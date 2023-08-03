@@ -1,7 +1,8 @@
 // eslint-disable-next-line babel/camelcase
 import { Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
+import { createTheme, ThemeProvider } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
-import { Slot, SplashScreen } from 'expo-router'
+import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
@@ -42,10 +43,17 @@ const RootLayout = () => {
   // let error boundary handle this
   if (mapboxError) throw mapboxError
 
+  // TODO place elsewhere
+  const theme = createTheme({
+    mode: 'light',
+  })
+
   // Render the children routes now that all the assets are loaded.
   return (
     <SafeAreaProvider>
-      <Slot />
+      <ThemeProvider theme={theme}>
+        <Stack />
+      </ThemeProvider>
     </SafeAreaProvider>
   )
 }
