@@ -1,12 +1,15 @@
+import { Text } from '@rneui/themed'
 import { Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { Example } from '@components/Example'
 
 const IndexScreen = () => (
   <View style={styles.container}>
     <Link href="/map">
       <Text>Map</Text>
     </Link>
+    <Example />
     <Text>Open up App.js to start working on your app!</Text>
     <StatusBar />
   </View>

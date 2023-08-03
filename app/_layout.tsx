@@ -3,6 +3,7 @@ import { Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
 import Mapbox from '@rnmapbox/maps'
 import { Slot, SplashScreen } from 'expo-router'
 import { useEffect, useState } from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { environment } from '../environment'
 
@@ -42,7 +43,11 @@ const RootLayout = () => {
   if (mapboxError) throw mapboxError
 
   // Render the children routes now that all the assets are loaded.
-  return <Slot />
+  return (
+    <SafeAreaProvider>
+      <Slot />
+    </SafeAreaProvider>
+  )
 }
 
 export default RootLayout
