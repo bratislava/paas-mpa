@@ -41,6 +41,6 @@ module.exports = {
     'sonarjs/no-duplicate-string': 'warn',
     // quite annoying as it conflicts with VS Code"s auto import
     'lodash/import-scope': 'off',
-    'no-process-env': 'error',
+    // 'no-process-env': 'error',
   },
 }

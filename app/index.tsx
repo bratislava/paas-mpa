@@ -1,14 +1,18 @@
+import { Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 
-const App = () => (
+const IndexScreen = () => (
   <View style={styles.container}>
+    <Link href="/map">
+      <Text>Map</Text>
+    </Link>
     <Text>Open up App.js to start working on your app!</Text>
     <StatusBar />
   </View>
 )
 
-export default App
+export default IndexScreen
 
 const styles = StyleSheet.create({
   container: {
