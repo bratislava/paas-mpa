@@ -1,8 +1,8 @@
+import { Example } from '@components/Example'
 import { Text } from '@rneui/themed'
 import { Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
-import { Example } from '@components/Example'
 
 const IndexScreen = () => (
   <View style={styles.container}>
