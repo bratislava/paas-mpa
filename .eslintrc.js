@@ -16,8 +16,8 @@ module.exports = {
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     /** Links get confused for secrets */
     'no-secrets/no-secrets': ['error', { ignoreContent: '^http' }],
-    /** Turned off in other repos, consider keeping here as we have clean slate to build upon */
-    // "@typescript-eslint/no-unsafe-assignment": "off",
+    /** Very hard to maintain, especially with other libs not respecting this */
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     /** Turned off in other repos, consider keeping here as we have clean slate to build upon */
     // "unicorn/prefer-spread": "off",
     /** To remove optional parameter warning e.g. { page?: number } */

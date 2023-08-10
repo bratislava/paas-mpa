@@ -1,3 +1,5 @@
+import 'utils/amplify'
+
 // eslint-disable-next-line babel/camelcase
 import { Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
 import { createTheme, ThemeProvider } from '@rneui/themed'
