@@ -3,7 +3,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"]
+      "@/*": ["./*"]
     }
   },
   "extends": "expo/tsconfig.base"

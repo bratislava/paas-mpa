@@ -14,6 +14,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     /** We prefer arrow functions */
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
+    /** e.g. Keeps return statement in short arrow functions */
+    'arrow-body-style': 'off',
     /** Links get confused for secrets */
     'no-secrets/no-secrets': ['error', { ignoreContent: '^http' }],
     /** Very hard to maintain, especially with other libs not respecting this */
@@ -41,6 +43,8 @@ module.exports = {
     'sonarjs/no-duplicate-string': 'warn',
     // quite annoying as it conflicts with VS Code"s auto import
     'lodash/import-scope': 'off',
+    /* solves error with imports from files with no extension */
+    'import/extensions': ['error', 'ignorePackages', { '': 'never' }],
     // 'no-process-env': 'error',
   },
 }

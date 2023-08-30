@@ -1,9 +1,9 @@
-import { Text, Input, Button } from '@rneui/themed'
-import { Auth } from 'aws-amplify'
+import { Button, Input, Text } from '@rneui/themed'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
+import { Auth } from 'aws-amplify'
 
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
 

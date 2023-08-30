@@ -1,7 +1,6 @@
 import { Text } from '@rneui/themed'
 import { Auth } from 'aws-amplify'
-import * as Crypto from 'expo-crypto'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
 
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
@@ -14,11 +13,11 @@ const LoginConfirmScreen = () => {
 
   const confirmStep = async () => {
     try {
-      if (!loginResult) {
+      if (loginResult) {
+        await Auth.confirmSignIn(loginResult, code)
+      } else {
         // this is a signUp operation
         await Auth.confirmSignUp(phone, code)
-      } else {
-        await Auth.confirmSignIn(loginResult, code)
       }
     } catch (error) {
       if (isError(error)) {

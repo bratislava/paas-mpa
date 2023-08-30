@@ -1,5 +1,6 @@
-import DeveloperMenu from '@components/DeveloperMenu'
 import { StyleSheet, View } from 'react-native'
+
+import DeveloperMenu from '@/components/DeveloperMenu'
 
 const IndexScreen = () => (
   <View style={styles.container}>

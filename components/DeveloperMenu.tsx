@@ -54,7 +54,13 @@ const DeveloperMenu = () => {
       <TouchableOpacity>
         <ListItem key={item.title}>
           <ListItem.Content>
-            <ListItem.Title>{item.title}</ListItem.Title>
+            <ListItem.Title
+              style={{
+                fontFamily: 'BelfastGrotesk_Black',
+              }}
+            >
+              {item.title}
+            </ListItem.Title>
             <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
