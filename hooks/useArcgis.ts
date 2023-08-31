@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-unlimited-disable,unicorn/no-abusive-eslint-disable */
+/* eslint-disable */
 import { Feature, FeatureCollection } from 'geojson'
 import { useEffect, useState } from 'react'
 

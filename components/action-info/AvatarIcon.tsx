@@ -20,9 +20,9 @@ const AvatarIcon = ({ variant = 'info' }: Props) => {
   return (
     <View
       className={clsx('flex items-center justify-center self-center rounded-full p-4', {
-        'bg-info-100 text-info-500': variant === 'info',
+        'text-info-500 bg-info-100': variant === 'info',
         'bg-green-light text-green': variant === 'success',
-        'bg-warning-100 text-warning-500': variant === 'warning',
+        'text-warning-500 bg-warning-100': variant === 'warning',
         'bg-negative-100 text-negative-700': variant === 'error',
       })}
     >

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import { colors } from './colors'
 
 const styles = [

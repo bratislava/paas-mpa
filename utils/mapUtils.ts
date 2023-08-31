@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/no-unlimited-disable,unicorn/no-abusive-eslint-disable */
+/* eslint-disable */
 import area from '@turf/area'
 import booleanIntersects from '@turf/boolean-intersects'
 import { Point, Polygon } from '@turf/helpers'

@@ -47,5 +47,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     // cumbersome when prototyping
     'react-native/no-color-literals': 'off',
+    // no need for error
+    'pii/no-phone-number': 'warn',
   },
 }

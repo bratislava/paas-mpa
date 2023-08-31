@@ -21,7 +21,7 @@ export const paasTheme = createTheme({
     //     fontFamily: 'BelfastGrotesk_Black',
     //   },
     // },
-    Button: (props, theme) => ({
+    Button: () => ({
       raised: false,
       buttonStyle: {
         // borderRadius: theme.radius.r8,
