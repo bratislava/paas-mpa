@@ -10,8 +10,9 @@ const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
 const LoginScreen = () => {
   const [phoneToConfirm, setPhoneToConfirm] = useState<string | null>(null)
   const [loginError, setLoginError] = useState<Error | null>(null)
-  const [loginResult, setLoginResult] = useState<Auth.SignInResult | null>(null)
-  const [signUpResult, setSignUpResult] = useState<Auth.SignUpResult | null>(null)
+  // fix types once aws-amplify fixes them
+  const [loginResult, setLoginResult] = useState</* Auth.SignInResult */ any | null>(null)
+  const [signUpResult, setSignUpResult] = useState</* Auth.SignUpResult */ any | null>(null)
   const [authResult, setAuthResult] = useState<any>(null)
   const [phone, setPhone] = useState('+421948234641')
   const [code, setCode] = useState('')
