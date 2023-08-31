@@ -54,15 +54,8 @@ const DeveloperMenu = () => {
       <TouchableOpacity>
         <ListItem key={item.title}>
           <ListItem.Content>
-            <ListItem.Title
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                fontFamily: 'BelfastGrotesk_Black',
-              }}
-            >
-              {item.title}
-            </ListItem.Title>
-            <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
+            <ListItem.Title className="font-belfast">{item.title}</ListItem.Title>
+            <ListItem.Subtitle className="font-belfast">{item.subtitle}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>

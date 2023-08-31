@@ -1,9 +1,8 @@
 import 'utils/amplify'
 
-// eslint-disable-next-line babel/camelcase
-import { Inter_500Medium, useFonts } from '@expo-google-fonts/inter'
 import { ThemeProvider } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
+import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -19,7 +18,6 @@ const RootLayout = () => {
 
   // temp - replace with font we actually want to use
   const [fontsLoaded] = useFonts({
-    Inter_500Medium,
     // eslint-disable-next-line unicorn/prefer-module,global-require
     BelfastGrotesk_Black: require('@/assets/fonts/Belfast-Grotesk-Black.otf'),
   })

@@ -9,6 +9,7 @@ module.exports = {
     './hooks/**/*.{js,jsx,ts,tsx}',
     './utils/**/*.{js,jsx,ts,tsx}',
   ],
+  presets: [nativewind],
   plugins: [
     // https://github.com/marklawlor/nativewind/issues/386
     plugin(function ({ matchUtilities, theme }) {
@@ -56,5 +57,4 @@ module.exports = {
       },
     },
   },
-  presets: [nativewind],
 }
