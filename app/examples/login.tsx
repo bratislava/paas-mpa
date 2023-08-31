@@ -1,9 +1,9 @@
 import { Button, Input, Text } from '@rneui/themed'
+import { Auth } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
-import { Auth } from 'aws-amplify'
 
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
 
@@ -91,9 +91,9 @@ const LoginScreen = () => {
         <Input placeholder="Phone" value={phone} onChangeText={setPhone} />
         <Input placeholder="Code" value={code} onChangeText={setCode} />
         <Text>{loginError?.message || JSON.stringify(loginResult)}</Text>
-        <Button onPress={() => attemptLogin()}>Login/Register</Button>
-        <Button onPress={confirmStep}>Confirm</Button>
-        <Button onPress={() => Auth.signOut()}>Logout</Button>
+        <Button onPress={() => attemptLogin()} title="Login/Register" />
+        <Button onPress={confirmStep} title="Confirm" />
+        <Button onPress={() => Auth.signOut()} title="Logout" />
         <Text>{phoneToConfirm}</Text>
         <Text>{JSON.stringify(authResult)}</Text>
         <Text>{JSON.stringify(loginResult)}</Text>
