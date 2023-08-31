@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BottomSheet, Button, Text } from '@rneui/themed'
 import {
   Camera,
@@ -10,7 +11,7 @@ import {
 } from '@rnmapbox/maps'
 import { FeatureCollection } from 'geojson'
 import { useArcgis } from 'hooks/useArcgis'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import udrStyle from 'utils/layer-styles/visitors2'
 import { processData } from 'utils/mapUtils'
@@ -61,6 +62,7 @@ const MapScreen = () => {
   )
 
   const [isLoading, setLoading] = useState(true)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bottomSheetContent, setBottomSheetContent] = useState<any>(null)
   const [markersData, setMarkersData] = useState<FeatureCollection | null>(null)
   const [zonesData, setZonesData] = useState<FeatureCollection | null>(null)
@@ -92,6 +94,7 @@ const MapScreen = () => {
       rawOdpData &&
       rawZonesData
     ) {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const { markersData, udrData, odpData, zonesData } = processData({
         rawZonesData,
         rawAssistantsData,
@@ -124,6 +127,7 @@ const MapScreen = () => {
       <MapView
         ref={map}
         style={styles.map}
+        // eslint-disable-next-line no-secrets/no-secrets
         styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
       >
         <Camera
@@ -146,6 +150,7 @@ const MapScreen = () => {
           <ShapeSource id="udrSource" shape={udrData} onPress={setBottomSheetContent}>
             <FillLayer
               id="udrFill"
+              // eslint-disable-next-line unicorn/no-array-reduce
               style={udrStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
             />
           </ShapeSource>
@@ -157,7 +162,7 @@ const MapScreen = () => {
       >
         <View style={styles.bottomSheetContainer}>
           <Text>{JSON.stringify(bottomSheetContent)}</Text>
-          <Button onPress={() => setBottomSheetContent(null)}>Close</Button>
+          <Button onPress={() => setBottomSheetContent(null)} title="Close" />
         </View>
       </BottomSheet>
     </View>
@@ -167,14 +172,14 @@ const MapScreen = () => {
 export default MapScreen
 
 const styles = StyleSheet.create({
+  bottomSheetContainer: {
+    backgroundColor: 'white',
+  },
   map: {
     flex: 1,
   },
   page: {
     alignItems: 'stretch',
     flex: 1,
-  },
-  bottomSheetContainer: {
-    backgroundColor: 'white',
   },
 })

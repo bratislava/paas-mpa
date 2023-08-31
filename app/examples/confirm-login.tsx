@@ -1,24 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Text } from '@rneui/themed'
 import { Auth } from 'aws-amplify'
-import * as Crypto from 'expo-crypto'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
 
+// eslint-disable-next-line const-case/uppercase
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
 
 const LoginConfirmScreen = () => {
   const [loginError, setLoginError] = useState<Error | null>(null)
-  const [loginResult, setLoginResult] = useState<Auth.SignInResult | null>(null)
+  // fix types once aws-amplify fixes them
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-redundant-type-constituents
+  const [loginResult, setLoginResult] = useState</* Auth.SignInResult */ any | null>(null)
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
 
   const confirmStep = async () => {
     try {
-      if (!loginResult) {
+      // eslint-disable-next-line unicorn/prefer-ternary
+      if (loginResult) {
+        await Auth.confirmSignIn(loginResult, code)
+      } else {
         // this is a signUp operation
         await Auth.confirmSignUp(phone, code)
-      } else {
-        await Auth.confirmSignIn(loginResult, code)
       }
     } catch (error) {
       if (isError(error)) {
@@ -36,10 +40,10 @@ const LoginConfirmScreen = () => {
   const attemptLogin = async (email: string, password: string) => {
     try {
       try {
-        const loginResult = await Auth.signIn(email, password)
-        if (loginResult) {
+        const loginResultInner = await Auth.signIn(email, password)
+        if (loginResultInner) {
           // TODO confirm login
-          await Auth.confirmSignIn(loginResult, 'todocode')
+          await Auth.confirmSignIn(loginResultInner, 'todocode')
         }
       } catch (error) {
         console.log(error)
@@ -76,6 +80,7 @@ const LoginConfirmScreen = () => {
   //     console.log('hello')
   //     console.log(Crypto.randomUUID())
   //     await Auth.signUp({
+  // eslint-disable-next-line pii/no-phone-number
   //       username: '+421948234641',
   //       password: staticTempPass,
   //       autoSignIn: {
