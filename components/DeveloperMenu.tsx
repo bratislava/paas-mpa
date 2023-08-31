@@ -55,6 +55,7 @@ const DeveloperMenu = () => {
         <ListItem key={item.title}>
           <ListItem.Content>
             <ListItem.Title
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{
                 fontFamily: 'BelfastGrotesk_Black',
               }}

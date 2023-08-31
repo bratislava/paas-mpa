@@ -1,9 +1,15 @@
 module.exports = {
   extends: ['auto'],
+  ignorePatterns: ['*.config.*', '.eslintrc.js', '.expo'],
+  // overrides: [
+  //   {
+  //     files: ['*.ts', '*.tsx', '*.d.ts'],
+  //     parserOptions: {
+  //       project: './tsconfig.json',
+  //     },
+  //   },
+  // ],
   rules: {
-    'react/react-in-jsx-scope': 'off',
-    // cumbersome when prototyping
-    'react-native/no-color-literals': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     /** We use this a lot with isDefined and hasAttributes */
     'unicorn/no-array-callback-reference': 'off',
@@ -29,14 +35,14 @@ module.exports = {
     // This rule disallows lexical declarations (let, const, function and class) in case/default clauses.
     // "no-case-declarations": "off",
     // Solve warning "Promise-returning function provided to attribute where a void return was expected."
-    '@typescript-eslint/no-misused-promises': [
-      2,
-      {
-        checksVoidReturn: {
-          attributes: false,
-        },
-      },
-    ],
+    // '@typescript-eslint/no-misused-promises': [
+    //   2,
+    //   {
+    //     checksVoidReturn: {
+    //       attributes: false,
+    //     },
+    //   },
+    // ],
     /** better to use empty function */
     // "lodash/prefer-noop": "off",
     /** if comparing values in cx function or creating translations, it"s overkill to create variables for that */
@@ -46,5 +52,8 @@ module.exports = {
     /* solves error with imports from files with no extension */
     'import/extensions': ['error', 'ignorePackages', { '': 'never' }],
     // 'no-process-env': 'error',
+    'react/react-in-jsx-scope': 'off',
+    // cumbersome when prototyping
+    'react-native/no-color-literals': 'off',
   },
 }

@@ -10,7 +10,7 @@ import {
 } from '@rnmapbox/maps'
 import { FeatureCollection } from 'geojson'
 import { useArcgis } from 'hooks/useArcgis'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import udrStyle from 'utils/layer-styles/visitors2'
 import { processData } from 'utils/mapUtils'
