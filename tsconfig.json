@@ -10,12 +10,13 @@
   "include": [
     "themed.d.ts",
     "index.d.ts",
+    "app.d.ts",
     "**/*.ts",
     "**/*.js",
     "**/*.tsx",
     "**/*.jsx",
     "./types",
-    ".expo/types/**/*.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    ".prettierrc.js"
   ]
 }

@@ -16,11 +16,11 @@ export const paasTheme = createTheme({
     thin: 1,
   },
   components: {
-    Text: {
-      style: {
-        fontFamily: 'BelfastGrotesk_Black',
-      },
-    },
+    // Text: {
+    //   style: {
+    //     fontFamily: 'BelfastGrotesk_Black',
+    //   },
+    // },
     Button: (props, theme) => ({
       raised: false,
       buttonStyle: {
@@ -29,7 +29,7 @@ export const paasTheme = createTheme({
       },
       titleStyle: {
         fontSize: 16,
-        fontFamily: 'BelfastGrotesk_Black',
+        // fontFamily: 'BelfastGrotesk_Black',
       },
       radius: 'md',
     }),

@@ -1,14 +1,6 @@
 module.exports = {
   extends: ['auto'],
-  ignorePatterns: ['*.config.*', '.eslintrc.js', '.expo'],
-  // overrides: [
-  //   {
-  //     files: ['*.ts', '*.tsx', '*.d.ts'],
-  //     parserOptions: {
-  //       project: './tsconfig.json',
-  //     },
-  //   },
-  // ],
+  ignorePatterns: ['*.config.*', '.eslintrc.js'],
   rules: {
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     /** We use this a lot with isDefined and hasAttributes */
