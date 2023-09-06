@@ -11,6 +11,7 @@
     "themed.d.ts",
     "index.d.ts",
     "app.d.ts",
+    "declarations.d.ts",
     "**/*.ts",
     "**/*.js",
     "**/*.tsx",
