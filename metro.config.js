@@ -2,22 +2,21 @@
 const { getDefaultConfig } = require('expo/metro-config')
 const withNativewind = require('nativewind/metro')
 
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname)
+
 /* Setup for react-native-svg-transformer https://github.com/kristerkari/react-native-svg-transformer#step-3-configure-the-react-native-packager */
-module.exports = (() => {
-  /** @type {import('expo/metro-config').MetroConfig} */
-  const config = getDefaultConfig(__dirname)
+const { transformer, resolver } = config
 
-  const { transformer, resolver } = config
+config.transformer = {
+  ...transformer,
+  babelTransformerPath: require.resolve('react-native-svg-transformer'),
+}
+config.resolver = {
+  ...resolver,
+  assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
+  sourceExts: [...resolver.sourceExts, 'svg'],
+}
+/* end of setup react-native-svg-transformer */
 
-  config.transformer = {
-    ...transformer,
-    babelTransformerPath: require.resolve('react-native-svg-transformer'),
-  }
-  config.resolver = {
-    ...resolver,
-    assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
-    sourceExts: [...resolver.sourceExts, 'svg'],
-  }
-
-  return withNativewind(config)
-})()
+module.exports = withNativewind(config)
