@@ -8,7 +8,7 @@ We are using eas-development builds - read more here https://docs.expo.dev/devel
 
 Quick reference:
 
-```
+```bash
 # you'll want eas-cli installed globally
 # install local packages
 yarn
