@@ -74,9 +74,14 @@ module.exports = {
       activeZone: '#F1B830',
       custom: {
         light: '#ECEEF1',
+        'gray-100': '#EBEBEB',
       },
     },
     extend: {
+      borderWidth: {
+        DEFAULT: '2px',
+        px: '1px',
+      },
       fontFamily: {
         belfast: ['BelfastGrotesk_Black'],
       },
