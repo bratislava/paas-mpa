@@ -22,6 +22,8 @@ module.exports = {
     // "unicorn/prefer-spread": "off",
     /** To remove optional parameter warning e.g. { page?: number } */
     'react/require-default-props': 'off',
+    /** Include Typography as allowed text component */
+    'react-native/no-raw-text': ['error', { skip: ['Typography'] }],
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
     'switch-case/newline-between-switch-case': 'off',
     // This rule disallows lexical declarations (let, const, function and class) in case/default clauses.

@@ -10,6 +10,8 @@ const AvatarIconShowcase = () => {
       <AvatarIcon variant="success" />
       <AvatarIcon variant="warning" />
       <AvatarIcon variant="error" />
+      <AvatarIcon variant="thumbUp" />
+      <AvatarIcon variant="noGps" />
     </View>
   )
 }
