@@ -15,18 +15,22 @@ type Props = TextProps & {
     | 'small-bold'
 }
 
-const Typography = ({ variant = 'default', children, ...rest }: Props) => {
+const Typography = ({ variant = 'default', children, className, ...rest }: Props) => {
   return (
     <TextNative
-      className={clsx('text-dark', {
-        'text-h1 font-bold': variant === 'h1',
-        'text-h2 font-bold': variant === 'h2',
-        'text-h3 font-bold': variant === 'h3',
-        'text-16': variant.startsWith('default'),
-        'text-14': variant.startsWith('small'),
-        'font-semibold': variant.includes('-semibold'),
-        'font-bold': variant.includes('-bold'),
-      })}
+      className={clsx(
+        'text-dark',
+        {
+          'text-h1 font-bold': variant === 'h1',
+          'text-h2 font-bold': variant === 'h2',
+          'text-h3 font-bold': variant === 'h3',
+          'text-16': variant.startsWith('default'),
+          'text-14': variant.startsWith('small'),
+          'font-semibold': variant.includes('-semibold'),
+          'font-bold': variant.includes('-bold'),
+        },
+        className,
+      )}
       {...rest}
     >
       {children}

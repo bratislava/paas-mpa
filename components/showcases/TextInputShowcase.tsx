@@ -12,6 +12,7 @@ const TextInputShowcase = () => {
       <TextInput isDisabled placeholder="Disabled" />
       <TextInput isDisabled hasError placeholder="Disabled with error (shouldn't be red)" />
       <TextInput secureTextEntry />
+      <TextInput multiline numberOfLines={4} placeholder="Multiline" />
     </View>
   )
 }

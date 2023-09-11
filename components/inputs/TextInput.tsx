@@ -7,7 +7,9 @@ type Props = Omit<TextInputProps, 'editable'> & {
   isDisabled?: boolean
 }
 
-// TODO associate control with with label
+// TODO associate control with label
+// eslint-disable-next-line no-secrets/no-secrets
+// TODO multiline height on ios, inspiration?: https://stackoverflow.com/questions/35936908/numberoflines-textinput-property-not-working
 
 const TextInput = ({ hasError, isDisabled, ...rest }: Props) => {
   return (

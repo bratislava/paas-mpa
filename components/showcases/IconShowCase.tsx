@@ -1,11 +1,12 @@
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 
 import { CalendarIcon } from '@/assets/ui-icons'
+import Typography from '@/components/shared/Typography'
 
 const StatusBarShowCase = () => {
   return (
-    <View className="relative">
-      <Text>See comments in the code for more details how to resize icon.</Text>
+    <View className="p-4 g-2">
+      <Typography>See comments in the code for more details how to resize icon.</Typography>
       {/* You can safely use icon without className to render it in standard size */}
       <CalendarIcon />
       {/* To specify size, use width and height */}

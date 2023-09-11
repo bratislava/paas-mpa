@@ -8,7 +8,7 @@ type Props = {
 }
 
 // TODO icon size and color
-const AvatarIcon = ({ variant = 'info' }: Props) => {
+const AvatarCircle = ({ variant = 'info' }: Props) => {
   const iconName =
     {
       info: 'info-outline',
@@ -34,4 +34,4 @@ const AvatarIcon = ({ variant = 'info' }: Props) => {
   )
 }
 
-export default AvatarIcon
+export default AvatarCircle
