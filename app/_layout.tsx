@@ -1,4 +1,6 @@
 import 'utils/amplify'
+import '../i18n.config.js'
+import 'intl-pluralrules'
 
 import { ThemeProvider } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
