@@ -2,10 +2,14 @@ import React from 'react'
 import { View } from 'react-native'
 
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
 
 const TypographyShowcase = () => {
+  const t = useTranslation('Typography')
+
   return (
     <View className="p-4 g-4">
+      <Typography variant="h1">{t('test')}</Typography>
       <Typography variant="h1">Heading 1</Typography>
       <Typography variant="h2">Heading 2</Typography>
       <Typography variant="h3">Heading 3</Typography>
