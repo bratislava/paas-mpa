@@ -14,7 +14,7 @@ type Props = Omit<TextInputProps, 'editable'> & {
 const TextInput = ({ hasError, isDisabled, ...rest }: Props) => {
   return (
     <TextInputNative
-      className={clsx('rounded border px-4 py-3', {
+      className={clsx('rounded border bg-white px-4 py-3', {
         'border-divider focus:border-dark': !isDisabled && !hasError,
         'border-negative': hasError && !isDisabled,
         'border-divider bg-custom-gray-100': isDisabled,

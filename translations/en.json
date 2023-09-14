@@ -1,4 +1,15 @@
 {
+  "Navigation": {
+    "continue": "Continue"
+  },
+  "EnterPhoneNumber": {
+    "enterPhoneNumber": "Enter phone number",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s podmienkami spracúvania osobných údajov hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy VZN č. 6/2023 a Prevádzkového poriadku."
+  },
+  "EnterVerificationCode": {
+    "enterVerificationCode": "Enter 6-digit code",
+    "instructions": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou."
+  },
   "Typography": {
     "test": "EN translation"
   }

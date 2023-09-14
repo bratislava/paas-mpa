@@ -51,5 +51,6 @@ module.exports = {
     'react-native/no-color-literals': 'off',
     // no need for error
     'pii/no-phone-number': 'warn',
+    'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
   },
 }

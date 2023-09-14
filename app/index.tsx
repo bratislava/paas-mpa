@@ -1,10 +1,14 @@
+import { Link } from 'expo-router'
 import { View } from 'react-native'
 
-import DeveloperMenu from '@/components/DeveloperMenu'
+import Button from '@/components/shared/Button'
 
 const IndexScreen = () => (
-  <View className="flex-1 items-stretch font-belfast">
-    <DeveloperMenu />
+  <View className="flex-1 p-4 font-belfast">
+    {/* <DeveloperMenu /> */}
+    <Link href="/dev" asChild>
+      <Button title="Developer menu" />
+    </Link>
   </View>
 )
 

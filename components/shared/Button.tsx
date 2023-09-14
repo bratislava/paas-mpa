@@ -12,6 +12,7 @@ type CustomButtonProps = Omit<ButtonProps, 'radius' | 'raised' | 'size' | 'color
     | 'plain-secondary'
 }
 
+// TODO forwardRef
 const Button = ({ variant = 'primary', ...props }: CustomButtonProps) => {
   const transformedProps: Partial<ButtonProps> = {
     primary: { color: 'primary', type: 'solid' } as const,
