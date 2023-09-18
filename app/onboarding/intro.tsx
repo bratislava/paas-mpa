@@ -13,6 +13,7 @@ const Page = () => {
     <View>
       <ScreenContent>
         <Typography>Intro</Typography>
+
         <Link asChild href="/onboarding/enter-phone-number">
           <Button title={t('continue')} />
         </Link>

@@ -2,10 +2,6 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
-import {
-  DefaultTheme,
-  ThemeProvider as ThemeProviderReactNavigation,
-} from '@react-navigation/native'
 import { ThemeProvider as ThemeProviderRNEUI } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
 import { useFonts } from 'expo-font'
@@ -56,17 +52,15 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <SafeAreaProvider>
-      <ThemeProviderReactNavigation value={DefaultTheme}>
-        <ThemeProviderRNEUI theme={paasTheme}>
-          <Stack
-            screenOptions={
-              {
-                // headerBackImageSource: CHEVRON,
-              }
+      <ThemeProviderRNEUI theme={paasTheme}>
+        <Stack
+          screenOptions={
+            {
+              // headerBackImageSource: CHEVRON,
             }
-          />
-        </ThemeProviderRNEUI>
-      </ThemeProviderReactNavigation>
+          }
+        />
+      </ThemeProviderRNEUI>
     </SafeAreaProvider>
   )
 }
