@@ -54,11 +54,9 @@ const RootLayout = () => {
     <SafeAreaProvider>
       <ThemeProviderRNEUI theme={paasTheme}>
         <Stack
-          screenOptions={
-            {
-              // headerBackImageSource: CHEVRON,
-            }
-          }
+          screenOptions={{
+            headerBackTitleVisible: false,
+          }}
         />
       </ThemeProviderRNEUI>
     </SafeAreaProvider>

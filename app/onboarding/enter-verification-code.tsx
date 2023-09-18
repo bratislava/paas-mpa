@@ -1,28 +1,20 @@
-import { Link } from 'expo-router'
-import { View } from 'react-native'
-
 import TextInput from '@/components/inputs/TextInput'
-import Button from '@/components/shared/Button'
+import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('Navigation')
-  const tCode = useTranslation('EnterVerificationCode')
+  const t = useTranslation('EnterVerificationCode')
 
   return (
-    <View>
-      <ScreenContent>
-        <Typography variant="h1">{tCode('enterVerificationCode')}</Typography>
+    <Screen>
+      <ScreenContent continueProps={{ href: '/' }}>
+        <Typography variant="h1">{t('enterVerificationCode')}</Typography>
         <TextInput />
-        <Typography>{tCode('instructions')}</Typography>
-
-        <Link asChild href="/">
-          <Button title={t('continue')} />
-        </Link>
+        <Typography>{t('instructions')}</Typography>
       </ScreenContent>
-    </View>
+    </Screen>
   )
 }
 
