@@ -2,7 +2,7 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
-import { ThemeProvider } from '@rneui/themed'
+import { ThemeProvider as ThemeProviderRNEUI } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
@@ -45,14 +45,22 @@ const RootLayout = () => {
   }
 
   // let error boundary handle this
-  if (mapboxError) throw mapboxError
+  if (mapboxError) {
+    throw mapboxError
+  }
 
   // Render the children routes now that all the assets are loaded.
   return (
     <SafeAreaProvider>
-      <ThemeProvider theme={paasTheme}>
-        <Stack />
-      </ThemeProvider>
+      <ThemeProviderRNEUI theme={paasTheme}>
+        <Stack
+          screenOptions={
+            {
+              // headerBackImageSource: CHEVRON,
+            }
+          }
+        />
+      </ThemeProviderRNEUI>
     </SafeAreaProvider>
   )
 }

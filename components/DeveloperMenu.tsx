@@ -42,6 +42,11 @@ const menuItems: MenuItem[] = [
     route: '/examples/info',
   },
   {
+    title: 'Onboarding',
+    subtitle: 'Onboarding screens with swiper',
+    route: '/onboarding/intro',
+  },
+  {
     title: 'TODO more',
     subtitle: 'Feel free to add to this list',
     route: '/index',
