@@ -45,8 +45,8 @@ const Screen = ({
     >
       <Stack.Screen options={{ title }} />
       <View
-        className={clsx({
-          'grow justify-center': variant === 'centered',
+        className={clsx('flex-1', {
+          'justify-center': variant === 'centered',
         })}
       >
         {children}
