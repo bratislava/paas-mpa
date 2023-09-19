@@ -29,5 +29,12 @@
     "addVehicle": "Pridať vozidlo",
     "summary": "Celkom",
     "pay": "Zaplatiť"
+  },
+  "VehiclesScreen": {
+    "addVehicleTitle": "Pridať vozidlo",
+    "addVehicle": "Pridať vozidlo",
+    "licensePlateFieldLabel": "Evidenčné číslo vozidla",
+    "vehicleNameFieldLabel": "Názov vozidla",
+    "optional": "Voliteľné"
   }
 }
