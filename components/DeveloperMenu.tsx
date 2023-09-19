@@ -36,6 +36,11 @@ const menuItems: MenuItem[] = [
     route: '/add-parking-cards/enter-email-addresses',
   },
   {
+    title: 'Bottom sheet',
+    subtitle: 'Bottom sheet examples',
+    route: '/examples/bottom-sheet',
+  },
+  {
     title: 'Address / zone search screen',
     subtitle:
       'Search by address (places integration) or zone name (be integration) with autocomplete',
