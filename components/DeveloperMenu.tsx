@@ -36,6 +36,11 @@ const menuItems: MenuItem[] = [
     route: '/add-parking-cards/enter-email-addresses',
   },
   {
+    title: 'Add vehicle',
+    subtitle: 'Flow for adding new vehicle',
+    route: '/vehicles',
+  },
+  {
     title: 'Bottom sheet',
     subtitle: 'Bottom sheet examples',
     route: '/examples/bottom-sheet',

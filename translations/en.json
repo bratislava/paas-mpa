@@ -29,5 +29,12 @@
     "addVehicle": "Add vehicle",
     "summary": "Summary",
     "pay": "Pay"
+  },
+  "VehiclesScreen": {
+    "addVehicleTitle": "Add vehicle",
+    "addVehicle": "Add vehicle",
+    "licensePlateFieldLabel": "License plate",
+    "vehicleNameFieldLabel": "Vehicle name",
+    "optional": "Optional"
   }
 }
