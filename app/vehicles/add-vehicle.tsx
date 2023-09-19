@@ -1,7 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Link, router, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
@@ -9,34 +8,32 @@ import Field from '@/components/shared/Field'
 import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
 import Typography from '@/components/shared/Typography'
+import { useStorageVehicles, Vehicle } from '@/hooks/useStorageVehicles'
 import { useTranslation } from '@/hooks/useTranslation'
 
 // TODO make sure that modal is what we want and that it works correctly
 const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
 
-  const [licencePlate, setLicencePlate] = React.useState('')
-  const [vehicleName, setVehicleName] = React.useState('')
+  const [licencePlate, setLicencePlate] = useState('')
+  const [vehicleName, setVehicleName] = useState('')
+
+  const [vehicles, setVehicles] = useStorageVehicles()
 
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
   const isPresented = router.canGoBack()
 
+  // TODO validation?
   const isValid = licencePlate.length > 0
 
-  const handleSaveVehicle = async () => {
-    const newVehicle = {
+  // TODO duplicates
+  const handleSaveVehicle = () => {
+    const newVehicle: Vehicle = {
       licencePlate,
       vehicleName: vehicleName.length > 0 ? vehicleName : null,
     }
-
-    try {
-      await AsyncStorage.setItem('vehicles', JSON.stringify(newVehicle))
-    } catch (error) {
-      console.log('Error while saving vehicle:', error)
-    }
-
-    console.log('Done.')
+    setVehicles([...(vehicles ?? []), newVehicle])
   }
 
   return (
