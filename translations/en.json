@@ -19,5 +19,15 @@
     "instructions": "TODO EN Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
     "verifyYourEmail": "Verify e-mail",
     "verifyYourEmailInfo": "TODO EN Poslali sme vám overovací e-mail na adresu: {{email}}. \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
+  },
+  "PurchaseScreen": {
+    "ticketPurchaseTitle": "Ticket purchase",
+    "segmentFieldLabel": "Segment",
+    "vehicleFieldLabel": "Choose vehicle",
+    "parkingTimeFieldLabel": "Parking time",
+    "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
+    "addVehicle": "Add vehicle",
+    "summary": "Summary",
+    "pay": "Pay"
   }
 }

@@ -41,6 +41,11 @@ const menuItems: MenuItem[] = [
     route: '/examples/bottom-sheet',
   },
   {
+    title: 'Purchase',
+    subtitle: 'Whole flow of ticket purchase',
+    route: '/purchase',
+  },
+  {
     title: 'Address / zone search screen',
     subtitle:
       'Search by address (places integration) or zone name (be integration) with autocomplete',

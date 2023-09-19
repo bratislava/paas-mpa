@@ -15,7 +15,8 @@ module.exports = {
     /** e.g. Keeps return statement in short arrow functions */
     'arrow-body-style': 'off',
     /** Links get confused for secrets */
-    'no-secrets/no-secrets': ['error', { ignoreContent: 'http' }],
+    /** Turned off completely because of several false positives */
+    'no-secrets/no-secrets': ['off', { ignoreContent: 'http' }],
     /** Very hard to maintain, especially with other libs not respecting this */
     '@typescript-eslint/no-unsafe-assignment': 'off',
     /** Turned off in other repos, consider keeping here as we have clean slate to build upon */
