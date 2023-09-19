@@ -26,6 +26,16 @@ const menuItems: MenuItem[] = [
     route: '/examples/login',
   },
   {
+    title: 'Onboarding',
+    subtitle: 'Onboarding screens with swiper',
+    route: '/onboarding/intro',
+  },
+  {
+    title: 'Add parking cards',
+    subtitle: 'Flow for adding parking cards',
+    route: '/add-parking-cards/enter-email-addresses',
+  },
+  {
     title: 'Address / zone search screen',
     subtitle:
       'Search by address (places integration) or zone name (be integration) with autocomplete',
@@ -42,11 +52,6 @@ const menuItems: MenuItem[] = [
     route: '/examples/info',
   },
   {
-    title: 'Onboarding',
-    subtitle: 'Onboarding screens with swiper',
-    route: '/onboarding/intro',
-  },
-  {
     title: 'TODO more',
     subtitle: 'Feel free to add to this list',
     route: '/index',
@@ -57,10 +62,10 @@ const DeveloperMenu = () => {
   const renderRow = ({ item }: { item: MenuItem }) => (
     <Link href={item.route} asChild>
       <TouchableOpacity>
-        <ListItem key={item.title}>
+        <ListItem key={item.title} className="border-b-px border-divider">
           <ListItem.Content>
-            <ListItem.Title className="font-belfast">{item.title}</ListItem.Title>
-            <ListItem.Subtitle className="font-belfast">{item.subtitle}</ListItem.Subtitle>
+            <ListItem.Title className="font-semibold">{item.title}</ListItem.Title>
+            <ListItem.Subtitle className="pt-1">{item.subtitle}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
