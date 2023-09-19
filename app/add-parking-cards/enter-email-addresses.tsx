@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
 import Field from '@/components/shared/Field'
-import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -22,7 +22,7 @@ const Page = () => {
   const isValid = email.length > 0
 
   return (
-    <Screen title={t('addCardsTitle')}>
+    <ScreenView title={t('addCardsTitle')}>
       <ScreenContent
         continueProps={{
           href: `/add-parking-cards/verification-sent?emailToVerify=${email}`,
@@ -42,7 +42,7 @@ const Page = () => {
           <Typography>{t('instructions')}</Typography>
         </Surface>
       </ScreenContent>
-    </Screen>
+    </ScreenView>
   )
 }
 

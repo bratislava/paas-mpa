@@ -5,6 +5,6 @@ export type Vehicle = {
   vehicleName: string | null
 }
 
-export const useStorageVehicles = () => {
+export const useVehiclesStorage = () => {
   return useMMKVObject<Vehicle[]>('vehicles')
 }

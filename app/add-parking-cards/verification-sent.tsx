@@ -2,8 +2,8 @@ import { useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import AvatarCircle from '@/components/action-info/AvatarCircle'
-import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -19,7 +19,7 @@ const Page = () => {
 
   return (
     // TODO add dynamic href
-    <Screen variant="centered" backgroundVariant="dots" continueProps={{ href: '/' }}>
+    <ScreenView variant="centered" backgroundVariant="dots" continueProps={{ href: '/' }}>
       <ScreenContent variant="center">
         {/* TODO replace by icon */}
         <AvatarCircle variant="info" />
@@ -27,7 +27,7 @@ const Page = () => {
 
         <Typography>{t('verifyYourEmailInfo', { email: emailToVerify })}</Typography>
       </ScreenContent>
-    </Screen>
+    </ScreenView>
   )
 }
 

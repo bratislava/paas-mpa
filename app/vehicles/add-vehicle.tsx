@@ -5,11 +5,11 @@ import React, { useState } from 'react'
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
-import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
-import { useStorageVehicles, Vehicle } from '@/hooks/useStorageVehicles'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useVehiclesStorage, Vehicle } from '@/hooks/useVehiclesStorage'
 
 // TODO make sure that modal is what we want and that it works correctly
 const AddVehicleScreen = () => {
@@ -18,7 +18,7 @@ const AddVehicleScreen = () => {
   const [licencePlate, setLicencePlate] = useState('')
   const [vehicleName, setVehicleName] = useState('')
 
-  const [vehicles, setVehicles] = useStorageVehicles()
+  const [vehicles, setVehicles] = useVehiclesStorage()
 
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
@@ -27,7 +27,7 @@ const AddVehicleScreen = () => {
   // TODO validation?
   const isValid = licencePlate.length > 0
 
-  // TODO duplicates
+  // TODO duplicates, sanitize inputs, trim, etc.
   const handleSaveVehicle = () => {
     const newVehicle: Vehicle = {
       licencePlate,
@@ -37,7 +37,7 @@ const AddVehicleScreen = () => {
   }
 
   return (
-    <Screen>
+    <ScreenView>
       <Stack.Screen options={{ title: t('addVehicleTitle') }} />
 
       {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
@@ -70,7 +70,7 @@ const AddVehicleScreen = () => {
 
         <Button title={t('addVehicle')} disabled={!isValid} onPress={() => handleSaveVehicle()} />
       </ScreenContent>
-    </Screen>
+    </ScreenView>
   )
 }
 

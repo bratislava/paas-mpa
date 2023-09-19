@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import TextInput from '@/components/inputs/TextInput'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
-import Screen from '@/components/shared/Screen'
+import ScreenView from '@/components/shared/ScreenView'
 import SegmentBadge from '@/components/shared/SegmentBadge'
 import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
@@ -25,9 +25,8 @@ const Page = () => {
     console.log('handleSheetChanges', index)
   }, [])
 
-  // renders
   return (
-    <Screen backgroundVariant="dots">
+    <ScreenView backgroundVariant="dots">
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -58,7 +57,7 @@ const Page = () => {
           )}
         </View>
       </BottomSheet>
-    </Screen>
+    </ScreenView>
   )
 }
 
