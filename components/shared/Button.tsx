@@ -1,30 +1,84 @@
-import { Button as RneButton, ButtonProps } from '@rneui/themed'
+import clsx from 'clsx'
 import React from 'react'
+import { Pressable } from 'react-native'
 
-type CustomButtonProps = Omit<ButtonProps, 'radius' | 'raised' | 'size' | 'color' | 'type'> & {
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'negative'
-    | 'floating'
-    | 'plain-primary'
-    | 'plain-secondary'
+import Icon, { IconName } from '@/components/shared/Icon'
+import Typography from '@/components/shared/Typography'
+
+type PressableProps = Omit<React.ComponentProps<typeof Pressable>, 'children'>
+
+type ButtonProps = {
+  children: string
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'negative' | 'plain' | 'plain-dark'
+  startIcon?: IconName
+  endIcon?: IconName
+  isLoading?: boolean
+  loadingText?: string
+} & PressableProps
+
+export const buttonClassNames = (
+  variant: ButtonProps['variant'],
+  pressableProps: PressableProps,
+) => {
+  const { disabled } = pressableProps
+
+  const isPlainStyle = variant === 'plain' || variant === 'plain-dark'
+
+  const buttonContainerClassNames = clsx(
+    'flex flex-row items-center justify-center g-3 active:opacity-70',
+    {
+      'rounded border p-2.5': !isPlainStyle,
+      'border-green bg-green': variant === 'primary',
+      'border-green': variant === 'secondary',
+      'border-divider': variant === 'tertiary',
+      'border-negative bg-negative': variant === 'negative',
+      'opacity-50': disabled,
+    },
+  )
+
+  const buttonTextClassNames = clsx('', {
+    'text-white': variant === 'primary' || variant === 'negative',
+    'text-dark': variant === 'secondary' || variant === 'tertiary' || variant === 'plain-dark',
+    'text-green': variant === 'plain',
+  })
+
+  return {
+    buttonContainerClassNames,
+    buttonTextClassNames,
+  }
 }
 
 // TODO forwardRef
-const Button = ({ variant = 'primary', ...props }: CustomButtonProps) => {
-  const transformedProps: Partial<ButtonProps> = {
-    primary: { color: 'primary', type: 'solid' } as const,
-    secondary: { type: 'outline' } as const,
-    tertiary: { type: 'outline' } as const,
-    negative: { color: 'error', type: 'solid' } as const,
-    floating: { type: 'solid', color: 'secondary', raised: true, radius: 100 } as const,
-    'plain-primary': { type: 'clear' } as const,
-    'plain-secondary': { color: 'secondary', type: 'clear' } as const,
-  }[variant]
+const Button = ({
+  children,
+  variant = 'primary',
+  startIcon,
+  endIcon,
+  isLoading,
+  loadingText,
+  disabled,
+  ...restProps
+}: ButtonProps) => {
+  const rest = { ...restProps, disabled: disabled || isLoading }
 
-  return <RneButton {...props} {...transformedProps} />
+  const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
+
+  return isLoading ? (
+    <Pressable {...rest} disabled className={clsx(buttonContainerClassNames)}>
+      <Icon name="hourglass-top" className={buttonTextClassNames} />
+      <Typography variant="button" className={buttonTextClassNames}>
+        Loading
+      </Typography>
+    </Pressable>
+  ) : (
+    <Pressable {...rest} className={clsx(buttonContainerClassNames)}>
+      {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
+      <Typography variant="button" className={buttonTextClassNames}>
+        {children}
+      </Typography>
+      {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
+    </Pressable>
+  )
 }
 
 export default Button
