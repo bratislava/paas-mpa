@@ -36,7 +36,7 @@ const ScreenContent = ({ children, continueProps, variant, cn }: Props) => {
           href={continueProps.href}
           disabled={continueProps.isDisabled}
         >
-          <Button title={continueProps.label ?? t('continue')} />
+          <Button>{continueProps.label ?? t('continue')}</Button>
         </Link>
       ) : null}
     </View>

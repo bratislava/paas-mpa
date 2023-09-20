@@ -2,14 +2,12 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
-import { ThemeProvider as ThemeProviderRNEUI } from '@rneui/themed'
 import Mapbox from '@rnmapbox/maps'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { paasTheme } from '@/components/shared/theme'
 import { environment } from '@/environment'
 
 SplashScreen.preventAutoHideAsync()
@@ -52,13 +50,11 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <SafeAreaProvider>
-      <ThemeProviderRNEUI theme={paasTheme}>
-        <Stack
-          screenOptions={{
-            headerBackTitleVisible: false,
-          }}
-        />
-      </ThemeProviderRNEUI>
+      <Stack
+        screenOptions={{
+          headerBackTitleVisible: false,
+        }}
+      />
     </SafeAreaProvider>
   )
 }

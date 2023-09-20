@@ -1,9 +1,11 @@
-import { Button, Input, Text } from '@rneui/themed'
 import { Auth } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
+import Button from '@/components/shared/Button'
+import Typography from '@/components/shared/Typography'
+import TextInput from '@/components/inputs/TextInput'
 
 // eslint-disable-next-line const-case/uppercase
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
@@ -94,19 +96,19 @@ const LoginScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Input placeholder="Phone" value={phone} onChangeText={setPhone} />
-        <Input placeholder="Code" value={code} onChangeText={setCode} />
-        <Text>{loginError?.message || JSON.stringify(loginResult)}</Text>
+        <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} />
+        <TextInput placeholder="Code" value={code} onChangeText={setCode} />
+        <Typography>{loginError?.message || JSON.stringify(loginResult)}</Typography>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={() => attemptLogin()} title="Login/Register" />
+        <Button onPress={() => attemptLogin()}>Login/Register</Button>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={confirmStep} title="Confirm" />
+        <Button onPress={confirmStep}>Confirm</Button>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={() => Auth.signOut()} title="Logout" />
-        <Text>{phoneToConfirm}</Text>
-        <Text>{JSON.stringify(authResult)}</Text>
-        <Text>{JSON.stringify(loginResult)}</Text>
-        <Text>{JSON.stringify(signUpResult)}</Text>
+        <Button onPress={() => Auth.signOut()}>Logout</Button>
+        <Typography>{phoneToConfirm}</Typography>
+        <Typography>{JSON.stringify(authResult)}</Typography>
+        <Typography>{JSON.stringify(loginResult)}</Typography>
+        <Typography>{JSON.stringify(signUpResult)}</Typography>
       </View>
     </ScrollView>
   )

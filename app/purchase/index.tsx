@@ -70,7 +70,7 @@ const PurchaseScreen = () => {
           </FlexRow>
 
           <Link href="/" asChild>
-            <Button title={t('pay')} />
+            <Button>{t('pay')}</Button>
           </Link>
         </BottomSheetView>
       </BottomSheet>

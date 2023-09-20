@@ -27,7 +27,7 @@ const VehiclesScreen = () => {
         </Field>
 
         <Link href="/vehicles/add-vehicle" asChild>
-          <Button title="Add vehicle" />
+          <Button>{t('addVehicle')}</Button>
         </Link>
       </ScreenContent>
     </ScreenView>

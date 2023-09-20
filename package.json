@@ -19,8 +19,6 @@
     "@gorhom/bottom-sheet": "~4.5.1",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
-    "@rneui/base": "^4.0.0-rc.8",
-    "@rneui/themed": "^4.0.0-rc.8",
     "@rnmapbox/maps": "^10.0.11",
     "@turf/area": "^6.5.0",
     "@turf/boolean-intersects": "^6.5.0",

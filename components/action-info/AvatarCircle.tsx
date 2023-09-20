@@ -1,7 +1,8 @@
-import { Icon } from '@rneui/base'
 import { clsx } from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
+
+import Icon from '@/components/shared/Icon'
 
 type Props = {
   variant?: 'info' | 'success' | 'warning' | 'error' | 'thumbUp' | 'noGps'
@@ -10,14 +11,16 @@ type Props = {
 // TODO icon size and color
 const AvatarCircle = ({ variant = 'info' }: Props) => {
   const iconName =
-    {
-      info: 'info-outline',
-      success: 'check',
-      warning: 'warning', // TODO outline warning
-      error: 'error-outline',
-      thumbUp: 'thumb-up',
-      noGps: 'location-disabled',
-    }[variant] ?? 'info'
+    (
+      {
+        info: 'info-outline',
+        success: 'check',
+        warning: 'warning', // TODO outline warning
+        error: 'error-outline',
+        thumbUp: 'thumb-up',
+        noGps: 'location-disabled',
+      } as const
+    )[variant] ?? 'info'
 
   return (
     <View

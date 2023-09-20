@@ -1,6 +1,7 @@
-import { Text } from '@rneui/themed'
 import React from 'react'
 
-const SwiperScreen = () => <Text>TODO</Text>
+import Typography from '@/components/shared/Typography'
+
+const SwiperScreen = () => <Typography>TODO</Typography>
 
 export default SwiperScreen

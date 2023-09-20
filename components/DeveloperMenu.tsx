@@ -1,7 +1,8 @@
-import { ListItem } from '@rneui/themed'
 import { Link } from 'expo-router'
 import React from 'react'
-import { FlatList, TouchableOpacity } from 'react-native'
+import { FlatList, TouchableOpacity, View } from 'react-native'
+
+import Typography from '@/components/shared/Typography'
 
 type MenuItem = {
   title: string
@@ -75,15 +76,12 @@ const menuItems: MenuItem[] = [
 
 const DeveloperMenu = () => {
   const renderRow = ({ item }: { item: MenuItem }) => (
-    <Link href={item.route} asChild>
+    <Link key={item.title} href={item.route} asChild>
       <TouchableOpacity>
-        <ListItem key={item.title} className="border-b-px border-divider">
-          <ListItem.Content>
-            <ListItem.Title className="font-semibold">{item.title}</ListItem.Title>
-            <ListItem.Subtitle className="pt-1">{item.subtitle}</ListItem.Subtitle>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
+        <View key={item.title} className="border-b-px border-divider p-3">
+          <Typography variant="h2">{item.title}</Typography>
+          <Typography>{item.subtitle}</Typography>
+        </View>
       </TouchableOpacity>
     </Link>
   )

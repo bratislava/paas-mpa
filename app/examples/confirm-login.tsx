@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Text } from '@rneui/themed'
 import { Auth } from 'aws-amplify'
 import React, { useState } from 'react'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
+
+import Typography from '@/components/shared/Typography'
 
 // eslint-disable-next-line const-case/uppercase
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
@@ -91,7 +92,7 @@ const LoginConfirmScreen = () => {
   //     .then(() => console.log('done'))
   //     .catch(console.log)
   // }, [])
-  return <Text>TODO</Text>
+  return <Typography>TODO</Typography>
 }
 
 export default LoginConfirmScreen

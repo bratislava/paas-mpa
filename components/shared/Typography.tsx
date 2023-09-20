@@ -13,6 +13,7 @@ type Props = TextProps & {
     | 'small'
     | 'small-semibold'
     | 'small-bold'
+    | 'button'
 }
 
 const Typography = ({ variant = 'default', children, className, ...rest }: Props) => {
@@ -21,6 +22,7 @@ const Typography = ({ variant = 'default', children, className, ...rest }: Props
       className={clsx(
         'text-dark',
         {
+          'text-16 font-bold': variant === 'button',
           'text-h1 font-bold': variant === 'h1',
           'text-h2 font-bold': variant === 'h2',
           'text-h3 font-bold': variant === 'h3',
