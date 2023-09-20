@@ -9,7 +9,7 @@ type Props = {
   children: ReactNode
   errorMessage?: string
 }
-// TODO associate control with with label
+// TODO associate control with label
 
 const Field = ({ label, children, labelInsertArea, errorMessage }: Props) => {
   return (
