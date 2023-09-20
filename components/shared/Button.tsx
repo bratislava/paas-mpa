@@ -4,6 +4,7 @@ import { Pressable } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
 
 type PressableProps = Omit<React.ComponentProps<typeof Pressable>, 'children'>
 
@@ -14,6 +15,7 @@ type ButtonProps = {
   endIcon?: IconName
   isLoading?: boolean
   loadingText?: string
+  loadingTextEllipsis?: boolean
 } & PressableProps
 
 export const buttonClassNames = (
@@ -56,27 +58,33 @@ const Button = ({
   endIcon,
   isLoading,
   loadingText,
+  loadingTextEllipsis = true,
   disabled,
   ...restProps
 }: ButtonProps) => {
-  const rest = { ...restProps, disabled: disabled || isLoading }
+  const t = useTranslation('Common')
 
+  const rest = { ...restProps, disabled: disabled || isLoading }
   const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
-  return isLoading ? (
-    <Pressable {...rest} disabled className={clsx(buttonContainerClassNames)}>
-      <Icon name="hourglass-top" className={buttonTextClassNames} />
-      <Typography variant="button" className={buttonTextClassNames}>
-        Loading
-      </Typography>
-    </Pressable>
-  ) : (
+  return (
     <Pressable {...rest} className={clsx(buttonContainerClassNames)}>
-      {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
-      <Typography variant="button" className={buttonTextClassNames}>
-        {children}
-      </Typography>
-      {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
+      {isLoading ? (
+        <>
+          <Icon name="hourglass-top" className={buttonTextClassNames} />
+          <Typography variant="button" className={buttonTextClassNames}>
+            {`${loadingText || t('loading')}${loadingTextEllipsis ? '…' : ''}`}
+          </Typography>
+        </>
+      ) : (
+        <>
+          {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
+          <Typography variant="button" className={buttonTextClassNames}>
+            {children}
+          </Typography>
+          {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
+        </>
+      )}
     </Pressable>
   )
 }

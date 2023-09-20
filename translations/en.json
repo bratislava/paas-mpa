@@ -2,6 +2,9 @@
   "Navigation": {
     "continue": "Continue"
   },
+  "Common": {
+    "loading": "Loading"
+  },
   "Typography": {
     "test": "EN translation"
   },

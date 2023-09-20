@@ -2,6 +2,9 @@
   "Navigation": {
     "continue": "Pokračovať"
   },
+  "Common": {
+    "loading": "Načítavam"
+  },
   "Typography": {
     "test": "SK preklad"
   },
