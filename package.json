@@ -9,7 +9,9 @@
     "web": "expo start --web",
     "ts:check": "tsc",
     "lint": "eslint --color --ext .md,.ts,.tsx ./",
-    "lint:fix": "yarn eslint --fix"
+    "lint:fix": "yarn eslint --fix",
+    "doctor": "expo install --check",
+    "doctor:fix": "expo install --fix"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
@@ -31,7 +33,7 @@
     "expo": "~49.0.5",
     "expo-constants": "~14.4.2",
     "expo-crypto": "~12.4.1",
-    "expo-dev-client": "~2.4.8",
+    "expo-dev-client": "~2.4.10",
     "expo-font": "~11.4.0",
     "expo-linking": "~5.0.2",
     "expo-localization": "~14.3.0",
