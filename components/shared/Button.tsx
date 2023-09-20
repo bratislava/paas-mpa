@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import React from 'react'
-import { Pressable } from 'react-native'
+import React, { forwardRef } from 'react'
+import { Pressable, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
@@ -50,43 +50,47 @@ export const buttonClassNames = (
   }
 }
 
-// TODO forwardRef
-const Button = ({
-  children,
-  variant = 'primary',
-  startIcon,
-  endIcon,
-  loading,
-  loadingText,
-  loadingTextEllipsis = true,
-  disabled,
-  ...restProps
-}: ButtonProps) => {
-  const t = useTranslation('Common')
+const Button = forwardRef<View, ButtonProps>(
+  (
+    {
+      children,
+      variant = 'primary',
+      startIcon,
+      endIcon,
+      loading,
+      loadingText,
+      loadingTextEllipsis = true,
+      disabled,
+      ...restProps
+    },
+    ref,
+  ) => {
+    const t = useTranslation('Common')
 
-  const rest = { ...restProps, disabled: disabled ?? loading }
-  const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
+    const rest = { ...restProps, disabled: disabled ?? loading }
+    const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
-  return (
-    <Pressable {...rest} className={clsx(buttonContainerClassNames)}>
-      {loading ? (
-        <>
-          <Icon name="hourglass-top" className={buttonTextClassNames} />
-          <Typography variant="button" className={buttonTextClassNames}>
-            {`${loadingText || t('loading')}${loadingTextEllipsis ? '…' : ''}`}
-          </Typography>
-        </>
-      ) : (
-        <>
-          {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
-          <Typography variant="button" className={buttonTextClassNames}>
-            {children}
-          </Typography>
-          {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
-        </>
-      )}
-    </Pressable>
-  )
-}
+    return (
+      <Pressable ref={ref} {...rest} className={clsx(buttonContainerClassNames)}>
+        {loading ? (
+          <>
+            <Icon name="hourglass-top" className={buttonTextClassNames} />
+            <Typography variant="button" className={buttonTextClassNames}>
+              {`${loadingText || t('loading')}${loadingTextEllipsis ? '…' : ''}`}
+            </Typography>
+          </>
+        ) : (
+          <>
+            {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
+            <Typography variant="button" className={buttonTextClassNames}>
+              {children}
+            </Typography>
+            {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
+          </>
+        )}
+      </Pressable>
+    )
+  },
+)
 
 export default Button
