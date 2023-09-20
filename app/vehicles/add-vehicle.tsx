@@ -34,18 +34,12 @@ const AddVehicleScreen = () => {
       vehicleName: vehicleName.length > 0 ? vehicleName : null,
     }
     setVehicles([...(vehicles ?? []), newVehicle])
+    router.back()
   }
 
   return (
     <ScreenView>
       <Stack.Screen options={{ title: t('addVehicleTitle') }} />
-
-      {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
-      {!isPresented && (
-        <Link href="../">
-          <Typography variant="default-bold">Dismiss</Typography>
-        </Link>
-      )}
 
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       {/* eslint-disable-next-line react/style-prop-object */}
@@ -71,6 +65,13 @@ const AddVehicleScreen = () => {
         <Button disabled={!isValid} onPress={() => handleSaveVehicle()}>
           {t('addVehicle')}
         </Button>
+
+        {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
+        {!isPresented && (
+          <Link href="../">
+            <Typography variant="default-bold">Dismiss</Typography>
+          </Link>
+        )}
       </ScreenContent>
     </ScreenView>
   )
