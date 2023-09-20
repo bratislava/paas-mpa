@@ -2,6 +2,8 @@ name: "PR Labeler"
 on:
   pull_request_review:
     types: [submitted]
+  pull_request:
+    types: [review_requested]
 
 jobs:
   created:
