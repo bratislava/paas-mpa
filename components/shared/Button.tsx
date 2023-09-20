@@ -13,7 +13,7 @@ type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'negative' | 'plain' | 'plain-dark'
   startIcon?: IconName
   endIcon?: IconName
-  isLoading?: boolean
+  loading?: boolean
   loadingText?: string
   loadingTextEllipsis?: boolean
 } & PressableProps
@@ -56,7 +56,7 @@ const Button = ({
   variant = 'primary',
   startIcon,
   endIcon,
-  isLoading,
+  loading,
   loadingText,
   loadingTextEllipsis = true,
   disabled,
@@ -64,12 +64,12 @@ const Button = ({
 }: ButtonProps) => {
   const t = useTranslation('Common')
 
-  const rest = { ...restProps, disabled: disabled || isLoading }
+  const rest = { ...restProps, disabled: disabled ?? loading }
   const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
   return (
     <Pressable {...rest} className={clsx(buttonContainerClassNames)}>
-      {isLoading ? (
+      {loading ? (
         <>
           <Icon name="hourglass-top" className={buttonTextClassNames} />
           <Typography variant="button" className={buttonTextClassNames}>

@@ -32,15 +32,15 @@ const ButtonShowcase = () => (
     <Button variant="plain-dark" startIcon="add-circle-outline">
       Plain with icon
     </Button>
-    <Button variant="primary" isLoading>
+    <Button variant="primary" loading>
       Loading
     </Button>
-    <Button variant="secondary" isLoading loadingText="Custom loading text">
+    <Button variant="secondary" loading loadingText="Custom loading text">
       Custom loadingText
     </Button>
     <Button
       variant="tertiary"
-      isLoading
+      loading
       loadingText="Custom without ellipsis"
       loadingTextEllipsis={false}
     >
