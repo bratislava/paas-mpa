@@ -31,4 +31,4 @@ jobs:
         uses: andymckay/labeler@1.0.4
         with:
           add-labels: 'pr: needs work :hammer_and_wrench:'
-          remove-labels: '"pr: fix & ship :ship:", "pr: needs work :hammer_and_wrench:"'
+          remove-labels: '"pr: fix & ship :ship:", "pr: needs review :pray:"'
