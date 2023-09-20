@@ -21,7 +21,7 @@ jobs:
         uses: andymckay/labeler@1.0.4
         with:
           add-labels: 'pr: fix & ship :ship:'
-          remove-labels: '"pr: needs review :pray:", "pr: needs work :hammer_and_wrench:"'
+          remove-labels: 'pr: needs review :pray:, pr: needs work :hammer_and_wrench:'
 
   needs-work:
     if: github.event.review.state == 'changes_requested'
@@ -31,4 +31,4 @@ jobs:
         uses: andymckay/labeler@1.0.4
         with:
           add-labels: 'pr: needs work :hammer_and_wrench:'
-          remove-labels: '"pr: fix & ship :ship:", "pr: needs review :pray:"'
+          remove-labels: 'pr: fix & ship :ship:, pr: needs review :pray:'
