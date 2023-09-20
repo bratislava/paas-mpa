@@ -17,6 +17,7 @@ const VehiclesScreen = () => {
   return (
     <ScreenView>
       <ScreenContent>
+        {/* TODO use SectionList */}
         <Field label={t('otherVehicles')}>
           {vehicles?.map((vehicle) => (
             <Surface key={vehicle.licencePlate}>

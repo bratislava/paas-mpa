@@ -19,10 +19,10 @@ const AvatarSquare = ({ variant }: Props) => {
 
   return (
     <View
-      className={clsx('flex items-center justify-center self-center rounded p-[10px]', {
-        'bg-visitorCard': variant === 'visitor-card',
-        'bg-dark': variant === 'payment-gate',
-      })}
+      className={clsx(
+        'flex items-center justify-center self-center rounded p-[10px]',
+        variant === 'visitor-card' ? 'bg-visitorCard' : 'bg-dark',
+      )}
     >
       <Icon name={iconName} className="text-white" />
     </View>

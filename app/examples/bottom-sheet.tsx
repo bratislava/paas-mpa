@@ -2,11 +2,11 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 
+import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import ScreenView from '@/components/shared/ScreenView'
-import SegmentBadge from '@/components/shared/SegmentBadge'
 import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import AvatarCircle from '@/components/action-info/AvatarCircle'
-import AvatarSquare from '@/components/action-info/AvatarSquare'
+import AvatarCircle from '@/components/info/AvatarCircle'
+import AvatarSquare from '@/components/info/AvatarSquare'
 
 const AvatarShowcase = () => {
   return (

@@ -28,7 +28,7 @@ const menuItems: MenuItem[] = [
   },
   {
     title: 'Onboarding',
-    subtitle: 'Onboarding screens with swiper',
+    subtitle: 'Onboarding screens with swiper after splash screen',
     route: '/onboarding/intro',
   },
   {
@@ -56,11 +56,6 @@ const menuItems: MenuItem[] = [
     subtitle:
       'Search by address (places integration) or zone name (be integration) with autocomplete',
     route: '/examples/search',
-  },
-  {
-    title: 'Swiper / Promo',
-    subtitle: 'The first screen on inial startup after splash screen',
-    route: '/examples/swiper',
   },
   {
     title: 'Info screen',

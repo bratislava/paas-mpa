@@ -1,11 +1,11 @@
 import { Auth } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
 
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
+import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 
 // eslint-disable-next-line const-case/uppercase
@@ -101,8 +101,8 @@ const LoginScreen = () => {
   }, [])
 
   return (
-    <ScrollView>
-      <View className="flex-1">
+    <ScreenView>
+      <ScreenContent>
         <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} />
         <TextInput placeholder="Code" value={code} onChangeText={setCode} />
         <Typography>{loginError?.message || JSON.stringify(loginResult)}</Typography>
@@ -116,8 +116,8 @@ const LoginScreen = () => {
         <Typography>{JSON.stringify(authResult)}</Typography>
         <Typography>{JSON.stringify(loginResult)}</Typography>
         <Typography>{JSON.stringify(signUpResult)}</Typography>
-      </View>
-    </ScrollView>
+      </ScreenContent>
+    </ScreenView>
   )
 }
 
