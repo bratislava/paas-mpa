@@ -3,10 +3,17 @@ import { View } from 'react-native'
 
 import Button from '@/components/shared/Button'
 
+const handlePress = () => {
+  // eslint-disable-next-line no-console
+  console.log('Button pressed')
+}
+
 const ButtonShowcase = () => (
   // eslint-disable-next-line react-native/no-inline-styles
   <View className="p-4 g-2">
-    <Button variant="primary">Primary</Button>
+    <Button variant="primary" onPress={handlePress}>
+      Primary
+    </Button>
     <Button variant="secondary">Secondary</Button>
     <Button variant="tertiary">Tertiary</Button>
     <Button variant="negative">Negative</Button>

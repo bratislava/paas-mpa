@@ -1,11 +1,12 @@
 import { Auth } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
+
+import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
-import TextInput from '@/components/inputs/TextInput'
 
 // eslint-disable-next-line const-case/uppercase
 const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
@@ -86,6 +87,11 @@ const LoginScreen = () => {
     }
   }
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const signOut = () => {
+    return Auth.signOut()
+  }
+
   useEffect(() => {
     ;(async () => {
       setAuthResult(await Auth.currentUserInfo())
@@ -93,19 +99,20 @@ const LoginScreen = () => {
       .then(() => console.log('done'))
       .catch(console.log)
   }, [])
+
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View className="flex-1">
         <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} />
         <TextInput placeholder="Code" value={code} onChangeText={setCode} />
         <Typography>{loginError?.message || JSON.stringify(loginResult)}</Typography>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={() => attemptLogin()}>Login/Register</Button>
+        <Button onPress={attemptLogin}>Login/Register</Button>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <Button onPress={confirmStep}>Confirm</Button>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={() => Auth.signOut()}>Logout</Button>
-        <Typography>{phoneToConfirm}</Typography>
+        <Button onPress={signOut}>Logout</Button>
+        {phoneToConfirm ? <Typography>{phoneToConfirm}</Typography> : null}
         <Typography>{JSON.stringify(authResult)}</Typography>
         <Typography>{JSON.stringify(loginResult)}</Typography>
         <Typography>{JSON.stringify(signUpResult)}</Typography>
@@ -115,10 +122,3 @@ const LoginScreen = () => {
 }
 
 export default LoginScreen
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'stretch',
-    flex: 1,
-  },
-})
