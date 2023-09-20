@@ -5,6 +5,7 @@ on:
 
 jobs:
   created:
+    if: github.event.review.state != 'changes_requested' && github.event.review.state != 'approved'
     runs-on: ubuntu-latest
     steps:
       - name: Add basic label
