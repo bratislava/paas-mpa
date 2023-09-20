@@ -21,7 +21,7 @@ export type ContinueProps = {
   isDisabled?: boolean
 }
 
-const Screen = ({
+const ScreenView = ({
   children,
   title,
   continueProps,
@@ -62,4 +62,4 @@ const Screen = ({
   )
 }
 
-export default Screen
+export default ScreenView

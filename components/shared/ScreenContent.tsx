@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 import { View } from 'react-native'
 
 import Button from '@/components/shared/Button'
-import { ContinueProps } from '@/components/shared/Screen'
+import { ContinueProps } from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {

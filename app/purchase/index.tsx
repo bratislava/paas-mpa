@@ -7,8 +7,8 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
-import Screen from '@/components/shared/Screen'
 import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import SegmentBadge from '@/components/shared/SegmentBadge'
 import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
@@ -20,7 +20,7 @@ const PurchaseScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   return (
-    <Screen>
+    <ScreenView>
       <Stack.Screen options={{ title: t('ticketPurchaseTitle') }} />
 
       <ScreenContent>
@@ -74,7 +74,7 @@ const PurchaseScreen = () => {
           </Link>
         </BottomSheetView>
       </BottomSheet>
-    </Screen>
+    </ScreenView>
   )
 }
 

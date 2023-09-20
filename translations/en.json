@@ -35,6 +35,7 @@
     "addVehicle": "Add vehicle",
     "licensePlateFieldLabel": "License plate",
     "vehicleNameFieldLabel": "Vehicle name",
-    "optional": "Optional"
+    "optional": "Optional",
+    "otherVehicles": "Other vehicles"
   }
 }
