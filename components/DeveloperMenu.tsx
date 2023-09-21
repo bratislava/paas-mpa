@@ -52,6 +52,11 @@ const menuItems: MenuItem[] = [
     route: '/examples/bottom-sheet',
   },
   {
+    title: 'Modal',
+    subtitle: 'Modal examples',
+    route: '/examples/modal',
+  },
+  {
     title: 'Purchase',
     subtitle: 'Whole flow of ticket purchase',
     route: '/purchase',

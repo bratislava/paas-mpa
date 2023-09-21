@@ -22,6 +22,18 @@ const AvatarCircle = ({ variant = 'info' }: Props) => {
       } as const
     )[variant] ?? 'info'
 
+  const iconClassName =
+    (
+      {
+        info: 'text-info',
+        success: 'text-green',
+        warning: 'text-warning-500',
+        error: 'text-negative',
+        thumbUp: 'text-green',
+        noGps: 'text-gray-500',
+      } as const
+    )[variant] ?? 'info'
+
   return (
     <View
       className={clsx('flex items-center justify-center self-center rounded-full p-4', {
@@ -32,7 +44,7 @@ const AvatarCircle = ({ variant = 'info' }: Props) => {
         'bg-custom-light': variant === 'noGps',
       })}
     >
-      <Icon name={iconName} />
+      <Icon name={iconName} className={iconClassName} />
     </View>
   )
 }
