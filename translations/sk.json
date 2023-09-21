@@ -36,9 +36,14 @@
   "VehiclesScreen": {
     "addVehicleTitle": "Pridať vozidlo",
     "addVehicle": "Pridať vozidlo",
-    "licensePlateFieldLabel": "Evidenčné číslo vozidla",
+    "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
-    "otherVehicles": "Ostatné vozidlá"
+    "myVehicles": "Moje vozidlá",
+    "default": "Predvolené",
+    "actions": {
+      "saveAsDefault": "Uložiť ako predvolené",
+      "deleteVehicle": "Odstrániť"
+    }
   }
 }

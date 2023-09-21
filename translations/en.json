@@ -36,9 +36,14 @@
   "VehiclesScreen": {
     "addVehicleTitle": "Add vehicle",
     "addVehicle": "Add vehicle",
-    "licensePlateFieldLabel": "License plate",
+    "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
-    "otherVehicles": "Other vehicles"
+    "myVehicles": "My vehicles",
+    "default": "Default",
+    "actions": {
+      "saveAsDefault": "Set as default",
+      "deleteVehicle": "Delete"
+    }
   }
 }

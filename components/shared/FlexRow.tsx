@@ -8,7 +8,7 @@ type Props = {
 }
 
 const FlexRow = ({ children, cn }: Props) => {
-  return <View className={clsx('flex-row justify-between', cn)}>{children}</View>
+  return <View className={clsx('flex-row justify-between g-4', cn)}>{children}</View>
 }
 
 export default FlexRow
