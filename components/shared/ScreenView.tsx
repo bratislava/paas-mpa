@@ -1,10 +1,12 @@
 import { clsx } from 'clsx'
 import { Link, Stack } from 'expo-router'
 import React, { ReactNode } from 'react'
-import { View } from 'react-native'
+import { View, Image } from 'react-native'
 
 import Button from '@/components/shared/Button'
 import { useTranslation } from '@/hooks/useTranslation'
+
+const DottedBackground = require('@/assets/images/dotted-background.png')
 
 type Props = {
   children: ReactNode
@@ -34,15 +36,20 @@ const ScreenView = ({
   return (
     <View
       className={clsx(
-        'flex-1 bg-white',
+        'flex-1',
         {
-          'bg-white': backgroundVariant === 'white',
+          'bg-white': backgroundVariant === 'white' || backgroundVariant === 'dots',
           // TODO add dots background
-          'bg-divider': backgroundVariant === 'dots',
         },
         cn,
       )}
     >
+      {backgroundVariant === 'dots' && (
+        <Image
+          source={DottedBackground}
+          style={{ width: '100%', height: '100%', position: 'absolute' }}
+        />
+      )}
       <Stack.Screen options={{ title }} />
       <View
         className={clsx('flex-1', {
