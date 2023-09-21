@@ -1,6 +1,7 @@
-import { Text } from '@rneui/themed'
 import React from 'react'
 
-const SearchScreen = () => <Text>TODO</Text>
+import Typography from '@/components/shared/Typography'
+
+const SearchScreen = () => <Typography>TODO</Typography>
 
 export default SearchScreen

@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
-import AvatarCircle from '@/components/action-info/AvatarCircle'
+import AvatarCircle from '@/components/info/AvatarCircle'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'

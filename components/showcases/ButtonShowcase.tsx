@@ -3,17 +3,49 @@ import { View } from 'react-native'
 
 import Button from '@/components/shared/Button'
 
+const handlePress = () => {
+  // eslint-disable-next-line no-console
+  console.log('Button pressed')
+}
+
 const ButtonShowcase = () => (
   // eslint-disable-next-line react-native/no-inline-styles
-  <View style={{ padding: 16, flex: 1, flexDirection: 'column', gap: 12 }}>
-    <Button title="Primary" variant="primary" />
-    <Button title="Secondary" variant="secondary" />
-    <Button title="Tertiary" variant="tertiary" />
-    <Button title="Negative" variant="negative" />
-    <Button title="Floating" variant="floating" />
-    <Button title="Plain primary" variant="plain-primary" />
-    <Button title="Plain secondary" variant="plain-secondary" />
-    <Button title="Primary" variant="primary" disabled />
+  <View className="p-4 g-2">
+    <Button variant="primary" onPress={handlePress}>
+      Primary
+    </Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="tertiary">Tertiary</Button>
+    <Button variant="negative">Negative</Button>
+    {/* <Button variant="floating" >Floating</Button> */}
+    <Button variant="plain">Plain</Button>
+    <Button variant="plain-dark">Plain dark</Button>
+    <Button variant="primary" disabled>
+      Disabled
+    </Button>
+    <Button variant="plain" disabled>
+      Disabled plain
+    </Button>
+    <Button variant="primary" startIcon="add">
+      With icon
+    </Button>
+    <Button variant="plain-dark" startIcon="add-circle-outline">
+      Plain with icon
+    </Button>
+    <Button variant="primary" loading>
+      Loading
+    </Button>
+    <Button variant="secondary" loading loadingText="Custom loading text">
+      Custom loadingText
+    </Button>
+    <Button
+      variant="tertiary"
+      loading
+      loadingText="Custom without ellipsis"
+      loadingTextEllipsis={false}
+    >
+      Custom loadingText
+    </Button>
   </View>
 )
 

@@ -17,6 +17,7 @@ const VehiclesScreen = () => {
   return (
     <ScreenView>
       <ScreenContent>
+        {/* TODO use SectionList */}
         <Field label={t('otherVehicles')}>
           {vehicles?.map((vehicle) => (
             <Surface key={vehicle.licencePlate}>
@@ -27,7 +28,7 @@ const VehiclesScreen = () => {
         </Field>
 
         <Link href="/vehicles/add-vehicle" asChild>
-          <Button title="Add vehicle" />
+          <Button>{t('addVehicle')}</Button>
         </Link>
       </ScreenContent>
     </ScreenView>

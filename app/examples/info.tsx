@@ -1,6 +1,7 @@
-import { Text } from '@rneui/themed'
 import React from 'react'
 
-const InfoScreen = () => <Text>TODO</Text>
+import Typography from '@/components/shared/Typography'
+
+const InfoScreen = () => <Typography>TODO</Typography>
 
 export default InfoScreen

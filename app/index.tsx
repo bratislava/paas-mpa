@@ -7,7 +7,7 @@ const IndexScreen = () => (
   <View className="flex-1 p-4 font-belfast">
     {/* <DeveloperMenu /> */}
     <Link href="/dev" asChild>
-      <Button title="Developer menu" />
+      <Button>Developer menu</Button>
     </Link>
   </View>
 )

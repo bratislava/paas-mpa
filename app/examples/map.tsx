@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BottomSheet, Button, Text } from '@rneui/themed'
+import BottomSheet from '@gorhom/bottom-sheet'
 import {
   Camera,
   FillLayer,
@@ -15,6 +15,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import udrStyle from 'utils/layer-styles/visitors2'
 import { processData } from 'utils/mapUtils'
+
+import Typography from '@/components/shared/Typography'
 
 const MapScreen = () => {
   const camera = useRef<Camera>(null)
@@ -156,15 +158,19 @@ const MapScreen = () => {
           </ShapeSource>
         )}
       </MapView>
-      <BottomSheet
-        modalProps={{ style: { backgroundColor: 'white' } }}
-        isVisible={!!bottomSheetContent}
-      >
-        <View style={styles.bottomSheetContainer}>
-          <Text>{JSON.stringify(bottomSheetContent)}</Text>
-          <Button onPress={() => setBottomSheetContent(null)} title="Close" />
-        </View>
-      </BottomSheet>
+      {/* TODO fix */}
+      {/* eslint-disable-next-line sonarjs/no-redundant-boolean */}
+      {false && (
+        <BottomSheet
+        // modalProps={{ style: { backgroundColor: 'white' } }}
+        // isVisible={!!bottomSheetContent}
+        >
+          <View style={styles.bottomSheetContainer}>
+            <Typography>{JSON.stringify(bottomSheetContent)}</Typography>
+            {/* <Button onPress={() => setBottomSheetContent(null)}>Close</Button> */}
+          </View>
+        </BottomSheet>
+      )}
     </View>
   )
 }

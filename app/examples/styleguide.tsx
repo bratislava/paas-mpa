@@ -15,13 +15,13 @@ import TypographyShowcase from '@/components/showcases/TypographyShowcase'
 const StyleguideScreen = () => (
   <ScrollView className="flex bg-white">
     <TypographyShowcase />
+    <ButtonShowcase />
     <TextInputShowcase />
     <FieldShowcase />
     <SurfaceShowcase />
     <DividerShowcase />
     <IconShowCase />
     <SegmentBadgeShowcase />
-    <ButtonShowcase />
     <AvatarShowcase />
     <ChipShowcase />
   </ScrollView>

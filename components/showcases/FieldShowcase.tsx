@@ -1,9 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 
+import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Field from '@/components/shared/Field'
-import SegmentBadge from '@/components/shared/SegmentBadge'
 import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 

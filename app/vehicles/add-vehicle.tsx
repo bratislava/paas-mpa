@@ -68,7 +68,9 @@ const AddVehicleScreen = () => {
           <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
         </Field>
 
-        <Button title={t('addVehicle')} disabled={!isValid} onPress={() => handleSaveVehicle()} />
+        <Button disabled={!isValid} onPress={() => handleSaveVehicle()}>
+          {t('addVehicle')}
+        </Button>
       </ScreenContent>
     </ScreenView>
   )

@@ -54,7 +54,7 @@ const ScreenView = ({
       {continueProps ? (
         <View className="p-5 pb-[50px]">
           <Link asChild href={continueProps.href} disabled={continueProps.isDisabled}>
-            <Button title={continueProps.label ?? t('continue')} />
+            <Button>{continueProps.label ?? t('continue')}</Button>
           </Link>
         </View>
       ) : null}
