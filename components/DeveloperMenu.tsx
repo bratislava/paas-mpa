@@ -37,9 +37,14 @@ const menuItems: MenuItem[] = [
     route: '/add-parking-cards/enter-email-addresses',
   },
   {
-    title: 'Add vehicle',
-    subtitle: 'Flow for adding new vehicle',
+    title: 'Vehicles',
+    subtitle: 'List and manage vehicles',
     route: '/vehicles',
+  },
+  {
+    title: 'Add vehicle modal',
+    subtitle: 'Adding new vehicle from different screen',
+    route: '/vehicles/add-vehicle',
   },
   {
     title: 'Bottom sheet',
