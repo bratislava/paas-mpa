@@ -6,7 +6,7 @@ import { View, Image } from 'react-native'
 import Button from '@/components/shared/Button'
 import { useTranslation } from '@/hooks/useTranslation'
 
-const DottedBackground = require('@/assets/images/dotted-background.png')
+const dottedBackground = require('@/assets/images/dotted-background.png')
 
 type Props = {
   children: ReactNode
@@ -46,7 +46,7 @@ const ScreenView = ({
     >
       {backgroundVariant === 'dots' && (
         <Image
-          source={DottedBackground}
+          source={dottedBackground}
           style={{ width: '100%', height: '100%', position: 'absolute' }}
         />
       )}
