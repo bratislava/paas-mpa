@@ -28,6 +28,10 @@ export const useVehicles = () => {
     return vehicles.some((vehicle) => vehicle.licencePlate === licencePlate)
   }
 
+  const getVehicle = (licencePlate: string) => {
+    return vehicles.find((vehicle) => vehicle.licencePlate === licencePlate) ?? null
+  }
+
   return {
     vehicles,
     setVehicles,
@@ -36,5 +40,6 @@ export const useVehicles = () => {
     setDefaultVehicle,
     defaultVehicle,
     isVehiclePresent,
+    getVehicle,
   }
 }

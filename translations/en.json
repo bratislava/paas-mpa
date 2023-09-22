@@ -26,7 +26,6 @@
   "PurchaseScreen": {
     "ticketPurchaseTitle": "Ticket purchase",
     "segmentFieldLabel": "Segment",
-    "vehicleFieldLabel": "Choose vehicle",
     "parkingTimeFieldLabel": "Parking time",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
@@ -42,6 +41,7 @@
     "myVehicles": "My vehicles",
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
+    "chooseVehicleFieldLabel": "Choose vehicle",
     "deleteVehicleConfirmModal": {
       "title": "Delete vehicle",
       "message": "Do you really want to delete vehicle {{licencePlate}}?",

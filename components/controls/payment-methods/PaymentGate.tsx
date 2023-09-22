@@ -13,6 +13,7 @@ const PaymentGate = () => {
       <FlexRow cn="items-center">
         <AvatarSquare variant="payment-gate" />
         <View className="flex-1">
+          {/* TODO translation */}
           <Typography variant="default-bold">Platobná karta / Apple Pay / Google Pay</Typography>
         </View>
         <Icon name="expand-more" />

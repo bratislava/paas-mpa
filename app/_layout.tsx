@@ -64,13 +64,8 @@ const RootLayout = () => {
           headerBackTitleVisible: false,
         }}
       >
-        <Stack.Screen
-          name="vehicles/add-vehicle"
-          options={{
-            // Set the presentation mode to modal for our modal route.
-            presentation: 'modal',
-          }}
-        />
+        <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
       </Stack>
     </SafeAreaProvider>
   )

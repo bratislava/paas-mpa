@@ -1,8 +1,9 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { Link, Stack } from 'expo-router'
+import { Link, Stack, useLocalSearchParams } from 'expo-router'
 import React, { useRef } from 'react'
 
 import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
+import VehicleField from '@/components/controls/vehicles/VehicleField'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
@@ -19,7 +20,11 @@ import { useVehicles } from '@/hooks/useVehicles'
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const { defaultVehicle } = useVehicles()
+  const { licencePlate } = useLocalSearchParams()
+  const { getVehicle, defaultVehicle } = useVehicles()
+
+  const chosenVehicle =
+    licencePlate && typeof licencePlate === 'string' ? getVehicle(licencePlate) : defaultVehicle
 
   return (
     <ScreenView>
@@ -35,15 +40,7 @@ const PurchaseScreen = () => {
           </PanelPressable>
         </Field>
 
-        <Field label={t('vehicleFieldLabel')}>
-          <TextInput keyboardType="numeric" defaultValue={defaultVehicle?.licencePlate} />
-          {/* TODO replace by proper field control */}
-          {/* <Surface touchable> */}
-          {/*   <FlexRow> */}
-          {/*     <Typography variant="default-semibold">{t('addVehicle')}</Typography> */}
-          {/*   </FlexRow> */}
-          {/* </Surface> */}
-        </Field>
+        <VehicleField vehicle={chosenVehicle} />
 
         <Field label={t('parkingTimeFieldLabel')}>
           <TextInput keyboardType="numeric" />
