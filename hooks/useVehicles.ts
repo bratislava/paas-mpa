@@ -22,9 +22,7 @@ export const useVehicles = () => {
     }
   }
 
-  const getDefaultVehicle = () => {
-    return vehicles[0]
-  }
+  const defaultVehicle = vehicles.length > 0 ? vehicles[0] : null
 
   const isVehiclePresent = (licencePlate: string) => {
     return vehicles.some((vehicle) => vehicle.licencePlate === licencePlate)
@@ -36,7 +34,7 @@ export const useVehicles = () => {
     addVehicle,
     deleteVehicle,
     setDefaultVehicle,
-    getDefaultVehicle,
+    defaultVehicle,
     isVehiclePresent,
   }
 }

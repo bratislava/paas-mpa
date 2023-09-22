@@ -9,7 +9,7 @@ const DividerShowcase = () => {
   return (
     <View className="px-4 g-4">
       <Divider />
-      <Panel surfaceClassName="g-3">
+      <Panel className="g-3">
         <Typography>See how divider is used in Surface component</Typography>
         <Divider />
         <Typography>It is neat!</Typography>

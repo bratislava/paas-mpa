@@ -9,16 +9,17 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
-import Panel from '@/components/shared/Panel'
+import PanelPressable from '@/components/shared/PanelPressable'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useVehicles } from '@/hooks/useVehicles'
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
-
   const bottomSheetRef = useRef<BottomSheet>(null)
+  const { defaultVehicle } = useVehicles()
 
   return (
     <ScreenView>
@@ -26,16 +27,16 @@ const PurchaseScreen = () => {
 
       <ScreenContent>
         <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-          <Panel isPressable>
+          <PanelPressable>
             <FlexRow>
               <Typography>Staré Mesto – Fazuľová</Typography>
               <Typography variant="default-semibold">2,90</Typography>
             </FlexRow>
-          </Panel>
+          </PanelPressable>
         </Field>
 
         <Field label={t('vehicleFieldLabel')}>
-          <TextInput keyboardType="numeric" />
+          <TextInput keyboardType="numeric" defaultValue={defaultVehicle?.licencePlate} />
           {/* TODO replace by proper field control */}
           {/* <Surface touchable> */}
           {/*   <FlexRow> */}
@@ -50,6 +51,7 @@ const PurchaseScreen = () => {
         </Field>
 
         <Field label={t('paymentMethodsFieldLabel')}>
+          {/* TODO replace by control */}
           <PaymentGate />
         </Field>
       </ScreenContent>

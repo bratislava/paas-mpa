@@ -99,7 +99,7 @@ const AddVehicleScreen = () => {
           secondaryActionOnPress={closeModal}
         >
           {isStandardFormat(sanitizedLicencePlate) ? null : (
-            <Panel surfaceClassName="bg-warning-light">
+            <Panel className="bg-warning-light">
               <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
             </Panel>
           )}

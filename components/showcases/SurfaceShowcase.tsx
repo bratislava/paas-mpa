@@ -2,6 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 
 import Panel from '@/components/shared/Panel'
+import PanelPressable from '@/components/shared/PanelPressable'
 import Typography from '@/components/shared/Typography'
 
 const SurfaceShowcase = () => {
@@ -10,11 +11,11 @@ const SurfaceShowcase = () => {
       <Panel>
         <Typography>Plain</Typography>
       </Panel>
-      <Panel isPressable>
-        <Typography>Touchable</Typography>
-      </Panel>
-      <Panel surfaceClassName="bg-warning-light">
-        <Typography>Custom surfaceClassName</Typography>
+      <PanelPressable>
+        <Typography>Pressable</Typography>
+      </PanelPressable>
+      <Panel className="bg-warning-light">
+        <Typography>Custom className</Typography>
       </Panel>
     </View>
   )

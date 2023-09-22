@@ -1,25 +1,14 @@
 import { clsx } from 'clsx'
-import React, { ReactNode } from 'react'
-import { Pressable, View } from 'react-native'
+import React from 'react'
+import { View, ViewProps } from 'react-native'
 
-type Props = {
-  isPressable?: boolean
-  surfaceClassName?: string
-  children?: ReactNode
-}
+type Props = ViewProps
 
-const Panel = ({ isPressable = false, surfaceClassName, children }: Props) => {
-  // eslint-disable-next-line const-case/uppercase
-  const className = clsx(
-    'rounded bg-soft p-4',
-    isPressable && 'active:opacity-50',
-    surfaceClassName,
-  )
-
-  return isPressable ? (
-    <Pressable className={className}>{children}</Pressable>
-  ) : (
-    <View className={className}>{children}</View>
+const Panel = ({ className, children, ...rest }: Props) => {
+  return (
+    <View className={clsx('rounded bg-soft p-4', className)} {...rest}>
+      {children}
+    </View>
   )
 }
 

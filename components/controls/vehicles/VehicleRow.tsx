@@ -9,7 +9,7 @@ import { Vehicle } from '@/hooks/useVehiclesStorage'
 
 type Props = {
   vehicle: Vehicle
-  onContextMenuPress: (licencePlate: string) => void
+  onContextMenuPress?: (licencePlate: string) => void
   isDefault?: boolean
 }
 
@@ -30,7 +30,9 @@ const VehicleRow = ({ vehicle, onContextMenuPress, isDefault }: Props) => {
             </Typography>
           )}
         </FlexRow>
-        <Icon name="more-vert" onPress={() => onContextMenuPress(vehicle.licencePlate)} />
+        {onContextMenuPress ? (
+          <Icon name="more-vert" onPress={() => onContextMenuPress(vehicle.licencePlate)} />
+        ) : null}
       </FlexRow>
       {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}
     </Panel>
