@@ -66,7 +66,6 @@ const AddVehicleScreen = () => {
           {t('addVehicle')}
         </Button>
 
-        {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
         {!isPresented && (
           <Link href="/">
             <Typography variant="default-bold">Dismiss</Typography>

@@ -60,6 +60,7 @@ module.exports = {
       },
       warning: {
         100: '#FCF2E6',
+        500: '#F1B830',
       },
       info: {
         DEFAULT: '#3171AF',

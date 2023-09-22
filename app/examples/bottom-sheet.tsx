@@ -4,6 +4,7 @@ import { View } from 'react-native'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
+import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import ScreenView from '@/components/shared/ScreenView'
@@ -33,7 +34,7 @@ const Page = () => {
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >
-        <View className="flex-1 p-5 g-5">
+        <BottomSheetContent cn="g-5">
           <Field label="Where are you parking?">
             <TextInput />
           </Field>
@@ -55,7 +56,7 @@ const Page = () => {
               </Typography>
             </>
           )}
-        </View>
+        </BottomSheetContent>
       </BottomSheet>
     </ScreenView>
   )
