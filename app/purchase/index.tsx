@@ -2,15 +2,16 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { Link, Stack } from 'expo-router'
 import React, { useRef } from 'react'
 
+import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
+import Panel from '@/components/shared/Panel'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -25,12 +26,12 @@ const PurchaseScreen = () => {
 
       <ScreenContent>
         <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-          <Surface touchable>
+          <Panel isPressable>
             <FlexRow>
               <Typography>Staré Mesto – Fazuľová</Typography>
               <Typography variant="default-semibold">2,90</Typography>
             </FlexRow>
-          </Surface>
+          </Panel>
         </Field>
 
         <Field label={t('vehicleFieldLabel')}>
@@ -49,9 +50,7 @@ const PurchaseScreen = () => {
         </Field>
 
         <Field label={t('paymentMethodsFieldLabel')}>
-          <Surface touchable>
-            <Typography>TODO platobne metody</Typography>
-          </Surface>
+          <PaymentGate />
         </Field>
       </ScreenContent>
 

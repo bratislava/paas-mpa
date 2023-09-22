@@ -7,8 +7,8 @@ import TextInput from '@/components/inputs/TextInput'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
+import Panel from '@/components/shared/Panel'
 import ScreenView from '@/components/shared/ScreenView'
-import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 
 const Page = () => {
@@ -40,7 +40,7 @@ const Page = () => {
           </Field>
           {showSegmentDetail && (
             <>
-              <Surface surfaceClassName="g-4">
+              <Panel surfaceClassName="g-4">
                 <View className="flex-row justify-between">
                   <Typography>Fazuľová + Školská</Typography>
                   <SegmentBadge label="1009" />
@@ -50,7 +50,7 @@ const Page = () => {
                   <Typography variant="default-bold">2€ / h</Typography>
                   <Typography variant="default-bold">Show details</Typography>
                 </View>
-              </Surface>
+              </Panel>
               <Typography>
                 This is just a working example without proper styling and functionality.
               </Typography>

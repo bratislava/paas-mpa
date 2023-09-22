@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Field from '@/components/shared/Field'
-import Surface from '@/components/shared/Surface'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 
 const FieldShowcase = () => {
@@ -19,14 +19,14 @@ const FieldShowcase = () => {
       </Field>
 
       <Field label="Simple field">
-        <Surface touchable>
+        <Panel isPressable>
           <Typography variant="default-bold">Some control</Typography>
-        </Surface>
+        </Panel>
       </Field>
       <Field label="Field with labelInsertArea" labelInsertArea={<SegmentBadge label="1059" />}>
-        <Surface touchable>
+        <Panel isPressable>
           <Typography variant="default-bold">Some control</Typography>
-        </Surface>
+        </Panel>
       </Field>
     </View>
   )

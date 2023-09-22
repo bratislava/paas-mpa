@@ -2,7 +2,7 @@ import React from 'react'
 
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
-import Surface from '@/components/shared/Surface'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Vehicle } from '@/hooks/useVehiclesStorage'
@@ -17,7 +17,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, isDefault }: Props) => {
   const t = useTranslation('VehiclesScreen')
 
   return (
-    <Surface key={vehicle.licencePlate}>
+    <Panel key={vehicle.licencePlate}>
       <FlexRow>
         <FlexRow>
           <Typography variant="default-bold">
@@ -33,7 +33,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, isDefault }: Props) => {
         <Icon name="more-vert" onPress={() => onContextMenuPress(vehicle.licencePlate)} />
       </FlexRow>
       {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}
-    </Surface>
+    </Panel>
   )
 }
 
