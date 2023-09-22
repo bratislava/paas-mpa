@@ -26,5 +26,17 @@ export const useVehicles = () => {
     return vehicles[0]
   }
 
-  return { vehicles, setVehicles, addVehicle, deleteVehicle, setDefaultVehicle, getDefaultVehicle }
+  const isVehiclePresent = (licencePlate: string) => {
+    return vehicles.some((vehicle) => vehicle.licencePlate === licencePlate)
+  }
+
+  return {
+    vehicles,
+    setVehicles,
+    addVehicle,
+    deleteVehicle,
+    setDefaultVehicle,
+    getDefaultVehicle,
+    isVehiclePresent,
+  }
 }

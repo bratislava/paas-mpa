@@ -8,15 +8,19 @@ import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
+import Modal, { ModalContentWithActions } from '@/components/shared/Modal'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import NoVehicles from '@/components/vehicles/NoVehicles'
 import VehicleRow from '@/components/vehicles/VehicleRow'
+import { useModal } from '@/hooks/useModal'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 
+// TODO consider moving whole Delete modal with actions to separate component
 const VehiclesScreen = () => {
   const t = useTranslation('VehiclesScreen')
+  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { vehicles, deleteVehicle, setDefaultVehicle } = useVehicles()
 
@@ -31,23 +35,28 @@ const VehiclesScreen = () => {
     [],
   )
 
-  const handlePress = (licencePlate: string) => {
+  const handleContextMenuPress = (licencePlate: string) => {
     setActiveVehicle(licencePlate)
     bottomSheetRef.current?.expand()
   }
 
-  const handleDelete = (licencePlate: string | null) => {
-    if (licencePlate) {
-      deleteVehicle(licencePlate)
+  const handleActionDelete = () => {
+    bottomSheetRef.current?.close()
+    openModal()
+  }
+
+  const handleActionSetDefault = () => {
+    if (activeVehicle) {
+      setDefaultVehicle(activeVehicle)
     }
     bottomSheetRef.current?.close()
   }
 
-  const handleSetDefault = (licencePlate: string | null) => {
-    if (licencePlate) {
-      setDefaultVehicle(licencePlate)
+  const handleConfirmDelete = () => {
+    if (activeVehicle) {
+      deleteVehicle(activeVehicle)
     }
-    bottomSheetRef.current?.close()
+    closeModal()
   }
 
   return (
@@ -61,7 +70,7 @@ const VehiclesScreen = () => {
             renderItem={({ item, index }) => (
               <VehicleRow
                 vehicle={item}
-                onContextMenuPress={() => handlePress(item.licencePlate)}
+                onContextMenuPress={() => handleContextMenuPress(item.licencePlate)}
                 isDefault={index === 0}
               />
             )}
@@ -85,7 +94,7 @@ const VehiclesScreen = () => {
           <ActionRow
             icon="check-circle"
             label={t('actions.saveAsDefault')}
-            onPress={() => handleSetDefault(activeVehicle)}
+            onPress={handleActionSetDefault}
           />
           <Divider />
           {/* <ActionRow icon="edit" label="Edit vehicle" /> */}
@@ -94,10 +103,22 @@ const VehiclesScreen = () => {
             icon="delete"
             label={t('actions.deleteVehicle')}
             variant="negative"
-            onPress={() => handleDelete(activeVehicle)}
+            onPress={handleActionDelete}
           />
         </BottomSheetContent>
       </BottomSheet>
+
+      <Modal visible={isModalVisible} onRequestClose={toggleModal}>
+        <ModalContentWithActions
+          variant="error"
+          title={t('deleteVehicleConfirmModal.title')}
+          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicle })}
+          primaryActionLabel={t('deleteVehicleConfirmModal.actionConfirm')}
+          primaryActionOnPress={handleConfirmDelete}
+          secondaryActionLabel={t('deleteVehicleConfirmModal.actionReject')}
+          secondaryActionOnPress={closeModal}
+        />
+      </Modal>
     </ScreenView>
   )
 }

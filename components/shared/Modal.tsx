@@ -69,6 +69,7 @@ type ConfirmModalProps = {
   title: string
   text?: string
   variant?: 'success' | 'error'
+  hideAvatar?: boolean
   customAvatarComponent?: ReactNode
 } & PrimaryActionProps &
   SecondaryActionProps &
@@ -80,6 +81,7 @@ export const ModalContentWithActions = ({
   className,
   children,
   variant,
+  hideAvatar,
   customAvatarComponent,
   primaryActionOnPress,
   primaryActionLabel,
@@ -89,8 +91,8 @@ export const ModalContentWithActions = ({
 }: ConfirmModalProps) => {
   return (
     <ModalContent {...rest} className="g-6">
-      {customAvatarComponent ?? <AvatarCircle variant={variant} />}
-      <View>
+      {hideAvatar ? null : customAvatarComponent ?? <AvatarCircle variant={variant} />}
+      <View className="g-2">
         <Typography variant="h1" className="text-center">
           {title}
         </Typography>
