@@ -2,12 +2,14 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
+/* eslint-disable babel/camelcase */
 import {
   Inter_400Regular,
   Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter'
+/* eslint-enable babel/camelcase */
 import Mapbox from '@rnmapbox/maps'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
