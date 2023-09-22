@@ -41,6 +41,20 @@
     "optional": "Voliteľné",
     "myVehicles": "Moje vozidlá",
     "default": "Predvolené",
+    "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
+    "deleteVehicleConfirmModal": {
+      "title": "Vymazať vozidlo",
+      "message": "Naozaj si prajete vymazať vozidlo {{licencePlate}}?",
+      "actionConfirm": "Vymazať vozidlo",
+      "actionReject": "Ponechať"
+    },
+    "addVehicleConfirmModal": {
+      "title": "Pridať vozidlo",
+      "message": "Naozaj si prajete pridať vozidlo {{licencePlate}}?",
+      "licencePlateFormatWarning": "Pozorne si skontrolujte zadané EČV.",
+      "actionConfirm": "Pridať vozidlo",
+      "actionReject": "Zrušiť"
+    },
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
       "deleteVehicle": "Odstrániť"

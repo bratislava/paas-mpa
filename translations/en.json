@@ -41,6 +41,20 @@
     "optional": "Optional",
     "myVehicles": "My vehicles",
     "default": "Default",
+    "licencePlateDuplicate": "Vehicle with this license plate already exists.",
+    "deleteVehicleConfirmModal": {
+      "title": "Delete vehicle",
+      "message": "Do you really want to delete vehicle {{licencePlate}}?",
+      "actionConfirm": "Delete vehicle",
+      "actionReject": "Keep"
+    },
+    "addVehicleConfirmModal": {
+      "title": "Add vehicle",
+      "message": "Do you really want to add vehicle {{licencePlate}}?",
+      "licencePlateFormatWarning": "Please, check the license plate carefully.",
+      "actionConfirm": "Add vehicle",
+      "actionReject": "Cancel"
+    },
     "actions": {
       "saveAsDefault": "Set as default",
       "deleteVehicle": "Delete"
