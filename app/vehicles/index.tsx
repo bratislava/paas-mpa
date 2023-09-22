@@ -20,7 +20,6 @@ import { useVehicles } from '@/hooks/useVehicles'
 // TODO consider moving whole Delete modal with actions to separate component
 const VehiclesScreen = () => {
   const t = useTranslation('VehiclesScreen')
-  const tDeleteModal = useTranslation('VehiclesScreen.deleteVehicleConfirmModal')
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { vehicles, deleteVehicle, setDefaultVehicle } = useVehicles()
@@ -112,11 +111,11 @@ const VehiclesScreen = () => {
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions
           variant="error"
-          title={tDeleteModal('title')}
-          text={tDeleteModal('message', { licencePlate: activeVehicle })}
-          primaryActionLabel={tDeleteModal('actionConfirm')}
+          title={t('deleteVehicleConfirmModal.title')}
+          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicle })}
+          primaryActionLabel={t('deleteVehicleConfirmModal.actionConfirm')}
           primaryActionOnPress={handleConfirmDelete}
-          secondaryActionLabel={tDeleteModal('actionReject')}
+          secondaryActionLabel={t('deleteVehicleConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         />
       </Modal>

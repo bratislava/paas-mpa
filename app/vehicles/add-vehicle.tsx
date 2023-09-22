@@ -18,10 +18,9 @@ import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
-  const tAddModal = useTranslation('VehiclesScreen.addVehicleConfirmModal')
+  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { addVehicle, isVehiclePresent } = useVehicles()
-  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const [licencePlateInput, setLicencePlateInput] = useState('')
   const [vehicleName, setVehicleName] = useState('')
@@ -91,17 +90,17 @@ const AddVehicleScreen = () => {
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions
           variant="success"
-          title={tAddModal('title')}
-          text={tAddModal('message', { licencePlate: sanitizedLicencePlate })}
+          title={t('addVehicleConfirmModal.title')}
+          text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
           hideAvatar
-          primaryActionLabel={tAddModal('actionConfirm')}
+          primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
           primaryActionOnPress={() => handleSaveVehicle()}
-          secondaryActionLabel={tAddModal('actionReject')}
+          secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         >
           {isStandardFormat(sanitizedLicencePlate) ? null : (
             <Surface surfaceClassName="bg-warning-light">
-              <Typography>{tAddModal('licencePlateFormatWarning')}</Typography>
+              <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
             </Surface>
           )}
         </ModalContentWithActions>
