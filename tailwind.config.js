@@ -46,37 +46,35 @@ module.exports = {
       white: '#fff',
       dark: {
         DEFAULT: '#16254C',
+        light: '#EBF2E7',
       },
-      light2: '#F7F8F9',
       green: {
         DEFAULT: '#579636',
         light: '#EBF2E7',
       },
-      soft: {
-        DEFAULT: '#F7F8F9',
-      },
-      divider: {
-        DEFAULT: '#C8CFD9',
+      light: '#ECEEF1',
+      light2: '#F7F8F9',
+      divider: '#C8CFD9',
+      soft: '#F7F8F9',
+      placeholder: '#858585',
+      info: {
+        DEFAULT: '#3171AF', // my custom
+        light: '#E6EEF5', // my custom
       },
       warning: {
-        100: '#FCF2E6',
-        500: '#F1B830',
-      },
-      info: {
-        DEFAULT: '#3171AF',
-        100: '#E6EEF5',
+        DEFAULT: '#E07B04',
+        light: '#FCF2E6',
       },
       negative: {
         DEFAULT: '#D00000',
-        100: '#FAE5E5',
+        light: '#FAE5E5',
       },
-      visitorCard: '#3171AF',
+      visitorCard: {
+        DEFAULT: '#3171AF',
+        light: '#EFF4F9',
+      },
       parkingZone: '#71CA55',
       activeZone: '#F1B830',
-      custom: {
-        light: '#ECEEF1',
-        'gray-100': '#EBEBEB',
-      },
     },
     extend: {
       borderWidth: {
@@ -84,7 +82,10 @@ module.exports = {
         px: '1px',
       },
       fontFamily: {
-        belfast: ['BelfastGrotesk_Black'],
+        'belfast-700bold': ['BelfastGrotesk_700Bold'],
+        'inter-400regular': ['Inter_400Regular'],
+        'inter-600semibold': ['Inter_600SemiBold'],
+        'inter-700bold': ['Inter_700Bold'],
       },
     },
   },

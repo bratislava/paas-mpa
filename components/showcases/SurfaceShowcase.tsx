@@ -13,7 +13,7 @@ const SurfaceShowcase = () => {
       <Surface touchable>
         <Typography>Touchable</Typography>
       </Surface>
-      <Surface surfaceClassName="bg-warning-100">
+      <Surface surfaceClassName="bg-warning-light">
         <Typography>Custom surfaceClassName</Typography>
       </Surface>
     </View>
