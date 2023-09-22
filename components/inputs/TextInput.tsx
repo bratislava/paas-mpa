@@ -17,7 +17,7 @@ const TextInput = ({ hasError, isDisabled, ...rest }: Props) => {
       className={clsx('rounded border bg-white px-4 py-3', {
         'border-divider focus:border-dark': !isDisabled && !hasError,
         'border-negative': hasError && !isDisabled,
-        'border-divider bg-custom-gray-100': isDisabled,
+        'border-divider bg-[#D6D6D6]': isDisabled,
       })}
       editable={!isDisabled}
       {...rest}
