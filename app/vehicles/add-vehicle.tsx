@@ -20,7 +20,7 @@ const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const tAddModal = useTranslation('VehiclesScreen.addVehicleConfirmModal')
 
-  const { vehicles, addVehicle } = useVehicles()
+  const { addVehicle, isVehiclePresent } = useVehicles()
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const [licencePlateInput, setLicencePlateInput] = useState('')
@@ -31,10 +31,10 @@ const AddVehicleScreen = () => {
 
   useEffect(() => {
     setError('')
-    if (vehicles.find((vehicle) => vehicle.licencePlate === sanitizedLicencePlate)) {
+    if (isVehiclePresent(sanitizedLicencePlate)) {
       setError(t('licencePlateDuplicate'))
     }
-  }, [licencePlateInput, sanitizedLicencePlate, t, vehicles])
+  }, [isVehiclePresent, sanitizedLicencePlate, t])
 
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
