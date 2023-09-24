@@ -5,14 +5,16 @@ import { View } from 'react-native'
 
 type Props = Omit<ComponentProps<typeof BottomSheetView>, 'className'> & {
   cn?: string
+  hideSpacer?: boolean
 }
 
-const BottomSheetContent = ({ children, cn }: Props) => {
+const BottomSheetContent = ({ children, cn, hideSpacer }: Props) => {
   return (
     <BottomSheetView className={clsx('px-5 py-3', cn)}>
       {children}
+      {/* TODO this should be handled by SafeAreaProvider */}
       {/* spacer */}
-      <View className="h-[29px]" aria-hidden />
+      {!hideSpacer && <View className="h-[29px]" aria-hidden />}
     </BottomSheetView>
   )
 }
