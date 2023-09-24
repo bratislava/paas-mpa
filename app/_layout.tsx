@@ -2,12 +2,14 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
+/* eslint-disable babel/camelcase */
 import {
   Inter_400Regular,
   Inter_600SemiBold,
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter'
+/* eslint-enable babel/camelcase */
 import Mapbox from '@rnmapbox/maps'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -64,13 +66,8 @@ const RootLayout = () => {
           headerBackTitleVisible: false,
         }}
       >
-        <Stack.Screen
-          name="vehicles/add-vehicle"
-          options={{
-            // Set the presentation mode to modal for our modal route.
-            presentation: 'modal',
-          }}
-        />
+        <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
       </Stack>
     </SafeAreaProvider>
   )

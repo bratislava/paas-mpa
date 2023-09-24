@@ -26,7 +26,6 @@
   "PurchaseScreen": {
     "ticketPurchaseTitle": "Nákup lístka",
     "segmentFieldLabel": "Segment",
-    "vehicleFieldLabel": "Vyberte vozidlo",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
@@ -42,6 +41,7 @@
     "myVehicles": "Moje vozidlá",
     "default": "Predvolené",
     "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
+    "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "deleteVehicleConfirmModal": {
       "title": "Vymazať vozidlo",
       "message": "Naozaj si prajete vymazať vozidlo {{licencePlate}}?",

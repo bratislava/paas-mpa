@@ -1,14 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import Surface from '@/components/shared/Surface'
+import Panel from '@/components/shared/Panel'
 
 // TODO
 const VehicleControl = () => {
   return (
-    <Surface>
+    <Panel>
       <View />
-    </Surface>
+    </Panel>
   )
 }
 

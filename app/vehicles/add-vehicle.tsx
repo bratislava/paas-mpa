@@ -6,9 +6,9 @@ import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
 import Modal, { ModalContentWithActions } from '@/components/shared/Modal'
+import Panel from '@/components/shared/Panel'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 import { useModal } from '@/hooks/useModal'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -99,9 +99,9 @@ const AddVehicleScreen = () => {
           secondaryActionOnPress={closeModal}
         >
           {isStandardFormat(sanitizedLicencePlate) ? null : (
-            <Surface surfaceClassName="bg-warning-light">
+            <Panel className="bg-warning-light">
               <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
-            </Surface>
+            </Panel>
           )}
         </ModalContentWithActions>
       </Modal>
