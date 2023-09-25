@@ -1,5 +1,6 @@
 const nativewind = require('nativewind/tailwind')
 const plugin = require('tailwindcss/plugin')
+const colors = require('./tailwind.config.colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -39,43 +40,7 @@ module.exports = {
       DEFAULT: '0.5rem',
       sm: '0.25rem',
     },
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: '#000',
-      white: '#fff',
-      dark: {
-        DEFAULT: '#16254C',
-        light: '#E8E9EC',
-      },
-      green: {
-        DEFAULT: '#579636',
-        light: '#EBF2E7',
-      },
-      light: '#ECEEF1',
-      light2: '#F7F8F9',
-      divider: '#C8CFD9',
-      soft: '#F7F8F9',
-      placeholder: '#858585',
-      info: {
-        DEFAULT: '#3171AF', // my custom
-        light: '#E6EEF5', // my custom
-      },
-      warning: {
-        DEFAULT: '#E07B04',
-        light: '#FCF2E6',
-      },
-      negative: {
-        DEFAULT: '#D00000',
-        light: '#FAE5E5',
-      },
-      visitorCard: {
-        DEFAULT: '#3171AF',
-        light: '#EFF4F9',
-      },
-      parkingZone: '#71CA55',
-      activeZone: '#F1B830',
-    },
+    colors: colors,
     extend: {
       borderWidth: {
         DEFAULT: '2px',
