@@ -2,6 +2,8 @@ import React from 'react'
 import { View } from 'react-native'
 
 import Button from '@/components/shared/Button'
+import FlexRow from '@/components/shared/FlexRow'
+import IconButton from '@/components/shared/IconButton'
 
 const handlePress = () => {
   // eslint-disable-next-line no-console
@@ -11,6 +13,15 @@ const handlePress = () => {
 const ButtonShowcase = () => (
   // eslint-disable-next-line react-native/no-inline-styles
   <View className="p-4 g-2">
+    <FlexRow cn="justify-start">
+      <IconButton name="add" accessibilityLabel="Add" />
+      <IconButton name="add" accessibilityLabel="Add" variant="white-raised" />
+      <IconButton name="add" accessibilityLabel="Add" variant="dark" />
+      <IconButton name="add" accessibilityLabel="Add" variant="dark-small" />
+      <IconButton name="add" accessibilityLabel="Add" variant="white-raised-small" />
+      <IconButton name="add" accessibilityLabel="Add" variant="dark" disabled />
+      <IconButton name="add" accessibilityLabel="Add" variant="white-raised" disabled />
+    </FlexRow>
     <Button variant="primary" onPress={handlePress}>
       Primary
     </Button>

@@ -4,7 +4,7 @@ import { Modal as ModalRN, ModalProps, View, ViewProps } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
 import Button from '@/components/shared/Button'
-import Icon from '@/components/shared/Icon'
+import IconButton from '@/components/shared/IconButton'
 import Typography from '@/components/shared/Typography'
 
 export const ModalBackdrop = ({ className, ...rest }: ViewProps) => {
@@ -29,11 +29,11 @@ export const ModalContainer = ({
   return (
     <View {...rest} className={clsx('w-full overflow-hidden rounded bg-white', className)}>
       {children}
-      <Icon
+      <IconButton
         name="close"
         // TODO translation
         // TODO add option to hide this button
-        aria-label="Close dialog"
+        accessibilityLabel="Close dialog"
         className="absolute right-4 top-4"
         onPress={onRequestClose}
       />

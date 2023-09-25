@@ -1,7 +1,7 @@
 import React from 'react'
 
 import FlexRow from '@/components/shared/FlexRow'
-import Icon from '@/components/shared/Icon'
+import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -31,7 +31,11 @@ const VehicleRow = ({ vehicle, onContextMenuPress, isDefault }: Props) => {
           )}
         </FlexRow>
         {onContextMenuPress ? (
-          <Icon name="more-vert" onPress={() => onContextMenuPress(vehicle.licencePlate)} />
+          <IconButton
+            name="more-vert"
+            accessibilityLabel="Edit vehicle"
+            onPress={() => onContextMenuPress(vehicle.licencePlate)}
+          />
         ) : null}
       </FlexRow>
       {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}
