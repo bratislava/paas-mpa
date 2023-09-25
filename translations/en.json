@@ -33,6 +33,7 @@
     "pay": "Pay"
   },
   "VehiclesScreen": {
+    "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
     "addVehicle": "Add vehicle",
     "licencePlateFieldLabel": "Licence plate",
@@ -59,5 +60,18 @@
       "saveAsDefault": "Set as default",
       "deleteVehicle": "Delete"
     }
+  },
+  "Settings": {
+    "title": "Settings"
+  },
+  "PaymentMethods": {
+    "title": "Payment methods"
+  },
+  "Tickets": {
+    "title": "Parking tickets"
+  },
+  "ParkingCards": {
+    "title": "Parking cards",
+    "addParkingCards": "Add parking cards"
   }
 }

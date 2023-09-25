@@ -25,7 +25,7 @@ const Page = () => {
     <ScreenView title={t('addCardsTitle')}>
       <ScreenContent
         continueProps={{
-          href: `/add-parking-cards/verification-sent?emailToVerify=${email}`,
+          href: `/parking-cards/verification-sent?emailToVerify=${email}`,
           isDisabled: !isValid,
         }}
       >

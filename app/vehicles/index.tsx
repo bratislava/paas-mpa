@@ -60,7 +60,7 @@ const VehiclesScreen = () => {
   }
 
   return (
-    <ScreenView>
+    <ScreenView title={t('title')}>
       <ScreenContent>
         <Field label={t('myVehicles')}>
           <FlatList

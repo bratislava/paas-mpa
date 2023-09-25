@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Pressable, PressableProps, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
@@ -18,7 +19,7 @@ const ActionRow = ({
     <Pressable className="py-4" {...rest}>
       <View className="flex-row gap-3">
         <Icon name={icon} className={textColor} />
-        <Typography variant="default-semibold" className={textColor}>
+        <Typography variant="default-semibold" className={clsx('flex-1', textColor)}>
           {label}
         </Typography>
       </View>

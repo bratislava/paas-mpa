@@ -33,6 +33,7 @@
     "pay": "Zaplatiť"
   },
   "VehiclesScreen": {
+    "title": "Vozidlá",
     "addVehicleTitle": "Pridať vozidlo",
     "addVehicle": "Pridať vozidlo",
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
@@ -59,5 +60,18 @@
       "saveAsDefault": "Uložiť ako predvolené",
       "deleteVehicle": "Odstrániť"
     }
+  },
+  "Settings": {
+    "title": "Nastavenia"
+  },
+  "PaymentMethods": {
+    "title": "Platobné metódy"
+  },
+  "Tickets": {
+    "title": "Parkovacie lístky"
+  },
+  "ParkingCards": {
+    "title": "Parkovacie karty",
+    "addParkingCards": "Pridať parkovacie karty"
   }
 }
