@@ -72,6 +72,13 @@
   },
   "ParkingCards": {
     "title": "Parking cards",
-    "addParkingCards": "Add parking cards"
+    "addParkingCards": "Add parking cards",
+    "type": {
+      "visitor": "Visitor card",
+      "resident": "Resident card",
+      "bonus": "Bonus card"
+    },
+    "validUntil": "Valid until",
+    "remainingCredit": "Remaining credit"
   }
 }

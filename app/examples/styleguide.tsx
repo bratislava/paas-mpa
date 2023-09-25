@@ -7,6 +7,7 @@ import ChipShowcase from '@/components/showcases/ChipShowcase'
 import DividerShowcase from '@/components/showcases/DividerShowcase'
 import FieldShowcase from '@/components/showcases/FieldShowcase'
 import IconShowCase from '@/components/showcases/IconShowCase'
+import ParkingCardsShowcase from '@/components/showcases/ParkingCardsShowcase'
 import SegmentBadgeShowcase from '@/components/showcases/SegmentBadgeShowcase'
 import SurfaceShowcase from '@/components/showcases/SurfaceShowcase'
 import TextInputShowcase from '@/components/showcases/TextInputShowcase'
@@ -24,6 +25,7 @@ const StyleguideScreen = () => (
     <SegmentBadgeShowcase />
     <AvatarShowcase />
     <ChipShowcase />
+    <ParkingCardsShowcase />
   </ScrollView>
 )
 
