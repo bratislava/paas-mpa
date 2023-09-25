@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   transparent: 'transparent',
   current: 'currentColor',
   black: '#000',
@@ -35,4 +35,3 @@ export default {
   parkingZone: '#71CA55',
   activeZone: '#F1B830',
 }
-
