@@ -1,12 +1,12 @@
-import RNCheckBox, { CheckBoxProps } from '@react-native-community/checkbox'
+import RNCheckBox, { CheckBoxProps as RNCheckBoxProps } from '@react-native-community/checkbox'
 import React from 'react'
 
 import colors from '@/tailwind.config.colors'
 
 // Docs: https://github.com/react-native-checkbox/react-native-checkbox#props
-type Props = Pick<CheckBoxProps, 'value' | 'onValueChange' | 'disabled'>
+export type CheckBoxProps = Pick<RNCheckBoxProps, 'value' | 'onValueChange' | 'disabled'>
 
-const CheckBox = ({ ...rest }: Props) => {
+const CheckBox = ({ ...rest }: CheckBoxProps) => {
   // eslint-disable-next-line const-case/uppercase
   const GREEN = colors.green.DEFAULT
 
@@ -25,7 +25,6 @@ const CheckBox = ({ ...rest }: Props) => {
       onAnimationType="bounce"
       offAnimationType="bounce"
       animationDuration={0.2}
-      className="h-10 w-10"
       {...rest}
     />
   )

@@ -8,7 +8,6 @@ import { FlatList, StyleSheet } from 'react-native'
 import ActionRow from '@/components/actions/ActionRow'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
-import Divider from '@/components/shared/Divider'
 import Icon, { IconName } from '@/components/shared/Icon'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
@@ -98,14 +97,12 @@ const IndexScreen = () => {
             data={menuItems}
             renderItem={({ item }) => (
               <Link asChild href={item.path} onPress={() => bottomSheetRef.current?.close()}>
-                <ActionRow icon={item.icon} label={item.label} />
+                <ActionRow startIcon={item.icon} label={item.label} />
               </Link>
             )}
           />
 
-          <Divider />
-
-          <ActionRow icon="logout" label="Logout" variant="negative" />
+          <ActionRow endIcon="logout" label="Logout" variant="negative" />
         </BottomSheetContent>
       </BottomSheet>
     </>

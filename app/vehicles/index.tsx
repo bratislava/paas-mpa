@@ -92,7 +92,7 @@ const VehiclesScreen = () => {
       >
         <BottomSheetContent>
           <ActionRow
-            icon="check-circle"
+            startIcon="check-circle"
             label={t('actions.saveAsDefault')}
             onPress={handleActionSetDefault}
           />
@@ -100,7 +100,7 @@ const VehiclesScreen = () => {
           {/* <ActionRow icon="edit" label="Edit vehicle" /> */}
           {/* <Divider /> */}
           <ActionRow
-            icon="delete"
+            startIcon="delete"
             label={t('actions.deleteVehicle')}
             variant="negative"
             onPress={handleActionDelete}
