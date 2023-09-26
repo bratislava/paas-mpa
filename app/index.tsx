@@ -8,7 +8,8 @@ import { FlatList, StyleSheet } from 'react-native'
 import ActionRow from '@/components/actions/ActionRow'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
-import Icon, { IconName } from '@/components/shared/Icon'
+import { IconName } from '@/components/shared/Icon'
+import IconButton from '@/components/shared/IconButton'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -66,7 +67,9 @@ const IndexScreen = () => {
         <Stack.Screen
           options={{
             // headerTransparent: true,
-            headerRight: () => <Icon name="menu" onPress={handlePress} />,
+            headerRight: () => (
+              <IconButton name="menu" accessibilityLabel="Open menu" onPress={handlePress} />
+            ),
           }}
         />
         <ScreenContent>

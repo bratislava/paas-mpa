@@ -1,9 +1,10 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import React from 'react'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 
 import ActionRow, { ActionRowProps } from '@/components/actions/ActionRow'
 import ListRow, { ListRowProps } from '@/components/actions/ListRow'
+import Divider from '@/components/shared/Divider'
 
 const ListRowsShowcase = () => {
   const dataListRows: ListRowProps[] = [
@@ -20,9 +21,25 @@ const ListRowsShowcase = () => {
 
   return (
     <View className="p-4 g-4">
-      <FlatList data={dataListRows} renderItem={({ item }) => <ListRow {...item} />} />
+      <View>
+        {dataListRows.map((item, index) => (
+          <>
+            {index !== 0 && <Divider />}
+            {/* eslint-disable-next-line react/no-array-index-key */}
+            <ListRow key={index} {...item} />
+          </>
+        ))}
+      </View>
 
-      <FlatList data={dataActionRows} renderItem={({ item }) => <ActionRow {...item} />} />
+      <View>
+        {dataActionRows.map((item, index) => (
+          <>
+            {index !== 0 && <Divider />}
+            {/* eslint-disable-next-line react/no-array-index-key */}
+            <ActionRow key={index} {...item} />
+          </>
+        ))}
+      </View>
     </View>
   )
 }
