@@ -26,6 +26,7 @@ module.exports = {
     },
     experiments: {
       tsconfigPaths: true,
+      typedRoutes: true,
     },
     extra: {
       eas: {
