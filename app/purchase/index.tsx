@@ -22,11 +22,10 @@ import { useVehicles } from '@/hooks/useVehicles'
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const { licencePlate } = useLocalSearchParams()
+  const { licencePlate } = useLocalSearchParams<{ licencePlate?: string }>()
   const { getVehicle, defaultVehicle } = useVehicles()
   const { timeValue, setTimeValue } = useTimeSelector(60)
-  const chosenVehicle =
-    licencePlate && typeof licencePlate === 'string' ? getVehicle(licencePlate) : defaultVehicle
+  const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
   // TODO TimeSelector chips collapses when not in ScrollView - investigate
   return (

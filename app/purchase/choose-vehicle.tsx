@@ -26,7 +26,13 @@ const ChooseVehicleScreen = () => {
           ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
           renderItem={({ item }) => (
             // TODO Link+Pressable
-            <Link asChild href={`/purchase?licencePlate=${item.licencePlate}`}>
+            <Link
+              asChild
+              href={{
+                pathname: '/purchase/',
+                params: { licencePlate: item.licencePlate },
+              }}
+            >
               <PressableStyled>
                 <VehicleRow vehicle={item} />
               </PressableStyled>

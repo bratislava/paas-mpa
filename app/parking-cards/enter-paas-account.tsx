@@ -25,7 +25,9 @@ const Page = () => {
     <ScreenView title={t('addCardsTitle')}>
       <ScreenContent
         continueProps={{
-          href: `/parking-cards/verification-sent?emailToVerify=${email}`,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          href: `/parking-cards/verification-sent/?emailToVerify=${email}`,
           isDisabled: !isValid,
         }}
       >

@@ -5,6 +5,7 @@ import { Image, View } from 'react-native'
 
 import Button from '@/components/shared/Button'
 import { useTranslation } from '@/hooks/useTranslation'
+import { LinkHref } from '@/utils/link-types'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 const dottedBackground = require('@/assets/images/dotted-background.png')
@@ -19,7 +20,7 @@ type Props = {
 }
 
 export type ContinueProps = {
-  href: string
+  href: LinkHref
   label?: string
   isDisabled?: boolean
 }

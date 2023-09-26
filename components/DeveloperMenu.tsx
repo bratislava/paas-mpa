@@ -3,11 +3,12 @@ import React from 'react'
 import { FlatList, TouchableOpacity, View } from 'react-native'
 
 import Typography from '@/components/shared/Typography'
+import { LinkHref } from '@/utils/link-types'
 
 type MenuItem = {
   title: string
   subtitle: string
-  route: string
+  route: LinkHref
 }
 
 const menuItems: MenuItem[] = [
@@ -34,12 +35,12 @@ const menuItems: MenuItem[] = [
   {
     title: 'Parking cards',
     subtitle: 'All parking cards + flow for adding cards',
-    route: '/parking-cards',
+    route: '/parking-cards/',
   },
   {
     title: 'Vehicles',
     subtitle: 'List and manage vehicles',
-    route: '/vehicles',
+    route: '/vehicles/',
   },
   {
     title: 'Add vehicle modal',
@@ -59,7 +60,7 @@ const menuItems: MenuItem[] = [
   {
     title: 'Purchase',
     subtitle: 'Whole flow of ticket purchase',
-    route: '/purchase',
+    route: '/purchase/',
   },
   {
     title: 'Address / zone search screen',
@@ -75,7 +76,7 @@ const menuItems: MenuItem[] = [
   {
     title: 'TODO more',
     subtitle: 'Feel free to add to this list',
-    route: '/index',
+    route: '/',
   },
 ]
 

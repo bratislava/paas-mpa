@@ -15,14 +15,14 @@ import { useTranslation } from '@/hooks/useTranslation'
  */
 const Page = () => {
   const t = useTranslation('AddParkingCards')
-  const { emailToVerify } = useLocalSearchParams()
+  const { emailToVerify } = useLocalSearchParams<{ emailToVerify?: string }>()
 
   return (
     // TODO add dynamic href
     <ScreenView
       variant="centered"
       backgroundVariant="dots"
-      continueProps={{ href: '/parking-cards' }}
+      continueProps={{ href: '/parking-cards/' }}
     >
       <ScreenContent variant="center">
         {/* TODO replace by icon */}

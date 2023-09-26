@@ -14,6 +14,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
+import { LinkHref } from '@/utils/link-types'
 
 const IndexScreen = () => {
   const t = useTranslation()
@@ -33,32 +34,32 @@ const IndexScreen = () => {
   const menuItems: {
     label: string
     icon: IconName
-    path: string
+    path: LinkHref
   }[] = [
     {
       label: t('VehiclesScreen.title'),
       icon: 'directions-car',
-      path: '/vehicles',
+      path: '/vehicles/',
     },
     {
       label: t('ParkingCards.title'),
       icon: 'card-membership',
-      path: '/parking-cards',
+      path: '/parking-cards/',
     },
     {
       label: t('PaymentMethods.title'),
       icon: 'payment',
-      path: '/payment-methods',
+      path: '/payment-methods/',
     },
     {
       label: t('Tickets.title'),
       icon: 'local-parking',
-      path: '/tickets',
+      path: '/tickets/',
     },
     {
       label: t('Settings.title'),
       icon: 'settings',
-      path: '/settings',
+      path: '/settings/',
     },
   ]
 
@@ -74,7 +75,7 @@ const IndexScreen = () => {
           }}
         />
         <ScreenContent>
-          <Link href="/dev" asChild>
+          <Link href="/dev/" asChild>
             <Button>Developer menu</Button>
           </Link>
 
