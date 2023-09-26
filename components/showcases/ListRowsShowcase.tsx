@@ -1,10 +1,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View } from 'react-native'
 
 import ActionRow, { ActionRowProps } from '@/components/actions/ActionRow'
 import ListRow, { ListRowProps } from '@/components/actions/ListRow'
 import Divider from '@/components/shared/Divider'
+import PressableStyled from '@/components/shared/PressableStyled'
 
 const ListRowsShowcase = () => {
   const dataListRows: ListRowProps[] = [
@@ -23,21 +24,23 @@ const ListRowsShowcase = () => {
     <View className="p-4 g-4">
       <View>
         {dataListRows.map((item, index) => (
-          <>
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
             {index !== 0 && <Divider />}
-            {/* eslint-disable-next-line react/no-array-index-key */}
-            <ListRow key={index} {...item} />
-          </>
+            <ListRow {...item} />
+          </Fragment>
         ))}
       </View>
 
       <View>
         {dataActionRows.map((item, index) => (
-          <>
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
             {index !== 0 && <Divider />}
-            {/* eslint-disable-next-line react/no-array-index-key */}
-            <ActionRow key={index} {...item} />
-          </>
+            <PressableStyled>
+              <ActionRow {...item} />
+            </PressableStyled>
+          </Fragment>
         ))}
       </View>
     </View>
