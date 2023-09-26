@@ -9,67 +9,22 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { FeatureCollection } from 'geojson'
-import { useArcgis } from 'hooks/useArcgis'
-import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { View } from 'react-native'
 import udrStyle from 'utils/layer-styles/visitors2'
-import { processData } from 'utils/mapUtils'
 
 import Typography from '@/components/shared/Typography'
+import { useProcessedArcgisData } from '@/hooks/useProcessedMapData'
 
 const MapScreen = () => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
 
-  const { data: rawZonesData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/parkovanie/Hranica_RZ/MapServer/1',
-    { format: 'geojson' },
-  )
+  const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
 
-  const { data: rawAssistantsData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/doprava/Asistenti_PAAS/MapServer/51',
-    { format: 'geojson' },
-  )
-
-  const { data: rawParkomatsData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/doprava/Parkomaty/MapServer/17',
-    { format: 'geojson' },
-  )
-
-  const { data: rawPartnersData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/parkovanie/Zmluvn%C3%AD_partneri_PAAS/MapServer/128',
-    { format: 'geojson' },
-  )
-
-  const { data: rawParkingLotsData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/parkovanie/Parkovisk%C3%A1/MapServer/118',
-    { format: 'geojson' },
-  )
-
-  const { data: rawBranchesData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/parkovanie/Pobo%C4%8Dka/MapServer/87',
-    { format: 'geojson' },
-  )
-
-  const { data: rawUdrData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hsite/rest/services/parkovanie/UDR_P/MapServer/40',
-    { format: 'geojson' },
-  )
-
-  const { data: rawOdpData } = useArcgis(
-    'https://nest-proxy.bratislava.sk/geoportal/hSite/rest/services/parkovanie/ODP/MapServer/3',
-    { format: 'geojson' },
-  )
-
-  const [isLoading, setLoading] = useState(true)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bottomSheetContent, setBottomSheetContent] = useState<any>(null)
-  const [markersData, setMarkersData] = useState<FeatureCollection | null>(null)
-  const [zonesData, setZonesData] = useState<FeatureCollection | null>(null)
-  const [udrData, setUdrData] = useState<FeatureCollection | null>(null)
-  const [odpData, setOdpData] = useState<FeatureCollection | null>(null)
 
   // const udrDataByPrice = useMemo(
   //   () => ({
@@ -85,50 +40,11 @@ const MapScreen = () => {
   //   [udrData],
   // )
 
-  useEffect(() => {
-    if (
-      rawAssistantsData &&
-      rawParkomatsData &&
-      rawPartnersData &&
-      rawParkingLotsData &&
-      rawBranchesData &&
-      rawUdrData &&
-      rawOdpData &&
-      rawZonesData
-    ) {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { markersData, udrData, odpData, zonesData } = processData({
-        rawZonesData,
-        rawAssistantsData,
-        rawParkomatsData,
-        rawPartnersData,
-        rawParkingLotsData,
-        rawBranchesData,
-        rawUdrData,
-        rawOdpData,
-      })
-      setMarkersData(markersData)
-      setZonesData(zonesData)
-      setUdrData(udrData)
-      setOdpData(odpData)
-      setLoading(false)
-    }
-  }, [
-    rawAssistantsData,
-    rawParkomatsData,
-    rawPartnersData,
-    rawParkingLotsData,
-    rawBranchesData,
-    rawUdrData,
-    rawOdpData,
-    rawZonesData,
-  ])
-
   return (
-    <View style={styles.page}>
+    <View className="flex-1 items-stretch">
       <MapView
         ref={map}
-        style={styles.map}
+        className="flex-1"
         // eslint-disable-next-line no-secrets/no-secrets
         styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
       >
@@ -158,14 +74,9 @@ const MapScreen = () => {
           </ShapeSource>
         )}
       </MapView>
-      {/* TODO fix */}
-      {/* eslint-disable-next-line sonarjs/no-redundant-boolean */}
-      {false && (
-        <BottomSheet
-        // modalProps={{ style: { backgroundColor: 'white' } }}
-        // isVisible={!!bottomSheetContent}
-        >
-          <View style={styles.bottomSheetContainer}>
+      {bottomSheetContent && (
+        <BottomSheet>
+          <View className="bg-white">
             <Typography>{JSON.stringify(bottomSheetContent)}</Typography>
             {/* <Button onPress={() => setBottomSheetContent(null)}>Close</Button> */}
           </View>
@@ -176,16 +87,3 @@ const MapScreen = () => {
 }
 
 export default MapScreen
-
-const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    backgroundColor: 'white',
-  },
-  map: {
-    flex: 1,
-  },
-  page: {
-    alignItems: 'stretch',
-    flex: 1,
-  },
-})

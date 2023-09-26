@@ -1,7 +1,6 @@
 /* eslint-disable eslint-comments/no-unlimited-disable,unicorn/no-abusive-eslint-disable */
 /* eslint-disable */
 import { Feature, FeatureCollection } from 'geojson'
-import { useEffect, useState } from 'react'
 
 export const fetchFromArcgis = async (
   url: string,
@@ -110,49 +109,8 @@ export const fetchAttachmentsFromArcgis = async (serverUrl: string, objectId: st
     resolve(json.attachmentInfos)
   })
 
-interface IUseArcgisOptions {
+export interface IUseArcgisOptions {
   countPerRequest?: number
   pagination?: boolean
   format?: string
-}
-
-export const useArcgis = (url: string | string[], options?: IUseArcgisOptions) => {
-  const [data, setData] = useState<FeatureCollection | null>(null)
-
-  useEffect(() => {
-    if (Array.isArray(url)) {
-      Promise.all(url.map((u) => fetchAllFromArcgis(u, options))).then((results) => {
-        setData({
-          type: 'FeatureCollection',
-          features: results.reduce(
-            (features, result) => [...features, ...result.features],
-            [] as Feature[],
-          ),
-        })
-      })
-    } else {
-      fetchAllFromArcgis(url, options).then((fetchedData) => {
-        setData(fetchedData)
-      })
-    }
-  }, [url])
-
-  return {
-    data,
-  }
-}
-
-export const useArcgisAttachments = (url: string, objectId: string | number | null) => {
-  const [data, setData] = useState<Attachment[] | null>(null)
-
-  useEffect(() => {
-    setData(null)
-    if (objectId) {
-      fetchAttachmentsFromArcgis(url, objectId).then((fetchedData) => {
-        setData(fetchedData)
-      })
-    }
-  }, [url, objectId])
-
-  return { data }
 }

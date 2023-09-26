@@ -55,14 +55,14 @@ export const addZonePropertyToLayer = (
 })
 
 export interface ProcessDataOptions {
-  rawAssistantsData: FeatureCollection
-  rawParkomatsData: FeatureCollection
-  rawPartnersData: FeatureCollection
-  rawParkingLotsData: FeatureCollection
-  rawBranchesData: FeatureCollection
-  rawUdrData: FeatureCollection<any>
-  rawOdpData: FeatureCollection<any>
-  rawZonesData: FeatureCollection<any>
+  rawAssistantsData: FeatureCollection | null
+  rawParkomatsData: FeatureCollection | null
+  rawPartnersData: FeatureCollection | null
+  rawParkingLotsData: FeatureCollection | null
+  rawBranchesData: FeatureCollection | null
+  rawUdrData: FeatureCollection<any> | null
+  rawOdpData: FeatureCollection<any> | null
+  rawZonesData: FeatureCollection<any> | null
 }
 
 export const processData = ({
@@ -79,21 +79,22 @@ export const processData = ({
 
   const zonesData: FeatureCollection<Polygon> = {
     type: 'FeatureCollection',
-    features: rawZonesData.features
-      .map((feature) => {
-        GLOBAL_ID++
-        const layer = 'zones'
-        return {
-          ...feature,
-          id: GLOBAL_ID,
-          properties: {
-            ...feature.properties,
-            layer,
-            zone: zoneMapping[feature.properties?.Kod_parkovacej_karty],
-          },
-        } as Feature<Polygon>
-      })
-      .filter((z) => z.properties?.zone && z.properties.Dátum_spustenia),
+    features:
+      rawZonesData?.features
+        .map((feature) => {
+          GLOBAL_ID++
+          const layer = 'zones'
+          return {
+            ...feature,
+            id: GLOBAL_ID,
+            properties: {
+              ...feature.properties,
+              layer,
+              zone: zoneMapping[feature.properties?.Kod_parkovacej_karty],
+            },
+          } as Feature<Polygon>
+        })
+        .filter((z) => z.properties?.zone && z.properties.Dátum_spustenia) ?? [],
   }
 
   const markersData: FeatureCollection = addZonePropertyToLayer(
@@ -103,7 +104,7 @@ export const processData = ({
         /*
         ASSISTNANTS
       */
-        ...rawAssistantsData.features
+        ...(rawAssistantsData?.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'assistants'
@@ -118,12 +119,12 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano'),
+          .filter((f) => f.properties?.web === 'ano') ?? []),
 
         /*
         BRANCHES
       */
-        ...rawBranchesData.features.map((feature) => {
+        ...(rawBranchesData?.features.map((feature) => {
           GLOBAL_ID++
           const kind = 'branches'
           const icon = 'branch'
@@ -136,12 +137,12 @@ export const processData = ({
               icon,
             },
           } as Feature
-        }),
+        }) ?? []),
 
         /*
         PARKOMATS
       */
-        ...rawParkomatsData.features
+        ...(rawParkomatsData?.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'parkomats'
@@ -156,12 +157,12 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.Web === 'ano'),
+          .filter((f) => f.properties?.Web === 'ano') ?? []),
 
         /*
         PARTNERS
       */
-        ...rawPartnersData.features
+        ...(rawPartnersData?.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'partners'
@@ -176,12 +177,12 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano'),
+          .filter((f) => f.properties?.web === 'ano') ?? []),
 
         /*
         PARKING LOTS
       */
-        ...rawParkingLotsData.features
+        ...(rawParkingLotsData?.features
           .map((feature) => {
             GLOBAL_ID++
             const type =
@@ -204,7 +205,7 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano'),
+          .filter((f) => f.properties?.web === 'ano') ?? []),
       ],
     } as FeatureCollection<Point>,
     zonesData,
@@ -213,7 +214,7 @@ export const processData = ({
   const udrData: FeatureCollection = addZonePropertyToLayer(
     {
       type: 'FeatureCollection',
-      features: rawUdrData.features
+      features: rawUdrData?.features
         .map((feature) => {
           GLOBAL_ID++
           const layer = 'visitors'
@@ -237,7 +238,7 @@ export const processData = ({
 
   const odpData: FeatureCollection = {
     type: 'FeatureCollection',
-    features: rawOdpData.features
+    features: rawOdpData?.features
       .map((feature) => {
         GLOBAL_ID++
         const layer = 'residents'
