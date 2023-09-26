@@ -11,6 +11,7 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import Modal, { ModalContentWithActions } from '@/components/shared/Modal'
+import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useModal } from '@/hooks/useModal'
@@ -91,20 +92,15 @@ const VehiclesScreen = () => {
         backdropComponent={renderBackdrop}
       >
         <BottomSheetContent>
-          <ActionRow
-            startIcon="check-circle"
-            label={t('actions.saveAsDefault')}
-            onPress={handleActionSetDefault}
-          />
+          <PressableStyled onPress={handleActionSetDefault}>
+            <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
+          </PressableStyled>
+
           <Divider />
-          {/* <ActionRow icon="edit" label="Edit vehicle" /> */}
-          {/* <Divider /> */}
-          <ActionRow
-            startIcon="delete"
-            label={t('actions.deleteVehicle')}
-            variant="negative"
-            onPress={handleActionDelete}
-          />
+
+          <PressableStyled onPress={handleActionDelete}>
+            <ActionRow startIcon="delete" label={t('actions.deleteVehicle')} variant="negative" />
+          </PressableStyled>
         </BottomSheetContent>
       </BottomSheet>
 

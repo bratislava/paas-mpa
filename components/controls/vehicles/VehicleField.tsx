@@ -1,12 +1,12 @@
 import { Link } from 'expo-router'
 import React from 'react'
-import { Pressable } from 'react-native'
 
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
+import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Vehicle } from '@/hooks/useVehiclesStorage'
@@ -20,8 +20,9 @@ const VehicleField = ({ vehicle }: Props) => {
 
   return (
     <Field label={t('vehicleFieldLabel')}>
+      {/* TODO Link+Pressable */}
       <Link asChild href="/purchase/choose-vehicle">
-        <Pressable className="active:opacity-50">
+        <PressableStyled>
           {vehicle ? (
             <VehicleFieldControl vehicle={vehicle} />
           ) : (
@@ -32,7 +33,7 @@ const VehicleField = ({ vehicle }: Props) => {
               </FlexRow>
             </Panel>
           )}
-        </Pressable>
+        </PressableStyled>
       </Link>
     </Field>
   )

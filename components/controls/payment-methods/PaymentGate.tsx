@@ -4,12 +4,12 @@ import { View } from 'react-native'
 import AvatarSquare from '@/components/info/AvatarSquare'
 import FlexRow from '@/components/shared/FlexRow'
 import IconButton from '@/components/shared/IconButton'
-import PanelPressable from '@/components/shared/PanelPressable'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 
 const PaymentGate = () => {
   return (
-    <PanelPressable>
+    <Panel>
       <FlexRow cn="items-center">
         <AvatarSquare variant="payment-gate" />
         <View className="flex-1">
@@ -18,7 +18,7 @@ const PaymentGate = () => {
         </View>
         <IconButton name="expand-more" accessibilityLabel="Expand more" />
       </FlexRow>
-    </PanelPressable>
+    </Panel>
   )
 }
 

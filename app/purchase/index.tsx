@@ -10,7 +10,8 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
-import PanelPressable from '@/components/shared/PanelPressable'
+import Panel from '@/components/shared/Panel'
+import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
@@ -32,24 +33,28 @@ const PurchaseScreen = () => {
 
       <ScreenContent>
         <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-          <PanelPressable>
-            <FlexRow>
-              <Typography>Staré Mesto – Fazuľová</Typography>
-              <Typography variant="default-semibold">2,90</Typography>
-            </FlexRow>
-          </PanelPressable>
+          <PressableStyled>
+            <Panel>
+              <FlexRow>
+                <Typography>Staré Mesto – Fazuľová</Typography>
+                <Typography variant="default-semibold">2,90</Typography>
+              </FlexRow>
+            </Panel>
+          </PressableStyled>
         </Field>
 
         <VehicleField vehicle={chosenVehicle} />
 
         <Field label={t('parkingTimeFieldLabel')}>
-          <TextInput keyboardType="numeric" />
           {/* TODO replace by proper field control */}
+          <TextInput keyboardType="numeric" />
         </Field>
 
         <Field label={t('paymentMethodsFieldLabel')}>
-          {/* TODO replace by control */}
-          <PaymentGate />
+          {/* TODO replace by proper field control */}
+          <PressableStyled>
+            <PaymentGate />
+          </PressableStyled>
         </Field>
       </ScreenContent>
 

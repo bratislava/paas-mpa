@@ -10,6 +10,7 @@ import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import { IconName } from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
+import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -99,13 +100,17 @@ const IndexScreen = () => {
           <FlatList
             data={menuItems}
             renderItem={({ item }) => (
+              // TODO Link+Pressable
               <Link asChild href={item.path} onPress={() => bottomSheetRef.current?.close()}>
-                <ActionRow startIcon={item.icon} label={item.label} />
+                <PressableStyled>
+                  <ActionRow startIcon={item.icon} label={item.label} />
+                </PressableStyled>
               </Link>
             )}
           />
-
-          <ActionRow endIcon="logout" label="Logout" variant="negative" />
+          <PressableStyled>
+            <ActionRow endIcon="logout" label="Logout" variant="negative" />
+          </PressableStyled>
         </BottomSheetContent>
       </BottomSheet>
     </>
