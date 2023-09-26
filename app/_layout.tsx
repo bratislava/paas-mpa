@@ -2,8 +2,15 @@ import 'utils/amplify'
 import '../i18n.config.js'
 import 'intl-pluralrules'
 
+/* eslint-disable babel/camelcase */
+import {
+  Inter_400Regular,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  useFonts,
+} from '@expo-google-fonts/inter'
+/* eslint-enable babel/camelcase */
 import Mapbox from '@rnmapbox/maps'
-import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -18,8 +25,12 @@ const RootLayout = () => {
 
   // temp - replace with font we actually want to use
   const [fontsLoaded] = useFonts({
-    // eslint-disable-next-line unicorn/prefer-module,global-require
-    BelfastGrotesk_Black: require('@/assets/fonts/Belfast-Grotesk-Black.otf'),
+    /* eslint-disable unicorn/prefer-module,global-require */
+    BelfastGrotesk_700Bold: require('@/assets/fonts/Belfast-Grotesk-Bold.otf'),
+    Inter_400Regular,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    /* eslint-enable unicorn/prefer-module,global-require */
   })
 
   useEffect(() => {
@@ -55,13 +66,8 @@ const RootLayout = () => {
           headerBackTitleVisible: false,
         }}
       >
-        <Stack.Screen
-          name="vehicles/add-vehicle"
-          options={{
-            // Set the presentation mode to modal for our modal route.
-            presentation: 'modal',
-          }}
-        />
+        <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
       </Stack>
     </SafeAreaProvider>
   )

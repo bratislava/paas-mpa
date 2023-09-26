@@ -1,13 +1,13 @@
 import React from 'react'
 
-import Surface from '@/components/shared/Surface'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 
 const SelectableControl = () => {
   return (
-    <Surface>
+    <Panel>
       <Typography>Select me</Typography>
-    </Surface>
+    </Panel>
   )
 }
 

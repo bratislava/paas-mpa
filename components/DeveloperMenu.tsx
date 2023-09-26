@@ -32,9 +32,9 @@ const menuItems: MenuItem[] = [
     route: '/onboarding/intro',
   },
   {
-    title: 'Add parking cards',
-    subtitle: 'Flow for adding parking cards',
-    route: '/add-parking-cards/enter-email-addresses',
+    title: 'Parking cards',
+    subtitle: 'All parking cards + flow for adding cards',
+    route: '/parking-cards',
   },
   {
     title: 'Vehicles',
@@ -50,6 +50,11 @@ const menuItems: MenuItem[] = [
     title: 'Bottom sheet',
     subtitle: 'Bottom sheet examples',
     route: '/examples/bottom-sheet',
+  },
+  {
+    title: 'Modal',
+    subtitle: 'Modal examples',
+    route: '/examples/modal',
   },
   {
     title: 'Purchase',

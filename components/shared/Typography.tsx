@@ -20,16 +20,16 @@ const Typography = ({ variant = 'default', children, className, ...rest }: Props
   return (
     <TextNative
       className={clsx(
-        'text-dark',
+        'font-inter-400regular text-dark',
         {
-          'text-16 font-bold': variant === 'button',
-          'text-h1 font-bold': variant === 'h1',
-          'text-h2 font-bold': variant === 'h2',
-          'text-h3 font-bold': variant === 'h3',
+          'font-inter-700bold text-16': variant === 'button',
+          'font-belfast-700bold text-h1': variant === 'h1',
+          'font-belfast-700bold text-h2': variant === 'h2',
+          'font-belfast-700bold text-h3': variant === 'h3',
           'text-16': variant.startsWith('default'),
           'text-14': variant.startsWith('small'),
-          'font-semibold': variant.includes('-semibold'),
-          'font-bold': variant.includes('-bold'),
+          'font-inter-600semibold': variant.includes('-semibold'),
+          'font-inter-700bold': variant.includes('-bold'),
         },
         className,
       )}

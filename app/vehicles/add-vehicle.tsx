@@ -1,39 +1,52 @@
 import { Link, router, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
+import Modal, { ModalContentWithActions } from '@/components/shared/Modal'
+import Panel from '@/components/shared/Panel'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
+import { useModal } from '@/hooks/useModal'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehiclesStorage, Vehicle } from '@/hooks/useVehiclesStorage'
+import { useVehicles } from '@/hooks/useVehicles'
+import { Vehicle } from '@/hooks/useVehiclesStorage'
+import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
-// TODO make sure that modal is what we want and that it works correctly
 const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
+  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
-  const [licencePlate, setLicencePlate] = useState('')
+  const { addVehicle, isVehiclePresent } = useVehicles()
+
+  const [licencePlateInput, setLicencePlateInput] = useState('')
   const [vehicleName, setVehicleName] = useState('')
+  const [error, setError] = useState('')
 
-  const [vehicles, setVehicles] = useVehiclesStorage()
+  const sanitizedLicencePlate = sanitizeLicencePlate(licencePlateInput)
+
+  useEffect(() => {
+    setError('')
+    if (isVehiclePresent(sanitizedLicencePlate)) {
+      setError(t('licencePlateDuplicate'))
+    }
+  }, [isVehiclePresent, sanitizedLicencePlate, t])
 
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
   const isPresented = router.canGoBack()
 
-  // TODO validation?
-  const isValid = licencePlate.length > 0
+  const isValid = sanitizedLicencePlate.length > 0 && error.length === 0
 
-  // TODO duplicates, sanitize inputs, trim, etc.
   const handleSaveVehicle = () => {
     const newVehicle: Vehicle = {
-      licencePlate,
+      licencePlate: sanitizedLicencePlate,
       vehicleName: vehicleName.length > 0 ? vehicleName : null,
     }
-    setVehicles([...(vehicles ?? []), newVehicle])
+    addVehicle(newVehicle)
     router.back()
   }
 
@@ -46,12 +59,13 @@ const AddVehicleScreen = () => {
       <StatusBar style="light" />
 
       <ScreenContent>
-        <Field label={t('licensePlateFieldLabel')}>
+        <Field label={t('licencePlateFieldLabel')} errorMessage={error}>
           <TextInput
             autoCapitalize="characters"
             autoCorrect={false}
-            value={licencePlate}
-            onChangeText={setLicencePlate}
+            value={licencePlateInput}
+            onChangeText={setLicencePlateInput}
+            hasError={error.length > 0}
           />
         </Field>
 
@@ -62,17 +76,35 @@ const AddVehicleScreen = () => {
           <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
         </Field>
 
-        <Button disabled={!isValid} onPress={() => handleSaveVehicle()}>
+        <Button disabled={!isValid} onPress={openModal}>
           {t('addVehicle')}
         </Button>
 
-        {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
         {!isPresented && (
-          <Link href="../">
-            <Typography variant="default-bold">Dismiss</Typography>
+          <Link href="/" asChild>
+            <Button variant="plain-dark">Dismiss</Button>
           </Link>
         )}
       </ScreenContent>
+
+      <Modal visible={isModalVisible} onRequestClose={toggleModal}>
+        <ModalContentWithActions
+          variant="success"
+          title={t('addVehicleConfirmModal.title')}
+          text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
+          hideAvatar
+          primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
+          primaryActionOnPress={() => handleSaveVehicle()}
+          secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
+          secondaryActionOnPress={closeModal}
+        >
+          {isStandardFormat(sanitizedLicencePlate) ? null : (
+            <Panel className="bg-warning-light">
+              <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
+            </Panel>
+          )}
+        </ModalContentWithActions>
+      </Modal>
     </ScreenView>
   )
 }

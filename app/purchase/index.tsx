@@ -1,23 +1,30 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { Link, Stack } from 'expo-router'
+import { Link, Stack, useLocalSearchParams } from 'expo-router'
 import React, { useRef } from 'react'
 
+import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
+import VehicleField from '@/components/controls/vehicles/VehicleField'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
+import PanelPressable from '@/components/shared/PanelPressable'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Surface from '@/components/shared/Surface'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useVehicles } from '@/hooks/useVehicles'
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
-
   const bottomSheetRef = useRef<BottomSheet>(null)
+  const { licencePlate } = useLocalSearchParams()
+  const { getVehicle, defaultVehicle } = useVehicles()
+
+  const chosenVehicle =
+    licencePlate && typeof licencePlate === 'string' ? getVehicle(licencePlate) : defaultVehicle
 
   return (
     <ScreenView>
@@ -25,23 +32,15 @@ const PurchaseScreen = () => {
 
       <ScreenContent>
         <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-          <Surface touchable>
+          <PanelPressable>
             <FlexRow>
               <Typography>Staré Mesto – Fazuľová</Typography>
               <Typography variant="default-semibold">2,90</Typography>
             </FlexRow>
-          </Surface>
+          </PanelPressable>
         </Field>
 
-        <Field label={t('vehicleFieldLabel')}>
-          <TextInput keyboardType="numeric" />
-          {/* TODO replace by proper field control */}
-          {/* <Surface touchable> */}
-          {/*   <FlexRow> */}
-          {/*     <Typography variant="default-semibold">{t('addVehicle')}</Typography> */}
-          {/*   </FlexRow> */}
-          {/* </Surface> */}
-        </Field>
+        <VehicleField vehicle={chosenVehicle} />
 
         <Field label={t('parkingTimeFieldLabel')}>
           <TextInput keyboardType="numeric" />
@@ -49,9 +48,8 @@ const PurchaseScreen = () => {
         </Field>
 
         <Field label={t('paymentMethodsFieldLabel')}>
-          <Surface touchable>
-            <Typography>TODO platobne metody</Typography>
-          </Surface>
+          {/* TODO replace by control */}
+          <PaymentGate />
         </Field>
       </ScreenContent>
 

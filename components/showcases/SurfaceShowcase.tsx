@@ -1,21 +1,22 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import Surface from '@/components/shared/Surface'
+import Panel from '@/components/shared/Panel'
+import PanelPressable from '@/components/shared/PanelPressable'
 import Typography from '@/components/shared/Typography'
 
 const SurfaceShowcase = () => {
   return (
     <View className="p-4 g-4">
-      <Surface>
+      <Panel>
         <Typography>Plain</Typography>
-      </Surface>
-      <Surface touchable>
-        <Typography>Touchable</Typography>
-      </Surface>
-      <Surface surfaceClassName="bg-warning-100">
-        <Typography>Custom surfaceClassName</Typography>
-      </Surface>
+      </Panel>
+      <PanelPressable>
+        <Typography>Pressable</Typography>
+      </PanelPressable>
+      <Panel className="bg-warning-light">
+        <Typography>Custom className</Typography>
+      </Panel>
     </View>
   )
 }

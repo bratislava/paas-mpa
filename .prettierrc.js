@@ -6,5 +6,5 @@ module.exports = {
   printWidth: 100,
   trailingComma: 'all',
   plugins: ['prettier-plugin-tailwindcss'],
-  tailwindFunctions: ['cx', 'classnames', 'clsx', 'twMerge'],
+  tailwindFunctions: ['cx', 'classnames', 'clsx', 'twMerge', 'tw', 'cn'],
 }

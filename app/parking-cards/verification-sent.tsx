@@ -19,7 +19,11 @@ const Page = () => {
 
   return (
     // TODO add dynamic href
-    <ScreenView variant="centered" backgroundVariant="dots" continueProps={{ href: '/' }}>
+    <ScreenView
+      variant="centered"
+      backgroundVariant="dots"
+      continueProps={{ href: '/parking-cards' }}
+    >
       <ScreenContent variant="center">
         {/* TODO replace by icon */}
         <AvatarCircle variant="info" />

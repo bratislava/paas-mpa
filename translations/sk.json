@@ -26,7 +26,6 @@
   "PurchaseScreen": {
     "ticketPurchaseTitle": "Nákup lístka",
     "segmentFieldLabel": "Segment",
-    "vehicleFieldLabel": "Vyberte vozidlo",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
@@ -34,11 +33,45 @@
     "pay": "Zaplatiť"
   },
   "VehiclesScreen": {
+    "title": "Vozidlá",
     "addVehicleTitle": "Pridať vozidlo",
     "addVehicle": "Pridať vozidlo",
-    "licensePlateFieldLabel": "Evidenčné číslo vozidla",
+    "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
-    "otherVehicles": "Ostatné vozidlá"
+    "myVehicles": "Moje vozidlá",
+    "default": "Predvolené",
+    "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
+    "chooseVehicleFieldLabel": "Vyberte vozidlo",
+    "deleteVehicleConfirmModal": {
+      "title": "Vymazať vozidlo",
+      "message": "Naozaj si prajete vymazať vozidlo {{licencePlate}}?",
+      "actionConfirm": "Vymazať vozidlo",
+      "actionReject": "Ponechať"
+    },
+    "addVehicleConfirmModal": {
+      "title": "Pridať vozidlo",
+      "message": "Naozaj si prajete pridať vozidlo {{licencePlate}}?",
+      "licencePlateFormatWarning": "Pozorne si skontrolujte zadané EČV.",
+      "actionConfirm": "Pridať vozidlo",
+      "actionReject": "Zrušiť"
+    },
+    "actions": {
+      "saveAsDefault": "Uložiť ako predvolené",
+      "deleteVehicle": "Odstrániť"
+    }
+  },
+  "Settings": {
+    "title": "Nastavenia"
+  },
+  "PaymentMethods": {
+    "title": "Platobné metódy"
+  },
+  "Tickets": {
+    "title": "Parkovacie lístky"
+  },
+  "ParkingCards": {
+    "title": "Parkovacie karty",
+    "addParkingCards": "Pridať parkovacie karty"
   }
 }

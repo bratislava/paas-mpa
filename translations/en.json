@@ -26,7 +26,6 @@
   "PurchaseScreen": {
     "ticketPurchaseTitle": "Ticket purchase",
     "segmentFieldLabel": "Segment",
-    "vehicleFieldLabel": "Choose vehicle",
     "parkingTimeFieldLabel": "Parking time",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
@@ -34,11 +33,52 @@
     "pay": "Pay"
   },
   "VehiclesScreen": {
+    "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
     "addVehicle": "Add vehicle",
-    "licensePlateFieldLabel": "License plate",
+    "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
-    "otherVehicles": "Other vehicles"
+    "myVehicles": "My vehicles",
+    "default": "Default",
+    "licencePlateDuplicate": "Vehicle with this license plate already exists.",
+    "chooseVehicleFieldLabel": "Choose vehicle",
+    "deleteVehicleConfirmModal": {
+      "title": "Delete vehicle",
+      "message": "Do you really want to delete vehicle {{licencePlate}}?",
+      "actionConfirm": "Delete vehicle",
+      "actionReject": "Keep"
+    },
+    "addVehicleConfirmModal": {
+      "title": "Add vehicle",
+      "message": "Do you really want to add vehicle {{licencePlate}}?",
+      "licencePlateFormatWarning": "Please, check the license plate carefully.",
+      "actionConfirm": "Add vehicle",
+      "actionReject": "Cancel"
+    },
+    "actions": {
+      "saveAsDefault": "Set as default",
+      "deleteVehicle": "Delete"
+    }
+  },
+  "Settings": {
+    "title": "Settings"
+  },
+  "PaymentMethods": {
+    "title": "Payment methods"
+  },
+  "Tickets": {
+    "title": "Parking tickets"
+  },
+  "ParkingCards": {
+    "title": "Parking cards",
+    "addParkingCards": "Add parking cards",
+    "type": {
+      "visitor": "Visitor card",
+      "resident": "Resident card",
+      "bonus": "Bonus card"
+    },
+    "validUntil": "Valid until",
+    "remainingCredit": "Remaining credit"
   }
 }

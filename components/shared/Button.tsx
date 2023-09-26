@@ -71,7 +71,7 @@ const Button = forwardRef<View, ButtonProps>(
     const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
     return (
-      <Pressable ref={ref} {...rest} className={clsx(buttonContainerClassNames)}>
+      <Pressable ref={ref} hitSlop={4} {...rest} className={clsx(buttonContainerClassNames)}>
         {loading ? (
           <>
             <Icon name="hourglass-top" className={buttonTextClassNames} />
