@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 
 import Typography from '@/components/shared/Typography'
 
@@ -12,17 +12,17 @@ type Props = {
 
 const Chip = ({ label, isActive, chipClassName }: Props) => {
   return (
-    <TouchableOpacity
+    <View
       className={clsx(
-        'rounded border p-3',
-        isActive ? 'border-dark bg-dark' : 'border-divider bg-transparent',
+        'flex-1 items-center justify-center rounded border p-3',
+        isActive ? 'border-dark bg-dark' : 'border-divider bg-white',
         chipClassName,
       )}
     >
-      <Typography variant="small-semibold" className={clsx(isActive ? 'text-white' : 'text-dark')}>
+      <Typography variant="small-bold" className={clsx(isActive ? 'text-white' : 'text-dark')}>
         {label}
       </Typography>
-    </TouchableOpacity>
+    </View>
   )
 }
 
