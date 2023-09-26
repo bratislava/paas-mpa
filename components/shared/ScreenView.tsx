@@ -1,11 +1,12 @@
 import { clsx } from 'clsx'
 import { Link, Stack } from 'expo-router'
 import React, { ReactNode } from 'react'
-import { View, Image } from 'react-native'
+import { Image, View } from 'react-native'
 
 import Button from '@/components/shared/Button'
 import { useTranslation } from '@/hooks/useTranslation'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 const dottedBackground = require('@/assets/images/dotted-background.png')
 
 type Props = {
@@ -45,10 +46,7 @@ const ScreenView = ({
       )}
     >
       {backgroundVariant === 'dots' && (
-        <Image
-          source={dottedBackground}
-          style={{ width: '100%', height: '100%', position: 'absolute' }}
-        />
+        <Image source={dottedBackground} className="absolute h-full w-full" />
       )}
       <Stack.Screen options={{ title }} />
       <View
