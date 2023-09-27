@@ -32,7 +32,8 @@
     "summary": "Celkom",
     "pay": "Zaplatiť",
     "customParkingTimeTitle": "Vlastný čas",
-    "chooseVehicleFieldLabel": "Vyberte vozidlo"
+    "chooseVehicleFieldLabel": "Vyberte vozidlo",
+    "customParkingTimeFieldLabel": "Vyberte čas"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",

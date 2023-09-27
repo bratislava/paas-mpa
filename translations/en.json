@@ -32,7 +32,8 @@
     "summary": "Summary",
     "pay": "Pay",
     "customParkingTimeTitle": "Custom time",
-    "chooseVehicleFieldLabel": "Choose vehicle"
+    "chooseVehicleFieldLabel": "Choose vehicle",
+    "customParkingTimeFieldLabel": "Choose time"
   },
   "VehiclesScreen": {
     "title": "Vehicles",
@@ -91,5 +92,20 @@
     "subtractTimeButton": "Subtract 15 minutes",
     "custom": "Custom",
     "validUntil": "Valid until"
+  },
+  "DateTimePicker": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "now": "Now",
+    "set": "Set",
+    "FromToScreen": {
+      "arrivalAt": "Arrival at",
+      "departureAt": "Departure at"
+    },
+    "abbr": {
+      "d": "d",
+      "h": "h",
+      "m": "m"
+    }
   }
 }
