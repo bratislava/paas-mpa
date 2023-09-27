@@ -18,21 +18,21 @@ const IconButton = forwardRef<View, Props>(
         {...rest}
         hitSlop={hitSlop ?? 12}
         accessibilityLabel={accessibilityLabel}
-        className={clsx('self-start rounded-full active:opacity-50', {
+        className={clsx('self-start rounded-full', {
           'p-3': variant === 'dark' || variant === 'white-raised',
           'p-2.5': variant.includes('small'),
           'bg-white shadow': variant.startsWith('white'),
-          'bg-dark': variant.startsWith('dark'),
+          'bg-dark active:bg-dark/50': variant.startsWith('dark'),
           'bg-dark/50': rest.disabled && variant.startsWith('dark'),
         })}
       >
-        {() => (
+        {({ pressed }) => (
           <Icon
             name={name}
             className={clsx({
-              'text-dark': variant.startsWith('white'),
               'text-white': variant.startsWith('dark'),
-              'text-dark/50': rest.disabled && variant.startsWith('white'),
+              'text-dark': variant.startsWith('white'),
+              'text-dark/50': (rest.disabled || pressed) && variant.startsWith('white'),
             })}
           />
         )}
