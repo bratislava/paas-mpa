@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { View } from 'react-native'
 
-import { Map } from '@/components/map/Map'
+import Map from '@/components/map/Map'
 import Typography from '@/components/shared/Typography'
 
 const MapScreen = () => {

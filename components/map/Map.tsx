@@ -8,24 +8,24 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import udrStyle from 'utils/layer-styles/visitors2'
 
-import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 
+import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { MAP_INSETS } from '../../modules/map/constants'
 
 type Props = {
   onBottomSheetContentChange?: (content: any) => void
 }
 
-export const Map = ({ onBottomSheetContentChange }: Props) => {
+const Map = ({ onBottomSheetContentChange }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
-  const { location } = useLocation()
+  useLocationPermission()
   const insets = useSafeAreaInsets()
 
   const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
@@ -33,9 +33,9 @@ export const Map = ({ onBottomSheetContentChange }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bottomSheetContent, setBottomSheetContent] = useState<any>(null)
 
-  useEffect(() => {
-    onBottomSheetContentChange?.(bottomSheetContent)
-  }, [bottomSheetContent, onBottomSheetContentChange])
+  // useEffect(() => {
+  //   onBottomSheetContentChange?.(bottomSheetContent)
+  // }, [bottomSheetContent, onBottomSheetContentChange])
 
   return (
     <MapView
@@ -60,7 +60,6 @@ export const Map = ({ onBottomSheetContentChange }: Props) => {
         renderMode={UserLocationRenderMode.Normal}
         showsUserHeadingIndicator
         visible
-        requestsAlwaysUse
         minDisplacement={3}
         animated
       />
@@ -75,3 +74,5 @@ export const Map = ({ onBottomSheetContentChange }: Props) => {
     </MapView>
   )
 }
+
+export default Map

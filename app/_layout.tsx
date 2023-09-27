@@ -1,6 +1,6 @@
+import 'intl-pluralrules'
 import 'utils/amplify'
 import '../i18n.config.js'
-import 'intl-pluralrules'
 
 /* eslint-disable babel/camelcase */
 import {
@@ -13,6 +13,7 @@ import {
 import Mapbox from '@rnmapbox/maps'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { environment } from '@/environment'
@@ -62,20 +63,22 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <SafeAreaProvider>
-      <Stack
-        screenOptions={{
-          headerBackTitleVisible: false,
-          headerTitleStyle: {
-            fontFamily: 'BelfastGrotesk_700Bold',
-          },
-          headerTintColor: colors.dark.DEFAULT,
-        }}
-      >
-        <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="purchase/choose-payment-method" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
-      </Stack>
+      <GestureHandlerRootView className="flex-1">
+        <Stack
+          screenOptions={{
+            headerBackTitleVisible: false,
+            headerTitleStyle: {
+              fontFamily: 'BelfastGrotesk_700Bold',
+            },
+            headerTintColor: colors.dark.DEFAULT,
+          }}
+        >
+          <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="purchase/choose-payment-method" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
+        </Stack>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   )
 }
