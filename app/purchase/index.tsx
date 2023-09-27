@@ -36,8 +36,6 @@ const PurchaseScreen = () => {
   const { getVehicle, defaultVehicle } = useVehicles()
   const { licencePlate, time = '60' } = searchParams
 
-  console.log('searchParams PurchaseScreen:', searchParams)
-
   const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
   // TODO TimeSelector chips sometimes collapses, when not in ScrollView - investigate
