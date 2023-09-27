@@ -3,8 +3,8 @@ import { Link, router, useLocalSearchParams } from 'expo-router'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 
+import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
-import TimeSelector from '@/components/controls/TimeSelector'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import Button from '@/components/shared/Button'
@@ -22,6 +22,7 @@ import { useVehicles } from '@/hooks/useVehicles'
 export type PurchaseSearchParams = {
   time?: string
   licencePlate?: string
+  customParkingTime?: string
 }
 
 const setTimeValue = (minutes: number) => {
@@ -31,8 +32,9 @@ const setTimeValue = (minutes: number) => {
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const { licencePlate, time = '60' } = useLocalSearchParams<PurchaseSearchParams>()
+  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
+  const { licencePlate, time = '60' } = searchParams
 
   const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
@@ -58,7 +60,7 @@ const PurchaseScreen = () => {
               {/* TODO Link+Pressable */}
               <Link
                 asChild
-                href={`/purchase/choose-vehicle?licencePlate=${chosenVehicle?.licencePlate}`}
+                href={{ pathname: '/purchase/choose-vehicle', params: { ...searchParams } }}
               >
                 <PressableStyled>
                   <VehicleFieldControl vehicle={chosenVehicle} />
@@ -72,7 +74,10 @@ const PurchaseScreen = () => {
 
             <Field label={t('paymentMethodsFieldLabel')}>
               {/* TODO replace by proper field control */}
-              <Link asChild href="/purchase/choose-payment-method">
+              <Link
+                asChild
+                href={{ pathname: '/purchase/choose-payment-method', params: { ...searchParams } }}
+              >
                 <PressableStyled>
                   <PaymentGate showControlChevron />
                 </PressableStyled>

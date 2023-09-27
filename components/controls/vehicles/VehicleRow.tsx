@@ -10,6 +10,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Vehicle } from '@/hooks/useVehiclesStorage'
 
+// Ensure that only one of these props is set at a time
 type AdditionalProps =
   | {
       onContextMenuPress?: (licencePlate: string) => void

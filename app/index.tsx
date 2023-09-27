@@ -123,7 +123,12 @@ const IndexScreen = () => {
           <View>
             {menuItems.map((item) => (
               // TODO Link+Pressable
-              <Link asChild href={item.path} onPress={() => bottomSheetRef.current?.close()}>
+              <Link
+                key={item.path}
+                asChild
+                href={item.path}
+                onPress={() => bottomSheetRef.current?.close()}
+              >
                 <PressableStyled>
                   <ActionRow startIcon={item.icon} label={item.label} />
                 </PressableStyled>

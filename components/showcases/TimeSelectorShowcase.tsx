@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import TimeSelector from '@/components/controls/TimeSelector'
+import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import { useTimeSelector } from '@/hooks/useTimeSelector'
 
 const TimeSelectorShowcase = () => {
