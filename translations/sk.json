@@ -24,13 +24,16 @@
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: {{email}}. \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
   },
   "PurchaseScreen": {
-    "ticketPurchaseTitle": "Nákup lístka",
+    "title": "Nákup lístka",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
     "summary": "Celkom",
-    "pay": "Zaplatiť"
+    "pay": "Zaplatiť",
+    "customParkingTimeTitle": "Vlastný čas",
+    "chooseVehicleFieldLabel": "Vyberte vozidlo",
+    "customParkingTimeFieldLabel": "Vyberte čas"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",
@@ -39,7 +42,8 @@
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
-    "myVehicles": "Moje vozidlá",
+    "myDefaultVehicle": "Predvolené",
+    "myOtherVehicles": "Ostatné vozidlá",
     "default": "Predvolené",
     "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
@@ -56,6 +60,7 @@
       "actionConfirm": "Pridať vozidlo",
       "actionReject": "Zrušiť"
     },
+    "openVehicleContextMenu": "Uprať vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
       "deleteVehicle": "Odstrániť"
@@ -65,13 +70,16 @@
     "title": "Nastavenia"
   },
   "PaymentMethods": {
-    "title": "Platobné metódy"
+    "title": "Platobné metódy",
+    "paymentGate": "Platobná karta / Apple Pay / Google Pay"
   },
   "Tickets": {
     "title": "Parkovacie lístky"
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
-    "addParkingCards": "Pridať parkovacie karty"
+    "addParkingCards": "Pridať parkovacie karty",
+    "custom": "Vlastný",
+    "validUntil": "Platný do"
   }
 }

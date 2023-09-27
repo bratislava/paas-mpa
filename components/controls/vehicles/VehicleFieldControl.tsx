@@ -1,28 +1,27 @@
 import React from 'react'
-import { View } from 'react-native'
 
+import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import FlexRow from '@/components/shared/FlexRow'
-import IconButton from '@/components/shared/IconButton'
+import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
 import { Vehicle } from '@/hooks/useVehiclesStorage'
 
 type Props = {
-  vehicle: Vehicle
+  vehicle: Vehicle | null | undefined
 }
 
 const VehicleFieldControl = ({ vehicle }: Props) => {
-  return (
+  const t = useTranslation('VehiclesScreen')
+
+  return vehicle ? (
+    <VehicleRow vehicle={vehicle} showControlChevron />
+  ) : (
     <Panel>
-      <FlexRow cn="items-center">
-        <View>
-          <Typography variant="default-bold">
-            {vehicle.licencePlate}
-            {/* TODO */}
-          </Typography>
-          {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}
-        </View>
-        <IconButton name="expand-more" accessibilityLabel="Expand more" />
+      <FlexRow>
+        <Typography variant="default-bold">{t('addVehicle')}</Typography>
+        <Icon name="add" />
       </FlexRow>
     </Panel>
   )

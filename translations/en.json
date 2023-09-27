@@ -24,13 +24,16 @@
     "verifyYourEmailInfo": "TODO EN Poslali sme vám overovací e-mail na adresu: {{email}}. \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
   },
   "PurchaseScreen": {
-    "ticketPurchaseTitle": "Ticket purchase",
+    "title": "Ticket purchase",
     "segmentFieldLabel": "Segment",
-    "parkingTimeFieldLabel": "Parking time",
+    "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
     "summary": "Summary",
-    "pay": "Pay"
+    "pay": "Pay",
+    "customParkingTimeTitle": "Custom time",
+    "chooseVehicleFieldLabel": "Choose vehicle",
+    "customParkingTimeFieldLabel": "Choose time"
   },
   "VehiclesScreen": {
     "title": "Vehicles",
@@ -39,7 +42,8 @@
     "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
-    "myVehicles": "My vehicles",
+    "myDefaultVehicle": "Default vehicle",
+    "myOtherVehicles": "Other vehicles",
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
     "chooseVehicleFieldLabel": "Choose vehicle",
@@ -56,6 +60,7 @@
       "actionConfirm": "Add vehicle",
       "actionReject": "Cancel"
     },
+    "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
       "deleteVehicle": "Delete"
@@ -65,7 +70,8 @@
     "title": "Settings"
   },
   "PaymentMethods": {
-    "title": "Payment methods"
+    "title": "Payment methods",
+    "paymentGate": "Payment card / Apple Pay / Google Pay"
   },
   "Tickets": {
     "title": "Parking tickets"
@@ -80,5 +86,26 @@
     },
     "validUntil": "Valid until",
     "remainingCredit": "Remaining credit"
+  },
+  "TimeSelector": {
+    "addTimeButton": "Add 15 minutes",
+    "subtractTimeButton": "Subtract 15 minutes",
+    "custom": "Custom",
+    "validUntil": "Valid until"
+  },
+  "DateTimePicker": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "now": "Now",
+    "set": "Set",
+    "FromToScreen": {
+      "arrivalAt": "Arrival at",
+      "departureAt": "Departure at"
+    },
+    "abbr": {
+      "d": "d",
+      "h": "h",
+      "m": "m"
+    }
   }
 }

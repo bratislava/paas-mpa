@@ -28,11 +28,11 @@ module.exports = {
     // https://github.com/marklawlor/nativewind/issues/386
     g: ({ theme }) => theme('spacing'),
     fontSize: {
-      h1: ['1.5rem', '2rem'], // 24px / 32px
-      h2: ['1.25rem', '1.5rem'], // 20px / 24px
-      h3: ['1rem', '1.5rem'], // 16px / 24px
-      16: ['1rem', '1.5rem'], // 16px / 24px
-      14: ['0.875rem', '1.5rem'], // 14px / 24px
+      h1: ['24px', '32px'],
+      h2: ['20px', '24px'],
+      h3: ['16px', '24px'],
+      16: ['16px', '24px'],
+      14: ['14px', '24px'],
     },
     borderRadius: {
       none: '0',
