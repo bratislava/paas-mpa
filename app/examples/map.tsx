@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import BottomSheet from '@gorhom/bottom-sheet'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { View } from 'react-native'
 
+import { Map } from '@/components/map/Map'
 import Typography from '@/components/shared/Typography'
-import { Map } from '@/modules/map/components/Map'
 
 const MapScreen = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ const MapScreen = () => {
   return (
     <View className="flex-1 items-stretch">
       <Map onBottomSheetContentChange={handleBottomSheetChange} />
-      {bottomSheetContent && (
+      {false && (
         <BottomSheet>
           <View className="bg-white">
             <Typography>{JSON.stringify(bottomSheetContent)}</Typography>

@@ -15,7 +15,7 @@ import udrStyle from 'utils/layer-styles/visitors2'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 
-import { MAP_INSETS } from '../constants'
+import { MAP_INSETS } from '../../modules/map/constants'
 
 type Props = {
   onBottomSheetContentChange?: (content: any) => void
@@ -43,7 +43,10 @@ export const Map = ({ onBottomSheetContentChange }: Props) => {
       className="flex-1"
       // eslint-disable-next-line no-secrets/no-secrets
       styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
-      scaleBarPosition={{ top: insets.top + MAP_INSETS.top, left: insets.left + MAP_INSETS.left }}
+      scaleBarPosition={{
+        top: insets.top + MAP_INSETS.top,
+        left: insets.left + MAP_INSETS.left,
+      }}
     >
       <Camera
         ref={camera}
