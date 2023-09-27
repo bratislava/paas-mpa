@@ -16,20 +16,6 @@ const MapScreen = () => {
     [setBottomSheetContent],
   )
 
-  // const udrDataByPrice = useMemo(
-  //   () => ({
-  //     udrDataRegular: {
-  //       ...udrData,
-  //       features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena !== 2),
-  //     } as FeatureCollection,
-  //     udrDataTwoEur: {
-  //       ...udrData,
-  //       features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena === 2),
-  //     } as FeatureCollection,
-  //   }),
-  //   [udrData],
-  // )
-
   return (
     <View className="flex-1 items-stretch">
       <Map onBottomSheetContentChange={handleBottomSheetChange} />

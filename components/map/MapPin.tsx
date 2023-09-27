@@ -31,6 +31,7 @@ const MapPin = ({ price }: Props) => {
           </Typography>
         )}
       </View>
+      {/* This red point is the exact center of the screen, I would leave it there for now for testing */}
       <View className="absolute" style={{ top: screenCenter.top, left: screenCenter.left }}>
         <View className="h-[1px] w-[1px] bg-[#f00]" />
       </View>

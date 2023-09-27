@@ -6,9 +6,9 @@ const styles = [
     id: 'zones-line',
     type: 'line',
     paint: {
-      'line-color': colors.grey,
-      'line-opacity': 0.6,
-      'line-width': [
+      fillOutlineColor: colors.grey,
+      lineOpacity: 0.6,
+      lineWidth: [
         'interpolate',
         ['linear'],
         ['zoom'],

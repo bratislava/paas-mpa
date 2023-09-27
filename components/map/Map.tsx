@@ -8,14 +8,15 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { MapState, RegionPayload } from '@rnmapbox/maps/lib/typescript/components/MapView'
+import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { PermissionStatus } from 'expo-location'
-import { Feature, GeoJsonProperties, Geometry, Point } from 'geojson'
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDebouncedCallback } from 'use-debounce'
-import udrStyle from 'utils/layer-styles/visitors2'
+import udrStyle from 'utils/layer-styles/visitors'
+import udrStyle2 from 'utils/layer-styles/visitors2'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
@@ -57,7 +58,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
     const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
       [screenCenter.left, screenCenter.top],
       null,
-      ['udrFill'],
+      ['udrFill', 'udrFill2'],
     )
     if ((featuresAtCenter?.features?.length ?? 0) < 1) {
       setSelectedPolygon(null)
@@ -73,6 +74,20 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
       handleDebouncedCameraChange(state)
     },
     [handleDebouncedCameraChange],
+  )
+
+  const udrDataByPrice = useMemo(
+    () => ({
+      regular: {
+        ...udrData,
+        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena !== 2),
+      } as FeatureCollection,
+      eur2: {
+        ...udrData,
+        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena === 2),
+      } as FeatureCollection,
+    }),
+    [udrData],
   )
 
   return (
@@ -115,14 +130,30 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
             animated
           />
         )}
-        {udrData && (
-          <ShapeSource id="udrSource" shape={udrData}>
+        {udrDataByPrice.regular?.features?.length > 0 && (
+          <ShapeSource id="udrSource" shape={udrDataByPrice.regular}>
             <FillLayer
               id="udrFill"
               style={udrStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
             />
           </ShapeSource>
         )}
+        {udrDataByPrice.eur2?.features?.length > 0 && (
+          <ShapeSource id="udrSource2" shape={udrDataByPrice.eur2}>
+            <FillLayer
+              id="udrFill2"
+              style={udrStyle2.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
+            />
+          </ShapeSource>
+        )}
+        {/* {zonesData && (
+          <ShapeSource id="zonesSource" shape={zonesData}>
+            <FillLayer
+              id="zonesSource"
+              style={zonesStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
+            />
+          </ShapeSource>
+        )} */}
         {selectedPolygon && (
           <ShapeSource id="highlight" shape={selectedPolygon}>
             <FillLayer
@@ -131,7 +162,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
                 const paint = { ...current.paint }
                 if (paint.fillColor) {
                   paint.fillColor = [...paint.fillColor]
-                  paint.fillColor[3] = colors.green
+                  paint.fillColor[3] = colors.orange
                 }
 
                 return { ...prev, ...paint }
