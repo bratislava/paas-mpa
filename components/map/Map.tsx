@@ -26,7 +26,7 @@ import { MAP_INSETS } from '../../modules/map/constants'
 import MapPin from './MapPin'
 
 type Props = {
-  onBottomSheetContentChange?: (content: any) => void
+  onBottomSheetContentChange?: (content: string | null) => void
 }
 
 const Map = ({ onBottomSheetContentChange }: Props) => {
@@ -65,7 +65,6 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
       return
     }
     const feature = featuresAtCenter!.features[0]
-    console.log(`Nazov: ${feature?.properties?.Nazov}`)
     setSelectedPolygon(feature)
   }, 200)
 

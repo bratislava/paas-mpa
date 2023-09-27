@@ -10,7 +10,7 @@ const MapScreen = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bottomSheetContent, setBottomSheetContent] = useState<any>(null)
   const handleBottomSheetChange = useCallback(
-    (content: any) => {
+    (content: string | null) => {
       setBottomSheetContent(content)
     },
     [setBottomSheetContent],
