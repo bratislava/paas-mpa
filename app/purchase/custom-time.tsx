@@ -1,4 +1,4 @@
-import { router, useGlobalSearchParams } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import { PurchaseSearchParams } from '@/app/purchase/index'
@@ -10,7 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
   const t = useTranslation('PurchaseScreen')
-  const searchParams = useGlobalSearchParams<PurchaseSearchParams>()
+  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
 
   return (
     <ScreenView title={t('customParkingTimeTitle')}>

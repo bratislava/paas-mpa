@@ -1,4 +1,4 @@
-import { Link, useGlobalSearchParams } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
 
@@ -20,7 +20,7 @@ type Props = {
 
 const TimeSelector = ({ value, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
-  const searchParams = useGlobalSearchParams<PurchaseSearchParams>()
+  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
   // eslint-disable-next-line const-case/uppercase
   const customTimeScreen = '/purchase/custom-time'
   const hrefObject = { pathname: customTimeScreen, params: searchParams }

@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { Link, router, useGlobalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -32,7 +32,7 @@ const setTimeValue = (minutes: number) => {
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const searchParams = useGlobalSearchParams<PurchaseSearchParams>()
+  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
   const { licencePlate, time = '60' } = searchParams
 
