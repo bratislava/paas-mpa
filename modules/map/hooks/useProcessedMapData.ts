@@ -1,9 +1,9 @@
 import { FeatureCollection } from 'geojson'
 import { useEffect, useState } from 'react'
 
-import { processData } from '@/utils/mapUtils'
+import { useArcgisData } from '@/modules/arcgis/hooks/useArcgisData'
 
-import { useArcgisData } from '../modules/arcgis/hooks/useArcgisData'
+import { processData } from '../utils/processData'
 
 export const useProcessedArcgisData = () => {
   const [isLoading, setLoading] = useState(true)

@@ -1,10 +1,8 @@
 /* eslint-disable eslint-comments/no-unlimited-disable,unicorn/no-abusive-eslint-disable */
 /* eslint-disable */
-import area from '@turf/area'
-import booleanIntersects from '@turf/boolean-intersects'
 import { Point, Polygon } from '@turf/helpers'
-import intersect from '@turf/intersect'
 import { Feature, FeatureCollection } from 'geojson'
+import { addZonePropertyToLayer } from './addZonePropertyToLayer'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -13,46 +11,6 @@ const zoneMapping = {
   RA1: 'RA1',
   'PE1-Dvory IV': 'PE1',
 } as { [key: string]: string }
-
-export const getIntersectionOfFeatureFromFeatures = (
-  feature: Feature<Polygon | Point>,
-  featureCollection: FeatureCollection<Polygon>,
-) => {
-  const availableFeatures = featureCollection.features
-
-  for (const availableFeature of availableFeatures) {
-    if (feature.geometry.type === 'Polygon') {
-      const intersection = intersect(availableFeature.geometry, feature as Feature<Polygon>)
-
-      if (!intersection) {
-        continue
-      }
-
-      if (area(intersection) > area(feature) / 2) {
-        return availableFeature
-      }
-    }
-
-    if (feature.geometry.type === 'Point' && booleanIntersects(availableFeature, feature)) {
-      return availableFeature
-    }
-  }
-  return null
-}
-
-export const addZonePropertyToLayer = (
-  featureCollection: FeatureCollection<Polygon | Point>,
-  zonesCollection: FeatureCollection<Polygon>,
-) => ({
-  ...featureCollection,
-  features: featureCollection.features.map((feature) => ({
-    ...feature,
-    properties: {
-      ...feature.properties,
-      zone: getIntersectionOfFeatureFromFeatures(feature, zonesCollection)?.properties?.zone,
-    },
-  })),
-})
 
 export interface ProcessDataOptions {
   rawAssistantsData: FeatureCollection | null

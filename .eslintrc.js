@@ -60,5 +60,8 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'off',
     'promise/always-return': 'off',
     'unicorn/no-array-reduce': 'off',
+    'no-restricted-syntax': 'off',
+    'no-continue': 'off',
+    'const-case/uppercase': 'off',
   },
 }
