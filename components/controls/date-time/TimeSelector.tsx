@@ -1,7 +1,8 @@
-import { Link } from 'expo-router'
+import { Link, useGlobalSearchParams } from 'expo-router'
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
 
+import { PurchaseSearchParams } from '@/app/purchase'
 import Chip from '@/components/shared/Chip'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -19,8 +20,10 @@ type Props = {
 
 const TimeSelector = ({ value, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
+  const searchParams = useGlobalSearchParams<PurchaseSearchParams>()
   // eslint-disable-next-line const-case/uppercase
   const customTimeScreen = '/purchase/custom-time'
+  const hrefObject = { pathname: customTimeScreen, params: searchParams }
 
   const addTime = () => {
     onValueChange(value + 15)
@@ -58,7 +61,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
           accessibilityLabel={t('subtractTimeButton')}
           onPress={subtractTime}
         />
-        <Link asChild href={customTimeScreen}>
+        <Link asChild href={hrefObject}>
           <PressableStyled>
             <Typography variant="h1">{formatMinutes(value)}</Typography>
           </PressableStyled>
@@ -97,7 +100,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
             )
           })}
 
-          <Link asChild href={customTimeScreen}>
+          <Link asChild href={hrefObject}>
             <PressableStyled className="flex-1">
               <Chip label={t('custom')} isActive={isCustomTimeActive} />
             </PressableStyled>
@@ -110,7 +113,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
       <FlexRow>
         <Typography variant="small">{t('validUntil')}</Typography>
 
-        <Link asChild href={customTimeScreen}>
+        <Link asChild href={hrefObject}>
           <PressableStyled>
             <Typography variant="small-bold">12:00 TODO</Typography>
           </PressableStyled>
