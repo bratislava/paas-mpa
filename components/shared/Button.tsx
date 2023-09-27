@@ -1,12 +1,12 @@
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'
-import { Pressable, View } from 'react-native'
+import { Pressable, PressableProps, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
-type PressableProps = Omit<React.ComponentProps<typeof Pressable>, 'children'>
+type PressablePropsOmitted = Omit<PressableProps, 'children'>
 
 type ButtonProps = {
   children: string
@@ -16,11 +16,11 @@ type ButtonProps = {
   loading?: boolean
   loadingText?: string
   loadingTextEllipsis?: boolean
-} & PressableProps
+} & PressablePropsOmitted
 
 export const buttonClassNames = (
   variant: ButtonProps['variant'],
-  pressableProps: PressableProps,
+  pressableProps: PressablePropsOmitted,
 ) => {
   const { disabled } = pressableProps
 

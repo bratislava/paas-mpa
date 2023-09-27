@@ -63,21 +63,32 @@ const VehiclesScreen = () => {
   return (
     <ScreenView title={t('title')}>
       <ScreenContent>
-        <Field label={t('myVehicles')}>
-          <FlatList
-            data={vehicles}
-            keyExtractor={(vehicle) => vehicle.licencePlate}
-            ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
-            renderItem={({ item, index }) => (
-              <VehicleRow
-                vehicle={item}
-                onContextMenuPress={() => handleContextMenuPress(item.licencePlate)}
-                isDefault={index === 0}
-              />
-            )}
-            ListEmptyComponent={() => <NoVehicles />}
-          />
-        </Field>
+        {vehicles.length > 0 ? (
+          <Field label={t('myDefaultVehicle')}>
+            <VehicleRow
+              vehicle={vehicles[0]}
+              onContextMenuPress={() => handleContextMenuPress(vehicles[0].licencePlate)}
+            />
+          </Field>
+        ) : (
+          <NoVehicles />
+        )}
+
+        {vehicles.length > 1 ? (
+          <Field label={t('myOtherVehicles')}>
+            <FlatList
+              data={vehicles.slice(1)}
+              keyExtractor={(vehicle) => vehicle.licencePlate}
+              ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+              renderItem={({ item }) => (
+                <VehicleRow
+                  vehicle={item}
+                  onContextMenuPress={() => handleContextMenuPress(item.licencePlate)}
+                />
+              )}
+            />
+          </Field>
+        ) : null}
 
         <Link href="/vehicles/add-vehicle" asChild>
           <Button>{t('addVehicle')}</Button>

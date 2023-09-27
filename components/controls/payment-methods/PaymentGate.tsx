@@ -1,22 +1,36 @@
+import clsx from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
 
 import AvatarSquare from '@/components/info/AvatarSquare'
 import FlexRow from '@/components/shared/FlexRow'
-import IconButton from '@/components/shared/IconButton'
+import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
 
-const PaymentGate = () => {
+type Props =
+  | {
+      selected?: boolean
+      showControlChevron?: never
+    }
+  | {
+      selected?: never
+      showControlChevron?: boolean
+    }
+
+const PaymentGate = ({ selected, showControlChevron }: Props) => {
+  const t = useTranslation('PaymentMethods')
+
   return (
-    <Panel>
+    <Panel className={clsx(selected && 'border border-dark')}>
       <FlexRow cn="items-center">
         <AvatarSquare variant="payment-gate" />
         <View className="flex-1">
-          {/* TODO translation */}
-          <Typography variant="default-bold">Platobná karta / Apple Pay / Google Pay</Typography>
+          <Typography variant="default-bold">{t('paymentGate')}</Typography>
         </View>
-        <IconButton name="expand-more" accessibilityLabel="Expand more" />
+        {selected && <Icon name="check-circle" />}
+        {showControlChevron && <Icon name="expand-more" />}
       </FlexRow>
     </Panel>
   )

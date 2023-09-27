@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { environment } from '@/environment'
+import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -64,10 +65,15 @@ const RootLayout = () => {
       <Stack
         screenOptions={{
           headerBackTitleVisible: false,
+          headerTitleStyle: {
+            fontFamily: 'BelfastGrotesk_700Bold',
+          },
+          headerTintColor: colors.dark.DEFAULT,
         }}
       >
         <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
         <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="purchase/choose-payment-method" options={{ presentation: 'modal' }} />
         <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
       </Stack>
     </SafeAreaProvider>

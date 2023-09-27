@@ -1,11 +1,11 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { Link, Stack, useLocalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 
 import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
 import TimeSelector from '@/components/controls/TimeSelector'
-import VehicleField from '@/components/controls/vehicles/VehicleField'
+import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
@@ -14,52 +14,73 @@ import FlexRow from '@/components/shared/FlexRow'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
+import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
-import { useTimeSelector } from '@/hooks/useTimeSelector'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
+
+export type PurchaseSearchParams = {
+  time?: string
+  licencePlate?: string
+}
+
+const setTimeValue = (minutes: number) => {
+  router.setParams({ time: String(minutes) })
+}
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const { licencePlate } = useLocalSearchParams()
+  const { licencePlate, time = '60' } = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
-  const { timeValue, setTimeValue } = useTimeSelector(60)
-  const chosenVehicle =
-    licencePlate && typeof licencePlate === 'string' ? getVehicle(licencePlate) : defaultVehicle
 
-  // TODO TimeSelector chips collapses when not in ScrollView - investigate
+  const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
+
+  // TODO TimeSelector chips sometimes collapses, when not in ScrollView - investigate
   return (
     <>
-      <ScrollView>
-        <Stack.Screen options={{ title: t('title') }} />
+      <ScreenView title={t('title')}>
+        <ScrollView>
+          {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
+          <ScreenContent cn="pb-[250px]">
+            <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
+              <PressableStyled>
+                <Panel>
+                  <FlexRow>
+                    <Typography>Staré Mesto – Fazuľová</Typography>
+                    <Typography variant="default-semibold">2,90</Typography>
+                  </FlexRow>
+                </Panel>
+              </PressableStyled>
+            </Field>
 
-        <ScreenContent>
-          <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-            <PressableStyled>
-              <Panel>
-                <FlexRow>
-                  <Typography>Staré Mesto – Fazuľová</Typography>
-                  <Typography variant="default-semibold">2,90</Typography>
-                </FlexRow>
-              </Panel>
-            </PressableStyled>
-          </Field>
+            <Field label={t('chooseVehicleFieldLabel')}>
+              {/* TODO Link+Pressable */}
+              <Link
+                asChild
+                href={`/purchase/choose-vehicle?licencePlate=${chosenVehicle?.licencePlate}`}
+              >
+                <PressableStyled>
+                  <VehicleFieldControl vehicle={chosenVehicle} />
+                </PressableStyled>
+              </Link>
+            </Field>
 
-          <VehicleField vehicle={chosenVehicle} />
+            <Field label={t('parkingTimeFieldLabel')}>
+              <TimeSelector value={Number(time)} onValueChange={setTimeValue} />
+            </Field>
 
-          <Field label={t('parkingTimeFieldLabel')}>
-            <TimeSelector value={timeValue} onValueChange={setTimeValue} />
-          </Field>
-
-          <Field label={t('paymentMethodsFieldLabel')}>
-            {/* TODO replace by proper field control */}
-            <PressableStyled>
-              <PaymentGate />
-            </PressableStyled>
-          </Field>
-        </ScreenContent>
-      </ScrollView>
+            <Field label={t('paymentMethodsFieldLabel')}>
+              {/* TODO replace by proper field control */}
+              <Link asChild href="/purchase/choose-payment-method">
+                <PressableStyled>
+                  <PaymentGate showControlChevron />
+                </PressableStyled>
+              </Link>
+            </Field>
+          </ScreenContent>
+        </ScrollView>
+      </ScreenView>
 
       <BottomSheet ref={bottomSheetRef} enableDynamicSizing>
         <BottomSheetView className="p-5 pb-[50px] g-3">

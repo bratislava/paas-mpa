@@ -31,7 +31,8 @@
     "addVehicle": "Pridať vozidlo",
     "summary": "Celkom",
     "pay": "Zaplatiť",
-    "customParkingTimeTitle": "Vlastný čas"
+    "customParkingTimeTitle": "Vlastný čas",
+    "chooseVehicleFieldLabel": "Vyberte vozidlo"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",
@@ -40,7 +41,8 @@
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
-    "myVehicles": "Moje vozidlá",
+    "myDefaultVehicle": "Predvolené",
+    "myOtherVehicles": "Ostatné vozidlá",
     "default": "Predvolené",
     "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
@@ -57,6 +59,7 @@
       "actionConfirm": "Pridať vozidlo",
       "actionReject": "Zrušiť"
     },
+    "openVehicleContextMenu": "Uprať vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
       "deleteVehicle": "Odstrániť"
@@ -66,13 +69,16 @@
     "title": "Nastavenia"
   },
   "PaymentMethods": {
-    "title": "Platobné metódy"
+    "title": "Platobné metódy",
+    "paymentGate": "Platobná karta / Apple Pay / Google Pay"
   },
   "Tickets": {
     "title": "Parkovacie lístky"
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
-    "addParkingCards": "Pridať parkovacie karty"
+    "addParkingCards": "Pridať parkovacie karty",
+    "custom": "Vlastný",
+    "validUntil": "Platný do"
   }
 }
