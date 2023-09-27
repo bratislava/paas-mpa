@@ -19,7 +19,7 @@ const VehicleField = ({ vehicle }: Props) => {
   const t = useTranslation('VehiclesScreen')
 
   return (
-    <Field label={t('vehicleFieldLabel')}>
+    <Field label={t('chooseVehicleFieldLabel')}>
       {/* TODO Link+Pressable */}
       <Link asChild href="/purchase/choose-vehicle">
         <PressableStyled>

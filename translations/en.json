@@ -24,13 +24,14 @@
     "verifyYourEmailInfo": "TODO EN Poslali sme vám overovací e-mail na adresu: {{email}}. \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
   },
   "PurchaseScreen": {
-    "ticketPurchaseTitle": "Ticket purchase",
+    "title": "Ticket purchase",
     "segmentFieldLabel": "Segment",
-    "parkingTimeFieldLabel": "Parking time",
+    "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
     "summary": "Summary",
-    "pay": "Pay"
+    "pay": "Pay",
+    "customParkingTimeTitle": "Custom time"
   },
   "VehiclesScreen": {
     "title": "Vehicles",
@@ -80,5 +81,9 @@
     },
     "validUntil": "Valid until",
     "remainingCredit": "Remaining credit"
+  },
+  "TimeSelector": {
+    "addTimeButton": "Add 15 minutes",
+    "subtractTimeButton": "Subtract 15 minutes"
   }
 }
