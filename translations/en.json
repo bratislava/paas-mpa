@@ -31,7 +31,8 @@
     "addVehicle": "Add vehicle",
     "summary": "Summary",
     "pay": "Pay",
-    "customParkingTimeTitle": "Custom time"
+    "customParkingTimeTitle": "Custom time",
+    "chooseVehicleFieldLabel": "Choose vehicle"
   },
   "VehiclesScreen": {
     "title": "Vehicles",
@@ -40,7 +41,8 @@
     "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
-    "myVehicles": "My vehicles",
+    "myDefaultVehicle": "Default vehicle",
+    "myOtherVehicles": "Other vehicles",
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
     "chooseVehicleFieldLabel": "Choose vehicle",
@@ -57,6 +59,7 @@
       "actionConfirm": "Add vehicle",
       "actionReject": "Cancel"
     },
+    "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
       "deleteVehicle": "Delete"
@@ -66,7 +69,8 @@
     "title": "Settings"
   },
   "PaymentMethods": {
-    "title": "Payment methods"
+    "title": "Payment methods",
+    "paymentGate": "Payment card / Apple Pay / Google Pay"
   },
   "Tickets": {
     "title": "Parking tickets"
@@ -84,6 +88,8 @@
   },
   "TimeSelector": {
     "addTimeButton": "Add 15 minutes",
-    "subtractTimeButton": "Subtract 15 minutes"
+    "subtractTimeButton": "Subtract 15 minutes",
+    "custom": "Custom",
+    "validUntil": "Valid until"
   }
 }

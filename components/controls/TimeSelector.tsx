@@ -1,5 +1,5 @@
 import { Link } from 'expo-router'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View } from 'react-native'
 
 import Chip from '@/components/shared/Chip'
@@ -34,8 +34,20 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
     onValueChange(minutes)
   }
 
-  const chipRow1 = [{ value: 15 }, { value: 30 }, { value: 45 }, { value: 60 }]
-  const chipRow2 = [{ value: 120 }, { value: 240 }, { value: 480 }]
+  const chips = useMemo(
+    () => [
+      { value: 15 },
+      { value: 30 },
+      { value: 45 },
+      { value: 60 },
+      { value: 120 },
+      { value: 240 },
+      { value: 480 },
+    ],
+    [],
+  )
+
+  const isCustomTimeActive = chips.every((chip) => chip.value !== value)
 
   return (
     <Panel className="g-4">
@@ -60,7 +72,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
       </FlexRow>
       <View className="g-1">
         <View className="flex-row g-1">
-          {chipRow1.map((chip) => {
+          {chips.slice(0, 4).map((chip) => {
             return (
               <PressableStyled
                 key={chip.value}
@@ -73,7 +85,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
           })}
         </View>
         <View className="flex-row g-1">
-          {chipRow2.map((chip) => {
+          {chips.slice(4).map((chip) => {
             return (
               <PressableStyled
                 key={chip.value}
@@ -87,7 +99,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
           <Link asChild href={customTimeScreen}>
             <PressableStyled className="flex-1">
-              <Chip label="Custom" />
+              <Chip label={t('custom')} isActive={isCustomTimeActive} />
             </PressableStyled>
           </Link>
         </View>
@@ -96,7 +108,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
       <Divider />
 
       <FlexRow>
-        <Typography variant="small">Valid until</Typography>
+        <Typography variant="small">{t('validUntil')}</Typography>
 
         <Link asChild href={customTimeScreen}>
           <PressableStyled>

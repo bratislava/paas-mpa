@@ -1,7 +1,8 @@
-import { Link, Stack } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { FlatList } from 'react-native'
 
+import { PurchaseSearchParams } from '@/app/purchase/index'
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import Button from '@/components/shared/Button'
@@ -15,10 +16,10 @@ import { useVehicles } from '@/hooks/useVehicles'
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { vehicles } = useVehicles()
+  const { licencePlate } = useLocalSearchParams<PurchaseSearchParams>()
 
   return (
-    <ScreenView>
-      <Stack.Screen options={{ title: 'Vehicles' }} />
+    <ScreenView title={t('title')}>
       <ScreenContent>
         <FlatList
           data={vehicles}
@@ -28,7 +29,7 @@ const ChooseVehicleScreen = () => {
             // TODO Link+Pressable
             <Link asChild href={`/purchase?licencePlate=${item.licencePlate}`}>
               <PressableStyled>
-                <VehicleRow vehicle={item} />
+                <VehicleRow vehicle={item} selected={licencePlate === item.licencePlate} />
               </PressableStyled>
             </Link>
           )}
