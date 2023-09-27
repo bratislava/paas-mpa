@@ -3,7 +3,6 @@ module.exports = {
   ignorePatterns: ['*.config.*', '.eslintrc.js'],
   plugins: ['prettier'],
   rules: {
-    'prettier/prettier': 'error',
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     /** We use this a lot with isDefined and hasAttributes */
     'unicorn/no-array-callback-reference': 'off',
@@ -63,5 +62,6 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-continue': 'off',
     'const-case/uppercase': 'off',
+    'prettier/prettier': 'error',
   },
 }

@@ -33,8 +33,8 @@ const MapScreen = () => {
   return (
     <View className="flex-1 items-stretch">
       <Map onBottomSheetContentChange={handleBottomSheetChange} />
-      {false && (
-        <BottomSheet>
+      {bottomSheetContent && (
+        <BottomSheet snapPoints={['20%', '80%']}>
           <View className="bg-white">
             <Typography>{JSON.stringify(bottomSheetContent)}</Typography>
             {/* <Button onPress={() => setBottomSheetContent(null)}>Close</Button> */}

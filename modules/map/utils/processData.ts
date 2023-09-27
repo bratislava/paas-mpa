@@ -1,8 +1,10 @@
 /* eslint-disable eslint-comments/no-unlimited-disable,unicorn/no-abusive-eslint-disable */
 /* eslint-disable */
+import area from '@turf/area'
+import booleanIntersects from '@turf/boolean-intersects'
 import { Point, Polygon } from '@turf/helpers'
+import intersect from '@turf/intersect'
 import { Feature, FeatureCollection } from 'geojson'
-import { addZonePropertyToLayer } from './addZonePropertyToLayer'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -12,15 +14,58 @@ const zoneMapping = {
   'PE1-Dvory IV': 'PE1',
 } as { [key: string]: string }
 
+export const getIntersectionOfFeatureFromFeatures = (
+  feature: Feature<Polygon | Point>,
+  featureCollection: FeatureCollection<Polygon>,
+) => {
+  const availableFeatures = featureCollection.features
+
+  for (const availableFeature of availableFeatures) {
+    if (feature.geometry.type === 'Polygon') {
+      const intersection = intersect(availableFeature.geometry, feature as Feature<Polygon>)
+
+      if (!intersection) {
+        continue
+      }
+
+      if (area(intersection) > area(feature) / 2) {
+        return availableFeature
+      }
+    }
+
+    if (feature.geometry.type === 'Point' && booleanIntersects(availableFeature, feature)) {
+      return availableFeature
+    }
+  }
+
+  return null
+}
+
+export const addZonePropertyToLayer = (
+  featureCollection: FeatureCollection<Polygon | Point>,
+  zonesCollection: FeatureCollection<Polygon>,
+) => ({
+  ...featureCollection,
+  features: featureCollection.features.map((feature) => {
+    return {
+      ...feature,
+      properties: {
+        ...feature.properties,
+        zone: getIntersectionOfFeatureFromFeatures(feature, zonesCollection)?.properties?.zone,
+      },
+    }
+  }),
+})
+
 export interface ProcessDataOptions {
-  rawAssistantsData: FeatureCollection | null
-  rawParkomatsData: FeatureCollection | null
-  rawPartnersData: FeatureCollection | null
-  rawParkingLotsData: FeatureCollection | null
-  rawBranchesData: FeatureCollection | null
-  rawUdrData: FeatureCollection<any> | null
-  rawOdpData: FeatureCollection<any> | null
-  rawZonesData: FeatureCollection<any> | null
+  rawAssistantsData: FeatureCollection
+  rawParkomatsData: FeatureCollection
+  rawPartnersData: FeatureCollection
+  rawParkingLotsData: FeatureCollection
+  rawBranchesData: FeatureCollection
+  rawUdrData: FeatureCollection<any>
+  rawOdpData: FeatureCollection<any>
+  rawZonesData: FeatureCollection<any>
 }
 
 export const processData = ({
@@ -37,22 +82,22 @@ export const processData = ({
 
   const zonesData: FeatureCollection<Polygon> = {
     type: 'FeatureCollection',
-    features:
-      rawZonesData?.features
-        .map((feature) => {
-          GLOBAL_ID++
-          const layer = 'zones'
-          return {
-            ...feature,
-            id: GLOBAL_ID,
-            properties: {
-              ...feature.properties,
-              layer,
-              zone: zoneMapping[feature.properties?.Kod_parkovacej_karty],
-            },
-          } as Feature<Polygon>
-        })
-        .filter((z) => z.properties?.zone && z.properties.Dátum_spustenia) ?? [],
+    features: rawZonesData.features
+      .map((feature) => {
+        GLOBAL_ID++
+        const layer = 'zones'
+
+        return {
+          ...feature,
+          id: GLOBAL_ID,
+          properties: {
+            ...feature.properties,
+            layer,
+            zone: zoneMapping[feature.properties?.Kod_parkovacej_karty],
+          },
+        } as Feature<Polygon>
+      })
+      .filter((z) => z.properties?.zone && z.properties.Dátum_spustenia),
   }
 
   const markersData: FeatureCollection = addZonePropertyToLayer(
@@ -62,11 +107,12 @@ export const processData = ({
         /*
         ASSISTNANTS
       */
-        ...(rawAssistantsData?.features
+        ...rawAssistantsData.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'assistants'
             const icon = 'assistant'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -77,15 +123,16 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano') ?? []),
+          .filter((f) => f.properties?.web === 'ano'),
 
         /*
         BRANCHES
       */
-        ...(rawBranchesData?.features.map((feature) => {
+        ...rawBranchesData.features.map((feature) => {
           GLOBAL_ID++
           const kind = 'branches'
           const icon = 'branch'
+
           return {
             ...feature,
             id: GLOBAL_ID,
@@ -95,16 +142,17 @@ export const processData = ({
               icon,
             },
           } as Feature
-        }) ?? []),
+        }),
 
         /*
         PARKOMATS
       */
-        ...(rawParkomatsData?.features
+        ...rawParkomatsData.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'parkomats'
             const icon = 'parkomat'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -115,16 +163,17 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.Web === 'ano') ?? []),
+          .filter((f) => f.properties?.Web === 'ano'),
 
         /*
         PARTNERS
       */
-        ...(rawPartnersData?.features
+        ...rawPartnersData.features
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'partners'
             const icon = 'partner'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -135,12 +184,12 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano') ?? []),
+          .filter((f) => f.properties?.web === 'ano'),
 
         /*
         PARKING LOTS
       */
-        ...(rawParkingLotsData?.features
+        ...rawParkingLotsData.features
           .map((feature) => {
             GLOBAL_ID++
             const type =
@@ -153,6 +202,7 @@ export const processData = ({
             const kind =
               type == 'p-plus-r' ? 'p-plus-r' : type == 'garage' ? 'garages' : 'parking-lots'
             const icon = type
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -163,7 +213,7 @@ export const processData = ({
               },
             } as Feature
           })
-          .filter((f) => f.properties?.web === 'ano') ?? []),
+          .filter((f) => f.properties?.web === 'ano'),
       ],
     } as FeatureCollection<Point>,
     zonesData,
@@ -172,10 +222,11 @@ export const processData = ({
   const udrData: FeatureCollection = addZonePropertyToLayer(
     {
       type: 'FeatureCollection',
-      features: rawUdrData?.features
+      features: rawUdrData.features
         .map((feature) => {
           GLOBAL_ID++
           const layer = 'visitors'
+
           return {
             ...feature,
             id: GLOBAL_ID,
@@ -196,10 +247,11 @@ export const processData = ({
 
   const odpData: FeatureCollection = {
     type: 'FeatureCollection',
-    features: rawOdpData?.features
+    features: rawOdpData.features
       .map((feature) => {
         GLOBAL_ID++
         const layer = 'residents'
+
         return {
           ...feature,
           id: GLOBAL_ID,
