@@ -7,10 +7,10 @@ const markersStyles = {
       'interpolate',
       ['linear'],
       ['zoom'],
-      // zoom is 5 (or less) -> circle radius will be 1px
-      5,
+      // zoom is 10 (or less) -> szie will be 0.1
+      10,
       0.1,
-      // zoom is 10 (or greater) -> circle radius will be 5px
+      // zoom is 14 (or greater) -> size will be 0.25
       14,
       0.25,
     ],
@@ -20,33 +20,13 @@ const markersStyles = {
   },
   parkomatCluster: {
     iconImage: IconsEnum.parkomat,
-    iconSize: [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      // zoom is 5 (or less) -> circle radius will be 1px
-      5,
-      0.1,
-      // zoom is 10 (or greater) -> circle radius will be 5px
-      14,
-      0.25,
-    ],
+    iconSize: 0.25,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,
   },
   sellingPointCluster: {
     iconImage: IconsEnum.partner,
-    iconSize: [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      // zoom is 5 (or less) -> circle radius will be 1px
-      5,
-      0.1,
-      // zoom is 10 (or greater) -> circle radius will be 5px
-      14,
-      0.25,
-    ],
+    iconSize: 0.25,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,
   },
