@@ -1,3 +1,4 @@
+/* eslint-disable pii/no-phone-number, unicorn/numeric-separators-style */
 export const MAP_INSETS = {
   top: 40,
   right: 0,
@@ -29,4 +30,10 @@ export const KINDS = {
   pPlusR: 'p-plus-r',
   garage: 'garages',
   parkingLot: 'parking-lots',
+}
+
+export const MAP_CENTER = [17.1110118, 48.1512015] // Bratislava
+export const CITY_BOUNDS = {
+  sw: [16.95716298676959, 48.02126829091361], // south-west corner
+  ne: [17.28590508163896, 48.26473441916502], // north-east corner
 }
