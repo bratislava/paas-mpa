@@ -1,12 +1,10 @@
 import { View } from 'react-native'
 
-import MapPinSvg from '@/assets/ui-icons/map-pin.svg'
-import MapPinNoZoneSvg from '@/assets/ui-icons/map-pin-no-zone.svg'
+import { MapPinIcon, MapPinNoZoneIcon } from '@/assets/map'
+import Typography from '@/components/shared/Typography'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 
-import Typography from '../shared/Typography'
-
-interface Props {
+type Props = {
   price?: number
 }
 
@@ -24,7 +22,7 @@ const MapPin = ({ price }: Props) => {
   return (
     <>
       <View className="absolute items-center" style={position}>
-        {price ? <MapPinSvg {...pinSize} /> : <MapPinNoZoneSvg {...pinSize} />}
+        {price ? <MapPinIcon {...pinSize} /> : <MapPinNoZoneIcon {...pinSize} />}
         {price && (
           <Typography variant="small-bold" className="absolute text-white">
             {price} €
@@ -33,7 +31,7 @@ const MapPin = ({ price }: Props) => {
       </View>
       {/* This red point is the exact center of the screen, I would leave it there for now for testing */}
       <View className="absolute" style={{ top: screenCenter.top, left: screenCenter.left }}>
-        <View className="h-[1px] w-[1px] bg-[#f00]" />
+        <View className="h-px-1 w-px-1 bg-[#f00]" />
       </View>
     </>
   )

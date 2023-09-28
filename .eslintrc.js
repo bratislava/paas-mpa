@@ -1,7 +1,6 @@
 module.exports = {
-  extends: ['auto', 'prettier'],
+  extends: ['auto'],
   ignorePatterns: ['*.config.*', '.eslintrc.js'],
-  plugins: ['prettier'],
   rules: {
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     /** We use this a lot with isDefined and hasAttributes */
@@ -54,14 +53,8 @@ module.exports = {
     // no need for error
     'pii/no-phone-number': 'warn',
     'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
-    'import/extensions': 'off',
-    'promise/catch-or-return': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
-    'promise/always-return': 'off',
-    'unicorn/no-array-reduce': 'off',
-    'no-restricted-syntax': 'off',
-    'no-continue': 'off',
+    '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',
-    'prettier/prettier': 'error',
+    'import/extensions': 'off',
   },
 }

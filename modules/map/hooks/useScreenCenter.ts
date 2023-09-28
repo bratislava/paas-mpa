@@ -2,13 +2,13 @@ import { useMemo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import { useSafeAreaFrame } from 'react-native-safe-area-context'
 
-interface Props {
+type Options = {
   safeArea?: boolean
   scale?: boolean
 }
 
-export const useScreenCenter = (props?: Props) => {
-  const { safeArea = false, scale = false } = props ?? {}
+export const useScreenCenter = (options?: Options) => {
+  const { safeArea = false, scale = false } = options ?? {}
   const safeAreaFrame = useSafeAreaFrame()
   const windowDimensions = useWindowDimensions()
 

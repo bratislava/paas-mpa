@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars, unicorn/no-array-reduce */
 import {
   Camera,
   FillLayer,
@@ -10,21 +10,20 @@ import {
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { PermissionStatus } from 'expo-location'
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDebouncedCallback } from 'use-debounce'
-import udrStyle from 'utils/layer-styles/visitors'
-import udrStyle2 from 'utils/layer-styles/visitors2'
 
+import MapPin from '@/components/map/MapPin'
+import { MAP_INSETS } from '@/modules/map/constants'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { colors } from '@/utils/layer-styles/colors'
-
-import { MAP_INSETS } from '../../modules/map/constants'
-import MapPin from './MapPin'
+import udrStyle from '@/utils/layer-styles/visitors'
+import udrStyle2 from '@/utils/layer-styles/visitors2'
 
 type Props = {
   onBottomSheetContentChange?: (content: string | null) => void

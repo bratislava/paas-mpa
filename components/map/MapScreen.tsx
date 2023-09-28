@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import BottomSheet from '@gorhom/bottom-sheet'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { View } from 'react-native'
 
 import Map from '@/components/map/Map'
+import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Typography from '@/components/shared/Typography'
 
 const MapScreen = () => {
@@ -16,15 +17,19 @@ const MapScreen = () => {
     [setBottomSheetContent],
   )
 
+  const snapPoints = useMemo(() => ['20%', '80%'], [])
+
   return (
     <View className="flex-1 items-stretch">
       <Map onBottomSheetContentChange={handleBottomSheetChange} />
       {bottomSheetContent && (
-        <BottomSheet snapPoints={['20%', '80%']}>
-          <View className="bg-white">
-            <Typography>{JSON.stringify(bottomSheetContent)}</Typography>
-            {/* <Button onPress={() => setBottomSheetContent(null)}>Close</Button> */}
-          </View>
+        <BottomSheet snapPoints={snapPoints}>
+          <BottomSheetContent>
+            <View className="bg-white">
+              <Typography>{JSON.stringify(bottomSheetContent)}</Typography>
+              {/* <Button onPress={() => setBottomSheetContent(null)}>Close</Button> */}
+            </View>
+          </BottomSheetContent>
         </BottomSheet>
       )}
     </View>
