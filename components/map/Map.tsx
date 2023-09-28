@@ -21,9 +21,9 @@ import { MAP_INSETS } from '@/modules/map/constants'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
-import { colors } from '@/utils/layer-styles/colors'
-import udrStyle from '@/utils/layer-styles/visitors'
-import udrStyle2 from '@/utils/layer-styles/visitors2'
+import { colors } from '@/modules/map/utils/layer-styles/colors'
+import udrStyle from '@/modules/map/utils/layer-styles/visitors'
+import udrStyle2 from '@/modules/map/utils/layer-styles/visitors2'
 
 type Props = {
   onBottomSheetContentChange?: (content: string | null) => void
