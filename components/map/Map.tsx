@@ -3,6 +3,7 @@ import {
   Camera,
   FillLayer,
   MapView,
+  PointAnnotation,
   ShapeSource,
   UserLocation,
   UserLocationRenderMode,
@@ -15,10 +16,11 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapPin from '@/components/map/MapPin'
-import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
+import { CITY_BOUNDS, IconsEnum, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
+import { getMapIcon } from '@/modules/map/utils/getMapIcon'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 import udrStyle2 from '@/modules/map/utils/layer-styles/visitors2'
@@ -105,6 +107,26 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
     [udrData],
   )
 
+  const getIcon = useCallback((iconName: IconsEnum) => getMapIcon(iconName), [])
+
+  const markers = useMemo(
+    () =>
+      markersData?.features.map((marker) => {
+        const Icon = getIcon(marker.properties?.icon as IconsEnum)
+
+        return (
+          <PointAnnotation
+            coordinate={marker.geometry.coordinates}
+            key={marker.id?.toString()}
+            id="markers"
+          >
+            <View className="bg-green">{Icon ? <Icon /> : <View />}</View>
+          </PointAnnotation>
+        )
+      }),
+    [markersData, getIcon],
+  )
+
   return (
     <View className="flex-1">
       <MapView
@@ -183,6 +205,18 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
             />
           </ShapeSource>
         )}
+        {/* <Images images={{ parkomat: ParkomatImage }} /> */}
+        {/* {markersData && (
+          <ShapeSource id="markersSource" shape={markersData}>
+            <SymbolLayer
+              id="markersSymbol"
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={markersStyles.pin}
+              // style={zonesStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
+            />
+          </ShapeSource>
+        )} */}
+        {markers}
       </MapView>
       <MapPin price={selectedZone?.Zakladna_cena} />
     </View>

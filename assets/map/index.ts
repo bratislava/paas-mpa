@@ -1,5 +1,6 @@
 export { default as AssistantIcon } from './assistant.svg'
 export { default as BranchIcon } from './branch.svg'
+export { default as GarageIcon } from './garage.svg'
 export { default as MapPinIcon } from './map-pin.svg'
 export { default as MapPinNoZoneIcon } from './map-pin-no-zone.svg'
 export { default as PPlusRIcon } from './p-plus-r.svg'
