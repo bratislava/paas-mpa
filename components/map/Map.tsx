@@ -20,13 +20,14 @@ import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
+import { SelectedUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 import MapZones from './MapZones'
 
 type Props = {
-  onBottomSheetContentChange?: (content: string | null) => void
+  onBottomSheetContentChange?: (feature: SelectedUdrZone) => void
 }
 
 const Map = ({ onBottomSheetContentChange }: Props) => {
@@ -46,11 +47,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
   const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
 
   useEffect(() => {
-    onBottomSheetContentChange?.(
-      selectedPolygon
-        ? `${selectedPolygon?.properties?.Nazov} [polygonId: ${selectedPolygon?.id}]`
-        : null,
-    )
+    onBottomSheetContentChange?.((selectedPolygon?.properties as SelectedUdrZone) ?? null)
   }, [selectedPolygon, onBottomSheetContentChange])
 
   const getCurrentPolygon = useCallback(
