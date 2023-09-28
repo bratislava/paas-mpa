@@ -18,30 +18,20 @@ type Props = {
 }
 
 const MapMarkers = ({ markersData }: Props) => {
-  const markersDataByKind = useMemo(
-    () => ({
-      parkomats: {
+  const markersDataByKind: [
+    string,
+    FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
+  ][] = useMemo(() => {
+    Object.keys(IconsEnum)
+
+    return Object.keys(IconsEnum).map((icon) => [
+      icon,
+      {
         ...markersData,
-        features: markersData?.features.filter(
-          (marker) => marker.properties?.icon === IconsEnum.parkomat,
-        ),
-      } as FeatureCollection,
-      sellingPoints: {
-        ...markersData,
-        features: markersData?.features.filter(
-          (marker) => marker.properties?.icon === IconsEnum.partner,
-        ),
-      } as FeatureCollection,
-      others: {
-        ...markersData,
-        features: markersData?.features.filter(
-          (marker) =>
-            ![IconsEnum.parkomat, IconsEnum.partner].includes(marker.properties?.icon as IconsEnum),
-        ),
-      } as FeatureCollection,
-    }),
-    [markersData],
-  )
+        features: markersData?.features.filter((marker) => marker.properties?.icon === icon),
+      } as FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
+    ])
+  }, [markersData])
 
   return (
     <>
@@ -56,69 +46,34 @@ const MapMarkers = ({ markersData }: Props) => {
           [IconsEnum.assistant]: AssistantImage,
         }}
       />
-      {markersDataByKind.others?.features?.length > 0 && (
-        <ShapeSource id="markersOthersSource" shape={markersDataByKind.others}>
-          <SymbolLayer
-            id="markersOthersSymbol"
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.pin}
-          />
-        </ShapeSource>
-      )}
-      {markersDataByKind?.sellingPoints?.features?.length > 0 && (
+      {markersDataByKind?.map(([icon, shape]) => (
         <ShapeSource
-          id="markersSellingPointsSource"
-          shape={markersDataByKind.sellingPoints}
+          id={`${icon}MarkersSource`}
+          shape={shape}
           clusterRadius={50}
           clusterMaxZoomLevel={14}
           cluster
+          key={icon}
         >
           <SymbolLayer
-            id="markersSellingPointsSymbol"
+            id={`${icon}MarkersSymbol`}
             // eslint-disable-next-line react-native/no-inline-styles
             style={markersStyles.pin}
           />
           <SymbolLayer
-            id="markersSellingPointsCluster"
+            id={`${icon}MarkersCluster`}
             // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.sellingPointCluster}
+            style={{ ...markersStyles.sellingPointCluster, iconImage: icon }}
             filter={['has', 'point_count']}
           />
           <SymbolLayer
-            id="markersSellingPointsClusterCount"
+            id={`${icon}MarkersClusterCount`}
             // eslint-disable-next-line react-native/no-inline-styles
             style={markersStyles.clusterCount}
             filter={['has', 'point_count']}
           />
         </ShapeSource>
-      )}
-      {markersDataByKind?.parkomats?.features?.length > 0 && (
-        <ShapeSource
-          id="markersParkomatsSource"
-          shape={markersDataByKind.parkomats}
-          clusterRadius={50}
-          clusterMaxZoomLevel={14}
-          cluster
-        >
-          <SymbolLayer
-            id="markersParkomatsSymbol"
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.pin}
-          />
-          <SymbolLayer
-            id="markersParkomatsCluster"
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.parkomatCluster}
-            filter={['has', 'point_count']}
-          />
-          <SymbolLayer
-            id="markersParkomatsClusterCount"
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.clusterCount}
-            filter={['has', 'point_count']}
-          />
-        </ShapeSource>
-      )}
+      ))}
     </>
   )
 }
