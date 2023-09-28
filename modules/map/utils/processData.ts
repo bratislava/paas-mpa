@@ -37,6 +37,7 @@ export const getIntersectionOfFeatureFromFeatures = (
       return availableFeature
     }
   }
+
   return null
 }
 
@@ -45,13 +46,15 @@ export const addZonePropertyToLayer = (
   zonesCollection: FeatureCollection<Polygon>,
 ) => ({
   ...featureCollection,
-  features: featureCollection.features.map((feature) => ({
-    ...feature,
-    properties: {
-      ...feature.properties,
-      zone: getIntersectionOfFeatureFromFeatures(feature, zonesCollection)?.properties?.zone,
-    },
-  })),
+  features: featureCollection.features.map((feature) => {
+    return {
+      ...feature,
+      properties: {
+        ...feature.properties,
+        zone: getIntersectionOfFeatureFromFeatures(feature, zonesCollection)?.properties?.zone,
+      },
+    }
+  }),
 })
 
 export interface ProcessDataOptions {
@@ -83,6 +86,7 @@ export const processData = ({
       .map((feature) => {
         GLOBAL_ID++
         const layer = 'zones'
+
         return {
           ...feature,
           id: GLOBAL_ID,
@@ -108,6 +112,7 @@ export const processData = ({
             GLOBAL_ID++
             const kind = 'assistants'
             const icon = 'assistant'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -127,6 +132,7 @@ export const processData = ({
           GLOBAL_ID++
           const kind = 'branches'
           const icon = 'branch'
+
           return {
             ...feature,
             id: GLOBAL_ID,
@@ -146,6 +152,7 @@ export const processData = ({
             GLOBAL_ID++
             const kind = 'parkomats'
             const icon = 'parkomat'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -166,6 +173,7 @@ export const processData = ({
             GLOBAL_ID++
             const kind = 'partners'
             const icon = 'partner'
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -194,6 +202,7 @@ export const processData = ({
             const kind =
               type == 'p-plus-r' ? 'p-plus-r' : type == 'garage' ? 'garages' : 'parking-lots'
             const icon = type
+
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -217,6 +226,7 @@ export const processData = ({
         .map((feature) => {
           GLOBAL_ID++
           const layer = 'visitors'
+
           return {
             ...feature,
             id: GLOBAL_ID,
@@ -241,6 +251,7 @@ export const processData = ({
       .map((feature) => {
         GLOBAL_ID++
         const layer = 'residents'
+
         return {
           ...feature,
           id: GLOBAL_ID,

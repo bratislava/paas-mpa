@@ -120,6 +120,7 @@ export const useArcgis = (url: string | string[], options?: IUseArcgisOptions) =
   const [data, setData] = useState<FeatureCollection | null>(null)
 
   useEffect(() => {
+    console.log('call useArcgis')
     if (Array.isArray(url)) {
       Promise.all(url.map((u) => fetchAllFromArcgis(u, options))).then((results) => {
         setData({

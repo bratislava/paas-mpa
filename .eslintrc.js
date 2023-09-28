@@ -53,5 +53,8 @@ module.exports = {
     // no need for error
     'pii/no-phone-number': 'warn',
     'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
+    '@typescript-eslint/no-floating-promises': 'warn',
+    'const-case/uppercase': 'off',
+    'import/extensions': 'off',
   },
 }
