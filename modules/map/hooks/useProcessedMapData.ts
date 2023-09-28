@@ -1,15 +1,16 @@
-import { FeatureCollection } from 'geojson'
 import { useEffect, useState } from 'react'
 
 import { useArcgisData } from '@/modules/arcgis/hooks/useArcgisData'
 import { processData } from '@/modules/map/utils/processData'
 
+type ProcessDataReturn = ReturnType<typeof processData>
+
 export const useProcessedArcgisData = () => {
   const [isLoading, setLoading] = useState(true)
-  const [markersData, setMarkersData] = useState<FeatureCollection | null>(null)
-  const [zonesData, setZonesData] = useState<FeatureCollection | null>(null)
-  const [udrData, setUdrData] = useState<FeatureCollection | null>(null)
-  const [odpData, setOdpData] = useState<FeatureCollection | null>(null)
+  const [markersData, setMarkersData] = useState<ProcessDataReturn['markersData'] | null>(null)
+  const [zonesData, setZonesData] = useState<ProcessDataReturn['zonesData'] | null>(null)
+  const [udrData, setUdrData] = useState<ProcessDataReturn['udrData'] | null>(null)
+  const [odpData, setOdpData] = useState<ProcessDataReturn['odpData'] | null>(null)
 
   const {
     rawZonesData,
