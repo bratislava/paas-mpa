@@ -1,4 +1,4 @@
-import { IconsEnum } from '../../constants'
+import { IconsEnum } from '@/modules/map/constants'
 
 const markersStyles = {
   pin: {

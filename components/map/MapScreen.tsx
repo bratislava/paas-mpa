@@ -3,19 +3,18 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 
+import SegmentBadge from '@/components/info/SegmentBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Map from '@/components/map/Map'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
+import Button from '@/components/shared/Button'
+import Divider from '@/components/shared/Divider'
+import Field from '@/components/shared/Field'
+import FlexRow from '@/components/shared/FlexRow'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { SelectedUdrZone } from '@/modules/map/types'
-
-import SegmentBadge from '../info/SegmentBadge'
-import Button from '../shared/Button'
-import Divider from '../shared/Divider'
-import Field from '../shared/Field'
-import FlexRow from '../shared/FlexRow'
-import Panel from '../shared/Panel'
 
 const MapScreen = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
