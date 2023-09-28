@@ -12,7 +12,7 @@ import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { PermissionStatus } from 'expo-location'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -35,7 +35,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
   const [followingUser, setFollowingUser] = useState(true)
   const { permissionStatus } = useLocationPermission()
   const insets = useSafeAreaInsets()
-  const screenCenter = useScreenCenter({ scale: true })
+  const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
   const [selectedPolygon, setSelectedPolygon] = useState<Feature<
     Geometry,
     GeoJsonProperties
@@ -59,13 +59,12 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
       null,
       ['udrFill', 'udrFill2'],
     )
-    if ((featuresAtCenter?.features?.length ?? 0) < 1) {
-      setSelectedPolygon(null)
 
-      return
+    if (featuresAtCenter?.features && featuresAtCenter.features.length > 0) {
+      setSelectedPolygon(featuresAtCenter.features[0])
+    } else {
+      setSelectedPolygon(null)
     }
-    const feature = featuresAtCenter!.features[0]
-    setSelectedPolygon(feature)
   }, 200)
 
   const handleCameraChange = useCallback(
