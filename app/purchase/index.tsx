@@ -1,12 +1,14 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 import { Link, router, useLocalSearchParams } from 'expo-router'
-import React, { useRef } from 'react'
-import { ScrollView } from 'react-native'
+import React, { useMemo, useRef } from 'react'
+import { ScrollView, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import SegmentBadge from '@/components/info/SegmentBadge'
+import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
@@ -18,33 +20,35 @@ import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
+import { formatDuration } from '@/utils/formatDuration'
 
 export type PurchaseSearchParams = {
-  time?: string
+  duration?: string
   licencePlate?: string
   customParkingTime?: string
-}
-
-const setTimeValue = (minutes: number) => {
-  router.setParams({ time: String(minutes) })
 }
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
+  const purchaseParams = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
-  const { licencePlate, time = '60' } = searchParams
+  const { licencePlate, duration = '60' } = purchaseParams
+  const insets = useSafeAreaInsets()
+  // height of the button + safeArea bottom inset
+  const purchaseButtonContainerHeight = 48 + insets.bottom
 
   const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
-  // TODO TimeSelector chips sometimes collapses, when not in ScrollView - investigate
+  // 32 is just visually okay
+  const snapPoints = useMemo(() => [32], [])
+
   return (
     <>
       <ScreenView title={t('title')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
-          <ScreenContent cn="pb-[250px]">
+          <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
             <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
               <PressableStyled>
                 <Panel>
@@ -60,7 +64,7 @@ const PurchaseScreen = () => {
               {/* TODO Link+Pressable */}
               <Link
                 asChild
-                href={{ pathname: '/purchase/choose-vehicle', params: { ...searchParams } }}
+                href={{ pathname: '/purchase/choose-vehicle', params: { ...purchaseParams } }}
               >
                 <PressableStyled>
                   <VehicleFieldControl vehicle={chosenVehicle} />
@@ -69,14 +73,20 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('parkingTimeFieldLabel')}>
-              <TimeSelector value={Number(time)} onValueChange={setTimeValue} />
+              <TimeSelector
+                value={Number(duration)}
+                onValueChange={(newDuration) => router.setParams({ duration: String(newDuration) })}
+              />
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
               {/* TODO replace by proper field control */}
               <Link
                 asChild
-                href={{ pathname: '/purchase/choose-payment-method', params: { ...searchParams } }}
+                href={{
+                  pathname: '/purchase/choose-payment-method',
+                  params: { ...purchaseParams },
+                }}
               >
                 <PressableStyled>
                   <PaymentGate showControlChevron />
@@ -87,25 +97,34 @@ const PurchaseScreen = () => {
         </ScrollView>
       </ScreenView>
 
-      <BottomSheet ref={bottomSheetRef} enableDynamicSizing>
-        <BottomSheetView className="p-5 pb-[50px] g-3">
+      <BottomSheet
+        ref={bottomSheetRef}
+        enableDynamicSizing
+        bottomInset={purchaseButtonContainerHeight}
+        snapPoints={snapPoints}
+        index={1}
+      >
+        <BottomSheetContent cn="g-3" hideSpacer>
           <FlexRow>
-            <Typography variant="default">Parkovanie 60 min</Typography>
-            <Typography variant="default-bold">2 €</Typography>
+            <Typography variant="default">Parkovanie {formatDuration(Number(duration))}</Typography>
+            <Typography variant="default-bold">? €</Typography>
           </FlexRow>
 
+          <Typography>{JSON.stringify(purchaseParams)}</Typography>
           <Divider />
 
           <FlexRow>
             <Typography variant="default-bold">{t('summary')}</Typography>
             <Typography variant="default-bold">2 €</Typography>
           </FlexRow>
-
-          <Link href="/" asChild>
-            <Button>{t('pay')}</Button>
-          </Link>
-        </BottomSheetView>
+        </BottomSheetContent>
       </BottomSheet>
+
+      <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
+        <Link href="/" asChild>
+          <Button>{t('pay')}</Button>
+        </Link>
+      </View>
     </>
   )
 }

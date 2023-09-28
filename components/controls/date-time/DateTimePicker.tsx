@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import { convert, DateTimeFormatter, LocalDateTime } from '@js-joda/core'
+import { DateTimeFormatter, LocalDateTime } from '@js-joda/core'
 import React, {
   forwardRef,
   useCallback,
@@ -77,8 +77,8 @@ interface DateTimePickerHandles {
 
 export type DateTimePickerRef = DateTimePickerProps & DateTimePickerHandles
 
-const DateTimePicker = React.forwardRef<DateTimePickerHandles, DateTimePickerProps>(
-  ({ onConfirm }: DateTimePickerProps, ref) => {
+const DateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerProps>(
+  ({ onConfirm }, ref) => {
     const t = useTranslation('DateTimePicker')
 
     const [now, setNow] = useState(LocalDateTime.now())
@@ -134,7 +134,6 @@ const DateTimePicker = React.forwardRef<DateTimePickerHandles, DateTimePickerPro
       const localNow = LocalDateTime.now()
       setNow(localNow)
       scrollToDate(localNow)
-      onConfirm(convert(localNow).toDate())
     }
 
     return (

@@ -8,6 +8,13 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
 
+const getDuration = (date: Date) => {
+  const now = new Date()
+  const diff = date.getTime() - now.getTime()
+
+  return Math.ceil(diff / 1000 / 60)
+}
+
 const Page = () => {
   const t = useTranslation('PurchaseScreen')
   const searchParams = useLocalSearchParams<PurchaseSearchParams>()
@@ -20,7 +27,7 @@ const Page = () => {
             onConfirm={(date) => {
               router.push({
                 pathname: '/purchase/',
-                params: { ...searchParams, customParkingTime: date.toISOString() },
+                params: { ...searchParams, duration: getDuration(date) },
               })
             }}
           />

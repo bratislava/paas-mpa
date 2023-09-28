@@ -2,6 +2,7 @@ import { BottomSheetView } from '@gorhom/bottom-sheet'
 import clsx from 'clsx'
 import React, { ComponentProps } from 'react'
 import { View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type Props = Omit<ComponentProps<typeof BottomSheetView>, 'className'> & {
   cn?: string
@@ -9,12 +10,14 @@ type Props = Omit<ComponentProps<typeof BottomSheetView>, 'className'> & {
 }
 
 const BottomSheetContent = ({ children, cn, hideSpacer }: Props) => {
+  const insets = useSafeAreaInsets()
+
   return (
     <BottomSheetView className={clsx('px-5 py-3', cn)}>
       {children}
       {/* TODO this should be handled by SafeAreaProvider */}
       {/* spacer */}
-      {!hideSpacer && <View className="h-[29px]" aria-hidden />}
+      {!hideSpacer && <View style={{ height: insets.bottom }} aria-hidden />}
     </BottomSheetView>
   )
 }
