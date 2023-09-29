@@ -18,10 +18,10 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { SelectedUdrZone } from '@/modules/map/types'
 
 type Props = {
-  content: SelectedUdrZone
+  zone: SelectedUdrZone
 }
 
-const MapBottomSheet = forwardRef<BottomSheet, Props>(({ content }, ref) => {
+const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
   const t = useTranslation()
 
   const snapPoints = useMemo(() => [220, 320], [])
@@ -34,20 +34,20 @@ const MapBottomSheet = forwardRef<BottomSheet, Props>(({ content }, ref) => {
             <Field label={t('MapScreen.BottomSheet.title')}>
               <TextInput />
             </Field>
-            {content && (
+            {zone && (
               <Panel className="g-4">
                 <FlexRow>
-                  <Typography>{content.Nazov}</Typography>
-                  <SegmentBadge label={content.UDR_ID.toString()} />
+                  <Typography>{zone.Nazov}</Typography>
+                  <SegmentBadge label={zone.UDR_ID.toString()} />
                 </FlexRow>
                 <Divider />
                 <FlexRow>
-                  <Typography variant="default-bold">{content.Zakladna_cena}€ / h</Typography>
+                  <Typography variant="default-bold">{zone.Zakladna_cena}€ / h</Typography>
                   <Link
                     asChild
                     href={{
                       pathname: '/zone-details',
-                      params: { content },
+                      params: { zone },
                     }}
                   >
                     <PressableStyled>
@@ -63,7 +63,7 @@ const MapBottomSheet = forwardRef<BottomSheet, Props>(({ content }, ref) => {
               </Panel>
             )}
           </View>
-          {content ? (
+          {zone ? (
             <Button variant="primary">{t('Navigation.continue')}</Button>
           ) : (
             <Panel className="bg-warning-light g-2">
@@ -76,4 +76,4 @@ const MapBottomSheet = forwardRef<BottomSheet, Props>(({ content }, ref) => {
   )
 })
 
-export default MapBottomSheet
+export default MapZoneBottomSheet

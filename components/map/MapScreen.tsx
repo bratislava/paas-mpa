@@ -5,24 +5,24 @@ import { View } from 'react-native'
 import Map from '@/components/map/Map'
 import { SelectedUdrZone } from '@/modules/map/types'
 
-import MapBottomSheet from './MapBottomSheet'
+import MapZoneBottomSheet from './MapZoneBottomSheet'
 
 const MapScreen = () => {
-  const [bottomSheetContent, setBottomSheetContent] = useState<SelectedUdrZone>(null)
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const handleBottomSheetChange = useCallback(
+  const [selectedZone, setSelectedZone] = useState<SelectedUdrZone>(null)
+  const zoneBottomSheetRef = useRef<BottomSheet>(null)
+  const handleZoneChange = useCallback(
     (content: SelectedUdrZone) => {
-      setBottomSheetContent(content)
+      setSelectedZone(content)
       console.log(content)
-      bottomSheetRef.current?.snapToIndex(0)
+      zoneBottomSheetRef.current?.snapToIndex(0)
     },
-    [setBottomSheetContent],
+    [setSelectedZone],
   )
 
   return (
     <View className="flex-1 items-stretch">
-      <Map onBottomSheetContentChange={handleBottomSheetChange} />
-      <MapBottomSheet ref={bottomSheetRef} content={bottomSheetContent} />
+      <Map onZoneChange={handleZoneChange} />
+      <MapZoneBottomSheet ref={zoneBottomSheetRef} zone={selectedZone} />
     </View>
   )
 }

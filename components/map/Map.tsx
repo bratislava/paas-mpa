@@ -28,12 +28,12 @@ import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 import MapZones from './MapZones'
 
 type Props = {
-  onBottomSheetContentChange?: (feature: SelectedUdrZone) => void
+  onZoneChange?: (feature: SelectedUdrZone) => void
 }
 
 const DEBOUNCE_TIME = 50
 
-const Map = ({ onBottomSheetContentChange }: Props) => {
+const Map = ({ onZoneChange }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
@@ -50,8 +50,8 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
   const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
 
   useEffect(() => {
-    onBottomSheetContentChange?.((selectedPolygon?.properties as SelectedUdrZone) ?? null)
-  }, [selectedPolygon, onBottomSheetContentChange])
+    onZoneChange?.((selectedPolygon?.properties as SelectedUdrZone) ?? null)
+  }, [selectedPolygon, onZoneChange])
 
   const getCurrentPolygon = useCallback(
     async (state: MapState) => {
