@@ -31,7 +31,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
       <BottomSheetContent cn="bg-white">
         <View className="bg-white g-3">
           <View className="g-2">
-            <Field label={t('MapScreen.BottomSheet.title')}>
+            <Field label={t('MapScreen.ZoneBottomSheet.title')}>
               <TextInput />
             </Field>
             {zone && (
@@ -53,7 +53,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
                     <PressableStyled>
                       <View className="flex-row">
                         <Typography variant="default-bold">
-                          {t('MapScreen.BottomSheet.showDetails')}
+                          {t('MapScreen.ZoneBottomSheet.showDetails')}
                         </Typography>
                         <Icon name="expand-more" />
                       </View>
@@ -67,7 +67,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
             <Button variant="primary">{t('Navigation.continue')}</Button>
           ) : (
             <Panel className="bg-warning-light g-2">
-              <Typography>{t('MapScreen.BottomSheet.noZoneSelected')}</Typography>
+              <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
             </Panel>
           )}
         </View>
