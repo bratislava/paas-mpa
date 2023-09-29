@@ -3,26 +3,36 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import Map from '@/components/map/Map'
-import { SelectedUdrZone } from '@/modules/map/types'
+import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
 
+import MapPointBottomSheet from './MapPointBottomSheet'
 import MapZoneBottomSheet from './MapZoneBottomSheet'
 
 const MapScreen = () => {
   const [selectedZone, setSelectedZone] = useState<SelectedUdrZone>(null)
+  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint>(null)
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
+  const pointBottomSheetRef = useRef<BottomSheet>(null)
   const handleZoneChange = useCallback(
-    (content: SelectedUdrZone) => {
-      setSelectedZone(content)
-      console.log(content)
+    (zone: SelectedUdrZone) => {
+      setSelectedZone(zone)
       zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setSelectedZone],
   )
+  const handlePointPress = useCallback(
+    (zone: SelectedPoint) => {
+      setSelectedPoint(zone)
+      zoneBottomSheetRef.current?.expand()
+    },
+    [setSelectedPoint],
+  )
 
   return (
     <View className="flex-1 items-stretch">
-      <Map onZoneChange={handleZoneChange} />
+      <Map onZoneChange={handleZoneChange} onPointPress={handlePointPress} />
       <MapZoneBottomSheet ref={zoneBottomSheetRef} zone={selectedZone} />
+      <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
     </View>
   )
 }

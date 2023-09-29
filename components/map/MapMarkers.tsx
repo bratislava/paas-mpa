@@ -1,6 +1,7 @@
 import { Images, ShapeSource, SymbolLayer } from '@rnmapbox/maps'
-import { FeatureCollection, GeoJsonProperties, Point } from 'geojson'
-import { useMemo } from 'react'
+import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
+import { Feature, FeatureCollection, GeoJsonProperties, Point } from 'geojson'
+import { useCallback, useMemo } from 'react'
 
 import {
   AssistantImage,
@@ -15,9 +16,10 @@ import markersStyles from '@/modules/map/utils/layer-styles/markers'
 
 type Props = {
   markersData: FeatureCollection<Point, GeoJsonProperties | { icon: string }>
+  onPointPress?: (point: Feature<Point, GeoJsonProperties>) => void
 }
 
-const MapMarkers = ({ markersData }: Props) => {
+const MapMarkers = ({ markersData, onPointPress }: Props) => {
   const markersDataByKind: [
     string,
     FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
@@ -30,6 +32,14 @@ const MapMarkers = ({ markersData }: Props) => {
       } satisfies FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
     ])
   }, [markersData])
+
+  const handlePointPress = useCallback(
+    (event: OnPressEvent) => {
+      if (!event?.features || event.features.length === 0) return
+      onPointPress?.(event.features[0] as Feature<Point, GeoJsonProperties>)
+    },
+    [onPointPress],
+  )
 
   return (
     <>
@@ -51,6 +61,7 @@ const MapMarkers = ({ markersData }: Props) => {
           clusterRadius={50}
           clusterMaxZoomLevel={14}
           cluster
+          onPress={handlePointPress}
           key={icon}
         >
           <SymbolLayer

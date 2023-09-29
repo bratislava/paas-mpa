@@ -9,7 +9,7 @@ import {
   UserTrackingMode,
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, GeoJsonProperties, Geometry } from 'geojson'
+import { Feature, GeoJsonProperties, Geometry, Point } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -21,7 +21,7 @@ import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
-import { SelectedUdrZone } from '@/modules/map/types'
+import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
@@ -29,11 +29,12 @@ import MapZones from './MapZones'
 
 type Props = {
   onZoneChange?: (feature: SelectedUdrZone) => void
+  onPointPress?: (point: SelectedPoint) => void
 }
 
 const DEBOUNCE_TIME = 50
 
-const Map = ({ onZoneChange }: Props) => {
+const Map = ({ onZoneChange, onPointPress }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
@@ -44,6 +45,7 @@ const Map = ({ onZoneChange }: Props) => {
     Geometry,
     GeoJsonProperties
   > | null>(null)
+  const [selectedPoint, setSelectedPoint] = useState<Feature<Point, GeoJsonProperties> | null>(null)
 
   const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -80,6 +82,14 @@ const Map = ({ onZoneChange }: Props) => {
       debouncedHandleCameraChange(state)
     },
     [debouncedHandleCameraChange],
+  )
+
+  const handlePointPress = useCallback(
+    (point: Feature<Point, GeoJsonProperties>) => {
+      onPointPress?.(point.properties as SelectedPoint)
+      setSelectedPoint(point)
+    },
+    [onPointPress],
   )
 
   const isWithinCity = useMemo(() => {
@@ -160,7 +170,7 @@ const Map = ({ onZoneChange }: Props) => {
             />
           </ShapeSource>
         )}
-        {markersData && <MapMarkers markersData={markersData} />}
+        {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
       </MapView>
       <MapPin price={selectedZone?.Zakladna_cena} />
     </View>

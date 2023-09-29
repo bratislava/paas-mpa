@@ -109,10 +109,16 @@
     }
   },
   "MapScreen": {
-    "BottomSheet": {
+    "ZoneBottomSheet": {
       "title": "Where are you parking?",
       "showDetails": "Show details",
-      "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby."
+      "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
+    }, "PointBottomSheet": {
+      "title": "Point detail",
+      "address": "Address",
+      "id": "ID",
+      "getDirections": "Get directions",
+      "openingHours": "Opening hours"
     }
   }
 }
