@@ -22,9 +22,7 @@ const MapMarkers = ({ markersData }: Props) => {
     string,
     FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
   ][] = useMemo(() => {
-    Object.keys(IconsEnum)
-
-    return Object.keys(IconsEnum).map((icon) => [
+    return Object.values(IconsEnum).map((icon) => [
       icon,
       {
         ...markersData,
