@@ -13,6 +13,7 @@ import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useDebouncedCallback } from 'use-debounce'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
@@ -29,6 +30,8 @@ import MapZones from './MapZones'
 type Props = {
   onBottomSheetContentChange?: (feature: SelectedUdrZone) => void
 }
+
+const DEBOUNCE_TIME = 50
 
 const Map = ({ onBottomSheetContentChange }: Props) => {
   const camera = useRef<Camera>(null)
@@ -68,11 +71,15 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
     [screenCenter],
   )
 
+  const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
+    getCurrentPolygon(state)
+  }, DEBOUNCE_TIME)
+
   const handleCameraChange = useCallback(
     (state: MapState) => {
-      getCurrentPolygon(state)
+      debouncedHandleCameraChange(state)
     },
-    [getCurrentPolygon],
+    [debouncedHandleCameraChange],
   )
 
   const isWithinCity = useMemo(() => {
