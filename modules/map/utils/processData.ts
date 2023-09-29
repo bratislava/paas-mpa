@@ -15,8 +15,8 @@ const zoneMapping = {
   'PE1-Dvory IV': 'PE1',
 } as { [key: string]: string }
 
-export const getIntersectionOfFeatureFromFeatures = <T extends Geometry>(
-  feature: Feature<T>,
+export const getIntersectionOfFeatureFromFeatures = <G extends Geometry>(
+  feature: Feature<G>,
   featureCollection: FeatureCollection<Polygon>,
 ) => {
   const availableFeatures = featureCollection.features
@@ -42,10 +42,10 @@ export const getIntersectionOfFeatureFromFeatures = <T extends Geometry>(
   return null
 }
 
-export const addZonePropertyToLayer = <T extends Geometry, T2 extends GeoJsonProperties>(
-  featureCollection: FeatureCollection<T, T2>,
+export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonProperties>(
+  featureCollection: FeatureCollection<G, GJP>,
   zonesCollection: FeatureCollection<Polygon>,
-): FeatureCollection<T, T2> => ({
+): FeatureCollection<G, GJP> => ({
   ...featureCollection,
   features: featureCollection.features.map((feature) => {
     return {

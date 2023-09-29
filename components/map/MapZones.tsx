@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, unicorn/no-array-reduce */
+/* eslint-disable unicorn/no-array-reduce */
 import { FillLayer, ShapeSource } from '@rnmapbox/maps'
 import { FeatureCollection, GeoJsonProperties, Polygon } from 'geojson'
 import { useMemo } from 'react'

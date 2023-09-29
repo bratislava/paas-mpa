@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
@@ -11,13 +10,15 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
+import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { SelectedUdrZone } from '@/modules/map/types'
 
+import PressableStyled from '../shared/PressableStyled'
+
 const MapScreen = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bottomSheetContent, setBottomSheetContent] = useState<SelectedUdrZone>(null)
   const t = useTranslation()
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -38,13 +39,13 @@ const MapScreen = () => {
       <Map onBottomSheetContentChange={handleBottomSheetChange} />
       <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
         <BottomSheetContent cn="bg-white">
-          <View className="bg-white">
-            <Field label={t('MapScreen.BottomSheet.title')}>
-              <TextInput />
-            </Field>
-            {bottomSheetContent ? (
-              <>
-                <Panel className="my-2 g-4">
+          <View className="bg-white g-3">
+            <View className="g-2">
+              <Field label={t('MapScreen.BottomSheet.title')}>
+                <TextInput />
+              </Field>
+              {bottomSheetContent && (
+                <Panel className="g-4">
                   <FlexRow>
                     <Typography>{bottomSheetContent.Nazov}</Typography>
                     <SegmentBadge label={bottomSheetContent.UDR_ID.toString()} />
@@ -54,17 +55,22 @@ const MapScreen = () => {
                     <Typography variant="default-bold">
                       {bottomSheetContent.Zakladna_cena}€ / h
                     </Typography>
-                    <Typography variant="default-bold">
-                      {t('MapScreen.BottomSheet.showDetails')}
-                    </Typography>
+                    <PressableStyled>
+                      <View className="flex-row">
+                        <Typography variant="default-bold">
+                          {t('MapScreen.BottomSheet.showDetails')}
+                        </Typography>
+                        <Icon name="expand-more" />
+                      </View>
+                    </PressableStyled>
                   </FlexRow>
                 </Panel>
-                <Button className="my-1" variant="primary">
-                  {t('Navigation.continue')}
-                </Button>
-              </>
+              )}
+            </View>
+            {bottomSheetContent ? (
+              <Button variant="primary">{t('Navigation.continue')}</Button>
             ) : (
-              <Panel className="my-3 bg-warning-light">
+              <Panel className="bg-warning-light g-2">
                 <Typography>{t('MapScreen.BottomSheet.noZoneSelected')}</Typography>
               </Panel>
             )}

@@ -11,7 +11,7 @@ import {
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapMarkers from '@/components/map/MapMarkers'
@@ -36,7 +36,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
   const [followingUser, setFollowingUser] = useState(true)
   const [location] = useLocation()
   const insets = useSafeAreaInsets()
-  const screenCenter = useScreenCenter({ scale: true })
+  const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
   const [selectedPolygon, setSelectedPolygon] = useState<Feature<
     Geometry,
     GeoJsonProperties

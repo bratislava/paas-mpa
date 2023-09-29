@@ -7,7 +7,7 @@ const markersStyles = {
       'interpolate',
       ['linear'],
       ['zoom'],
-      // zoom is 10 (or less) -> szie will be 0.1
+      // zoom is 10 (or less) -> size will be 0.1
       10,
       0.1,
       // zoom is 14 (or greater) -> size will be 0.25
