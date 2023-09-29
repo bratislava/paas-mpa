@@ -29,7 +29,7 @@ const MapMarkers = ({ markersData }: Props) => {
       {
         ...markersData,
         features: markersData?.features.filter((marker) => marker.properties?.icon === icon),
-      } as FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
+      } satisfies FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
     ])
   }, [markersData])
 
