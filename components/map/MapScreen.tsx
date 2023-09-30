@@ -9,8 +9,8 @@ import MapPointBottomSheet from './MapPointBottomSheet'
 import MapZoneBottomSheet from './MapZoneBottomSheet'
 
 const MapScreen = () => {
-  const [selectedZone, setSelectedZone] = useState<SelectedUdrZone>(null)
-  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint>(null)
+  const [selectedZone, setSelectedZone] = useState<SelectedUdrZone | null>(null)
+  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null)
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const handleZoneChange = useCallback(
@@ -32,7 +32,7 @@ const MapScreen = () => {
     <View className="flex-1 items-stretch">
       <Map onZoneChange={handleZoneChange} onPointPress={handlePointPress} />
       <MapZoneBottomSheet ref={zoneBottomSheetRef} zone={selectedZone} />
-      <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
+      {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
     </View>
   )
 }

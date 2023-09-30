@@ -18,7 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { SelectedUdrZone } from '@/modules/map/types'
 
 type Props = {
-  zone: SelectedUdrZone
+  zone: SelectedUdrZone | null
 }
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
