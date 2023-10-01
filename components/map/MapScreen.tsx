@@ -23,7 +23,7 @@ const MapScreen = () => {
   const handlePointPress = useCallback(
     (zone: SelectedPoint) => {
       setSelectedPoint(zone)
-      zoneBottomSheetRef.current?.expand()
+      zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setSelectedPoint],
   )
