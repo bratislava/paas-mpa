@@ -3,10 +3,9 @@ import { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import Map from '@/components/map/Map'
+import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
+import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
-
-import MapPointBottomSheet from './MapPointBottomSheet'
-import MapZoneBottomSheet from './MapZoneBottomSheet'
 
 const MapScreen = () => {
   const [selectedZone, setSelectedZone] = useState<SelectedUdrZone | null>(null)

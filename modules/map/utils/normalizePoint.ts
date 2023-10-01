@@ -14,6 +14,7 @@ const resolveName = (point: { Nazov_en: string; Nazov_sk: string }) =>
 export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   if (isPointOfType(point, KindsEnum.branch)) {
     return {
+      id: point.OBJECTID,
       address: point.Adresa,
       kind: point.kind,
       name: point.Nazov,
@@ -23,6 +24,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfType(point, KindsEnum.garage)) {
     return {
+      id: point.OBJECTID,
       address: point.Adresa,
       kind: point.kind,
       name: resolveName(point),
@@ -32,7 +34,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfType(point, KindsEnum.pPlusR)) {
     return {
-      address: undefined,
+      id: point.OBJECTID,
       kind: point.kind,
       name: resolveName(point),
       navigation: point.Navigacia,
@@ -45,7 +47,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfType(point, KindsEnum.parkingLot)) {
     return {
-      address: undefined,
+      id: point.OBJECTID,
       kind: point.kind,
       name: resolveName(point),
       navigation: point.Navigacia,
@@ -58,15 +60,14 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfType(point, KindsEnum.parkomat)) {
     return {
-      address: undefined,
+      id: point.OBJECTID,
       kind: point.kind,
       name: point.Lokalita,
-      navigation: undefined,
-      openingHours: undefined,
     }
   }
   if (isPointOfType(point, KindsEnum.partner)) {
     return {
+      id: point.OBJECTID,
       address: point.adresa,
       kind: point.kind,
       name: point.Nazov,
@@ -76,11 +77,15 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfType(point, KindsEnum.assistant)) {
     return {
+      id: 0,
+      name: 'N/A',
       kind: point.kind,
     }
   }
 
   return {
+    id: 0,
+    name: 'N/A',
     kind: point.kind,
   }
 }
