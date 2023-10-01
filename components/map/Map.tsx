@@ -17,6 +17,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
+import MapZones from '@/components/map/MapZones'
 import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
@@ -24,8 +25,6 @@ import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
-
-import MapZones from './MapZones'
 
 type Props = {
   onZoneChange?: (feature: SelectedUdrZone) => void

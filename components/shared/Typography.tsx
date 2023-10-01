@@ -1,8 +1,7 @@
 import { clsx } from 'clsx'
-import React from 'react'
 import { Text as TextNative, TextProps } from 'react-native'
 
-type Props = TextProps & {
+export type TypographyProps = TextProps & {
   variant?:
     | 'h1'
     | 'h2'
@@ -16,7 +15,7 @@ type Props = TextProps & {
     | 'button'
 }
 
-const Typography = ({ variant = 'default', children, className, ...rest }: Props) => {
+const Typography = ({ variant = 'default', children, className, ...rest }: TypographyProps) => {
   return (
     <TextNative
       className={clsx(

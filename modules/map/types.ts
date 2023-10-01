@@ -127,7 +127,8 @@ export type ParkingLotPoint = SelectedPoint & {
 }
 
 export type NormalizedPoint = {
-  name?: string
+  id: number
+  name: string
   navigation?: string
   openingHours?: string
   kind: KindsEnum

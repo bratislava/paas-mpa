@@ -16,6 +16,7 @@ const BRANCH_EXAMPLE = {
   kind: KindsEnum.branch,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PARKING_LOT_EXAMPLE = {
   Dojazdova_doba: '4 min',
   Navigacia:
