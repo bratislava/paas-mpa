@@ -10,8 +10,8 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
-import { formatMinutes } from '@/utils/formatMinutes'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatDuration } from '@/utils/formatDuration'
 
 type Props = {
   value: number // number of minutes
@@ -20,10 +20,22 @@ type Props = {
 
 const TimeSelector = ({ value, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
+  const locale = useLocale()
   const searchParams = useLocalSearchParams<PurchaseSearchParams>()
-  // eslint-disable-next-line const-case/uppercase
-  const customTimeScreen = '/purchase/custom-time'
-  const hrefObject = { pathname: customTimeScreen, params: searchParams }
+  const hrefObject = { pathname: '/purchase/custom-time', params: searchParams }
+
+  const now = useMemo(() => new Date(), [])
+  const validUntil = useMemo(
+    () =>
+      new Date(now.getTime() + value * 60 * 1000).toLocaleDateString(locale, {
+        minute: '2-digit',
+        hour: 'numeric',
+        day: 'numeric',
+        month: 'short',
+        weekday: 'long',
+      }),
+    [locale, now, value],
+  )
 
   const addTime = () => {
     onValueChange(value + 15)
@@ -39,13 +51,13 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
   const chips = useMemo(
     () => [
-      { value: 15 },
-      { value: 30 },
-      { value: 45 },
-      { value: 60 },
-      { value: 120 },
-      { value: 240 },
-      { value: 480 },
+      { value: 15, label: '15 min' },
+      { value: 30, label: '30 min' },
+      { value: 45, label: '45 min' },
+      { value: 60, label: '1 h' },
+      { value: 120, label: '2 h' },
+      { value: 240, label: '4 h' },
+      { value: 480, label: '8 h' },
     ],
     [],
   )
@@ -63,7 +75,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
         />
         <Link asChild href={hrefObject}>
           <PressableStyled>
-            <Typography variant="h1">{formatMinutes(value)}</Typography>
+            <Typography variant="h1">{formatDuration(value)}</Typography>
           </PressableStyled>
         </Link>
         <IconButton
@@ -82,7 +94,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
                 onPress={() => setTime(chip.value)}
                 className="flex-1"
               >
-                <Chip label={formatMinutes(chip.value)} isActive={chip.value === value} />
+                <Chip label={chip.label} isActive={chip.value === value} />
               </PressableStyled>
             )
           })}
@@ -95,7 +107,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
                 onPress={() => setTime(Number(chip.value))}
                 className="flex-1"
               >
-                <Chip label={formatMinutes(chip.value)} isActive={chip.value === value} />
+                <Chip label={chip.label} isActive={chip.value === value} />
               </PressableStyled>
             )
           })}
@@ -115,7 +127,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
         <Link asChild href={hrefObject}>
           <PressableStyled>
-            <Typography variant="small-bold">12:00 TODO</Typography>
+            <Typography variant="small-bold">{validUntil}</Typography>
           </PressableStyled>
         </Link>
       </FlexRow>

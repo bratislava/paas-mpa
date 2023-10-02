@@ -6,15 +6,16 @@ import { View } from 'react-native'
 import Button from '@/components/shared/Button'
 import { ContinueProps } from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
+import { ViewStyleProps } from '@/utils/types'
 
 type Props = {
   children: ReactNode
   continueProps?: ContinueProps
   variant?: 'default' | 'center'
   cn?: string
-}
+} & ViewStyleProps
 
-const ScreenContent = ({ children, continueProps, variant, cn }: Props) => {
+const ScreenContent = ({ children, continueProps, variant, cn, ...rest }: Props) => {
   const t = useTranslation('Navigation')
 
   return (
@@ -27,6 +28,7 @@ const ScreenContent = ({ children, continueProps, variant, cn }: Props) => {
         },
         cn,
       )}
+      {...rest}
     >
       {children}
       {continueProps ? (

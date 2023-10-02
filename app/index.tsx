@@ -1,8 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
-import { Link, router } from 'expo-router'
-import Stack from 'expo-router/stack'
-import { useCallback, useMemo, useRef } from 'react'
+import { Link, router, useNavigation } from 'expo-router'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -20,8 +19,13 @@ const handleLongPress = () => {
 
 const IndexScreen = () => {
   const t = useTranslation()
+  const navigation = useNavigation()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false })
+  }, [navigation])
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -74,8 +78,6 @@ const IndexScreen = () => {
 
   return (
     <>
-      <Stack.Screen options={{ headerShown: false }} />
-
       {/* TODO MapScreen should be moved outside of examples folder */}
       <MapScreen />
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useCallback, useMemo, useState } from 'react'
 import { View } from 'react-native'

@@ -17,7 +17,6 @@ const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { vehicles } = useVehicles()
   const searchParams = useLocalSearchParams<PurchaseSearchParams>()
-  const { licencePlate } = searchParams
 
   return (
     <ScreenView title={t('title')}>
@@ -36,7 +35,10 @@ const ChooseVehicleScreen = () => {
               }}
             >
               <PressableStyled>
-                <VehicleRow vehicle={item} selected={licencePlate === item.licencePlate} />
+                <VehicleRow
+                  vehicle={item}
+                  selected={searchParams.licencePlate === item.licencePlate}
+                />
               </PressableStyled>
             </Link>
           )}
