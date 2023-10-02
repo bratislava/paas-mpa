@@ -34,7 +34,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
             <Field label={t('MapScreen.ZoneBottomSheet.title')}>
               <TextInput />
             </Field>
-            {zone && (
+            {zone ? (
               <Panel className="g-4">
                 <FlexRow>
                   <Typography>{zone.Nazov}</Typography>
@@ -61,7 +61,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
                   </Link>
                 </FlexRow>
               </Panel>
-            )}
+            ) : null}
           </View>
           {zone ? (
             <Button variant="primary">{t('Navigation.continue')}</Button>
