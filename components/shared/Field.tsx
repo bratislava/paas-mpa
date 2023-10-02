@@ -1,21 +1,28 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { View } from 'react-native'
 
-import Typography from '@/components/shared/Typography'
+import Typography, { TypographyProps } from '@/components/shared/Typography'
 
 type Props = {
   label: string
   labelInsertArea?: ReactNode
   children: ReactNode
   errorMessage?: string
+  variant?: TypographyProps['variant']
 }
 // TODO associate control with label
 
-const Field = ({ label, children, labelInsertArea, errorMessage }: Props) => {
+const Field = ({
+  label,
+  children,
+  labelInsertArea,
+  errorMessage,
+  variant = 'default-bold',
+}: Props) => {
   return (
     <View className="g-1">
       <View className="flex-row g-6">
-        <Typography variant="default-bold" className="grow">
+        <Typography variant={variant} className="grow">
           {label}
         </Typography>
         {labelInsertArea || null}

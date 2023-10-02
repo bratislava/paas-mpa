@@ -5,7 +5,7 @@ import booleanIntersects from '@turf/boolean-intersects'
 import { Point, Polygon } from '@turf/helpers'
 import intersect from '@turf/intersect'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
-import { IconsEnum } from '../constants'
+import { MapPointIconEnum } from '../constants'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -217,7 +217,7 @@ export const processData = ({
           })
           .filter((f) => f.properties?.web === 'ano'),
       ],
-    } as FeatureCollection<Point, GeoJsonProperties | { icon: IconsEnum }>,
+    } as FeatureCollection<Point, GeoJsonProperties | { icon: MapPointIconEnum }>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 

@@ -9,7 +9,7 @@ import {
   UserTrackingMode,
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, GeoJsonProperties, Geometry } from 'geojson'
+import { Feature, GeoJsonProperties, Geometry, Point, Position } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -17,23 +17,24 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
+import MapZones from '@/components/map/MapZones'
 import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
-import { SelectedUdrZone } from '@/modules/map/types'
+import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
-import MapZones from './MapZones'
-
 type Props = {
   onZoneChange?: (feature: SelectedUdrZone) => void
+  onPointPress?: (point: SelectedPoint) => void
 }
 
 const DEBOUNCE_TIME = 50
+const ZOOM_ON_CLUSTER_PRESS = 1.5
 
-const Map = ({ onZoneChange }: Props) => {
+const Map = ({ onZoneChange, onPointPress }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
@@ -44,6 +45,10 @@ const Map = ({ onZoneChange }: Props) => {
     Geometry,
     GeoJsonProperties
   > | null>(null)
+  const [selectedPoint, setSelectedPoint] = useState<Feature<Point, GeoJsonProperties> | null>(null)
+
+  const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
+  const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
   const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -82,6 +87,21 @@ const Map = ({ onZoneChange }: Props) => {
     [debouncedHandleCameraChange],
   )
 
+  const handlePointPress = useCallback(
+    async (point: Feature<Point, GeoJsonProperties>) => {
+      if (point.properties?.point_count) {
+        setFlyToCenter(point.geometry.coordinates)
+        const zoom = await map.current?.getZoom()
+        setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
+
+        return
+      }
+      onPointPress?.(point.properties as SelectedPoint)
+      setSelectedPoint(point)
+    },
+    [onPointPress],
+  )
+
   const isWithinCity = useMemo(() => {
     if (!location) return false
     const position = [location.coords.longitude, location.coords.latitude]
@@ -96,6 +116,8 @@ const Map = ({ onZoneChange }: Props) => {
 
     return false
   }, [location])
+
+  const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
   return (
     <View className="flex-1">
@@ -117,14 +139,16 @@ const Map = ({ onZoneChange }: Props) => {
             followUserMode={UserTrackingMode.Follow}
             animationMode="flyTo"
             followZoomLevel={14}
+            zoomLevel={cameraZoom}
+            centerCoordinate={flyToCenter}
           />
         ) : (
           <Camera
             ref={camera}
             followUserLocation={false}
             animationMode="flyTo"
-            zoomLevel={11.5}
-            centerCoordinate={MAP_CENTER}
+            zoomLevel={cameraZoom ?? 11.5}
+            centerCoordinate={nonFollowingMapCenter}
           />
         )}
         <UserLocation
@@ -160,7 +184,8 @@ const Map = ({ onZoneChange }: Props) => {
             />
           </ShapeSource>
         )}
-        {markersData && <MapMarkers markersData={markersData} />}
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
       </MapView>
       <MapPin price={selectedZone?.Zakladna_cena} />
     </View>

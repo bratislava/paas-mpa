@@ -83,10 +83,32 @@
     "validUntil": "Platný do"
   },
   "MapScreen": {
-    "BottomSheet": {
+    "ZoneBottomSheet": {
       "title": "Kde parkujete?",
       "showDetails": "Ukázať detail",
       "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na niektorú zo zón v blízkosti."
+    },
+    "PointBottomSheet": {
+      "title": "Detail bodu",
+      "getDirections": "Navigácia",
+      "fields": {
+        "address": "Adresa",
+        "id": "ID",
+        "openingHours": "Otváracie hodiny",
+        "parkingSpotCount": "Počet parkovacích miest",
+        "publicTransportLines": "Linky MHD",
+        "distanceToCenter": "Vzdialenosť do centra",
+        "distanceToPublicTransport": "Vzdialenosť k zastávke MHD"
+      },
+      "kinds": {
+        "assistants": "Asistent",
+        "branches": "Prevádzka",
+        "parkomats": "Parkomat",
+        "partners": "Partnerská prevádzka",
+        "p-plus-r": "P + R",
+        "garages": "Garáž",
+        "parking-lots": "Parkovisko"
+      }
     }
   }
 }

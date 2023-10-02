@@ -1,4 +1,4 @@
-import { IconsEnum } from '@/modules/map/constants'
+import { MapPointIconEnum } from '@/modules/map/constants'
 
 const iconSize = [
   'interpolate',
@@ -21,13 +21,13 @@ const markersStyles = {
     iconIgnorePlacement: true,
   },
   parkomatCluster: {
-    iconImage: IconsEnum.parkomat,
+    iconImage: MapPointIconEnum.parkomat,
     iconSize,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,
   },
   sellingPointCluster: {
-    iconImage: IconsEnum.partner,
+    iconImage: MapPointIconEnum.partner,
     iconSize,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,

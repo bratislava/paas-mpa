@@ -13,6 +13,7 @@ import {
 import Mapbox from '@rnmapbox/maps'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
+import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
@@ -20,6 +21,13 @@ import { environment } from '@/environment'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
+
+const { UIManager } = NativeModules
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+if (UIManager.setLayoutAnimationEnabledExperimental)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const RootLayout = () => {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
