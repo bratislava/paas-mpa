@@ -68,14 +68,9 @@ const menuItems: MenuItem[] = [
     route: '/examples/search',
   },
   {
-    title: 'Info screen',
-    subtitle: 'Large icon, title, description and cofirm (optional reject?) button',
-    route: '/examples/info',
-  },
-  {
-    title: 'TODO more',
-    subtitle: 'Feel free to add to this list',
-    route: '/index',
+    title: 'Healthcheck BE',
+    subtitle: 'Check if BE is running',
+    route: '/examples/healthcheck',
   },
 ]
 

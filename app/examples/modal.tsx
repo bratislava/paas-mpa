@@ -30,6 +30,7 @@ const ModalScreen = () => {
           title="Confirm modal"
           text="Optional text"
           primaryActionLabel="Some action"
+          // eslint-disable-next-line no-console
           primaryActionOnPress={() => console.log('Primary action pressed')}
           secondaryActionLabel="Close"
           secondaryActionOnPress={closeModal}
