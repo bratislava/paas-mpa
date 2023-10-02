@@ -9,7 +9,7 @@ import {
   UserTrackingMode,
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, GeoJsonProperties, Geometry, Point } from 'geojson'
+import { Feature, GeoJsonProperties, Geometry, Point, Position } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -32,6 +32,7 @@ type Props = {
 }
 
 const DEBOUNCE_TIME = 50
+const ZOOM_ON_CLUSTER_PRESS = 1.5
 
 const Map = ({ onZoneChange, onPointPress }: Props) => {
   const camera = useRef<Camera>(null)
@@ -45,6 +46,9 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
     GeoJsonProperties
   > | null>(null)
   const [selectedPoint, setSelectedPoint] = useState<Feature<Point, GeoJsonProperties> | null>(null)
+
+  const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
+  const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
   const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -84,7 +88,14 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
   )
 
   const handlePointPress = useCallback(
-    (point: Feature<Point, GeoJsonProperties>) => {
+    async (point: Feature<Point, GeoJsonProperties>) => {
+      if (point.properties?.point_count) {
+        setFlyToCenter(point.geometry.coordinates)
+        const zoom = await map.current?.getZoom()
+        setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
+
+        return
+      }
       onPointPress?.(point.properties as SelectedPoint)
       setSelectedPoint(point)
     },
@@ -106,6 +117,8 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
     return false
   }, [location])
 
+  const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
+
   return (
     <View className="flex-1">
       <MapView
@@ -126,14 +139,16 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
             followUserMode={UserTrackingMode.Follow}
             animationMode="flyTo"
             followZoomLevel={14}
+            zoomLevel={cameraZoom}
+            centerCoordinate={flyToCenter}
           />
         ) : (
           <Camera
             ref={camera}
             followUserLocation={false}
             animationMode="flyTo"
-            zoomLevel={11.5}
-            centerCoordinate={MAP_CENTER}
+            zoomLevel={cameraZoom ?? 11.5}
+            centerCoordinate={nonFollowingMapCenter}
           />
         )}
         <UserLocation
@@ -169,6 +184,7 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
             />
           </ShapeSource>
         )}
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
       </MapView>
       <MapPin price={selectedZone?.Zakladna_cena} />
