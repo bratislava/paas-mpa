@@ -1,4 +1,4 @@
-import { Link, router, Stack } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
 
@@ -51,9 +51,7 @@ const AddVehicleScreen = () => {
   }
 
   return (
-    <ScreenView>
-      <Stack.Screen options={{ title: t('addVehicleTitle') }} />
-
+    <ScreenView title={t('addVehicleTitle')}>
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       {/* eslint-disable-next-line react/style-prop-object */}
       <StatusBar style="light" />

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
-import { Link, Stack } from 'expo-router'
-import React, { ReactNode } from 'react'
+import { Link, useNavigation } from 'expo-router'
+import React, { ReactNode, useEffect } from 'react'
 import { Image, View } from 'react-native'
 
 import Button from '@/components/shared/Button'
@@ -33,22 +33,17 @@ const ScreenView = ({
   cn,
 }: Props) => {
   const t = useTranslation('Navigation')
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({ title })
+  }, [navigation, title])
 
   return (
-    <View
-      className={clsx(
-        'flex-1',
-        {
-          'bg-white': backgroundVariant === 'white' || backgroundVariant === 'dots',
-          // TODO add dots background
-        },
-        cn,
-      )}
-    >
+    <View className={clsx('flex-1 bg-white', cn)}>
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />
       )}
-      <Stack.Screen options={{ title }} />
       <View
         className={clsx('flex-1', {
           'justify-center': variant === 'centered',
