@@ -1,5 +1,14 @@
 import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
+import {
+  BranchPoint,
+  ParkingLotPoint,
+  ParkomatPoint,
+  PartnerPoint,
+  SelectedPoint,
+  SelectedUdrZone,
+} from '@/modules/map/types'
+
 import { ARCGIS_URL } from '../constants'
 import { useArcgis } from './useArcgis'
 
@@ -41,12 +50,15 @@ export const useArcgisData = () => {
   })
 
   return {
-    rawAssistantsData: rawAssistantsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawPartnersData: rawPartnersData as FeatureCollection<Point, GeoJsonProperties>,
-    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawBranchesData: rawBranchesData as FeatureCollection<Point, GeoJsonProperties>,
-    rawUdrData: rawUdrData as FeatureCollection<Polygon, GeoJsonProperties>,
+    rawAssistantsData: rawAssistantsData as FeatureCollection<
+      Point,
+      SelectedPoint & { web: string }
+    >,
+    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint>,
+    rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint>,
+    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint>,
+    rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint>,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, SelectedUdrZone>,
     rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties>,
     rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   }

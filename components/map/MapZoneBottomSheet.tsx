@@ -47,7 +47,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
                     asChild
                     href={{
                       pathname: '/zone-details',
-                      params: { zone },
+                      params: { id: zone.OBJECTID.toString() },
                     }}
                   >
                     <PressableStyled>

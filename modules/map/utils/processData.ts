@@ -5,7 +5,14 @@ import booleanIntersects from '@turf/boolean-intersects'
 import { Point, Polygon } from '@turf/helpers'
 import intersect from '@turf/intersect'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
-import { MapPointIconEnum } from '../constants'
+import {
+  BranchPoint,
+  ParkingLotPoint,
+  ParkomatPoint,
+  PartnerPoint,
+  SelectedPoint,
+  SelectedUdrZone,
+} from '../types'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -59,12 +66,12 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
 })
 
 export interface ProcessDataOptions {
-  rawAssistantsData: FeatureCollection<Point, GeoJsonProperties>
-  rawParkomatsData: FeatureCollection<Point, GeoJsonProperties>
-  rawPartnersData: FeatureCollection<Point, GeoJsonProperties>
-  rawParkingLotsData: FeatureCollection<Point, GeoJsonProperties>
-  rawBranchesData: FeatureCollection<Point, GeoJsonProperties>
-  rawUdrData: FeatureCollection<Polygon, GeoJsonProperties>
+  rawAssistantsData: FeatureCollection<Point, SelectedPoint>
+  rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
+  rawPartnersData: FeatureCollection<Point, PartnerPoint>
+  rawParkingLotsData: FeatureCollection<Point, ParkingLotPoint>
+  rawBranchesData: FeatureCollection<Point, BranchPoint>
+  rawUdrData: FeatureCollection<Polygon, SelectedUdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
   rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }
@@ -123,7 +130,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, GeoJsonProperties>
+            } as Feature<Point, SelectedPoint & { web: string }>
           })
           .filter((f) => f.properties?.web === 'ano'),
 
@@ -143,7 +150,7 @@ export const processData = ({
               kind,
               icon,
             },
-          } as Feature<Point, GeoJsonProperties>
+          } as Feature<Point, BranchPoint>
         }),
 
         /*
@@ -163,7 +170,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, GeoJsonProperties>
+            } as Feature<Point, ParkomatPoint>
           })
           .filter((f) => f.properties?.Web === 'ano'),
 
@@ -184,7 +191,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, GeoJsonProperties>
+            } as Feature<Point, PartnerPoint>
           })
           .filter((f) => f.properties?.web === 'ano'),
 
@@ -213,11 +220,11 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, GeoJsonProperties>
+            } as Feature<Point, ParkingLotPoint>
           })
           .filter((f) => f.properties?.web === 'ano'),
       ],
-    } as FeatureCollection<Point, GeoJsonProperties | { icon: MapPointIconEnum }>,
+    } as FeatureCollection<Point, SelectedPoint>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 
@@ -237,15 +244,15 @@ export const processData = ({
               ...feature.properties,
               layer,
             },
-          } as Feature<Polygon, GeoJsonProperties>
+          } as Feature<Polygon, SelectedUdrZone>
         })
         .filter(
           (f) =>
             (f.properties?.web === 'ano' || f.properties?.web === 'ano - planned') &&
             (f.properties?.Status === 'active' || f.properties?.Status === 'planned'),
         ),
-    } as FeatureCollection<Polygon, GeoJsonProperties>,
-    zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
+    } as FeatureCollection<Polygon, SelectedUdrZone>,
+    zonesData as FeatureCollection<Polygon, SelectedUdrZone>,
   )
 
   const odpData = {
