@@ -9,31 +9,35 @@ import {
   UserTrackingMode,
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { PermissionStatus } from 'expo-location'
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
+import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDebouncedCallback } from 'use-debounce'
 
+import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
-import { MAP_INSETS } from '@/modules/map/constants'
-import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
+import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
+import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
+import { SelectedUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
-import udrStyle2 from '@/modules/map/utils/layer-styles/visitors2'
+
+import MapZones from './MapZones'
 
 type Props = {
-  onBottomSheetContentChange?: (content: string | null) => void
+  onZoneChange?: (feature: SelectedUdrZone) => void
 }
 
-const Map = ({ onBottomSheetContentChange }: Props) => {
+const DEBOUNCE_TIME = 50
+
+const Map = ({ onZoneChange }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
-  const { permissionStatus } = useLocationPermission()
+  const [location] = useLocation()
   const insets = useSafeAreaInsets()
   const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
   const [selectedPolygon, setSelectedPolygon] = useState<Feature<
@@ -46,47 +50,52 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
   const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
 
   useEffect(() => {
-    onBottomSheetContentChange?.(
-      selectedPolygon
-        ? `${selectedPolygon?.properties?.Nazov} [polygonId: ${selectedPolygon?.id}]`
-        : null,
-    )
-  }, [selectedPolygon, onBottomSheetContentChange])
+    onZoneChange?.((selectedPolygon?.properties as SelectedUdrZone) ?? null)
+  }, [selectedPolygon, onZoneChange])
 
-  const handleDebouncedCameraChange = useDebouncedCallback(async (state: MapState) => {
-    const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
-      [screenCenter.left, screenCenter.top],
-      null,
-      ['udrFill', 'udrFill2'],
-    )
+  const getCurrentPolygon = useCallback(
+    async (state: MapState) => {
+      const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
+        [screenCenter.left, screenCenter.top],
+        null,
+        ['udrFill', 'udrFill2'],
+      )
+      if ((featuresAtCenter?.features?.length ?? 0) < 1) {
+        setSelectedPolygon(null)
 
-    if (featuresAtCenter?.features && featuresAtCenter.features.length > 0) {
-      setSelectedPolygon(featuresAtCenter.features[0])
-    } else {
-      setSelectedPolygon(null)
-    }
-  }, 200)
+        return
+      }
+      const feature = featuresAtCenter!.features[0]
+      setSelectedPolygon(feature)
+    },
+    [screenCenter],
+  )
+
+  const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
+    getCurrentPolygon(state)
+  }, DEBOUNCE_TIME)
 
   const handleCameraChange = useCallback(
     (state: MapState) => {
-      handleDebouncedCameraChange(state)
+      debouncedHandleCameraChange(state)
     },
-    [handleDebouncedCameraChange],
+    [debouncedHandleCameraChange],
   )
 
-  const udrDataByPrice = useMemo(
-    () => ({
-      regular: {
-        ...udrData,
-        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena !== 2),
-      } as FeatureCollection,
-      eur2: {
-        ...udrData,
-        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena === 2),
-      } as FeatureCollection,
-    }),
-    [udrData],
-  )
+  const isWithinCity = useMemo(() => {
+    if (!location) return false
+    const position = [location.coords.longitude, location.coords.latitude]
+    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
+    if (
+      position[0] > CITY_BOUNDS.sw[0] &&
+      position[1] > CITY_BOUNDS.sw[1] &&
+      position[0] < CITY_BOUNDS.ne[0] &&
+      position[1] < CITY_BOUNDS.ne[1]
+    )
+      return true
+
+    return false
+  }, [location])
 
   return (
     <View className="flex-1">
@@ -101,7 +110,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
         }}
         onCameraChanged={handleCameraChange}
       >
-        {permissionStatus === PermissionStatus.GRANTED ? (
+        {location && isWithinCity ? (
           <Camera
             ref={camera}
             followUserLocation={followingUser}
@@ -112,38 +121,20 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
         ) : (
           <Camera
             ref={camera}
+            followUserLocation={false}
             animationMode="flyTo"
             zoomLevel={11.5}
-            // eslint-disable-next-line unicorn/numeric-separators-style
-            centerCoordinate={[17.1110118, 48.1512015]}
+            centerCoordinate={MAP_CENTER}
           />
         )}
-        {permissionStatus === PermissionStatus.GRANTED && (
-          <UserLocation
-            androidRenderMode="gps"
-            renderMode={UserLocationRenderMode.Normal}
-            showsUserHeadingIndicator
-            visible
-            minDisplacement={3}
-            animated
-          />
-        )}
-        {udrDataByPrice.regular?.features?.length > 0 && (
-          <ShapeSource id="udrSource" shape={udrDataByPrice.regular}>
-            <FillLayer
-              id="udrFill"
-              style={udrStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
-            />
-          </ShapeSource>
-        )}
-        {udrDataByPrice.eur2?.features?.length > 0 && (
-          <ShapeSource id="udrSource2" shape={udrDataByPrice.eur2}>
-            <FillLayer
-              id="udrFill2"
-              style={udrStyle2.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
-            />
-          </ShapeSource>
-        )}
+        <UserLocation
+          androidRenderMode="gps"
+          renderMode={UserLocationRenderMode.Normal}
+          showsUserHeadingIndicator
+          visible
+          minDisplacement={3}
+          animated
+        />
         {/* {zonesData && (
           <ShapeSource id="zonesSource" shape={zonesData}>
             <FillLayer
@@ -152,6 +143,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
             />
           </ShapeSource>
         )} */}
+        {udrData && <MapZones udrData={udrData} />}
         {selectedPolygon && (
           <ShapeSource id="highlight" shape={selectedPolygon}>
             <FillLayer
@@ -168,6 +160,7 @@ const Map = ({ onBottomSheetContentChange }: Props) => {
             />
           </ShapeSource>
         )}
+        {markersData && <MapMarkers markersData={markersData} />}
       </MapView>
       <MapPin price={selectedZone?.Zakladna_cena} />
     </View>

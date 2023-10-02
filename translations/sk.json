@@ -81,5 +81,12 @@
     "addParkingCards": "Pridať parkovacie karty",
     "custom": "Vlastný",
     "validUntil": "Platný do"
+  },
+  "MapScreen": {
+    "BottomSheet": {
+      "title": "Kde parkujete?",
+      "showDetails": "Ukázať detail",
+      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na niektorú zo zón v blízkosti."
+    }
   }
 }

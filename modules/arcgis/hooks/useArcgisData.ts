@@ -1,3 +1,5 @@
+import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
+
 import { ARCGIS_URL } from '../constants'
 import { useArcgis } from './useArcgis'
 
@@ -39,13 +41,13 @@ export const useArcgisData = () => {
   })
 
   return {
-    rawZonesData,
-    rawAssistantsData,
-    rawParkomatsData,
-    rawPartnersData,
-    rawParkingLotsData,
-    rawBranchesData,
-    rawUdrData,
-    rawOdpData,
+    rawAssistantsData: rawAssistantsData as FeatureCollection<Point, GeoJsonProperties>,
+    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, GeoJsonProperties>,
+    rawPartnersData: rawPartnersData as FeatureCollection<Point, GeoJsonProperties>,
+    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, GeoJsonProperties>,
+    rawBranchesData: rawBranchesData as FeatureCollection<Point, GeoJsonProperties>,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, GeoJsonProperties>,
+    rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties>,
+    rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   }
 }
