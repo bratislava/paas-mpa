@@ -6,13 +6,13 @@ export const MAP_INSETS = {
   left: 10,
 }
 
-export enum LayersEnum {
+export enum MapLayerEnum {
   zones = 'zones',
   visitors = 'visitors',
   residents = 'residents',
 }
 
-export enum IconsEnum {
+export enum MapPointIconEnum {
   assistant = 'assistant',
   branch = 'branch',
   parkomat = 'parkomat',
@@ -22,7 +22,7 @@ export enum IconsEnum {
   parkingLot = 'parking-lot',
 }
 
-export enum KindsEnum {
+export enum MapPointKindEnum {
   assistant = 'assistants',
   branch = 'branches',
   parkomat = 'parkomats',

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
-import { IconsEnum, KindsEnum } from '@/modules/map/constants'
+import { MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 
 const BRANCH_EXAMPLE = {
   Adresa: 'Primaciálne nám. 1, 811 01 Bratislava',
@@ -12,8 +12,8 @@ const BRANCH_EXAMPLE = {
   OBJECTID: 4,
   Otvaracie_hodiny_en: 'Mo 8:30-17:00, Tu-Th 8:30-16:00, Fr 8:30-15:00',
   Otvaracie_hodiny_sk: 'Po 8:30-17:00, Ut-Št 8:30-16:00, Pi 8:30-15:00',
-  icon: IconsEnum.branch,
-  kind: KindsEnum.branch,
+  icon: MapPointIconEnum.branch,
+  kind: MapPointKindEnum.branch,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

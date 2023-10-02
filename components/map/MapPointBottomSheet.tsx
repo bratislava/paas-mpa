@@ -23,7 +23,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const [index, setIndex] = useState(-1)
   const [footerHeight, setFooterHeight] = useState(0)
 
-  const np = useMemo(() => normalizePoint(point), [point])
+  const formattedMapPoint = useMemo(() => normalizePoint(point), [point])
 
   const snapPoints = useMemo(() => [375, '80%'], [])
 
@@ -49,17 +49,17 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
 
   const renderFooter = useCallback(
     (props: BottomSheetFooterProps) => {
-      if (!np.navigation) return null
+      if (!formattedMapPoint.navigation) return null
 
       return (
         <NavigateBottomSheetFooter
           onLayout={(event) => setFooterHeight(event.nativeEvent.layout.height)}
-          navigationUrl={np.navigation}
+          navigationUrl={formattedMapPoint.navigation}
           {...props}
         />
       )
     },
-    [np.navigation],
+    [formattedMapPoint.navigation],
   )
 
   const handleClose = useCallback(() => {
@@ -70,7 +70,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     localRef.current?.collapse()
   }, [point])
 
-  const expanded = index === 1
+  const isExpanded = index === 1
 
   return (
     <BottomSheet
@@ -95,41 +95,43 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
         >
           <View>
             <View className="px-5 pt-3">
-              <Field label={np.name} variant="h1">
-                <Typography>{t(`kinds.${np.kind}`)}</Typography>
+              <Field label={formattedMapPoint.name} variant="h1">
+                <Typography>{t(`kinds.${formattedMapPoint.kind}`)}</Typography>
               </Field>
             </View>
             <View className="px-5 pb-4 pt-5 g-4">
               <View>
-                {np.address && (
+                {formattedMapPoint.address && (
                   <Field label={t('fields.address')}>
-                    <Typography>{np.address}</Typography>
+                    <Typography>{formattedMapPoint.address}</Typography>
                   </Field>
                 )}
               </View>
-              {!expanded && (
-                <>
-                  {np.address && <Divider />}
-                  <View>
-                    {np.id && (
-                      <Field label="ID">
-                        <Typography>{np.id}</Typography>
-                      </Field>
-                    )}
-                  </View>
-                </>
-              )}
-              {expanded &&
-                Object.keys(np)
+              {isExpanded ? (
+                Object.keys(formattedMapPoint)
                   .filter((k) => !EXCLUDED_ATTRIBUTES.has(k))
                   .map((k) => (
                     <View key={k} className="g-4">
                       <Divider />
                       <Field label={t(`fields.${k}`)}>
-                        <Typography>{np[k as keyof typeof np]}</Typography>
+                        <Typography>
+                          {formattedMapPoint[k as keyof typeof formattedMapPoint]}
+                        </Typography>
                       </Field>
                     </View>
-                  ))}
+                  ))
+              ) : (
+                <>
+                  {formattedMapPoint.address && <Divider />}
+                  <View>
+                    {formattedMapPoint.id && (
+                      <Field label="ID">
+                        <Typography>{formattedMapPoint.id}</Typography>
+                      </Field>
+                    )}
+                  </View>
+                </>
+              )}
             </View>
           </View>
         </BottomSheetScrollView>

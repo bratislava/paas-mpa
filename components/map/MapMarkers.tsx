@@ -11,7 +11,7 @@ import {
   PPLusRImage,
   SellingPointImage,
 } from '@/assets/map/images'
-import { IconsEnum } from '@/modules/map/constants'
+import { MapPointIconEnum } from '@/modules/map/constants'
 import markersStyles from '@/modules/map/utils/layer-styles/markers'
 
 type Props = {
@@ -24,7 +24,7 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
     string,
     FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
   ][] = useMemo(() => {
-    return Object.values(IconsEnum).map((icon) => [
+    return Object.values(MapPointIconEnum).map((icon) => [
       icon,
       {
         ...markersData,
@@ -35,8 +35,9 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
 
   const handlePointPress = useCallback(
     (event: OnPressEvent) => {
-      if (!event?.features || event.features.length === 0) return
-      onPointPress?.(event.features[0] as Feature<Point, GeoJsonProperties>)
+      if (event?.features && event?.features.length > 0) {
+        onPointPress?.(event.features[0] as Feature<Point, GeoJsonProperties>)
+      }
     },
     [onPointPress],
   )
@@ -45,13 +46,13 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
     <>
       <Images
         images={{
-          [IconsEnum.parkomat]: ParkomatImage,
-          [IconsEnum.garage]: GarageImage,
-          [IconsEnum.branch]: SellingPointImage,
-          [IconsEnum.partner]: SellingPointImage,
-          [IconsEnum.pPlusR]: PPLusRImage,
-          [IconsEnum.parkingLot]: ParkingImage,
-          [IconsEnum.assistant]: AssistantImage,
+          [MapPointIconEnum.parkomat]: ParkomatImage,
+          [MapPointIconEnum.garage]: GarageImage,
+          [MapPointIconEnum.branch]: SellingPointImage,
+          [MapPointIconEnum.partner]: SellingPointImage,
+          [MapPointIconEnum.pPlusR]: PPLusRImage,
+          [MapPointIconEnum.parkingLot]: ParkingImage,
+          [MapPointIconEnum.assistant]: AssistantImage,
         }}
       />
       {markersDataByKind?.map(([icon, shape]) => (

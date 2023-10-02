@@ -1,7 +1,7 @@
 import i18n from '@/i18n.config'
 
-import { KindsEnum } from '../constants'
-import { isPointOfType, NormalizedPoint, SelectedPoint } from '../types'
+import { MapPointKindEnum } from '../constants'
+import { isPointOfKind, NormalizedPoint, SelectedPoint } from '../types'
 
 // eslint-disable-next-line babel/camelcase
 const resolveOpeningHours = (point: { Otvaracie_hodiny_en: string; Otvaracie_hodiny_sk: string }) =>
@@ -12,7 +12,7 @@ const resolveName = (point: { Nazov_en: string; Nazov_sk: string }) =>
   i18n.language === 'en' ? point.Nazov_en : point.Nazov_sk
 
 export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
-  if (isPointOfType(point, KindsEnum.branch)) {
+  if (isPointOfKind(point, MapPointKindEnum.branch)) {
     return {
       id: point.OBJECTID,
       address: point.Adresa,
@@ -22,7 +22,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
       openingHours: resolveOpeningHours(point),
     }
   }
-  if (isPointOfType(point, KindsEnum.garage)) {
+  if (isPointOfKind(point, MapPointKindEnum.garage)) {
     return {
       id: point.OBJECTID,
       address: point.Adresa,
@@ -32,7 +32,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
       openingHours: point.Prevadzkova_doba,
     }
   }
-  if (isPointOfType(point, KindsEnum.pPlusR)) {
+  if (isPointOfKind(point, MapPointKindEnum.pPlusR)) {
     return {
       id: point.OBJECTID,
       kind: point.kind,
@@ -45,7 +45,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
       publicTransportLines: point.Verejna_doprava,
     }
   }
-  if (isPointOfType(point, KindsEnum.parkingLot)) {
+  if (isPointOfKind(point, MapPointKindEnum.parkingLot)) {
     return {
       id: point.OBJECTID,
       kind: point.kind,
@@ -58,14 +58,14 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
       publicTransportLines: point.Verejna_doprava,
     }
   }
-  if (isPointOfType(point, KindsEnum.parkomat)) {
+  if (isPointOfKind(point, MapPointKindEnum.parkomat)) {
     return {
       id: point.OBJECTID,
       kind: point.kind,
       name: point.Lokalita,
     }
   }
-  if (isPointOfType(point, KindsEnum.partner)) {
+  if (isPointOfKind(point, MapPointKindEnum.partner)) {
     return {
       id: point.OBJECTID,
       address: point.adresa,
@@ -75,7 +75,7 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
       openingHours: resolveOpeningHours(point),
     }
   }
-  if (isPointOfType(point, KindsEnum.assistant)) {
+  if (isPointOfKind(point, MapPointKindEnum.assistant)) {
     return {
       id: 0,
       name: 'N/A',

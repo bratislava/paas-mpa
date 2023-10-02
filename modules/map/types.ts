@@ -1,6 +1,6 @@
 /* eslint-disable babel/camelcase */
 
-import { IconsEnum, KindsEnum } from './constants'
+import { MapPointIconEnum, MapPointKindEnum } from './constants'
 
 export type SelectedUdrZone = {
   Nazov: string
@@ -29,8 +29,8 @@ export type SelectedUdrZone = {
 
 export type SelectedPoint = {
   Navigacia: string // "https://www.google.com/maps/place/Magistr%C3%A1t+hlavn%C3%A9ho+mesta+SR+Bratislavy/@48.1439423,17.1091824,234m/data=!3m3!1e3!4b1!5s0x476c89431d7c7795:0x4caf7acfb0ed99d7!4m5!3m4!1s0x476c89433d1bc761:0x6ad8016ef317f8f0!8m2!3d48.1439414!4d17.1097296"
-  icon: IconsEnum
-  kind: KindsEnum
+  icon: MapPointIconEnum
+  kind: MapPointKindEnum
 }
 
 export type BranchPoint = SelectedPoint & {
@@ -131,7 +131,7 @@ export type NormalizedPoint = {
   name: string
   navigation?: string
   openingHours?: string
-  kind: KindsEnum
+  kind: MapPointKindEnum
   address?: string
   parkingSpotCount?: number
   publicTransportLines?: string
@@ -140,17 +140,17 @@ export type NormalizedPoint = {
 }
 
 type PointTypes = {
-  [KindsEnum.assistant]: SelectedPoint & { kind: KindsEnum.assistant }
-  [KindsEnum.branch]: BranchPoint
-  [KindsEnum.parkomat]: ParkomatPoint
-  [KindsEnum.partner]: PartnerPoint
-  [KindsEnum.pPlusR]: PPlusRPoinit
-  [KindsEnum.garage]: GaragePoint
-  [KindsEnum.parkingLot]: ParkingLotPoint
+  [MapPointKindEnum.assistant]: SelectedPoint & { kind: MapPointKindEnum.assistant }
+  [MapPointKindEnum.branch]: BranchPoint
+  [MapPointKindEnum.parkomat]: ParkomatPoint
+  [MapPointKindEnum.partner]: PartnerPoint
+  [MapPointKindEnum.pPlusR]: PPlusRPoinit
+  [MapPointKindEnum.garage]: GaragePoint
+  [MapPointKindEnum.parkingLot]: ParkingLotPoint
 }
 
 // Type guard function using conditional types
-export function isPointOfType<T extends KindsEnum>(
+export function isPointOfKind<T extends MapPointKindEnum>(
   point: SelectedPoint,
   kind: T,
 ): point is PointTypes[T] {

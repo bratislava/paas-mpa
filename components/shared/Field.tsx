@@ -12,11 +12,17 @@ type Props = {
 }
 // TODO associate control with label
 
-const Field = ({ label, children, labelInsertArea, errorMessage, variant }: Props) => {
+const Field = ({
+  label,
+  children,
+  labelInsertArea,
+  errorMessage,
+  variant = 'default-bold',
+}: Props) => {
   return (
     <View className="g-1">
       <View className="flex-row g-6">
-        <Typography variant={variant ?? 'default-bold'} className="grow">
+        <Typography variant={variant} className="grow">
           {label}
         </Typography>
         {labelInsertArea || null}
