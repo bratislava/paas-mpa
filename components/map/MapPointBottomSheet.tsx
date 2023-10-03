@@ -9,8 +9,8 @@ import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useNormalizedPoint } from '@/modules/map/hooks/useNormalizedPoint'
 import { SelectedPoint } from '@/modules/map/types'
-import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 
 type Props = {
   point: SelectedPoint
@@ -23,7 +23,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const [index, setIndex] = useState(-1)
   const [footerHeight, setFooterHeight] = useState(0)
 
-  const formattedMapPoint = useMemo(() => normalizePoint(point), [point])
+  const formattedMapPoint = useNormalizedPoint(point)
 
   const snapPoints = useMemo(() => [375, '80%'], [])
 

@@ -1,17 +1,17 @@
-import i18n from '@/i18n.config'
-
+/* eslint-disable babel/camelcase */
 import { MapPointKindEnum } from '../constants'
 import { isPointOfKind, NormalizedPoint, SelectedPoint } from '../types'
 
-// eslint-disable-next-line babel/camelcase
-const resolveOpeningHours = (point: { Otvaracie_hodiny_en: string; Otvaracie_hodiny_sk: string }) =>
-  i18n.language === 'en' ? point.Otvaracie_hodiny_en : point.Otvaracie_hodiny_sk
+export const normalizePoint = (point: SelectedPoint, language: string): NormalizedPoint => {
+  const resolveOpeningHours = (resolvingPoint: {
+    Otvaracie_hodiny_en: string
+    Otvaracie_hodiny_sk: string
+  }) =>
+    language === 'en' ? resolvingPoint.Otvaracie_hodiny_en : resolvingPoint.Otvaracie_hodiny_sk
 
-// eslint-disable-next-line babel/camelcase
-const resolveName = (point: { Nazov_en: string; Nazov_sk: string }) =>
-  i18n.language === 'en' ? point.Nazov_en : point.Nazov_sk
+  const resolveName = (resolvingPoint: { Nazov_en: string; Nazov_sk: string }) =>
+    language === 'en' ? resolvingPoint.Nazov_en : resolvingPoint.Nazov_sk
 
-export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   if (isPointOfKind(point, MapPointKindEnum.branch)) {
     return {
       id: point.OBJECTID,

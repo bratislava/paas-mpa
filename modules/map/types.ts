@@ -1,6 +1,6 @@
 /* eslint-disable babel/camelcase */
 
-import { MapPointIconEnum, MapPointKindEnum } from './constants'
+import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from './constants'
 
 export type SelectedUdrZone = {
   OBJECTID: number
@@ -30,6 +30,29 @@ export type SelectedUdrZone = {
   layer: string // "visitors"
   vikendy_a_sviatky: number // 1
   web: string // "ano"
+}
+
+export type NormalizedUdrZone = {
+  /** OBJECTID */
+  id: number
+  name: string
+  price: number
+  paidHours: string
+  parkingDurationLimit: number
+  additionalInformation: string
+  rpkInformation: string
+  npkInformation: string
+  code: string
+  status: string
+  udrId: number
+  odpRpk: string
+  restrictionOnlyRpk: string
+  residentialZoneName: string
+  reservedParking: string
+  initialFreeParkingDuration: number
+  parkingDurationRestrictionException: string
+  parkingFeeException: string
+  layer: MapLayerEnum
 }
 
 export type SelectedPoint = {

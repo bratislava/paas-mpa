@@ -1,0 +1,19 @@
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { NormalizedPoint, SelectedPoint } from '@/modules/map/types'
+import { normalizePoint } from '@/modules/map/utils/normalizePoint'
+
+export function useNormalizedPoint<Point extends SelectedPoint | undefined | null>(
+  point: Point,
+): Point extends undefined | null ? NormalizedPoint | null : NormalizedPoint
+export function useNormalizedPoint(
+  point: SelectedPoint | undefined | null,
+): NormalizedPoint | null {
+  const [, i18n] = useTranslation()
+
+  return useMemo(
+    () => (point ? normalizePoint(point, i18n.language) : null),
+    [i18n.language, point],
+  )
+}

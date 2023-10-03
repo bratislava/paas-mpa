@@ -31,9 +31,9 @@ const ZoneDetailsScreen = () => {
     <ScreenView title={t('ZoneDetailsScreen.title')} continueProps={{ href: 'purchase' }}>
       <View className="p-5 g-4">
         <FlexRow>
-          <SegmentBadge label={zone.UDR_ID.toString()} />
-          <Typography className="flex-1">{zone.Nazov}</Typography>
-          <Typography variant="default-bold">{`${zone.Zakladna_cena}€ / h`}</Typography>
+          <SegmentBadge label={zone.udrId.toString()} />
+          <Typography className="flex-1">{zone.name}</Typography>
+          <Typography variant="default-bold">{`${zone.price}€ / h`}</Typography>
         </FlexRow>
         <Divider />
         <FlexRow cn="justify-start">
@@ -44,13 +44,15 @@ const ZoneDetailsScreen = () => {
           >
             <Icon name="local-parking" size={12} className="text-white" />
           </View>
-          <Typography variant="default-bold">{zone.Vyhradene_park_statie_en}</Typography>
+          <Typography variant="default-bold">{zone.reservedParking}</Typography>
         </FlexRow>
         <Divider />
-        <FlexRow cn="justify-start">
-          <Typography>{'\u2022'}</Typography>
-          <Typography>{zone.Doplnkova_informacia_en}</Typography>
-        </FlexRow>
+        {zone.additionalInformation ? (
+          <FlexRow cn="justify-start">
+            <Typography>{'\u2022'}</Typography>
+            <Typography>{zone.additionalInformation}</Typography>
+          </FlexRow>
+        ) : null}
       </View>
     </ScreenView>
   )
