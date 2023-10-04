@@ -1,5 +1,7 @@
 import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
+import { ARCGIS_URL } from '@/modules/arcgis/constants'
+import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
 import {
   BranchPoint,
   ParkingLotPoint,
@@ -8,9 +10,6 @@ import {
   SelectedPoint,
   SelectedUdrZone,
 } from '@/modules/map/types'
-
-import { ARCGIS_URL } from '../constants'
-import { useArcgis } from './useArcgis'
 
 export const useArcgisData = () => {
   const { data: rawZonesData } = useArcgis(`${ARCGIS_URL}/parkovanie/Hranica_RZ/MapServer/1`, {

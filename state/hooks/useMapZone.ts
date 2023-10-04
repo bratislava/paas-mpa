@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { NormalizedUdrZone, SelectedUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
-
-import { GlobalStoreContext } from '../GlobalStoreProvider'
+import { GlobalStoreContext } from '@/state/GlobalStoreProvider'
 
 export function useMapZone<NormalizePropertiesOnly extends boolean>(
   id: number,

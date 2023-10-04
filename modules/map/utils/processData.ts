@@ -12,7 +12,7 @@ import {
   PartnerPoint,
   SelectedPoint,
   SelectedUdrZone,
-} from '../types'
+} from '@/modules/map/types'
 
 const zoneMapping = {
   SM1: 'SM1',

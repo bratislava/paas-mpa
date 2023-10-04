@@ -1,6 +1,6 @@
 /* eslint-disable babel/camelcase */
 
-import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from './constants'
+import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 
 export type SelectedUdrZone = {
   OBJECTID: number

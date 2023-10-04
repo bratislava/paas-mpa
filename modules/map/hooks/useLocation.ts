@@ -1,7 +1,7 @@
 import * as Location from 'expo-location'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useLocationPermission } from './useLocationPermission'
+import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 export const useLocation = (): [Location.LocationObject | null, () => Promise<void>] => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
