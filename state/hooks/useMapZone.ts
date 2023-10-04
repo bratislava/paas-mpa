@@ -2,7 +2,7 @@ import { Feature, Polygon } from 'geojson'
 import { useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { NormalizedUdrZone, MapUdrZone } from '@/modules/map/types'
+import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { GlobalStoreContext } from '@/state/GlobalStoreProvider'
 
