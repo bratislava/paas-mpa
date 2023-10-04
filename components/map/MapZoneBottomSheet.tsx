@@ -15,10 +15,10 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { SelectedUdrZone } from '@/modules/map/types'
+import { MapUdrZone } from '@/modules/map/types'
 
 type Props = {
-  zone: SelectedUdrZone | null
+  zone: MapUdrZone | null
 }
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {

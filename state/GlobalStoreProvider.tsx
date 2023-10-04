@@ -1,9 +1,9 @@
 import { Feature, Point, Polygon } from 'geojson'
 import { createContext, Dispatch, SetStateAction, useMemo, useState } from 'react'
 
-import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
+import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 
-export type MapFeaturesHashMapValue = Feature<Point | Polygon, SelectedUdrZone | SelectedPoint>
+export type MapFeaturesHashMapValue = Feature<Point | Polygon, MapUdrZone | MapInterestPoint>
 
 type MapFeatureHashMap = Map<number, MapFeaturesHashMapValue>
 

@@ -7,8 +7,8 @@ import {
   ParkingLotPoint,
   ParkomatPoint,
   PartnerPoint,
-  SelectedPoint,
-  SelectedUdrZone,
+  MapInterestPoint,
+  MapUdrZone,
 } from '@/modules/map/types'
 
 export const useArcgisData = () => {
@@ -51,13 +51,13 @@ export const useArcgisData = () => {
   return {
     rawAssistantsData: rawAssistantsData as FeatureCollection<
       Point,
-      SelectedPoint & { web: string }
+      MapInterestPoint & { web: string }
     >,
     rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint>,
     rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint>,
     rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint>,
     rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint>,
-    rawUdrData: rawUdrData as FeatureCollection<Polygon, SelectedUdrZone>,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone>,
     rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties>,
     rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   }

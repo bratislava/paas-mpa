@@ -10,10 +10,10 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useNormalizedPoint } from '@/modules/map/hooks/useNormalizedPoint'
-import { SelectedPoint } from '@/modules/map/types'
+import { MapInterestPoint } from '@/modules/map/types'
 
 type Props = {
-  point: SelectedPoint
+  point: MapInterestPoint
 }
 
 const EXCLUDED_ATTRIBUTES = new Set(['address', 'name', 'navigation', 'kind', 'id'])

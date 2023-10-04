@@ -10,8 +10,8 @@ import {
   ParkingLotPoint,
   ParkomatPoint,
   PartnerPoint,
-  SelectedPoint,
-  SelectedUdrZone,
+  MapInterestPoint,
+  MapUdrZone,
 } from '@/modules/map/types'
 
 const zoneMapping = {
@@ -66,12 +66,12 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
 })
 
 export interface ProcessDataOptions {
-  rawAssistantsData: FeatureCollection<Point, SelectedPoint>
+  rawAssistantsData: FeatureCollection<Point, MapInterestPoint>
   rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
   rawPartnersData: FeatureCollection<Point, PartnerPoint>
   rawParkingLotsData: FeatureCollection<Point, ParkingLotPoint>
   rawBranchesData: FeatureCollection<Point, BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, SelectedUdrZone>
+  rawUdrData: FeatureCollection<Polygon, MapUdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
   rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }
@@ -130,7 +130,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, SelectedPoint & { web: string }>
+            } as Feature<Point, MapInterestPoint & { web: string }>
           })
           .filter((f) => f.properties?.web === 'ano'),
 
@@ -224,7 +224,7 @@ export const processData = ({
           })
           .filter((f) => f.properties?.web === 'ano'),
       ],
-    } as FeatureCollection<Point, SelectedPoint>,
+    } as FeatureCollection<Point, MapInterestPoint>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 
@@ -244,15 +244,15 @@ export const processData = ({
               ...feature.properties,
               layer,
             },
-          } as Feature<Polygon, SelectedUdrZone>
+          } as Feature<Polygon, MapUdrZone>
         })
         .filter(
           (f) =>
             (f.properties?.web === 'ano' || f.properties?.web === 'ano - planned') &&
             (f.properties?.Status === 'active' || f.properties?.Status === 'planned'),
         ),
-    } as FeatureCollection<Polygon, SelectedUdrZone>,
-    zonesData as FeatureCollection<Polygon, SelectedUdrZone>,
+    } as FeatureCollection<Polygon, MapUdrZone>,
+    zonesData as FeatureCollection<Polygon, MapUdrZone>,
   )
 
   const odpData = {

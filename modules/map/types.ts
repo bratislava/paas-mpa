@@ -2,7 +2,7 @@
 
 import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 
-export type SelectedUdrZone = {
+export type MapUdrZone = {
   OBJECTID: number
   Nazov: string
   Zakladna_cena: number // 2
@@ -55,14 +55,14 @@ export type NormalizedUdrZone = {
   layer: MapLayerEnum
 }
 
-export type SelectedPoint = {
+export type MapInterestPoint = {
   Navigacia: string // "https://www.google.com/maps/place/Magistr%C3%A1t+hlavn%C3%A9ho+mesta+SR+Bratislavy/@48.1439423,17.1091824,234m/data=!3m3!1e3!4b1!5s0x476c89431d7c7795:0x4caf7acfb0ed99d7!4m5!3m4!1s0x476c89433d1bc761:0x6ad8016ef317f8f0!8m2!3d48.1439414!4d17.1097296"
   icon: MapPointIconEnum
   kind: MapPointKindEnum
   OBJECTID: number // 4
 }
 
-export type BranchPoint = SelectedPoint & {
+export type BranchPoint = MapInterestPoint & {
   Adresa: string // "Primaciálne nám. 1, 811 01 Bratislava"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "PAAS Centrum"
@@ -70,7 +70,7 @@ export type BranchPoint = SelectedPoint & {
   Otvaracie_hodiny_sk: string // "Po 8:30-17:00, Ut-Št 8:30-16:00, Pi 8:30-15:00"
 }
 
-export type PartnerPoint = SelectedPoint & {
+export type PartnerPoint = MapInterestPoint & {
   adresa: string // "Jesenského 4"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "Talks kaviareň "
@@ -80,7 +80,7 @@ export type PartnerPoint = SelectedPoint & {
   web?: string // "ano"
 }
 
-export type ParkomatPoint = SelectedPoint & {
+export type ParkomatPoint = MapInterestPoint & {
   Datum_osadenia_en: string // '31.07.2023'
   Datum_osadenia_sk: string // '31.07.2023'
   Lokalita: string // 'Rigeleho x Paulínyho'
@@ -91,7 +91,7 @@ export type ParkomatPoint = SelectedPoint & {
   Navigacia: never
 }
 
-export type GaragePoint = SelectedPoint & {
+export type GaragePoint = MapInterestPoint & {
   Adresa: string // "Námestie Martina Benku"
   Informacia_NPK_en: string // "Visitor parking fee: weekdays from 8am-6pm - €1.80/h, weekdays from 6pm-8am + weekends and holidays - €1.20/h."
   Informacia_NPK_sk: string // "Návštevnícke parkovné: pracovné dni od 08:00-18:00 - 1,80 €/h., pracovné dni od 18:00-08:00 + víkendy a sviatky - 1,20 €/h. "
@@ -110,7 +110,7 @@ export type GaragePoint = SelectedPoint & {
   zone: string // "SM1"
 }
 
-export type PPlusRPoinit = SelectedPoint & {
+export type PPlusRPoinit = MapInterestPoint & {
   Dojazdova_doba: string // "23 min"
   Nazov_en: string // "P+R Tesco Lamač"
   Nazov_sk: string // "P+R Tesco Lamač"
@@ -129,7 +129,7 @@ export type PPlusRPoinit = SelectedPoint & {
   kind: string // "p-plus-r"
 }
 
-export type ParkingLotPoint = SelectedPoint & {
+export type ParkingLotPoint = MapInterestPoint & {
   Dojazdova_doba: string // "4 min"
   Nazov_en: string // "Parking lot Černyševského"
   Nazov_sk: string // "Záchytné parkovisko Černyševského"
@@ -163,7 +163,7 @@ export type NormalizedPoint = {
 }
 
 type PointTypes = {
-  [MapPointKindEnum.assistant]: SelectedPoint & { kind: MapPointKindEnum.assistant }
+  [MapPointKindEnum.assistant]: MapInterestPoint & { kind: MapPointKindEnum.assistant }
   [MapPointKindEnum.branch]: BranchPoint
   [MapPointKindEnum.parkomat]: ParkomatPoint
   [MapPointKindEnum.partner]: PartnerPoint
@@ -174,7 +174,7 @@ type PointTypes = {
 
 // Type guard function using conditional types
 export function isPointOfKind<T extends MapPointKindEnum>(
-  point: SelectedPoint,
+  point: MapInterestPoint,
   kind: T,
 ): point is PointTypes[T] {
   return point?.kind === kind

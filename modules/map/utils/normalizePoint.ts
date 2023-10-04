@@ -1,9 +1,9 @@
 /* eslint-disable babel/camelcase */
 
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { isPointOfKind, NormalizedPoint, SelectedPoint } from '@/modules/map/types'
+import { isPointOfKind, NormalizedPoint, MapInterestPoint } from '@/modules/map/types'
 
-export const normalizePoint = (point: SelectedPoint, language: string): NormalizedPoint => {
+export const normalizePoint = (point: MapInterestPoint, language: string): NormalizedPoint => {
   const resolveOpeningHours = (resolvingPoint: {
     Otvaracie_hodiny_en: string
     Otvaracie_hodiny_sk: string
