@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { NormalizedPoint, MapInterestPoint } from '@/modules/map/types'
+import { MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
 import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 
 export function useNormalizedPoint<Point extends MapInterestPoint | undefined | null>(

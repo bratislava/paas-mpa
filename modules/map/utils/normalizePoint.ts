@@ -1,7 +1,7 @@
 /* eslint-disable babel/camelcase */
 
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { isPointOfKind, NormalizedPoint, MapInterestPoint } from '@/modules/map/types'
+import { isPointOfKind, MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
 
 export const normalizePoint = (point: MapInterestPoint, language: string): NormalizedPoint => {
   const resolveOpeningHours = (resolvingPoint: {
@@ -78,9 +78,9 @@ export const normalizePoint = (point: MapInterestPoint, language: string): Norma
   }
   if (isPointOfKind(point, MapPointKindEnum.assistant)) {
     return {
-      id: 0,
-      name: 'N/A',
-      kind: point.kind,
+      id: point.OBJECTID,
+      name: point.Interny_nazov, // TODO: Change
+      kind: MapPointKindEnum.assistant,
     }
   }
 

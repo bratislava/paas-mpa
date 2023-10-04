@@ -4,11 +4,11 @@ import { ARCGIS_URL } from '@/modules/arcgis/constants'
 import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
 import {
   BranchPoint,
+  MapInterestPoint,
+  MapUdrZone,
   ParkingLotPoint,
   ParkomatPoint,
   PartnerPoint,
-  MapInterestPoint,
-  MapUdrZone,
 } from '@/modules/map/types'
 
 export const useArcgisData = () => {

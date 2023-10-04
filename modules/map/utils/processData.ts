@@ -12,6 +12,7 @@ import {
   PartnerPoint,
   MapInterestPoint,
   MapUdrZone,
+  AssistantPoint,
 } from '@/modules/map/types'
 
 const zoneMapping = {
@@ -130,7 +131,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, MapInterestPoint & { web: string }>
+            } as Feature<Point, AssistantPoint>
           })
           .filter((f) => f.properties?.web === 'ano'),
 

@@ -1,5 +1,5 @@
 import { MapLayerEnum } from '@/modules/map/constants'
-import { NormalizedUdrZone, MapUdrZone } from '@/modules/map/types'
+import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
 
 export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdrZone => {
   const isEnglish = language === 'en'
