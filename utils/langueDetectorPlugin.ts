@@ -4,6 +4,8 @@ import { storage } from '@/utils/mmkv'
 
 export const STORAGE_LANGUAGE_KEY = 'settings.locale'
 
+// Inspiration from here: https://dev.to/ramonak/react-native-internationalization-with-i18next-568n#3-custom-plugin-to-store-chosen-language-in-the-local-storage
+
 export const languageDetectorPlugin = {
   type: 'languageDetector',
   async: true,
@@ -19,9 +21,5 @@ export const languageDetectorPlugin = {
 
     // if language was not stored yet, use device's locale
     return callback(Localization.locale)
-  },
-  cacheUserLanguage(language: string) {
-    // save a user's language choice in storage
-    storage.set(STORAGE_LANGUAGE_KEY, language)
   },
 }
