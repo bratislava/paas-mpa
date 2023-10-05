@@ -67,7 +67,9 @@
     }
   },
   "Settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "language": "Language",
+    "system": "System"
   },
   "PaymentMethods": {
     "title": "Payment methods",

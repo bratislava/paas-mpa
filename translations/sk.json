@@ -67,7 +67,9 @@
     }
   },
   "Settings": {
-    "title": "Nastavenia"
+    "title": "Nastavenia",
+    "language": "Jazyk",
+    "system": "Systém"
   },
   "PaymentMethods": {
     "title": "Platobné metódy",

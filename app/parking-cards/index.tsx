@@ -16,8 +16,6 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Active = () => {
-  const t = useTranslation('ParkingCards')
-
   return (
     <ScrollView>
       <ScreenContent>
@@ -41,8 +39,6 @@ const Active = () => {
 }
 
 const Expired = () => {
-  const t = useTranslation('ParkingCards')
-
   return (
     <ScrollView>
       <ScreenContent>
@@ -70,7 +66,7 @@ const Page = () => {
         </Link>
       ),
     })
-  }, [])
+  }, [navigation, t])
 
   const layout = useWindowDimensions()
 
