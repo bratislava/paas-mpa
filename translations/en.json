@@ -82,10 +82,13 @@
     "type": {
       "visitor": "Visitor card",
       "resident": "Resident card",
-      "bonus": "Bonus card"
+      "bonus": "Bonus card",
+      "subscriber": "Subscriber card"
     },
     "validUntil": "Valid until",
-    "remainingCredit": "Remaining credit"
+    "remainingCredit": "Remaining credit",
+    "activeCards": "Active cards",
+    "expiredCards": "Expired cards"
   },
   "TimeSelector": {
     "addTimeButton": "Add 15 minutes",

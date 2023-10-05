@@ -6,7 +6,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
-  variant: 'visitor' | 'resident' | 'bonus'
+  variant: 'visitor' | 'resident' | 'bonus' | 'subscriber'
   children: ReactNode
 }
 
@@ -18,7 +18,8 @@ const ParkingCardBase = ({ variant, children }: Props) => {
       className={clsx('border', {
         'border-visitorCard bg-visitorCard-light': variant === 'visitor',
         'border-dark bg-dark-light': variant === 'resident',
-        // TODO bonus
+        'border-divider bg-white': variant === 'bonus',
+        'border-subscriberCard bg-subscriberCard-light': variant === 'subscriber',
       })}
     >
       <Typography variant="default-semibold">{t(`type.${variant}`)}</Typography>

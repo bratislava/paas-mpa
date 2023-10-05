@@ -79,8 +79,16 @@
   "ParkingCards": {
     "title": "Parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
-    "custom": "Vlastný",
-    "validUntil": "Platný do"
+    "type": {
+      "visitor": "Návštevnícka karta",
+      "resident": "Rezidentská karta",
+      "bonus": "Bonusová karta",
+      "subscriber": "Abonentská karta"
+    },
+    "validUntil": "Platný do",
+    "remainingCredit": "Zostávajúci kredit",
+    "activeCards": "Aktívne karty",
+    "expiredCards": "Exspirované karty"
   },
   "MapScreen": {
     "ZoneBottomSheet": {
