@@ -71,7 +71,12 @@
   },
   "PaymentMethods": {
     "title": "Payment methods",
-    "paymentGate": "Payment card / Apple Pay / Google Pay"
+    "paymentGate": "Payment card / Apple Pay / Google Pay",
+    "visitorCard": "Visitor card",
+    "bonusCard": "Bonus card",
+    "remaining": "Remaining",
+    "todayRemaining": "Today remaining",
+    "validUntil": "Valid until"
   },
   "Tickets": {
     "title": "Parking tickets"

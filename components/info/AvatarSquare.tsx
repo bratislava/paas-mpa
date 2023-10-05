@@ -20,7 +20,7 @@ const AvatarSquare = ({ variant }: Props) => {
   return (
     <View
       className={clsx(
-        'flex items-center justify-center self-center rounded p-2.5',
+        'flex items-center justify-center rounded p-2.5',
         variant === 'visitor-card' ? 'bg-visitorCard' : 'bg-dark',
       )}
     >

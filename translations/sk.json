@@ -71,7 +71,12 @@
   },
   "PaymentMethods": {
     "title": "Platobné metódy",
-    "paymentGate": "Platobná karta / Apple Pay / Google Pay"
+    "paymentGate": "Platobná karta / Apple Pay / Google Pay",
+    "visitorCard": "Návštevnícka karta",
+    "bonusCard": "Bonusová karta",
+    "remaining": "Zostáva",
+    "todayRemaining": "Dnes zostáva",
+    "validUntil": "Platná do"
   },
   "Tickets": {
     "title": "Parkovacie lístky"
