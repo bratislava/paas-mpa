@@ -2,7 +2,7 @@ import { Link, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import { PurchaseSearchParams } from '@/app/purchase/index'
-import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
+import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
@@ -17,7 +17,7 @@ const Page = () => {
       <ScreenContent>
         <Link asChild href={{ pathname: '/purchase', params: searchParams }}>
           <PressableStyled>
-            <PaymentGate selected />
+            <PaymentGateMethod selected />
           </PressableStyled>
         </Link>
       </ScreenContent>

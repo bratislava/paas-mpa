@@ -5,7 +5,7 @@ import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
-import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
+import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
@@ -90,7 +90,7 @@ const PurchaseScreen = () => {
                 }}
               >
                 <PressableStyled>
-                  <PaymentGate showControlChevron />
+                  <PaymentGateMethod showControlChevron />
                 </PressableStyled>
               </Link>
             </Field>

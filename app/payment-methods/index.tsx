@@ -1,7 +1,7 @@
 import React from 'react'
 
 import BonusCardMethod from '@/components/controls/payment-methods/BonusCardMethod'
-import PaymentGate from '@/components/controls/payment-methods/PaymentGate'
+import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import VisitorCardMethod from '@/components/controls/payment-methods/VisitorCardMethod'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
@@ -16,7 +16,7 @@ const Page = () => {
     <ScreenView title={t('title')}>
       <ScreenContent>
         <Typography variant="h1">TODO</Typography>
-        <PaymentGate />
+        <PaymentGateMethod />
         <VisitorCardMethod />
         <BonusCardMethod />
       </ScreenContent>
