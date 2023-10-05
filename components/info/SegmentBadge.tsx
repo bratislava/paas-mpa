@@ -9,7 +9,7 @@ type Props = {
 
 const SegmentBadge = ({ label }: Props) => {
   return (
-    <View className="self-center rounded-sm bg-green-light px-2">
+    <View className="rounded-sm bg-green-light px-2">
       <Typography variant="default-bold" className="text-green">
         {label}
       </Typography>

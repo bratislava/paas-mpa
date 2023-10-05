@@ -6,7 +6,7 @@ import AvatarSquare from '@/components/info/AvatarSquare'
 
 const AvatarShowcase = () => {
   return (
-    <View className="flex-row flex-wrap px-4 g-4">
+    <View className="flex-row flex-wrap items-center px-4 g-4">
       <AvatarCircle variant="info" />
       <AvatarCircle variant="success" />
       <AvatarCircle variant="warning" />
