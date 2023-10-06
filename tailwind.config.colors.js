@@ -32,6 +32,10 @@ module.exports = {
     DEFAULT: '#3171AF',
     light: '#EFF4F9',
   },
+  subscriberCard: {
+    DEFAULT: '#C3B26F',
+    light: '#F5F2E8',
+  },
   parkingZone: '#71CA55',
   activeZone: '#F1B830',
 }

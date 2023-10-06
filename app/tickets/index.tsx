@@ -6,11 +6,13 @@ import TabBar from '@/components/navigation/TabBar'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
+import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const ActiveTicketsRoute = () => (
   <ScreenContent>
-    <Typography>Active</Typography>
+    <Typography>TODO</Typography>
+    <TicketCard />
   </ScreenContent>
 )
 
