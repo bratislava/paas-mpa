@@ -1,5 +1,7 @@
 import clsx from 'clsx'
-import { Image, ImageSourcePropType, Pressable, PressableProps } from 'react-native'
+import { FC } from 'react'
+import { Pressable, PressableProps } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import CheckBox from '@/components/shared/CheckBox'
 import Icon, { IconName } from '@/components/shared/Icon'
@@ -14,7 +16,7 @@ export type SelectRowProps = {
   value: boolean
   onValueChange: (value: boolean) => void
   disabled?: boolean
-  iconSource?: ImageSourcePropType
+  IconComponent?: FC<SvgProps>
 } & Omit<PressableProps, 'children'>
 
 const SelectRow = ({
@@ -24,20 +26,16 @@ const SelectRow = ({
   value,
   onValueChange,
   disabled,
-  iconSource,
+  IconComponent,
   ...restPressableProps
 }: SelectRowProps) => {
   return (
     <Pressable
       onPress={() => onValueChange(!value)}
-      className="flex-row gap-3 py-3"
+      className="flex-row items-center gap-3 py-3"
       {...restPressableProps}
     >
-      {icon ? (
-        <Icon name={icon} />
-      ) : iconSource ? (
-        <Image className="h-10 w-10" source={iconSource} />
-      ) : null}
+      {icon ? <Icon name={icon} /> : IconComponent ? <IconComponent /> : null}
 
       <Typography variant="default-semibold" className={clsx('flex-1', labelClassName)}>
         {label}

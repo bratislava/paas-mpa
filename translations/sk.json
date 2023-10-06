@@ -128,5 +128,24 @@
   },
   "ZoneDetailsScreen": {
     "title": "Detail zóny"
+  },
+  "FiltersScreen": {
+    "title": "Filtre",
+    "showResults": "Ukázať výsledky",
+    "filteringOptions": {
+      "assistant": "Asistent",
+      "parkomat": "Parkomat",
+      "sellingPoint": "Predajný bod",
+      "p-plus-r": "Park & Ride",
+      "garage": "Garáž",
+      "parking-lot": "Parkovisko",
+      "active": "Parkovacie zóny",
+      "planned": "Plánované zóny"
+    },
+    "sectionHeaders": {
+      "payment": "Platba",
+      "parkingType": "Typ parkoviska",
+      "zones": "Zóny"
+    }
   }
 }

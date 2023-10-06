@@ -80,15 +80,7 @@ const IndexScreen = () => {
     <>
       <MapScreen />
 
-      <View className="absolute flex w-full flex-row justify-between px-2.5" style={{ top }}>
-        <Link asChild href={{ pathname: '/filters', params: {} }}>
-          <IconButton
-            name="filter-list"
-            // TODO translation
-            accessibilityLabel="Open filters"
-            variant="white-raised-small"
-          />
-        </Link>
+      <View className="absolute flex w-full flex-row justify-end px-2.5" style={{ top }}>
         <IconButton
           name="menu"
           // TODO translation
