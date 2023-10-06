@@ -32,6 +32,15 @@ export enum MapPointKindEnum {
   parkingLot = 'parking-lots',
 }
 
+export enum MapPointFilterKindEnum {
+  assistant = 'assistant',
+  parkomat = 'parkomat',
+  sellingPoint = 'sellingPoint',
+  pPlusR = 'p-plus-r',
+  garage = 'garage',
+  parkingLot = 'parking-lot',
+}
+
 export enum MapZoneStatusEnum {
   active = 'active',
   inactive = 'inactive',
@@ -42,4 +51,24 @@ export const MAP_CENTER = [17.1110118, 48.1512015] // Bratislava
 export const CITY_BOUNDS = {
   sw: [16.95716298676959, 48.02126829091361], // south-west corner
   ne: [17.28590508163896, 48.26473441916502], // north-east corner
+}
+
+// here because of a cyclic dependency
+export type MapFilters = {
+  [key in MapPointKindEnum]: 'true' | 'false'
+} & {
+  [key in MapZoneStatusEnum]: 'true' | 'false'
+}
+
+export const DEFAULT_FILTERS: MapFilters = {
+  'p-plus-r': 'false',
+  'parking-lots': 'false',
+  assistants: 'false',
+  branches: 'false',
+  garages: 'false',
+  parkomats: 'false',
+  partners: 'false',
+  active: 'false',
+  inactive: 'false',
+  planned: 'false',
 }

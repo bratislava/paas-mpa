@@ -1,6 +1,11 @@
 /* eslint-disable babel/camelcase */
 
-import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
+import {
+  MapLayerEnum,
+  MapPointIconEnum,
+  MapPointKindEnum,
+  MapZoneStatusEnum,
+} from '@/modules/map/constants'
 
 export type MapUdrZone = {
   OBJECTID: number
@@ -16,7 +21,7 @@ export type MapUdrZone = {
   Informacia_NPK_sk: string
   Informacia_NPK_en: string
   Kod_rezidentskej_zony: string // "SM0"
-  Status: string // "active"
+  Status: MapZoneStatusEnum // "active"
   UDR_ID: number // 1027
   ODP_RPKAPK: string // "SM0"
   Obmedzene_len_pre_RPK_APK: string // "N/A"

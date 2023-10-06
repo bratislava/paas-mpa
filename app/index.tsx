@@ -81,15 +81,14 @@ const IndexScreen = () => {
       <MapScreen />
 
       <View className="absolute flex w-full flex-row justify-between px-2.5" style={{ top }}>
-        <IconButton
-          name="filter-list"
-          // TODO translation
-          accessibilityLabel="Open filters"
-          variant="white-raised-small"
-          onPress={() => {
-            console.log('Open filters')
-          }}
-        />
+        <Link asChild href="/filters">
+          <IconButton
+            name="filter-list"
+            // TODO translation
+            accessibilityLabel="Open filters"
+            variant="white-raised-small"
+          />
+        </Link>
         <IconButton
           name="menu"
           // TODO translation

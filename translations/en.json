@@ -152,6 +152,14 @@
   },
   "FiltersScreen": {
     "title": "Filters",
-    "showResults": "Show results"
+    "showResults": "Show results",
+    "filteringOptions": {
+      "assistant": "Assistant",
+      "parkomat": "Parkomat",
+      "sellingPoint": "Selling point",
+      "p-plus-r": "Park & Ride",
+      "garage": "Garage",
+      "parking-lot": "Parking lot"
+    }
   }
 }

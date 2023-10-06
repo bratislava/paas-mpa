@@ -18,7 +18,8 @@ import { useDebouncedCallback } from 'use-debounce'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
+import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS, MapFilters } from '@/modules/map/constants'
+import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
@@ -29,12 +30,13 @@ import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 type Props = {
   onZoneChange?: (feature: MapUdrZone) => void
   onPointPress?: (point: MapInterestPoint) => void
+  filters: MapFilters
 }
 
 const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
 
-const Map = ({ onZoneChange, onPointPress }: Props) => {
+const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
@@ -54,7 +56,9 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
 
   const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
-  const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
+  const { isLoading, ...processedData } = useProcessedArcgisData()
+
+  const { markersData, zonesData, udrData, odpData } = useFilteredMapData(processedData, filters)
 
   useEffect(() => {
     onZoneChange?.((selectedPolygon?.properties as MapUdrZone) ?? null)

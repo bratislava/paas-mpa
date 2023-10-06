@@ -1,19 +1,40 @@
 import { useLocalSearchParams } from 'expo-router'
 import { ScrollView, View } from 'react-native'
 
+import {
+  AssistantImage,
+  GarageImage,
+  ParkingImage,
+  ParkomatImage,
+  PPLusRImage,
+  SellingPointImage,
+} from '@/assets/map/images'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
-import { MapPointKindEnum, MapZoneStatusEnum } from '@/modules/map/constants'
+import { MapFilters, MapPointIconEnum, MapZoneStatusEnum } from '@/modules/map/constants'
 
-type FiltersParams = {
-  [key in MapPointKindEnum]: 'true' | 'false'
-} & {
-  [key in MapZoneStatusEnum]: 'true' | 'false'
-}
+type FiltersParams = MapFilters
+
+const paymentFilteringOptions = [
+  { iconSource: ParkomatImage, translationKey: MapPointIconEnum.parkomat },
+  { iconSource: SellingPointImage, translationKey: 'sellingPoint' },
+  { iconSource: AssistantImage, translationKey: MapPointIconEnum.assistant },
+]
+
+const parkingTypeFilteringOptions = [
+  { iconSource: ParkingImage, translationKey: MapPointIconEnum.parkingLot },
+  { iconSource: GarageImage, translationKey: MapPointIconEnum.garage },
+  { iconSource: PPLusRImage, translationKey: MapPointIconEnum.pPlusR },
+]
+
+const zoneFilteringOptions = [
+  { iconSource: ParkingImage, translationKey: MapZoneStatusEnum.active },
+  { iconSource: GarageImage, translationKey: MapZoneStatusEnum.planned },
+]
 
 const FiltersScreen = () => {
   // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
-  const zoneDetailsParams = useLocalSearchParams<FiltersParams>()
+  const filtersParams = useLocalSearchParams<FiltersParams>()
   const t = useTranslation()
 
   return (

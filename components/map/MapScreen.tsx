@@ -5,11 +5,13 @@ import { View } from 'react-native'
 import Map from '@/components/map/Map'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
+import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 
 const MapScreen = () => {
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
+  const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const handleZoneChange = useCallback(
@@ -29,7 +31,7 @@ const MapScreen = () => {
 
   return (
     <View className="flex-1 items-stretch">
-      <Map onZoneChange={handleZoneChange} onPointPress={handlePointPress} />
+      <Map onZoneChange={handleZoneChange} onPointPress={handlePointPress} filters={filters} />
       <MapZoneBottomSheet ref={zoneBottomSheetRef} zone={selectedZone} />
       {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
     </View>
