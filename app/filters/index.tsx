@@ -17,7 +17,7 @@ type FiltersParams = MapFilters
 
 const paymentFilteringOptions = [
   { iconSource: ParkomatImage, translationKey: MapPointIconEnum.parkomat },
-  { iconSource: SellingPointImage, translationKey: 'sellingPoint' },
+  { iconSource: SellingPointImage, translationKey: MapPointIconEnum.sellingPoint },
   { iconSource: AssistantImage, translationKey: MapPointIconEnum.assistant },
 ]
 

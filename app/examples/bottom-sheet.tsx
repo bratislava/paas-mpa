@@ -12,7 +12,7 @@ const BRANCH_EXAMPLE = {
   OBJECTID: 4,
   Otvaracie_hodiny_en: 'Mo 8:30-17:00, Tu-Th 8:30-16:00, Fr 8:30-15:00',
   Otvaracie_hodiny_sk: 'Po 8:30-17:00, Ut-Št 8:30-16:00, Pi 8:30-15:00',
-  icon: MapPointIconEnum.branch,
+  icon: MapPointIconEnum.sellingPoint,
   kind: MapPointKindEnum.branch,
 }
 

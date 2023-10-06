@@ -141,7 +141,7 @@ export const processData = ({
         ...rawBranchesData.features.map((feature) => {
           GLOBAL_ID++
           const kind = 'branches'
-          const icon = 'branch'
+          const icon = 'sellingPoint'
 
           return {
             ...feature,
@@ -182,7 +182,7 @@ export const processData = ({
           .map((feature) => {
             GLOBAL_ID++
             const kind = 'partners'
-            const icon = 'partner'
+            const icon = 'sellingPoint'
 
             return {
               ...feature,
