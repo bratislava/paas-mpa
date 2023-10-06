@@ -32,6 +32,12 @@ export enum MapPointKindEnum {
   parkingLot = 'parking-lots',
 }
 
+export enum MapZoneStatusEnum {
+  active = 'active',
+  inactive = 'inactive',
+  planned = 'planned',
+}
+
 export const MAP_CENTER = [17.1110118, 48.1512015] // Bratislava
 export const CITY_BOUNDS = {
   sw: [16.95716298676959, 48.02126829091361], // south-west corner

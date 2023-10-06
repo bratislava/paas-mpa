@@ -78,7 +78,6 @@ const IndexScreen = () => {
 
   return (
     <>
-      {/* TODO MapScreen should be moved outside of examples folder */}
       <MapScreen />
 
       <View className="absolute flex w-full flex-row justify-between px-2.5" style={{ top }}>

@@ -149,5 +149,9 @@
   },
   "ZoneDetailsScreen": {
     "title": "Zone details"
+  },
+  "FiltersScreen": {
+    "title": "Filters",
+    "showResults": "Show results"
   }
 }
