@@ -6,7 +6,7 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { STORAGE_LANGUAGE_KEY } from '@/utils/langueDetectorPlugin'
+import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 const LanguageSelect = () => {
   const t = useTranslation('Settings')

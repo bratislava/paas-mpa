@@ -2,7 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 import { en, sk } from './translations'
-import { languageDetectorPlugin } from '@/utils/langueDetectorPlugin'
+import { languageDetectorPlugin } from '@/utils/languageDetectorPlugin'
 
 const resources = {
   en: {

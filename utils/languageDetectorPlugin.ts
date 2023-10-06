@@ -1,8 +1,6 @@
 import * as Localization from 'expo-localization'
 
-import { storage } from '@/utils/mmkv'
-
-export const STORAGE_LANGUAGE_KEY = 'settings.locale'
+import { storage, STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 // Inspiration from here: https://dev.to/ramonak/react-native-internationalization-with-i18next-568n#3-custom-plugin-to-store-chosen-language-in-the-local-storage
 

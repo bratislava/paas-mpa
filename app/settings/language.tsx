@@ -12,17 +12,17 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
-import { STORAGE_LANGUAGE_KEY } from '@/utils/langueDetectorPlugin'
-import { storage } from '@/utils/mmkv'
+import { storage, STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 // TODO
 const Page = () => {
   const t = useTranslationLocal('Settings')
   const { i18n } = useTranslation()
-  const [mmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
+  const [mmkvLocale, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
   const setLanguage = async (language: 'sk' | 'en') => {
     await i18n.changeLanguage(language)
+    setMmkvLocale(language)
 
     if (router.canGoBack()) {
       router.back()
