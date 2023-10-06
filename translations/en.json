@@ -160,6 +160,11 @@
       "p-plus-r": "Park & Ride",
       "garage": "Garage",
       "parking-lot": "Parking lot"
+    },
+    "sectionHeaders": {
+      "payment": "Payment",
+      "parkingType": "Parking type",
+      "zones": "Zones"
     }
   }
 }

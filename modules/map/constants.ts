@@ -45,20 +45,19 @@ export const CITY_BOUNDS = {
 
 // here because of a cyclic dependency
 export type MapFilters = {
-  [key in MapPointKindEnum]: 'true' | 'false'
+  [key in MapPointIconEnum]: 'true' | 'false'
 } & {
   [key in MapZoneStatusEnum]: 'true' | 'false'
 }
 
 export const DEFAULT_FILTERS: MapFilters = {
-  'p-plus-r': 'false',
-  'parking-lots': 'false',
-  assistants: 'false',
-  branches: 'false',
-  garages: 'false',
-  parkomats: 'false',
-  partners: 'false',
-  active: 'false',
-  inactive: 'false',
-  planned: 'false',
+  'p-plus-r': 'true',
+  'parking-lot': 'true',
+  assistant: 'true',
+  garage: 'true',
+  parkomat: 'true',
+  sellingPoint: 'true',
+  active: 'true',
+  inactive: 'true',
+  planned: 'true',
 }

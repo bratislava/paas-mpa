@@ -81,7 +81,7 @@ const IndexScreen = () => {
       <MapScreen />
 
       <View className="absolute flex w-full flex-row justify-between px-2.5" style={{ top }}>
-        <Link asChild href="/filters">
+        <Link asChild href={{ pathname: '/filters', params: {} }}>
           <IconButton
             name="filter-list"
             // TODO translation

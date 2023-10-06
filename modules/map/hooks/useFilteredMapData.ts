@@ -10,7 +10,7 @@ export const useFilteredMapData = (data: ProcessedMapData, filters: MapFilters) 
       filteredData.markersData = {
         ...filteredData.markersData,
         features: filteredData.markersData.features.filter(
-          (feature) => filters[feature.properties.kind] === 'true',
+          (feature) => filters[feature.properties.icon] === 'true',
         ),
       }
     }
