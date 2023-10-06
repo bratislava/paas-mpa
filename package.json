@@ -12,7 +12,9 @@
     "lint": "eslint --color --ext .md,.ts,.tsx ./",
     "lint:fix": "yarn eslint --fix",
     "doctor": "expo install --check",
-    "doctor:fix": "expo install --fix"
+    "doctor:fix": "expo install --fix",
+    "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.dev.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
+    "generate-clients": "yarn generate-client-paas-mpa"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "~0.2.3",
@@ -28,8 +30,9 @@
     "@turf/helpers": "^6.5.0",
     "@turf/intersect": "^6.5.0",
     "@types/react": "~18.2.14",
-    "amazon-cognito-identity-js": "^6.3.1",
-    "aws-amplify": "^5.3.6",
+    "amazon-cognito-identity-js": "^6.3.6",
+    "aws-amplify": "^5.3.11",
+    "axios": "^1.5.1",
     "clsx": "~2.0.0",
     "conditional-wrap": "~1.0.2",
     "expo": "~49.0.13",
@@ -63,6 +66,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/eslint-parser": "^7.22.11",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/url-parse": "^1.4.9",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",

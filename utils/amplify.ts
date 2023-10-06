@@ -30,6 +30,7 @@ export const getAccessTokenOrLogout = async () => {
     const session = await Auth.currentSession()
     const jwtToken = session.getAccessToken().getJwtToken()
     if (!jwtToken) throw new Error('no jwt token found in current session')
+
     return jwtToken
   } catch (error) {
     console.error('error getting access token - redirect to login', error)
