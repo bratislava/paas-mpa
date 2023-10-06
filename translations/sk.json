@@ -67,11 +67,18 @@
     }
   },
   "Settings": {
-    "title": "Nastavenia"
+    "title": "Nastavenia",
+    "language": "Jazyk",
+    "system": "Systém"
   },
   "PaymentMethods": {
     "title": "Platobné metódy",
-    "paymentGate": "Platobná karta / Apple Pay / Google Pay"
+    "paymentGate": "Platobná karta / Apple Pay / Google Pay",
+    "visitorCard": "Návštevnícka karta",
+    "bonusCard": "Bonusová karta",
+    "remaining": "Zostáva",
+    "todayRemaining": "Dnes zostáva",
+    "validUntil": "Platná do"
   },
   "Tickets": {
     "title": "Parkovacie lístky"
@@ -79,8 +86,16 @@
   "ParkingCards": {
     "title": "Parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
-    "custom": "Vlastný",
-    "validUntil": "Platný do"
+    "type": {
+      "visitor": "Návštevnícka karta",
+      "resident": "Rezidentská karta",
+      "bonus": "Bonusová karta",
+      "subscriber": "Abonentská karta"
+    },
+    "validUntil": "Platný do",
+    "remainingCredit": "Zostávajúci kredit",
+    "activeCards": "Aktívne karty",
+    "expiredCards": "Exspirované karty"
   },
   "MapScreen": {
     "ZoneBottomSheet": {

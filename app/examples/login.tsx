@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
+import { ScrollView } from 'react-native'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -22,7 +23,7 @@ const LoginScreen = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [authResult, setAuthResult] = useState<any>(null)
   // eslint-disable-next-line pii/no-phone-number
-  const [phone, setPhone] = useState('+421948234641')
+  const [phone, setPhone] = useState('+421')
   const [code, setCode] = useState('')
 
   const confirmStep = async () => {
@@ -52,6 +53,7 @@ const LoginScreen = () => {
     try {
       try {
         const loginResultInner = await Auth.signIn(phone, staticTempPass)
+        console.log('loginResultInner:\n', JSON.stringify(loginResultInner, undefined, 2))
         if (loginResultInner) {
           setLoginResult(loginResultInner)
         }
@@ -94,29 +96,33 @@ const LoginScreen = () => {
 
   useEffect(() => {
     ;(async () => {
-      setAuthResult(await Auth.currentUserInfo())
+      const currentUser = await Auth.currentSession()
+      console.log('currentUser:', currentUser)
+      setAuthResult(currentUser)
     })()
       .then(() => console.log('done'))
-      .catch(console.log)
+      .catch((error) => console.log('No user:', error))
   }, [])
 
   return (
     <ScreenView>
-      <ScreenContent>
-        <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} />
-        <TextInput placeholder="Code" value={code} onChangeText={setCode} />
-        <Typography>{loginError?.message || JSON.stringify(loginResult)}</Typography>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={attemptLogin}>Login/Register</Button>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={confirmStep}>Confirm</Button>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={signOut}>Logout</Button>
-        {phoneToConfirm ? <Typography>{phoneToConfirm}</Typography> : null}
-        <Typography>{JSON.stringify(authResult)}</Typography>
-        <Typography>{JSON.stringify(loginResult)}</Typography>
-        <Typography>{JSON.stringify(signUpResult)}</Typography>
-      </ScreenContent>
+      <ScrollView>
+        <ScreenContent>
+          <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} />
+          <TextInput placeholder="Code" value={code} onChangeText={setCode} />
+          <Typography>Login error message: {loginError?.message}</Typography>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <Button onPress={attemptLogin}>Login/Register</Button>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <Button onPress={confirmStep}>Confirm</Button>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <Button onPress={signOut}>Logout</Button>
+          {phoneToConfirm ? <Typography>{phoneToConfirm}</Typography> : null}
+          <Typography>Auth result: {JSON.stringify(authResult, undefined, 2)}</Typography>
+          <Typography>Login result: {JSON.stringify(loginResult, undefined, 2)}</Typography>
+          <Typography>Signup result: {JSON.stringify(signUpResult, undefined, 2)}</Typography>
+        </ScreenContent>
+      </ScrollView>
     </ScreenView>
   )
 }

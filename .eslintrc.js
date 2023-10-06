@@ -1,6 +1,11 @@
 module.exports = {
   extends: ['auto'],
-  ignorePatterns: ['*.config.*', '.eslintrc.js'],
+  ignorePatterns: [
+    '*.config.*',
+    '.eslintrc.js',
+    'modules/backend/openapi-generated',
+    'modules/backend/utils/fix-client.js',
+  ],
   rules: {
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     /** We use this a lot with isDefined and hasAttributes */
@@ -45,16 +50,16 @@ module.exports = {
     // quite annoying as it conflicts with VS Code"s auto import
     'lodash/import-scope': 'off',
     /* solves error with imports from files with no extension */
-    'import/extensions': ['error', 'ignorePackages', { '': 'never' }],
+    'import/extensions': 'off',
+    // 'import/extensions': ['error', 'ignorePackages', { '': 'never' }],
     // 'no-process-env': 'error',
     'react/react-in-jsx-scope': 'off',
     // cumbersome when prototyping
     'react-native/no-color-literals': 'off',
-    // no need for error
-    'pii/no-phone-number': 'warn',
+    // too many false positives
+    'pii/no-phone-number': 'off',
     'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
     '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',
-    'import/extensions': 'off',
   },
 }

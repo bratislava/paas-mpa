@@ -8,6 +8,7 @@ function assertEnv<T>(variable: string, value: T) {
   if (!value) {
     throw new Error(`Missing environment variable: ${variable}`)
   }
+
   return value
 }
 

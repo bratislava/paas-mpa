@@ -9,6 +9,12 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
+/*
+ *  Figma:
+ *  https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3230%3A21389&mode=dev
+ *  https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=2677%3A22038&mode=dev
+ */
+
 // Ensure that only one of these props is set at a time
 type Props =
   | {
@@ -20,7 +26,7 @@ type Props =
       showControlChevron?: boolean
     }
 
-const PaymentGate = ({ selected, showControlChevron }: Props) => {
+const PaymentGateMethod = ({ selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 
   return (
@@ -37,4 +43,4 @@ const PaymentGate = ({ selected, showControlChevron }: Props) => {
   )
 }
 
-export default PaymentGate
+export default PaymentGateMethod
