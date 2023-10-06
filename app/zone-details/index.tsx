@@ -19,7 +19,7 @@ const ZoneDetailsScreen = () => {
   const zoneDetailsParams = useLocalSearchParams<ZoneDetailsParamas>()
   const t = useTranslation()
 
-  const id = zoneDetailsParams.id ? Number.parseInt(zoneDetailsParams.id, 10) : -1
+  const id = zoneDetailsParams.id ? Number.parseInt(zoneDetailsParams.id, 10) : null
 
   const zone = useMapZone(id, true)
 
