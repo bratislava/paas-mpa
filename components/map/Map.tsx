@@ -22,13 +22,13 @@ import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
-import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
+import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
-  onZoneChange?: (feature: SelectedUdrZone) => void
-  onPointPress?: (point: SelectedPoint) => void
+  onZoneChange?: (feature: MapUdrZone) => void
+  onPointPress?: (point: MapInterestPoint) => void
 }
 
 const DEBOUNCE_TIME = 50
@@ -45,7 +45,9 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
     Geometry,
     GeoJsonProperties
   > | null>(null)
-  const [selectedPoint, setSelectedPoint] = useState<Feature<Point, GeoJsonProperties> | null>(null)
+  const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, GeoJsonProperties> | null>(
+    null,
+  )
 
   const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
   const [cameraZoom, setCameraZoom] = useState<number | undefined>()
@@ -55,7 +57,7 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
   const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
 
   useEffect(() => {
-    onZoneChange?.((selectedPolygon?.properties as SelectedUdrZone) ?? null)
+    onZoneChange?.((selectedPolygon?.properties as MapUdrZone) ?? null)
   }, [selectedPolygon, onZoneChange])
 
   const getCurrentPolygon = useCallback(
@@ -96,8 +98,8 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
 
         return
       }
-      onPointPress?.(point.properties as SelectedPoint)
-      setSelectedPoint(point)
+      onPointPress?.(point.properties as MapInterestPoint)
+      setMapInterestPoint(point)
     },
     [onPointPress],
   )

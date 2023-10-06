@@ -1,8 +1,9 @@
 /* eslint-disable babel/camelcase */
 
-import { MapPointIconEnum, MapPointKindEnum } from './constants'
+import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 
-export type SelectedUdrZone = {
+export type MapUdrZone = {
+  OBJECTID: number
   Nazov: string
   Zakladna_cena: number // 2
   Cas_spoplatnenia_en: string // "8-24"
@@ -10,6 +11,10 @@ export type SelectedUdrZone = {
   Casove_obmedzenie_dlzky_park: number // 0
   Doplnkova_informacia_en: string // "Bonus parking card cannot be used in this segment"
   Doplnkova_informacia_sk: string // "V tomto úseku nie je možné využiť bonusovú parkovaciu kartu"
+  Informacia_RPK_sk: string
+  Informacia_RPK_en: string
+  Informacia_NPK_sk: string
+  Informacia_NPK_en: string
   Kod_rezidentskej_zony: string // "SM0"
   Status: string // "active"
   UDR_ID: number // 1027
@@ -27,37 +32,64 @@ export type SelectedUdrZone = {
   web: string // "ano"
 }
 
-export type SelectedPoint = {
+export type NormalizedUdrZone = {
+  /** OBJECTID */
+  id: number
+  name: string
+  price: number
+  paidHours: string
+  parkingDurationLimit: number
+  additionalInformation: string
+  rpkInformation: string
+  npkInformation: string
+  code: string
+  status: string
+  udrId: number
+  odpRpk: string
+  restrictionOnlyRpk: string
+  residentialZoneName: string
+  reservedParking: string
+  initialFreeParkingDuration: number
+  parkingDurationRestrictionException: string
+  parkingFeeException: string
+  layer: MapLayerEnum
+}
+
+export type MapInterestPoint = {
   Navigacia: string // "https://www.google.com/maps/place/Magistr%C3%A1t+hlavn%C3%A9ho+mesta+SR+Bratislavy/@48.1439423,17.1091824,234m/data=!3m3!1e3!4b1!5s0x476c89431d7c7795:0x4caf7acfb0ed99d7!4m5!3m4!1s0x476c89433d1bc761:0x6ad8016ef317f8f0!8m2!3d48.1439414!4d17.1097296"
   icon: MapPointIconEnum
   kind: MapPointKindEnum
+  OBJECTID: number // 4
 }
 
-export type BranchPoint = SelectedPoint & {
+export type BranchPoint = MapInterestPoint & {
   Adresa: string // "Primaciálne nám. 1, 811 01 Bratislava"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "PAAS Centrum"
-  OBJECTID: number // 4
   Otvaracie_hodiny_en: string // "Mo 8:30-17:00, Tu-Th 8:30-16:00, Fr 8:30-15:00"
   Otvaracie_hodiny_sk: string // "Po 8:30-17:00, Ut-Št 8:30-16:00, Pi 8:30-15:00"
 }
 
-export type PartnerPoint = SelectedPoint & {
+export type AssistantPoint = MapInterestPoint & {
+  Rezidenstka_zona: string
+  Interny_nazov: string
+  web: string
+}
+
+export type PartnerPoint = MapInterestPoint & {
   adresa: string // "Jesenského 4"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "Talks kaviareň "
-  OBJECTID: number // 63
   Otvaracie_hodiny_en: string // "Mo-Th 7:15-18:00 Fr 7:15-19:00 Sa 9:00-19:00 Su 10:00-18:00"
   Otvaracie_hodiny_sk: string // "Otvaracie_hodiny_sk": "Po-Št 7:15-18:00 Pi 7:15-19:00 So 9:00-19:00 Ne 10:00-18:00"
   Predajne_miesto: string // "Talks kaviareň"
   web?: string // "ano"
 }
 
-export type ParkomatPoint = SelectedPoint & {
+export type ParkomatPoint = MapInterestPoint & {
   Datum_osadenia_en: string // '31.07.2023'
   Datum_osadenia_sk: string // '31.07.2023'
   Lokalita: string // 'Rigeleho x Paulínyho'
-  OBJECTID: number // 162
   Parkomat_ID: string // 'P0076'
   Rezidentska_zona: string // 'SM0'
   UDR: number // 1015
@@ -65,7 +97,7 @@ export type ParkomatPoint = SelectedPoint & {
   Navigacia: never
 }
 
-export type GaragePoint = SelectedPoint & {
+export type GaragePoint = MapInterestPoint & {
   Adresa: string // "Námestie Martina Benku"
   Informacia_NPK_en: string // "Visitor parking fee: weekdays from 8am-6pm - €1.80/h, weekdays from 6pm-8am + weekends and holidays - €1.20/h."
   Informacia_NPK_sk: string // "Návštevnícke parkovné: pracovné dni od 08:00-18:00 - 1,80 €/h., pracovné dni od 18:00-08:00 + víkendy a sviatky - 1,20 €/h. "
@@ -73,7 +105,6 @@ export type GaragePoint = SelectedPoint & {
   Informacia_RPK_sk: string // "Pre držiteľov rezidentskej parkovacej karty SM1 - pracovné dni 17:00-08:00 + víkendy a sviatky zadarmo."
   Nazov_en: string // "Underground garage Krížna"
   Nazov_sk: string // "Podzemná garáž Krížna"
-  OBJECTID: number // 23
   Povrch_en: string // "underground parking"
   Povrch_sk: string // "podzemná garáž"
   Prevadzkova_doba: string // "Nonstop"
@@ -85,11 +116,10 @@ export type GaragePoint = SelectedPoint & {
   zone: string // "SM1"
 }
 
-export type PPlusRPoinit = SelectedPoint & {
+export type PPlusRPoinit = MapInterestPoint & {
   Dojazdova_doba: string // "23 min"
   Nazov_en: string // "P+R Tesco Lamač"
   Nazov_sk: string // "P+R Tesco Lamač"
-  OBJECTID: number // 26
   Pocet_parkovacich_miest: string // "33"
   Povrch_en: string // "parking lot"
   Povrch_sk: string // "parkovisko"
@@ -105,11 +135,10 @@ export type PPlusRPoinit = SelectedPoint & {
   kind: string // "p-plus-r"
 }
 
-export type ParkingLotPoint = SelectedPoint & {
+export type ParkingLotPoint = MapInterestPoint & {
   Dojazdova_doba: string // "4 min"
   Nazov_en: string // "Parking lot Černyševského"
   Nazov_sk: string // "Záchytné parkovisko Černyševského"
-  OBJECTID: number // 7
   Pocet_parkovacich_miest: string // "59"
   Povrch_en: string // "parking lot"
   Povrch_sk: string // "parkovisko"
@@ -140,7 +169,7 @@ export type NormalizedPoint = {
 }
 
 type PointTypes = {
-  [MapPointKindEnum.assistant]: SelectedPoint & { kind: MapPointKindEnum.assistant }
+  [MapPointKindEnum.assistant]: AssistantPoint
   [MapPointKindEnum.branch]: BranchPoint
   [MapPointKindEnum.parkomat]: ParkomatPoint
   [MapPointKindEnum.partner]: PartnerPoint
@@ -151,7 +180,7 @@ type PointTypes = {
 
 // Type guard function using conditional types
 export function isPointOfKind<T extends MapPointKindEnum>(
-  point: SelectedPoint,
+  point: MapInterestPoint,
   kind: T,
 ): point is PointTypes[T] {
   return point?.kind === kind

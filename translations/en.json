@@ -146,5 +146,8 @@
         "parking-lots": "Parking lot"
       }
     }
+  },
+  "ZoneDetailsScreen": {
+    "title": "Zone details"
   }
 }

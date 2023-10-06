@@ -1,7 +1,15 @@
 import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
-import { ARCGIS_URL } from '../constants'
-import { useArcgis } from './useArcgis'
+import { ARCGIS_URL } from '@/modules/arcgis/constants'
+import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
+import {
+  BranchPoint,
+  MapInterestPoint,
+  MapUdrZone,
+  ParkingLotPoint,
+  ParkomatPoint,
+  PartnerPoint,
+} from '@/modules/map/types'
 
 export const useArcgisData = () => {
   const { data: rawZonesData } = useArcgis(`${ARCGIS_URL}/parkovanie/Hranica_RZ/MapServer/1`, {
@@ -41,12 +49,15 @@ export const useArcgisData = () => {
   })
 
   return {
-    rawAssistantsData: rawAssistantsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawPartnersData: rawPartnersData as FeatureCollection<Point, GeoJsonProperties>,
-    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, GeoJsonProperties>,
-    rawBranchesData: rawBranchesData as FeatureCollection<Point, GeoJsonProperties>,
-    rawUdrData: rawUdrData as FeatureCollection<Polygon, GeoJsonProperties>,
+    rawAssistantsData: rawAssistantsData as FeatureCollection<
+      Point,
+      MapInterestPoint & { web: string }
+    >,
+    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint>,
+    rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint>,
+    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint>,
+    rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint>,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone>,
     rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties>,
     rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   }

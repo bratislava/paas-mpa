@@ -9,11 +9,11 @@ import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { SelectedPoint } from '@/modules/map/types'
-import { normalizePoint } from '@/modules/map/utils/normalizePoint'
+import { useNormalizedPoint } from '@/modules/map/hooks/useNormalizedPoint'
+import { MapInterestPoint } from '@/modules/map/types'
 
 type Props = {
-  point: SelectedPoint
+  point: MapInterestPoint
 }
 
 const EXCLUDED_ATTRIBUTES = new Set(['address', 'name', 'navigation', 'kind', 'id'])
@@ -23,7 +23,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const [index, setIndex] = useState(-1)
   const [footerHeight, setFooterHeight] = useState(0)
 
-  const formattedMapPoint = useMemo(() => normalizePoint(point), [point])
+  const formattedMapPoint = useNormalizedPoint(point)
 
   const snapPoints = useMemo(() => [375, '80%'], [])
 

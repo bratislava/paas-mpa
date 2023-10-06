@@ -1,17 +1,18 @@
-import i18n from '@/i18n.config'
+/* eslint-disable babel/camelcase */
 
-import { MapPointKindEnum } from '../constants'
-import { isPointOfKind, NormalizedPoint, SelectedPoint } from '../types'
+import { MapPointKindEnum } from '@/modules/map/constants'
+import { isPointOfKind, MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
 
-// eslint-disable-next-line babel/camelcase
-const resolveOpeningHours = (point: { Otvaracie_hodiny_en: string; Otvaracie_hodiny_sk: string }) =>
-  i18n.language === 'en' ? point.Otvaracie_hodiny_en : point.Otvaracie_hodiny_sk
+export const normalizePoint = (point: MapInterestPoint, language: string): NormalizedPoint => {
+  const resolveOpeningHours = (resolvingPoint: {
+    Otvaracie_hodiny_en: string
+    Otvaracie_hodiny_sk: string
+  }) =>
+    language === 'en' ? resolvingPoint.Otvaracie_hodiny_en : resolvingPoint.Otvaracie_hodiny_sk
 
-// eslint-disable-next-line babel/camelcase
-const resolveName = (point: { Nazov_en: string; Nazov_sk: string }) =>
-  i18n.language === 'en' ? point.Nazov_en : point.Nazov_sk
+  const resolveName = (resolvingPoint: { Nazov_en: string; Nazov_sk: string }) =>
+    language === 'en' ? resolvingPoint.Nazov_en : resolvingPoint.Nazov_sk
 
-export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   if (isPointOfKind(point, MapPointKindEnum.branch)) {
     return {
       id: point.OBJECTID,
@@ -77,9 +78,9 @@ export const normalizePoint = (point: SelectedPoint): NormalizedPoint => {
   }
   if (isPointOfKind(point, MapPointKindEnum.assistant)) {
     return {
-      id: 0,
-      name: 'N/A',
-      kind: point.kind,
+      id: point.OBJECTID,
+      name: point.Interny_nazov, // TODO: Change
+      kind: MapPointKindEnum.assistant,
     }
   }
 

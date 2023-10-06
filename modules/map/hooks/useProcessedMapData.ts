@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { useArcgisData } from '@/modules/arcgis/hooks/useArcgisData'
 import { processData } from '@/modules/map/utils/processData'
+import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { MapFeaturesHashMapValue } from '@/state/types'
 
 type ProcessDataReturn = ReturnType<typeof processData>
 
@@ -11,6 +13,8 @@ export const useProcessedArcgisData = () => {
   const [zonesData, setZonesData] = useState<ProcessDataReturn['zonesData'] | null>(null)
   const [udrData, setUdrData] = useState<ProcessDataReturn['udrData'] | null>(null)
   const [odpData, setOdpData] = useState<ProcessDataReturn['odpData'] | null>(null)
+
+  const { setMapFeatures } = useGlobalStoreContext()
 
   const {
     rawZonesData,
@@ -50,6 +54,19 @@ export const useProcessedArcgisData = () => {
       setUdrData(udrData)
       setOdpData(odpData)
       setLoading(false)
+
+      const featuresHashMap = new Map<number, MapFeaturesHashMapValue>()
+      udrData.features.forEach((feature) => {
+        if (feature.properties) {
+          featuresHashMap.set(feature.properties.OBJECTID, feature)
+        }
+      })
+      markersData.features.forEach((feature) => {
+        if (feature.properties) {
+          featuresHashMap.set(feature.properties.OBJECTID, feature)
+        }
+      })
+      setMapFeatures(featuresHashMap)
     }
   }, [
     rawAssistantsData,
@@ -60,6 +77,7 @@ export const useProcessedArcgisData = () => {
     rawUdrData,
     rawOdpData,
     rawZonesData,
+    setMapFeatures,
   ])
 
   return { isLoading, markersData, zonesData, udrData, odpData }

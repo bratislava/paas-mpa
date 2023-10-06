@@ -5,26 +5,26 @@ import { View } from 'react-native'
 import Map from '@/components/map/Map'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
-import { SelectedPoint, SelectedUdrZone } from '@/modules/map/types'
+import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 
 const MapScreen = () => {
-  const [selectedZone, setSelectedZone] = useState<SelectedUdrZone | null>(null)
-  const [selectedPoint, setSelectedPoint] = useState<SelectedPoint | null>(null)
+  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
+  const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const handleZoneChange = useCallback(
-    (zone: SelectedUdrZone) => {
+    (zone: MapUdrZone) => {
       setSelectedZone(zone)
       zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setSelectedZone],
   )
   const handlePointPress = useCallback(
-    (zone: SelectedPoint) => {
-      setSelectedPoint(zone)
+    (zone: MapInterestPoint) => {
+      setMapInterestPoint(zone)
       zoneBottomSheetRef.current?.snapToIndex(0)
     },
-    [setSelectedPoint],
+    [setMapInterestPoint],
   )
 
   return (
