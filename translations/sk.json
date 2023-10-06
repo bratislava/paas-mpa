@@ -110,5 +110,8 @@
         "parking-lots": "Parkovisko"
       }
     }
+  },
+  "ZoneDetailsScreen": {
+    "title": "Detail zóny"
   }
 }
