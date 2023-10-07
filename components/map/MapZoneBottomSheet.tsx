@@ -1,10 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
 import { View } from 'react-native'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
-import TextInput from '@/components/inputs/TextInput'
+import Autocomplete from '@/components/inputs/Autocomplete'
+import { MapRef } from '@/components/map/Map'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
@@ -15,16 +16,25 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { MapUdrZone } from '@/modules/map/types'
+import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 
 type Props = {
   zone: MapUdrZone | null
+  setFlyToCenter?: MapRef['setFlyToCenter']
 }
 
-const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
+const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCenter }, ref) => {
   const t = useTranslation()
 
   const snapPoints = useMemo(() => [220, 320], [])
+
+  const handleValueChange = useCallback(
+    (value: GeocodingFeature) => {
+      setFlyToCenter?.(value.center)
+    },
+    [setFlyToCenter],
+  )
 
   return (
     <BottomSheet ref={ref} snapPoints={snapPoints}>
@@ -32,7 +42,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone }, ref) => {
         <View className="bg-white g-3">
           <View className="g-2">
             <Field label={t('MapScreen.ZoneBottomSheet.title')}>
-              <TextInput />
+              <Autocomplete
+                getOptions={forwardGeocode}
+                getOptionLabel={(option) => option.text}
+                onValueChange={handleValueChange}
+              />
             </Field>
             {zone ? (
               <Panel className="g-4">
