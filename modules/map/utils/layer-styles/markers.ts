@@ -12,6 +12,9 @@ const iconSize = [
   0.25,
 ]
 
+const clusterTextOffset = ['interpolate', ['linear'], ['zoom'], 10, [0.6, -0.6], 14, [0.9, -0.9]]
+const clusterIconOffset = ['interpolate', ['linear'], ['zoom'], 10, [40, -40], 14, [50, -50]]
+
 const markersStyles = {
   pin: {
     iconImage: ['get', 'icon'],
@@ -33,11 +36,13 @@ const markersStyles = {
     iconIgnorePlacement: true,
   },
   clusterCount: {
+    iconImage: 'clusterCircle',
+    iconSize,
+    iconOffset: clusterIconOffset,
     textField: ['get', 'point_count_abbreviated'],
     textColor: '#fff',
-    textOffset: [1, -1],
-    textHaloColor: '#f00',
-    textHaloWidth: 5,
+    textOffset: clusterTextOffset,
+    textSize: ['interpolate', ['linear'], ['zoom'], 10, 6, 14, 15],
   },
 }
 

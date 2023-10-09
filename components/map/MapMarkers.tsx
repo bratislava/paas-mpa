@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react'
 
 import {
   AssistantImage,
+  ClusterCircleImage,
   GarageImage,
   ParkingImage,
   ParkomatImage,
@@ -53,6 +54,7 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           [MapPointIconEnum.pPlusR]: PPLusRImage,
           [MapPointIconEnum.parkingLot]: ParkingImage,
           [MapPointIconEnum.assistant]: AssistantImage,
+          clusterCircle: ClusterCircleImage,
         }}
       />
       {markersDataByKind?.map(([icon, shape]) => (

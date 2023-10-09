@@ -34,6 +34,7 @@ type Props = {
 
 const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
+const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 
 const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const camera = useRef<Camera>(null)
@@ -49,6 +50,7 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, GeoJsonProperties> | null>(
     null,
   )
+  const [isMapPinShown, setIsMapPinShown] = useState(false)
 
   const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
   const [cameraZoom, setCameraZoom] = useState<number | undefined>()
@@ -75,10 +77,12 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
 
         return
       }
-      const feature = featuresAtCenter!.features[0]
-      setSelectedPolygon(feature)
+      if (isMapPinShown) {
+        const feature = featuresAtCenter!.features[0]
+        setSelectedPolygon(feature)
+      }
     },
-    [screenCenter],
+    [screenCenter, isMapPinShown],
   )
 
   const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
@@ -88,6 +92,11 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const handleCameraChange = useCallback(
     (state: MapState) => {
       debouncedHandleCameraChange(state)
+      if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
+        setIsMapPinShown(false)
+      } else {
+        setIsMapPinShown(true)
+      }
     },
     [debouncedHandleCameraChange],
   )
@@ -95,6 +104,7 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const handlePointPress = useCallback(
     async (point: Feature<Point, GeoJsonProperties>) => {
       if (point.properties?.point_count) {
+        setFollowingUser(false)
         setFlyToCenter(point.geometry.coordinates)
         const zoom = await map.current?.getZoom()
         setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
@@ -184,7 +194,7 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
       </MapView>
-      <MapPin price={selectedZone?.Zakladna_cena} />
+      {isMapPinShown && <MapPin price={selectedZone?.Zakladna_cena} />}
     </View>
   )
 }

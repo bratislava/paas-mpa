@@ -29,7 +29,7 @@ const filteringOptions: {
     title: 'payment',
     data: [
       { icon: ParkomatIcon, optionKey: MapPointIconEnum.parkomat },
-      { icon: SellingPointIcon, optionKey: MapPointIconEnum.sellingPoint },
+      { icon: SellingPointIcon, optionKey: MapPointIconEnum.partner },
       { icon: AssistantIcon, optionKey: MapPointIconEnum.assistant },
     ],
   },
