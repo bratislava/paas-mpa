@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { forwardRef, ReactElement, Ref, useCallback, useState } from 'react'
-import { FlatList, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
+import {
+  FlatList,
+  ListRenderItem,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  View,
+} from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -14,6 +20,7 @@ type Props<O> = {
   areOptionsEqual?: (optionA: O, optionB: O) => boolean
   getOptionLabel: (option: O) => string
   debounce?: number
+  renderItem?: ListRenderItem<O> | null
 }
 
 // eslint-disable-next-line react/function-component-definition
@@ -25,6 +32,7 @@ function AutocompleteInner<O>(
     areOptionsEqual,
     getOptionLabel,
     debounce = 300,
+    renderItem,
   }: Props<O>,
   ref: React.ForwardedRef<View>,
 ) {
@@ -39,7 +47,6 @@ function AutocompleteInner<O>(
 
   const handleChange = useCallback(
     async (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
-      console.log({ event })
       const newInput = event.nativeEvent.text
       setInput(newInput)
       debouncedHandleChange(newInput)?.catch((error) => false)
@@ -47,31 +54,36 @@ function AutocompleteInner<O>(
     [debouncedHandleChange],
   )
 
-  const handleOptionPress = (option: O) => () => {
-    setValue(option)
-    setInput(getOptionLabel(option))
-    onValueChange(option)
-    setOptions([])
-  }
+  const handleOptionPress = useCallback(
+    (option: O) => () => {
+      setValue(option)
+      setInput(getOptionLabel(option))
+      onValueChange(option)
+      setOptions([])
+    },
+    [getOptionLabel, onValueChange],
+  )
+
+  const defaultRenderItem: ListRenderItem<O> = useCallback(
+    ({ item }) => (
+      <PressableStyled
+        className="border-divider p-3"
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ borderBottomWidth: 1 }}
+        onPress={handleOptionPress(item)}
+      >
+        <Typography>{getOptionLabel(item)}</Typography>
+      </PressableStyled>
+    ),
+    [handleOptionPress, getOptionLabel],
+  )
 
   return (
     <View ref={ref}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <TextInput onChange={handleChange} value={input} />
       <View>
-        <FlatList
-          renderItem={({ item }) => (
-            <PressableStyled
-              className="border-divider p-3"
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{ borderBottomWidth: 1 }}
-              onPress={handleOptionPress(item)}
-            >
-              <Typography>{getOptionLabel(item)}</Typography>
-            </PressableStyled>
-          )}
-          data={options}
-        />
+        <FlatList renderItem={renderItem || defaultRenderItem} data={options} />
       </View>
     </View>
   )
