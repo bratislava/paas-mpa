@@ -48,6 +48,7 @@ export type MapRef = {
 const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
 const HIDE_MARKER_ON_ZOOM_OVER = 13.5
+const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
   ({ onZoneChange, onPointPress, filters }: Props, ref: ForwardedRef<MapRef>) => {
@@ -102,6 +103,7 @@ const Map = forwardRef(
     const handleSetFlyToCenter = useCallback((center: Position) => {
       setFollowingUser(false)
       setFlyToCenter(center)
+      setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
 
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
