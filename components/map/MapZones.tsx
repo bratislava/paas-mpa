@@ -1,45 +1,58 @@
 /* eslint-disable unicorn/no-array-reduce */
-import { FillLayer, ShapeSource } from '@rnmapbox/maps'
-import { FeatureCollection, GeoJsonProperties, Polygon } from 'geojson'
+import { FillLayer, LineLayer, ShapeSource } from '@rnmapbox/maps'
+import { FeatureCollection, Polygon } from 'geojson'
 import { useMemo } from 'react'
 
+import { MapZoneStatusEnum } from '@/modules/map/constants'
+import { MapUdrZone } from '@/modules/map/types'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
-import udrStyle2 from '@/modules/map/utils/layer-styles/visitors2'
 
 type Props = {
-  udrData: FeatureCollection<Polygon, GeoJsonProperties>
+  udrData: FeatureCollection<Polygon, MapUdrZone>
 }
 
 const MapZones = ({ udrData }: Props) => {
-  const udrDataByPrice = useMemo(
+  const udrDataByStatus = useMemo(
     () => ({
-      regular: {
+      active: {
         ...udrData,
-        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena !== 2),
-      } as FeatureCollection,
-      eur2: {
+        features: udrData?.features.filter(
+          (udr) => udr.properties?.Status === MapZoneStatusEnum.active,
+        ),
+      },
+      planned: {
         ...udrData,
-        features: udrData?.features.filter((udr) => udr.properties?.Zakladna_cena === 2),
-      } as FeatureCollection,
+        features: udrData?.features.filter(
+          (udr) => udr.properties?.Status === MapZoneStatusEnum.planned,
+        ),
+      },
     }),
     [udrData],
   )
 
   return (
     <>
-      {udrDataByPrice.regular?.features?.length > 0 && (
-        <ShapeSource id="udrSource" shape={udrDataByPrice.regular}>
+      {udrData.features?.length > 0 && (
+        <ShapeSource id="udrSource" shape={udrData}>
           <FillLayer
             id="udrFill"
-            style={udrStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
+            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-fill')?.paint}
           />
         </ShapeSource>
       )}
-      {udrDataByPrice.eur2?.features?.length > 0 && (
-        <ShapeSource id="udrSource2" shape={udrDataByPrice.eur2}>
-          <FillLayer
-            id="udrFill2"
-            style={udrStyle2.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
+      {udrDataByStatus.active.features?.length > 0 && (
+        <ShapeSource id="udrSourceActive" shape={udrDataByStatus.active}>
+          <LineLayer
+            id="udrLineActive"
+            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-active')?.paint}
+          />
+        </ShapeSource>
+      )}
+      {udrDataByStatus.planned.features?.length > 0 && (
+        <ShapeSource id="udrSourcePlanned" shape={udrDataByStatus.planned}>
+          <LineLayer
+            id="udrLinePlanned"
+            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-planned')?.paint}
           />
         </ShapeSource>
       )}

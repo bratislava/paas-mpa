@@ -24,7 +24,6 @@ import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
-import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
@@ -178,15 +177,7 @@ const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
           <ShapeSource id="highlight" shape={selectedPolygon}>
             <FillLayer
               id="highlight"
-              style={udrStyle.reduce((prev, current) => {
-                const paint = { ...current.paint }
-                if (paint.fillColor) {
-                  paint.fillColor = [...paint.fillColor]
-                  paint.fillColor[3] = colors.orange
-                }
-
-                return { ...prev, ...paint }
-              }, {})}
+              style={udrStyle.find((layerStyle) => layerStyle.id === 'udr-fill-selected')?.paint}
             />
           </ShapeSource>
         )}
