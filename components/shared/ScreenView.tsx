@@ -1,6 +1,7 @@
 import { clsx } from 'clsx'
 import { Link, useNavigation } from 'expo-router'
-import React, { ReactNode, useEffect } from 'react'
+import { Href } from 'expo-router/build/link/href'
+import { ReactNode, useEffect } from 'react'
 import { Image, View } from 'react-native'
 
 import Button from '@/components/shared/Button'
@@ -19,7 +20,7 @@ type Props = {
 }
 
 export type ContinueProps = {
-  href: string
+  href: Href
   label?: string
   isDisabled?: boolean
 }

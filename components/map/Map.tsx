@@ -18,23 +18,25 @@ import { useDebouncedCallback } from 'use-debounce'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS } from '@/modules/map/constants'
+import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS, MapFilters } from '@/modules/map/constants'
+import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
-import { colors } from '@/modules/map/utils/layer-styles/colors'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
   onZoneChange?: (feature: MapUdrZone) => void
   onPointPress?: (point: MapInterestPoint) => void
+  filters: MapFilters
 }
 
 const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
+const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 
-const Map = ({ onZoneChange, onPointPress }: Props) => {
+const Map = ({ onZoneChange, onPointPress, filters }: Props) => {
   const camera = useRef<Camera>(null)
   const map = useRef<MapView>(null)
   const [followingUser, setFollowingUser] = useState(true)
@@ -48,13 +50,16 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
   const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, GeoJsonProperties> | null>(
     null,
   )
+  const [isMapPinShown, setIsMapPinShown] = useState(false)
 
   const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
   const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
   const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
-  const { isLoading, markersData, zonesData, udrData, odpData } = useProcessedArcgisData()
+  const { isLoading, ...processedData } = useProcessedArcgisData()
+
+  const { markersData, zonesData, udrData, odpData } = useFilteredMapData(processedData, filters)
 
   useEffect(() => {
     onZoneChange?.((selectedPolygon?.properties as MapUdrZone) ?? null)
@@ -72,10 +77,12 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
 
         return
       }
-      const feature = featuresAtCenter!.features[0]
-      setSelectedPolygon(feature)
+      if (isMapPinShown) {
+        const feature = featuresAtCenter!.features[0]
+        setSelectedPolygon(feature)
+      }
     },
-    [screenCenter],
+    [screenCenter, isMapPinShown],
   )
 
   const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
@@ -85,6 +92,11 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
   const handleCameraChange = useCallback(
     (state: MapState) => {
       debouncedHandleCameraChange(state)
+      if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
+        setIsMapPinShown(false)
+      } else {
+        setIsMapPinShown(true)
+      }
     },
     [debouncedHandleCameraChange],
   )
@@ -92,6 +104,7 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
   const handlePointPress = useCallback(
     async (point: Feature<Point, GeoJsonProperties>) => {
       if (point.properties?.point_count) {
+        setFollowingUser(false)
         setFlyToCenter(point.geometry.coordinates)
         const zoom = await map.current?.getZoom()
         setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
@@ -174,22 +187,14 @@ const Map = ({ onZoneChange, onPointPress }: Props) => {
           <ShapeSource id="highlight" shape={selectedPolygon}>
             <FillLayer
               id="highlight"
-              style={udrStyle.reduce((prev, current) => {
-                const paint = { ...current.paint }
-                if (paint.fillColor) {
-                  paint.fillColor = [...paint.fillColor]
-                  paint.fillColor[3] = colors.orange
-                }
-
-                return { ...prev, ...paint }
-              }, {})}
+              style={udrStyle.find((layerStyle) => layerStyle.id === 'udr-fill-selected')?.paint}
             />
           </ShapeSource>
         )}
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
       </MapView>
-      <MapPin price={selectedZone?.Zakladna_cena} />
+      {isMapPinShown && <MapPin price={selectedZone?.Zakladna_cena} />}
     </View>
   )
 }

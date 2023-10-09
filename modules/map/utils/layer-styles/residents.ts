@@ -12,24 +12,24 @@ const styles = [
         colors.orange,
         colors.lightBlue,
       ],
-      'line-dasharray': [
-        'match',
-        ['get', 'Status'],
-        'planned',
-        ['literal', [2, 2]],
-        ['literal', [1, 0]],
-      ],
-      'line-width': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        // zoom is 5 (or less) -> circle radius will be 1px
-        11,
-        1,
-        // zoom is 10 (or greater) -> circle radius will be 5px
-        20,
-        3,
-      ],
+      // 'line-dasharray': [
+      //   'match',
+      //   ['get', 'Status'],
+      //   'planned',
+      //   ['literal', [2, 2]],
+      //   ['literal', [1, 0]],
+      // ],
+      // 'line-width': [
+      //   'interpolate',
+      //   ['linear'],
+      //   ['zoom'],
+      //   // zoom is 5 (or less) -> circle radius will be 1px
+      //   11,
+      //   1,
+      //   // zoom is 10 (or greater) -> circle radius will be 5px
+      //   20,
+      //   3,
+      // ],
     },
   },
   {

@@ -149,5 +149,24 @@
   },
   "ZoneDetailsScreen": {
     "title": "Zone details"
+  },
+  "FiltersScreen": {
+    "title": "Filters",
+    "showResults": "Show results",
+    "filteringOptions": {
+      "assistant": "Assistant",
+      "parkomat": "Parkomat",
+      "partner": "Selling point",
+      "p-plus-r": "Park & Ride",
+      "garage": "Garage",
+      "parking-lot": "Parking lot",
+      "active": "Parking zone",
+      "planned": "Planned zones"
+    },
+    "sectionHeaders": {
+      "payment": "Payment",
+      "parkingType": "Parking type",
+      "zones": "Zones"
+    }
   }
 }

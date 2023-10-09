@@ -7,6 +7,8 @@ import { MapFeaturesHashMapValue } from '@/state/types'
 
 type ProcessDataReturn = ReturnType<typeof processData>
 
+export type ProcessedMapData = Omit<ReturnType<typeof useProcessedArcgisData>, 'isLoading'>
+
 export const useProcessedArcgisData = () => {
   const [isLoading, setLoading] = useState(true)
   const [markersData, setMarkersData] = useState<ProcessDataReturn['markersData'] | null>(null)
