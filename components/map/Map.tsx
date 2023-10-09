@@ -10,8 +10,17 @@ import {
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { Feature, GeoJsonProperties, Geometry, Point, Position } from 'geojson'
-import { ForwardedRef, forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Platform, View } from 'react-native'
+import {
+  ForwardedRef,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { Keyboard, Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -90,6 +99,15 @@ const Map = forwardRef(
       [screenCenter, isMapPinShown],
     )
 
+    const handleSetFlyToCenter = useCallback((center: Position) => {
+      setFollowingUser(false)
+      setFlyToCenter(center)
+    }, [])
+
+    useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
+      handleSetFlyToCenter,
+    ])
+
     const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
       getCurrentPolygon(state)
     }, DEBOUNCE_TIME)
@@ -151,6 +169,7 @@ const Map = forwardRef(
             left: insets.left + MAP_INSETS.left,
           }}
           onCameraChanged={handleCameraChange}
+          onPress={Keyboard.dismiss}
         >
           {location && isWithinCity ? (
             <Camera

@@ -208,10 +208,10 @@ export type GeocodingFeature = {
     | 'poi'
   )[]
   relevance: number // 0 -> 1
-  address?: string
+  address?: string // house number for place_type 'address'
   properties: {
     accuracy?: 'rooftop' | 'parcel' | 'point' | 'interpolated' | 'intersection' | 'street'
-    address?: string
+    address?: string // for place_type 'poi'
     category?: string
     maki?: string
     wikidata?: string

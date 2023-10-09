@@ -39,6 +39,7 @@ function AutocompleteInner<O>(
   const [input, setInput] = useState(defaultValue)
   const [value, setValue] = useState<O | null>(null)
   const [options, setOptions] = useState<O[]>([])
+  const [lastSearchText, setLastSearchText] = useState<string | null>(null)
 
   const debouncedHandleChange = useDebouncedCallback(async (newInput: string) => {
     const newOptions = await getOptions(newInput)
@@ -56,34 +57,49 @@ function AutocompleteInner<O>(
 
   const handleOptionPress = useCallback(
     (option: O) => () => {
+      setLastSearchText(input)
       setValue(option)
       setInput(getOptionLabel(option))
       onValueChange(option)
       setOptions([])
     },
-    [getOptionLabel, onValueChange],
+    [getOptionLabel, onValueChange, input],
   )
 
+  const handleFocus = useCallback(() => {
+    if (lastSearchText) {
+      setInput(lastSearchText)
+      setLastSearchText(null)
+    }
+  }, [lastSearchText])
+
   const defaultRenderItem: ListRenderItem<O> = useCallback(
-    ({ item }) => (
+    (info) => (
       <PressableStyled
-        className="border-divider p-3"
         // eslint-disable-next-line react-native/no-inline-styles
         style={{ borderBottomWidth: 1 }}
-        onPress={handleOptionPress(item)}
+        onPress={handleOptionPress(info.item)}
       >
-        <Typography>{getOptionLabel(item)}</Typography>
+        {renderItem ? (
+          renderItem(info)
+        ) : (
+          <View className="border-divider p-3">
+            <Typography className="flex-1" numberOfLines={1}>
+              {getOptionLabel(info.item)}
+            </Typography>
+          </View>
+        )}
       </PressableStyled>
     ),
-    [handleOptionPress, getOptionLabel],
+    [handleOptionPress, getOptionLabel, renderItem],
   )
 
   return (
     <View ref={ref}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <TextInput onChange={handleChange} value={input} />
+      <TextInput onChange={handleChange} value={input} onFocus={handleFocus} />
       <View>
-        <FlatList renderItem={renderItem || defaultRenderItem} data={options} />
+        <FlatList keyboardShouldPersistTaps renderItem={defaultRenderItem} data={options} />
       </View>
     </View>
   )

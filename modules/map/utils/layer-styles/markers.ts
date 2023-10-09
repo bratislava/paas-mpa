@@ -12,7 +12,7 @@ const iconSize = [
   0.25,
 ]
 
-const clusterTextOffset = ['interpolate', ['linear'], ['zoom'], 10, [0.6, -0.6], 14, [0.9, -0.9]]
+const clusterTextOffset = ['interpolate', ['linear'], ['zoom'], 10, [0.6, -0.6], 14, [0.85, -0.85]]
 const clusterIconOffset = ['interpolate', ['linear'], ['zoom'], 10, [40, -40], 14, [50, -50]]
 
 const markersStyles = {
@@ -34,6 +34,7 @@ const markersStyles = {
     iconSize,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,
+    iconOpacity: 1,
   },
   clusterCount: {
     iconImage: 'clusterCircle',
@@ -43,6 +44,9 @@ const markersStyles = {
     textColor: '#fff',
     textOffset: clusterTextOffset,
     textSize: ['interpolate', ['linear'], ['zoom'], 10, 6, 14, 15],
+    iconAllowOverlap: true,
+    iconIgnorePlacement: true,
+    iconOpacity: 1,
   },
 }
 
