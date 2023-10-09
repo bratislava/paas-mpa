@@ -27,7 +27,7 @@ const markersStyles = {
     iconIgnorePlacement: true,
   },
   sellingPointCluster: {
-    iconImage: MapPointIconEnum.sellingPoint,
+    iconImage: MapPointIconEnum.partner,
     iconSize,
     iconAllowOverlap: true,
     iconIgnorePlacement: true,

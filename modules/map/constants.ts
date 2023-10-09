@@ -14,8 +14,9 @@ export enum MapLayerEnum {
 
 export enum MapPointIconEnum {
   assistant = 'assistant',
-  sellingPoint = 'sellingPoint',
+  branch = 'branch',
   parkomat = 'parkomat',
+  partner = 'partner',
   pPlusR = 'p-plus-r',
   garage = 'garage',
   parkingLot = 'parking-lot',
@@ -29,6 +30,15 @@ export enum MapPointKindEnum {
   pPlusR = 'p-plus-r',
   garage = 'garages',
   parkingLot = 'parking-lots',
+}
+
+export enum MapPointFilterKindEnum {
+  assistant = 'assistant',
+  parkomat = 'parkomat',
+  sellingPoint = 'sellingPoint',
+  pPlusR = 'p-plus-r',
+  garage = 'garage',
+  parkingLot = 'parking-lot',
 }
 
 export enum MapZoneStatusEnum {

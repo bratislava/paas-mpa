@@ -48,7 +48,8 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
         images={{
           [MapPointIconEnum.parkomat]: ParkomatImage,
           [MapPointIconEnum.garage]: GarageImage,
-          [MapPointIconEnum.sellingPoint]: SellingPointImage,
+          [MapPointIconEnum.branch]: SellingPointImage,
+          [MapPointIconEnum.partner]: SellingPointImage,
           [MapPointIconEnum.pPlusR]: PPLusRImage,
           [MapPointIconEnum.parkingLot]: ParkingImage,
           [MapPointIconEnum.assistant]: AssistantImage,
