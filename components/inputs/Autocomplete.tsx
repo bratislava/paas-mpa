@@ -23,8 +23,7 @@ type Props<O> = {
   renderItem?: ListRenderItem<O> | null
 }
 
-// eslint-disable-next-line react/function-component-definition
-function AutocompleteInner<O>(
+const AutocompleteInner = <O,>(
   {
     onValueChange,
     defaultValue = '',
@@ -35,7 +34,7 @@ function AutocompleteInner<O>(
     renderItem,
   }: Props<O>,
   ref: React.ForwardedRef<View>,
-) {
+) => {
   const [input, setInput] = useState(defaultValue)
   const [value, setValue] = useState<O | null>(null)
   const [options, setOptions] = useState<O[]>([])
@@ -75,11 +74,7 @@ function AutocompleteInner<O>(
 
   const defaultRenderItem: ListRenderItem<O> = useCallback(
     (info) => (
-      <PressableStyled
-        // eslint-disable-next-line react-native/no-inline-styles
-        style={{ borderBottomWidth: 1 }}
-        onPress={handleOptionPress(info.item)}
-      >
+      <PressableStyled className="border-b-px" onPress={handleOptionPress(info.item)}>
         {renderItem ? (
           renderItem(info)
         ) : (
@@ -99,12 +94,18 @@ function AutocompleteInner<O>(
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <TextInput onChange={handleChange} value={input} onFocus={handleFocus} />
       <View>
-        <FlatList keyboardShouldPersistTaps renderItem={defaultRenderItem} data={options} />
+        <FlatList
+          keyboardShouldPersistTaps="always"
+          renderItem={defaultRenderItem}
+          data={options}
+        />
       </View>
     </View>
   )
 }
 
+// The best, most reliable, and achievable solution is type assertion
+// https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
 const Autocomplete = forwardRef(AutocompleteInner) as <O>(
   p: Props<O> & { ref?: Ref<View> },
 ) => ReactElement
