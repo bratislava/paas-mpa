@@ -1,5 +1,7 @@
 /* eslint-disable babel/camelcase */
 
+import { GeoJsonTypes, Geometry } from 'geojson'
+
 import {
   MapLayerEnum,
   MapPointIconEnum,
@@ -189,4 +191,40 @@ export function isPointOfKind<T extends MapPointKindEnum>(
   kind: T,
 ): point is PointTypes[T] {
   return point?.kind === kind
+}
+
+export type GeocodingFeature = {
+  id: string
+  type: GeoJsonTypes
+  place_type: (
+    | 'country'
+    | 'region'
+    | 'postcode'
+    | 'district'
+    | 'place'
+    | 'locality'
+    | 'neighborhood'
+    | 'address'
+    | 'poi'
+  )[]
+  relevance: number // 0 -> 1
+  address?: string // house number for place_type 'address'
+  properties: {
+    accuracy?: 'rooftop' | 'parcel' | 'point' | 'interpolated' | 'intersection' | 'street'
+    address?: string // for place_type 'poi'
+    category?: string
+    maki?: string
+    wikidata?: string
+    short_code?: string
+  }
+  text: string
+  place_name: string
+  matching_text?: string
+  matching_place_name?: string
+  bbox: number[]
+  center: [number, number]
+  geometry: Geometry
+  routable_points?: {
+    points?: { coordinates: [number, number] }[] | null
+  }
 }

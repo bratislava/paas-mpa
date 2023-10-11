@@ -61,5 +61,6 @@ module.exports = {
     'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
     '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',
+    'sonarjs/cognitive-complexity': 'warn',
   },
 }

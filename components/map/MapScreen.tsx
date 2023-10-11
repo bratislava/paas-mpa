@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import Map from '@/components/map/Map'
+import Map, { MapRef } from '@/components/map/Map'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
@@ -21,6 +21,7 @@ const MapScreen = () => {
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
+  const mapRef = useRef<MapRef>(null)
   const handleZoneChange = useCallback(
     (zone: MapUdrZone) => {
       setSelectedZone(zone)
@@ -47,8 +48,17 @@ const MapScreen = () => {
 
   return (
     <View className="flex-1 items-stretch">
-      <Map onZoneChange={handleZoneChange} onPointPress={handlePointPress} filters={filters} />
-      <MapZoneBottomSheet ref={zoneBottomSheetRef} zone={selectedZone} />
+      <Map
+        ref={mapRef}
+        onZoneChange={handleZoneChange}
+        onPointPress={handlePointPress}
+        filters={filters}
+      />
+      <MapZoneBottomSheet
+        ref={zoneBottomSheetRef}
+        zone={selectedZone}
+        setFlyToCenter={mapRef.current?.setFlyToCenter}
+      />
       {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
       <View className="absolute flex w-full flex-row justify-start px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
