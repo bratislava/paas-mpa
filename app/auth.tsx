@@ -17,7 +17,7 @@ const Page = () => {
 
   const [phone, setPhone] = useState('+421')
 
-  const { setSignInResult } = useGlobalStoreContext()
+  const { setSignInResult, setSignUpPhone } = useGlobalStoreContext()
 
   const attemptSignInOrSignUp = async () => {
     try {
@@ -37,23 +37,22 @@ const Page = () => {
           // TODO @mpinter investigate autoSignIn after resendSignUp
           const resendSignUpResult = await Auth.resendSignUp(phone)
           router.push({
-            pathname: '/confirm-signin',
+            pathname: '/confirm-signup',
             params: { loginResult: JSON.stringify(resendSignUpResult) },
           })
         } else {
-          console.log('Other errors - TODO chose which to handle and which to throw.')
           // TODO @mpinter only sing up on some errors, not on all, throw the rest
-          const signUpResultInner = await Auth.signUp({
+          console.log('Other errors - TODO chose which to handle and which to throw.')
+
+          setSignUpPhone(phone)
+          await Auth.signUp({
             username: phone,
             password: STATIC_TEMP_PASS,
             autoSignIn: {
               enabled: true,
             },
           })
-          router.push({
-            pathname: '/confirm-signin',
-            params: { loginResult: JSON.stringify(signUpResultInner) },
-          })
+          router.push({ pathname: '/confirm-signup' })
         }
       }
     } catch (error) {
