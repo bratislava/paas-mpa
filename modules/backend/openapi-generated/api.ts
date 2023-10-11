@@ -36,56 +36,56 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base'
 /**
  *
  * @export
- * @interface AnnouncmentsDto
+ * @interface AnnouncementDto
  */
-export interface AnnouncmentsDto {
+export interface AnnouncementDto {
   /**
-   * Database id of the announcment
+   * Title of the announcement
+   * @type {string}
+   * @memberof AnnouncementDto
+   */
+  title: string
+  /**
+   * Content of the announcement
+   * @type {string}
+   * @memberof AnnouncementDto
+   */
+  content: string
+  /**
+   * External url to route the user on CTA
+   * @type {object}
+   * @memberof AnnouncementDto
+   */
+  externalUrl?: object
+  /**
+   * Database id of the announcement
    * @type {number}
-   * @memberof AnnouncmentsDto
+   * @memberof AnnouncementDto
    */
   id: number
   /**
    * Date of the creation
    * @type {string}
-   * @memberof AnnouncmentsDto
+   * @memberof AnnouncementDto
    */
   createdAt: string
-  /**
-   * Title of the announcment
-   * @type {string}
-   * @memberof AnnouncmentsDto
-   */
-  title: string
-  /**
-   * Content of the announcment
-   * @type {string}
-   * @memberof AnnouncmentsDto
-   */
-  content: string
-  /**
-   * External url to route the user on CTA
-   * @type {string}
-   * @memberof AnnouncmentsDto
-   */
-  externalUrl?: string
 }
 /**
  *
  * @export
- * @interface AnnouncmentsResponseDto
+ * @interface AnnouncementsResponseDto
  */
-export interface AnnouncmentsResponseDto {
+export interface AnnouncementsResponseDto {
   /**
-   * List of announcments
-   * @type {Array<AnnouncmentsDto>}
-   * @memberof AnnouncmentsResponseDto
+   * List of announcements
+   * @type {Array<AnnouncementDto>}
+   * @memberof AnnouncementsResponseDto
    */
-  announcments: Array<AnnouncmentsDto>
+  announcements: Array<AnnouncementDto>
   /**
    *
    * @type {PaginationInfo}
-   * @memberof AnnouncmentsResponseDto
+   * @memberof AnnouncementsResponseDto
    */
   paginationInfo: PaginationInfo
 }
@@ -327,6 +327,31 @@ export interface GetTicketPriceTicketInfoRequestDto {
 /**
  *
  * @export
+ * @interface GetTicketProlongationPriceRequestDto
+ */
+export interface GetTicketProlongationPriceRequestDto {
+  /**
+   * The date and time when parking ends (UTC time in ISO8601 format)
+   * @type {string}
+   * @memberof GetTicketProlongationPriceRequestDto
+   */
+  newParkingEnd: string
+  /**
+   * Value of BPK UUID
+   * @type {string}
+   * @memberof GetTicketProlongationPriceRequestDto
+   */
+  bpkId?: string
+  /**
+   * Id of the ticket to be prolonged
+   * @type {number}
+   * @memberof GetTicketProlongationPriceRequestDto
+   */
+  ticketId: number
+}
+/**
+ *
+ * @export
  * @interface InitiatePaymentRequestDto
  */
 export interface InitiatePaymentRequestDto {
@@ -379,6 +404,31 @@ export interface PaginationInfo {
    * @memberof PaginationInfo
    */
   pageSize: number
+}
+/**
+ *
+ * @export
+ * @interface SaveAnnouncementDto
+ */
+export interface SaveAnnouncementDto {
+  /**
+   * Title of the announcement
+   * @type {string}
+   * @memberof SaveAnnouncementDto
+   */
+  title: string
+  /**
+   * Content of the announcement
+   * @type {string}
+   * @memberof SaveAnnouncementDto
+   */
+  content: string
+  /**
+   * External url to route the user on CTA
+   * @type {object}
+   * @memberof SaveAnnouncementDto
+   */
+  externalUrl?: object
 }
 /**
  *
@@ -872,25 +922,25 @@ export interface VisitorCardsResponseDto {
 }
 
 /**
- * AnnouncmentsApi - axios parameter creator
+ * AnnouncementsApi - axios parameter creator
  * @export
  */
-export const AnnouncmentsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AnnouncementsApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary Get all announcments paginated
+     * @summary Get all announcements paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    announcmentsControllerAnnouncmentsGetMany: async (
+    announcementsControllerAnnouncementsGetMany: async (
       page?: number,
       pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      const localVarPath = `/announcments`
+      const localVarPath = `/announcements`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
       let baseOptions
@@ -902,7 +952,7 @@ export const AnnouncmentsApiAxiosParamCreator = function (configuration?: Config
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -927,35 +977,166 @@ export const AnnouncmentsApiAxiosParamCreator = function (configuration?: Config
         options: localVarRequestOptions,
       }
     },
+    /**
+     *
+     * @summary Delete a specific announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    announcementsControllerDeleteAnnouncement: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('announcementsControllerDeleteAnnouncement', 'id', id)
+      const localVarPath = `/announcements/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Inserts new vehicle
+     * @param {SaveAnnouncementDto} saveAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    announcementsControllerInsertAnnouncement: async (
+      saveAnnouncementDto: SaveAnnouncementDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'saveAnnouncementDto' is not null or undefined
+      assertParamExists(
+        'announcementsControllerInsertAnnouncement',
+        'saveAnnouncementDto',
+        saveAnnouncementDto,
+      )
+      const localVarPath = `/announcements`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        saveAnnouncementDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
   }
 }
 
 /**
- * AnnouncmentsApi - functional programming interface
+ * AnnouncementsApi - functional programming interface
  * @export
  */
-export const AnnouncmentsApiFp = function (configuration?: Configuration) {
-  const localVarAxiosParamCreator = AnnouncmentsApiAxiosParamCreator(configuration)
+export const AnnouncementsApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = AnnouncementsApiAxiosParamCreator(configuration)
   return {
     /**
      *
-     * @summary Get all announcments paginated
+     * @summary Get all announcements paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async announcmentsControllerAnnouncmentsGetMany(
+    async announcementsControllerAnnouncementsGetMany(
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AnnouncmentsResponseDto>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AnnouncementsResponseDto>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.announcmentsControllerAnnouncmentsGetMany(
+        await localVarAxiosParamCreator.announcementsControllerAnnouncementsGetMany(
           page,
           pageSize,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Delete a specific announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async announcementsControllerDeleteAnnouncement(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.announcementsControllerDeleteAnnouncement(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Inserts new vehicle
+     * @param {SaveAnnouncementDto} saveAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async announcementsControllerInsertAnnouncement(
+      saveAnnouncementDto: SaveAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AnnouncementDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.announcementsControllerInsertAnnouncement(
+          saveAnnouncementDto,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -964,59 +1145,120 @@ export const AnnouncmentsApiFp = function (configuration?: Configuration) {
 }
 
 /**
- * AnnouncmentsApi - factory interface
+ * AnnouncementsApi - factory interface
  * @export
  */
-export const AnnouncmentsApiFactory = function (
+export const AnnouncementsApiFactory = function (
   configuration?: Configuration,
   basePath?: string,
   axios?: AxiosInstance,
 ) {
-  const localVarFp = AnnouncmentsApiFp(configuration)
+  const localVarFp = AnnouncementsApiFp(configuration)
   return {
     /**
      *
-     * @summary Get all announcments paginated
+     * @summary Get all announcements paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    announcmentsControllerAnnouncmentsGetMany(
+    announcementsControllerAnnouncementsGetMany(
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<AnnouncmentsResponseDto> {
+    ): AxiosPromise<AnnouncementsResponseDto> {
       return localVarFp
-        .announcmentsControllerAnnouncmentsGetMany(page, pageSize, options)
+        .announcementsControllerAnnouncementsGetMany(page, pageSize, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Delete a specific announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    announcementsControllerDeleteAnnouncement(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<DeleteResponseDto> {
+      return localVarFp
+        .announcementsControllerDeleteAnnouncement(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Inserts new vehicle
+     * @param {SaveAnnouncementDto} saveAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    announcementsControllerInsertAnnouncement(
+      saveAnnouncementDto: SaveAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<AnnouncementDto> {
+      return localVarFp
+        .announcementsControllerInsertAnnouncement(saveAnnouncementDto, options)
         .then((request) => request(axios, basePath))
     },
   }
 }
 
 /**
- * AnnouncmentsApi - object-oriented interface
+ * AnnouncementsApi - object-oriented interface
  * @export
- * @class AnnouncmentsApi
+ * @class AnnouncementsApi
  * @extends {BaseAPI}
  */
-export class AnnouncmentsApi extends BaseAPI {
+export class AnnouncementsApi extends BaseAPI {
   /**
    *
-   * @summary Get all announcments paginated
+   * @summary Get all announcements paginated
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
-   * @memberof AnnouncmentsApi
+   * @memberof AnnouncementsApi
    */
-  public announcmentsControllerAnnouncmentsGetMany(
+  public announcementsControllerAnnouncementsGetMany(
     page?: number,
     pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
-    return AnnouncmentsApiFp(this.configuration)
-      .announcmentsControllerAnnouncmentsGetMany(page, pageSize, options)
+    return AnnouncementsApiFp(this.configuration)
+      .announcementsControllerAnnouncementsGetMany(page, pageSize, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Delete a specific announcement
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AnnouncementsApi
+   */
+  public announcementsControllerDeleteAnnouncement(id: number, options?: AxiosRequestConfig) {
+    return AnnouncementsApiFp(this.configuration)
+      .announcementsControllerDeleteAnnouncement(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Inserts new vehicle
+   * @param {SaveAnnouncementDto} saveAnnouncementDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AnnouncementsApi
+   */
+  public announcementsControllerInsertAnnouncement(
+    saveAnnouncementDto: SaveAnnouncementDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return AnnouncementsApiFp(this.configuration)
+      .announcementsControllerInsertAnnouncement(saveAnnouncementDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }
@@ -1155,7 +1397,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1197,7 +1439,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1375,7 +1617,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1390,6 +1632,59 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       }
       localVarRequestOptions.data = serializeDataIfNeeded(
         getTicketPriceRequestDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Get ticket prolongation price
+     * @param {GetTicketProlongationPriceRequestDto} getTicketProlongationPriceRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetTicketProlongationPrice: async (
+      getTicketProlongationPriceRequestDto: GetTicketProlongationPriceRequestDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'getTicketProlongationPriceRequestDto' is not null or undefined
+      assertParamExists(
+        'ticketsControllerGetTicketProlongationPrice',
+        'getTicketProlongationPriceRequestDto',
+        getTicketProlongationPriceRequestDto,
+      )
+      const localVarPath = `/tickets/prolongation/price`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        getTicketProlongationPriceRequestDto,
         localVarRequestOptions,
         configuration,
       )
@@ -1428,7 +1723,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1477,7 +1772,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1530,7 +1825,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1586,6 +1881,26 @@ export const TicketsApiFp = function (configuration?: Configuration) {
         getTicketPriceRequestDto,
         options,
       )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get ticket prolongation price
+     * @param {GetTicketProlongationPriceRequestDto} getTicketProlongationPriceRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGetTicketProlongationPrice(
+      getTicketProlongationPriceRequestDto: GetTicketProlongationPriceRequestDto,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTicketPriceResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerGetTicketProlongationPrice(
+          getTicketProlongationPriceRequestDto,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -1675,6 +1990,21 @@ export const TicketsApiFactory = function (
     },
     /**
      *
+     * @summary Get ticket prolongation price
+     * @param {GetTicketProlongationPriceRequestDto} getTicketProlongationPriceRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetTicketProlongationPrice(
+      getTicketProlongationPriceRequestDto: GetTicketProlongationPriceRequestDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<GetTicketPriceResponseDto> {
+      return localVarFp
+        .ticketsControllerGetTicketProlongationPrice(getTicketProlongationPriceRequestDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Initiate ticket payment
      * @param {InitiatePaymentRequestDto} initiatePaymentRequestDto
      * @param {*} [options] Override http request option.
@@ -1746,6 +2076,23 @@ export class TicketsApi extends BaseAPI {
   ) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerGetTicketPrice(getTicketPriceRequestDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get ticket prolongation price
+   * @param {GetTicketProlongationPriceRequestDto} getTicketProlongationPriceRequestDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGetTicketProlongationPrice(
+    getTicketProlongationPriceRequestDto: GetTicketProlongationPriceRequestDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGetTicketProlongationPrice(getTicketProlongationPriceRequestDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -1829,7 +2176,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -1875,7 +2222,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2052,7 +2399,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2094,7 +2441,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2147,7 +2494,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2196,7 +2543,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2497,7 +2844,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2543,7 +2890,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2592,7 +2939,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2642,7 +2989,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
@@ -2930,7 +3277,7 @@ export const VisitorCardsApiAxiosParamCreator = function (configuration?: Config
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication bearer required
+      // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
