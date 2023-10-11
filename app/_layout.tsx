@@ -1,5 +1,5 @@
 import 'intl-pluralrules'
-import 'utils/amplify'
+import '@/modules/cognito/amplify'
 import '../i18n.config.js'
 
 /* eslint-disable babel/camelcase */

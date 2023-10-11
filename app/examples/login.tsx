@@ -30,9 +30,16 @@ const LoginScreen = () => {
     try {
       // eslint-disable-next-line unicorn/prefer-ternary
       if (loginResult) {
+        console.log('attempting to confirm sign in')
         await Auth.confirmSignIn(loginResult, code)
       } else {
         // this is a signUp operation
+        console.log(
+          'attempting to confirm sign up with phone',
+          phoneToConfirm || phone,
+          'and code',
+          code,
+        )
         await Auth.confirmSignUp(phoneToConfirm || phone, code)
       }
       setAuthResult(Auth.currentUserInfo())
@@ -58,15 +65,19 @@ const LoginScreen = () => {
           setLoginResult(loginResultInner)
         }
       } catch (error) {
-        if (isError(error)) {
+        if (
+          isError(error) &&
+          isErrorWithCode(error) &&
+          error.code === 'UserNotConfirmedException'
+        ) {
           setLoginError(error)
-          if (isErrorWithCode(error) && error.code === 'UserNotConfirmedException') {
-            // TODO @mpinter investigate autoSignIn after resendSignUp
-            await Auth.resendSignUp(phone)
-            setPhoneToConfirm(phone)
-            // TODO navigate
-          }
+          console.log('UserNotConfirmedException')
+          // TODO @mpinter investigate autoSignIn after resendSignUp
+          await Auth.resendSignUp(phone)
+          setPhoneToConfirm(phone)
+          // TODO navigate
         } else {
+          console.log('Other errors - TODO chose which to handle and which to throw.')
           // TODO @mpinter only sing up on some errors, not on all, throw the rest
           const signUpResultInner = await Auth.signUp({
             username: phone,
@@ -94,6 +105,20 @@ const LoginScreen = () => {
     return Auth.signOut()
   }
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const getToken = async () => {
+    try {
+      const tok = await Auth.currentSession()
+      if (tok) {
+        console.log(tok.getAccessToken())
+      } else {
+        console.log('no token')
+      }
+    } catch (error) {
+      console.error('getToken error:', error)
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       const currentUser = await Auth.currentSession()
@@ -117,6 +142,8 @@ const LoginScreen = () => {
           <Button onPress={confirmStep}>Confirm</Button>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <Button onPress={signOut}>Logout</Button>
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <Button onPress={getToken}>Token</Button>
           {phoneToConfirm ? <Typography>{phoneToConfirm}</Typography> : null}
           <Typography>Auth result: {JSON.stringify(authResult, undefined, 2)}</Typography>
           <Typography>Login result: {JSON.stringify(loginResult, undefined, 2)}</Typography>
