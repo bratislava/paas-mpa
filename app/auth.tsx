@@ -35,11 +35,9 @@ const Page = () => {
         ) {
           console.log('UserNotConfirmedException')
           // TODO @mpinter investigate autoSignIn after resendSignUp
-          const resendSignUpResult = await Auth.resendSignUp(phone)
-          router.push({
-            pathname: '/confirm-signup',
-            params: { loginResult: JSON.stringify(resendSignUpResult) },
-          })
+          setSignUpPhone(phone)
+          await Auth.resendSignUp(phone)
+          router.push({ pathname: '/confirm-signup' })
         } else {
           // TODO @mpinter only sing up on some errors, not on all, throw the rest
           console.log('Other errors - TODO chose which to handle and which to throw.')
