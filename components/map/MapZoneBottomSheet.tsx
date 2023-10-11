@@ -1,7 +1,7 @@
 import BottomSheet, { TouchableWithoutFeedback } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import { forwardRef, useMemo } from 'react'
-import { Keyboard, View } from 'react-native'
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Keyboard, LayoutAnimation, View } from 'react-native'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import { MapRef } from '@/components/map/Map'
@@ -17,6 +17,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
+import { getMultipleRefsSetter } from '@/utils/getMultipleRefsSetter'
 
 type Props = {
   zone: MapUdrZone | null
@@ -25,20 +26,58 @@ type Props = {
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCenter }, ref) => {
   const t = useTranslation()
+  const localRef = useRef<BottomSheet>(null)
 
   const isZoneSelected = Boolean(zone)
-  const snapPoints = useMemo(() => (isZoneSelected ? [220, 320] : [220]), [isZoneSelected])
+  const [snapPoints, setSnapPoints] = useState<(number | string)[]>([220])
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const [index, setIndex] = useState(0)
+
+  const refSetter = useMemo(() => getMultipleRefsSetter(ref, localRef), [ref])
+
+  const handleChange = useCallback((newIndex: number) => {
+    const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
+    LayoutAnimation.configureNext(animation)
+    setIndex(newIndex)
+  }, [])
+
+  const handleInputFocus = useCallback(() => {
+    setIsInputFocused(true)
+    localRef.current?.expand()
+  }, [])
+
+  const handleInputBlur = useCallback(() => {
+    setIsInputFocused(false)
+  }, [])
+
+  useEffect(() => {
+    const newSnapPoints: (string | number)[] = [220]
+    if (isZoneSelected) newSnapPoints.push(320)
+    newSnapPoints.push('100%')
+    setSnapPoints(newSnapPoints)
+  }, [isZoneSelected, isInputFocused])
+
+  const isFullHeightIndex = snapPoints.length === 3 ? index === 2 : index === 1
 
   return (
-    <BottomSheet ref={ref} snapPoints={snapPoints}>
+    <BottomSheet
+      ref={refSetter}
+      snapPoints={snapPoints}
+      keyboardBehavior="interactive"
+      onChange={handleChange}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <BottomSheetContent cn="bg-white">
           <View className="bg-white g-3">
             <View className="g-2">
               <Field label={t('MapScreen.ZoneBottomSheet.title')}>
-                <MapAutocomplete setFlyToCenter={setFlyToCenter} />
+                <MapAutocomplete
+                  setFlyToCenter={setFlyToCenter}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                />
               </Field>
-              {zone ? (
+              {!isFullHeightIndex && zone ? (
                 <Panel className="g-4">
                   <FlexRow>
                     <Typography>{zone.Nazov}</Typography>
@@ -67,12 +106,17 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
                 </Panel>
               ) : null}
             </View>
-            {zone ? (
-              <Button variant="primary">{t('Navigation.continue')}</Button>
-            ) : (
-              <Panel className="bg-warning-light g-2">
-                <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
-              </Panel>
+            {!isFullHeightIndex && (
+              // eslint-disable-next-line react/jsx-no-useless-fragment
+              <>
+                {zone ? (
+                  <Button variant="primary">{t('Navigation.continue')}</Button>
+                ) : (
+                  <Panel className="bg-warning-light g-2">
+                    <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
+                  </Panel>
+                )}
+              </>
             )}
           </View>
         </BottomSheetContent>

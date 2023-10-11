@@ -9,6 +9,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter'
+import { PortalProvider } from '@gorhom/portal'
 /* eslint-enable babel/camelcase */
 import Mapbox from '@rnmapbox/maps'
 import { SplashScreen, Stack } from 'expo-router'
@@ -74,23 +75,25 @@ const RootLayout = () => {
     <GlobalStoreProvider>
       <SafeAreaProvider>
         <GestureHandlerRootView className="flex-1">
-          <Stack
-            screenOptions={{
-              headerBackTitleVisible: false,
-              headerTitleStyle: {
-                fontFamily: 'BelfastGrotesk_700Bold',
-              },
-              headerTintColor: colors.dark.DEFAULT,
-            }}
-          >
-            <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-            <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
-            <Stack.Screen
-              name="purchase/choose-payment-method"
-              options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
-          </Stack>
+          <PortalProvider>
+            <Stack
+              screenOptions={{
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontFamily: 'BelfastGrotesk_700Bold',
+                },
+                headerTintColor: colors.dark.DEFAULT,
+              }}
+            >
+              <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+              <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
+              <Stack.Screen
+                name="purchase/choose-payment-method"
+                options={{ presentation: 'modal' }}
+              />
+              <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
+            </Stack>
+          </PortalProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </GlobalStoreProvider>

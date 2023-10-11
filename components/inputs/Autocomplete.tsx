@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { forwardRef, ReactElement, Ref, useCallback, useState } from 'react'
 import {
   FlatList,
   ListRenderItem,
   NativeSyntheticEvent,
+  RNTextInput,
   TextInputChangeEventData,
   View,
 } from 'react-native'
@@ -13,7 +15,7 @@ import TextInput from '@/components/inputs/TextInput'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 
-type Props<O> = {
+export type AutocompleteProps<O> = {
   onValueChange: (value: O) => void
   defaultValue?: string
   getOptions: (search: string) => Promise<O[]>
@@ -21,6 +23,8 @@ type Props<O> = {
   getOptionLabel: (option: O) => string
   debounce?: number
   renderItem?: ListRenderItem<O> | null
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 const AutocompleteInner = <O,>(
@@ -32,8 +36,10 @@ const AutocompleteInner = <O,>(
     getOptionLabel,
     debounce = 300,
     renderItem,
-  }: Props<O>,
-  ref: React.ForwardedRef<View>,
+    onFocus,
+    onBlur,
+  }: AutocompleteProps<O>,
+  ref: React.ForwardedRef<RNTextInput>,
 ) => {
   const [input, setInput] = useState(defaultValue)
   const [value, setValue] = useState<O | null>(null)
@@ -65,12 +71,17 @@ const AutocompleteInner = <O,>(
     [getOptionLabel, onValueChange, input],
   )
 
-  const handleFocus = useCallback(() => {
+  const handleFocus = useCallback(async () => {
+    onFocus?.()
     if (lastSearchText) {
       setInput(lastSearchText)
       setLastSearchText(null)
     }
-  }, [lastSearchText])
+  }, [lastSearchText, onFocus])
+
+  const handleBlur = useCallback(async () => {
+    onBlur?.()
+  }, [onBlur])
 
   const defaultRenderItem: ListRenderItem<O> = useCallback(
     (info) => (
@@ -91,8 +102,13 @@ const AutocompleteInner = <O,>(
 
   return (
     <View ref={ref}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <TextInput onChange={handleChange} value={input} onFocus={handleFocus} />
+      <TextInput
+        ref={ref}
+        onChange={handleChange}
+        value={input}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+      />
       <View>
         <FlatList
           keyboardShouldPersistTaps="always"
@@ -107,7 +123,7 @@ const AutocompleteInner = <O,>(
 // The best, most reliable, and achievable solution is type assertion
 // https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
 const Autocomplete = forwardRef(AutocompleteInner) as <O>(
-  p: Props<O> & { ref?: Ref<View> },
+  p: AutocompleteProps<O> & { ref?: Ref<View> },
 ) => ReactElement
 
 export default Autocomplete
