@@ -3,14 +3,13 @@ import { TextInput as RNTextInput } from 'react-native'
 
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
 import { MapRef } from '@/components/map/Map'
+import Icon from '@/components/shared/Icon'
 import { GeocodingFeature } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 
 type Props = {
   setFlyToCenter?: MapRef['setFlyToCenter']
-  onBlur: AutocompleteProps<GeocodingFeature>['onBlur']
-  onFocus: AutocompleteProps<GeocodingFeature>['onFocus']
-}
+} & Partial<AutocompleteProps<GeocodingFeature>>
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ setFlyToCenter, ...restProps }: Props, ref) => {
@@ -27,6 +26,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         getOptions={forwardGeocode}
         getOptionLabel={(option) => option.place_name || option.text}
         onValueChange={handleValueChange}
+        leftIcon={<Icon name="search" />}
         {...restProps}
       />
     )

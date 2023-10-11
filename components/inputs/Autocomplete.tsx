@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { forwardRef, ReactElement, Ref, useCallback, useState } from 'react'
+import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useState } from 'react'
 import {
   FlatList,
   ListRenderItem,
   NativeSyntheticEvent,
-  RNTextInput,
+  TextInput as RNTextInput,
   TextInputChangeEventData,
   View,
 } from 'react-native'
@@ -25,6 +25,7 @@ export type AutocompleteProps<O> = {
   renderItem?: ListRenderItem<O> | null
   onFocus?: () => void
   onBlur?: () => void
+  leftIcon?: ReactNode
 }
 
 const AutocompleteInner = <O,>(
@@ -38,6 +39,7 @@ const AutocompleteInner = <O,>(
     renderItem,
     onFocus,
     onBlur,
+    leftIcon,
   }: AutocompleteProps<O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
@@ -108,6 +110,7 @@ const AutocompleteInner = <O,>(
         value={input}
         onBlur={handleBlur}
         onFocus={handleFocus}
+        leftIcon={leftIcon}
       />
       <View>
         <FlatList

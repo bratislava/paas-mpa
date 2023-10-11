@@ -43,7 +43,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
 
   const handleInputFocus = useCallback(() => {
     setIsInputFocused(true)
-    localRef.current?.expand()
   }, [])
 
   const handleInputBlur = useCallback(() => {
@@ -53,11 +52,20 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
   useEffect(() => {
     const newSnapPoints: (string | number)[] = [220]
     if (isZoneSelected) newSnapPoints.push(320)
-    newSnapPoints.push('100%')
+    if (isInputFocused) newSnapPoints.push('100%')
     setSnapPoints(newSnapPoints)
   }, [isZoneSelected, isInputFocused])
 
   const isFullHeightIndex = snapPoints.length === 3 ? index === 2 : index === 1
+
+  const mapAutocomplete = useMemo(
+    () => <MapAutocomplete setFlyToCenter={setFlyToCenter} onBlur={handleInputBlur} />,
+    [handleInputBlur, setFlyToCenter],
+  )
+
+  useEffect(() => {
+    if (snapPoints.at(-1) === '100%') localRef.current?.expand()
+  }, [snapPoints])
 
   return (
     <BottomSheet
@@ -70,13 +78,15 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
         <BottomSheetContent cn="bg-white">
           <View className="bg-white g-3">
             <View className="g-2">
-              <Field label={t('MapScreen.ZoneBottomSheet.title')}>
-                <MapAutocomplete
-                  setFlyToCenter={setFlyToCenter}
-                  onFocus={handleInputFocus}
-                  onBlur={handleInputBlur}
-                />
-              </Field>
+              {isFullHeightIndex ? (
+                mapAutocomplete
+              ) : (
+                <TouchableWithoutFeedback onPress={handleInputFocus}>
+                  <View pointerEvents="none">
+                    <Field label={t('MapScreen.ZoneBottomSheet.title')}>{mapAutocomplete}</Field>
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
               {!isFullHeightIndex && zone ? (
                 <Panel className="g-4">
                   <FlexRow>
