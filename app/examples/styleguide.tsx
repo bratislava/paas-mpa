@@ -12,6 +12,7 @@ import ListRowsShowcase from '@/components/showcases/ListRowsShowcase'
 import ParkingCardsShowcase from '@/components/showcases/ParkingCardsShowcase'
 import SegmentBadgeShowcase from '@/components/showcases/SegmentBadgeShowcase'
 import SurfaceShowcase from '@/components/showcases/SurfaceShowcase'
+import SwitchShowcase from '@/components/showcases/SwitchShowcase'
 import TextInputShowcase from '@/components/showcases/TextInputShowcase'
 import TimeSelectorShowcase from '@/components/showcases/TimeSelectorShowcase'
 import TypographyShowcase from '@/components/showcases/TypographyShowcase'
@@ -26,6 +27,7 @@ const StyleguideScreen = () => (
     <DividerShowcase />
     <TimeSelectorShowcase />
     <CheckBoxShowcase />
+    <SwitchShowcase />
     <ListRowsShowcase />
     <IconShowCase />
     <SegmentBadgeShowcase />
