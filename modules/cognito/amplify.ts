@@ -5,6 +5,8 @@ import { Amplify } from 'aws-amplify'
 
 import { environment } from '@/environment'
 
+export const STATIC_TEMP_PASS = '66febdf7-5b71-4c32-9272-b9d9dd703a60'
+
 Amplify.configure({
   Auth: {
     // REQUIRED - Amazon Cognito Region

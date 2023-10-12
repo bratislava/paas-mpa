@@ -60,7 +60,7 @@ const MapScreen = () => {
         setFlyToCenter={mapRef.current?.setFlyToCenter}
       />
       {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
-      <View className="absolute flex w-full flex-row justify-start px-2.5" style={{ top }}>
+      <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton
             name="filter-list"
