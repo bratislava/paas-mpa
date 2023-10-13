@@ -26,6 +26,7 @@ export type AutocompleteProps<O> = {
   onFocus?: () => void
   onBlur?: () => void
   leftIcon?: ReactNode
+  autoFocus?: boolean
 }
 
 const AutocompleteInner = <O,>(
@@ -40,6 +41,7 @@ const AutocompleteInner = <O,>(
     onFocus,
     onBlur,
     leftIcon,
+    autoFocus,
   }: AutocompleteProps<O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
@@ -111,6 +113,7 @@ const AutocompleteInner = <O,>(
         onBlur={handleBlur}
         onFocus={handleFocus}
         leftIcon={leftIcon}
+        autoFocus={autoFocus}
       />
       <View>
         <FlatList
