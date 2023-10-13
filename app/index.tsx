@@ -74,6 +74,11 @@ const IndexScreen = () => {
       icon: 'settings',
       path: '/settings',
     },
+    {
+      label: 'Purchase DEV',
+      icon: 'payment',
+      path: '/purchase',
+    },
   ]
 
   return (

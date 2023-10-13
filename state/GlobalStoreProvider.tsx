@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 
-import { MapFeaturesHashMapValue } from '@/state/types'
+import { MapFeaturesHashMapValue, TicketPriceRequest } from '@/state/types'
 
 type MapFeatureHashMap = Map<number, MapFeaturesHashMapValue>
 
@@ -20,6 +20,8 @@ type ContextProps = {
   setSignInResult: Dispatch<SetStateAction<any>>
   signUpPhone: string | null
   setSignUpPhone: Dispatch<SetStateAction<string | null>>
+  ticketPriceRequest: TicketPriceRequest | null
+  setTicketPriceRequest: Dispatch<SetStateAction<TicketPriceRequest | null>>
 }
 
 export const GlobalStoreContext = createContext({} as ContextProps)
@@ -32,6 +34,8 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
 
   const [signUpPhone, setSignUpPhone] = useState<string | null>(null)
 
+  const [ticketPriceRequest, setTicketPriceRequest] = useState<TicketPriceRequest | null>(null)
+
   const value = useMemo(
     () => ({
       mapFeatures,
@@ -40,8 +44,10 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
       setSignInResult,
       signUpPhone,
       setSignUpPhone,
+      ticketPriceRequest,
+      setTicketPriceRequest,
     }),
-    [signInResult, mapFeatures, signUpPhone],
+    [mapFeatures, signInResult, signUpPhone, ticketPriceRequest],
   )
 
   return <GlobalStoreContext.Provider value={value}>{children}</GlobalStoreContext.Provider>
