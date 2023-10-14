@@ -1,4 +1,5 @@
 import BottomSheet, { TouchableWithoutFeedback } from '@gorhom/bottom-sheet'
+import { PortalHost } from '@gorhom/portal'
 import { Link } from 'expo-router'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LayoutAnimation, TextInput, View } from 'react-native'
@@ -64,7 +65,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
 
   const handleChange = useCallback(
     (newIndex: number) => {
-      const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
+      const animation = LayoutAnimation.create(100, 'easeInEaseOut', 'opacity')
       LayoutAnimation.configureNext(animation)
       setIndex(newIndex)
       if (checkIfFullyExtended(newIndex, snapPoints)) {
@@ -80,6 +81,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
   const handleInputFocus = useCallback(() => {
     setIsFullHeightEnabled(true)
   }, [])
+
+  const handleCancel = useCallback(() => {
+    handleInputBlur()
+    localRef.current?.collapse()
+  }, [handleInputBlur])
 
   useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -101,62 +107,74 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
       snapPoints={snapPoints}
       keyboardBehavior="interactive"
       onChange={handleChange}
+      // eslint-disable-next-line react-native/no-inline-styles
+      handleIndicatorStyle={isFullHeightIndex && { display: 'none' }}
     >
       <TouchableWithoutFeedback onPressIn={handleInputBlur}>
         <BottomSheetContent cn="bg-white h-full g-3">
-          <View className="g-2">
+          <View className="flex-1 g-2">
             <TouchableWithoutFeedback onPress={handleInputFocus}>
               <View pointerEvents={isFullHeightIndex ? 'auto' : 'none'}>
                 {!isFullHeightIndex && (
                   <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
                 )}
-                <MapAutocomplete
-                  key="mapAutocomplete"
-                  ref={inputRef}
-                  setFlyToCenter={setFlyToCenter}
-                />
+                <FlexRow>
+                  <MapAutocomplete
+                    key="mapAutocomplete"
+                    ref={inputRef}
+                    setFlyToCenter={setFlyToCenter}
+                    optionsPortalName="mapAutocompleteOptions"
+                  />
+                  {isFullHeightIndex && (
+                    <Button variant="plain-dark" onPress={handleCancel}>
+                      {t('Common.cancel')}
+                    </Button>
+                  )}
+                </FlexRow>
               </View>
             </TouchableWithoutFeedback>
-            {!isFullHeightIndex && zone ? (
-              <Panel className="g-4">
-                <FlexRow>
-                  <Typography>{zone.Nazov}</Typography>
-                  <SegmentBadge label={zone.UDR_ID.toString()} />
-                </FlexRow>
-                <Divider />
-                <FlexRow>
-                  <Typography variant="default-bold">{zone.Zakladna_cena}€ / h</Typography>
-                  <Link
-                    asChild
-                    href={{
-                      pathname: '/zone-details',
-                      params: { id: zone.OBJECTID.toString() },
-                    }}
-                  >
-                    <PressableStyled>
-                      <View className="flex-row">
-                        <Typography variant="default-bold">
-                          {t('MapScreen.ZoneBottomSheet.showDetails')}
-                        </Typography>
-                        <Icon name="expand-more" />
-                      </View>
-                    </PressableStyled>
-                  </Link>
-                </FlexRow>
-              </Panel>
-            ) : null}
-          </View>
-          {!isFullHeightIndex && (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
-            <>
-              {zone ? (
-                <Button variant="primary">{t('Navigation.continue')}</Button>
+            {isFullHeightIndex && (
+              <View className="flex-1 pt-3">
+                <PortalHost name="mapAutocompleteOptions" />
+              </View>
+            )}
+            {!isFullHeightIndex &&
+              (zone ? (
+                <Panel className="g-4">
+                  <FlexRow>
+                    <Typography>{zone.Nazov}</Typography>
+                    <SegmentBadge label={zone.UDR_ID.toString()} />
+                  </FlexRow>
+                  <Divider />
+                  <FlexRow>
+                    <Typography variant="default-bold">{zone.Zakladna_cena}€ / h</Typography>
+                    <Link
+                      asChild
+                      href={{
+                        pathname: '/zone-details',
+                        params: { id: zone.OBJECTID.toString() },
+                      }}
+                    >
+                      <PressableStyled>
+                        <View className="flex-row">
+                          <Typography variant="default-bold">
+                            {t('MapScreen.ZoneBottomSheet.showDetails')}
+                          </Typography>
+                          <Icon name="expand-more" />
+                        </View>
+                      </PressableStyled>
+                    </Link>
+                  </FlexRow>
+                </Panel>
               ) : (
                 <Panel className="bg-warning-light g-2">
                   <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
                 </Panel>
-              )}
-            </>
+              ))}
+          </View>
+          {!isFullHeightIndex && (
+            // eslint-disable-next-line react/jsx-no-useless-fragment
+            <>{zone ? <Button variant="primary">{t('Navigation.continue')}</Button> : null}</>
           )}
         </BottomSheetContent>
       </TouchableWithoutFeedback>

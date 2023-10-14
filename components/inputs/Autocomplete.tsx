@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useState } from 'react'
+import { Portal } from '@gorhom/portal'
+import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useMemo, useState } from 'react'
 import {
   FlatList,
+  FlatListProps,
   ListRenderItem,
   NativeSyntheticEvent,
   TextInput as RNTextInput,
@@ -27,6 +29,10 @@ export type AutocompleteProps<O> = {
   onBlur?: () => void
   leftIcon?: ReactNode
   autoFocus?: boolean
+  resultsHeader?: ReactNode
+  optionsPortalName?: string
+  ListComponent?: React.ComponentType<FlatListProps<O>>
+  listProps?: Partial<FlatListProps<O>>
 }
 
 const AutocompleteInner = <O,>(
@@ -42,6 +48,10 @@ const AutocompleteInner = <O,>(
     onBlur,
     leftIcon,
     autoFocus,
+    resultsHeader,
+    optionsPortalName,
+    ListComponent = FlatList,
+    listProps = {},
   }: AutocompleteProps<O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
@@ -89,11 +99,11 @@ const AutocompleteInner = <O,>(
 
   const defaultRenderItem: ListRenderItem<O> = useCallback(
     (info) => (
-      <PressableStyled className="border-b-px" onPress={handleOptionPress(info.item)}>
+      <PressableStyled onPress={handleOptionPress(info.item)}>
         {renderItem ? (
           renderItem(info)
         ) : (
-          <View className="border-divider p-3">
+          <View className="border-b-px border-divider p-3">
             <Typography className="flex-1" numberOfLines={1}>
               {getOptionLabel(info.item)}
             </Typography>
@@ -102,6 +112,16 @@ const AutocompleteInner = <O,>(
       </PressableStyled>
     ),
     [handleOptionPress, getOptionLabel, renderItem],
+  )
+
+  const optionsListProps: Omit<FlatListProps<O>, 'data'> = useMemo(
+    () => ({
+      className: 'flex-1',
+      ...listProps,
+      keyboardShouldPersistTaps: 'always',
+      renderItem: defaultRenderItem,
+    }),
+    [defaultRenderItem, listProps],
   )
 
   return (
@@ -116,11 +136,17 @@ const AutocompleteInner = <O,>(
         autoFocus={autoFocus}
       />
       <View>
-        <FlatList
-          keyboardShouldPersistTaps="always"
-          renderItem={defaultRenderItem}
-          data={options}
-        />
+        {optionsPortalName ? (
+          <Portal hostName={optionsPortalName}>
+            {options.length > 0 && (resultsHeader ?? null)}
+            <ListComponent data={options} {...optionsListProps} />
+          </Portal>
+        ) : (
+          <>
+            {options.length > 0 && (resultsHeader ?? null)}
+            <ListComponent data={options} {...optionsListProps} />
+          </>
+        )}
       </View>
     </View>
   )

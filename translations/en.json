@@ -3,7 +3,8 @@
     "continue": "Continue"
   },
   "Common": {
-    "loading": "Loading"
+    "loading": "Loading",
+    "cancel": "Cancel"
   },
   "Typography": {
     "test": "EN translation"
@@ -148,7 +149,8 @@
     }
   },
   "ZoneDetailsScreen": {
-    "title": "Zone details"
+    "title": "Zone details",
+    "searchResults": "Search results"
   },
   "FiltersScreen": {
     "title": "Filters",

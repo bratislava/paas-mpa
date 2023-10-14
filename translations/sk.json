@@ -3,7 +3,8 @@
     "continue": "Pokračovať"
   },
   "Common": {
-    "loading": "Načítavam"
+    "loading": "Načítavam",
+    "cancel": "Zrušiť"
   },
   "Typography": {
     "test": "SK preklad"
@@ -127,7 +128,8 @@
     }
   },
   "ZoneDetailsScreen": {
-    "title": "Detail zóny"
+    "title": "Detail zóny",
+    "showResults": "Ukázať výsledky"
   },
   "FiltersScreen": {
     "title": "Filtre",
