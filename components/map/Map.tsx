@@ -27,7 +27,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS, MapFilters } from '@/modules/map/constants'
+import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
@@ -43,6 +43,7 @@ type Props = {
 
 export type MapRef = {
   setFlyToCenter: (center: Position) => void
+  setIsZoneUpdateBlocked: (isBlocked: boolean) => void
 }
 
 const DEBOUNCE_TIME = 50
@@ -69,6 +70,7 @@ const Map = forwardRef(
 
     const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
+    const [isZoneUpdateBlocked, setIsZoneUpdateBlocked] = useState(false)
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -82,6 +84,9 @@ const Map = forwardRef(
 
     const getCurrentPolygon = useCallback(
       async (state: MapState) => {
+        if (isZoneUpdateBlocked) {
+          return
+        }
         const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
           [screenCenter.left, screenCenter.top],
           null,
@@ -97,7 +102,7 @@ const Map = forwardRef(
           setSelectedPolygon(feature)
         }
       },
-      [screenCenter, isMapPinShown],
+      [screenCenter, isMapPinShown, isZoneUpdateBlocked],
     )
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
@@ -106,9 +111,11 @@ const Map = forwardRef(
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
 
-    useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
-      handleSetFlyToCenter,
-    ])
+    useImperativeHandle(
+      ref,
+      () => ({ setFlyToCenter: handleSetFlyToCenter, setIsZoneUpdateBlocked }),
+      [handleSetFlyToCenter],
+    )
 
     const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
       getCurrentPolygon(state)
@@ -163,15 +170,12 @@ const Map = forwardRef(
       <View className="flex-1">
         <MapView
           ref={map}
-          className="flex-1"
+          className="grow"
           // eslint-disable-next-line no-secrets/no-secrets
           styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
-          scaleBarPosition={{
-            top: insets.top + MAP_INSETS.top,
-            left: insets.left + MAP_INSETS.left,
-          }}
           onCameraChanged={handleCameraChange}
           onPress={Keyboard.dismiss}
+          scaleBarEnabled={false}
         >
           {location && isWithinCity ? (
             <Camera

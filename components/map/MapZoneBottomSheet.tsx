@@ -29,12 +29,15 @@ const SNAP_POINTS = {
 type Props = {
   zone: MapUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
+  setBlockZoneMapUpdate?: (isBlocked: boolean) => void
 }
 
 const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
-const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCenter }, ref) => {
+const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
+  const { zone, setFlyToCenter, setBlockZoneMapUpdate } = props
+
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
 
@@ -61,16 +64,15 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
 
   const handleInputBlur = useCallback(() => {
     inputRef.current?.blur()
-  }, [])
+    setTimeout(() => setBlockZoneMapUpdate?.(false), 100)
+  }, [setBlockZoneMapUpdate])
 
   const handleChange = useCallback(
     (newIndex: number) => {
-      const animation = LayoutAnimation.create(100, 'easeInEaseOut', 'opacity')
+      const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
       LayoutAnimation.configureNext(animation)
       setIndex(newIndex)
-      if (checkIfFullyExtended(newIndex, snapPoints)) {
-        inputRef.current?.focus()
-      } else {
+      if (!checkIfFullyExtended(newIndex, snapPoints)) {
         handleInputBlur()
         setIsFullHeightEnabled(false)
       }
@@ -79,8 +81,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
   )
 
   const handleInputFocus = useCallback(() => {
+    console.log('focus')
+    setBlockZoneMapUpdate?.(true)
     setIsFullHeightEnabled(true)
-  }, [])
+    inputRef.current?.focus()
+  }, [setBlockZoneMapUpdate])
 
   const handleCancel = useCallback(() => {
     handleInputBlur()
@@ -101,6 +106,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
     }
   }, [snapPoints])
 
+  console.log({ snapPoints, index })
+
   return (
     <BottomSheet
       ref={refSetter}
@@ -108,31 +115,35 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(({ zone, setFlyToCente
       keyboardBehavior="interactive"
       onChange={handleChange}
       // eslint-disable-next-line react-native/no-inline-styles
-      handleIndicatorStyle={isFullHeightIndex && { display: 'none' }}
+      handleIndicatorStyle={isFullHeightIndex && { opacity: 0 }}
     >
       <TouchableWithoutFeedback onPressIn={handleInputBlur}>
         <BottomSheetContent cn="bg-white h-full g-3">
           <View className="flex-1 g-2">
-            <TouchableWithoutFeedback onPress={handleInputFocus}>
-              <View pointerEvents={isFullHeightIndex ? 'auto' : 'none'}>
-                {!isFullHeightIndex && (
-                  <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
+            <View>
+              <FlexRow>
+                <View className="flex-1">
+                  <TouchableWithoutFeedback onPress={handleInputFocus}>
+                    <View pointerEvents={isFullHeightIndex ? 'auto' : 'none'}>
+                      {!isFullHeightIndex && (
+                        <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
+                      )}
+                      <MapAutocomplete
+                        key="mapAutocomplete"
+                        ref={inputRef}
+                        setFlyToCenter={setFlyToCenter}
+                        optionsPortalName="mapAutocompleteOptions"
+                      />
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+                {isFullHeightIndex && (
+                  <Button variant="plain-dark" onPress={handleCancel}>
+                    {t('Common.cancel')}
+                  </Button>
                 )}
-                <FlexRow>
-                  <MapAutocomplete
-                    key="mapAutocomplete"
-                    ref={inputRef}
-                    setFlyToCenter={setFlyToCenter}
-                    optionsPortalName="mapAutocompleteOptions"
-                  />
-                  {isFullHeightIndex && (
-                    <Button variant="plain-dark" onPress={handleCancel}>
-                      {t('Common.cancel')}
-                    </Button>
-                  )}
-                </FlexRow>
-              </View>
-            </TouchableWithoutFeedback>
+              </FlexRow>
+            </View>
             {isFullHeightIndex && (
               <View className="flex-1 pt-3">
                 <PortalHost name="mapAutocompleteOptions" />

@@ -42,7 +42,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     )
 
     return (
-      <View className="flex-1">
+      <View>
         <Autocomplete
           ref={ref}
           getOptions={forwardGeocode}
