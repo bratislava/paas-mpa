@@ -1,21 +1,23 @@
 import axios from 'axios'
 
+import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
+
 export const axiosInstance = axios.create()
 
-// TODO token
+// TODO redirect on logout
 
-// declare module 'axios' {
-//   interface AxiosRequestConfig {
-//     accessToken?: string | null
-//   }
-// }
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    accessToken?: string | null
+  }
+}
 
 axiosInstance.interceptors.request.use(async (request) => {
-  // const session = await getSession()
-  //
-  // if (session) {
-  //   request.headers.Authorization = `Bearer ${session.accessToken}`
-  // }
+  const accessToken = await getAccessTokenOrLogout()
+
+  if (accessToken) {
+    request.headers.Authorization = `Bearer ${accessToken}`
+  }
 
   return request
 })

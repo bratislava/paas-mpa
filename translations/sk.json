@@ -70,7 +70,27 @@
   "Settings": {
     "title": "Nastavenia",
     "language": "Jazyk",
-    "system": "Systém"
+    "system": "Systém",
+    "pushNotifications": "Push notifikácie",
+    "emailNotifications": "E-mailové notifikácie",
+    "type": {
+      "pushNotificationsAboutToEnd": {
+        "title": "Parkovanie sa blíži ku koncu",
+        "description": "15 minút pred ukončením parkovania vám pošleme push notifikáciu"
+      },
+      "pushNotificationsToEnd": {
+        "title": "Parkovanie skončilo",
+        "description": "Po vypršaní parkovacieho lístka vám pošleme push notifikáciu"
+      },
+      "emailNotificationsAboutToEnd": {
+        "title": "Parkovanie sa blíži ku koncu",
+        "description": "15 minút pred ukončením parkovania vám pošleme e-mail"
+      },
+      "emailNotificationsToEnd": {
+        "title": "Parkovanie skončilo",
+        "description": "Po vypršaní parkovacieho lístka vám pošleme e-mail"
+      }
+    }
   },
   "PaymentMethods": {
     "title": "Platobné metódy",

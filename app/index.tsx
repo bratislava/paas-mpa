@@ -81,7 +81,7 @@ const IndexScreen = () => {
     <View className="flex-1">
       <MapScreen />
 
-      <View className="absolute flex w-full flex-row justify-end px-2.5" style={{ top }}>
+      <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
         <IconButton
           name="menu"
           // TODO translation
@@ -90,6 +90,14 @@ const IndexScreen = () => {
           onPress={handlePressOpen}
           onLongPress={handleLongPress}
         />
+
+        {/* <Link asChild href="/user"> */}
+        {/*   <IconButton */}
+        {/*     name="person" */}
+        {/*     accessibilityLabel="To be removed - temporary indicator that user is logged in" */}
+        {/*     variant="dark-small" */}
+        {/*   /> */}
+        {/* </Link> */}
       </View>
 
       <PortalHost name="index" />
@@ -137,9 +145,18 @@ const IndexScreen = () => {
                 <ActionRow label="Dev menu" />
               </PressableStyled>
             </Link>
-            <PressableStyled>
-              <ActionRow endIcon="logout" label="Logout" variant="negative" />
-            </PressableStyled>
+
+            {/* /!* eslint-disable-next-line @typescript-eslint/no-misused-promises *!/ */}
+            {/* <PressableStyled onPress={signOut}> */}
+            {/*   <ActionRow endIcon="logout" label="Logout" variant="negative" /> */}
+            {/* </PressableStyled> */}
+
+            {/* TODO TMP, replace by Login/Logout */}
+            <Link asChild href="/user" onPress={() => bottomSheetRef.current?.close()}>
+              <PressableStyled>
+                <ActionRow endIcon="login" label="User" />
+              </PressableStyled>
+            </Link>
           </View>
         </BottomSheetContent>
       </BottomSheet>

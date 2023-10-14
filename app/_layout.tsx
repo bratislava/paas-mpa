@@ -12,6 +12,7 @@ import {
 import { PortalProvider } from '@gorhom/portal'
 /* eslint-enable babel/camelcase */
 import Mapbox from '@rnmapbox/maps'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { NativeModules } from 'react-native'
@@ -45,6 +46,11 @@ const RootLayout = () => {
     /* eslint-enable unicorn/prefer-module,global-require */
   })
 
+  const queryClient = new QueryClient({
+    // TODO, set to 1 to prevent confusion during development, may be set to default for production
+    defaultOptions: { queries: { retry: 1 } },
+  })
+
   useEffect(() => {
     Mapbox.setAccessToken(environment.mapboxPublicKey)
       .finally(() => setMapboxLoaded(true))
@@ -72,31 +78,33 @@ const RootLayout = () => {
 
   // Render the children routes now that all the assets are loaded.
   return (
-    <GlobalStoreProvider>
-      <SafeAreaProvider>
-        <GestureHandlerRootView className="flex-1">
-          <PortalProvider>
-            <Stack
-              screenOptions={{
-                headerBackTitleVisible: false,
-                headerTitleStyle: {
-                  fontFamily: 'BelfastGrotesk_700Bold',
-                },
-                headerTintColor: colors.dark.DEFAULT,
-              }}
-            >
-              <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-              <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
-              <Stack.Screen
-                name="purchase/choose-payment-method"
-                options={{ presentation: 'modal' }}
-              />
-              <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
-            </Stack>
-          </PortalProvider>
-        </GestureHandlerRootView>
-      </SafeAreaProvider>
-    </GlobalStoreProvider>
+    <QueryClientProvider client={queryClient}>
+      <GlobalStoreProvider>
+        <SafeAreaProvider>
+          <GestureHandlerRootView className="flex-1">
+            <PortalProvider>
+              <Stack
+                screenOptions={{
+                  headerBackTitleVisible: false,
+                  headerTitleStyle: {
+                    fontFamily: 'BelfastGrotesk_700Bold',
+                  },
+                  headerTintColor: colors.dark.DEFAULT,
+                }}
+              >
+                <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+                <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
+                <Stack.Screen
+                  name="purchase/choose-payment-method"
+                  options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
+              </Stack>
+            </PortalProvider>
+          </GestureHandlerRootView>
+        </SafeAreaProvider>
+      </GlobalStoreProvider>
+    </QueryClientProvider>
   )
 }
 

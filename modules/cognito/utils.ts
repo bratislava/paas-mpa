@@ -1,10 +1,13 @@
 import { Auth } from 'aws-amplify'
+import { router } from 'expo-router'
 
 export const getAccessTokenOrLogout = async () => {
   try {
     const session = await Auth.currentSession()
     const jwtToken = session.getAccessToken().getJwtToken()
-    if (!jwtToken) throw new Error('no jwt token found in current session')
+    if (!jwtToken) {
+      throw new Error('no jwt token found in current session')
+    }
 
     return jwtToken
   } catch (error) {
@@ -23,5 +26,14 @@ export const getCurrentAuthenticatedUser = async () => {
     return await Auth.currentAuthenticatedUser()
   } catch (error) {
     return null
+  }
+}
+
+export const signOut = async () => {
+  try {
+    await Auth.signOut()
+    router.push('/')
+  } catch (error) {
+    console.log('error signing out', error)
   }
 }

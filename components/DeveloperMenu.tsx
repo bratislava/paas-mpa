@@ -27,9 +27,9 @@ const menuItems: MenuItem[] = [
     route: '/examples/login',
   },
   {
-    title: 'Onboarding',
+    title: 'Intro',
     subtitle: 'Onboarding screens with swiper after splash screen',
-    route: '/onboarding/intro',
+    route: '/intro',
   },
   {
     title: 'Parking cards',

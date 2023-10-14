@@ -8,9 +8,7 @@ import Button from '@/components/shared/Button'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
-
-// eslint-disable-next-line const-case/uppercase
-const staticTempPass = 'a0808cc6-5345-49f6-a7e7-c129df4adc5a'
+import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 
 const LoginScreen = () => {
   const [phoneToConfirm, setPhoneToConfirm] = useState<string | null>(null)
@@ -59,7 +57,7 @@ const LoginScreen = () => {
   const attemptLogin = async () => {
     try {
       try {
-        const loginResultInner = await Auth.signIn(phone, staticTempPass)
+        const loginResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
         console.log('loginResultInner:\n', JSON.stringify(loginResultInner, undefined, 2))
         if (loginResultInner) {
           setLoginResult(loginResultInner)
@@ -81,7 +79,7 @@ const LoginScreen = () => {
           // TODO @mpinter only sing up on some errors, not on all, throw the rest
           const signUpResultInner = await Auth.signUp({
             username: phone,
-            password: staticTempPass,
+            password: STATIC_TEMP_PASS,
             autoSignIn: {
               enabled: true,
             },

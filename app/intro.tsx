@@ -5,7 +5,7 @@ import Typography from '@/components/shared/Typography'
 const Page = () => {
   return (
     <ScreenView>
-      <ScreenContent continueProps={{ href: '/onboarding/enter-phone-number' }}>
+      <ScreenContent continueProps={{ href: '/auth' }}>
         <Typography>Intro</Typography>
       </ScreenContent>
     </ScreenView>

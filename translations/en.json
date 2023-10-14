@@ -70,7 +70,27 @@
   "Settings": {
     "title": "Settings",
     "language": "Language",
-    "system": "System"
+    "system": "System",
+    "pushNotifications": "Push notifications",
+    "emailNotifications": "E-mail notifications",
+    "type": {
+      "pushNotificationsAboutToEnd": {
+        "title": "Parking about to end",
+        "description": "We will send you push notification 15 minutes before your parking ends"
+      },
+      "pushNotificationsToEnd": {
+        "title": "Parking ended",
+        "description": "We will send you push notification when your parking ends"
+      },
+      "emailNotificationsAboutToEnd": {
+        "title": "Parking about to end",
+        "description": "We will send you e-mail 15 minutes before your parking ends"
+      },
+      "emailNotificationsToEnd": {
+        "title": "Parking ended",
+        "description": "We will send you e-mail when your parking ends"
+      }
+    }
   },
   "PaymentMethods": {
     "title": "Payment methods",
