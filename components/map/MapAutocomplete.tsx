@@ -16,13 +16,14 @@ type Props = {
 } & Partial<AutocompleteProps<GeocodingFeature>>
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
-  ({ setFlyToCenter, ...restProps }: Props, ref) => {
+  ({ setFlyToCenter, onValueChange, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
     const handleValueChange = useCallback(
       (value: GeocodingFeature) => {
         setFlyToCenter?.(value.center)
+        onValueChange?.(value)
       },
-      [setFlyToCenter],
+      [setFlyToCenter, onValueChange],
     )
 
     const renderItem: ListRenderItem<GeocodingFeature> = useCallback(
