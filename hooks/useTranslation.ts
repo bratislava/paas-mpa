@@ -14,5 +14,5 @@ export const useTranslation = (keyPrefix?: string) => {
 export const useLocale = () => {
   const { i18n } = useTranslationI18n()
 
-  return i18n.language
+  return i18n.language as 'sk' | 'en'
 }

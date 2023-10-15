@@ -1,197 +1,77 @@
-/* eslint-disable react-native/no-inline-styles */
-import { DateTimeFormatter, LocalDateTime } from '@js-joda/core'
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useState } from 'react'
 import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import DatePicker from 'react-native-date-picker'
 
 import Button from '@/components/shared/Button'
-import ScrollPickerNative, {
-  ScrollHandle,
-  ScrollPickerProps as ScrollPickerNativeProps,
-} from '@/components/shared/ScrollViewPicker'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
-import colors from '@/tailwind.config.colors'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import i18next from 'i18next'
 
-/* Inspired by po-meste-native: https://github.com/bratislava/po-meste-native/blob/master/components/DateTimePicker.tsx
- * Read ts docs in ScrollViewPicker.tsx for more info.
- */
-
-// similar to lodash range function, without step parameter
-const range = (start: number, end: number) => {
-  const inc = (end - start) / Math.abs(end - start)
-
-  return Array.from(Array.from({ length: Math.abs(end - start) + 1 }), (_, i) => start + i * inc)
-}
-
-const formatter = DateTimeFormatter.ofPattern('d.M.')
-const minutes = range(0, 60).map((value) => (value < 10 ? '0' : '') + value)
-const hours = range(0, 24).map((value) => (value < 10 ? '0' : '') + value)
-
-// TODO adjust heights of elements and wrapper if needed
-const ScrollPicker = forwardRef<ScrollHandle, ScrollPickerNativeProps>((scrollPickerProps, ref) => {
-  return (
-    <ScrollPickerNative
-      ref={ref}
-      style={{ width: 100 }}
-      dataSource={scrollPickerProps.dataSource}
-      selectedIndex={scrollPickerProps.selectedIndex ?? 1}
-      renderItem={(data, index) => (
-        <View key={index}>
-          <Typography variant="default-semibold">{data}</Typography>
-        </View>
-      )}
-      onValueChange={scrollPickerProps.onValueChange}
-      wrapperHeight={180}
-      wrapperStyle={{
-        width: 80,
-        height: 180,
-        ...scrollPickerProps.wrapperStyle,
-      }}
-      itemHeight={40}
-      scrollViewComponent={ScrollView}
-      highlightStyle={{
-        width: 80,
-        backgroundColor: colors.dark.light,
-        borderRadius: 6,
-        ...scrollPickerProps.highlightStyle,
-      }}
-    />
-  )
-})
-
-interface DateTimePickerProps {
+type Props = {
   onConfirm: (date: Date) => void
 }
 
-interface DateTimePickerHandles {
-  setDate: (date: LocalDateTime) => void
+const ANNOTATION_WIDTHS = {
+  en: { d: 155, h: 30, m: 30 },
+  sk: { d: 160, h: 40, m: 40 },
 }
 
-export type DateTimePickerRef = DateTimePickerProps & DateTimePickerHandles
+const DateTimePicker = ({ onConfirm }: Props) => {
+  const [date, setDate] = useState(new Date())
+  const locale = useLocale()
+  const t = useTranslation('DateTimePicker')
 
-const DateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerProps>(
-  ({ onConfirm }, ref) => {
-    const t = useTranslation('DateTimePicker')
+  const handleDateChanged = useCallback((newDate: Date) => {
+    setDate(newDate)
+  }, [])
 
-    const [now, setNow] = useState(LocalDateTime.now())
-    const [selectedHour, setSelectedHour] = useState<number>(now.hour())
-    const [selectedMinute, setSelectedMinute] = useState<number>(now.minute())
-    const [selectedDateIndex, setSelectedDateIndex] = useState<number>(7)
-    const datePickerRef = useRef<ScrollHandle>(null)
-    const hourPickerRef = useRef<ScrollHandle>(null)
-    const minutePickerRef = useRef<ScrollHandle>(null)
+  const handleConfirm = useCallback(() => {
+    onConfirm(date)
+  }, [date, onConfirm])
 
-    useImperativeHandle(ref, () => ({
-      setDate: (date) => scrollToDate(date),
-    }))
+  const handleNow = useCallback(() => {
+    setDate(new Date())
+  }, [])
 
-    const days = range(0, 15).map((value) => {
-      const date = LocalDateTime.now()
-      if (value < 7) return date.minusDays(7 - value).format(formatter)
-      if (value === 7) return t('today')
-      if (value === 8) return t('tomorrow')
-
-      return date.plusDays(value - 7).format(formatter)
-    })
-
-    const scrollToDate = useCallback(
-      (date: LocalDateTime) => {
-        setSelectedHour(date.hour())
-        hourPickerRef.current?.scrollTo(date.hour(), false)
-        setSelectedMinute(date.minute())
-        minutePickerRef.current?.scrollTo(date.minute(), false)
-        setSelectedDateIndex(7)
-        datePickerRef.current?.scrollTo(7, false)
-      },
-      [setSelectedHour, setSelectedMinute, setSelectedDateIndex],
-    )
-
-    useEffect(() => scrollToDate(LocalDateTime.now()), [scrollToDate])
-
-    const handleConfirm = () => {
-      let adjustedDate = now
-      if (selectedDateIndex < 7) adjustedDate = now.minusDays(7 - selectedDateIndex)
-      if (selectedDateIndex > 7) adjustedDate = now.plusDays(selectedDateIndex - 7)
-      const selectedDatetime = new Date(
-        adjustedDate.year(),
-        adjustedDate.monthValue() - 1,
-        adjustedDate.dayOfMonth(),
-        selectedHour,
-        selectedMinute,
-      )
-      onConfirm(selectedDatetime)
-    }
-
-    const handleNow = () => {
-      const localNow = LocalDateTime.now()
-      setNow(localNow)
-      scrollToDate(localNow)
-    }
-
-    return (
-      <View>
-        <View className="self-center rounded border">
-          <View className="flex-row bg-dark px-4 g-2">
-            <View className="w-[160px] items-center">
+  return (
+    <View>
+      <View className="self-center rounded border">
+        <View className="flex-row bg-dark px-4 g-2">
+          {Object.entries(ANNOTATION_WIDTHS[locale]).map(([translationKey, width]) => (
+            <View key={translationKey} className="items-center" style={{ width }}>
               <Typography variant="small-semibold" className="text-white">
-                {t('abbr.d')}
+                {t(`abbr.${translationKey}`)}
               </Typography>
             </View>
-            <View className="w-[80px] items-center">
-              <Typography variant="small-semibold" className="text-white">
-                {t('abbr.h')}
-              </Typography>
-            </View>
-            <View className="w-[80px] items-center">
-              <Typography variant="small-semibold" className="text-white">
-                {t('abbr.m')}
-              </Typography>
-            </View>
-          </View>
-          <View className="flex-row px-4 g-2">
-            <ScrollPicker
-              ref={datePickerRef}
-              dataSource={days}
-              selectedIndex={selectedDateIndex}
-              wrapperStyle={{ width: 160 }}
-              highlightStyle={{ width: 160 }}
-              onValueChange={(value, index) => setSelectedDateIndex(index)}
-            />
-            <ScrollPicker
-              ref={hourPickerRef}
-              dataSource={hours}
-              selectedIndex={selectedHour}
-              onValueChange={(value) => setSelectedHour(+value)}
-            />
-            <ScrollPicker
-              ref={minutePickerRef}
-              dataSource={minutes}
-              selectedIndex={selectedMinute}
-              onValueChange={(value) => setSelectedMinute(+value)}
-              // TODO investigate why this was here:
-              // wrapperStyle={{ right: 1 }}
-            />
-          </View>
+          ))}
+          <View className="flex-1" />
         </View>
 
-        <View className="mt-6 g-4">
-          <Button variant="plain-dark" onPress={handleNow}>
-            {t('now')}
-          </Button>
-
-          <Button onPress={handleConfirm}>{t('set')}</Button>
+        <View className="flex-row px-4 g-2">
+          <DatePicker
+            minimumDate={new Date()}
+            // maximumDate={} // TODO set maximum time
+            date={date}
+            onDateChange={handleDateChanged}
+            androidVariant="iosClone"
+            locale={locale}
+            is24hourSource="locale"
+          />
         </View>
       </View>
-    )
-  },
-)
+
+      <View className="mt-6 g-4">
+        <Button variant="plain-dark" onPress={handleNow}>
+          {t('now')}
+        </Button>
+
+        <Button onPress={handleConfirm}>{t('set')}</Button>
+        <Button onPress={() => i18next.changeLanguage(locale === 'sk' ? 'en' : 'sk')}>
+          Switch locale
+        </Button>
+      </View>
+    </View>
+  )
+}
 
 export default DateTimePicker

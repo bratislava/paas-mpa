@@ -1,5 +1,4 @@
 import { router, useLocalSearchParams } from 'expo-router'
-import React from 'react'
 
 import { PurchaseSearchParams } from '@/app/purchase/index'
 import DateTimePicker from '@/components/controls/date-time/DateTimePicker'
