@@ -67,7 +67,7 @@ const DateTimePicker = ({ onConfirm }: Props) => {
 
         <Button onPress={handleConfirm}>{t('set')}</Button>
         <Button onPress={() => i18next.changeLanguage(locale === 'sk' ? 'en' : 'sk')}>
-          Switch locale
+          {'Switch locale'}
         </Button>
       </View>
     </View>
