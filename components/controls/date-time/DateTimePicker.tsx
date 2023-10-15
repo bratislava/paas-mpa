@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ANNOTATION_WIDTHS = {
-  en: { d: 155, h: 30, m: 30 },
+  en: { d: 150, h: 30, m: 30 },
   sk: { d: 160, h: 40, m: 40 },
 }
 
@@ -37,7 +37,7 @@ const DateTimePicker = ({ onConfirm }: Props) => {
     <View>
       <View className="self-center rounded border">
         <View className="flex-row bg-dark px-4 g-2">
-          {Object.entries(ANNOTATION_WIDTHS[locale]).map(([translationKey, width]) => (
+          {Object.entries(ANNOTATION_WIDTHS[locale])?.map(([translationKey, width]) => (
             <View key={translationKey} className="items-center" style={{ width }}>
               <Typography variant="small-semibold" className="text-white">
                 {t(`abbr.${translationKey}`)}
