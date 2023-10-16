@@ -1,4 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
+import { Portal } from '@gorhom/portal'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
@@ -25,7 +26,6 @@ const MapScreen = () => {
   const handleZoneChange = useCallback(
     (zone: MapUdrZone) => {
       setSelectedZone(zone)
-      zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setSelectedZone],
   )
@@ -54,11 +54,13 @@ const MapScreen = () => {
         onPointPress={handlePointPress}
         filters={filters}
       />
-      <MapZoneBottomSheet
-        ref={zoneBottomSheetRef}
-        zone={selectedZone}
-        setFlyToCenter={mapRef.current?.setFlyToCenter}
-      />
+      <Portal hostName="index">
+        <MapZoneBottomSheet
+          ref={zoneBottomSheetRef}
+          zone={selectedZone}
+          setFlyToCenter={mapRef.current?.setFlyToCenter}
+        />
+      </Portal>
       {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
       <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
