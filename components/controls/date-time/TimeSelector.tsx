@@ -1,8 +1,7 @@
-import { Link, useLocalSearchParams } from 'expo-router'
-import React, { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { View } from 'react-native'
 
-import { PurchaseSearchParams } from '@/app/purchase'
+import DateTimePicker from '@/components/controls/date-time/DateTimePicker'
 import Chip from '@/components/shared/Chip'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -13,6 +12,13 @@ import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { formatDuration } from '@/utils/formatDuration'
 
+const getDuration = (date: Date) => {
+  const now = new Date()
+  const diff = date.getTime() - now.getTime()
+
+  return Math.ceil(diff / 1000 / 60)
+}
+
 type Props = {
   value: number // number of minutes
   onValueChange: (value: number) => void
@@ -21,8 +27,7 @@ type Props = {
 const TimeSelector = ({ value, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
   const locale = useLocale()
-  const searchParams = useLocalSearchParams<PurchaseSearchParams>()
-  const hrefObject = { pathname: '/purchase/custom-time', params: searchParams }
+  const [datePickerOpen, setDatePickerOpen] = useState(false)
 
   const now = useMemo(() => new Date(), [])
   const validUntil = useMemo(
@@ -64,6 +69,19 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
   const isCustomTimeActive = chips.every((chip) => chip.value !== value)
 
+  const handleDatePickerOpen = () => {
+    setDatePickerOpen(true)
+  }
+
+  const handleDatePickerClose = () => {
+    setDatePickerOpen(false)
+  }
+
+  const handleDatePickerConfirm = (date: Date) => {
+    const duration = getDuration(date)
+    onValueChange(duration)
+  }
+
   return (
     <Panel className="g-4">
       <FlexRow cn="items-center">
@@ -73,11 +91,9 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
           accessibilityLabel={t('subtractTimeButton')}
           onPress={subtractTime}
         />
-        <Link asChild href={hrefObject}>
-          <PressableStyled>
-            <Typography variant="h1">{formatDuration(value)}</Typography>
-          </PressableStyled>
-        </Link>
+        <PressableStyled onPress={handleDatePickerOpen}>
+          <Typography variant="h1">{formatDuration(value)}</Typography>
+        </PressableStyled>
         <IconButton
           variant="dark"
           name="add"
@@ -112,11 +128,9 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
             )
           })}
 
-          <Link asChild href={hrefObject}>
-            <PressableStyled className="flex-1">
-              <Chip label={t('custom')} isActive={isCustomTimeActive} />
-            </PressableStyled>
-          </Link>
+          <PressableStyled className="flex-1" onPress={handleDatePickerOpen}>
+            <Chip label={t('custom')} isActive={isCustomTimeActive} />
+          </PressableStyled>
         </View>
       </View>
 
@@ -124,13 +138,15 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
       <FlexRow>
         <Typography variant="small">{t('validUntil')}</Typography>
-
-        <Link asChild href={hrefObject}>
-          <PressableStyled>
-            <Typography variant="small-bold">{validUntil}</Typography>
-          </PressableStyled>
-        </Link>
+        <PressableStyled onPress={handleDatePickerOpen}>
+          <Typography variant="small-bold">{validUntil}</Typography>
+        </PressableStyled>
       </FlexRow>
+      <DateTimePicker
+        open={datePickerOpen}
+        onClose={handleDatePickerClose}
+        onConfirm={handleDatePickerConfirm}
+      />
     </Panel>
   )
 }
