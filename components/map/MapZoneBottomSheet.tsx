@@ -12,7 +12,6 @@ import MapAutocomplete from '@/components/map/MapAutocomplete'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
-import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
@@ -134,7 +133,9 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                 <Pressable onPress={handleInputFocus}>
                   <View pointerEvents={isFullHeightEnabled ? 'auto' : 'none'}>
                     {!isFullHeightEnabled && (
-                      <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
+                      <Typography variant="default-bold" className="pb-1">
+                        {t('MapScreen.ZoneBottomSheet.title')}
+                      </Typography>
                     )}
                     <MapAutocomplete
                       ref={inputRef}

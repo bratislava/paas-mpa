@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 
@@ -21,7 +20,7 @@ const Field = ({
   variant = 'default-bold',
 }: Props) => {
   return (
-    <View className={clsx('g-1', children === null && 'pb-1')}>
+    <View className="g-1">
       <View className="flex-row g-6">
         <Typography variant={variant} className="grow">
           {label}
