@@ -19,6 +19,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { ticketPriceRequest } = useGlobalStoreContext()
 
   const insets = useSafeAreaInsets()
+  // TODO tmp for now - fixed height from figma
   const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
 
   // 32 is just visually okay
