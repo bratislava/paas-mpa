@@ -1,5 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
+import { PortalHost } from '@gorhom/portal'
 import { Link, router, useNavigation } from 'expo-router'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -74,10 +75,15 @@ const IndexScreen = () => {
       icon: 'settings',
       path: '/settings',
     },
+    {
+      label: 'Purchase DEV',
+      icon: 'payment',
+      path: '/purchase',
+    },
   ]
 
   return (
-    <>
+    <View className="flex-1">
       <MapScreen />
 
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
@@ -98,6 +104,8 @@ const IndexScreen = () => {
         {/*   /> */}
         {/* </Link> */}
       </View>
+
+      <PortalHost name="index" />
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -157,7 +165,7 @@ const IndexScreen = () => {
           </View>
         </BottomSheetContent>
       </BottomSheet>
-    </>
+    </View>
   )
 }
 

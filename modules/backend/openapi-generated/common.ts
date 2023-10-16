@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Bratislava BPA backend
+ * PAAS MPA backend
  * BPA
  *
  * The version of the OpenAPI document: 1.0

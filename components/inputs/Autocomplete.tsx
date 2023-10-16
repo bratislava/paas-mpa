@@ -1,19 +1,31 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { forwardRef, ReactElement, Ref, useCallback, useState } from 'react'
+import { Portal } from '@gorhom/portal'
+import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useMemo, useState } from 'react'
 import {
   FlatList,
+  FlatListProps,
   ListRenderItem,
   NativeSyntheticEvent,
+  TextInput as RNTextInput,
   TextInputChangeEventData,
+  TextInputSelectionChangeEventData,
   View,
 } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
-import TextInput from '@/components/inputs/TextInput'
+import TextInput, { TextInputProps } from '@/components/inputs/TextInput'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 
-type Props<O> = {
+type TextSelection =
+  | {
+      start: number
+      end?: number
+    }
+  | undefined
+
+export type AutocompleteProps<O> = {
   onValueChange: (value: O) => void
   defaultValue?: string
   getOptions: (search: string) => Promise<O[]>
@@ -21,7 +33,15 @@ type Props<O> = {
   getOptionLabel: (option: O) => string
   debounce?: number
   renderItem?: ListRenderItem<O> | null
-}
+  onFocus?: () => void
+  onBlur?: () => void
+  leftIcon?: ReactNode
+  autoFocus?: boolean
+  resultsHeader?: ReactNode
+  optionsPortalName?: string
+  ListComponent?: React.ComponentType<FlatListProps<O>>
+  listProps?: Partial<FlatListProps<O>>
+} & TextInputProps
 
 const AutocompleteInner = <O,>(
   {
@@ -32,13 +52,22 @@ const AutocompleteInner = <O,>(
     getOptionLabel,
     debounce = 300,
     renderItem,
-  }: Props<O>,
-  ref: React.ForwardedRef<View>,
+    onFocus,
+    onBlur,
+    leftIcon,
+    autoFocus,
+    resultsHeader,
+    optionsPortalName,
+    ListComponent = FlatList,
+    listProps = {},
+    ...restProps
+  }: AutocompleteProps<O>,
+  ref: React.ForwardedRef<RNTextInput>,
 ) => {
   const [input, setInput] = useState(defaultValue)
-  const [value, setValue] = useState<O | null>(null)
   const [options, setOptions] = useState<O[]>([])
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
+  const [textSelection, setTextSelection] = useState<TextSelection>()
 
   const debouncedHandleChange = useDebouncedCallback(async (newInput: string) => {
     const newOptions = await getOptions(newInput)
@@ -57,7 +86,6 @@ const AutocompleteInner = <O,>(
   const handleOptionPress = useCallback(
     (option: O) => () => {
       setLastSearchText(input)
-      setValue(option)
       setInput(getOptionLabel(option))
       onValueChange(option)
       setOptions([])
@@ -65,20 +93,29 @@ const AutocompleteInner = <O,>(
     [getOptionLabel, onValueChange, input],
   )
 
-  const handleFocus = useCallback(() => {
+  const handleFocus = useCallback(async () => {
+    onFocus?.()
+    setTextSelection({ start: input.length, end: input.length })
     if (lastSearchText) {
       setInput(lastSearchText)
+      setTextSelection({ start: lastSearchText.length, end: lastSearchText.length })
       setLastSearchText(null)
+      debouncedHandleChange(lastSearchText)?.catch((error) => false)
     }
-  }, [lastSearchText])
+  }, [lastSearchText, onFocus, debouncedHandleChange, input])
+
+  const handleBlur = useCallback(async () => {
+    setTextSelection({ start: 0, end: 0 })
+    onBlur?.()
+  }, [onBlur])
 
   const defaultRenderItem: ListRenderItem<O> = useCallback(
     (info) => (
-      <PressableStyled className="border-b-px" onPress={handleOptionPress(info.item)}>
+      <PressableStyled onPress={handleOptionPress(info.item)}>
         {renderItem ? (
           renderItem(info)
         ) : (
-          <View className="border-divider p-3">
+          <View className="border-b-px border-divider p-3">
             <Typography className="flex-1" numberOfLines={1}>
               {getOptionLabel(info.item)}
             </Typography>
@@ -89,16 +126,49 @@ const AutocompleteInner = <O,>(
     [handleOptionPress, getOptionLabel, renderItem],
   )
 
+  const handleSelectionChange = useCallback(
+    (event: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+      setTextSelection(event.nativeEvent.selection)
+    },
+    [],
+  )
+
+  const optionsListProps: Omit<FlatListProps<O>, 'data'> = useMemo(
+    () => ({
+      className: 'flex-1',
+      ...listProps,
+      keyboardShouldPersistTaps: 'always',
+      renderItem: defaultRenderItem,
+    }),
+    [defaultRenderItem, listProps],
+  )
+
   return (
-    <View ref={ref}>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <TextInput onChange={handleChange} value={input} onFocus={handleFocus} />
+    <View>
+      <TextInput
+        {...restProps}
+        ref={ref}
+        onChange={handleChange}
+        value={input}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        leftIcon={leftIcon}
+        autoFocus={autoFocus}
+        selection={textSelection}
+        onSelectionChange={handleSelectionChange}
+      />
       <View>
-        <FlatList
-          keyboardShouldPersistTaps="always"
-          renderItem={defaultRenderItem}
-          data={options}
-        />
+        {optionsPortalName ? (
+          <Portal hostName={optionsPortalName}>
+            {options.length > 0 && (resultsHeader ?? null)}
+            <ListComponent data={options} {...optionsListProps} />
+          </Portal>
+        ) : (
+          <>
+            {options.length > 0 && (resultsHeader ?? null)}
+            <ListComponent data={options} {...optionsListProps} />
+          </>
+        )}
       </View>
     </View>
   )
@@ -107,7 +177,7 @@ const AutocompleteInner = <O,>(
 // The best, most reliable, and achievable solution is type assertion
 // https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
 const Autocomplete = forwardRef(AutocompleteInner) as <O>(
-  p: Props<O> & { ref?: Ref<View> },
+  p: AutocompleteProps<O> & { ref?: Ref<View> },
 ) => ReactElement
 
 export default Autocomplete

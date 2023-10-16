@@ -27,7 +27,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MAP_INSETS, MapFilters } from '@/modules/map/constants'
+import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
@@ -163,15 +163,12 @@ const Map = forwardRef(
       <View className="flex-1">
         <MapView
           ref={map}
-          className="flex-1"
+          className="grow"
           // eslint-disable-next-line no-secrets/no-secrets
           styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
-          scaleBarPosition={{
-            top: insets.top + MAP_INSETS.top,
-            left: insets.left + MAP_INSETS.left,
-          }}
           onCameraChanged={handleCameraChange}
           onPress={Keyboard.dismiss}
+          scaleBarEnabled={false}
         >
           {location && isWithinCity ? (
             <Camera
