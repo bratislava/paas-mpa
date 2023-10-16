@@ -14,8 +14,5 @@ export const useTranslation = (keyPrefix?: string) => {
 export const useLocale = () => {
   const { i18n } = useTranslationI18n()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [locale, region] = i18n.language.split('-')
-
-  return locale as 'sk' | 'en'
+  return i18n.resolvedLanguage
 }
