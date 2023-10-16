@@ -1,13 +1,14 @@
 import { axiosInstance } from './axios-instance'
 import {
+  AnnouncementsApiFactory,
   Configuration,
   DefaultApiFactory,
+  ParkingCardsApiFactory,
   SystemApiFactory,
   TicketsApiFactory,
   UserApiFactory,
   VehiclesApiFactory,
   VerifiedEmailsApiFactory,
-  VisitorCardsApiFactory,
 } from './openapi-generated'
 
 export const apiUrl = 'https://paas-mpa-backend.dev.bratislava.sk' // TODO move to env
@@ -20,6 +21,7 @@ export const clientApi = {
   ...TicketsApiFactory(...args),
   ...VehiclesApiFactory(...args),
   ...SystemApiFactory(...args),
-  ...VisitorCardsApiFactory(...args),
+  ...ParkingCardsApiFactory(...args),
   ...VerifiedEmailsApiFactory(...args),
+  ...AnnouncementsApiFactory(...args),
 }
