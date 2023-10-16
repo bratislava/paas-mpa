@@ -1,26 +1,23 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { Link, router, useLocalSearchParams } from 'expo-router'
-import React, { useMemo, useRef } from 'react'
-import { ScrollView, View } from 'react-native'
+import { useQuery } from '@tanstack/react-query'
+import { Link, useLocalSearchParams } from 'expo-router'
+import React, { useEffect, useRef } from 'react'
+import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
+import ParkingZoneControl from '@/components/controls/ParkingZoneControl'
 import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
-import SegmentBadge from '@/components/info/SegmentBadge'
-import BottomSheetContent from '@/components/shared/BottomSheetContent'
-import Button from '@/components/shared/Button'
-import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
-import FlexRow from '@/components/shared/FlexRow'
-import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Typography from '@/components/shared/Typography'
+import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
-import { formatDuration } from '@/utils/formatDuration'
+import { clientApi } from '@/modules/backend/client-api'
+import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 
 export type PurchaseSearchParams = {
   duration?: string
@@ -28,21 +25,54 @@ export type PurchaseSearchParams = {
   customParkingTime?: string
 }
 
+function addMinutes(date: Date, minutes: number) {
+  return new Date(date.getTime() + minutes * 60_000)
+}
+
 // TODO TimeSelector chips sometimes collapses - investigate
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
+
+  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
+
   const bottomSheetRef = useRef<BottomSheet>(null)
   const purchaseParams = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
-  const { licencePlate, duration = '60' } = purchaseParams
+  const { licencePlate } = purchaseParams
   const insets = useSafeAreaInsets()
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
   const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
-  // 32 is just visually okay
-  const snapPoints = useMemo(() => [32], [])
+  const parkingEnd = addMinutes(new Date(), ticketPriceRequest?.duration ?? 0).toISOString()
+  const isEnabled =
+    !!ticketPriceRequest?.udr && !!ticketPriceRequest?.ecv && !!ticketPriceRequest?.duration
+  console.log('isEnabled', isEnabled)
+
+  const { data } = useQuery({
+    queryKey: ['TicketRequest', ticketPriceRequest],
+    queryFn: () =>
+      clientApi.ticketsControllerGetTicketPrice({
+        ticket: {
+          udr: ticketPriceRequest?.udr ?? '',
+          ecv: ticketPriceRequest?.ecv ?? '',
+          parkingEnd,
+        },
+      }),
+    enabled: isEnabled,
+  })
+
+  console.log('data', data?.data.priceWithoutDiscount)
+
+  useEffect(() => {
+    if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
+      setTicketPriceRequest((prev) => ({
+        ...prev,
+        ecv: chosenVehicle?.licencePlate,
+      }))
+    }
+  }, [chosenVehicle, setTicketPriceRequest, ticketPriceRequest])
 
   return (
     <>
@@ -50,16 +80,7 @@ const PurchaseScreen = () => {
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
-            <Field label={t('segmentFieldLabel')} labelInsertArea={<SegmentBadge label="1048" />}>
-              <PressableStyled>
-                <Panel>
-                  <FlexRow>
-                    <Typography>Staré Mesto – Fazuľová</Typography>
-                    <Typography variant="default-semibold">2,90</Typography>
-                  </FlexRow>
-                </Panel>
-              </PressableStyled>
-            </Field>
+            <ParkingZoneControl />
 
             <Field label={t('chooseVehicleFieldLabel')}>
               {/* TODO Link+Pressable */}
@@ -75,8 +96,10 @@ const PurchaseScreen = () => {
 
             <Field label={t('parkingTimeFieldLabel')}>
               <TimeSelector
-                value={Number(duration)}
-                onValueChange={(newDuration) => router.setParams({ duration: String(newDuration) })}
+                value={ticketPriceRequest?.duration ?? 60}
+                onValueChange={(newDuration) =>
+                  setTicketPriceRequest((prev) => ({ ...prev, duration: newDuration }))
+                }
               />
             </Field>
 
@@ -98,34 +121,7 @@ const PurchaseScreen = () => {
         </ScrollView>
       </ScreenView>
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        enableDynamicSizing
-        bottomInset={purchaseButtonContainerHeight}
-        snapPoints={snapPoints}
-        index={1}
-      >
-        <BottomSheetContent cn="g-3" hideSpacer>
-          <FlexRow>
-            <Typography variant="default">Parkovanie {formatDuration(Number(duration))}</Typography>
-            <Typography variant="default-bold">? €</Typography>
-          </FlexRow>
-
-          <Typography>{JSON.stringify(purchaseParams)}</Typography>
-          <Divider />
-
-          <FlexRow>
-            <Typography variant="default-bold">{t('summary')}</Typography>
-            <Typography variant="default-bold">2 €</Typography>
-          </FlexRow>
-        </BottomSheetContent>
-      </BottomSheet>
-
-      <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
-        <Link href="/" asChild>
-          <Button>{t('pay')}</Button>
-        </Link>
-      </View>
+      <PurchaseBottomSheet ref={bottomSheetRef} />
     </>
   )
 }
