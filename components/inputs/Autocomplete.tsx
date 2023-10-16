@@ -65,7 +65,6 @@ const AutocompleteInner = <O,>(
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
   const [input, setInput] = useState(defaultValue)
-  const [value, setValue] = useState<O | null>(null)
   const [options, setOptions] = useState<O[]>([])
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
   const [textSelection, setTextSelection] = useState<TextSelection>()
@@ -87,7 +86,6 @@ const AutocompleteInner = <O,>(
   const handleOptionPress = useCallback(
     (option: O) => () => {
       setLastSearchText(input)
-      setValue(option)
       setInput(getOptionLabel(option))
       onValueChange(option)
       setOptions([])

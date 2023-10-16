@@ -24,7 +24,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
 
     const renderItem: ListRenderItem<GeocodingFeature> = useCallback(
       ({ item }) => (
-        <View className="border-b-[2px] border-divider py-4">
+        <View className="border-b border-divider py-4">
           <FlexRow cn="g-4 items-center">
             <Icon name="location-pin" />
             <View className="flex-1">

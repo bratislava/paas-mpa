@@ -39,7 +39,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
         >
           {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
           {/* TODO font size in input */}
-          <TextInputNative ref={refSetter} editable={!isDisabled} {...rest} />
+          <TextInputNative ref={refSetter} editable={!isDisabled} className="flex-1" {...rest} />
         </View>
       </Pressable>
     )

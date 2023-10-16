@@ -1,5 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
+import clsx from 'clsx'
 import { Link } from 'expo-router'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Keyboard, Pressable, TextInput, View } from 'react-native'
@@ -47,7 +48,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const isZoneSelected = Boolean(selectedZone)
   const [isFullHeightEnabled, setIsFullHeightEnabled] = useState(false)
   const inputRef = useRef<TextInput>(null)
-  const [nextZoneUpdate, setNextZoneUpdate] = useState<MapUdrZone | null | undefined>()
 
   const snapPoints = useMemo(() => {
     const newSnapPoints: (string | number)[] = [SNAP_POINTS.noZone]
@@ -76,16 +76,13 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   }, [])
 
   useEffect(() => {
-    setNextZoneUpdate(zone)
-  }, [zone])
-
-  useEffect(() => {
-    if (!isFullHeightEnabled && nextZoneUpdate !== undefined) {
-      setSelectedZone(nextZoneUpdate)
-      // eslint-disable-next-line unicorn/no-useless-undefined
-      setNextZoneUpdate(undefined)
+    if (!isFullHeightEnabled && zone !== undefined) {
+      setSelectedZone(zone)
+      if (zone === null) {
+        localRef.current?.collapse()
+      }
     }
-  }, [isFullHeightEnabled, nextZoneUpdate])
+  }, [isFullHeightEnabled, zone])
 
   const handleChange = useCallback(
     (newIndex: number) => {
@@ -129,8 +126,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       // eslint-disable-next-line react-native/no-inline-styles
       handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
     >
-      <BottomSheetContent cn="bg-white h-full g-3">
-        <View className="flex-1 g-2">
+      <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
+        <View className={clsx(isFullHeightEnabled && 'flex-1')}>
           <View>
             <FlexRow>
               <View className="flex-1">
@@ -155,55 +152,53 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
             </FlexRow>
           </View>
           <View className="flex-1">
-            <Pressable onPressIn={handleInputBlur}>
-              <View className="h-full">
-                {isFullHeightEnabled && (
-                  <View className="flex-1 pt-3">
+            {isFullHeightEnabled && (
+              <Pressable onTouchStart={handleInputBlur}>
+                <View className="h-full">
+                  <View className="flex-1 pt-5">
                     <PortalHost name="mapAutocompleteOptions" />
                   </View>
-                )}
-                {!isFullHeightEnabled &&
-                  (selectedZone ? (
-                    <Panel className="g-4">
-                      <FlexRow>
-                        <Typography>{selectedZone.Nazov}</Typography>
-                        <SegmentBadge label={selectedZone.UDR_ID.toString()} />
-                      </FlexRow>
-                      <Divider />
-                      <FlexRow>
-                        <Typography variant="default-bold">
-                          {selectedZone.Zakladna_cena}€ / h
-                        </Typography>
-                        <Link
-                          asChild
-                          href={{
-                            pathname: '/zone-details',
-                            params: { id: selectedZone.OBJECTID.toString() },
-                          }}
-                        >
-                          <PressableStyled>
-                            <View className="flex-row">
-                              <Typography variant="default-bold">
-                                {t('MapScreen.ZoneBottomSheet.showDetails')}
-                              </Typography>
-                              <Icon name="expand-more" />
-                            </View>
-                          </PressableStyled>
-                        </Link>
-                      </FlexRow>
-                    </Panel>
-                  ) : (
-                    <Panel className="bg-warning-light g-2">
-                      <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
-                    </Panel>
-                  ))}
-              </View>
-            </Pressable>
+                </View>
+              </Pressable>
+            )}
           </View>
         </View>
-        {!isFullHeightEnabled && selectedZone ? (
-          <Button variant="primary">{t('Navigation.continue')}</Button>
-        ) : null}
+        {!isFullHeightEnabled &&
+          (selectedZone ? (
+            <>
+              <Panel className="g-4">
+                <FlexRow>
+                  <Typography>{selectedZone.Nazov}</Typography>
+                  <SegmentBadge label={selectedZone.UDR_ID.toString()} />
+                </FlexRow>
+                <Divider />
+                <FlexRow>
+                  <Typography variant="default-bold">{selectedZone.Zakladna_cena}€ / h</Typography>
+                  <Link
+                    asChild
+                    href={{
+                      pathname: '/zone-details',
+                      params: { id: selectedZone.OBJECTID.toString() },
+                    }}
+                  >
+                    <PressableStyled>
+                      <View className="flex-row">
+                        <Typography variant="default-bold">
+                          {t('MapScreen.ZoneBottomSheet.showDetails')}
+                        </Typography>
+                        <Icon name="expand-more" />
+                      </View>
+                    </PressableStyled>
+                  </Link>
+                </FlexRow>
+              </Panel>
+              <Button variant="primary">{t('Navigation.continue')}</Button>
+            </>
+          ) : (
+            <Panel className="bg-warning-light g-2">
+              <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
+            </Panel>
+          ))}
       </BottomSheetContent>
     </BottomSheet>
   )
