@@ -146,7 +146,7 @@ const AutocompleteInner = <O,>(
   )
 
   return (
-    <View ref={ref}>
+    <View>
       <TextInput
         {...restProps}
         ref={ref}

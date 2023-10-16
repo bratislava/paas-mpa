@@ -1,9 +1,9 @@
 import { clsx } from 'clsx'
 import { forwardRef, ReactNode, useCallback, useRef } from 'react'
 import {
+  Pressable,
   TextInput as TextInputNative,
   TextInputProps as TextInputNativeProps,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native'
 
@@ -29,7 +29,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
     }, [])
 
     return (
-      <TouchableWithoutFeedback onPress={handlePress}>
+      <Pressable onPress={handlePress}>
         <View
           className={clsx('flex-row rounded border bg-white px-4 py-3 g-3', {
             'border-divider focus:border-dark': !isDisabled && !hasError,
@@ -37,10 +37,11 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
             'border-divider bg-[#D6D6D6]': isDisabled,
           })}
         >
-          <View className="h-6 w-6">{leftIcon ?? null}</View>
+          {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
+          {/* TODO font size in input */}
           <TextInputNative ref={refSetter} editable={!isDisabled} {...rest} />
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     )
   },
 )

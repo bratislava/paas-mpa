@@ -1,8 +1,9 @@
-import BottomSheet, { TouchableWithoutFeedback } from '@gorhom/bottom-sheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
 import { Link } from 'expo-router'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Keyboard, TextInput, View } from 'react-native'
+import { Keyboard, Pressable, TextInput, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import { MapRef } from '@/components/map/Map'
@@ -39,6 +40,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
+  const { top } = useSafeAreaInsets()
   const refSetter = useMultipleRefsSetter(ref, localRef)
 
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(zone)
@@ -121,6 +123,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     <BottomSheet
       ref={refSetter}
       snapPoints={snapPoints}
+      topInset={top}
       keyboardBehavior="interactive"
       onChange={handleChange}
       // eslint-disable-next-line react-native/no-inline-styles
@@ -131,7 +134,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
           <View>
             <FlexRow>
               <View className="flex-1">
-                <TouchableWithoutFeedback onPress={handleInputFocus}>
+                <Pressable onPress={handleInputFocus}>
                   <View pointerEvents={isFullHeightEnabled ? 'auto' : 'none'}>
                     {!isFullHeightEnabled && (
                       <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
@@ -142,7 +145,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                       onValueChange={handleChoice}
                     />
                   </View>
-                </TouchableWithoutFeedback>
+                </Pressable>
               </View>
               {isFullHeightEnabled && (
                 <Button variant="plain-dark" onPress={handleCancel}>
@@ -152,7 +155,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
             </FlexRow>
           </View>
           <View className="flex-1">
-            <TouchableWithoutFeedback onPressIn={handleInputBlur}>
+            <Pressable onPressIn={handleInputBlur}>
               <View className="h-full">
                 {isFullHeightEnabled && (
                   <View className="flex-1 pt-3">
@@ -195,7 +198,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     </Panel>
                   ))}
               </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
           </View>
         </View>
         {!isFullHeightEnabled && selectedZone ? (
