@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Bratislava BPA backend
+ * PAAS MPA backend
  * BPA
  *
  * The version of the OpenAPI document: 1.0
@@ -312,7 +312,7 @@ export interface GetTicketPriceTicketInfoRequestDto {
    */
   ecv: string
   /**
-   * UUID - unique identification of parking slot (specific section of parking regulation)
+   * Unique identification of parking slot (specific section of parking regulation)
    * @type {string}
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
@@ -408,6 +408,174 @@ export interface PaginationInfo {
 /**
  *
  * @export
+ * @interface ParkingCardDetail
+ */
+export interface ParkingCardDetail {
+  /**
+   * Name of the card cheme
+   * @type {string}
+   * @memberof ParkingCardDetail
+   */
+  cardSchemeName?: string
+  /**
+   * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
+   * @type {string}
+   * @memberof ParkingCardDetail
+   */
+  vehiclePlateNumber?: string
+  /**
+   * Start of card validity. ISO8601 formatted UTC timestamp
+   * @type {string}
+   * @memberof ParkingCardDetail
+   */
+  validFrom?: string
+  /**
+   * End of card validity. ISO8601 formatted UTC timestamp.
+   * @type {string}
+   * @memberof ParkingCardDetail
+   */
+  validTo?: string
+  /**
+   * Balance available on the visitor card (ISO8601 duration)
+   * @type {string}
+   * @memberof ParkingCardDetail
+   */
+  balance?: string
+  /**
+   * List of Internal ids of the parking space.
+   * @type {Array<string>}
+   * @memberof ParkingCardDetail
+   */
+  parkingSpaces?: Array<string>
+}
+/**
+ *
+ * @export
+ * @interface ParkingCardDto
+ */
+export interface ParkingCardDto {
+  /**
+   * Database id of the verified email
+   * @type {number}
+   * @memberof ParkingCardDto
+   */
+  id: number
+  /**
+   * Identificator from parkdots (npkid)
+   * @type {string}
+   * @memberof ParkingCardDto
+   */
+  identificator: string
+  /**
+   *
+   * @type {ParkingCardType}
+   * @memberof ParkingCardDto
+   */
+  type: ParkingCardType
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof ParkingCardDto
+   */
+  createdAt: string
+  /**
+   * Date of the last change
+   * @type {string}
+   * @memberof ParkingCardDto
+   */
+  updatedAt: string
+}
+
+/**
+ *
+ * @export
+ * @interface ParkingCardFullDto
+ */
+export interface ParkingCardFullDto {
+  /**
+   * Database id of the verified email
+   * @type {number}
+   * @memberof ParkingCardFullDto
+   */
+  id: number
+  /**
+   * Identificator from parkdots (npkid)
+   * @type {string}
+   * @memberof ParkingCardFullDto
+   */
+  identificator: string
+  /**
+   *
+   * @type {ParkingCardType}
+   * @memberof ParkingCardFullDto
+   */
+  type: ParkingCardType
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof ParkingCardFullDto
+   */
+  createdAt: string
+  /**
+   * Date of the last change
+   * @type {string}
+   * @memberof ParkingCardFullDto
+   */
+  updatedAt: string
+  /**
+   *
+   * @type {VerifiedEmailDto}
+   * @memberof ParkingCardFullDto
+   */
+  verifiedEmail: VerifiedEmailDto
+  /**
+   *
+   * @type {ParkingCardDetail}
+   * @memberof ParkingCardFullDto
+   */
+  details: ParkingCardDetail
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const ParkingCardType = {
+  Abonent: 'ABONENT',
+  Rezident: 'REZIDENT',
+  Bpk: 'BPK',
+  Npk: 'NPK',
+  Tzp: 'TZP',
+  Elektromobil: 'ELEKTROMOBIL',
+  Other: 'OTHER',
+} as const
+
+export type ParkingCardType = (typeof ParkingCardType)[keyof typeof ParkingCardType]
+
+/**
+ *
+ * @export
+ * @interface ParkingCardsResponseDto
+ */
+export interface ParkingCardsResponseDto {
+  /**
+   * List of parking cards
+   * @type {Array<ParkingCardFullDto>}
+   * @memberof ParkingCardsResponseDto
+   */
+  parkingCards: Array<ParkingCardFullDto>
+  /**
+   *
+   * @type {PaginationInfo}
+   * @memberof ParkingCardsResponseDto
+   */
+  paginationInfo: PaginationInfo
+}
+/**
+ *
+ * @export
  * @interface SaveAnnouncementDto
  */
 export interface SaveAnnouncementDto {
@@ -485,19 +653,6 @@ export interface SaveVehicleDto {
    * @memberof SaveVehicleDto
    */
   isDefault: boolean
-}
-/**
- *
- * @export
- * @interface SystemVersionDto
- */
-export interface SystemVersionDto {
-  /**
-   * Version of the current running API
-   * @type {string}
-   * @memberof SystemVersionDto
-   */
-  version: string
 }
 /**
  *
@@ -783,142 +938,6 @@ export interface VerifyEmailsDto {
    * @memberof VerifyEmailsDto
    */
   emails: Array<string>
-}
-/**
- *
- * @export
- * @interface VisitorCardDetail
- */
-export interface VisitorCardDetail {
-  /**
-   * Name of the card cheme
-   * @type {string}
-   * @memberof VisitorCardDetail
-   */
-  cardSchemeName?: string
-  /**
-   * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
-   * @type {string}
-   * @memberof VisitorCardDetail
-   */
-  vehiclePlateNumber?: string
-  /**
-   * Start of card validity. ISO8601 formatted UTC timestamp
-   * @type {string}
-   * @memberof VisitorCardDetail
-   */
-  validFrom?: string
-  /**
-   * End of card validity. ISO8601 formatted UTC timestamp.
-   * @type {string}
-   * @memberof VisitorCardDetail
-   */
-  validTo?: string
-  /**
-   * Balance available on the visitor card (ISO8601 duration)
-   * @type {string}
-   * @memberof VisitorCardDetail
-   */
-  balance?: string
-  /**
-   * List of Internal ids of the parking space.
-   * @type {Array<string>}
-   * @memberof VisitorCardDetail
-   */
-  parkingSpaces?: Array<string>
-}
-/**
- *
- * @export
- * @interface VisitorCardDto
- */
-export interface VisitorCardDto {
-  /**
-   * Database id of the verified email
-   * @type {number}
-   * @memberof VisitorCardDto
-   */
-  id: number
-  /**
-   * Identificator from parkdots (npkid)
-   * @type {string}
-   * @memberof VisitorCardDto
-   */
-  identificator: string
-  /**
-   * Date of the creation
-   * @type {string}
-   * @memberof VisitorCardDto
-   */
-  createdAt: string
-  /**
-   * Date of the last change
-   * @type {string}
-   * @memberof VisitorCardDto
-   */
-  updatedAt: string
-}
-/**
- *
- * @export
- * @interface VisitorCardFullDto
- */
-export interface VisitorCardFullDto {
-  /**
-   * Database id of the verified email
-   * @type {number}
-   * @memberof VisitorCardFullDto
-   */
-  id: number
-  /**
-   * Identificator from parkdots (npkid)
-   * @type {string}
-   * @memberof VisitorCardFullDto
-   */
-  identificator: string
-  /**
-   * Date of the creation
-   * @type {string}
-   * @memberof VisitorCardFullDto
-   */
-  createdAt: string
-  /**
-   * Date of the last change
-   * @type {string}
-   * @memberof VisitorCardFullDto
-   */
-  updatedAt: string
-  /**
-   *
-   * @type {VerifiedEmailDto}
-   * @memberof VisitorCardFullDto
-   */
-  verifiedEmail: VerifiedEmailDto
-  /**
-   *
-   * @type {VisitorCardDetail}
-   * @memberof VisitorCardFullDto
-   */
-  details: VisitorCardDetail
-}
-/**
- *
- * @export
- * @interface VisitorCardsResponseDto
- */
-export interface VisitorCardsResponseDto {
-  /**
-   * List of visitor cards
-   * @type {Array<VisitorCardFullDto>}
-   * @memberof VisitorCardsResponseDto
-   */
-  visitorCards: Array<VisitorCardFullDto>
-  /**
-   *
-   * @type {PaginationInfo}
-   * @memberof VisitorCardsResponseDto
-   */
-  paginationInfo: PaginationInfo
 }
 
 /**
@@ -1371,21 +1390,25 @@ export class DefaultApi extends BaseAPI {
 }
 
 /**
- * SystemApi - axios parameter creator
+ * ParkingCardsApi - axios parameter creator
  * @export
  */
-export const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ParkingCardsApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary Get the version of the BE system
+     * @summary Get all parking cards associated with the user
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    systemControllerGetSystemVersion: async (
+    parkingCardsControllerGetParkingCards: async (
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      const localVarPath = `/system/version`
+      const localVarPath = `/parking-cards`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
       let baseOptions
@@ -1401,6 +1424,14 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter['pageSize'] = pageSize
+      }
+
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
       localVarRequestOptions.headers = {
@@ -1414,6 +1445,106 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
         options: localVarRequestOptions,
       }
     },
+  }
+}
+
+/**
+ * ParkingCardsApi - functional programming interface
+ * @export
+ */
+export const ParkingCardsApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = ParkingCardsApiAxiosParamCreator(configuration)
+  return {
+    /**
+     *
+     * @summary Get all parking cards associated with the user
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async parkingCardsControllerGetParkingCards(
+      page?: number,
+      pageSize?: number,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParkingCardsResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.parkingCardsControllerGetParkingCards(
+          page,
+          pageSize,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * ParkingCardsApi - factory interface
+ * @export
+ */
+export const ParkingCardsApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = ParkingCardsApiFp(configuration)
+  return {
+    /**
+     *
+     * @summary Get all parking cards associated with the user
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    parkingCardsControllerGetParkingCards(
+      page?: number,
+      pageSize?: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<ParkingCardsResponseDto> {
+      return localVarFp
+        .parkingCardsControllerGetParkingCards(page, pageSize, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * ParkingCardsApi - object-oriented interface
+ * @export
+ * @class ParkingCardsApi
+ * @extends {BaseAPI}
+ */
+export class ParkingCardsApi extends BaseAPI {
+  /**
+   *
+   * @summary Get all parking cards associated with the user
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ParkingCardsApi
+   */
+  public parkingCardsControllerGetParkingCards(
+    page?: number,
+    pageSize?: number,
+    options?: AxiosRequestConfig,
+  ) {
+    return ParkingCardsApiFp(this.configuration)
+      .parkingCardsControllerGetParkingCards(page, pageSize, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
+ * SystemApi - axios parameter creator
+ * @export
+ */
+export const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
     /**
      *
      * @summary Send feedback
@@ -1475,20 +1606,6 @@ export const SystemApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary Get the version of the BE system
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async systemControllerGetSystemVersion(
-      options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SystemVersionDto>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerGetSystemVersion(
-        options,
-      )
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
-    },
-    /**
-     *
      * @summary Send feedback
      * @param {FeedbackDto} feedbackDto
      * @param {*} [options] Override http request option.
@@ -1520,17 +1637,6 @@ export const SystemApiFactory = function (
   return {
     /**
      *
-     * @summary Get the version of the BE system
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    systemControllerGetSystemVersion(options?: AxiosRequestConfig): AxiosPromise<SystemVersionDto> {
-      return localVarFp
-        .systemControllerGetSystemVersion(options)
-        .then((request) => request(axios, basePath))
-    },
-    /**
-     *
      * @summary Send feedback
      * @param {FeedbackDto} feedbackDto
      * @param {*} [options] Override http request option.
@@ -1554,19 +1660,6 @@ export const SystemApiFactory = function (
  * @extends {BaseAPI}
  */
 export class SystemApi extends BaseAPI {
-  /**
-   *
-   * @summary Get the version of the BE system
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof SystemApi
-   */
-  public systemControllerGetSystemVersion(options?: AxiosRequestConfig) {
-    return SystemApiFp(this.configuration)
-      .systemControllerGetSystemVersion(options)
-      .then((request) => request(this.axios, this.basePath))
-  }
-
   /**
    *
    * @summary Send feedback
@@ -1813,7 +1906,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     ): Promise<RequestArgs> => {
       // verify required parameter 'active' is not null or undefined
       assertParamExists('ticketsControllerTicketsGetMany', 'active', active)
-      const localVarPath = `/tickets/active`
+      const localVarPath = `/tickets`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
       let baseOptions
@@ -1821,7 +1914,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -2218,7 +2311,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -2490,7 +2583,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -2985,7 +3078,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -3088,7 +3181,7 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     async verifiedEmailsControllerVerifyEmail(
       token: string,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VisitorCardDto>>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ParkingCardDto>>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedEmailsControllerVerifyEmail(
         token,
         options,
@@ -3166,7 +3259,7 @@ export const VerifiedEmailsApiFactory = function (
     verifiedEmailsControllerVerifyEmail(
       token: string,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<Array<VisitorCardDto>> {
+    ): AxiosPromise<Array<ParkingCardDto>> {
       return localVarFp
         .verifiedEmailsControllerVerifyEmail(token, options)
         .then((request) => request(axios, basePath))
@@ -3242,156 +3335,6 @@ export class VerifiedEmailsApi extends BaseAPI {
   public verifiedEmailsControllerVerifyEmail(token: string, options?: AxiosRequestConfig) {
     return VerifiedEmailsApiFp(this.configuration)
       .verifiedEmailsControllerVerifyEmail(token, options)
-      .then((request) => request(this.axios, this.basePath))
-  }
-}
-
-/**
- * VisitorCardsApi - axios parameter creator
- * @export
- */
-export const VisitorCardsApiAxiosParamCreator = function (configuration?: Configuration) {
-  return {
-    /**
-     *
-     * @summary Get all visitor cards associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    visitorCardsControllerGetVisitorCards: async (
-      page?: number,
-      pageSize?: number,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      const localVarPath = `/visitor-cards`
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
-      let baseOptions
-      if (configuration) {
-        baseOptions = configuration.baseOptions
-      }
-
-      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
-      const localVarHeaderParameter = {} as any
-      const localVarQueryParameter = {} as any
-
-      // authentication cognito required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-      if (page !== undefined) {
-        localVarQueryParameter['page'] = page
-      }
-
-      if (pageSize !== undefined) {
-        localVarQueryParameter['pageSize'] = pageSize
-      }
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter)
-      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      }
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      }
-    },
-  }
-}
-
-/**
- * VisitorCardsApi - functional programming interface
- * @export
- */
-export const VisitorCardsApiFp = function (configuration?: Configuration) {
-  const localVarAxiosParamCreator = VisitorCardsApiAxiosParamCreator(configuration)
-  return {
-    /**
-     *
-     * @summary Get all visitor cards associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async visitorCardsControllerGetVisitorCards(
-      page?: number,
-      pageSize?: number,
-      options?: AxiosRequestConfig,
-    ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<VisitorCardsResponseDto>
-    > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.visitorCardsControllerGetVisitorCards(
-          page,
-          pageSize,
-          options,
-        )
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
-    },
-  }
-}
-
-/**
- * VisitorCardsApi - factory interface
- * @export
- */
-export const VisitorCardsApiFactory = function (
-  configuration?: Configuration,
-  basePath?: string,
-  axios?: AxiosInstance,
-) {
-  const localVarFp = VisitorCardsApiFp(configuration)
-  return {
-    /**
-     *
-     * @summary Get all visitor cards associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    visitorCardsControllerGetVisitorCards(
-      page?: number,
-      pageSize?: number,
-      options?: AxiosRequestConfig,
-    ): AxiosPromise<VisitorCardsResponseDto> {
-      return localVarFp
-        .visitorCardsControllerGetVisitorCards(page, pageSize, options)
-        .then((request) => request(axios, basePath))
-    },
-  }
-}
-
-/**
- * VisitorCardsApi - object-oriented interface
- * @export
- * @class VisitorCardsApi
- * @extends {BaseAPI}
- */
-export class VisitorCardsApi extends BaseAPI {
-  /**
-   *
-   * @summary Get all visitor cards associated with the user
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof VisitorCardsApi
-   */
-  public visitorCardsControllerGetVisitorCards(
-    page?: number,
-    pageSize?: number,
-    options?: AxiosRequestConfig,
-  ) {
-    return VisitorCardsApiFp(this.configuration)
-      .visitorCardsControllerGetVisitorCards(page, pageSize, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }
