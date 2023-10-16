@@ -121,8 +121,8 @@
   "MapScreen": {
     "ZoneBottomSheet": {
       "title": "Kde parkujete?",
-      "showDetails": "Ukázať detail",
-      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na niektorú zo zón v blízkosti."
+      "showDetails": "Detail úseku",
+      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti."
     },
     "PointBottomSheet": {
       "title": "Detail bodu",
@@ -148,17 +148,17 @@
     }
   },
   "ZoneDetailsScreen": {
-    "title": "Detail zóny",
+    "title": "Detail úseku",
     "showResults": "Ukázať výsledky"
   },
   "FiltersScreen": {
     "title": "Filtre",
-    "showResults": "Ukázať výsledky",
+    "showResults": "Zobraziť",
     "filteringOptions": {
-      "assistant": "Asistent",
-      "parkomat": "Parkomat",
-      "partner": "Predajný bod",
-      "p-plus-r": "Park & Ride",
+      "assistant": "Asistenti",
+      "parkomat": "Parkomaty",
+      "partner": "Partnerské prevádzky",
+      "p-plus-r": "P+R Záchytné parkoviská",
       "garage": "Garáž",
       "parking-lot": "Parkovisko",
       "active": "Parkovacie zóny",
@@ -166,7 +166,7 @@
     },
     "sectionHeaders": {
       "payment": "Platba",
-      "parkingType": "Typ parkoviska",
+      "parkingType": "Typ parkovania",
       "zones": "Zóny"
     }
   }

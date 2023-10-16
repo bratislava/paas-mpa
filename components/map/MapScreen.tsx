@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { LayoutAnimation, View } from 'react-native'
+import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import Map, { MapRef } from '@/components/map/Map'
@@ -25,10 +25,7 @@ const MapScreen = () => {
   const mapRef = useRef<MapRef>(null)
   const handleZoneChange = useCallback(
     (zone: MapUdrZone) => {
-      const animation = LayoutAnimation.create(100, 'easeInEaseOut', 'opacity')
-      LayoutAnimation.configureNext(animation)
       setSelectedZone(zone)
-      zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setSelectedZone],
   )
@@ -62,7 +59,6 @@ const MapScreen = () => {
           ref={zoneBottomSheetRef}
           zone={selectedZone}
           setFlyToCenter={mapRef.current?.setFlyToCenter}
-          setBlockZoneMapUpdate={mapRef.current?.setIsZoneUpdateBlocked}
         />
       </Portal>
       {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}

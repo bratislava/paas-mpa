@@ -3,7 +3,6 @@ import { forwardRef, useCallback } from 'react'
 import { ListRenderItem, TextInput as RNTextInput, View } from 'react-native'
 
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
-import { MapRef } from '@/components/map/Map'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
@@ -11,19 +10,16 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 
-type Props = {
-  setFlyToCenter?: MapRef['setFlyToCenter']
-} & Partial<AutocompleteProps<GeocodingFeature>>
+type Props = Partial<AutocompleteProps<GeocodingFeature>>
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
-  ({ setFlyToCenter, onValueChange, ...restProps }: Props, ref) => {
+  ({ onValueChange, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
     const handleValueChange = useCallback(
       (value: GeocodingFeature) => {
-        setFlyToCenter?.(value.center)
         onValueChange?.(value)
       },
-      [setFlyToCenter, onValueChange],
+      [onValueChange],
     )
 
     const renderItem: ListRenderItem<GeocodingFeature> = useCallback(
@@ -53,6 +49,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           resultsHeader={<Typography variant="h2">{t('searchResults')}</Typography>}
           renderItem={renderItem}
           ListComponent={BottomSheetFlatList}
+          // disabledIndication={false}
           {...restProps}
         />
       </View>

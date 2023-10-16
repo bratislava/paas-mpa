@@ -2,7 +2,7 @@ import BottomSheet, { TouchableWithoutFeedback } from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
 import { Link } from 'expo-router'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Keyboard, LayoutAnimation, TextInput, View } from 'react-native'
+import { Keyboard, TextInput, View } from 'react-native'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import { MapRef } from '@/components/map/Map'
@@ -16,9 +16,9 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
-import { MapUdrZone } from '@/modules/map/types'
-import { getMultipleRefsSetter } from '@/utils/getMultipleRefsSetter'
+import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
 
 const SNAP_POINTS = {
   noZone: 220,
@@ -29,24 +29,23 @@ const SNAP_POINTS = {
 type Props = {
   zone: MapUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
-  setBlockZoneMapUpdate?: (isBlocked: boolean) => void
 }
 
 const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
-  const { zone, setFlyToCenter, setBlockZoneMapUpdate = () => false } = props
+  const { zone, setFlyToCenter } = props
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
+  const refSetter = useMultipleRefsSetter(ref, localRef)
 
-  const isZoneSelected = Boolean(zone)
+  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(zone)
+  const isZoneSelected = Boolean(selectedZone)
   const [isFullHeightEnabled, setIsFullHeightEnabled] = useState(false)
-  const [index, setIndex] = useState(0)
   const inputRef = useRef<TextInput>(null)
-
-  const refSetter = useMemo(() => getMultipleRefsSetter(ref, localRef), [ref])
+  const [nextZoneUpdate, setNextZoneUpdate] = useState<MapUdrZone | null | undefined>()
 
   const snapPoints = useMemo(() => {
     const newSnapPoints: (string | number)[] = [SNAP_POINTS.noZone]
@@ -60,7 +59,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     return newSnapPoints
   }, [isZoneSelected, isFullHeightEnabled])
 
-  const isFullHeightIndex = checkIfFullyExtended(index, snapPoints)
+  useEffect(() => {
+    if (snapPoints.at(-1) === SNAP_POINTS.searchExpanded) {
+      localRef.current?.snapToPosition(SNAP_POINTS.searchExpanded)
+    }
+  }, [snapPoints])
 
   const handleInputBlur = useCallback(() => {
     if (inputRef.current?.isFocused()) {
@@ -70,53 +73,49 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     }
   }, [])
 
+  useEffect(() => {
+    setNextZoneUpdate(zone)
+  }, [zone])
+
+  useEffect(() => {
+    if (!isFullHeightEnabled && nextZoneUpdate !== undefined) {
+      setSelectedZone(nextZoneUpdate)
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      setNextZoneUpdate(undefined)
+    }
+  }, [isFullHeightEnabled, nextZoneUpdate])
+
   const handleChange = useCallback(
     (newIndex: number) => {
-      const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
-      LayoutAnimation.configureNext(animation)
-      setIndex(newIndex)
-      if (!checkIfFullyExtended(newIndex, snapPoints)) {
+      // const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
+      // LayoutAnimation.configureNext(animation)
+      if (checkIfFullyExtended(newIndex, snapPoints)) {
+        inputRef.current?.focus()
+      } else {
         handleInputBlur()
         setIsFullHeightEnabled(false)
-        // this is here because the Map keeps resizing on Keyboard popup causing changes to the selected zone
-        // the block should only be lifted *after* the bottomsheet is not fully extended anymore
-        setTimeout(() => setBlockZoneMapUpdate?.(false), 100)
       }
     },
-    [snapPoints, handleInputBlur, setBlockZoneMapUpdate],
+    [snapPoints, handleInputBlur],
   )
 
   const handleInputFocus = useCallback(() => {
-    setBlockZoneMapUpdate?.(true)
     setIsFullHeightEnabled(true)
-    if (!inputRef.current?.isFocused()) {
-      inputRef.current?.focus()
-    }
-  }, [setBlockZoneMapUpdate])
+  }, [])
 
   const handleCancel = useCallback(() => {
     handleInputBlur()
     localRef.current?.collapse()
   }, [handleInputBlur])
 
-  const handleChoice = useCallback(() => {
-    handleInputBlur()
-    localRef.current?.collapse()
-  }, [handleInputBlur])
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout
-    if (snapPoints.at(-1) === SNAP_POINTS.searchExpanded) {
-      // not the cleanest approach but I have found no other alternative, executing expand() on even the next render does not do anything
-      timeout = setTimeout(() => localRef.current?.expand(), 1)
-    }
-
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout)
-      }
-    }
-  }, [snapPoints])
+  const handleChoice = useCallback(
+    (newValue: GeocodingFeature) => {
+      handleInputBlur()
+      localRef.current?.collapse()
+      setFlyToCenter?.(newValue.center)
+    },
+    [handleInputBlur, setFlyToCenter],
+  )
 
   return (
     <BottomSheet
@@ -125,7 +124,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       keyboardBehavior="interactive"
       onChange={handleChange}
       // eslint-disable-next-line react-native/no-inline-styles
-      handleIndicatorStyle={isFullHeightIndex && { opacity: 0 }}
+      handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
     >
       <BottomSheetContent cn="bg-white h-full g-3">
         <View className="flex-1 g-2">
@@ -133,21 +132,19 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
             <FlexRow>
               <View className="flex-1">
                 <TouchableWithoutFeedback onPress={handleInputFocus}>
-                  <View pointerEvents={isFullHeightIndex ? 'auto' : 'none'}>
-                    {!isFullHeightIndex && (
+                  <View pointerEvents={isFullHeightEnabled ? 'auto' : 'none'}>
+                    {!isFullHeightEnabled && (
                       <Field label={t('MapScreen.ZoneBottomSheet.title')}>{null}</Field>
                     )}
                     <MapAutocomplete
-                      key="mapAutocomplete"
                       ref={inputRef}
-                      setFlyToCenter={setFlyToCenter}
                       optionsPortalName="mapAutocompleteOptions"
                       onValueChange={handleChoice}
                     />
                   </View>
                 </TouchableWithoutFeedback>
               </View>
-              {isFullHeightIndex && (
+              {isFullHeightEnabled && (
                 <Button variant="plain-dark" onPress={handleCancel}>
                   {t('Common.cancel')}
                 </Button>
@@ -157,26 +154,28 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
           <View className="flex-1">
             <TouchableWithoutFeedback onPressIn={handleInputBlur}>
               <View className="h-full">
-                {isFullHeightIndex && (
+                {isFullHeightEnabled && (
                   <View className="flex-1 pt-3">
                     <PortalHost name="mapAutocompleteOptions" />
                   </View>
                 )}
-                {!isFullHeightIndex &&
-                  (zone ? (
+                {!isFullHeightEnabled &&
+                  (selectedZone ? (
                     <Panel className="g-4">
                       <FlexRow>
-                        <Typography>{zone.Nazov}</Typography>
-                        <SegmentBadge label={zone.UDR_ID.toString()} />
+                        <Typography>{selectedZone.Nazov}</Typography>
+                        <SegmentBadge label={selectedZone.UDR_ID.toString()} />
                       </FlexRow>
                       <Divider />
                       <FlexRow>
-                        <Typography variant="default-bold">{zone.Zakladna_cena}€ / h</Typography>
+                        <Typography variant="default-bold">
+                          {selectedZone.Zakladna_cena}€ / h
+                        </Typography>
                         <Link
                           asChild
                           href={{
                             pathname: '/zone-details',
-                            params: { id: zone.OBJECTID.toString() },
+                            params: { id: selectedZone.OBJECTID.toString() },
                           }}
                         >
                           <PressableStyled>
@@ -199,7 +198,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
             </TouchableWithoutFeedback>
           </View>
         </View>
-        {!isFullHeightIndex && zone ? (
+        {!isFullHeightEnabled && selectedZone ? (
           <Button variant="primary">{t('Navigation.continue')}</Button>
         ) : null}
       </BottomSheetContent>

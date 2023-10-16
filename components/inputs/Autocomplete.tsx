@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
-import TextInput from '@/components/inputs/TextInput'
+import TextInput, { TextInputProps } from '@/components/inputs/TextInput'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 
@@ -41,7 +41,7 @@ export type AutocompleteProps<O> = {
   optionsPortalName?: string
   ListComponent?: React.ComponentType<FlatListProps<O>>
   listProps?: Partial<FlatListProps<O>>
-}
+} & TextInputProps
 
 const AutocompleteInner = <O,>(
   {
@@ -60,6 +60,7 @@ const AutocompleteInner = <O,>(
     optionsPortalName,
     ListComponent = FlatList,
     listProps = {},
+    ...restProps
   }: AutocompleteProps<O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
@@ -147,6 +148,7 @@ const AutocompleteInner = <O,>(
   return (
     <View ref={ref}>
       <TextInput
+        {...restProps}
         ref={ref}
         onChange={handleChange}
         value={input}
