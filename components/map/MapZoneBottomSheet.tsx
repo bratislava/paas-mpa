@@ -122,7 +122,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   return (
     <>
       {!isFullHeightEnabled && (
-        <MapZoneBottomSheetAttachment animatedPosition={animatedPosition} snapPoints={snapPoints} />
+        <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
       )}
       <BottomSheet
         ref={refSetter}

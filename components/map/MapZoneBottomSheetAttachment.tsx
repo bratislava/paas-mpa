@@ -1,5 +1,5 @@
 import { Link } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -11,17 +11,23 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { getCurrentLocation } from '@/modules/map/utils/getCurrentLocation'
+import { useLocation } from '@/modules/map/hooks/useLocation'
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
 }
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
+  const [location, getLocation] = useLocation()
   const onLocationPress = useCallback(async () => {
-    const location = await getCurrentLocation()
-    setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
-  }, [setFlyToCenter])
+    getLocation()
+  }, [getLocation])
+
+  useEffect(() => {
+    if (location) {
+      setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
+    }
+  }, [location, setFlyToCenter])
 
   return (
     <BottomSheetTopAttachment {...restProps}>

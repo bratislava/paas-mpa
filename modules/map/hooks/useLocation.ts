@@ -2,14 +2,13 @@ import * as Location from 'expo-location'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
-import { getCurrentLocation } from '@/modules/map/utils/getCurrentLocation'
 
 export const useLocation = (): [Location.LocationObject | null, () => Promise<void>] => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const { permissionStatus } = useLocationPermission()
 
   const getCurrentPosition = useCallback(async () => {
-    const currentPosition = await getCurrentLocation()
+    const currentPosition = await Location.getCurrentPositionAsync()
     setLocation(currentPosition)
   }, [])
 
