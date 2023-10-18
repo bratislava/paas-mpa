@@ -169,6 +169,9 @@ const Map = forwardRef(
           onCameraChanged={handleCameraChange}
           onPress={Keyboard.dismiss}
           scaleBarEnabled={false}
+          compassEnabled
+          compassPosition={{ top: insets.top + 44 + 10, right: 5 }}
+          compassFadeWhenNorth
         >
           {location && isWithinCity ? (
             <Camera

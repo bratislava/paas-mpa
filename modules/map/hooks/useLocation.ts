@@ -2,13 +2,14 @@ import * as Location from 'expo-location'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
+import { getCurrentLocation } from '@/modules/map/utils/getCurrentLocation'
 
 export const useLocation = (): [Location.LocationObject | null, () => Promise<void>] => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const { permissionStatus } = useLocationPermission()
 
-  const getCurrentLocation = useCallback(async () => {
-    const currentPosition = await Location.getCurrentPositionAsync()
+  const getCurrentPosition = useCallback(async () => {
+    const currentPosition = await getCurrentLocation()
     setLocation(currentPosition)
   }, [])
 
@@ -16,8 +17,8 @@ export const useLocation = (): [Location.LocationObject | null, () => Promise<vo
     if (permissionStatus !== Location.PermissionStatus.GRANTED) return
     const lastKnownPosition = await Location.getLastKnownPositionAsync()
     setLocation(lastKnownPosition)
-    await getCurrentLocation()
-  }, [permissionStatus, getCurrentLocation])
+    getCurrentPosition()
+  }, [permissionStatus, getCurrentPosition])
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
