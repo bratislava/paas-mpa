@@ -9,11 +9,17 @@ import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { formatDuration } from '@/utils/formatDuration'
+import { formatPrice } from '@/utils/formatPrice'
 
-type Props = object
+type Props = {
+  priceData: GetTicketPriceResponseDto | undefined
+  isLoading?: boolean
+}
 
-const PurchaseBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
+const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoading }, ref) => {
   const t = useTranslation('PurchaseScreen')
 
   const { ticketPriceRequest } = useGlobalStoreContext()
@@ -22,8 +28,8 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   // TODO tmp for now - fixed height from figma
   const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
 
-  // 32 is just visually okay
-  const snapPoints = useMemo(() => [32], [])
+  // 24 is handle height
+  const snapPoints = useMemo(() => [24], [])
 
   // const renderFooter = useCallback(
   //   (footerProps: BottomSheetFooterProps) => {
@@ -49,31 +55,41 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         // footerComponent={renderFooter}
         bottomInset={purchaseButtonContainerHeight}
         snapPoints={snapPoints}
-        index={1}
       >
-        <BottomSheetContent cn="g-3" hideSpacer>
-          {/* <FlexRow> */}
-          {/*   <Typography variant="default">Parkovanie {formatDuration(Number(duration))}</Typography> */}
-          {/*   <Typography variant="default-bold">? €</Typography> */}
-          {/* </FlexRow> */}
+        {priceData ? (
+          <BottomSheetContent cn="g-3" hideSpacer>
+            <FlexRow>
+              <Typography variant="default">
+                Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
+              </Typography>
+              <Typography variant="default-bold">
+                {formatPrice(priceData.priceWithoutDiscount)}
+              </Typography>
+            </FlexRow>
 
-          <Typography>{JSON.stringify(ticketPriceRequest)}</Typography>
-          <Divider />
+            {/* Check if tax is present (null/undefined, but show if it is 0) */}
+            {priceData.tax == null ? null : (
+              <FlexRow>
+                <Typography variant="default">Dan</Typography>
+                <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
+              </FlexRow>
+            )}
 
-          {/* <FlexRow> */}
-          {/*   <Typography variant="default-bold">{t('summary')}</Typography> */}
-          {/*   <Typography variant="default-bold">2 €</Typography> */}
-          {/* </FlexRow> */}
-        </BottomSheetContent>
+            <Divider />
+            {/* <Typography>{JSON.stringify(ticketPriceRequest)}</Typography> */}
+          </BottomSheetContent>
+        ) : null}
       </BottomSheet>
 
       <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
-        <FlexRow>
-          <Typography variant="default-bold">{t('summary')}</Typography>
-          <Typography variant="default-bold">2 €</Typography>
-        </FlexRow>
+        {priceData ? (
+          <FlexRow>
+            <Typography variant="default-bold">{t('summary')}</Typography>
+            <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
+          </FlexRow>
+        ) : null}
 
-        <Button>{t('pay')}</Button>
+        <Button loading={isLoading}>{t('pay')}</Button>
       </View>
     </>
   )

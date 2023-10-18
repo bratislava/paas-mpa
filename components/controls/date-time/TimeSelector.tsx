@@ -29,17 +29,16 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
-  const now = useMemo(() => new Date(), [])
   const validUntil = useMemo(
     () =>
-      new Date(now.getTime() + value * 60 * 1000).toLocaleDateString(locale, {
+      new Date(Date.now() + value * 60_000).toLocaleDateString(locale, {
         minute: '2-digit',
         hour: 'numeric',
         day: 'numeric',
         month: 'short',
         weekday: 'long',
       }),
-    [locale, now, value],
+    [locale, value],
   )
 
   const addTime = () => {

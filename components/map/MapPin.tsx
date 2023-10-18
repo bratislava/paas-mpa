@@ -24,6 +24,7 @@ const MapPin = ({ price }: Props) => {
       <View className="absolute items-center" style={position}>
         {price ? <MapPinIcon {...pinSize} /> : <MapPinNoZoneIcon {...pinSize} />}
         {price && (
+          // TODO formatPrice
           <Typography variant="small-bold" className="absolute text-white">
             {price} €
           </Typography>

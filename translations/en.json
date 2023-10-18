@@ -34,7 +34,8 @@
     "pay": "Pay",
     "customParkingTimeTitle": "Custom time",
     "chooseVehicleFieldLabel": "Choose vehicle",
-    "customParkingTimeFieldLabel": "Choose time"
+    "customParkingTimeFieldLabel": "Choose time",
+    "chooseParkingZoneEmptyControlLabel": "Choose parking zone"
   },
   "VehiclesScreen": {
     "title": "Vehicles",

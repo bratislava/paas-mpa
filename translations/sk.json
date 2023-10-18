@@ -34,7 +34,8 @@
     "pay": "Zaplatiť",
     "customParkingTimeTitle": "Vlastný čas",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
-    "customParkingTimeFieldLabel": "Vyberte čas"
+    "customParkingTimeFieldLabel": "Vyberte čas",
+    "chooseParkingZoneEmptyControlLabel": "Vyberte úsek parkovania"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",

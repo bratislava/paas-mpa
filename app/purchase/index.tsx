@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
-import ParkingZoneControl from '@/components/controls/ParkingZoneControl'
+import ParkingZoneField from '@/components/controls/ParkingZoneField'
 import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import Field from '@/components/shared/Field'
@@ -25,10 +25,6 @@ export type PurchaseSearchParams = {
   customParkingTime?: string
 }
 
-function addMinutes(date: Date, minutes: number) {
-  return new Date(date.getTime() + minutes * 60_000)
-}
-
 // TODO TimeSelector chips sometimes collapses - investigate
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
@@ -45,25 +41,35 @@ const PurchaseScreen = () => {
 
   const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
 
-  const parkingEnd = addMinutes(new Date(), ticketPriceRequest?.duration ?? 0).toISOString()
+  const parkingEnd = new Date(
+    Date.now() + (ticketPriceRequest?.duration ?? 0) * 60_000,
+  ).toISOString()
+
   const isEnabled =
     !!ticketPriceRequest?.udr && !!ticketPriceRequest?.ecv && !!ticketPriceRequest?.duration
-  console.log('isEnabled', isEnabled)
 
-  const { data } = useQuery({
+  const body = {
+    ticket: {
+      udr: ticketPriceRequest?.udr ?? '',
+      ecv: ticketPriceRequest?.ecv ?? '',
+      parkingEnd,
+    },
+  }
+
+  const {
+    data: response,
+    error,
+    isError,
+    isFetching,
+  } = useQuery({
     queryKey: ['TicketRequest', ticketPriceRequest],
-    queryFn: () =>
-      clientApi.ticketsControllerGetTicketPrice({
-        ticket: {
-          udr: ticketPriceRequest?.udr ?? '',
-          ecv: ticketPriceRequest?.ecv ?? '',
-          parkingEnd,
-        },
-      }),
+    queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
+    keepPreviousData: true,
     enabled: isEnabled,
   })
 
-  console.log('data', data?.data.priceWithoutDiscount)
+  // TODO handleError
+  console.log('data', isError, error)
 
   useEffect(() => {
     if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
@@ -80,7 +86,7 @@ const PurchaseScreen = () => {
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
-            <ParkingZoneControl />
+            <ParkingZoneField />
 
             <Field label={t('chooseVehicleFieldLabel')}>
               {/* TODO Link+Pressable */}
@@ -121,7 +127,7 @@ const PurchaseScreen = () => {
         </ScrollView>
       </ScreenView>
 
-      <PurchaseBottomSheet ref={bottomSheetRef} />
+      <PurchaseBottomSheet ref={bottomSheetRef} priceData={response?.data} isLoading={isFetching} />
     </>
   )
 }

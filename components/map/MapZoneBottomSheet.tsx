@@ -20,6 +20,8 @@ import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
   noZone: 220,
@@ -37,6 +39,7 @@ const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone, setFlyToCenter } = props
+  const { setTicketPriceRequest } = useGlobalStoreContext()
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
@@ -77,11 +80,17 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   useEffect(() => {
     if (!isFullHeightEnabled && zone !== undefined) {
       setSelectedZone(zone)
+
+      setTicketPriceRequest((prev) => ({
+        ...prev,
+        udr: zone?.UDR_ID.toString(),
+      }))
+
       if (zone === null) {
         localRef.current?.collapse()
       }
     }
-  }, [isFullHeightEnabled, zone])
+  }, [isFullHeightEnabled, setTicketPriceRequest, zone])
 
   const handleChange = useCallback(
     (newIndex: number) => {
@@ -174,7 +183,9 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                 </FlexRow>
                 <Divider />
                 <FlexRow>
-                  <Typography variant="default-bold">{selectedZone.Zakladna_cena}€ / h</Typography>
+                  <Typography variant="default-bold">
+                    {formatPricePerHour(selectedZone.Zakladna_cena)}
+                  </Typography>
                   <Link
                     asChild
                     href={{
@@ -193,7 +204,16 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   </Link>
                 </FlexRow>
               </Panel>
-              <Button variant="primary">{t('Navigation.continue')}</Button>
+
+              <Link
+                asChild
+                href={{
+                  pathname: '/purchase',
+                  params: { zoneId: selectedZone.OBJECTID.toString() },
+                }}
+              >
+                <Button variant="primary">{t('Navigation.continue')}</Button>
+              </Link>
             </>
           ) : (
             <Panel className="bg-warning-light g-2">
