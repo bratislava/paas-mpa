@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigation } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, useWindowDimensions, View } from 'react-native'
@@ -14,8 +15,18 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 
 const Active = () => {
+  const { data: response } = useQuery({
+    queryKey: ['ParkingCardsActive'],
+    queryFn: () => clientApi.parkingCardsControllerGetParkingCards(),
+  })
+
+  const cards = response?.data.parkingCards ?? []
+
+  console.log('PARKING CARDS', cards)
+
   return (
     <ScrollView>
       <ScreenContent>
