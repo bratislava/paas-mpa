@@ -801,25 +801,25 @@ export interface UserSettingsDto {
    * @type {boolean}
    * @memberof UserSettingsDto
    */
-  pushNotificationsAboutToEnd?: boolean
+  pushNotificationsAboutToEnd: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof UserSettingsDto
    */
-  pushNotificationsToEnd?: boolean
+  pushNotificationsToEnd: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof UserSettingsDto
    */
-  emailNotificationsAboutToEnd?: boolean
+  emailNotificationsAboutToEnd: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof UserSettingsDto
    */
-  emailNotificationsToEnd?: boolean
+  emailNotificationsToEnd: boolean
   /**
    * Date of the first creation
    * @type {string}

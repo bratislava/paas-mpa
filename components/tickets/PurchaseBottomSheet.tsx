@@ -82,12 +82,13 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
       </BottomSheet>
 
       <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
-        {priceData ? (
-          <FlexRow>
-            <Typography variant="default-bold">{t('summary')}</Typography>
+        {/* Toggling visibility prevents layout shifts */}
+        <FlexRow cn={priceData ? 'visible' : 'invisible'}>
+          <Typography variant="default-bold">{t('summary')}</Typography>
+          {priceData ? (
             <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
-          </FlexRow>
-        ) : null}
+          ) : null}
+        </FlexRow>
 
         <Button loading={isLoading}>{t('pay')}</Button>
       </View>

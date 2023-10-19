@@ -20,7 +20,6 @@ import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
@@ -39,7 +38,6 @@ const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone, setFlyToCenter } = props
-  const { setTicketPriceRequest } = useGlobalStoreContext()
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
@@ -81,16 +79,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     if (!isFullHeightEnabled && zone !== undefined) {
       setSelectedZone(zone)
 
-      setTicketPriceRequest((prev) => ({
-        ...prev,
-        udr: zone?.UDR_ID.toString(),
-      }))
-
       if (zone === null) {
         localRef.current?.collapse()
       }
     }
-  }, [isFullHeightEnabled, setTicketPriceRequest, zone])
+  }, [isFullHeightEnabled, zone])
 
   const handleChange = useCallback(
     (newIndex: number) => {
