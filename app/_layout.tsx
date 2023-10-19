@@ -98,7 +98,6 @@ const RootLayout = () => {
                   name="purchase/choose-payment-method"
                   options={{ presentation: 'modal' }}
                 />
-                <Stack.Screen name="purchase/custom-time" options={{ presentation: 'modal' }} />
               </Stack>
             </PortalProvider>
           </GestureHandlerRootView>
