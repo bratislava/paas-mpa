@@ -22,6 +22,7 @@ import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
   noZone: 220,
@@ -79,6 +80,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   useEffect(() => {
     if (!isFullHeightEnabled && zone !== undefined) {
       setSelectedZone(zone)
+
       if (zone === null) {
         localRef.current?.collapse()
       }
@@ -132,7 +134,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         onChange={handleChange}
         // eslint-disable-next-line react-native/no-inline-styles
         handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
-        animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
           <View className={clsx(isFullHeightEnabled && 'flex-1')}>
@@ -184,7 +185,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   <Divider />
                   <FlexRow>
                     <Typography variant="default-bold">
-                      {selectedZone.Zakladna_cena}€ / h
+                      {formatPricePerHour(selectedZone.Zakladna_cena)}
                     </Typography>
                     <Link
                       asChild
@@ -204,7 +205,16 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     </Link>
                   </FlexRow>
                 </Panel>
-                <Button variant="primary">{t('Navigation.continue')}</Button>
+
+                <Link
+                  asChild
+                  href={{
+                    pathname: '/purchase',
+                    params: { zoneId: selectedZone.OBJECTID.toString() },
+                  }}
+                >
+                  <Button variant="primary">{t('Navigation.continue')}</Button>
+                </Link>
               </>
             ) : (
               <Panel className="bg-warning-light g-2">

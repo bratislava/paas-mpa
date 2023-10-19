@@ -11,24 +11,34 @@ import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 
 type MapScreenParams = MapFilters
 
 const MapScreen = () => {
-  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
-  const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
   const params = useLocalSearchParams<MapScreenParams>()
-  const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
+  const { setTicketPriceRequest } = useGlobalStoreContext()
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
-  const { top } = useSafeAreaInsets()
   const mapRef = useRef<MapRef>(null)
+  const { top } = useSafeAreaInsets()
+
+  const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
+  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
+  const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
+
   const handleZoneChange = useCallback(
     (zone: MapUdrZone) => {
       setSelectedZone(zone)
+      setTicketPriceRequest((prev) => ({
+        ...prev,
+        // TODO I got an error here without "?" that zone can be null - investigate why Typescript is not complaining
+        udr: zone?.UDR_ID.toString(),
+      }))
     },
-    [setSelectedZone],
+    [setSelectedZone, setTicketPriceRequest],
   )
+
   const handlePointPress = useCallback(
     (zone: MapInterestPoint) => {
       setMapInterestPoint(zone)
