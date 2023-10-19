@@ -67,7 +67,8 @@ const Button = forwardRef<View, ButtonProps>(
   ) => {
     const t = useTranslation('Common')
 
-    const rest = { ...restProps, disabled: disabled ?? loading }
+    // First, check `loading`, then `disabled`, so the button is disabled correctly
+    const rest = { ...restProps, disabled: loading ?? disabled }
     const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
     return (
