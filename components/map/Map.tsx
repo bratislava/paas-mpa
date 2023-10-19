@@ -8,7 +8,6 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { Feature, GeoJsonProperties, Point, Polygon, Position } from 'geojson'
 import {
   ForwardedRef,
@@ -22,12 +21,12 @@ import {
 } from 'react'
 import { Keyboard, Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useDebouncedCallback } from 'use-debounce'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
 import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
@@ -80,28 +79,6 @@ const Map = forwardRef(
       onZoneChange?.(selectedPolygon ? selectedPolygon?.properties : null)
     }, [selectedPolygon, onZoneChange])
 
-    const getCurrentPolygon = useCallback(
-      async (state: MapState) => {
-        const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
-          [screenCenter.left, screenCenter.top],
-          null,
-          ['udrFill', 'udrFill2'],
-        )
-        if ((featuresAtCenter?.features?.length ?? 0) < 1) {
-          setSelectedPolygon(null)
-
-          return
-        }
-        if (isMapPinShown) {
-          const feature = featuresAtCenter!.features[0] as Feature<Polygon, MapUdrZone>
-          if (feature.properties.OBJECTID !== selectedPolygon?.properties.OBJECTID) {
-            setSelectedPolygon(feature)
-          }
-        }
-      },
-      [screenCenter, isMapPinShown, selectedPolygon],
-    )
-
     const handleSetFlyToCenter = useCallback((center: Position) => {
       setFollowingUser(false)
       setFlyToCenter(center)
@@ -112,23 +89,13 @@ const Map = forwardRef(
       handleSetFlyToCenter,
     ])
 
-    const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
-      getCurrentPolygon(state)
-    }, DEBOUNCE_TIME)
-
-    const handleCameraChange = useCallback(
-      (state: MapState) => {
-        if (!Keyboard.isVisible()) {
-          debouncedHandleCameraChange(state)
-          if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
-            setIsMapPinShown(false)
-          } else {
-            setIsMapPinShown(true)
-          }
-        }
-      },
-      [debouncedHandleCameraChange],
-    )
+    const handleCameraChange = useCameraChangeHandler({
+      isMapPinShown,
+      map: map.current,
+      selectedPolygon,
+      setIsMapPinShown,
+      setSelectedPolygon,
+    })
 
     const handlePointPress = useCallback(
       async (point: Feature<Point, GeoJsonProperties>) => {
