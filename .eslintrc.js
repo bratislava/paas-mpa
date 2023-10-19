@@ -62,5 +62,10 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',
     'sonarjs/cognitive-complexity': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
   },
 }
