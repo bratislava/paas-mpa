@@ -92,6 +92,31 @@ export interface AnnouncementsResponseDto {
 /**
  *
  * @export
+ * @interface CreateVehicleDto
+ */
+export interface CreateVehicleDto {
+  /**
+   * License plate number
+   * @type {string}
+   * @memberof CreateVehicleDto
+   */
+  vehiclePlateNumber: string
+  /**
+   * Name of the vehicle (user input)
+   * @type {string}
+   * @memberof CreateVehicleDto
+   */
+  name: string
+  /**
+   * Set to true to be the default car
+   * @type {boolean}
+   * @memberof CreateVehicleDto
+   */
+  isDefault: boolean
+}
+/**
+ *
+ * @export
  * @interface DeleteResponseDto
  */
 export interface DeleteResponseDto {
@@ -275,13 +300,13 @@ export interface GetTicketPriceResponseDto {
    */
   priceWithoutDiscount: number
   /**
-   * Bonus minutes used
+   * Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
   creditBPKUsed: string
   /**
-   * NPK - Bonus minutes used
+   * NPK - Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
@@ -337,12 +362,6 @@ export interface GetTicketProlongationPriceRequestDto {
    */
   newParkingEnd: string
   /**
-   * Value of BPK UUID
-   * @type {string}
-   * @memberof GetTicketProlongationPriceRequestDto
-   */
-  bpkId?: string
-  /**
    * Id of the ticket to be prolonged
    * @type {number}
    * @memberof GetTicketProlongationPriceRequestDto
@@ -368,13 +387,13 @@ export interface InitiatePaymentRequestDto {
    */
   price: number
   /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the BPK credit
+   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the BPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof InitiatePaymentRequestDto
    */
   priceBpk: string
   /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit
+   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof InitiatePaymentRequestDto
    */
@@ -436,7 +455,7 @@ export interface ParkingCardDetail {
    */
   validTo?: string
   /**
-   * Balance available on the visitor card (ISO8601 duration)
+   * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof ParkingCardDetail
    */
@@ -609,50 +628,25 @@ export interface SaveUserSettingsDto {
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsAboutToEnd: boolean
+  pushNotificationsAboutToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsToEnd: boolean
+  pushNotificationsToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsAboutToEnd: boolean
+  emailNotificationsAboutToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsToEnd: boolean
-}
-/**
- *
- * @export
- * @interface SaveVehicleDto
- */
-export interface SaveVehicleDto {
-  /**
-   * License plate number
-   * @type {string}
-   * @memberof SaveVehicleDto
-   */
-  vehiclePlateNumber: string
-  /**
-   * Name of the vehicle (user input)
-   * @type {string}
-   * @memberof SaveVehicleDto
-   */
-  name: string
-  /**
-   * Set to true to be the default car
-   * @type {boolean}
-   * @memberof SaveVehicleDto
-   */
-  isDefault: boolean
+  emailNotificationsToEnd?: boolean
 }
 /**
  *
@@ -685,13 +679,13 @@ export interface TicketDto {
    */
   price?: object
   /**
-   * Credits used in case of bonnus parking
+   * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {object}
    * @memberof TicketDto
    */
   bpkCreditUsed?: object
   /**
-   * Credits used in case of visitor parking
+   * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {object}
    * @memberof TicketDto
    */
@@ -770,6 +764,31 @@ export interface UnexpectedErrorDto {
    * @memberof UnexpectedErrorDto
    */
   errorName: string
+}
+/**
+ *
+ * @export
+ * @interface UpdateVehicleDto
+ */
+export interface UpdateVehicleDto {
+  /**
+   * License plate number
+   * @type {string}
+   * @memberof UpdateVehicleDto
+   */
+  vehiclePlateNumber?: string
+  /**
+   * Name of the vehicle (user input)
+   * @type {string}
+   * @memberof UpdateVehicleDto
+   */
+  name?: string
+  /**
+   * Set to true to be the default car
+   * @type {boolean}
+   * @memberof UpdateVehicleDto
+   */
+  isDefault?: boolean
 }
 /**
  *
@@ -2311,7 +2330,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -2512,16 +2531,16 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
     /**
      *
      * @summary Inserts new vehicle
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {CreateVehicleDto} createVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerInsertVehicle: async (
-      saveVehicleDto: SaveVehicleDto,
+      createVehicleDto: CreateVehicleDto,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'saveVehicleDto' is not null or undefined
-      assertParamExists('vehiclesControllerInsertVehicle', 'saveVehicleDto', saveVehicleDto)
+      // verify required parameter 'createVehicleDto' is not null or undefined
+      assertParamExists('vehiclesControllerInsertVehicle', 'createVehicleDto', createVehicleDto)
       const localVarPath = `/vehicles`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -2548,7 +2567,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
         ...options.headers,
       }
       localVarRequestOptions.data = serializeDataIfNeeded(
-        saveVehicleDto,
+        createVehicleDto,
         localVarRequestOptions,
         configuration,
       )
@@ -2562,19 +2581,19 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
      *
      * @summary Updates a specific vehicle
      * @param {number} id
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {UpdateVehicleDto} updateVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerUpdateVehicle: async (
       id: number,
-      saveVehicleDto: SaveVehicleDto,
+      updateVehicleDto: UpdateVehicleDto,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
       assertParamExists('vehiclesControllerUpdateVehicle', 'id', id)
-      // verify required parameter 'saveVehicleDto' is not null or undefined
-      assertParamExists('vehiclesControllerUpdateVehicle', 'saveVehicleDto', saveVehicleDto)
+      // verify required parameter 'updateVehicleDto' is not null or undefined
+      assertParamExists('vehiclesControllerUpdateVehicle', 'updateVehicleDto', updateVehicleDto)
       const localVarPath = `/vehicles/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)))
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -2583,7 +2602,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -2601,7 +2620,7 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
         ...options.headers,
       }
       localVarRequestOptions.data = serializeDataIfNeeded(
-        saveVehicleDto,
+        updateVehicleDto,
         localVarRequestOptions,
         configuration,
       )
@@ -2691,16 +2710,16 @@ export const VehiclesApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Inserts new vehicle
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {CreateVehicleDto} createVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async vehiclesControllerInsertVehicle(
-      saveVehicleDto: SaveVehicleDto,
+      createVehicleDto: CreateVehicleDto,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VehicleDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.vehiclesControllerInsertVehicle(
-        saveVehicleDto,
+        createVehicleDto,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -2709,18 +2728,18 @@ export const VehiclesApiFp = function (configuration?: Configuration) {
      *
      * @summary Updates a specific vehicle
      * @param {number} id
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {UpdateVehicleDto} updateVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async vehiclesControllerUpdateVehicle(
       id: number,
-      saveVehicleDto: SaveVehicleDto,
+      updateVehicleDto: UpdateVehicleDto,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VehicleDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.vehiclesControllerUpdateVehicle(
         id,
-        saveVehicleDto,
+        updateVehicleDto,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -2777,33 +2796,33 @@ export const VehiclesApiFactory = function (
     /**
      *
      * @summary Inserts new vehicle
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {CreateVehicleDto} createVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerInsertVehicle(
-      saveVehicleDto: SaveVehicleDto,
+      createVehicleDto: CreateVehicleDto,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VehicleDto> {
       return localVarFp
-        .vehiclesControllerInsertVehicle(saveVehicleDto, options)
+        .vehiclesControllerInsertVehicle(createVehicleDto, options)
         .then((request) => request(axios, basePath))
     },
     /**
      *
      * @summary Updates a specific vehicle
      * @param {number} id
-     * @param {SaveVehicleDto} saveVehicleDto
+     * @param {UpdateVehicleDto} updateVehicleDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerUpdateVehicle(
       id: number,
-      saveVehicleDto: SaveVehicleDto,
+      updateVehicleDto: UpdateVehicleDto,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VehicleDto> {
       return localVarFp
-        .vehiclesControllerUpdateVehicle(id, saveVehicleDto, options)
+        .vehiclesControllerUpdateVehicle(id, updateVehicleDto, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -2850,17 +2869,17 @@ export class VehiclesApi extends BaseAPI {
   /**
    *
    * @summary Inserts new vehicle
-   * @param {SaveVehicleDto} saveVehicleDto
+   * @param {CreateVehicleDto} createVehicleDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VehiclesApi
    */
   public vehiclesControllerInsertVehicle(
-    saveVehicleDto: SaveVehicleDto,
+    createVehicleDto: CreateVehicleDto,
     options?: AxiosRequestConfig,
   ) {
     return VehiclesApiFp(this.configuration)
-      .vehiclesControllerInsertVehicle(saveVehicleDto, options)
+      .vehiclesControllerInsertVehicle(createVehicleDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -2868,18 +2887,18 @@ export class VehiclesApi extends BaseAPI {
    *
    * @summary Updates a specific vehicle
    * @param {number} id
-   * @param {SaveVehicleDto} saveVehicleDto
+   * @param {UpdateVehicleDto} updateVehicleDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VehiclesApi
    */
   public vehiclesControllerUpdateVehicle(
     id: number,
-    saveVehicleDto: SaveVehicleDto,
+    updateVehicleDto: UpdateVehicleDto,
     options?: AxiosRequestConfig,
   ) {
     return VehiclesApiFp(this.configuration)
-      .vehiclesControllerUpdateVehicle(id, saveVehicleDto, options)
+      .vehiclesControllerUpdateVehicle(id, updateVehicleDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -3078,7 +3097,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 

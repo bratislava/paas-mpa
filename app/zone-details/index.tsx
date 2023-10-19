@@ -9,6 +9,7 @@ import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useMapZone } from '@/state/hooks/useMapZone'
+import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 type ZoneDetailsParamas = {
   id: string
@@ -33,7 +34,7 @@ const ZoneDetailsScreen = () => {
         <FlexRow>
           <SegmentBadge label={zone.udrId.toString()} />
           <Typography className="flex-1">{zone.name}</Typography>
-          <Typography variant="default-bold">{`${zone.price}€ / h`}</Typography>
+          <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>
         <Divider />
         <FlexRow cn="justify-start">
