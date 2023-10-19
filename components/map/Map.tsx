@@ -9,7 +9,7 @@ import {
   UserTrackingMode,
 } from '@rnmapbox/maps'
 import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, GeoJsonProperties, Geometry, Point, Position } from 'geojson'
+import { Feature, GeoJsonProperties, Point, Polygon, Position } from 'geojson'
 import {
   ForwardedRef,
   forwardRef,
@@ -27,16 +27,17 @@ import { useDebouncedCallback } from 'use-debounce'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
-  onZoneChange?: (feature: MapUdrZone) => void
+  onZoneChange?: (feature: MapUdrZone | null) => void
   onPointPress?: (point: MapInterestPoint) => void
   filters: MapFilters
 }
@@ -58,11 +59,10 @@ const Map = forwardRef(
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
     const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
-    const [selectedPolygon, setSelectedPolygon] = useState<Feature<
-      Geometry,
-      GeoJsonProperties
-    > | null>(null)
-    const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, GeoJsonProperties> | null>(
+    const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
+      null,
+    )
+    const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, MapInterestPoint> | null>(
       null,
     )
     const [isMapPinShown, setIsMapPinShown] = useState(false)
@@ -77,7 +77,7 @@ const Map = forwardRef(
     const { markersData, zonesData, udrData, odpData } = useFilteredMapData(processedData, filters)
 
     useEffect(() => {
-      onZoneChange?.((selectedPolygon?.properties as MapUdrZone) ?? null)
+      onZoneChange?.(selectedPolygon ? selectedPolygon?.properties : null)
     }, [selectedPolygon, onZoneChange])
 
     const getCurrentPolygon = useCallback(
@@ -93,11 +93,13 @@ const Map = forwardRef(
           return
         }
         if (isMapPinShown) {
-          const feature = featuresAtCenter!.features[0]
-          setSelectedPolygon(feature)
+          const feature = featuresAtCenter!.features[0] as Feature<Polygon, MapUdrZone>
+          if (feature.properties.OBJECTID !== selectedPolygon?.properties.OBJECTID) {
+            setSelectedPolygon(feature)
+          }
         }
       },
-      [screenCenter, isMapPinShown],
+      [screenCenter, isMapPinShown, selectedPolygon],
     )
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
@@ -116,11 +118,13 @@ const Map = forwardRef(
 
     const handleCameraChange = useCallback(
       (state: MapState) => {
-        debouncedHandleCameraChange(state)
-        if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
-          setIsMapPinShown(false)
-        } else {
-          setIsMapPinShown(true)
+        if (!Keyboard.isVisible()) {
+          debouncedHandleCameraChange(state)
+          if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
+            setIsMapPinShown(false)
+          } else {
+            setIsMapPinShown(true)
+          }
         }
       },
       [debouncedHandleCameraChange],
@@ -137,25 +141,12 @@ const Map = forwardRef(
           return
         }
         onPointPress?.(point.properties as MapInterestPoint)
-        setMapInterestPoint(point)
+        setMapInterestPoint(point as Feature<Point, MapInterestPoint>)
       },
       [onPointPress],
     )
 
-    const isWithinCity = useMemo(() => {
-      if (!location) return false
-      const position = [location.coords.longitude, location.coords.latitude]
-      // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-      if (
-        position[0] > CITY_BOUNDS.sw[0] &&
-        position[1] > CITY_BOUNDS.sw[1] &&
-        position[0] < CITY_BOUNDS.ne[0] &&
-        position[1] < CITY_BOUNDS.ne[1]
-      )
-        return true
-
-      return false
-    }, [location])
+    const isWithinCity = useMemo(() => isWithinCityBounds(location), [location])
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
@@ -170,6 +161,7 @@ const Map = forwardRef(
           onPress={Keyboard.dismiss}
           scaleBarEnabled={false}
           compassEnabled
+          // 44 is the size of the menu icon, 10 margin
           compassPosition={{ top: insets.top + 44 + 10, right: 5 }}
           compassFadeWhenNorth
         >
@@ -200,14 +192,6 @@ const Map = forwardRef(
             minDisplacement={3}
             animated
           />
-          {/* {zonesData && (
-          <ShapeSource id="zonesSource" shape={zonesData}>
-            <FillLayer
-              id="zonesSource"
-              style={zonesStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
-            />
-          </ShapeSource>
-        )} */}
           {udrData && <MapZones udrData={udrData} />}
           {selectedPolygon && (
             <ShapeSource id="highlight" shape={selectedPolygon}>

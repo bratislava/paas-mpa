@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { MapRef } from '@/components/map/Map'
+import Map, { MapRef } from '@/components/map/Map'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
@@ -28,7 +28,7 @@ const MapScreen = () => {
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
 
   const handleZoneChange = useCallback(
-    (zone: MapUdrZone) => {
+    (zone: MapUdrZone | null) => {
       setSelectedZone(zone)
       setTicketPriceRequest((prev) => ({
         ...prev,
@@ -58,12 +58,12 @@ const MapScreen = () => {
 
   return (
     <View className="flex-1 items-stretch">
-      {/* <Map
+      <Map
         ref={mapRef}
         onZoneChange={handleZoneChange}
         onPointPress={handlePointPress}
         filters={filters}
-      /> */}
+      />
       <Portal hostName="index">
         <MapZoneBottomSheet
           ref={zoneBottomSheetRef}

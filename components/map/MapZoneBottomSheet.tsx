@@ -39,14 +39,12 @@ const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
-  const { zone, setFlyToCenter } = props
+  const { zone: selectedZone, setFlyToCenter } = props
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
   const refSetter = useMultipleRefsSetter(ref, localRef)
-
-  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(zone)
   const isZoneSelected = Boolean(selectedZone)
   const [isFullHeightEnabled, setIsFullHeightEnabled] = useState(false)
   const inputRef = useRef<TextInput>(null)
@@ -78,14 +76,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   }, [])
 
   useEffect(() => {
-    if (!isFullHeightEnabled && zone !== undefined) {
-      setSelectedZone(zone)
-
-      if (zone === null) {
-        localRef.current?.collapse()
-      }
-    }
-  }, [isFullHeightEnabled, zone])
+    localRef.current?.collapse()
+  }, [selectedZone])
 
   const handleChange = useCallback(
     (newIndex: number) => {
@@ -134,6 +126,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         onChange={handleChange}
         // eslint-disable-next-line react-native/no-inline-styles
         handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
+        animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
           <View className={clsx(isFullHeightEnabled && 'flex-1')}>
