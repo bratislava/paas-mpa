@@ -16,6 +16,15 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Active = () => {
+  // const { data: response } = useQuery({
+  //   queryKey: ['ParkingCardsActive'],
+  //   queryFn: () => clientApi.parkingCardsControllerGetParkingCards(),
+  // })
+  //
+  // const cards = response?.data.parkingCards ?? []
+  //
+  // console.log('PARKING CARDS', cards)
+
   return (
     <ScrollView>
       <ScreenContent>

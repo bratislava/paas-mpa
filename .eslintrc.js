@@ -24,6 +24,10 @@ module.exports = {
     'no-secrets/no-secrets': ['off', { ignoreContent: 'http' }],
     /** Very hard to maintain, especially with other libs not respecting this */
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    // '@typescript-eslint/no-unsafe-argument': 'off',
+    // '@typescript-eslint/no-unsafe-call': 'off',
+    // '@typescript-eslint/no-unsafe-member-access': 'off',
+    // '@typescript-eslint/no-unsafe-return': 'off',
     /** Turned off in other repos, consider keeping here as we have clean slate to build upon */
     // "unicorn/prefer-spread": "off",
     /** To remove optional parameter warning e.g. { page?: number } */
@@ -62,5 +66,7 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',
     'sonarjs/cognitive-complexity': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
   },
 }

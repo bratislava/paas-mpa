@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { Link, useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -64,7 +64,8 @@ const PurchaseScreen = () => {
   } = useQuery({
     queryKey: ['TicketRequest', ticketPriceRequest],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
-    keepPreviousData: true,
+    // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
+    placeholderData: keepPreviousData,
     enabled: isEnabled,
   })
 
