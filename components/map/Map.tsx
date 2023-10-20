@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, unicorn/no-array-reduce */
 import {
   Camera,
   FillLayer,
@@ -8,8 +7,7 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, GeoJsonProperties, Geometry, Point, Position } from 'geojson'
+import { Feature, GeoJsonProperties, Point, Polygon, Position } from 'geojson'
 import {
   ForwardedRef,
   forwardRef,
@@ -20,23 +18,23 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Keyboard, Platform, View } from 'react-native'
+import { Keyboard, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useDebouncedCallback } from 'use-debounce'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
-import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
-  onZoneChange?: (feature: MapUdrZone) => void
+  onZoneChange?: (feature: MapUdrZone | null) => void
   onPointPress?: (point: MapInterestPoint) => void
   filters: MapFilters
 }
@@ -45,9 +43,7 @@ export type MapRef = {
   setFlyToCenter: (center: Position) => void
 }
 
-const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
-const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
@@ -57,12 +53,7 @@ const Map = forwardRef(
     const [followingUser, setFollowingUser] = useState(true)
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
-    const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
-    const [selectedPolygon, setSelectedPolygon] = useState<Feature<
-      Geometry,
-      GeoJsonProperties
-    > | null>(null)
-    const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, GeoJsonProperties> | null>(
+    const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
       null,
     )
     const [isMapPinShown, setIsMapPinShown] = useState(false)
@@ -74,31 +65,11 @@ const Map = forwardRef(
 
     const { isLoading, ...processedData } = useProcessedArcgisData()
 
-    const { markersData, zonesData, udrData, odpData } = useFilteredMapData(processedData, filters)
+    const { markersData, udrData } = useFilteredMapData(processedData, filters)
 
     useEffect(() => {
-      onZoneChange?.((selectedPolygon?.properties as MapUdrZone) ?? null)
+      onZoneChange?.(selectedPolygon?.properties ?? null)
     }, [selectedPolygon, onZoneChange])
-
-    const getCurrentPolygon = useCallback(
-      async (state: MapState) => {
-        const featuresAtCenter = await map.current?.queryRenderedFeaturesAtPoint(
-          [screenCenter.left, screenCenter.top],
-          null,
-          ['udrFill', 'udrFill2'],
-        )
-        if ((featuresAtCenter?.features?.length ?? 0) < 1) {
-          setSelectedPolygon(null)
-
-          return
-        }
-        if (isMapPinShown) {
-          const feature = featuresAtCenter!.features[0]
-          setSelectedPolygon(feature)
-        }
-      },
-      [screenCenter, isMapPinShown],
-    )
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
       setFollowingUser(false)
@@ -110,21 +81,13 @@ const Map = forwardRef(
       handleSetFlyToCenter,
     ])
 
-    const debouncedHandleCameraChange = useDebouncedCallback((state: MapState) => {
-      getCurrentPolygon(state)
-    }, DEBOUNCE_TIME)
-
-    const handleCameraChange = useCallback(
-      (state: MapState) => {
-        debouncedHandleCameraChange(state)
-        if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
-          setIsMapPinShown(false)
-        } else {
-          setIsMapPinShown(true)
-        }
-      },
-      [debouncedHandleCameraChange],
-    )
+    const handleCameraChange = useCameraChangeHandler({
+      isMapPinShown,
+      map: map.current,
+      selectedPolygon,
+      setIsMapPinShown,
+      setSelectedPolygon,
+    })
 
     const handlePointPress = useCallback(
       async (point: Feature<Point, GeoJsonProperties>) => {
@@ -137,25 +100,11 @@ const Map = forwardRef(
           return
         }
         onPointPress?.(point.properties as MapInterestPoint)
-        setMapInterestPoint(point)
       },
       [onPointPress],
     )
 
-    const isWithinCity = useMemo(() => {
-      if (!location) return false
-      const position = [location.coords.longitude, location.coords.latitude]
-      // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-      if (
-        position[0] > CITY_BOUNDS.sw[0] &&
-        position[1] > CITY_BOUNDS.sw[1] &&
-        position[0] < CITY_BOUNDS.ne[0] &&
-        position[1] < CITY_BOUNDS.ne[1]
-      )
-        return true
-
-      return false
-    }, [location])
+    const isWithinCity = useMemo(() => isWithinCityBounds(location), [location])
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
@@ -169,6 +118,10 @@ const Map = forwardRef(
           onCameraChanged={handleCameraChange}
           onPress={Keyboard.dismiss}
           scaleBarEnabled={false}
+          compassEnabled
+          // 44 is the size of the menu icon, 10 margin
+          compassPosition={{ top: insets.top + 44 + 10, right: 5 }}
+          compassFadeWhenNorth
         >
           {location && isWithinCity ? (
             <Camera
@@ -197,14 +150,6 @@ const Map = forwardRef(
             minDisplacement={3}
             animated
           />
-          {/* {zonesData && (
-          <ShapeSource id="zonesSource" shape={zonesData}>
-            <FillLayer
-              id="zonesSource"
-              style={zonesStyle.reduce((prev, current) => ({ ...prev, ...current.paint }), {})}
-            />
-          </ShapeSource>
-        )} */}
           {udrData && <MapZones udrData={udrData} />}
           {selectedPolygon && (
             <ShapeSource id="highlight" shape={selectedPolygon}>
