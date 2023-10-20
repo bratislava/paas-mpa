@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, unicorn/no-array-reduce */
 import {
   Camera,
   FillLayer,
@@ -19,7 +18,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Keyboard, Platform, View } from 'react-native'
+import { Keyboard, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapMarkers from '@/components/map/MapMarkers'
@@ -30,7 +29,6 @@ import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandl
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
-import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
@@ -45,9 +43,7 @@ export type MapRef = {
   setFlyToCenter: (center: Position) => void
 }
 
-const DEBOUNCE_TIME = 50
 const ZOOM_ON_CLUSTER_PRESS = 1.5
-const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
@@ -57,11 +53,7 @@ const Map = forwardRef(
     const [followingUser, setFollowingUser] = useState(true)
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
-    const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
     const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
-      null,
-    )
-    const [selectedPoint, setMapInterestPoint] = useState<Feature<Point, MapInterestPoint> | null>(
       null,
     )
     const [isMapPinShown, setIsMapPinShown] = useState(false)
@@ -73,10 +65,10 @@ const Map = forwardRef(
 
     const { isLoading, ...processedData } = useProcessedArcgisData()
 
-    const { markersData, zonesData, udrData, odpData } = useFilteredMapData(processedData, filters)
+    const { markersData, udrData } = useFilteredMapData(processedData, filters)
 
     useEffect(() => {
-      onZoneChange?.(selectedPolygon ? selectedPolygon?.properties : null)
+      onZoneChange?.(selectedPolygon?.properties ?? null)
     }, [selectedPolygon, onZoneChange])
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
@@ -108,7 +100,6 @@ const Map = forwardRef(
           return
         }
         onPointPress?.(point.properties as MapInterestPoint)
-        setMapInterestPoint(point as Feature<Point, MapInterestPoint>)
       },
       [onPointPress],
     )
