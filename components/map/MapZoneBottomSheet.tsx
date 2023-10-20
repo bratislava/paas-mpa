@@ -3,7 +3,7 @@ import { PortalHost } from '@gorhom/portal'
 import clsx from 'clsx'
 import { Link } from 'expo-router'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Keyboard, Pressable, TextInput, View } from 'react-native'
+import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -81,8 +81,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   const handleChange = useCallback(
     (newIndex: number) => {
-      // const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
-      // LayoutAnimation.configureNext(animation)
+      const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
+      LayoutAnimation.configureNext(animation)
       if (checkIfFullyExtended(newIndex, snapPoints)) {
         inputRef.current?.focus()
       } else {

@@ -25,11 +25,7 @@ const BottomSheetTopAttachment = ({
   }, [])
 
   return (
-    <Animated.View
-      className="absolute top-0 z-20 w-full"
-      style={animatedStyles}
-      onLayout={handleLayout}
-    >
+    <Animated.View className="absolute top-0 w-full" style={animatedStyles} onLayout={handleLayout}>
       {children}
     </Animated.View>
   )
