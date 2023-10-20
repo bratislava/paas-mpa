@@ -38,7 +38,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
             <PressableStyled>
               <FlexRow cn="g-2 p-2 pr-3 items-center">
                 <View className="h-8 w-8 items-center justify-center rounded-full bg-light">
-                  <Icon name="local-parking" />
+                  <Icon size={20} name="local-parking" />
                 </View>
                 <Typography variant="default-bold" className="py-1">
                   Tickets (2)
