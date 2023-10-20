@@ -8,7 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 
 type PressablePropsOmitted = Omit<PressableProps, 'children'>
 
-type ButtonProps = {
+export type ButtonProps = {
   children: string
   variant?: 'primary' | 'secondary' | 'tertiary' | 'negative' | 'plain' | 'plain-dark'
   startIcon?: IconName
@@ -67,8 +67,7 @@ const Button = forwardRef<View, ButtonProps>(
   ) => {
     const t = useTranslation('Common')
 
-    // First, check `loading`, then `disabled`, so the button is disabled correctly
-    const rest = { ...restProps, disabled: loading ?? disabled }
+    const rest = { ...restProps, disabled: loading || disabled }
     const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
     return (

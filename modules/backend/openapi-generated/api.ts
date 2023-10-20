@@ -323,6 +323,12 @@ export interface GetTicketPriceResponseDto {
    * @memberof GetTicketPriceResponseDto
    */
   ticketEnd: string
+  /**
+   * UUID
+   * @type {string}
+   * @memberof GetTicketPriceResponseDto
+   */
+  bpkId?: string
 }
 /**
  *
@@ -427,49 +433,6 @@ export interface PaginationInfo {
 /**
  *
  * @export
- * @interface ParkingCardDetail
- */
-export interface ParkingCardDetail {
-  /**
-   * Name of the card cheme
-   * @type {string}
-   * @memberof ParkingCardDetail
-   */
-  cardSchemeName?: string
-  /**
-   * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
-   * @type {string}
-   * @memberof ParkingCardDetail
-   */
-  vehiclePlateNumber?: string
-  /**
-   * Start of card validity. ISO8601 formatted UTC timestamp
-   * @type {string}
-   * @memberof ParkingCardDetail
-   */
-  validFrom?: string
-  /**
-   * End of card validity. ISO8601 formatted UTC timestamp.
-   * @type {string}
-   * @memberof ParkingCardDetail
-   */
-  validTo?: string
-  /**
-   * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof ParkingCardDetail
-   */
-  balance?: string
-  /**
-   * List of Internal ids of the parking space.
-   * @type {Array<string>}
-   * @memberof ParkingCardDetail
-   */
-  parkingSpaces?: Array<string>
-}
-/**
- *
- * @export
  * @interface ParkingCardDto
  */
 export interface ParkingCardDto {
@@ -492,6 +455,48 @@ export interface ParkingCardDto {
    */
   type: ParkingCardType
   /**
+   * Name of the card cheme
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  name?: object
+  /**
+   * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  vehiclePlateNumber?: object
+  /**
+   * Start of card validity. ISO8601 formatted UTC timestamp
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  validFrom?: object
+  /**
+   * End of card validity. ISO8601 formatted UTC timestamp.
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  validTo?: object
+  /**
+   * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  balance?: object
+  /**
+   * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {object}
+   * @memberof ParkingCardDto
+   */
+  originalBalance?: object
+  /**
+   * List of Internal ids of the parking space.
+   * @type {Array<string>}
+   * @memberof ParkingCardDto
+   */
+  parkingSpaces?: Array<string>
+  /**
    * Date of the creation
    * @type {string}
    * @memberof ParkingCardDto
@@ -503,56 +508,6 @@ export interface ParkingCardDto {
    * @memberof ParkingCardDto
    */
   updatedAt: string
-}
-
-/**
- *
- * @export
- * @interface ParkingCardFullDto
- */
-export interface ParkingCardFullDto {
-  /**
-   * Database id of the verified email
-   * @type {number}
-   * @memberof ParkingCardFullDto
-   */
-  id: number
-  /**
-   * Identificator from parkdots (npkid)
-   * @type {string}
-   * @memberof ParkingCardFullDto
-   */
-  identificator: string
-  /**
-   *
-   * @type {ParkingCardType}
-   * @memberof ParkingCardFullDto
-   */
-  type: ParkingCardType
-  /**
-   * Date of the creation
-   * @type {string}
-   * @memberof ParkingCardFullDto
-   */
-  createdAt: string
-  /**
-   * Date of the last change
-   * @type {string}
-   * @memberof ParkingCardFullDto
-   */
-  updatedAt: string
-  /**
-   *
-   * @type {VerifiedEmailDto}
-   * @memberof ParkingCardFullDto
-   */
-  verifiedEmail: VerifiedEmailDto
-  /**
-   *
-   * @type {ParkingCardDetail}
-   * @memberof ParkingCardFullDto
-   */
-  details: ParkingCardDetail
 }
 
 /**
@@ -581,10 +536,10 @@ export type ParkingCardType = (typeof ParkingCardType)[keyof typeof ParkingCardT
 export interface ParkingCardsResponseDto {
   /**
    * List of parking cards
-   * @type {Array<ParkingCardFullDto>}
+   * @type {Array<ParkingCardDto>}
    * @memberof ParkingCardsResponseDto
    */
-  parkingCards: Array<ParkingCardFullDto>
+  parkingCards: Array<ParkingCardDto>
   /**
    *
    * @type {PaginationInfo}
@@ -1308,7 +1263,7 @@ export class AnnouncementsApi extends BaseAPI {
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
     /**
-     * See if nest is working!
+     * Get information about the status of the mpa-backend.
      * @summary Healthcheck
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1350,7 +1305,7 @@ export const DefaultApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
   return {
     /**
-     * See if nest is working!
+     * Get information about the status of the mpa-backend.
      * @summary Healthcheck
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1376,7 +1331,7 @@ export const DefaultApiFactory = function (
   const localVarFp = DefaultApiFp(configuration)
   return {
     /**
-     * See if nest is working!
+     * Get information about the status of the mpa-backend.
      * @summary Healthcheck
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1395,7 +1350,7 @@ export const DefaultApiFactory = function (
  */
 export class DefaultApi extends BaseAPI {
   /**
-   * See if nest is working!
+   * Get information about the status of the mpa-backend.
    * @summary Healthcheck
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1417,16 +1372,20 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
     /**
      *
      * @summary Get all parking cards associated with the user
+     * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards: async (
+      email: string,
       page?: number,
       pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
+      // verify required parameter 'email' is not null or undefined
+      assertParamExists('parkingCardsControllerGetParkingCards', 'email', email)
       const localVarPath = `/parking-cards`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -1449,6 +1408,10 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
 
       if (pageSize !== undefined) {
         localVarQueryParameter['pageSize'] = pageSize
+      }
+
+      if (email !== undefined) {
+        localVarQueryParameter['email'] = email
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -1477,12 +1440,14 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all parking cards associated with the user
+     * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async parkingCardsControllerGetParkingCards(
+      email: string,
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
@@ -1491,6 +1456,7 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.parkingCardsControllerGetParkingCards(
+          email,
           page,
           pageSize,
           options,
@@ -1514,18 +1480,20 @@ export const ParkingCardsApiFactory = function (
     /**
      *
      * @summary Get all parking cards associated with the user
+     * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards(
+      email: string,
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<ParkingCardsResponseDto> {
       return localVarFp
-        .parkingCardsControllerGetParkingCards(page, pageSize, options)
+        .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
         .then((request) => request(axios, basePath))
     },
   }
@@ -1541,6 +1509,7 @@ export class ParkingCardsApi extends BaseAPI {
   /**
    *
    * @summary Get all parking cards associated with the user
+   * @param {string} email Email
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
@@ -1548,12 +1517,13 @@ export class ParkingCardsApi extends BaseAPI {
    * @memberof ParkingCardsApi
    */
   public parkingCardsControllerGetParkingCards(
+    email: string,
     page?: number,
     pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return ParkingCardsApiFp(this.configuration)
-      .parkingCardsControllerGetParkingCards(page, pageSize, options)
+      .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }
@@ -2975,6 +2945,44 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     },
     /**
      *
+     * @summary Refreshes all parking cards for the email
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    verifiedEmailsControllerRefreshVerifiedEmail: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/verified-emails/refresh`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Send out emails for each email for verification
      * @param {VerifyEmailsDto} verifyEmailsDto
      * @param {*} [options] Override http request option.
@@ -3149,6 +3157,19 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Refreshes all parking cards for the email
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async verifiedEmailsControllerRefreshVerifiedEmail(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.verifiedEmailsControllerRefreshVerifiedEmail(options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Send out emails for each email for verification
      * @param {VerifyEmailsDto} verifyEmailsDto
      * @param {*} [options] Override http request option.
@@ -3238,6 +3259,19 @@ export const VerifiedEmailsApiFactory = function (
     },
     /**
      *
+     * @summary Refreshes all parking cards for the email
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    verifiedEmailsControllerRefreshVerifiedEmail(
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<boolean> {
+      return localVarFp
+        .verifiedEmailsControllerRefreshVerifiedEmail(options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Send out emails for each email for verification
      * @param {VerifyEmailsDto} verifyEmailsDto
      * @param {*} [options] Override http request option.
@@ -3304,6 +3338,19 @@ export class VerifiedEmailsApi extends BaseAPI {
   public verifiedEmailsControllerDeleteVerifiedEmail(id: number, options?: AxiosRequestConfig) {
     return VerifiedEmailsApiFp(this.configuration)
       .verifiedEmailsControllerDeleteVerifiedEmail(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Refreshes all parking cards for the email
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof VerifiedEmailsApi
+   */
+  public verifiedEmailsControllerRefreshVerifiedEmail(options?: AxiosRequestConfig) {
+    return VerifiedEmailsApiFp(this.configuration)
+      .verifiedEmailsControllerRefreshVerifiedEmail(options)
       .then((request) => request(this.axios, this.basePath))
   }
 
