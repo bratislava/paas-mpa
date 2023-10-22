@@ -203,7 +203,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   asChild
                   href={{
                     pathname: '/purchase',
-                    params: { zoneId: selectedZone.OBJECTID.toString() },
+                    params: { udrId: selectedZone.UDR_ID.toString() },
                   }}
                 >
                   <Button variant="primary">{t('Navigation.continue')}</Button>

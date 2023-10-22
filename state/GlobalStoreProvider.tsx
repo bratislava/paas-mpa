@@ -7,13 +7,13 @@ import {
   useState,
 } from 'react'
 
-import { MapFeaturesHashMapValue, TicketPriceRequest } from '@/state/types'
+import { MapZoneHashMapValue, TicketPriceRequest } from '@/state/types'
 
-type MapFeatureHashMap = Map<number, MapFeaturesHashMapValue>
+type MapFeatureHashMap = Map<number, MapZoneHashMapValue>
 
 type ContextProps = {
-  mapFeatures: MapFeatureHashMap | null
-  setMapFeatures: Dispatch<SetStateAction<MapFeatureHashMap | null>>
+  mapZones: MapFeatureHashMap | null
+  setMapZones: Dispatch<SetStateAction<MapFeatureHashMap | null>>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signInResult: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +27,7 @@ type ContextProps = {
 export const GlobalStoreContext = createContext({} as ContextProps)
 
 const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
-  const [mapFeatures, setMapFeatures] = useState<MapFeatureHashMap | null>(null)
+  const [mapZones, setMapZones] = useState<MapFeatureHashMap | null>(null)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [signInResult, setSignInResult] = useState<any>(null)
@@ -38,8 +38,8 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
 
   const value = useMemo(
     () => ({
-      mapFeatures,
-      setMapFeatures,
+      mapZones,
+      setMapZones,
       signInResult,
       setSignInResult,
       signUpPhone,
@@ -47,7 +47,7 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
       ticketPriceRequest,
       setTicketPriceRequest,
     }),
-    [mapFeatures, signInResult, signUpPhone, ticketPriceRequest],
+    [mapZones, signInResult, signUpPhone, ticketPriceRequest],
   )
 
   return <GlobalStoreContext.Provider value={value}>{children}</GlobalStoreContext.Provider>

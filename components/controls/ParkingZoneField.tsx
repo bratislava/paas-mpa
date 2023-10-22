@@ -1,5 +1,4 @@
 import { Link, useLocalSearchParams } from 'expo-router'
-import React from 'react'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import Field from '@/components/shared/Field'
@@ -15,10 +14,9 @@ import { formatPricePerHour } from '@/utils/formatPricePerHour'
 const ParkingZoneField = () => {
   const t = useTranslation('PurchaseScreen')
 
-  const { zoneId } = useLocalSearchParams()
+  const { udrId } = useLocalSearchParams<{ udrId: string }>()
 
-  // TODO remove casting to number/string, use udr id
-  const zone = useMapZone(Number(zoneId), true)
+  const zone = useMapZone(udrId ?? null, true)
 
   return (
     <Field
