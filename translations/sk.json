@@ -107,6 +107,7 @@
     "TicketCard": {
       "prolong": "Predĺžiť",
       "terminate": "Predčasne ukončiť",
+      "more": "Viac",
       "terminationModal": {
         "title": "Predčasne ukončiť",
         "message": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",

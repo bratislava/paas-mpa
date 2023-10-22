@@ -43,8 +43,7 @@ const TicketCard = ({ ticket }: Props) => {
             <Typography variant="default-bold">
               {formatDateTime(fromDateTime, locale)} – {formatDateTime(toDateTime, locale)}
             </Typography>
-            {/* TODO translation */}
-            <IconButton name="more-vert" accessibilityLabel="More" />
+            <IconButton name="more-vert" accessibilityLabel={t('more')} />
           </FlexRow>
           <View className="items-start g-1">
             <SegmentBadge label={ticket.udr} />

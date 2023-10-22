@@ -107,6 +107,7 @@
     "TicketCard": {
       "prolong": "Prolong",
       "terminate": "Terminate",
+      "more": "More",
       "terminationModal": {
         "title": "Terminate parking ticket",
         "message": "Are you sure you want to terminate your parking ticket?",

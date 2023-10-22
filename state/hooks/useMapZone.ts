@@ -7,20 +7,23 @@ import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 
 export function useMapZone<NormalizePropertiesOnly extends boolean>(
-  id: number | string | null,
+  udrId: number | string | null,
   normalizedPropertiesOnly: NormalizePropertiesOnly,
 ): (NormalizePropertiesOnly extends true ? NormalizedUdrZone : Feature<Polygon, MapUdrZone>) | null
 export function useMapZone(
-  id: number | string | null,
+  udrId: number | string | null,
   normalizedPropertiesOnly: boolean = false,
 ): NormalizedUdrZone | Feature<Polygon, MapUdrZone> | null {
   const globalStore = useGlobalStoreContext()
   const locale = useLocale()
 
   return useMemo(() => {
+    const id = typeof udrId === 'string' ? Number.parseInt(udrId, 10) : udrId
+    if (Number.isNaN(id)) {
+      console.error('udrId is not a number')
+    }
     if (id === null) return null
-    const mapZone =
-      globalStore.mapZones?.get(typeof id === 'string' ? Number.parseInt(id, 10) : id) ?? null
+    const mapZone = globalStore.mapZones?.get(id) ?? null
     if (normalizedPropertiesOnly) {
       if (mapZone?.properties) return normalizeZone(mapZone.properties, locale)
 
@@ -28,5 +31,5 @@ export function useMapZone(
     }
 
     return mapZone
-  }, [id, globalStore, normalizedPropertiesOnly, locale])
+  }, [udrId, globalStore, normalizedPropertiesOnly, locale])
 }
