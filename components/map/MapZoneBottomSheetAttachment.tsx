@@ -12,6 +12,8 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
+import { useTickets } from '@/modules/backend/hooks/useTickets'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
@@ -19,6 +21,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 }
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
+  const t = useTranslation('MapScreen.ZoneBottomSheet.TopAttachment')
   const { permissionStatus } = useLocationPermission()
   const onLocationPress = useCallback(async () => {
     if (permissionStatus === Location.PermissionStatus.GRANTED) {
@@ -30,23 +33,30 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
+  const { tickets } = useTickets(true)
+  const activeTicketsCount = tickets?.length ?? 0
+
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow cn="flex-1 p-2.5 pt-0 items-end">
-        <View className="rounded-full bg-white shadow ">
-          <Link asChild href="/tickets">
-            <PressableStyled>
-              <FlexRow cn="g-2 p-2 pr-3 items-center">
-                <View className="h-8 w-8 items-center justify-center rounded-full bg-light">
-                  <Icon size={20} name="local-parking" />
-                </View>
-                <Typography variant="default-bold" className="leading-6">
-                  Tickets (2)
-                </Typography>
-              </FlexRow>
-            </PressableStyled>
-          </Link>
-        </View>
+        {activeTicketsCount > 0 ? (
+          <View className="rounded-full bg-white shadow ">
+            <Link asChild href="/tickets">
+              <PressableStyled>
+                <FlexRow cn="g-2 p-2 pr-3 items-center">
+                  <View className="h-8 w-8 items-center justify-center rounded-full bg-light">
+                    <Icon size={20} name="local-parking" />
+                  </View>
+                  <Typography variant="default-bold" className="leading-6">
+                    {t('tickets', { count: activeTicketsCount })}
+                  </Typography>
+                </FlexRow>
+              </PressableStyled>
+            </Link>
+          </View>
+        ) : (
+          <View />
+        )}
 
         <IconButton
           name="gps-fixed"

@@ -1,26 +1,77 @@
-import React, { useState } from 'react'
-import { useWindowDimensions } from 'react-native'
+import clsx from 'clsx'
+import { useCallback, useState } from 'react'
+import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
+import { SadSmileyAvatar } from '@/assets/avatars'
 import TabBar from '@/components/navigation/TabBar'
+import { ModalContentWithActions } from '@/components/shared/Modal'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Typography from '@/components/shared/Typography'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useTickets } from '@/modules/backend/hooks/useTickets'
+import { TicketDto } from '@/modules/backend/openapi-generated'
 
-const ActiveTicketsRoute = () => (
-  <ScreenContent>
-    <Typography>TODO</Typography>
-    <TicketCard />
-  </ScreenContent>
-)
+const ActiveTicketsRoute = () => {
+  const { tickets } = useTickets(true)
+  const renderItem: ListRenderItem<TicketDto> = useCallback(
+    ({ item }) => <TicketCard ticket={item} />,
+    [],
+  )
 
-const HistoryRoute = () => (
-  <ScreenContent>
-    <Typography>History</Typography>
-  </ScreenContent>
-)
+  const isShowingTickets = tickets && tickets.length > 0
+
+  return (
+    <ScreenContent cn={clsx('h-full px-0', !isShowingTickets && 'justify-center bg-transparent')}>
+      {isShowingTickets ? (
+        <View className="h-full bg-white px-5">
+          <FlatList
+            // eslint-disable-next-line react-native/no-inline-styles
+            contentContainerStyle={{ gap: 12 }}
+            data={tickets}
+            renderItem={renderItem}
+          />
+        </View>
+      ) : (
+        <ModalContentWithActions
+          variant="success"
+          title="No active tickets"
+          text="Blababalalalabablal"
+          primaryActionLabel="Buy a ticket"
+          primaryActionOnPress={() => false}
+          customAvatarComponent={
+            <View className="w-full items-center">
+              <SadSmileyAvatar />
+            </View>
+          }
+          className="bg-white"
+        />
+      )}
+    </ScreenContent>
+  )
+}
+
+const HistoryRoute = () => {
+  const { tickets } = useTickets(false)
+  const renderItem: ListRenderItem<TicketDto> = useCallback(
+    ({ item }) => <TicketCard ticket={item} />,
+    [],
+  )
+
+  return (
+    <ScreenContent>
+      <View className="h-full bg-white">
+        <FlatList
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{ gap: 12 }}
+          data={tickets}
+          renderItem={renderItem}
+        />
+      </View>
+    </ScreenContent>
+  )
+}
 
 const renderScene = SceneMap({
   active: ActiveTicketsRoute,
@@ -39,7 +90,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} backgroundVariant="dots">
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

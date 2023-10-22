@@ -103,7 +103,17 @@
     "validUntil": "Valid until"
   },
   "Tickets": {
-    "title": "Parking tickets"
+    "title": "Parking tickets",
+    "TicketCard": {
+      "prolong": "Prolong",
+      "terminate": "Terminate",
+      "terminationModal": {
+        "title": "Terminate parking ticket",
+        "message": "Are you sure you want to terminate your parking ticket?",
+        "actionConfirm": "Terminate ticket",
+        "actionCancel": "Keep ticket"
+      }
+    }
   },
   "ParkingCards": {
     "title": "Parking cards",
@@ -144,7 +154,10 @@
     "ZoneBottomSheet": {
       "title": "Where are you parking?",
       "showDetails": "Show details",
-      "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby."
+      "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
+      "TopAttachment": {
+        "tickets": "Tickets ({{count}})"
+      }
     },
     "PointBottomSheet": {
       "title": "Point detail",

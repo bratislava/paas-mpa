@@ -103,7 +103,17 @@
     "validUntil": "Platná do"
   },
   "Tickets": {
-    "title": "Parkovacie lístky"
+    "title": "Parkovacie lístky",
+    "TicketCard": {
+      "prolong": "Predĺžiť",
+      "terminate": "Predčasne ukončiť",
+      "terminationModal": {
+        "title": "Predčasne ukončiť",
+        "message": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
+        "actionConfirm": "Ukončiť",
+        "actionCancel": "Zrušiť"
+      }
+    }
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
@@ -123,7 +133,10 @@
     "ZoneBottomSheet": {
       "title": "Kde parkujete?",
       "showDetails": "Detail úseku",
-      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti."
+      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti.",
+      "TopAttachment": {
+        "tickets": "Lístky ({{count}})"
+      }
     },
     "PointBottomSheet": {
       "title": "Detail bodu",
