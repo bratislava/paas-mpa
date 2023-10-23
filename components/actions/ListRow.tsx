@@ -5,7 +5,7 @@ import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 
 export type ListRowProps = {
-  icon: IconName
+  icon?: IconName
   label: string
   labelClassName?: string
 } & Omit<ViewProps, 'children'>
@@ -13,7 +13,7 @@ export type ListRowProps = {
 const ListRow = ({ icon, label, labelClassName, ...rest }: ListRowProps) => {
   return (
     <View className="flex-row gap-3 py-3" {...rest}>
-      <Icon name={icon} />
+      {icon ? <Icon name={icon} /> : null}
 
       <Typography variant="default-semibold" className={clsx('flex-1', labelClassName)}>
         {label}

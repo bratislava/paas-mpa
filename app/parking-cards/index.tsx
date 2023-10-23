@@ -1,71 +1,26 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigation } from 'expo-router'
-import React, { useEffect, useState } from 'react'
-import { ScrollView, useWindowDimensions, View } from 'react-native'
-import { SceneMap, TabView } from 'react-native-tab-view'
+import React, { useEffect } from 'react'
+import { ScrollView } from 'react-native'
 
-import TabBar from '@/components/navigation/TabBar'
-import BonusCard from '@/components/parking-cards/BonusCard'
-import ResidentCard from '@/components/parking-cards/ResidentCard'
-import SubscriberCard from '@/components/parking-cards/SubscriberCard'
-import VisitorCard from '@/components/parking-cards/VisitorCard'
-import FlexRow from '@/components/shared/FlexRow'
+import ListRow from '@/components/actions/ListRow'
 import IconButton from '@/components/shared/IconButton'
+import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 
-const Active = () => {
-  // const { data: response } = useQuery({
-  //   queryKey: ['ParkingCardsActive'],
-  //   queryFn: () => clientApi.parkingCardsControllerGetParkingCards(),
-  // })
-  //
-  // const cards = response?.data.parkingCards ?? []
-  //
-  // console.log('PARKING CARDS', cards)
-
-  return (
-    <ScrollView>
-      <ScreenContent>
-        <Typography variant="h1">TODO</Typography>
-
-        <View className="g-3">
-          <FlexRow>
-            <Typography variant="default-bold">katarina.novotna@gmail.com</Typography>
-            {/* TODO translation */}
-            {/* TODO actions */}
-            <IconButton name="more-vert" accessibilityLabel="More" />
-          </FlexRow>
-          <VisitorCard />
-          <ResidentCard />
-          <BonusCard />
-          <SubscriberCard />
-        </View>
-      </ScreenContent>
-    </ScrollView>
-  )
-}
-
-const Expired = () => {
-  return (
-    <ScrollView>
-      <ScreenContent>
-        <Typography>Expired cards TODO</Typography>
-      </ScreenContent>
-    </ScrollView>
-  )
-}
-
-const renderScene = SceneMap({
-  active: Active,
-  expired: Expired,
-})
-
-// TODO
 const Page = () => {
   const t = useTranslation('ParkingCards')
   const navigation = useNavigation()
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['VerifiedEmails'],
+    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1, 10),
+    select: (res) => res.data,
+  })
 
   useEffect(() => {
     navigation.setOptions({
@@ -77,23 +32,28 @@ const Page = () => {
     })
   }, [navigation, t])
 
-  const layout = useWindowDimensions()
+  if (isPending) {
+    return <Typography>Loading...</Typography>
+  }
 
-  const [index, setIndex] = useState(0)
-  const [routes] = useState([
-    { key: 'active', title: t('activeCards') },
-    { key: 'expired', title: t('expiredCards') },
-  ])
+  if (isError) {
+    return <Typography>Error: {error.message}</Typography>
+  }
 
   return (
-    <ScreenView title={t('title')}>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-        renderTabBar={(props) => <TabBar {...props} />}
-      />
+    <ScreenView>
+      <ScrollView>
+        <ScreenContent>
+          <Typography>My accounts</Typography>
+          {data.verifiedEmails.map((emailItem) => (
+            <Link asChild href={`/parking-cards/${emailItem.email}`} key={emailItem.id}>
+              <PressableStyled>
+                <ListRow label={emailItem.email} />
+              </PressableStyled>
+            </Link>
+          ))}
+        </ScreenContent>
+      </ScrollView>
     </ScreenView>
   )
 }

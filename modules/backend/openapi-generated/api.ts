@@ -257,12 +257,6 @@ export interface GetTicketPriceRequestDto {
    */
   npkId?: string
   /**
-   * Value of BPK UUID
-   * @type {string}
-   * @memberof GetTicketPriceRequestDto
-   */
-  bpkId?: string
-  /**
    *
    * @type {GetTicketPriceTicketInfoRequestDto}
    * @memberof GetTicketPriceRequestDto
@@ -402,6 +396,37 @@ export interface InitiatePaymentRequestDto {
    * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof InitiatePaymentRequestDto
+   */
+  priceNpk: string
+}
+/**
+ *
+ * @export
+ * @interface InitiateProlongationRequestDto
+ */
+export interface InitiateProlongationRequestDto {
+  /**
+   *
+   * @type {GetTicketProlongationPriceRequestDto}
+   * @memberof InitiateProlongationRequestDto
+   */
+  ticket: GetTicketProlongationPriceRequestDto
+  /**
+   * Price coming from the FE what the user seen last time and accepted to pay for the ticket
+   * @type {number}
+   * @memberof InitiateProlongationRequestDto
+   */
+  price: number
+  /**
+   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the BPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {string}
+   * @memberof InitiateProlongationRequestDto
+   */
+  priceBpk: string
+  /**
+   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {string}
+   * @memberof InitiateProlongationRequestDto
    */
   priceNpk: string
 }
@@ -1831,6 +1856,59 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary Initiate prolongation ticket payment
+     * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerInitiateTicketProlongationPayment: async (
+      initiateProlongationRequestDto: InitiateProlongationRequestDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'initiateProlongationRequestDto' is not null or undefined
+      assertParamExists(
+        'ticketsControllerInitiateTicketProlongationPayment',
+        'initiateProlongationRequestDto',
+        initiateProlongationRequestDto,
+      )
+      const localVarPath = `/tickets/prolongation/payment`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        initiateProlongationRequestDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Process ticket payment
      * @param {object} body
      * @param {*} [options] Override http request option.
@@ -2005,6 +2083,24 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Initiate prolongation ticket payment
+     * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerInitiateTicketProlongationPayment(
+      initiateProlongationRequestDto: InitiateProlongationRequestDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerInitiateTicketProlongationPayment(
+          initiateProlongationRequestDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Process ticket payment
      * @param {object} body
      * @param {*} [options] Override http request option.
@@ -2102,6 +2198,21 @@ export const TicketsApiFactory = function (
     },
     /**
      *
+     * @summary Initiate prolongation ticket payment
+     * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerInitiateTicketProlongationPayment(
+      initiateProlongationRequestDto: InitiateProlongationRequestDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketDto> {
+      return localVarFp
+        .ticketsControllerInitiateTicketProlongationPayment(initiateProlongationRequestDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Process ticket payment
      * @param {object} body
      * @param {*} [options] Override http request option.
@@ -2192,6 +2303,23 @@ export class TicketsApi extends BaseAPI {
   ) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerInitiateTicketPayment(initiatePaymentRequestDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Initiate prolongation ticket payment
+   * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerInitiateTicketProlongationPayment(
+    initiateProlongationRequestDto: InitiateProlongationRequestDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerInitiateTicketProlongationPayment(initiateProlongationRequestDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
