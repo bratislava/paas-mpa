@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link, useNavigation } from 'expo-router'
-import React, { useEffect } from 'react'
+import { Link, Stack } from 'expo-router'
+import React from 'react'
 import { FlatList } from 'react-native'
 
 import ListRow from '@/components/actions/ListRow'
@@ -15,23 +15,12 @@ import { clientApi } from '@/modules/backend/client-api'
 
 const Page = () => {
   const t = useTranslation('ParkingCards')
-  const navigation = useNavigation()
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['VerifiedEmails'],
     queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1, 10),
     select: (res) => res.data,
   })
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Link asChild href="/parking-cards/enter-paas-account">
-          <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
-        </Link>
-      ),
-    })
-  }, [navigation, t])
 
   if (isPending) {
     return <Typography>Loading...</Typography>
@@ -43,6 +32,16 @@ const Page = () => {
 
   return (
     <ScreenView title={t('paasEmailsTitle')}>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Link asChild href="/parking-cards/enter-paas-account">
+              <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
+            </Link>
+          ),
+        }}
+      />
+
       <ScreenContent>
         <Typography variant="default-bold">{t('paasEmailsList')}</Typography>
         <FlatList

@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
-import React, { useEffect, useRef, useState } from 'react'
+import { Stack, useLocalSearchParams } from 'expo-router'
+import React, { useRef, useState } from 'react'
 import { ScrollView, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
@@ -72,7 +72,6 @@ const renderScene = SceneMap({
 })
 
 const Page = () => {
-  const navigation = useNavigation()
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
@@ -86,21 +85,21 @@ const Page = () => {
     { key: 'expired', title: t('expiredCards') },
   ])
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          name="more-horiz"
-          accessibilityLabel={t('openEmailActions')}
-          onPress={() => bottomSheetRef.current?.expand()}
-        />
-      ),
-    })
-  }, [navigation, t])
-
   return (
     <>
       <ScreenView title={email}>
+        <Stack.Screen
+          options={{
+            headerRight: () => (
+              <IconButton
+                name="more-horiz"
+                accessibilityLabel={t('openEmailActions')}
+                onPress={() => bottomSheetRef.current?.expand()}
+              />
+            ),
+          }}
+        />
+
         <TabView
           navigationState={{ index, routes }}
           renderScene={renderScene}
