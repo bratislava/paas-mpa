@@ -54,7 +54,7 @@ export type NormalizedUdrZone = {
   udrId: number
   odpRpk: string
   restrictionOnlyRpk: string
-  residentialZoneName: string
+  cityDistrict: string
   reservedParking: string
   initialFreeParkingDuration: number
   parkingDurationRestrictionException: string

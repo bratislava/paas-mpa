@@ -105,6 +105,17 @@
   "Tickets": {
     "title": "Parkovacie lístky"
   },
+  "TicketCard": {
+    "prolong": "Predĺžiť",
+    "terminate": "Predčasne ukončiť",
+    "more": "Viac",
+    "terminationModal": {
+      "title": "Predčasne ukončiť",
+      "message": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
+      "actionConfirm": "Ukončiť",
+      "actionCancel": "Zrušiť"
+    }
+  },
   "ParkingCards": {
     "title": "Parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
@@ -119,33 +130,34 @@
     "activeCards": "Aktívne karty",
     "expiredCards": "Exspirované karty"
   },
-  "MapScreen": {
-    "ZoneBottomSheet": {
-      "title": "Kde parkujete?",
-      "showDetails": "Detail úseku",
-      "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti."
+  "ZoneBottomSheet": {
+    "title": "Kde parkujete?",
+    "showDetails": "Detail úseku",
+    "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti.",
+    "TopAttachment": {
+      "tickets": "Lístky ({{count}})"
+    }
+  },
+  "PointBottomSheet": {
+    "title": "Detail bodu",
+    "getDirections": "Navigácia",
+    "fields": {
+      "address": "Adresa",
+      "id": "ID",
+      "openingHours": "Otváracie hodiny",
+      "parkingSpotCount": "Počet parkovacích miest",
+      "publicTransportLines": "Linky MHD",
+      "distanceToCenter": "Vzdialenosť do centra",
+      "distanceToPublicTransport": "Vzdialenosť k zastávke MHD"
     },
-    "PointBottomSheet": {
-      "title": "Detail bodu",
-      "getDirections": "Navigácia",
-      "fields": {
-        "address": "Adresa",
-        "id": "ID",
-        "openingHours": "Otváracie hodiny",
-        "parkingSpotCount": "Počet parkovacích miest",
-        "publicTransportLines": "Linky MHD",
-        "distanceToCenter": "Vzdialenosť do centra",
-        "distanceToPublicTransport": "Vzdialenosť k zastávke MHD"
-      },
-      "kinds": {
-        "assistants": "Asistent",
-        "branches": "Prevádzka",
-        "parkomats": "Parkomat",
-        "partners": "Partnerská prevádzka",
-        "p-plus-r": "P + R",
-        "garages": "Garáž",
-        "parking-lots": "Parkovisko"
-      }
+    "kinds": {
+      "assistants": "Asistent",
+      "branches": "Prevádzka",
+      "parkomats": "Parkomat",
+      "partners": "Partnerská prevádzka",
+      "p-plus-r": "P + R",
+      "garages": "Garáž",
+      "parking-lots": "Parkovisko"
     }
   },
   "ZoneDetailsScreen": {

@@ -10,6 +10,7 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatDateTime } from '@/utils/formatDateTime'
 import { formatDuration } from '@/utils/formatDuration'
 
 const getDuration = (date: Date) => {
@@ -30,14 +31,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
   const validUntil = useMemo(
-    () =>
-      new Date(Date.now() + value * 60_000).toLocaleDateString(locale, {
-        minute: '2-digit',
-        hour: 'numeric',
-        day: 'numeric',
-        month: 'short',
-        weekday: 'long',
-      }),
+    () => formatDateTime(new Date(Date.now() + value * 60_000), locale),
     [locale, value],
   )
 

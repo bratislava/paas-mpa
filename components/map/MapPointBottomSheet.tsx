@@ -19,7 +19,7 @@ type Props = {
 const EXCLUDED_ATTRIBUTES = new Set(['address', 'name', 'navigation', 'kind', 'id'])
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
-  const t = useTranslation('MapScreen.PointBottomSheet')
+  const t = useTranslation('PointBottomSheet')
   const [index, setIndex] = useState(-1)
   const [footerHeight, setFooterHeight] = useState(0)
 
