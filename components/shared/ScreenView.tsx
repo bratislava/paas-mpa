@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
-import { Link, useNavigation } from 'expo-router'
+import { Link, Stack } from 'expo-router'
 import { Href } from 'expo-router/build/link/href'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Image, View } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -32,14 +32,10 @@ const ScreenView = ({
   backgroundVariant = 'white',
   cn,
 }: Props) => {
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    navigation.setOptions({ title })
-  }, [navigation, title])
-
   return (
     <View className={clsx('flex-1 bg-white', cn)}>
+      <Stack.Screen options={{ title }} />
+
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />
       )}
