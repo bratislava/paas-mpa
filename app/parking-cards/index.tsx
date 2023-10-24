@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigation } from 'expo-router'
 import React, { useEffect } from 'react'
-import { ScrollView } from 'react-native'
+import { FlatList } from 'react-native'
 
 import ListRow from '@/components/actions/ListRow'
+import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import ScreenContent from '@/components/shared/ScreenContent'
@@ -41,19 +42,22 @@ const Page = () => {
   }
 
   return (
-    <ScreenView>
-      <ScrollView>
-        <ScreenContent>
-          <Typography>My accounts</Typography>
-          {data.verifiedEmails.map((emailItem) => (
+    <ScreenView title={t('paasEmailsTitle')}>
+      <ScreenContent>
+        <Typography variant="default-bold">{t('paasEmailsList')}</Typography>
+        <FlatList
+          data={data.verifiedEmails}
+          keyExtractor={(emailItem) => emailItem.email}
+          ItemSeparatorComponent={() => <Divider />}
+          renderItem={({ item: emailItem }) => (
             <Link asChild href={`/parking-cards/${emailItem.email}`} key={emailItem.id}>
               <PressableStyled>
                 <ListRow label={emailItem.email} />
               </PressableStyled>
             </Link>
-          ))}
-        </ScreenContent>
-      </ScrollView>
+          )}
+        />
+      </ScreenContent>
     </ScreenView>
   )
 }

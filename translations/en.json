@@ -107,12 +107,15 @@
   },
   "ParkingCards": {
     "title": "Parking cards",
+    "paasEmailsTitle": "Your e-mails",
+    "paasEmailsList": "Choose an e-mail to continue and show cards that are attached",
     "addParkingCards": "Add parking cards",
     "type": {
       "visitor": "Visitor card",
       "resident": "Resident card",
       "bonus": "Bonus card",
-      "subscriber": "Subscriber card"
+      "subscriber": "Subscriber card",
+      "other": "Other card"
     },
     "validUntil": "Valid until",
     "remainingCredit": "Remaining credit",

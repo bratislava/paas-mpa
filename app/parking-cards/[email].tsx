@@ -5,16 +5,19 @@ import { ScrollView, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
-import FlexRow from '@/components/shared/FlexRow'
-import IconButton from '@/components/shared/IconButton'
+import ParkingCard from '@/components/parking-cards/ParkingCard'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
+type ParkingCardsLocalSearchParams = {
+  email: string
+}
+
 const Active = () => {
-  const { email } = useLocalSearchParams<{ email: string }>()
+  const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['ParkingCardsActive'],
@@ -30,32 +33,19 @@ const Active = () => {
   if (isError) {
     return <Typography>Error: {error.message}</Typography>
   }
+
   const cards = data.parkingCards
 
-  console.log('PARKING CARDS', cards)
-
+  // TODO pagination
   return (
     <ScrollView>
       <ScreenContent>
-        <Typography variant="h1">TODO</Typography>
+        <Typography>TODO pagination, showing only first 10 cards</Typography>
 
         <View className="g-3">
-          <FlexRow>
-            <Typography variant="default-bold">{email}</Typography>
-            {/* TODO translation */}
-            {/* TODO actions */}
-            <IconButton name="more-vert" accessibilityLabel="More" />
-          </FlexRow>
-
           {cards.map((card) => {
-            // TODO return card component
-            return <Typography>{card.type}</Typography>
+            return <ParkingCard key={card.identificator} card={card} />
           })}
-
-          {/* <VisitorCard /> */}
-          {/* <ResidentCard /> */}
-          {/* <BonusCard /> */}
-          {/* <SubscriberCard /> */}
         </View>
       </ScreenContent>
     </ScrollView>
@@ -80,6 +70,7 @@ const renderScene = SceneMap({
 // TODO
 const Page = () => {
   const t = useTranslation('ParkingCards')
+  const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const layout = useWindowDimensions()
 
@@ -90,7 +81,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={email}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

@@ -53,10 +53,10 @@ export interface AnnouncementDto {
   content: string
   /**
    * External url to route the user on CTA
-   * @type {object}
+   * @type {string}
    * @memberof AnnouncementDto
    */
-  externalUrl?: object
+  externalUrl?: string | null
   /**
    * Database id of the announcement
    * @type {number}
@@ -167,11 +167,11 @@ export interface EmailVerificationResult {
   sent: boolean
   /**
    * Token which is sent to the email - only avaialble for test purposes
-   * @type {object}
+   * @type {string}
    * @memberof EmailVerificationResult
    * @deprecated
    */
-  token: object
+  token: string | null
 }
 /**
  *
@@ -280,7 +280,7 @@ export interface GetTicketPriceResponseDto {
    * @type {number}
    * @memberof GetTicketPriceResponseDto
    */
-  tax?: number
+  tax?: number | null
   /**
    * Total ticket price considering all discounts and credits.
    * @type {number}
@@ -304,7 +304,7 @@ export interface GetTicketPriceResponseDto {
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  creditNpkUsed?: string
+  creditNpkUsed?: string | null
   /**
    * The date and time when parking starts (UTC time in ISO8601 format)
    * @type {string}
@@ -322,7 +322,7 @@ export interface GetTicketPriceResponseDto {
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  bpkId?: string
+  bpkId?: string | null
 }
 /**
  *
@@ -433,6 +433,76 @@ export interface InitiateProlongationRequestDto {
 /**
  *
  * @export
+ * @interface MobileDeviceDto
+ */
+export interface MobileDeviceDto {
+  /**
+   * Mobile device token for sending push messages
+   * @type {string}
+   * @memberof MobileDeviceDto
+   */
+  token: string
+  /**
+   *
+   * @type {MobileDevicePlatform}
+   * @memberof MobileDeviceDto
+   */
+  platform: MobileDevicePlatform
+  /**
+   * Database id of the mobile device
+   * @type {number}
+   * @memberof MobileDeviceDto
+   */
+  id: number
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof MobileDeviceDto
+   */
+  createdAt: string
+  /**
+   * Date of the last change
+   * @type {string}
+   * @memberof MobileDeviceDto
+   */
+  updatedAt: string
+}
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const MobileDevicePlatform = {
+  Apple: 'APPLE',
+  Android: 'ANDROID',
+} as const
+
+export type MobileDevicePlatform = (typeof MobileDevicePlatform)[keyof typeof MobileDevicePlatform]
+
+/**
+ *
+ * @export
+ * @interface MobileDeviceResponseDto
+ */
+export interface MobileDeviceResponseDto {
+  /**
+   * List of mobile devices
+   * @type {Array<MobileDeviceDto>}
+   * @memberof MobileDeviceResponseDto
+   */
+  devices: Array<MobileDeviceDto>
+  /**
+   *
+   * @type {PaginationInfo}
+   * @memberof MobileDeviceResponseDto
+   */
+  paginationInfo: PaginationInfo
+}
+/**
+ *
+ * @export
  * @interface PaginationInfo
  */
 export interface PaginationInfo {
@@ -481,46 +551,46 @@ export interface ParkingCardDto {
   type: ParkingCardType
   /**
    * Name of the card cheme
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  name?: object
+  name?: string | null
   /**
    * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  vehiclePlateNumber?: object
+  vehiclePlateNumber?: string | null
   /**
    * Start of card validity. ISO8601 formatted UTC timestamp
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  validFrom?: object
+  validFrom?: string | null
   /**
    * End of card validity. ISO8601 formatted UTC timestamp.
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  validTo?: object
+  validTo?: string | null
   /**
    * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  balance?: object
+  balance?: string | null
   /**
    * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {object}
+   * @type {string}
    * @memberof ParkingCardDto
    */
-  originalBalance?: object
+  originalBalance?: string | null
   /**
    * List of Internal ids of the parking space.
    * @type {Array<string>}
    * @memberof ParkingCardDto
    */
-  parkingSpaces?: Array<string>
+  parkingSpaces?: Array<string> | null
   /**
    * Date of the creation
    * @type {string}
@@ -575,6 +645,55 @@ export interface ParkingCardsResponseDto {
 /**
  *
  * @export
+ * @interface PaymentResponseQueryDto
+ */
+export interface PaymentResponseQueryDto {
+  /**
+   * Operation text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  OPERATION: string
+  /**
+   * Ordernumber text coming from the paygate return url query param (13 characters long number)
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  ORDERNUMBER: string
+  /**
+   * Prcode text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  PRCODE: string
+  /**
+   * Srcode text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  SRCODE: string
+  /**
+   * Digest text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  DIGEST: string
+  /**
+   * Digest1 text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  DIGEST1: string
+  /**
+   * Result text coming from the paygate return url query param
+   * @type {string}
+   * @memberof PaymentResponseQueryDto
+   */
+  RESULTTEXT: string
+}
+/**
+ *
+ * @export
  * @interface SaveAnnouncementDto
  */
 export interface SaveAnnouncementDto {
@@ -592,11 +711,31 @@ export interface SaveAnnouncementDto {
   content: string
   /**
    * External url to route the user on CTA
-   * @type {object}
+   * @type {string}
    * @memberof SaveAnnouncementDto
    */
-  externalUrl?: object
+  externalUrl?: string | null
 }
+/**
+ *
+ * @export
+ * @interface SaveMobileDeviceDto
+ */
+export interface SaveMobileDeviceDto {
+  /**
+   * Mobile device token for sending push messages
+   * @type {string}
+   * @memberof SaveMobileDeviceDto
+   */
+  token: string
+  /**
+   *
+   * @type {MobileDevicePlatform}
+   * @memberof SaveMobileDeviceDto
+   */
+  platform: MobileDevicePlatform
+}
+
 /**
  *
  * @export
@@ -608,25 +747,25 @@ export interface SaveUserSettingsDto {
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsAboutToEnd?: boolean
+  pushNotificationsAboutToEnd?: boolean | null
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsToEnd?: boolean
+  pushNotificationsToEnd?: boolean | null
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsAboutToEnd?: boolean
+  emailNotificationsAboutToEnd?: boolean | null
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsToEnd?: boolean
+  emailNotificationsToEnd?: boolean | null
 }
 /**
  *
@@ -654,34 +793,34 @@ export interface TicketDto {
   parkingEnd: string
   /**
    * Price of the parking
-   * @type {object}
+   * @type {number}
    * @memberof TicketDto
    */
-  price?: object
+  price?: number | null
   /**
    * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {object}
+   * @type {string}
    * @memberof TicketDto
    */
-  bpkCreditUsed?: object
+  bpkCreditUsed?: string | null
   /**
    * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {object}
+   * @type {string}
    * @memberof TicketDto
    */
-  npkCreditUsed?: object
+  npkCreditUsed?: string | null
   /**
    * ID of the visitor card (GUID)
-   * @type {object}
+   * @type {string}
    * @memberof TicketDto
    */
-  npkId?: object
+  npkId?: string | null
   /**
    * ID of the bonus card (GUID)
-   * @type {object}
+   * @type {string}
    * @memberof TicketDto
    */
-  bpkId?: object
+  bpkId?: string | null
   /**
    * Date of the last change
    * @type {string}
@@ -756,19 +895,19 @@ export interface UpdateVehicleDto {
    * @type {string}
    * @memberof UpdateVehicleDto
    */
-  vehiclePlateNumber?: string
+  vehiclePlateNumber?: string | null
   /**
    * Name of the vehicle (user input)
    * @type {string}
    * @memberof UpdateVehicleDto
    */
-  name?: string
+  name?: string | null
   /**
    * Set to true to be the default car
    * @type {boolean}
    * @memberof UpdateVehicleDto
    */
-  isDefault?: boolean
+  isDefault?: boolean | null
 }
 /**
  *
@@ -948,14 +1087,14 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany: async (
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/announcements`
@@ -1106,14 +1245,14 @@ export const AnnouncementsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async announcementsControllerAnnouncementsGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AnnouncementsResponseDto>
@@ -1176,14 +1315,14 @@ export const AnnouncementsApiFactory = function (
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): AxiosPromise<AnnouncementsResponseDto> {
       return localVarFp
@@ -1233,15 +1372,15 @@ export class AnnouncementsApi extends BaseAPI {
   /**
    *
    * @summary Get all announcements paginated
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AnnouncementsApi
    */
   public announcementsControllerAnnouncementsGetMany(
-    page?: number,
-    pageSize?: number,
+    page?: number | null,
+    pageSize?: number | null,
     options?: AxiosRequestConfig,
   ) {
     return AnnouncementsApiFp(this.configuration)
@@ -1389,6 +1528,348 @@ export class DefaultApi extends BaseAPI {
 }
 
 /**
+ * MobileDevicesApi - axios parameter creator
+ * @export
+ */
+export const MobileDevicesApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Delete a specific mobile device
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDeleteMobileDevice: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('mobileDevicesControllerDeleteMobileDevice', 'id', id)
+      const localVarPath = `/mobile-devices/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Get all mobile devices associated with the user
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDevicesGetMany: async (
+      page?: number | null,
+      pageSize?: number | null,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/mobile-devices`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter['pageSize'] = pageSize
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Inserts new mobile device
+     * @param {SaveMobileDeviceDto} saveMobileDeviceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerInsertMobileDevice: async (
+      saveMobileDeviceDto: SaveMobileDeviceDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'saveMobileDeviceDto' is not null or undefined
+      assertParamExists(
+        'mobileDevicesControllerInsertMobileDevice',
+        'saveMobileDeviceDto',
+        saveMobileDeviceDto,
+      )
+      const localVarPath = `/mobile-devices`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        saveMobileDeviceDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * MobileDevicesApi - functional programming interface
+ * @export
+ */
+export const MobileDevicesApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = MobileDevicesApiAxiosParamCreator(configuration)
+  return {
+    /**
+     *
+     * @summary Delete a specific mobile device
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async mobileDevicesControllerDeleteMobileDevice(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.mobileDevicesControllerDeleteMobileDevice(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get all mobile devices associated with the user
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async mobileDevicesControllerDevicesGetMany(
+      page?: number | null,
+      pageSize?: number | null,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<MobileDeviceResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.mobileDevicesControllerDevicesGetMany(
+          page,
+          pageSize,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Inserts new mobile device
+     * @param {SaveMobileDeviceDto} saveMobileDeviceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async mobileDevicesControllerInsertMobileDevice(
+      saveMobileDeviceDto: SaveMobileDeviceDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MobileDeviceDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.mobileDevicesControllerInsertMobileDevice(
+          saveMobileDeviceDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * MobileDevicesApi - factory interface
+ * @export
+ */
+export const MobileDevicesApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = MobileDevicesApiFp(configuration)
+  return {
+    /**
+     *
+     * @summary Delete a specific mobile device
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDeleteMobileDevice(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<DeleteResponseDto> {
+      return localVarFp
+        .mobileDevicesControllerDeleteMobileDevice(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Get all mobile devices associated with the user
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDevicesGetMany(
+      page?: number | null,
+      pageSize?: number | null,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<MobileDeviceResponseDto> {
+      return localVarFp
+        .mobileDevicesControllerDevicesGetMany(page, pageSize, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Inserts new mobile device
+     * @param {SaveMobileDeviceDto} saveMobileDeviceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerInsertMobileDevice(
+      saveMobileDeviceDto: SaveMobileDeviceDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<MobileDeviceDto> {
+      return localVarFp
+        .mobileDevicesControllerInsertMobileDevice(saveMobileDeviceDto, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * MobileDevicesApi - object-oriented interface
+ * @export
+ * @class MobileDevicesApi
+ * @extends {BaseAPI}
+ */
+export class MobileDevicesApi extends BaseAPI {
+  /**
+   *
+   * @summary Delete a specific mobile device
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MobileDevicesApi
+   */
+  public mobileDevicesControllerDeleteMobileDevice(id: number, options?: AxiosRequestConfig) {
+    return MobileDevicesApiFp(this.configuration)
+      .mobileDevicesControllerDeleteMobileDevice(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get all mobile devices associated with the user
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MobileDevicesApi
+   */
+  public mobileDevicesControllerDevicesGetMany(
+    page?: number | null,
+    pageSize?: number | null,
+    options?: AxiosRequestConfig,
+  ) {
+    return MobileDevicesApiFp(this.configuration)
+      .mobileDevicesControllerDevicesGetMany(page, pageSize, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Inserts new mobile device
+   * @param {SaveMobileDeviceDto} saveMobileDeviceDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MobileDevicesApi
+   */
+  public mobileDevicesControllerInsertMobileDevice(
+    saveMobileDeviceDto: SaveMobileDeviceDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return MobileDevicesApiFp(this.configuration)
+      .mobileDevicesControllerInsertMobileDevice(saveMobileDeviceDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
  * ParkingCardsApi - axios parameter creator
  * @export
  */
@@ -1396,17 +1877,55 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
   return {
     /**
      *
+     * @summary Get all active visitor cards associated with the user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    parkingCardsControllerGetActiveVisitorCards: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/parking-cards/visitor-cards`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards: async (
       email: string,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'email' is not null or undefined
@@ -1464,17 +1983,30 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Get all active visitor cards associated with the user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async parkingCardsControllerGetActiveVisitorCards(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ParkingCardDto>>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.parkingCardsControllerGetActiveVisitorCards(options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async parkingCardsControllerGetParkingCards(
       email: string,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParkingCardsResponseDto>
@@ -1504,17 +2036,30 @@ export const ParkingCardsApiFactory = function (
   return {
     /**
      *
+     * @summary Get all active visitor cards associated with the user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    parkingCardsControllerGetActiveVisitorCards(
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<Array<ParkingCardDto>> {
+      return localVarFp
+        .parkingCardsControllerGetActiveVisitorCards(options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards(
       email: string,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): AxiosPromise<ParkingCardsResponseDto> {
       return localVarFp
@@ -1533,18 +2078,31 @@ export const ParkingCardsApiFactory = function (
 export class ParkingCardsApi extends BaseAPI {
   /**
    *
+   * @summary Get all active visitor cards associated with the user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ParkingCardsApi
+   */
+  public parkingCardsControllerGetActiveVisitorCards(options?: AxiosRequestConfig) {
+    return ParkingCardsApiFp(this.configuration)
+      .parkingCardsControllerGetActiveVisitorCards(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Get all parking cards associated with the user
    * @param {string} email Email
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof ParkingCardsApi
    */
   public parkingCardsControllerGetParkingCards(
     email: string,
-    page?: number,
-    pageSize?: number,
+    page?: number | null,
+    pageSize?: number | null,
     options?: AxiosRequestConfig,
   ) {
     return ParkingCardsApiFp(this.configuration)
@@ -1910,16 +2468,20 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     /**
      *
      * @summary Process ticket payment
-     * @param {object} body
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketPayment: async (
-      body: object,
+      paymentResponseQueryDto: PaymentResponseQueryDto,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'body' is not null or undefined
-      assertParamExists('ticketsControllerProcessTicketPayment', 'body', body)
+      // verify required parameter 'paymentResponseQueryDto' is not null or undefined
+      assertParamExists(
+        'ticketsControllerProcessTicketPayment',
+        'paymentResponseQueryDto',
+        paymentResponseQueryDto,
+      )
       const localVarPath = `/tickets/payment/process`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -1946,7 +2508,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         ...options.headers,
       }
       localVarRequestOptions.data = serializeDataIfNeeded(
-        body,
+        paymentResponseQueryDto,
         localVarRequestOptions,
         configuration,
       )
@@ -1960,15 +2522,15 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerTicketsGetMany: async (
       active: boolean,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'active' is not null or undefined
@@ -2102,31 +2664,34 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Process ticket payment
-     * @param {object} body
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerProcessTicketPayment(
-      body: object,
+      paymentResponseQueryDto: PaymentResponseQueryDto,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.ticketsControllerProcessTicketPayment(body, options)
+        await localVarAxiosParamCreator.ticketsControllerProcessTicketPayment(
+          paymentResponseQueryDto,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerTicketsGetMany(
       active: boolean,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketsResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerTicketsGetMany(
@@ -2214,31 +2779,31 @@ export const TicketsApiFactory = function (
     /**
      *
      * @summary Process ticket payment
-     * @param {object} body
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketPayment(
-      body: object,
+      paymentResponseQueryDto: PaymentResponseQueryDto,
       options?: AxiosRequestConfig,
     ): AxiosPromise<TicketDto> {
       return localVarFp
-        .ticketsControllerProcessTicketPayment(body, options)
+        .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
         .then((request) => request(axios, basePath))
     },
     /**
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerTicketsGetMany(
       active: boolean,
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): AxiosPromise<TicketsResponseDto> {
       return localVarFp
@@ -2326,14 +2891,17 @@ export class TicketsApi extends BaseAPI {
   /**
    *
    * @summary Process ticket payment
-   * @param {object} body
+   * @param {PaymentResponseQueryDto} paymentResponseQueryDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
-  public ticketsControllerProcessTicketPayment(body: object, options?: AxiosRequestConfig) {
+  public ticketsControllerProcessTicketPayment(
+    paymentResponseQueryDto: PaymentResponseQueryDto,
+    options?: AxiosRequestConfig,
+  ) {
     return TicketsApiFp(this.configuration)
-      .ticketsControllerProcessTicketPayment(body, options)
+      .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -2341,16 +2909,16 @@ export class TicketsApi extends BaseAPI {
    *
    * @summary Get tickets paginated
    * @param {boolean} active True to load active tickets, false to load past tickets
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
   public ticketsControllerTicketsGetMany(
     active: boolean,
-    page?: number,
-    pageSize?: number,
+    page?: number | null,
+    pageSize?: number | null,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -2731,14 +3299,14 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerVehiclesGetMany: async (
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/vehicles`
@@ -2845,14 +3413,14 @@ export const VehiclesApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async vehiclesControllerVehiclesGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VehiclesResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.vehiclesControllerVehiclesGetMany(
@@ -2926,14 +3494,14 @@ export const VehiclesApiFactory = function (
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerVehiclesGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VehiclesResponseDto> {
       return localVarFp
@@ -3003,15 +3571,15 @@ export class VehiclesApi extends BaseAPI {
   /**
    *
    * @summary Get all vehicles associated with the user
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VehiclesApi
    */
   public vehiclesControllerVehiclesGetMany(
-    page?: number,
-    pageSize?: number,
+    page?: number | null,
+    pageSize?: number | null,
     options?: AxiosRequestConfig,
   ) {
     return VehiclesApiFp(this.configuration)
@@ -3165,14 +3733,14 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifiedEmailsGetMany: async (
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/verified-emails`
@@ -3319,14 +3887,14 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async verifiedEmailsControllerVerifiedEmailsGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifiedEmailsResponseDto>
@@ -3416,14 +3984,14 @@ export const VerifiedEmailsApiFactory = function (
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number} [page] Page number
-     * @param {number} [pageSize] Items per page
+     * @param {number | null} [page] Page number
+     * @param {number | null} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifiedEmailsGetMany(
-      page?: number,
-      pageSize?: number,
+      page?: number | null,
+      pageSize?: number | null,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VerifiedEmailsResponseDto> {
       return localVarFp
@@ -3502,15 +4070,15 @@ export class VerifiedEmailsApi extends BaseAPI {
   /**
    *
    * @summary Get all verified emails associated with the user
-   * @param {number} [page] Page number
-   * @param {number} [pageSize] Items per page
+   * @param {number | null} [page] Page number
+   * @param {number | null} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VerifiedEmailsApi
    */
   public verifiedEmailsControllerVerifiedEmailsGetMany(
-    page?: number,
-    pageSize?: number,
+    page?: number | null,
+    pageSize?: number | null,
     options?: AxiosRequestConfig,
   ) {
     return VerifiedEmailsApiFp(this.configuration)

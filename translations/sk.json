@@ -107,12 +107,15 @@
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
+    "paasEmailsTitle": "Vaše e-mailové adresy",
+    "paasEmailsList": "Vyberte e-mailovú adresu, pre ktorú chcete zobraziť parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
     "type": {
       "visitor": "Návštevnícka karta",
       "resident": "Rezidentská karta",
       "bonus": "Bonusová karta",
-      "subscriber": "Abonentská karta"
+      "subscriber": "Abonentská karta",
+      "other": "Iná karta"
     },
     "validUntil": "Platný do",
     "remainingCredit": "Zostávajúci kredit",
