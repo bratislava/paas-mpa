@@ -26,7 +26,7 @@ const TicketCard = ({ ticket }: Props) => {
   const fromDateTime = new Date(ticket.parkingStart.replace('Z', ''))
   const toDateTime = new Date(ticket.parkingEnd.replace('Z', ''))
   const zone = useMapZone(ticket.udr, true)
-  const t = useTranslation('Tickets.TicketCard')
+  const t = useTranslation('TicketCard')
   const locale = useLocale()
   const [isTerminateModalVisible, setIsTerminateModalVisible] = useState(false)
 

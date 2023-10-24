@@ -9,7 +9,7 @@ import {
 
 import { MapZoneHashMapValue, TicketPriceRequest } from '@/state/types'
 
-type MapFeatureHashMap = Map<number, MapZoneHashMapValue>
+type MapFeatureHashMap = Map<string, MapZoneHashMapValue>
 
 type ContextProps = {
   mapZones: MapFeatureHashMap | null

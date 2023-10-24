@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
-import { SadSmileyAvatar } from '@/assets/avatars'
+import { EmptyStateAvatar } from '@/assets/avatars'
 import TabBar from '@/components/navigation/TabBar'
 import { ModalContentWithActions } from '@/components/shared/Modal'
 import ScreenContent from '@/components/shared/ScreenContent'
@@ -42,7 +42,7 @@ const ActiveTicketsRoute = () => {
           primaryActionOnPress={() => false}
           customAvatarComponent={
             <View className="w-full items-center">
-              <SadSmileyAvatar />
+              <EmptyStateAvatar />
             </View>
           }
           className="bg-white"

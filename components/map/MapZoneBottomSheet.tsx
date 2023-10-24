@@ -7,6 +7,7 @@ import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-nat
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { ZoneDetailsParamas } from '@/app/zone-details'
 import SegmentBadge from '@/components/info/SegmentBadge'
 import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
@@ -137,7 +138,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     <View pointerEvents={isFullHeightEnabled ? 'auto' : 'none'}>
                       {!isFullHeightEnabled && (
                         <Typography variant="default-bold" className="pb-1">
-                          {t('MapScreen.ZoneBottomSheet.title')}
+                          {t('ZoneBottomSheet.title')}
                         </Typography>
                       )}
                       <MapAutocomplete
@@ -184,13 +185,15 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                       asChild
                       href={{
                         pathname: '/zone-details',
-                        params: { id: selectedZone.OBJECTID.toString() },
+                        params: {
+                          udrId: selectedZone.UDR_ID.toString(),
+                        } satisfies ZoneDetailsParamas,
                       }}
                     >
                       <PressableStyled>
                         <View className="flex-row">
                           <Typography variant="default-bold">
-                            {t('MapScreen.ZoneBottomSheet.showDetails')}
+                            {t('ZoneBottomSheet.showDetails')}
                           </Typography>
                           <Icon name="expand-more" />
                         </View>
@@ -211,7 +214,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
               </>
             ) : (
               <Panel className="bg-warning-light g-2">
-                <Typography>{t('MapScreen.ZoneBottomSheet.noZoneSelected')}</Typography>
+                <Typography>{t('ZoneBottomSheet.noZoneSelected')}</Typography>
               </Panel>
             ))}
         </BottomSheetContent>

@@ -21,7 +21,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 }
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
-  const t = useTranslation('MapScreen.ZoneBottomSheet.TopAttachment')
+  const t = useTranslation('ZoneBottomSheet.TopAttachment')
   const { permissionStatus } = useLocationPermission()
   const onLocationPress = useCallback(async () => {
     if (permissionStatus === Location.PermissionStatus.GRANTED) {

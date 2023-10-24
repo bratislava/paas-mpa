@@ -1,1 +1,1 @@
-export { default as SadSmileyAvatar } from './sad-smiley.svg'
+export { default as EmptyStateAvatar } from './empty-state.svg'

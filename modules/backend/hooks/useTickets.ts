@@ -47,7 +47,7 @@ export const useTickets = (active: boolean) => {
   const options = useMemo(
     () =>
       queryOptions({
-        queryKey: [`tickets-${active ? 'active' : 'past'}`],
+        queryKey: ['tickets', active ? 'active' : 'past'],
         // queryFn: () => clientApi.ticketsControllerTicketsGetMany(active),
         queryFn: () => ({ data: TEST_TICKETS }),
         select: (data) => data.data,

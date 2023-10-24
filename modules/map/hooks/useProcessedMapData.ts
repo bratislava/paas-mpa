@@ -57,10 +57,10 @@ export const useProcessedArcgisData = () => {
       setOdpData(odpData)
       setLoading(false)
 
-      const featuresHashMap = new Map<number, MapZoneHashMapValue>()
+      const featuresHashMap = new Map<string, MapZoneHashMapValue>()
       udrData.features.forEach((feature) => {
         if (feature.properties) {
-          featuresHashMap.set(feature.properties.UDR_ID, feature)
+          featuresHashMap.set(feature.properties.UDR_ID.toString(), feature)
         }
       })
       setMapZones(featuresHashMap)
