@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
 import { useCallback } from 'react'
@@ -38,7 +39,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
 
   return (
     <BottomSheetTopAttachment {...restProps}>
-      <FlexRow cn="flex-1 p-2.5 pt-0 items-end">
+      <FlexRow cn={clsx('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}>
         {activeTicketsCount > 0 ? (
           <View className="rounded-full bg-white shadow ">
             <Link asChild href="/tickets">
@@ -54,9 +55,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
               </PressableStyled>
             </Link>
           </View>
-        ) : (
-          <View />
-        )}
+        ) : null}
 
         <IconButton
           name="gps-fixed"
