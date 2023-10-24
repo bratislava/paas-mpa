@@ -120,7 +120,11 @@
     "validUntil": "Valid until",
     "remainingCredit": "Remaining credit",
     "activeCards": "Active cards",
-    "expiredCards": "Expired cards"
+    "expiredCards": "Expired cards",
+    "openEmailActions": "Manage e-mail address",
+    "emailActions": {
+      "removeEmail": "Remove e-mail address"
+    }
   },
   "TimeSelector": {
     "addTimeButton": "Add 15 minutes",

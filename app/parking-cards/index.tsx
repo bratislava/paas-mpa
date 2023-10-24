@@ -50,7 +50,15 @@ const Page = () => {
           keyExtractor={(emailItem) => emailItem.email}
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item: emailItem }) => (
-            <Link asChild href={`/parking-cards/${emailItem.email}`} key={emailItem.id}>
+            <Link
+              asChild
+              // TODO when email is used as param with pathname /parking-cards/[email] - it returns %40 instead of @
+              href={{
+                pathname: `/parking-cards/${emailItem.email}`,
+                params: { emailId: emailItem.id },
+              }}
+              key={emailItem.id}
+            >
               <PressableStyled>
                 <ListRow label={emailItem.email} />
               </PressableStyled>

@@ -120,7 +120,11 @@
     "validUntil": "Platný do",
     "remainingCredit": "Zostávajúci kredit",
     "activeCards": "Aktívne karty",
-    "expiredCards": "Exspirované karty"
+    "expiredCards": "Exspirované karty",
+    "openEmailActions": "Spravovať e-mail",
+    "emailActions": {
+      "removeEmail": "Odstrániť e-mail"
+    }
   },
   "MapScreen": {
     "ZoneBottomSheet": {
