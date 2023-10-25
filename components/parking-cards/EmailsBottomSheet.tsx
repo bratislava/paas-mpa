@@ -10,6 +10,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
+// TODO FIXME bottom sheet is empty on Android
 const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
