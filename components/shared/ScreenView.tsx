@@ -1,11 +1,10 @@
 import { clsx } from 'clsx'
-import { Link, useNavigation } from 'expo-router'
+import { Link, Stack } from 'expo-router'
 import { Href } from 'expo-router/build/link/href'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Image, View } from 'react-native'
 
-import Button from '@/components/shared/Button'
-import { useTranslation } from '@/hooks/useTranslation'
+import ContinueButton from '@/components/navigation/ContinueButton'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 const dottedBackground = require('@/assets/images/dotted-background.png')
@@ -33,15 +32,10 @@ const ScreenView = ({
   backgroundVariant = 'white',
   cn,
 }: Props) => {
-  const t = useTranslation('Navigation')
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    navigation.setOptions({ title })
-  }, [navigation, title])
-
   return (
     <View className={clsx('flex-1 bg-white', cn)}>
+      <Stack.Screen options={{ title }} />
+
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />
       )}
@@ -55,7 +49,7 @@ const ScreenView = ({
       {continueProps ? (
         <View className="p-5 pb-[50px]">
           <Link asChild href={continueProps.href} disabled={continueProps.isDisabled}>
-            <Button>{continueProps.label ?? t('continue')}</Button>
+            <ContinueButton>{continueProps.label}</ContinueButton>
           </Link>
         </View>
       ) : null}

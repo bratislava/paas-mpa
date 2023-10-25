@@ -118,17 +118,24 @@
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
+    "paasEmailsTitle": "Vaše e-mailové adresy",
+    "paasEmailsList": "Vyberte e-mailovú adresu, pre ktorú chcete zobraziť parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
     "type": {
       "visitor": "Návštevnícka karta",
       "resident": "Rezidentská karta",
       "bonus": "Bonusová karta",
-      "subscriber": "Abonentská karta"
+      "subscriber": "Abonentská karta",
+      "other": "Iná karta"
     },
     "validUntil": "Platný do",
     "remainingCredit": "Zostávajúci kredit",
     "activeCards": "Aktívne karty",
-    "expiredCards": "Exspirované karty"
+    "expiredCards": "Exspirované karty",
+    "openEmailActions": "Spravovať e-mail",
+    "emailActions": {
+      "removeEmail": "Odstrániť e-mail"
+    }
   },
   "ZoneBottomSheet": {
     "title": "Kde parkujete?",

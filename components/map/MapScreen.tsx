@@ -34,6 +34,7 @@ const MapScreen = () => {
         ...prev,
         // TODO I got an error here without "?" that zone can be null - investigate why Typescript is not complaining
         udr: zone?.UDR_ID.toString(),
+        udrUuid: zone?.GlobalID,
       }))
     },
     [setSelectedZone, setTicketPriceRequest],

@@ -7,6 +7,7 @@ export type MapZoneHashMapValue = Feature<Polygon, MapUdrZone>
 export type TicketPriceRequest = {
   ecv?: string
   udr?: string
+  udrUuid?: string
   duration?: number
   parkingEnd?: string
   npkId?: string

@@ -3,7 +3,7 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
-import Button from '@/components/shared/Button'
+import ContinueButton from '@/components/navigation/ContinueButton'
 import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import ScreenContent from '@/components/shared/ScreenContent'
@@ -25,7 +25,7 @@ const Page = () => {
   const [email, setEmail] = useState('')
 
   // TODO add email validation
-  const isValid = email.length > 0
+  const isValid = email.includes('@')
 
   const mutation = useMutation({
     mutationFn: (bodyInner: VerifyEmailsDto) =>
@@ -43,11 +43,14 @@ const Page = () => {
     }
 
     mutation.mutate(body, {
-      onSuccess: () =>
+      onSuccess: (res) => {
+        const tmpVerificationToken = res.data[0].token
+        console.log('success', res.data[0].token)
         router.push({
           pathname: '/parking-cards/verification-sent',
-          params: { emailToVerify: email },
-        }),
+          params: { emailToVerify: email, tmpVerificationToken },
+        })
+      },
     })
   }
 
@@ -67,9 +70,7 @@ const Page = () => {
           <Typography>{t('instructions')}</Typography>
         </Panel>
 
-        <Button onPress={handlePress} disabled={!isValid} loading={mutation.isPending}>
-          Continue
-        </Button>
+        <ContinueButton onPress={handlePress} disabled={!isValid} loading={mutation.isPending} />
       </ScreenContent>
     </ScreenView>
   )
