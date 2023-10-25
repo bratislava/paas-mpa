@@ -16,6 +16,7 @@ import { clientApi } from '@/modules/backend/client-api'
 const Page = () => {
   const t = useTranslation('ParkingCards')
 
+  // TODO invalidate/refresh query on add/remove
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['VerifiedEmails'],
     queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1, 10),

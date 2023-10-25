@@ -1,21 +1,18 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import React, { forwardRef, useCallback, useRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 
 import { ParkingCardsLocalSearchParams } from '@/app/parking-cards/[email]'
 import ActionRow from '@/components/actions/ActionRow'
 import BottomSheetContent from '@/components/shared/BottomSheetContent'
 import PressableStyled from '@/components/shared/PressableStyled'
-import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
 const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
-  const localRef = useRef<BottomSheet>(null)
-  const refSetter = useMultipleRefsSetter(ref, localRef)
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
 
@@ -52,7 +49,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
 
   return (
     <BottomSheet
-      ref={refSetter}
+      ref={ref}
       index={-1}
       enableDynamicSizing
       enablePanDownToClose

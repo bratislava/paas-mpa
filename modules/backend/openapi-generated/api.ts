@@ -52,11 +52,17 @@ export interface AnnouncementDto {
    */
   content: string
   /**
+   *
+   * @type {AnnouncementType}
+   * @memberof AnnouncementDto
+   */
+  type: AnnouncementType
+  /**
    * External url to route the user on CTA
    * @type {string}
    * @memberof AnnouncementDto
    */
-  externalUrl?: string | null
+  externalUrl?: string
   /**
    * Database id of the announcement
    * @type {number}
@@ -70,6 +76,21 @@ export interface AnnouncementDto {
    */
   createdAt: string
 }
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const AnnouncementType = {
+  Info: 'INFO',
+  Warn: 'WARN',
+  Error: 'ERROR',
+} as const
+
+export type AnnouncementType = (typeof AnnouncementType)[keyof typeof AnnouncementType]
+
 /**
  *
  * @export
@@ -171,7 +192,7 @@ export interface EmailVerificationResult {
    * @memberof EmailVerificationResult
    * @deprecated
    */
-  token: string | null
+  token: string
 }
 /**
  *
@@ -280,7 +301,7 @@ export interface GetTicketPriceResponseDto {
    * @type {number}
    * @memberof GetTicketPriceResponseDto
    */
-  tax?: number | null
+  tax?: number
   /**
    * Total ticket price considering all discounts and credits.
    * @type {number}
@@ -304,7 +325,7 @@ export interface GetTicketPriceResponseDto {
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  creditNpkUsed?: string | null
+  creditNpkUsed?: string
   /**
    * The date and time when parking starts (UTC time in ISO8601 format)
    * @type {string}
@@ -322,7 +343,7 @@ export interface GetTicketPriceResponseDto {
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  bpkId?: string | null
+  bpkId?: string
 }
 /**
  *
@@ -342,6 +363,12 @@ export interface GetTicketPriceTicketInfoRequestDto {
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
   udr: string
+  /**
+   * GUID - Unique identification of parking slot (specific section of parking regulation)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestDto
+   */
+  udrUuid: string
   /**
    * The date and time when parking ends (UTC time in ISO8601 format)
    * @type {string}
@@ -554,43 +581,43 @@ export interface ParkingCardDto {
    * @type {string}
    * @memberof ParkingCardDto
    */
-  name?: string | null
+  name?: string
   /**
    * The vehicle plate number for which the card was issued. (Some cards are not issued to the vehicle. Therefore, it may be missing.)
    * @type {string}
    * @memberof ParkingCardDto
    */
-  vehiclePlateNumber?: string | null
+  vehiclePlateNumber?: string
   /**
    * Start of card validity. ISO8601 formatted UTC timestamp
    * @type {string}
    * @memberof ParkingCardDto
    */
-  validFrom?: string | null
+  validFrom?: string
   /**
    * End of card validity. ISO8601 formatted UTC timestamp.
    * @type {string}
    * @memberof ParkingCardDto
    */
-  validTo?: string | null
+  validTo?: string
   /**
    * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof ParkingCardDto
    */
-  balance?: string | null
+  balance?: string
   /**
    * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof ParkingCardDto
    */
-  originalBalance?: string | null
+  originalBalance?: string
   /**
    * List of Internal ids of the parking space.
    * @type {Array<string>}
    * @memberof ParkingCardDto
    */
-  parkingSpaces?: Array<string> | null
+  parkingSpaces?: Array<string>
   /**
    * Date of the creation
    * @type {string}
@@ -710,12 +737,19 @@ export interface SaveAnnouncementDto {
    */
   content: string
   /**
+   *
+   * @type {AnnouncementType}
+   * @memberof SaveAnnouncementDto
+   */
+  type: AnnouncementType
+  /**
    * External url to route the user on CTA
    * @type {string}
    * @memberof SaveAnnouncementDto
    */
-  externalUrl?: string | null
+  externalUrl?: string
 }
+
 /**
  *
  * @export
@@ -747,25 +781,25 @@ export interface SaveUserSettingsDto {
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsAboutToEnd?: boolean | null
+  pushNotificationsAboutToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  pushNotificationsToEnd?: boolean | null
+  pushNotificationsToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsAboutToEnd?: boolean | null
+  emailNotificationsAboutToEnd?: boolean
   /**
    * Set true to send push notifications for tickets about to end
    * @type {boolean}
    * @memberof SaveUserSettingsDto
    */
-  emailNotificationsToEnd?: boolean | null
+  emailNotificationsToEnd?: boolean
 }
 /**
  *
@@ -796,31 +830,31 @@ export interface TicketDto {
    * @type {number}
    * @memberof TicketDto
    */
-  price?: number | null
+  price?: number
   /**
    * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof TicketDto
    */
-  bpkCreditUsed?: string | null
+  bpkCreditUsed?: string
   /**
    * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof TicketDto
    */
-  npkCreditUsed?: string | null
+  npkCreditUsed?: string
   /**
    * ID of the visitor card (GUID)
    * @type {string}
    * @memberof TicketDto
    */
-  npkId?: string | null
+  npkId?: string
   /**
    * ID of the bonus card (GUID)
    * @type {string}
    * @memberof TicketDto
    */
-  bpkId?: string | null
+  bpkId?: string
   /**
    * Date of the last change
    * @type {string}
@@ -895,19 +929,19 @@ export interface UpdateVehicleDto {
    * @type {string}
    * @memberof UpdateVehicleDto
    */
-  vehiclePlateNumber?: string | null
+  vehiclePlateNumber?: string
   /**
    * Name of the vehicle (user input)
    * @type {string}
    * @memberof UpdateVehicleDto
    */
-  name?: string | null
+  name?: string
   /**
    * Set to true to be the default car
    * @type {boolean}
    * @memberof UpdateVehicleDto
    */
-  isDefault?: boolean | null
+  isDefault?: boolean
 }
 /**
  *
@@ -1087,14 +1121,14 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany: async (
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/announcements`
@@ -1245,14 +1279,14 @@ export const AnnouncementsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async announcementsControllerAnnouncementsGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<AnnouncementsResponseDto>
@@ -1315,14 +1349,14 @@ export const AnnouncementsApiFactory = function (
     /**
      *
      * @summary Get all announcements paginated
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<AnnouncementsResponseDto> {
       return localVarFp
@@ -1372,15 +1406,15 @@ export class AnnouncementsApi extends BaseAPI {
   /**
    *
    * @summary Get all announcements paginated
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AnnouncementsApi
    */
   public announcementsControllerAnnouncementsGetMany(
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return AnnouncementsApiFp(this.configuration)
@@ -1581,14 +1615,14 @@ export const MobileDevicesApiAxiosParamCreator = function (configuration?: Confi
     /**
      *
      * @summary Get all mobile devices associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     mobileDevicesControllerDevicesGetMany: async (
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/mobile-devices`
@@ -1709,14 +1743,14 @@ export const MobileDevicesApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all mobile devices associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async mobileDevicesControllerDevicesGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<MobileDeviceResponseDto>
@@ -1779,14 +1813,14 @@ export const MobileDevicesApiFactory = function (
     /**
      *
      * @summary Get all mobile devices associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     mobileDevicesControllerDevicesGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<MobileDeviceResponseDto> {
       return localVarFp
@@ -1835,15 +1869,15 @@ export class MobileDevicesApi extends BaseAPI {
   /**
    *
    * @summary Get all mobile devices associated with the user
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof MobileDevicesApi
    */
   public mobileDevicesControllerDevicesGetMany(
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return MobileDevicesApiFp(this.configuration)
@@ -1917,15 +1951,15 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
      *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards: async (
       email: string,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'email' is not null or undefined
@@ -1998,15 +2032,15 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
      *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async parkingCardsControllerGetParkingCards(
       email: string,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParkingCardsResponseDto>
@@ -2051,15 +2085,15 @@ export const ParkingCardsApiFactory = function (
      *
      * @summary Get all parking cards associated with the user
      * @param {string} email Email
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     parkingCardsControllerGetParkingCards(
       email: string,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<ParkingCardsResponseDto> {
       return localVarFp
@@ -2093,16 +2127,16 @@ export class ParkingCardsApi extends BaseAPI {
    *
    * @summary Get all parking cards associated with the user
    * @param {string} email Email
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof ParkingCardsApi
    */
   public parkingCardsControllerGetParkingCards(
     email: string,
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return ParkingCardsApiFp(this.configuration)
@@ -2522,15 +2556,15 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerTicketsGetMany: async (
       active: boolean,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'active' is not null or undefined
@@ -2683,15 +2717,15 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerTicketsGetMany(
       active: boolean,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketsResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerTicketsGetMany(
@@ -2795,15 +2829,15 @@ export const TicketsApiFactory = function (
      *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerTicketsGetMany(
       active: boolean,
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<TicketsResponseDto> {
       return localVarFp
@@ -2909,16 +2943,16 @@ export class TicketsApi extends BaseAPI {
    *
    * @summary Get tickets paginated
    * @param {boolean} active True to load active tickets, false to load past tickets
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
   public ticketsControllerTicketsGetMany(
     active: boolean,
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -3299,14 +3333,14 @@ export const VehiclesApiAxiosParamCreator = function (configuration?: Configurat
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerVehiclesGetMany: async (
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/vehicles`
@@ -3413,14 +3447,14 @@ export const VehiclesApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async vehiclesControllerVehiclesGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VehiclesResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.vehiclesControllerVehiclesGetMany(
@@ -3494,14 +3528,14 @@ export const VehiclesApiFactory = function (
     /**
      *
      * @summary Get all vehicles associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     vehiclesControllerVehiclesGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VehiclesResponseDto> {
       return localVarFp
@@ -3571,15 +3605,15 @@ export class VehiclesApi extends BaseAPI {
   /**
    *
    * @summary Get all vehicles associated with the user
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VehiclesApi
    */
   public vehiclesControllerVehiclesGetMany(
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return VehiclesApiFp(this.configuration)
@@ -3733,14 +3767,14 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifiedEmailsGetMany: async (
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/verified-emails`
@@ -3887,14 +3921,14 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async verifiedEmailsControllerVerifiedEmailsGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifiedEmailsResponseDto>
@@ -3984,14 +4018,14 @@ export const VerifiedEmailsApiFactory = function (
     /**
      *
      * @summary Get all verified emails associated with the user
-     * @param {number | null} [page] Page number
-     * @param {number | null} [pageSize] Items per page
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifiedEmailsGetMany(
-      page?: number | null,
-      pageSize?: number | null,
+      page?: number,
+      pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<VerifiedEmailsResponseDto> {
       return localVarFp
@@ -4070,15 +4104,15 @@ export class VerifiedEmailsApi extends BaseAPI {
   /**
    *
    * @summary Get all verified emails associated with the user
-   * @param {number | null} [page] Page number
-   * @param {number | null} [pageSize] Items per page
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VerifiedEmailsApi
    */
   public verifiedEmailsControllerVerifiedEmailsGetMany(
-    page?: number | null,
-    pageSize?: number | null,
+    page?: number,
+    pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return VerifiedEmailsApiFp(this.configuration)

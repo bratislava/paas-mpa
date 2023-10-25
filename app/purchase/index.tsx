@@ -51,6 +51,7 @@ const PurchaseScreen = () => {
   const body = {
     ticket: {
       udr: ticketPriceRequest?.udr ?? '',
+      udrUuid: ticketPriceRequest?.udrUuid ?? '',
       ecv: ticketPriceRequest?.ecv ?? '',
       parkingEnd,
     },

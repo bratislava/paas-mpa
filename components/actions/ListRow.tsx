@@ -11,7 +11,7 @@ export type ListRowProps = {
 } & Omit<ViewProps, 'children'>
 
 /**
- * ListRow should always be wrapped in PressableStyled (+ Link if needed)
+ * `ListRow` should always be wrapped in `PressableStyled` (+ `Link` if needed)
  *
  * @param icon
  * @param label
