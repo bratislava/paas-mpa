@@ -11,8 +11,8 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useMapZone } from '@/state/hooks/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
-type ZoneDetailsParamas = {
-  id: string
+export type ZoneDetailsParamas = {
+  udrId: string
 }
 
 const ZoneDetailsScreen = () => {
@@ -20,9 +20,7 @@ const ZoneDetailsScreen = () => {
   const zoneDetailsParams = useLocalSearchParams<ZoneDetailsParamas>()
   const t = useTranslation()
 
-  const id = zoneDetailsParams.id ? Number.parseInt(zoneDetailsParams.id, 10) : null
-
-  const zone = useMapZone(id, true)
+  const zone = useMapZone(zoneDetailsParams.udrId ?? null, true)
 
   if (!zone) {
     return null

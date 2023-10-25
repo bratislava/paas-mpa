@@ -5,32 +5,29 @@ import { useLocale } from '@/hooks/useTranslation'
 import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
-import { isFeatureZone } from '@/state/types'
 
 export function useMapZone<NormalizePropertiesOnly extends boolean>(
-  id: number | null,
+  udrId: string | null,
   normalizedPropertiesOnly: NormalizePropertiesOnly,
 ): (NormalizePropertiesOnly extends true ? NormalizedUdrZone : Feature<Polygon, MapUdrZone>) | null
 export function useMapZone(
-  id: number | null,
+  udrId: string | null,
   normalizedPropertiesOnly: boolean = false,
 ): NormalizedUdrZone | Feature<Polygon, MapUdrZone> | null {
   const globalStore = useGlobalStoreContext()
   const locale = useLocale()
 
   return useMemo(() => {
-    if (id === null) return null
-    const mapZone = globalStore.mapFeatures?.get(id) ?? null
-    if (isFeatureZone(mapZone)) {
-      if (normalizedPropertiesOnly) {
-        if (mapZone?.properties) return normalizeZone(mapZone.properties, locale)
-
-        return null
+    if (udrId === null) return null
+    const mapZone = globalStore.mapZones?.get(udrId) ?? null
+    if (normalizedPropertiesOnly) {
+      if (mapZone?.properties) {
+        return normalizeZone(mapZone.properties, locale)
       }
 
-      return mapZone
+      return null
     }
 
-    return null
-  }, [id, globalStore, normalizedPropertiesOnly, locale])
+    return mapZone
+  }, [udrId, globalStore, normalizedPropertiesOnly, locale])
 }

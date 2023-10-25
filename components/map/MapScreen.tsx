@@ -28,7 +28,7 @@ const MapScreen = () => {
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
 
   const handleZoneChange = useCallback(
-    (zone: MapUdrZone) => {
+    (zone: MapUdrZone | null) => {
       setSelectedZone(zone)
       setTicketPriceRequest((prev) => ({
         ...prev,
@@ -72,7 +72,11 @@ const MapScreen = () => {
           setFlyToCenter={mapRef.current?.setFlyToCenter}
         />
       </Portal>
-      {selectedPoint && <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />}
+      {selectedPoint && (
+        <Portal hostName="index">
+          <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
+        </Portal>
+      )}
       <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton

@@ -105,6 +105,17 @@
   "Tickets": {
     "title": "Parking tickets"
   },
+  "TicketCard": {
+    "prolong": "Prolong",
+    "terminate": "Terminate",
+    "more": "More",
+    "terminationModal": {
+      "title": "Terminate parking ticket",
+      "message": "Are you sure you want to terminate your parking ticket?",
+      "actionConfirm": "Terminate ticket",
+      "actionCancel": "Keep ticket"
+    }
+  },
   "ParkingCards": {
     "title": "Parking cards",
     "paasEmailsTitle": "Your e-mails",
@@ -147,33 +158,34 @@
       "m": "m"
     }
   },
-  "MapScreen": {
-    "ZoneBottomSheet": {
-      "title": "Where are you parking?",
-      "showDetails": "Show details",
-      "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby."
+  "ZoneBottomSheet": {
+    "title": "Where are you parking?",
+    "showDetails": "Show details",
+    "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
+    "TopAttachment": {
+      "tickets": "Tickets ({{count}})"
+    }
+  },
+  "PointBottomSheet": {
+    "title": "Point detail",
+    "getDirections": "Get directions",
+    "fields": {
+      "address": "Address",
+      "id": "ID",
+      "openingHours": "Opening hours",
+      "parkingSpotCount": "Parking spot count",
+      "publicTransportLines": "Public transport lines",
+      "distanceToCenter": "Distance to the city center",
+      "distanceToPublicTransport": "Distance to public transport"
     },
-    "PointBottomSheet": {
-      "title": "Point detail",
-      "getDirections": "Get directions",
-      "fields": {
-        "address": "Address",
-        "id": "ID",
-        "openingHours": "Opening hours",
-        "parkingSpotCount": "Parking spot count",
-        "publicTransportLines": "Public transport lines",
-        "distanceToCenter": "Distance to the city center",
-        "distanceToPublicTransport": "Distance to public transport"
-      },
-      "kinds": {
-        "assistants": "Assistant",
-        "branches": "Branch",
-        "parkomats": "Parkomat",
-        "partners": "Partner",
-        "p-plus-r": "P + R",
-        "garages": "Garage",
-        "parking-lots": "Parking lot"
-      }
+    "kinds": {
+      "assistants": "Assistant",
+      "branches": "Branch",
+      "parkomats": "Parkomat",
+      "partners": "Partner",
+      "p-plus-r": "P + R",
+      "garages": "Garage",
+      "parking-lots": "Parking lot"
     }
   },
   "ZoneDetailsScreen": {

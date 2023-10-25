@@ -12,7 +12,7 @@ type Props = BottomSheetFooterProps & {
 }
 
 const NavigateBottomSheetFooter = ({ onLayout, navigationUrl, ...restProps }: Props) => {
-  const t = useTranslation('MapScreen.PointBottomSheet')
+  const t = useTranslation('PointBottomSheet')
   const handlePress = useCallback(() => {
     Linking.openURL(navigationUrl).catch((error) => console.warn(error))
   }, [navigationUrl])
