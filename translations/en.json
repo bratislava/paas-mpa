@@ -95,6 +95,8 @@
   },
   "PaymentMethods": {
     "title": "Payment methods",
+    "fieldPaymentMethods": "Payment methods",
+    "fieldVisitorCards": "Visitor cards",
     "paymentGate": "Payment card / Apple Pay / Google Pay",
     "visitorCard": "Visitor card",
     "bonusCard": "Bonus card",

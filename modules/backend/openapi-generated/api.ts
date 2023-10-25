@@ -617,7 +617,7 @@ export interface ParkingCardDto {
    * @type {Array<string>}
    * @memberof ParkingCardDto
    */
-  parkingSpaces?: Array<string>
+  parkingZones?: Array<string>
   /**
    * Date of the creation
    * @type {string}
@@ -3675,6 +3675,64 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     },
     /**
      *
+     * @summary Get the target URL to route the user for email verification
+     * @param {string} userAgent
+     * @param {string} token
+     * @param {string} key
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    verifiedEmailsControllerGetVerificationUrl: async (
+      userAgent: string,
+      token: string,
+      key: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'userAgent' is not null or undefined
+      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'userAgent', userAgent)
+      // verify required parameter 'token' is not null or undefined
+      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'token', token)
+      // verify required parameter 'key' is not null or undefined
+      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'key', key)
+      const localVarPath = `/verified-emails/verification-target`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      if (token !== undefined) {
+        localVarQueryParameter['token'] = token
+      }
+
+      if (key !== undefined) {
+        localVarQueryParameter['key'] = key
+      }
+
+      if (userAgent != null) {
+        localVarHeaderParameter['user-agent'] = String(userAgent)
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Refreshes all parking cards for the email
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3818,15 +3876,19 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
      *
      * @summary Verifies an email with token
      * @param {string} token
+     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifyEmail: async (
       token: string,
+      key: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'token' is not null or undefined
       assertParamExists('verifiedEmailsControllerVerifyEmail', 'token', token)
+      // verify required parameter 'key' is not null or undefined
+      assertParamExists('verifiedEmailsControllerVerifyEmail', 'key', key)
       const localVarPath = `/verified-emails/verify`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -3839,12 +3901,12 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication cognito required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
       if (token !== undefined) {
         localVarQueryParameter['token'] = token
+      }
+
+      if (key !== undefined) {
+        localVarQueryParameter['key'] = key
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -3883,6 +3945,30 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.verifiedEmailsControllerDeleteVerifiedEmail(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get the target URL to route the user for email verification
+     * @param {string} userAgent
+     * @param {string} token
+     * @param {string} key
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async verifiedEmailsControllerGetVerificationUrl(
+      userAgent: string,
+      token: string,
+      key: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.verifiedEmailsControllerGetVerificationUrl(
+          userAgent,
+          token,
+          key,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -3945,15 +4031,18 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
      *
      * @summary Verifies an email with token
      * @param {string} token
+     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async verifiedEmailsControllerVerifyEmail(
       token: string,
+      key: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ParkingCardDto>>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedEmailsControllerVerifyEmail(
         token,
+        key,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3985,6 +4074,25 @@ export const VerifiedEmailsApiFactory = function (
     ): AxiosPromise<DeleteResponseDto> {
       return localVarFp
         .verifiedEmailsControllerDeleteVerifiedEmail(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Get the target URL to route the user for email verification
+     * @param {string} userAgent
+     * @param {string} token
+     * @param {string} key
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    verifiedEmailsControllerGetVerificationUrl(
+      userAgent: string,
+      token: string,
+      key: string,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .verifiedEmailsControllerGetVerificationUrl(userAgent, token, key, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -4036,15 +4144,17 @@ export const VerifiedEmailsApiFactory = function (
      *
      * @summary Verifies an email with token
      * @param {string} token
+     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifyEmail(
       token: string,
+      key: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<Array<ParkingCardDto>> {
       return localVarFp
-        .verifiedEmailsControllerVerifyEmail(token, options)
+        .verifiedEmailsControllerVerifyEmail(token, key, options)
         .then((request) => request(axios, basePath))
     },
   }
@@ -4068,6 +4178,27 @@ export class VerifiedEmailsApi extends BaseAPI {
   public verifiedEmailsControllerDeleteVerifiedEmail(id: number, options?: AxiosRequestConfig) {
     return VerifiedEmailsApiFp(this.configuration)
       .verifiedEmailsControllerDeleteVerifiedEmail(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get the target URL to route the user for email verification
+   * @param {string} userAgent
+   * @param {string} token
+   * @param {string} key
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof VerifiedEmailsApi
+   */
+  public verifiedEmailsControllerGetVerificationUrl(
+    userAgent: string,
+    token: string,
+    key: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return VerifiedEmailsApiFp(this.configuration)
+      .verifiedEmailsControllerGetVerificationUrl(userAgent, token, key, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -4124,13 +4255,18 @@ export class VerifiedEmailsApi extends BaseAPI {
    *
    * @summary Verifies an email with token
    * @param {string} token
+   * @param {string} key
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VerifiedEmailsApi
    */
-  public verifiedEmailsControllerVerifyEmail(token: string, options?: AxiosRequestConfig) {
+  public verifiedEmailsControllerVerifyEmail(
+    token: string,
+    key: string,
+    options?: AxiosRequestConfig,
+  ) {
     return VerifiedEmailsApiFp(this.configuration)
-      .verifiedEmailsControllerVerifyEmail(token, options)
+      .verifiedEmailsControllerVerifyEmail(token, key, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }

@@ -12,6 +12,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
+import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 import { formatPrice } from '@/utils/formatPrice'
 
 type Props = {
@@ -58,16 +59,29 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
       >
         {priceData ? (
           <BottomSheetContent cn="g-3" hideSpacer>
-            <FlexRow>
-              <Typography variant="default">
-                Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
-              </Typography>
-              <Typography variant="default-bold">
-                {formatPrice(priceData.priceWithoutDiscount)}
-              </Typography>
-            </FlexRow>
+            {/* Do not show it also if it's 0 */}
+            {priceData.priceWithoutDiscount ? (
+              <FlexRow>
+                <Typography variant="default">
+                  Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
+                </Typography>
+                <Typography variant="default-bold">
+                  {formatPrice(priceData.priceWithoutDiscount)}
+                </Typography>
+              </FlexRow>
+            ) : null}
 
-            {/* Check if tax is present (null/undefined, but show if it is 0) */}
+            {/* Check if it is present (null/undefined, but show if it is 0) */}
+            {priceData.creditNpkUsed == null ? null : (
+              <FlexRow>
+                <Typography variant="default">Stiahnuté z návštevníckej karty</Typography>
+                <Typography variant="default-bold">
+                  {formatPeriodOfTime(priceData.creditNpkUsed)}
+                </Typography>
+              </FlexRow>
+            )}
+
+            {/* Check if it is present (null/undefined, but show if it is 0) */}
             {priceData.tax == null ? null : (
               <FlexRow>
                 <Typography variant="default">Dan</Typography>
