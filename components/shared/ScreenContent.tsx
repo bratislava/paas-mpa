@@ -3,9 +3,8 @@ import { Link } from 'expo-router'
 import React, { ReactNode } from 'react'
 import { View } from 'react-native'
 
-import Button from '@/components/shared/Button'
+import ContinueButton from '@/components/navigation/ContinueButton'
 import { ContinueProps } from '@/components/shared/ScreenView'
-import { useTranslation } from '@/hooks/useTranslation'
 import { ViewStyleProps } from '@/utils/types'
 
 type Props = {
@@ -16,8 +15,6 @@ type Props = {
 } & ViewStyleProps
 
 const ScreenContent = ({ children, continueProps, variant, cn, ...rest }: Props) => {
-  const t = useTranslation('Navigation')
-
   return (
     <View
       className={clsx(
@@ -32,13 +29,8 @@ const ScreenContent = ({ children, continueProps, variant, cn, ...rest }: Props)
     >
       {children}
       {continueProps ? (
-        <Link
-          asChild
-          className="self-stretch"
-          href={continueProps.href}
-          disabled={continueProps.isDisabled}
-        >
-          <Button>{continueProps.label ?? t('continue')}</Button>
+        <Link asChild href={continueProps.href} disabled={continueProps.isDisabled}>
+          <ContinueButton>{continueProps.label}</ContinueButton>
         </Link>
       ) : null}
     </View>

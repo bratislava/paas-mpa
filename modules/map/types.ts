@@ -18,6 +18,7 @@ export type MapUdrZone = {
   Casove_obmedzenie_dlzky_park: number // 0
   Doplnkova_informacia_en: string // "Bonus parking card cannot be used in this segment"
   Doplnkova_informacia_sk: string // "V tomto úseku nie je možné využiť bonusovú parkovaciu kartu"
+  GlobalID: string // Uuid
   Informacia_RPK_sk: string
   Informacia_RPK_en: string
   Informacia_NPK_sk: string
@@ -54,7 +55,7 @@ export type NormalizedUdrZone = {
   udrId: number
   odpRpk: string
   restrictionOnlyRpk: string
-  residentialZoneName: string
+  cityDistrict: string
   reservedParking: string
   initialFreeParkingDuration: number
   parkingDurationRestrictionException: string

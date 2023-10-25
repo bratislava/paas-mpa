@@ -18,7 +18,7 @@ export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdr
     udrId: zone.UDR_ID,
     odpRpk: zone.ODP_RPKAPK,
     restrictionOnlyRpk: zone.Obmedzene_len_pre_RPK_APK,
-    residentialZoneName: zone.UTJ,
+    cityDistrict: zone.UTJ,
     reservedParking: isEnglish ? zone.Vyhradene_park_statie_en : zone.Vyhradene_park_statie_sk,
     initialFreeParkingDuration: zone.Uvodny_bezplatny_cas_parkovan,
     parkingDurationRestrictionException: zone.Vynimka_z_obmedzenia_dlzky_pa,

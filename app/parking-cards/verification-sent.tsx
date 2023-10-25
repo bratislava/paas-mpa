@@ -1,11 +1,39 @@
-import { useLocalSearchParams } from 'expo-router'
+import { useMutation } from '@tanstack/react-query'
+import { router, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
+import Button from '@/components/shared/Button'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
+
+// TODO remove - this button simulates email verification
+const TmpVerifyButton = () => {
+  const { tmpVerificationToken } = useLocalSearchParams<{ tmpVerificationToken: string }>()
+
+  const mutation = useMutation({
+    mutationFn: () => clientApi.verifiedEmailsControllerVerifyEmail(tmpVerificationToken ?? ''),
+    onError: (error) => {
+      // TODO handle error, show snackbar?
+      // Handled in mutation to be sure that snackbar is shown on error
+      console.log('error', error)
+    },
+  })
+
+  const handlePressVerify = () => {
+    mutation.mutate(undefined, {
+      onSuccess: (res) => {
+        console.log('success', res.status)
+        router.push('/parking-cards')
+      },
+    })
+  }
+
+  return <Button onPress={handlePressVerify}>Verify</Button>
+}
 
 /*
  * TODO
@@ -30,6 +58,8 @@ const Page = () => {
         <Typography variant="h1">{t('verifyYourEmail')}</Typography>
 
         <Typography>{t('verifyYourEmailInfo', { email: emailToVerify })}</Typography>
+
+        <TmpVerifyButton />
       </ScreenContent>
     </ScreenView>
   )
