@@ -193,6 +193,13 @@ export interface EmailVerificationResult {
    * @deprecated
    */
   token: string
+  /**
+   * Key which is sent to the email - only avaialble for test purposes
+   * @type {string}
+   * @memberof EmailVerificationResult
+   * @deprecated
+   */
+  key: string
 }
 /**
  *

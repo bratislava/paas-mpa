@@ -57,7 +57,9 @@ const VisitorCardsField = () => {
         >
           <VisitorCardMethod
             email={card.name ?? ''}
-            balance={formatPeriodOfTime(card.balance ?? '')}
+            balance={`${formatPeriodOfTime(card.balance)} / ${formatPeriodOfTime(
+              card.originalBalance,
+            )}`}
             selected={card.identificator === ticketPriceRequest?.npkId}
           />
         </PressableStyled>
