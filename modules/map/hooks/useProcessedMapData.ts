@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { useArcgisData } from '@/modules/arcgis/hooks/useArcgisData'
 import { processData } from '@/modules/map/utils/processData'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
-import { MapZoneHashMapValue } from '@/state/types'
+import { MapZoneHashMapValue } from '@/state/MapProvider/types'
+import { useMapContext } from '@/state/MapProvider/useMapContext'
 
 type ProcessDataReturn = ReturnType<typeof processData>
 
@@ -16,7 +16,7 @@ export const useProcessedArcgisData = () => {
   const [udrData, setUdrData] = useState<ProcessDataReturn['udrData'] | null>(null)
   const [odpData, setOdpData] = useState<ProcessDataReturn['odpData'] | null>(null)
 
-  const { setMapZones } = useGlobalStoreContext()
+  const { setMapZones } = useMapContext()
 
   const {
     rawZonesData,

@@ -108,6 +108,8 @@ const Map = forwardRef(
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
+    console.log('Map render')
+
     return (
       <View className="flex-1">
         <MapView

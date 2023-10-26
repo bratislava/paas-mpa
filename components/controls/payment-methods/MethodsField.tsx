@@ -5,7 +5,7 @@ import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGate
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 const MethodsField = () => {
   const t = useTranslation('PaymentMethods')

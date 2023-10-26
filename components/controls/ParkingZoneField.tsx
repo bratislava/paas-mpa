@@ -8,7 +8,7 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useMapZone } from '@/state/hooks/useMapZone'
+import { useMapZone } from '@/state/MapProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const ParkingZoneField = () => {

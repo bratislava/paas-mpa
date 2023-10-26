@@ -11,7 +11,7 @@ import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 type MapScreenParams = MapFilters
 

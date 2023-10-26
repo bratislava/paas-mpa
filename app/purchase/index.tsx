@@ -18,7 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 export type PurchaseSearchParams = {
   duration?: string

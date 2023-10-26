@@ -8,7 +8,7 @@ import Icon from '@/components/shared/Icon'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useMapZone } from '@/state/hooks/useMapZone'
+import { useMapZone } from '@/state/MapProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 export type ZoneDetailsParamas = {
