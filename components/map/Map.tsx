@@ -28,7 +28,7 @@ import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
-import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedMapData'
+import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
@@ -107,8 +107,6 @@ const Map = forwardRef(
     const isWithinCity = useMemo(() => isWithinCityBounds(location), [location])
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
-
-    console.log('Map render')
 
     return (
       <View className="flex-1">

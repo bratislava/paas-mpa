@@ -7,17 +7,21 @@ import {
   useState,
 } from 'react'
 
-import { MapZoneHashMapValue } from '@/state/MapProvider/types'
+import { MapFeatureHashMap } from '@/state/MapProvider/types'
 
-type MapFeatureHashMap = Map<string, MapZoneHashMapValue>
-
-type ContextProps = {
+type ValueContextProps = {
   mapZones: MapFeatureHashMap | null
+}
+
+type UpdateContextProps = {
   setMapZones: Dispatch<SetStateAction<MapFeatureHashMap | null>>
 }
 
-export const MapContext = createContext({} as ContextProps)
-MapContext.displayName = 'MapContext'
+export const MapValueContext = createContext({} as ValueContextProps)
+MapValueContext.displayName = 'MapValueContext'
+
+export const MapUpdateContext = createContext({} as UpdateContextProps)
+MapUpdateContext.displayName = 'MapUpdateContext'
 
 const MapProvider = ({ children }: PropsWithChildren) => {
   const [mapZones, setMapZones] = useState<MapFeatureHashMap | null>(null)
@@ -25,12 +29,22 @@ const MapProvider = ({ children }: PropsWithChildren) => {
   const value = useMemo(
     () => ({
       mapZones,
-      setMapZones,
     }),
     [mapZones],
   )
 
-  return <MapContext.Provider value={value}>{children}</MapContext.Provider>
+  const update = useMemo(
+    () => ({
+      setMapZones,
+    }),
+    [],
+  )
+
+  return (
+    <MapValueContext.Provider value={value}>
+      <MapUpdateContext.Provider value={update}>{children}</MapUpdateContext.Provider>
+    </MapValueContext.Provider>
+  )
 }
 
 export default MapProvider

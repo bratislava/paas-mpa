@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useLocale } from '@/hooks/useTranslation'
 import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
-import { useMapContext } from '@/state/MapProvider/useMapContext'
+import { useMapValueContext } from '@/state/MapProvider/useMapValueContext'
 
 export function useMapZone<NormalizePropertiesOnly extends boolean>(
   udrId: string | null,
@@ -14,7 +14,7 @@ export function useMapZone(
   udrId: string | null,
   normalizedPropertiesOnly: boolean = false,
 ): NormalizedUdrZone | Feature<Polygon, MapUdrZone> | null {
-  const { mapZones } = useMapContext()
+  const { mapZones } = useMapValueContext()
   const locale = useLocale()
 
   return useMemo(() => {
