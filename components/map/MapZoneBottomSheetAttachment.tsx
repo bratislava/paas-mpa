@@ -39,12 +39,14 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
 
   return (
     <BottomSheetTopAttachment {...restProps}>
-      <FlexRow cn={clsx('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}>
+      <FlexRow
+        className={clsx('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
+      >
         {activeTicketsCount > 0 ? (
           <View className="rounded-full bg-white shadow ">
             <Link asChild href="/tickets">
               <PressableStyled>
-                <FlexRow cn="g-2 p-2 pr-3 items-center">
+                <FlexRow className="items-center p-2 pr-3 g-2">
                   <View className="h-8 w-8 items-center justify-center rounded-full bg-light">
                     <Icon size={20} name="local-parking" />
                   </View>

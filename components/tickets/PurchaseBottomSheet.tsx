@@ -97,7 +97,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
 
       <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
         {/* Toggling visibility prevents layout shifts */}
-        <FlexRow cn={priceData ? 'visible' : 'invisible'}>
+        <FlexRow className={priceData ? 'visible' : 'invisible'}>
           <Typography variant="default-bold">{t('summary')}</Typography>
           {priceData ? (
             <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>

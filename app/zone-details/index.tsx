@@ -35,7 +35,7 @@ const ZoneDetailsScreen = () => {
           <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>
         <Divider />
-        <FlexRow cn="justify-start">
+        <FlexRow className="justify-start">
           <View
             className="h-6 w-6 items-center justify-center bg-dark"
             // eslint-disable-next-line react-native/no-inline-styles
@@ -47,7 +47,7 @@ const ZoneDetailsScreen = () => {
         </FlexRow>
         <Divider />
         {zone.additionalInformation ? (
-          <FlexRow cn="justify-start">
+          <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>{zone.additionalInformation}</Typography>
           </FlexRow>

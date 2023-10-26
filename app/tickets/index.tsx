@@ -23,7 +23,9 @@ const ActiveTicketsRoute = () => {
   const isShowingTickets = tickets && tickets.length > 0
 
   return (
-    <ScreenContent cn={clsx('h-full px-0', !isShowingTickets && 'justify-center bg-transparent')}>
+    <ScreenContent
+      className={clsx('h-full px-0', !isShowingTickets && 'justify-center bg-transparent')}
+    >
       {isShowingTickets ? (
         <View className="h-full bg-white px-5">
           <FlatList
