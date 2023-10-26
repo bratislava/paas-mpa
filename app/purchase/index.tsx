@@ -59,6 +59,7 @@ const PurchaseScreen = () => {
     },
   }
 
+  // TODO handleError
   const { data, error, isError, isFetching } = useQuery({
     queryKey: ['TicketRequest', ticketPriceRequest],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
@@ -68,8 +69,8 @@ const PurchaseScreen = () => {
     enabled: isEnabled,
   })
 
-  // TODO handleError
-  console.log('data', body, data, isError, error)
+  console.log('body', body)
+  console.log('data', data, isError, error)
 
   useEffect(() => {
     if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
@@ -89,7 +90,6 @@ const PurchaseScreen = () => {
             <ParkingZoneField />
 
             <Field label={t('chooseVehicleFieldLabel')}>
-              {/* TODO Link+Pressable */}
               <Link
                 asChild
                 href={{ pathname: '/purchase/choose-vehicle', params: { ...purchaseParams } }}
@@ -110,7 +110,6 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
-              {/* TODO replace by proper field control */}
               <Link
                 asChild
                 href={{

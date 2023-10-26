@@ -127,7 +127,6 @@ const IndexScreen = () => {
         <BottomSheetContent cn="justify-between flex-1" hideSpacer>
           <View>
             {menuItems.map((item) => (
-              // TODO Link+Pressable
               <Link
                 key={item.path}
                 asChild
