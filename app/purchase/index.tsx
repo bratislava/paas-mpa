@@ -19,11 +19,10 @@ import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useMapZone } from '@/state/MapProvider/useMapZone'
 
 export type PurchaseSearchParams = {
-  duration?: string
-  licencePlate?: string
-  customParkingTime?: string
+  udrId?: string
 }
 
 // TODO TimeSelector chips sometimes collapses - investigate
@@ -31,29 +30,32 @@ const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
 
   const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
-
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const purchaseParams = useLocalSearchParams<PurchaseSearchParams>()
   const { getVehicle, defaultVehicle } = useVehicles()
-  const { licencePlate } = purchaseParams
+
+  const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
+
+  // BottomSheet
+  const bottomSheetRef = useRef<BottomSheet>(null)
   const insets = useSafeAreaInsets()
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
-  const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
-
   const parkingEnd = new Date(
     Date.now() + (ticketPriceRequest?.duration ?? 0) * 60_000,
   ).toISOString()
+  const udrUuid = useMapZone(ticketPriceRequest?.udr ?? null, true)?.udrUuid
 
-  const isEnabled =
-    !!ticketPriceRequest?.udr && !!ticketPriceRequest?.ecv && !!ticketPriceRequest?.duration
+  const isQueryEnabled =
+    !!ticketPriceRequest?.udr &&
+    !!ticketPriceRequest?.ecv &&
+    !!ticketPriceRequest?.duration &&
+    !!udrUuid
 
   const body: GetTicketPriceRequestDto = {
-    npkId: ticketPriceRequest?.npkId ?? undefined,
+    npkId: ticketPriceRequest?.npkId || undefined,
     ticket: {
       udr: ticketPriceRequest?.udr ?? '',
-      udrUuid: ticketPriceRequest?.udrUuid ?? '',
+      udrUuid: udrUuid ?? '',
       ecv: ticketPriceRequest?.ecv ?? '',
       parkingEnd,
     },
@@ -66,20 +68,31 @@ const PurchaseScreen = () => {
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
-    enabled: isEnabled,
+    enabled: isQueryEnabled,
   })
 
   console.log('body', body)
   console.log('data', data, isError, error)
 
+  // Change zone when udrId from SearchParam changes
   useEffect(() => {
-    if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
+    if (udrIdSearchParam && udrIdSearchParam !== ticketPriceRequest?.udr) {
       setTicketPriceRequest((prev) => ({
         ...prev,
-        ecv: chosenVehicle?.licencePlate,
+        udr: udrIdSearchParam,
       }))
     }
-  }, [chosenVehicle, setTicketPriceRequest, ticketPriceRequest])
+  }, [setTicketPriceRequest, ticketPriceRequest?.udr, udrIdSearchParam])
+
+  // Set ticketPriceRequest.ecv to defaultVehicle
+  useEffect(() => {
+    if (!ticketPriceRequest?.ecv && defaultVehicle) {
+      setTicketPriceRequest((prev) => ({
+        ...prev,
+        ecv: defaultVehicle.licencePlate,
+      }))
+    }
+  }, [defaultVehicle, setTicketPriceRequest, ticketPriceRequest?.ecv])
 
   return (
     <>
@@ -90,12 +103,11 @@ const PurchaseScreen = () => {
             <ParkingZoneField />
 
             <Field label={t('chooseVehicleFieldLabel')}>
-              <Link
-                asChild
-                href={{ pathname: '/purchase/choose-vehicle', params: { ...purchaseParams } }}
-              >
+              <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl vehicle={chosenVehicle} />
+                  <VehicleFieldControl
+                    vehicle={ticketPriceRequest?.ecv ? getVehicle(ticketPriceRequest.ecv) : null}
+                  />
                 </PressableStyled>
               </Link>
             </Field>
@@ -110,13 +122,7 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
-              <Link
-                asChild
-                href={{
-                  pathname: '/purchase/choose-payment-method',
-                  params: { ...purchaseParams },
-                }}
-              >
+              <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
                   <PaymentMethodsFieldControl />
                 </PressableStyled>

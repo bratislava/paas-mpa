@@ -11,13 +11,11 @@ import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 type MapScreenParams = MapFilters
 
 const MapScreen = () => {
   const params = useLocalSearchParams<MapScreenParams>()
-  const { setTicketPriceRequest } = useGlobalStoreContext()
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const mapRef = useRef<MapRef>(null)
@@ -30,13 +28,8 @@ const MapScreen = () => {
   const handleZoneChange = useCallback(
     (zone: MapUdrZone | null) => {
       setSelectedZone(zone)
-      setTicketPriceRequest((prev) => ({
-        ...prev,
-        udr: zone?.UDR_ID.toString(),
-        udrUuid: zone?.GlobalID,
-      }))
     },
-    [setSelectedZone, setTicketPriceRequest],
+    [setSelectedZone],
   )
 
   const handlePointPress = useCallback(

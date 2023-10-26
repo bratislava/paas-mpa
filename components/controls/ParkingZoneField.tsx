@@ -1,4 +1,4 @@
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link } from 'expo-router'
 
 import SegmentBadge from '@/components/info/SegmentBadge'
 import Field from '@/components/shared/Field'
@@ -8,15 +8,16 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { useMapZone } from '@/state/MapProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const ParkingZoneField = () => {
   const t = useTranslation('PurchaseScreen')
 
-  const { udrId } = useLocalSearchParams<{ udrId: string }>()
+  const { ticketPriceRequest } = useGlobalStoreContext()
 
-  const zone = useMapZone(udrId ?? null, true)
+  const zone = useMapZone(ticketPriceRequest?.udr ?? null, true)
 
   return (
     <Field
