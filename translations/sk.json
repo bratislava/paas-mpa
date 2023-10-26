@@ -95,6 +95,8 @@
   },
   "PaymentMethods": {
     "title": "Platobné metódy",
+    "fieldPaymentMethods": "Metódy platby",
+    "fieldVisitorCards": "Návštevnícke karty",
     "paymentGate": "Platobná karta / Apple Pay / Google Pay",
     "visitorCard": "Návštevnícka karta",
     "bonusCard": "Bonusová karta",

@@ -26,7 +26,6 @@ const ChooseVehicleScreen = () => {
           keyExtractor={(vehicle) => vehicle.licencePlate}
           ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
           renderItem={({ item }) => (
-            // TODO Link+Pressable
             <Link
               asChild
               href={{

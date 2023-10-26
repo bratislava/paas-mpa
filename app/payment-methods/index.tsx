@@ -1,25 +1,28 @@
 import React from 'react'
+import { ScrollView } from 'react-native'
 
-import BonusCardMethod from '@/components/controls/payment-methods/BonusCardMethod'
-import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
-import VisitorCardMethod from '@/components/controls/payment-methods/VisitorCardMethod'
+import MethodsField from '@/components/controls/payment-methods/MethodsField'
+import VisitorCardsField from '@/components/controls/payment-methods/VisitorCardsField'
+import Divider from '@/components/shared/Divider'
 import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
-import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
-// TODO
+// TODO discuss what should be displayed on this screen
 const Page = () => {
   const t = useTranslation('PaymentMethods')
 
   return (
     <ScreenView title={t('title')}>
-      <ScreenContent>
-        <Typography variant="h1">TODO</Typography>
-        <PaymentGateMethod />
-        <VisitorCardMethod />
-        <BonusCardMethod />
-      </ScreenContent>
+      <ScrollView>
+        <ScreenContent>
+          <MethodsField />
+
+          <Divider />
+
+          <VisitorCardsField />
+        </ScreenContent>
+      </ScrollView>
     </ScreenView>
   )
 }

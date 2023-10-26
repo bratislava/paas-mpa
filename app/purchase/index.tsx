@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
-import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
+import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
@@ -17,6 +17,7 @@ import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
+import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 
 export type PurchaseSearchParams = {
@@ -48,7 +49,8 @@ const PurchaseScreen = () => {
   const isEnabled =
     !!ticketPriceRequest?.udr && !!ticketPriceRequest?.ecv && !!ticketPriceRequest?.duration
 
-  const body = {
+  const body: GetTicketPriceRequestDto = {
+    npkId: ticketPriceRequest?.npkId ?? undefined,
     ticket: {
       udr: ticketPriceRequest?.udr ?? '',
       udrUuid: ticketPriceRequest?.udrUuid ?? '',
@@ -57,21 +59,18 @@ const PurchaseScreen = () => {
     },
   }
 
-  const {
-    data: response,
-    error,
-    isError,
-    isFetching,
-  } = useQuery({
+  // TODO handleError
+  const { data, error, isError, isFetching } = useQuery({
     queryKey: ['TicketRequest', ticketPriceRequest],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
+    select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
     enabled: isEnabled,
   })
 
-  // TODO handleError
-  console.log('data', isError, error)
+  console.log('body', body)
+  console.log('data', data, isError, error)
 
   useEffect(() => {
     if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
@@ -91,7 +90,6 @@ const PurchaseScreen = () => {
             <ParkingZoneField />
 
             <Field label={t('chooseVehicleFieldLabel')}>
-              {/* TODO Link+Pressable */}
               <Link
                 asChild
                 href={{ pathname: '/purchase/choose-vehicle', params: { ...purchaseParams } }}
@@ -112,7 +110,6 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
-              {/* TODO replace by proper field control */}
               <Link
                 asChild
                 href={{
@@ -121,7 +118,7 @@ const PurchaseScreen = () => {
                 }}
               >
                 <PressableStyled>
-                  <PaymentGateMethod showControlChevron />
+                  <PaymentMethodsFieldControl />
                 </PressableStyled>
               </Link>
             </Field>
@@ -129,7 +126,7 @@ const PurchaseScreen = () => {
         </ScrollView>
       </ScreenView>
 
-      <PurchaseBottomSheet ref={bottomSheetRef} priceData={response?.data} isLoading={isFetching} />
+      <PurchaseBottomSheet ref={bottomSheetRef} priceData={data} isLoading={isFetching} />
     </>
   )
 }

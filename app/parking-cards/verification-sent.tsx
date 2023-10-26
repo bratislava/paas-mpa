@@ -12,10 +12,17 @@ import { clientApi } from '@/modules/backend/client-api'
 
 // TODO remove - this button simulates email verification
 const TmpVerifyButton = () => {
-  const { tmpVerificationToken } = useLocalSearchParams<{ tmpVerificationToken: string }>()
+  const { tmpVerificationToken, verificationKey } = useLocalSearchParams<{
+    tmpVerificationToken: string
+    verificationKey: string
+  }>()
 
   const mutation = useMutation({
-    mutationFn: () => clientApi.verifiedEmailsControllerVerifyEmail(tmpVerificationToken ?? ''),
+    mutationFn: () =>
+      clientApi.verifiedEmailsControllerVerifyEmail(
+        tmpVerificationToken ?? '',
+        verificationKey ?? '',
+      ),
     onError: (error) => {
       // TODO handle error, show snackbar?
       // Handled in mutation to be sure that snackbar is shown on error

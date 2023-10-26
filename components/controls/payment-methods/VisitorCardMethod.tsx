@@ -17,7 +17,7 @@ import { useTranslation } from '@/hooks/useTranslation'
  */
 
 // Ensure that only one of these props is set at a time
-type Props =
+type AdditionalProps =
   | {
       selected?: boolean
       showControlChevron?: never
@@ -27,8 +27,13 @@ type Props =
       showControlChevron?: boolean
     }
 
+type Props = AdditionalProps & {
+  email: string
+  balance: string
+}
+
 // TODO props
-const VisitorCardMethod = ({ selected, showControlChevron }: Props) => {
+const VisitorCardMethod = ({ email, balance, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 
   return (
@@ -41,7 +46,7 @@ const VisitorCardMethod = ({ selected, showControlChevron }: Props) => {
           <FlexRow>
             <View className="flex-1">
               <Typography variant="default-bold">{t('visitorCard')}</Typography>
-              <Typography variant="small">email@email.com</Typography>
+              <Typography variant="small">{email}</Typography>
             </View>
             {selected && <Icon name="check-circle" />}
             {showControlChevron && <Icon name="expand-more" />}
@@ -49,7 +54,8 @@ const VisitorCardMethod = ({ selected, showControlChevron }: Props) => {
           <Divider />
           <FlexRow>
             <Typography variant="small">{t('remaining')}</Typography>
-            <Typography variant="small-bold">48h 30 min / 140h</Typography>
+            <Typography variant="small-bold">{balance}</Typography>
+            {/* <Typography variant="small-bold">48h 30 min / 140h</Typography> */}
           </FlexRow>
         </View>
       </FlexRow>

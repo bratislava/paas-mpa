@@ -45,10 +45,11 @@ const Page = () => {
     mutation.mutate(body, {
       onSuccess: (res) => {
         const tmpVerificationToken = res.data[0].token
-        console.log('success', res.data[0].token)
+        const verificationKey = res.data[0].key
+        console.log('success', tmpVerificationToken, verificationKey)
         router.push({
           pathname: '/parking-cards/verification-sent',
-          params: { emailToVerify: email, tmpVerificationToken },
+          params: { emailToVerify: email, verificationKey, tmpVerificationToken },
         })
       },
     })
