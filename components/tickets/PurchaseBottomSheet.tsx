@@ -10,7 +10,6 @@ import FlexRow from '@/components/shared/FlexRow'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
 import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 import { formatPrice } from '@/utils/formatPrice'
@@ -22,8 +21,6 @@ type Props = {
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoading }, ref) => {
   const t = useTranslation('PurchaseScreen')
-
-  const { ticketPriceRequest } = useGlobalStoreContext()
 
   const insets = useSafeAreaInsets()
   // TODO tmp for now - fixed height from figma
@@ -48,6 +45,18 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
   //   [t],
   // )
 
+  // TODO use seconds
+  const getDurationFromPriceData = () => {
+    if (!priceData) {
+      return 0
+    }
+
+    const ticketStartDate = new Date(priceData.ticketStart)
+    const ticketEndDate = new Date(priceData.ticketEnd)
+
+    return (ticketEndDate.getTime() - ticketStartDate.getTime()) / 1000 / 60
+  }
+
   return (
     <>
       <BottomSheet
@@ -61,7 +70,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
           <BottomSheetContent cn="g-3" hideSpacer>
             <FlexRow>
               <Typography variant="default">
-                Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
+                Parkovanie {formatDuration(getDurationFromPriceData())}
               </Typography>
               <Typography variant="default-bold">
                 {formatPrice(priceData.priceWithoutDiscount)}
@@ -97,7 +106,6 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
             )}
 
             <Divider />
-            {/* <Typography>{JSON.stringify(ticketPriceRequest)}</Typography> */}
           </BottomSheetContent>
         ) : null}
       </BottomSheet>

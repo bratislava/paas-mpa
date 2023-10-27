@@ -8,12 +8,15 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
+import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 
 const VisitorCardsField = () => {
   const t = useTranslation('PaymentMethods')
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
+
+  // TODO potentially get value and setValue functions by props
+  const { npk, setNpk } = useGlobalStoreContext()
 
   const {
     data: visitorCards,
@@ -26,9 +29,9 @@ const VisitorCardsField = () => {
     select: (res) => res.data,
   })
 
-  const handleCardPress = (npkId: string) => {
-    console.log('handleCardPress', npkId)
-    setTicketPriceRequest((prev) => ({ ...prev, npkId }))
+  const handleCardPress = (card: ParkingCardDto) => {
+    console.log('handleCardPress', card.identificator)
+    setNpk(card)
     router.push('/purchase')
   }
 
@@ -51,16 +54,13 @@ const VisitorCardsField = () => {
   return (
     <Field label={t('fieldVisitorCards')}>
       {visitorCards.map((card) => (
-        <PressableStyled
-          key={card.identificator}
-          onPress={() => handleCardPress(card.identificator)}
-        >
+        <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
           <VisitorCardMethod
             email={card.name ?? ''}
             balance={`${formatPeriodOfTime(card.balance)} / ${formatPeriodOfTime(
               card.originalBalance,
             )}`}
-            selected={card.identificator === ticketPriceRequest?.npkId}
+            selected={card.identificator === npk?.identificator}
           />
         </PressableStyled>
       ))}

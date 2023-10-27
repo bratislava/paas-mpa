@@ -9,17 +9,19 @@ import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStor
 
 const MethodsField = () => {
   const t = useTranslation('PaymentMethods')
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
+
+  // TODO potentially get value and setValue functions by props
+  const { npk, setNpk } = useGlobalStoreContext()
 
   const handleCardPress = () => {
-    setTicketPriceRequest((prev) => ({ ...prev, npkId: '' }))
+    setNpk(null)
     router.push('/purchase')
   }
 
   return (
     <Field label={t('fieldPaymentMethods')}>
       <PressableStyled onPress={handleCardPress}>
-        <PaymentGateMethod selected={!ticketPriceRequest?.npkId} />
+        <PaymentGateMethod selected={!npk} />
       </PressableStyled>
     </Field>
   )

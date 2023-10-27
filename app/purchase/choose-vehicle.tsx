@@ -16,14 +16,11 @@ import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStor
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
 
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
+  const { licencePlate, setLicencePlate } = useGlobalStoreContext()
   const { vehicles } = useVehicles()
 
-  const handleChoseVehicle = (ecv: string) => {
-    setTicketPriceRequest({
-      ...ticketPriceRequest,
-      ecv,
-    })
+  const handleChoseVehicle = (newLicencePlate: string) => {
+    setLicencePlate(newLicencePlate)
     router.push('/purchase')
   }
 
@@ -38,7 +35,7 @@ const ChooseVehicleScreen = () => {
             <PressableStyled onPress={() => handleChoseVehicle(vehicleItem.licencePlate)}>
               <VehicleRow
                 vehicle={vehicleItem}
-                selected={ticketPriceRequest?.ecv === vehicleItem.licencePlate}
+                selected={licencePlate === vehicleItem.licencePlate}
               />
             </PressableStyled>
           )}

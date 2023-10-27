@@ -1,5 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { Link, useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -28,42 +29,49 @@ export type PurchaseSearchParams = {
 // TODO TimeSelector chips sometimes collapses - investigate
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
-
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
-  const { getVehicle, defaultVehicle } = useVehicles()
-
-  const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
-
-  // BottomSheet
   const bottomSheetRef = useRef<BottomSheet>(null)
   const insets = useSafeAreaInsets()
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
-  const udrUuid = useMapZone(ticketPriceRequest?.udr ?? null, true)?.udrUuid
-  const parkingEnd = new Date(
-    Date.now() + (ticketPriceRequest?.duration ?? 0) * 60_000,
-  ).toISOString()
+  const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk } =
+    useGlobalStoreContext()
+  const { getVehicle, defaultVehicle } = useVehicles()
 
-  const isQueryEnabled =
-    !!ticketPriceRequest?.udr &&
-    !!ticketPriceRequest?.ecv &&
-    !!ticketPriceRequest?.duration &&
-    !!udrUuid
+  const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
 
+  // Change zone when udrId from SearchParam changes
+  const newUdrZone = useMapZone(udrIdSearchParam ?? null, true)
+  useEffect(() => {
+    if (newUdrZone && newUdrZone.udrId !== udr?.udrId) {
+      setUdr(newUdrZone)
+    }
+  }, [newUdrZone, setUdr, udr?.udrId])
+
+  // Set licencePlate to defaultVehicle if empty
+  useEffect(() => {
+    if (!licencePlate && defaultVehicle) {
+      setLicencePlate(defaultVehicle.licencePlate)
+    }
+  }, [defaultVehicle, licencePlate, setLicencePlate])
+
+  // Run query only if all required attributes are present
+  const isQueryEnabled = !!udr && !!licencePlate && !!duration
+
+  const parkingEnd = new Date(Date.now() + duration * 60_000).toISOString()
   const body: GetTicketPriceRequestDto = {
-    npkId: ticketPriceRequest?.npkId || undefined,
+    npkId: npk?.identificator || undefined,
     ticket: {
-      udr: ticketPriceRequest?.udr ?? '',
-      udrUuid: udrUuid ?? '',
-      ecv: ticketPriceRequest?.ecv ?? '',
+      udr: String(udr?.udrId) ?? '',
+      udrUuid: udr?.udrUuid ?? '',
+      ecv: licencePlate,
       parkingEnd,
     },
   }
 
   // TODO handleError
   const { data, isError, error, isFetching } = useQuery({
-    queryKey: ['TicketRequest', ticketPriceRequest],
+    queryKey: ['TicketRequest', udr, licencePlate, duration, npk],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
@@ -71,28 +79,8 @@ const PurchaseScreen = () => {
     enabled: isQueryEnabled,
   })
 
-  console.log('body', body)
-  console.log('data', data, isError, error)
-
-  // Change zone when udrId from SearchParam changes
-  useEffect(() => {
-    if (udrIdSearchParam && udrIdSearchParam !== ticketPriceRequest?.udr) {
-      setTicketPriceRequest((prev) => ({
-        ...prev,
-        udr: udrIdSearchParam,
-      }))
-    }
-  }, [setTicketPriceRequest, ticketPriceRequest?.udr, udrIdSearchParam])
-
-  // Set ticketPriceRequest.ecv to defaultVehicle
-  useEffect(() => {
-    if (!ticketPriceRequest?.ecv && defaultVehicle) {
-      setTicketPriceRequest((prev) => ({
-        ...prev,
-        ecv: defaultVehicle.licencePlate,
-      }))
-    }
-  }, [defaultVehicle, setTicketPriceRequest, ticketPriceRequest?.ecv])
+  // console.log('body', body)
+  console.log('data', data, isError, error, isAxiosError(error) && error.response?.data)
 
   return (
     <>
@@ -100,31 +88,24 @@ const PurchaseScreen = () => {
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
-            <ParkingZoneField />
+            <ParkingZoneField zone={udr} />
 
             <Field label={t('chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl
-                    vehicle={ticketPriceRequest?.ecv ? getVehicle(ticketPriceRequest.ecv) : null}
-                  />
+                  <VehicleFieldControl vehicle={getVehicle(licencePlate)} />
                 </PressableStyled>
               </Link>
             </Field>
 
             <Field label={t('parkingTimeFieldLabel')}>
-              <TimeSelector
-                value={ticketPriceRequest?.duration ?? 60}
-                onValueChange={(newDuration) =>
-                  setTicketPriceRequest((prev) => ({ ...prev, duration: newDuration }))
-                }
-              />
+              <TimeSelector value={duration} onValueChange={setDuration} />
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
-                  <PaymentMethodsFieldControl />
+                  <PaymentMethodsFieldControl card={npk} />
                 </PressableStyled>
               </Link>
             </Field>

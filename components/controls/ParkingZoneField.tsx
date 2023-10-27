@@ -8,16 +8,15 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
-import { useMapZone } from '@/state/MapProvider/useMapZone'
+import { NormalizedUdrZone } from '@/modules/map/types'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
-const ParkingZoneField = () => {
+type Props = {
+  zone: NormalizedUdrZone | null
+}
+
+const ParkingZoneField = ({ zone }: Props) => {
   const t = useTranslation('PurchaseScreen')
-
-  const { ticketPriceRequest } = useGlobalStoreContext()
-
-  const zone = useMapZone(ticketPriceRequest?.udr ?? null, true)
 
   return (
     <Field
