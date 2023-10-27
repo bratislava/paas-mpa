@@ -8,6 +8,7 @@ import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
 import Typography from '@/components/shared/Typography'
+import { getDurationFromPriceData } from '@/components/tickets/getDurationFromPriceData'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { formatDuration } from '@/utils/formatDuration'
@@ -21,6 +22,8 @@ type Props = {
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoading }, ref) => {
   const t = useTranslation('PurchaseScreen')
+
+  const durationFromPriceDate = getDurationFromPriceData(priceData)
 
   const insets = useSafeAreaInsets()
   // TODO tmp for now - fixed height from figma
@@ -45,18 +48,6 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
   //   [t],
   // )
 
-  // TODO use seconds
-  const getDurationFromPriceData = () => {
-    if (!priceData) {
-      return 0
-    }
-
-    const ticketStartDate = new Date(priceData.ticketStart)
-    const ticketEndDate = new Date(priceData.ticketEnd)
-
-    return (ticketEndDate.getTime() - ticketStartDate.getTime()) / 1000 / 60
-  }
-
   return (
     <>
       <BottomSheet
@@ -70,7 +61,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
           <BottomSheetContent cn="g-3" hideSpacer>
             <FlexRow>
               <Typography variant="default">
-                Parkovanie {formatDuration(getDurationFromPriceData())}
+                Parkovanie {formatDuration(durationFromPriceDate ?? 0)}
               </Typography>
               <Typography variant="default-bold">
                 {formatPrice(priceData.priceWithoutDiscount)}
@@ -87,8 +78,8 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
               </FlexRow>
             )}
 
-            {/* Check if it is present (null/undefined, but show if it is 0) */}
-            {priceData.creditBPKUsed == null ? null : (
+            {/* Show creditBPKUsed nly if it is defined and "non-zero" */}
+            {!priceData.creditBPKUsed || priceData.creditBPKUsed === 'PT0S' ? null : (
               <FlexRow>
                 <Typography variant="default">Stiahnuté z bonusovej karty</Typography>
                 <Typography variant="default-bold">
