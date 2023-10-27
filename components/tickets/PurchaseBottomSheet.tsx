@@ -10,7 +10,6 @@ import FlexRow from '@/components/shared/FlexRow'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
 import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 import { formatPrice } from '@/utils/formatPrice'
@@ -22,8 +21,6 @@ type Props = {
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoading }, ref) => {
   const t = useTranslation('PurchaseScreen')
-
-  const { ticketPriceRequest } = useGlobalStoreContext()
 
   const insets = useSafeAreaInsets()
   // TODO tmp for now - fixed height from figma
@@ -48,6 +45,18 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
   //   [t],
   // )
 
+  // TODO use seconds
+  const getDurationFromPriceData = () => {
+    if (!priceData) {
+      return 0
+    }
+
+    const ticketStartDate = new Date(priceData.ticketStart)
+    const ticketEndDate = new Date(priceData.ticketEnd)
+
+    return (ticketEndDate.getTime() - ticketStartDate.getTime()) / 1000 / 60
+  }
+
   return (
     <>
       <BottomSheet
@@ -59,17 +68,14 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
       >
         {priceData ? (
           <BottomSheetContent cn="g-3" hideSpacer>
-            {/* Do not show it also if it's 0 */}
-            {priceData.priceWithoutDiscount ? (
-              <FlexRow>
-                <Typography variant="default">
-                  Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
-                </Typography>
-                <Typography variant="default-bold">
-                  {formatPrice(priceData.priceWithoutDiscount)}
-                </Typography>
-              </FlexRow>
-            ) : null}
+            <FlexRow>
+              <Typography variant="default">
+                Parkovanie {formatDuration(getDurationFromPriceData())}
+              </Typography>
+              <Typography variant="default-bold">
+                {formatPrice(priceData.priceWithoutDiscount)}
+              </Typography>
+            </FlexRow>
 
             {/* Check if it is present (null/undefined, but show if it is 0) */}
             {priceData.creditNpkUsed == null ? null : (
@@ -77,6 +83,16 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
                 <Typography variant="default">Stiahnuté z návštevníckej karty</Typography>
                 <Typography variant="default-bold">
                   {formatPeriodOfTime(priceData.creditNpkUsed)}
+                </Typography>
+              </FlexRow>
+            )}
+
+            {/* Check if it is present (null/undefined, but show if it is 0) */}
+            {priceData.creditBPKUsed == null ? null : (
+              <FlexRow>
+                <Typography variant="default">Stiahnuté z bonusovej karty</Typography>
+                <Typography variant="default-bold">
+                  {formatPeriodOfTime(priceData.creditBPKUsed)}
                 </Typography>
               </FlexRow>
             )}
@@ -90,14 +106,13 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
             )}
 
             <Divider />
-            {/* <Typography>{JSON.stringify(ticketPriceRequest)}</Typography> */}
           </BottomSheetContent>
         ) : null}
       </BottomSheet>
 
       <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
         {/* Toggling visibility prevents layout shifts */}
-        <FlexRow cn={priceData ? 'visible' : 'invisible'}>
+        <FlexRow className={priceData ? 'visible' : 'invisible'}>
           <Typography variant="default-bold">{t('summary')}</Typography>
           {priceData ? (
             <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>

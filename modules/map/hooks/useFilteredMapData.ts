@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { MapFilters } from '@/modules/map/constants'
-import { ProcessedMapData } from '@/modules/map/hooks/useProcessedMapData'
+import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 
 export const useFilteredMapData = (data: ProcessedMapData, filters: MapFilters) => {
   return useMemo(() => {

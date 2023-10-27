@@ -77,7 +77,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
   return (
     <Panel className="g-4">
-      <FlexRow cn="items-center">
+      <FlexRow className="items-center">
         <IconButton
           variant="dark"
           name="remove"

@@ -1,5 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { Link, useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -18,68 +19,68 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 
 export type PurchaseSearchParams = {
-  duration?: string
-  licencePlate?: string
-  customParkingTime?: string
+  udrId?: string
 }
 
 // TODO TimeSelector chips sometimes collapses - investigate
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
-
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
-
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const purchaseParams = useLocalSearchParams<PurchaseSearchParams>()
-  const { getVehicle, defaultVehicle } = useVehicles()
-  const { licencePlate } = purchaseParams
   const insets = useSafeAreaInsets()
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
-  const chosenVehicle = licencePlate ? getVehicle(licencePlate) : defaultVehicle
+  const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk } =
+    useGlobalStoreContext()
+  const { getVehicle, defaultVehicle } = useVehicles()
 
-  const parkingEnd = new Date(
-    Date.now() + (ticketPriceRequest?.duration ?? 0) * 60_000,
-  ).toISOString()
+  const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
 
-  const isEnabled =
-    !!ticketPriceRequest?.udr && !!ticketPriceRequest?.ecv && !!ticketPriceRequest?.duration
+  // Change zone when udrId from SearchParam changes
+  const newUdrZone = useMapZone(udrIdSearchParam ?? null, true)
+  useEffect(() => {
+    if (newUdrZone && newUdrZone.udrId !== udr?.udrId) {
+      setUdr(newUdrZone)
+    }
+  }, [newUdrZone, setUdr, udr?.udrId])
 
+  // Set licencePlate to defaultVehicle if empty
+  useEffect(() => {
+    if (!licencePlate && defaultVehicle) {
+      setLicencePlate(defaultVehicle.licencePlate)
+    }
+  }, [defaultVehicle, licencePlate, setLicencePlate])
+
+  // Run query only if all required attributes are present
+  const isQueryEnabled = !!udr && !!licencePlate && !!duration
+
+  const parkingEnd = new Date(Date.now() + duration * 60_000).toISOString()
   const body: GetTicketPriceRequestDto = {
-    npkId: ticketPriceRequest?.npkId ?? undefined,
+    npkId: npk?.identificator || undefined,
     ticket: {
-      udr: ticketPriceRequest?.udr ?? '',
-      udrUuid: ticketPriceRequest?.udrUuid ?? '',
-      ecv: ticketPriceRequest?.ecv ?? '',
+      udr: String(udr?.udrId) ?? '',
+      udrUuid: udr?.udrUuid ?? '',
+      ecv: licencePlate,
       parkingEnd,
     },
   }
 
   // TODO handleError
-  const { data, error, isError, isFetching } = useQuery({
-    queryKey: ['TicketRequest', ticketPriceRequest],
+  const { data, isError, error, isFetching } = useQuery({
+    queryKey: ['TicketRequest', udr, licencePlate, duration, npk],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
-    enabled: isEnabled,
+    enabled: isQueryEnabled,
   })
 
-  console.log('body', body)
-  console.log('data', data, isError, error)
-
-  useEffect(() => {
-    if (ticketPriceRequest?.ecv !== chosenVehicle?.licencePlate) {
-      setTicketPriceRequest((prev) => ({
-        ...prev,
-        ecv: chosenVehicle?.licencePlate,
-      }))
-    }
-  }, [chosenVehicle, setTicketPriceRequest, ticketPriceRequest])
+  // console.log('body', body)
+  console.log('data', data, isError, error, isAxiosError(error) && error.response?.data)
 
   return (
     <>
@@ -87,38 +88,24 @@ const PurchaseScreen = () => {
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
-            <ParkingZoneField />
+            <ParkingZoneField zone={udr} />
 
             <Field label={t('chooseVehicleFieldLabel')}>
-              <Link
-                asChild
-                href={{ pathname: '/purchase/choose-vehicle', params: { ...purchaseParams } }}
-              >
+              <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl vehicle={chosenVehicle} />
+                  <VehicleFieldControl vehicle={getVehicle(licencePlate)} />
                 </PressableStyled>
               </Link>
             </Field>
 
             <Field label={t('parkingTimeFieldLabel')}>
-              <TimeSelector
-                value={ticketPriceRequest?.duration ?? 60}
-                onValueChange={(newDuration) =>
-                  setTicketPriceRequest((prev) => ({ ...prev, duration: newDuration }))
-                }
-              />
+              <TimeSelector value={duration} onValueChange={setDuration} />
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
-              <Link
-                asChild
-                href={{
-                  pathname: '/purchase/choose-payment-method',
-                  params: { ...purchaseParams },
-                }}
-              >
+              <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
-                  <PaymentMethodsFieldControl />
+                  <PaymentMethodsFieldControl card={npk} />
                 </PressableStyled>
               </Link>
             </Field>

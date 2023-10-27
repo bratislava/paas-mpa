@@ -5,21 +5,23 @@ import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGate
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 const MethodsField = () => {
   const t = useTranslation('PaymentMethods')
-  const { ticketPriceRequest, setTicketPriceRequest } = useGlobalStoreContext()
+
+  // TODO potentially get value and setValue functions by props
+  const { npk, setNpk } = useGlobalStoreContext()
 
   const handleCardPress = () => {
-    setTicketPriceRequest((prev) => ({ ...prev, npkId: '' }))
+    setNpk(null)
     router.push('/purchase')
   }
 
   return (
     <Field label={t('fieldPaymentMethods')}>
       <PressableStyled onPress={handleCardPress}>
-        <PaymentGateMethod selected={!ticketPriceRequest?.npkId} />
+        <PaymentGateMethod selected={!npk} />
       </PressableStyled>
     </Field>
   )

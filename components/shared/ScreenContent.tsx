@@ -1,20 +1,18 @@
 import { clsx } from 'clsx'
 import { Link } from 'expo-router'
 import React, { ReactNode } from 'react'
-import { View } from 'react-native'
+import { View, ViewProps } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import { ContinueProps } from '@/components/shared/ScreenView'
-import { ViewStyleProps } from '@/utils/types'
 
 type Props = {
   children: ReactNode
   continueProps?: ContinueProps
   variant?: 'default' | 'center'
-  cn?: string
-} & ViewStyleProps
+} & ViewProps
 
-const ScreenContent = ({ children, continueProps, variant, cn, ...rest }: Props) => {
+const ScreenContent = ({ children, continueProps, variant, className, ...rest }: Props) => {
   return (
     <View
       className={clsx(
@@ -23,7 +21,7 @@ const ScreenContent = ({ children, continueProps, variant, cn, ...rest }: Props)
           // TODO long Text is not centered horizontally
           'items-center text-center': variant === 'center',
         },
-        cn,
+        className,
       )}
       {...rest}
     >

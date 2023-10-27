@@ -9,7 +9,7 @@ import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
 const Page = () => {

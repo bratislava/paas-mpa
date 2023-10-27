@@ -37,7 +37,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
 
   return (
     <Panel className={clsx(selected && 'border border-dark')}>
-      <FlexRow cn={clsx(!onContextMenuPress && 'items-center')}>
+      <FlexRow className={clsx(!onContextMenuPress && 'items-center')}>
         <View>
           <Typography variant="default-bold">{vehicle.licencePlate}</Typography>
           {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}

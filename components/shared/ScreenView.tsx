@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 import { Link, Stack } from 'expo-router'
 import { Href } from 'expo-router/build/link/href'
 import { ReactNode } from 'react'
-import { Image, View } from 'react-native'
+import { Image, View, ViewProps } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 
@@ -15,8 +15,7 @@ type Props = {
   continueProps?: ContinueProps
   variant?: 'default' | 'centered'
   backgroundVariant?: 'white' | 'dots'
-  cn?: string
-}
+} & ViewProps
 
 export type ContinueProps = {
   href: Href
@@ -30,10 +29,11 @@ const ScreenView = ({
   continueProps,
   variant,
   backgroundVariant = 'white',
-  cn,
+  className,
+  ...rest
 }: Props) => {
   return (
-    <View className={clsx('flex-1 bg-white', cn)}>
+    <View className={clsx('flex-1 bg-white', className)} {...rest}>
       <Stack.Screen options={{ title }} />
 
       {backgroundVariant === 'dots' && (
