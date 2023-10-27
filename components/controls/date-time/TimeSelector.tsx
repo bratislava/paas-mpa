@@ -100,8 +100,10 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
           onPress={addTime}
         />
       </FlexRow>
+
+      {/* Hardcoded h-[48px] prevents chips to shrink */}
       <View className="g-1">
-        <View className="flex-row g-1">
+        <View className="h-[48px] flex-row g-1">
           {chips.slice(0, 4).map((chip) => {
             return (
               <PressableStyled
@@ -114,7 +116,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
             )
           })}
         </View>
-        <View className="flex-row g-1">
+        <View className="h-[48px] flex-row g-1">
           {chips.slice(4).map((chip) => {
             return (
               <PressableStyled

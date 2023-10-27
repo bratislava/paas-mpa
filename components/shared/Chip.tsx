@@ -14,7 +14,7 @@ const Chip = ({ label, isActive, chipClassName }: Props) => {
   return (
     <View
       className={clsx(
-        'flex-1 items-center justify-center rounded border p-3',
+        'h-[48px] flex-1 items-center justify-center rounded border',
         isActive ? 'border-dark bg-dark' : 'border-divider bg-white',
         chipClassName,
       )}
