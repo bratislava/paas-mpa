@@ -59,17 +59,14 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
       >
         {priceData ? (
           <BottomSheetContent cn="g-3" hideSpacer>
-            {/* Do not show it also if it's 0 */}
-            {priceData.priceWithoutDiscount ? (
-              <FlexRow>
-                <Typography variant="default">
-                  Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
-                </Typography>
-                <Typography variant="default-bold">
-                  {formatPrice(priceData.priceWithoutDiscount)}
-                </Typography>
-              </FlexRow>
-            ) : null}
+            <FlexRow>
+              <Typography variant="default">
+                Parkovanie {formatDuration(Number(ticketPriceRequest?.duration))}
+              </Typography>
+              <Typography variant="default-bold">
+                {formatPrice(priceData.priceWithoutDiscount)}
+              </Typography>
+            </FlexRow>
 
             {/* Check if it is present (null/undefined, but show if it is 0) */}
             {priceData.creditNpkUsed == null ? null : (
@@ -77,6 +74,16 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(({ priceData, isLoadi
                 <Typography variant="default">Stiahnuté z návštevníckej karty</Typography>
                 <Typography variant="default-bold">
                   {formatPeriodOfTime(priceData.creditNpkUsed)}
+                </Typography>
+              </FlexRow>
+            )}
+
+            {/* Check if it is present (null/undefined, but show if it is 0) */}
+            {priceData.creditBPKUsed == null ? null : (
+              <FlexRow>
+                <Typography variant="default">Stiahnuté z bonusovej karty</Typography>
+                <Typography variant="default-bold">
+                  {formatPeriodOfTime(priceData.creditBPKUsed)}
                 </Typography>
               </FlexRow>
             )}

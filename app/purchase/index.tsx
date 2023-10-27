@@ -40,10 +40,10 @@ const PurchaseScreen = () => {
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
+  const udrUuid = useMapZone(ticketPriceRequest?.udr ?? null, true)?.udrUuid
   const parkingEnd = new Date(
     Date.now() + (ticketPriceRequest?.duration ?? 0) * 60_000,
   ).toISOString()
-  const udrUuid = useMapZone(ticketPriceRequest?.udr ?? null, true)?.udrUuid
 
   const isQueryEnabled =
     !!ticketPriceRequest?.udr &&
@@ -62,7 +62,7 @@ const PurchaseScreen = () => {
   }
 
   // TODO handleError
-  const { data, error, isError, isFetching } = useQuery({
+  const { data, isError, error, isFetching } = useQuery({
     queryKey: ['TicketRequest', ticketPriceRequest],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
     select: (res) => res.data,

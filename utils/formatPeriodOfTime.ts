@@ -11,10 +11,12 @@ export const formatPeriodOfTime = (periodOfTime: string | undefined | null) => {
 
     const hours =
       (durationObj.hours ?? 0) + (durationObj.days ?? 0) * 24 + (durationObj.weeks ?? 0) * 24 * 7
-    const { minutes } = durationObj
+    const { minutes, seconds } = durationObj
 
     // eslint-disable-next-line sonarjs/no-nested-template-literals
-    return `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}min` : ''}`.trim()
+    return `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}min` : ''} ${
+      seconds ? `${seconds}s` : ''
+    }`.trim()
   } catch (error) {
     console.log(error)
   }
