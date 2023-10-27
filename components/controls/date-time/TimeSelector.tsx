@@ -31,31 +31,37 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
   const validUntil = useMemo(
-    () => formatDateTime(new Date(Date.now() + value * 60_000), locale),
+    () => formatDateTime(new Date(Date.now() + value * 1000), locale),
     [locale, value],
   )
 
+  /**
+   * Add 15 minutes
+   */
   const addTime = () => {
-    onValueChange(value + 15)
+    onValueChange(value + 15 * 60)
   }
 
+  /**
+   * Subtract 15 minutes
+   */
   const subtractTime = () => {
-    onValueChange(Math.max(0, value - 15))
+    onValueChange(Math.max(0, value - 15 * 60))
   }
 
-  const setTime = (minutes: number) => {
-    onValueChange(minutes)
+  const setTime = (value: number) => {
+    onValueChange(value)
   }
 
   const chips = useMemo(
     () => [
-      { value: 15, label: '15 min' },
-      { value: 30, label: '30 min' },
-      { value: 45, label: '45 min' },
-      { value: 60, label: '1 h' },
-      { value: 120, label: '2 h' },
-      { value: 240, label: '4 h' },
-      { value: 480, label: '8 h' },
+      { value: 15 * 60, label: '15 min' },
+      { value: 30 * 60, label: '30 min' },
+      { value: 45 * 60, label: '45 min' },
+      { value: 60 * 60, label: '1 h' },
+      { value: 2 * 60 * 60, label: '2 h' },
+      { value: 4 * 60 * 60, label: '4 h' },
+      { value: 8 * 60 * 60, label: '8 h' },
     ],
     [],
   )
@@ -113,7 +119,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
             return (
               <PressableStyled
                 key={chip.value}
-                onPress={() => setTime(Number(chip.value))}
+                onPress={() => setTime(chip.value)}
                 className="flex-1"
               >
                 <Chip label={chip.label} isActive={chip.value === value} />

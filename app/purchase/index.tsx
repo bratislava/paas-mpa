@@ -58,7 +58,7 @@ const PurchaseScreen = () => {
   // Run query only if all required attributes are present
   const isQueryEnabled = !!udr && !!licencePlate && !!duration
 
-  const parkingEnd = new Date(Date.now() + duration * 60_000).toISOString()
+  const parkingEnd = new Date(Date.now() + duration * 1000).toISOString()
   const body: GetTicketPriceRequestDto = {
     npkId: npk?.identificator || undefined,
     ticket: {
