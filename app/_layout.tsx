@@ -21,7 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { environment } from '@/environment'
 import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
-import MapProvider from '@/state/MapProvider/MapProvider'
+import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
@@ -80,7 +80,7 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <QueryClientProvider client={queryClient}>
-      <MapProvider>
+      <MapZonesProvider>
         <GlobalStoreProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView className="flex-1">
@@ -108,7 +108,7 @@ const RootLayout = () => {
             </GestureHandlerRootView>
           </SafeAreaProvider>
         </GlobalStoreProvider>
-      </MapProvider>
+      </MapZonesProvider>
     </QueryClientProvider>
   )
 }

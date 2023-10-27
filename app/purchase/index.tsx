@@ -20,7 +20,7 @@ import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
-import { useMapZone } from '@/state/MapProvider/useMapZone'
+import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 
 export type PurchaseSearchParams = {
   udrId?: string

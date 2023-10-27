@@ -11,7 +11,7 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { TicketDto } from '@/modules/backend/openapi-generated'
-import { useMapZone } from '@/state/MapProvider/useMapZone'
+import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatDateTime } from '@/utils/formatDateTime'
 
 /*
