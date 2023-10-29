@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { Link, Stack } from 'expo-router'
+import { Link, Stack, useNavigation } from 'expo-router'
 import { Href } from 'expo-router/build/link/href'
 import { ReactNode } from 'react'
 import { Image, View, ViewProps } from 'react-native'
@@ -32,6 +32,10 @@ const ScreenView = ({
   className,
   ...rest
 }: Props) => {
+  const navigation = useNavigation()
+  const rootNavigation = navigation.getParent()
+  rootNavigation?.setOptions({ headerShown: false })
+
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
       <Stack.Screen options={{ title }} />

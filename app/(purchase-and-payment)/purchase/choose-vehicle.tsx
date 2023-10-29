@@ -1,5 +1,4 @@
 import { Link, router } from 'expo-router'
-import React from 'react'
 import { FlatList } from 'react-native'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
@@ -11,12 +10,12 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
 
-  const { licencePlate, setLicencePlate } = useGlobalStoreContext()
+  const { licencePlate, setLicencePlate } = usePurchaseStoreContext()
   const { vehicles } = useVehicles()
 
   const handleChoseVehicle = (newLicencePlate: string) => {

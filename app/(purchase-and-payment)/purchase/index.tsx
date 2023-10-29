@@ -19,8 +19,8 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 
 export type PurchaseSearchParams = {
   udrId?: string
@@ -35,7 +35,7 @@ const PurchaseScreen = () => {
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
   const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk } =
-    useGlobalStoreContext()
+    usePurchaseStoreContext()
   const { getVehicle, defaultVehicle } = useVehicles()
 
   const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()

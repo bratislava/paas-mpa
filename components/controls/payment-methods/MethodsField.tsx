@@ -1,17 +1,16 @@
 import { router } from 'expo-router'
-import React from 'react'
 
 import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 
 const MethodsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { npk, setNpk } = useGlobalStoreContext()
+  const { npk, setNpk } = usePurchaseStoreContext()
 
   const handleCardPress = () => {
     setNpk(null)

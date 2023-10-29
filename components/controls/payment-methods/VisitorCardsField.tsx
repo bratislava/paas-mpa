@@ -8,14 +8,14 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 
 const VisitorCardsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { npk, setNpk } = useGlobalStoreContext()
+  const { npk, setNpk } = usePurchaseStoreContext()
 
   const { data: visitorCards, isPending, isError, error } = useQuery(visitorCardsOptions())
 
