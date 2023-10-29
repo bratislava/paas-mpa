@@ -31,7 +31,7 @@ const PaymentGateMethod = ({ selected, showControlChevron }: Props) => {
 
   return (
     <Panel className={clsx(selected && 'border border-dark')}>
-      <FlexRow cn="items-center">
+      <FlexRow className="items-center">
         <AvatarSquare variant="payment-gate" />
         <View className="flex-1">
           <Typography variant="default-bold">{t('paymentGate')}</Typography>

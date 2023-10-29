@@ -2,13 +2,20 @@ import React from 'react'
 
 import PaymentGateMethod from '@/components/controls/payment-methods/PaymentGateMethod'
 import VisitorCardMethod from '@/components/controls/payment-methods/VisitorCardMethod'
-import { useGlobalStoreContext } from '@/state/hooks/useGlobalStoreContext'
+import { ParkingCardDto } from '@/modules/backend/openapi-generated'
+import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 
-const PaymentMethodsFieldControl = () => {
-  const { ticketPriceRequest } = useGlobalStoreContext()
+type Props = {
+  card: ParkingCardDto | null
+}
 
-  return ticketPriceRequest?.npkId ? (
-    <VisitorCardMethod email={ticketPriceRequest.npkId} balance="TODO" showControlChevron />
+const PaymentMethodsFieldControl = ({ card }: Props) => {
+  return card ? (
+    <VisitorCardMethod
+      email={card.name ?? ''}
+      balance={formatPeriodOfTime(card.balance)}
+      showControlChevron
+    />
   ) : (
     <PaymentGateMethod showControlChevron />
   )

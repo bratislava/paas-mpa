@@ -8,7 +8,7 @@ import Icon from '@/components/shared/Icon'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useMapZone } from '@/state/hooks/useMapZone'
+import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 export type ZoneDetailsParamas = {
@@ -35,7 +35,7 @@ const ZoneDetailsScreen = () => {
           <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>
         <Divider />
-        <FlexRow cn="justify-start">
+        <FlexRow className="justify-start">
           <View
             className="h-6 w-6 items-center justify-center bg-dark"
             // eslint-disable-next-line react-native/no-inline-styles
@@ -47,7 +47,7 @@ const ZoneDetailsScreen = () => {
         </FlexRow>
         <Divider />
         {zone.additionalInformation ? (
-          <FlexRow cn="justify-start">
+          <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>{zone.additionalInformation}</Typography>
           </FlexRow>

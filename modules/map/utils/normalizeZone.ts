@@ -16,6 +16,7 @@ export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdr
     code: zone.Kod_rezidentskej_zony,
     status: zone.Status,
     udrId: zone.UDR_ID,
+    udrUuid: zone.GlobalID,
     odpRpk: zone.ODP_RPKAPK,
     restrictionOnlyRpk: zone.Obmedzene_len_pre_RPK_APK,
     cityDistrict: zone.UTJ,

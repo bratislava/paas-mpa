@@ -20,7 +20,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { environment } from '@/environment'
-import GlobalStoreProvider from '@/state/GlobalStoreProvider'
+import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
+import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
@@ -79,30 +80,35 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <QueryClientProvider client={queryClient}>
-      <GlobalStoreProvider>
-        <SafeAreaProvider>
-          <GestureHandlerRootView className="flex-1">
-            <PortalProvider>
-              <Stack
-                screenOptions={{
-                  headerBackTitleVisible: false,
-                  headerTitleStyle: {
-                    fontFamily: 'BelfastGrotesk_700Bold',
-                  },
-                  headerTintColor: colors.dark.DEFAULT,
-                }}
-              >
-                <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-                <Stack.Screen name="purchase/choose-vehicle" options={{ presentation: 'modal' }} />
-                <Stack.Screen
-                  name="purchase/choose-payment-method"
-                  options={{ presentation: 'modal' }}
-                />
-              </Stack>
-            </PortalProvider>
-          </GestureHandlerRootView>
-        </SafeAreaProvider>
-      </GlobalStoreProvider>
+      <MapZonesProvider>
+        <GlobalStoreProvider>
+          <SafeAreaProvider>
+            <GestureHandlerRootView className="flex-1">
+              <PortalProvider>
+                <Stack
+                  screenOptions={{
+                    headerBackTitleVisible: false,
+                    headerTitleStyle: {
+                      fontFamily: 'BelfastGrotesk_700Bold',
+                    },
+                    headerTintColor: colors.dark.DEFAULT,
+                  }}
+                >
+                  <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+                  <Stack.Screen
+                    name="purchase/choose-vehicle"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="purchase/choose-payment-method"
+                    options={{ presentation: 'modal' }}
+                  />
+                </Stack>
+              </PortalProvider>
+            </GestureHandlerRootView>
+          </SafeAreaProvider>
+        </GlobalStoreProvider>
+      </MapZonesProvider>
     </QueryClientProvider>
   )
 }

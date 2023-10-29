@@ -53,6 +53,7 @@ export type NormalizedUdrZone = {
   code: string
   status: string
   udrId: number
+  udrUuid: string
   odpRpk: string
   restrictionOnlyRpk: string
   cityDistrict: string
