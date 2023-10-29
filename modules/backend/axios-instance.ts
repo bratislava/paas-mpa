@@ -19,6 +19,8 @@ axiosInstance.interceptors.request.use(async (request) => {
     request.headers.Authorization = `Bearer ${accessToken}`
   }
 
+  console.log('fetching:', request.url)
+
   return request
 })
 

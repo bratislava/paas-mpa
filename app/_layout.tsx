@@ -19,6 +19,7 @@ import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import { environment } from '@/environment'
 import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
@@ -85,6 +86,7 @@ const RootLayout = () => {
           <SafeAreaProvider>
             <GestureHandlerRootView className="flex-1">
               <PortalProvider>
+                <OmnipresentComponent />
                 <Stack
                   screenOptions={{
                     headerBackTitleVisible: false,
