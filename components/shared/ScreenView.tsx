@@ -34,6 +34,10 @@ const ScreenView = ({
 }: Props) => {
   const navigation = useNavigation()
   useEffect(() => {
+    // This is our problem: https://github.com/expo/expo/issues/24553#issuecomment-1749261475
+    // but the solution provided does not work
+    // Here we are hiding the header for the root navigation when the nested navigator is rendered
+    // this keeps the back button working as expected and the title is also correctly displayed
     const rootNavigation = navigation.getParent()
     rootNavigation?.setOptions({ headerShown: false })
   }, [navigation])
