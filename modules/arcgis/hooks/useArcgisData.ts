@@ -2,16 +2,17 @@ import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
 import { ARCGIS_URL } from '@/modules/arcgis/constants'
 import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
+import { ArcgisData } from '@/modules/arcgis/types'
 import {
+  AssistantPoint,
   BranchPoint,
-  MapInterestPoint,
   MapUdrZone,
   ParkingLotPoint,
   ParkomatPoint,
   PartnerPoint,
 } from '@/modules/map/types'
 
-export const useArcgisData = () => {
+export const useArcgisData = (): ArcgisData => {
   const { data: rawZonesData } = useArcgis(`${ARCGIS_URL}/parkovanie/Hranica_RZ/MapServer/1`, {
     format: 'geojson',
   })
@@ -49,16 +50,13 @@ export const useArcgisData = () => {
   })
 
   return {
-    rawAssistantsData: rawAssistantsData as FeatureCollection<
-      Point,
-      MapInterestPoint & { web: string }
-    >,
-    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint>,
-    rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint>,
-    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint>,
-    rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint>,
-    rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone>,
-    rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties>,
-    rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties>,
+    rawAssistantsData: rawAssistantsData as FeatureCollection<Point, AssistantPoint> | undefined,
+    rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint> | undefined,
+    rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint> | undefined,
+    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint> | undefined,
+    rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint> | undefined,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone> | undefined,
+    rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties> | undefined,
+    rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties> | undefined,
   }
 }
