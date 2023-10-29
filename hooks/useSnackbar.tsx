@@ -15,7 +15,7 @@ export const useToastProviderProps = (): Partial<ToastProps> =>
   )
 
 type SnackbarOptions = {
-  type?: SnackbarTypes
+  variant?: SnackbarTypes
   actionText?: string
   onActionPress?: () => void
 } & Pick<
@@ -29,6 +29,7 @@ export const useSnackbar = () => {
     (message: string, options?: SnackbarOptions) => {
       const toastOptions: ToastOptions = { ...options }
       if (options) {
+        toastOptions.type = options.variant
         toastOptions.data = {
           actionText: options.actionText,
           onActionPress: options.onActionPress,

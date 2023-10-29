@@ -8,7 +8,7 @@ const SnackbarScreen = () => {
   const { show } = useSnackbar()
   const openSnackbar = () =>
     show('Error message from snackbar screen example 🚀 This is a very long text', {
-      type: 'success',
+      variant: 'success',
     })
 
   return (

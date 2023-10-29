@@ -42,7 +42,7 @@ export const useAxiosResponseInterceptors = () => {
       }
 
       snackbarMessage ??= t('generic')
-      snackbar.show(snackbarMessage)
+      snackbar.show(snackbarMessage, { variant: 'danger' })
 
       return Promise.reject(error)
     }
