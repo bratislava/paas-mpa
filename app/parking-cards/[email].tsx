@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { ScrollView, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
@@ -13,7 +13,7 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clientApi } from '@/modules/backend/client-api'
+import { parkingCardsOptions } from '@/modules/backend/constants/queryOptions'
 
 export type ParkingCardsLocalSearchParams = {
   email: string
@@ -23,12 +23,7 @@ export type ParkingCardsLocalSearchParams = {
 const Active = () => {
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: ['ParkingCardsActive'],
-    enabled: !!email,
-    queryFn: () => clientApi.parkingCardsControllerGetParkingCards(email!),
-    select: (res) => res.data,
-  })
+  const { data, isPending, isError, error } = useQuery(parkingCardsOptions({ email }))
 
   if (isPending) {
     return <Typography>Loading...</Typography>

@@ -1,8 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { Link, useLocalSearchParams } from 'expo-router'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -17,7 +17,7 @@ import ScreenView from '@/components/shared/ScreenView'
 import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
-import { clientApi } from '@/modules/backend/client-api'
+import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
@@ -55,9 +55,6 @@ const PurchaseScreen = () => {
     }
   }, [defaultVehicle, licencePlate, setLicencePlate])
 
-  // Run query only if all required attributes are present
-  const isQueryEnabled = !!udr && !!licencePlate && !!duration
-
   const parkingEnd = new Date(Date.now() + duration * 1000).toISOString()
   const body: GetTicketPriceRequestDto = {
     npkId: npk?.identificator || undefined,
@@ -70,14 +67,9 @@ const PurchaseScreen = () => {
   }
 
   // TODO handleError
-  const { data, isError, error, isFetching } = useQuery({
-    queryKey: ['TicketRequest', udr, licencePlate, duration, npk],
-    queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
-    select: (res) => res.data,
-    // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
-    placeholderData: keepPreviousData,
-    enabled: isQueryEnabled,
-  })
+  const { data, isError, error, isFetching } = useQuery(
+    ticketPriceOptions({ requestBody: body, udr, npk, licencePlate, duration }),
+  )
 
   // console.log('body', body)
   console.log('data', data, isError, error, isAxiosError(error) && error.response?.data)

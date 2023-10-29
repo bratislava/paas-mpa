@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
@@ -14,7 +15,7 @@ import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useTickets } from '@/modules/backend/hooks/useTickets'
+import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
@@ -34,8 +35,8 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const { tickets } = useTickets(true)
-  const activeTicketsCount = tickets?.length ?? 0
+  const { data: ticketsData } = useQuery(ticketsOptions({ active: true }))
+  const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
   return (
     <BottomSheetTopAttachment {...restProps}>
