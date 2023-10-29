@@ -20,9 +20,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ToastProvider } from 'react-native-toast-notifications'
 
+import AxiosResponseInterceptors from '@/components/special/AxiosResponseInterceptors'
 import { environment } from '@/environment'
 import { useToastProviderProps } from '@/hooks/useSnackbar'
-import { useAxiosResponseInterceptors } from '@/modules/backend/hooks/useAxiosResponseInterceptors'
 import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import colors from '@/tailwind.config.colors'
@@ -70,8 +70,6 @@ const RootLayout = () => {
     }
   }, [fontsLoaded])
 
-  useAxiosResponseInterceptors()
-
   const toastProviderProps = useToastProviderProps()
 
   // Prevent rendering until the font has loaded and mapbox has loaded
@@ -86,13 +84,14 @@ const RootLayout = () => {
 
   // Render the children routes now that all the assets are loaded.
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider {...toastProviderProps}>
+    <ToastProvider {...toastProviderProps}>
+      <QueryClientProvider client={queryClient}>
         <MapZonesProvider>
           <GlobalStoreProvider>
             <SafeAreaProvider>
               <GestureHandlerRootView className="flex-1">
                 <PortalProvider>
+                  <AxiosResponseInterceptors />
                   <Stack
                     screenOptions={{
                       headerBackTitleVisible: false,
@@ -117,8 +116,8 @@ const RootLayout = () => {
             </SafeAreaProvider>
           </GlobalStoreProvider>
         </MapZonesProvider>
-      </ToastProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </ToastProvider>
   )
 }
 
