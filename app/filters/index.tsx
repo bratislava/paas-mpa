@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import { FC, useState } from 'react'
 import { SectionList, View } from 'react-native'
 import { SvgProps } from 'react-native-svg'
@@ -14,6 +14,7 @@ import {
   SellingPointIcon,
 } from '@/assets/map'
 import SelectRow from '@/components/actions/SelectRow'
+import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -53,7 +54,7 @@ const filteringOptions: {
 const FiltersScreen = () => {
   const filtersParams = useLocalSearchParams<FiltersParams>()
   const [filters, setFilters] = useState<Partial<MapFilters>>(filtersParams)
-  const t = useTranslation()
+  const t = useTranslation('FiltersScreen')
 
   const getValueChangeHandler =
     (filterKey: MapZoneStatusEnum | MapPointIconEnum) => (value: boolean) => {
@@ -67,20 +68,19 @@ const FiltersScreen = () => {
 
   return (
     <ScreenView
-      title={t('FiltersScreen.title')}
-      continueProps={{
-        href: { pathname: '/', params: filters },
-        label: t('FiltersScreen.showResults'),
-      }}
+      title={t('title')}
+      actionButton={
+        <Link asChild href={{ pathname: '/', params: filters }}>
+          <ContinueButton>{t('showResults')}</ContinueButton>
+        </Link>
+      }
     >
       <View>
         <SectionList
           sections={filteringOptions}
           renderSectionHeader={({ section: { title } }) => (
             <View>
-              <Typography variant="default-bold">
-                {t(`FiltersScreen.sectionHeaders.${title}`)}
-              </Typography>
+              <Typography variant="default-bold">{t(`sectionHeaders.${title}`)}</Typography>
             </View>
           )}
           className="p-5"
@@ -88,7 +88,7 @@ const FiltersScreen = () => {
             <SelectRow
               key={optionKey}
               IconComponent={icon}
-              label={t(`FiltersScreen.filteringOptions.${optionKey}`)}
+              label={t(`filteringOptions.${optionKey}`)}
               onValueChange={getValueChangeHandler(optionKey)}
               value={filters[optionKey] === 'true'}
             />

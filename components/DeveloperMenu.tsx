@@ -76,6 +76,11 @@ const menuItems: MenuItem[] = [
     subtitle: 'Check if BE is running',
     route: '/examples/healthcheck',
   },
+  {
+    title: 'Empty state screen',
+    subtitle: 'Centered screen with sad smiley',
+    route: '/examples/empty-state-example',
+  },
 ]
 
 const DeveloperMenu = () => {
