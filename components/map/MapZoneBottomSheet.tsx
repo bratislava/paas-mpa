@@ -22,7 +22,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
-import { GeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import { GeocodingFeature, NormalizedUdrZone } from '@/modules/map/types'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
@@ -32,7 +32,7 @@ const SNAP_POINTS = {
 }
 
 type Props = {
-  zone: MapUdrZone | null
+  zone: NormalizedUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
 }
 
@@ -173,20 +173,20 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
               <>
                 <Panel className="g-4">
                   <FlexRow>
-                    <Typography>{selectedZone.Nazov}</Typography>
-                    <SegmentBadge label={selectedZone.UDR_ID.toString()} />
+                    <Typography>{selectedZone.name}</Typography>
+                    <SegmentBadge label={selectedZone.udrId.toString()} />
                   </FlexRow>
                   <Divider />
                   <FlexRow>
                     <Typography variant="default-bold">
-                      {formatPricePerHour(selectedZone.Zakladna_cena)}
+                      {formatPricePerHour(selectedZone.price)}
                     </Typography>
                     <Link
                       asChild
                       href={{
                         pathname: '/zone-details',
                         params: {
-                          udrId: selectedZone.UDR_ID.toString(),
+                          udrId: selectedZone.udrId.toString(),
                         } satisfies ZoneDetailsParamas,
                       }}
                     >
@@ -206,7 +206,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   asChild
                   href={{
                     pathname: '/purchase',
-                    params: { udrId: selectedZone.UDR_ID.toString() },
+                    params: { udrId: selectedZone.udrId.toString() },
                   }}
                 >
                   <Button variant="primary">{t('Navigation.continue')}</Button>

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link, Stack } from 'expo-router'
-import React from 'react'
 import { FlatList } from 'react-native'
 
 import ListRow from '@/components/actions/ListRow'
@@ -11,17 +10,13 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clientApi } from '@/modules/backend/client-api'
+import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
 
 const Page = () => {
   const t = useTranslation('ParkingCards')
 
   // TODO invalidate/refresh query on add/remove
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: ['VerifiedEmails'],
-    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1, 10),
-    select: (res) => res.data,
-  })
+  const { data, isPending, isError, error } = useQuery(verifiedEmailsOptions())
 
   if (isPending) {
     return <Typography>Loading...</Typography>

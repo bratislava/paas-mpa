@@ -21,6 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ToastProvider } from 'react-native-toast-notifications'
 
 import AxiosResponseInterceptors from '@/components/special/AxiosResponseInterceptors'
+import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import { environment } from '@/environment'
 import { useToastProviderProps } from '@/hooks/useSnackbar'
 import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
@@ -92,6 +93,7 @@ const RootLayout = () => {
               <GestureHandlerRootView className="flex-1">
                 <PortalProvider>
                   <AxiosResponseInterceptors />
+                  <OmnipresentComponent />
                   <Stack
                     screenOptions={{
                       headerBackTitleVisible: false,
@@ -102,14 +104,6 @@ const RootLayout = () => {
                     }}
                   >
                     <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-                    <Stack.Screen
-                      name="purchase/choose-vehicle"
-                      options={{ presentation: 'modal' }}
-                    />
-                    <Stack.Screen
-                      name="purchase/choose-payment-method"
-                      options={{ presentation: 'modal' }}
-                    />
                   </Stack>
                 </PortalProvider>
               </GestureHandlerRootView>

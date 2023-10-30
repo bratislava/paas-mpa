@@ -1,7 +1,7 @@
 import { clsx } from 'clsx'
-import { Link, Stack } from 'expo-router'
+import { Link, Stack, useNavigation } from 'expo-router'
 import { Href } from 'expo-router/build/link/href'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -32,6 +32,16 @@ const ScreenView = ({
   className,
   ...rest
 }: Props) => {
+  const navigation = useNavigation()
+  useEffect(() => {
+    // This is our problem: https://github.com/expo/expo/issues/24553#issuecomment-1749261475
+    // but the solution provided does not work
+    // Here we are hiding the header for the root navigation when the nested navigator is rendered
+    // this keeps the back button working as expected and the title is also correctly displayed
+    const rootNavigation = navigation.getParent()
+    rootNavigation?.setOptions({ headerShown: false })
+  }, [navigation])
+
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
       <Stack.Screen options={{ title }} />

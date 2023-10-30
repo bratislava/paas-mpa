@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useCallback, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
@@ -10,15 +11,17 @@ import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenView from '@/components/shared/ScreenView'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useTickets } from '@/modules/backend/hooks/useTickets'
+import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
 const ActiveTicketsRoute = () => {
-  const { tickets } = useTickets(true)
+  const { data: ticketsResponse } = useQuery(ticketsOptions({ active: true }))
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
   )
+
+  const tickets = ticketsResponse?.tickets
 
   const isShowingTickets = tickets && tickets.length > 0
 
@@ -55,11 +58,13 @@ const ActiveTicketsRoute = () => {
 }
 
 const HistoryRoute = () => {
-  const { tickets } = useTickets(false)
+  const { data: ticketsResponse } = useQuery(ticketsOptions({ active: false }))
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
   )
+
+  const tickets = ticketsResponse?.tickets ?? []
 
   return (
     <ScreenContent>

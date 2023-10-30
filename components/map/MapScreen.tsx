@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Link, useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -9,8 +9,10 @@ import Map, { MapRef } from '@/components/map/Map'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
+import { useLocale } from '@/hooks/useTranslation'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 
 type MapScreenParams = MapFilters
 
@@ -20,6 +22,7 @@ const MapScreen = () => {
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const mapRef = useRef<MapRef>(null)
   const { top } = useSafeAreaInsets()
+  const locale = useLocale()
 
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
@@ -49,6 +52,11 @@ const MapScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stringifiedParams])
 
+  const normalizedZone = useMemo(
+    () => (selectedZone ? normalizeZone(selectedZone, locale) : null),
+    [selectedZone, locale],
+  )
+
   return (
     <View className="flex-1 items-stretch">
       <Map
@@ -60,7 +68,7 @@ const MapScreen = () => {
       <Portal hostName="index">
         <MapZoneBottomSheet
           ref={zoneBottomSheetRef}
-          zone={selectedZone}
+          zone={normalizedZone}
           setFlyToCenter={mapRef.current?.setFlyToCenter}
         />
       </Portal>

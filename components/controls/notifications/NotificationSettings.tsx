@@ -1,10 +1,11 @@
-import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
 import Field from '@/components/shared/Field'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
+import { notificationSettingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 
 /*
@@ -24,12 +25,6 @@ import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
  * We use `queryOptions` to leverage query type queryProvider functions (like queryClient.setQueryData)
  * Docs: https://tanstack.com/query/latest/docs/react/typescript#typing-query-options
  */
-const notificationSettingsOptions = () =>
-  queryOptions({
-    queryKey: ['NotificationSetting'],
-    queryFn: () => clientApi.usersControllerGetUserSettings(),
-    select: (data) => data.data,
-  })
 
 const NotificationSettings = () => {
   const t = useTranslation('Settings')
