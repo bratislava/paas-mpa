@@ -27,16 +27,23 @@
   },
   "PurchaseScreen": {
     "title": "Nákup lístka",
+    "titlePayment": "Platba",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
-    "summary": "Celkom",
-    "pay": "Zaplatiť",
     "customParkingTimeTitle": "Vlastný čas",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "customParkingTimeFieldLabel": "Vyberte čas",
     "chooseParkingZoneEmptyControlLabel": "Vyberte úsek parkovania"
+  },
+  "PurchaseBottomSheet": {
+    "pay": "Zaplatiť",
+    "summary": "Celkom",
+    "parkingTime": "Parkovanie {{time}}",
+    "creditNpkUsed": "Návštevnícka karta",
+    "creditBpkUsed": "Bonusová karta",
+    "tax": "Daň"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",

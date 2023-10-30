@@ -24,7 +24,7 @@ const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
   const [udr, setUdr] = useState<NormalizedUdrZone | null>(null)
   const [npk, setNpk] = useState<ParkingCardDto | null>(null)
   const [licencePlate, setLicencePlate] = useState<string>('')
-  const [duration, setDuration] = useState<number>(60)
+  const [duration, setDuration] = useState<number>(60 * 60) // 1 hour
 
   const value = useMemo(
     () => ({

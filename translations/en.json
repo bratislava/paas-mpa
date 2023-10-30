@@ -27,16 +27,23 @@
   },
   "PurchaseScreen": {
     "title": "Ticket purchase",
+    "titlePayment": "Payment",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
-    "summary": "Summary",
-    "pay": "Pay",
     "customParkingTimeTitle": "Custom time",
     "chooseVehicleFieldLabel": "Choose vehicle",
     "customParkingTimeFieldLabel": "Choose time",
     "chooseParkingZoneEmptyControlLabel": "Choose parking zone"
+  },
+  "PurchaseBottomSheet": {
+    "pay": "Pay",
+    "summary": "Summary",
+    "parkingTime": "Parking {{time}}",
+    "creditNpkUsed": "Visitor card",
+    "creditBpkUsed": "Bonus card",
+    "tax": "Tax"
   },
   "VehiclesScreen": {
     "title": "Vehicles",

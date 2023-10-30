@@ -55,20 +55,23 @@ const PurchaseScreen = () => {
     }
   }, [defaultVehicle, licencePlate, setLicencePlate])
 
-  const parkingEnd = new Date(Date.now() + duration * 1000).toISOString()
+  const dateNow = Date.now()
+  const parkingStart = new Date(dateNow).toISOString()
+  const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
   const body: GetTicketPriceRequestDto = {
     npkId: npk?.identificator || undefined,
     ticket: {
       udr: String(udr?.udrId) ?? '',
       udrUuid: udr?.udrUuid ?? '',
       ecv: licencePlate,
+      parkingStart,
       parkingEnd,
     },
   }
 
   // TODO handleError
   const { data, isError, error, isFetching } = useQuery(
-    ticketPriceOptions({ requestBody: body, udr, npk, licencePlate, duration }),
+    ticketPriceOptions(body, { udr, npk, licencePlate, duration }),
   )
 
   // console.log('body', body)
@@ -105,7 +108,12 @@ const PurchaseScreen = () => {
         </ScrollView>
       </ScreenView>
 
-      <PurchaseBottomSheet ref={bottomSheetRef} priceData={data} isLoading={isFetching} />
+      <PurchaseBottomSheet
+        ref={bottomSheetRef}
+        priceData={data}
+        isLoading={isFetching}
+        priceRequestBody={body}
+      />
     </>
   )
 }

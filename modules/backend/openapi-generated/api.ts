@@ -157,20 +157,6 @@ export interface DeleteResponseDto {
 /**
  *
  * @export
- * @enum {string}
- */
-
-export const ERRORNAMES = {
-  DatabaseError: 'DATABASE ERROR',
-  MailgunError: 'MAILGUN_ERROR',
-  RabbitMqError: 'RABBIT_MQ_ERROR',
-} as const
-
-export type ERRORNAMES = (typeof ERRORNAMES)[keyof typeof ERRORNAMES]
-
-/**
- *
- * @export
  * @interface EmailVerificationResult
  */
 export interface EmailVerificationResult {
@@ -201,38 +187,6 @@ export interface EmailVerificationResult {
    */
   key: string
 }
-/**
- *
- * @export
- * @interface ExpectedErrorDto
- */
-export interface ExpectedErrorDto {
-  /**
-   * Status Code
-   * @type {number}
-   * @memberof ExpectedErrorDto
-   */
-  statusCode: number
-  /**
-   * Status in text
-   * @type {string}
-   * @memberof ExpectedErrorDto
-   */
-  status: string
-  /**
-   * Detail error message
-   * @type {string}
-   * @memberof ExpectedErrorDto
-   */
-  message: string
-  /**
-   *
-   * @type {ERRORNAMES}
-   * @memberof ExpectedErrorDto
-   */
-  errorName: ERRORNAMES
-}
-
 /**
  *
  * @export
@@ -326,13 +280,13 @@ export interface GetTicketPriceResponseDto {
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  creditBPKUsed: string
+  creditBpkUsed: string
   /**
    * NPK - Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
-  creditNpkUsed?: string
+  creditNpkUsed: string
   /**
    * The date and time when parking starts (UTC time in ISO8601 format)
    * @type {string}
@@ -382,6 +336,12 @@ export interface GetTicketPriceTicketInfoRequestDto {
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
   parkingEnd: string
+  /**
+   * The date and time when parking ends (UTC time in ISO8601 format)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestDto
+   */
+  parkingStart?: string
 }
 /**
  *
@@ -728,6 +688,56 @@ export interface PaymentResponseQueryDto {
 /**
  *
  * @export
+ * @enum {string}
+ */
+
+export const PaymentStatus = {
+  Success: 'SUCCESS',
+  Pending: 'PENDING',
+  Fail: 'FAIL',
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const SERVICEERROR = {
+  Token: 'TOKEN',
+  TokenIncorrect: 'TOKEN_INCORRECT',
+  TokenExpired: 'TOKEN_EXPIRED',
+  PricingApiError: 'PRICING_API_ERROR',
+  ParkdotsError: 'PARKDOTS_ERROR',
+  ParkdotsTokenError: 'PARKDOTS_TOKEN_ERROR',
+  PriceMismatch: 'PRICE_MISMATCH',
+  PaymentInit: 'PAYMENT_INIT',
+  PaymentValdation: 'PAYMENT_VALDATION',
+  Ticket: 'TICKET',
+  Mpa: 'MPA',
+} as const
+
+export type SERVICEERROR = (typeof SERVICEERROR)[keyof typeof SERVICEERROR]
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const SYSTEMERROR = {
+  DatabaseError: 'DATABASE_ERROR',
+  MailgunError: 'MAILGUN_ERROR',
+  RabbitMqError: 'RABBIT_MQ_ERROR',
+} as const
+
+export type SYSTEMERROR = (typeof SYSTEMERROR)[keyof typeof SYSTEMERROR]
+
+/**
+ *
+ * @export
  * @interface SaveAnnouncementDto
  */
 export interface SaveAnnouncementDto {
@@ -811,6 +821,70 @@ export interface SaveUserSettingsDto {
 /**
  *
  * @export
+ * @interface ServiceErrorDto
+ */
+export interface ServiceErrorDto {
+  /**
+   * Status in text
+   * @type {string}
+   * @memberof ServiceErrorDto
+   */
+  status: string
+  /**
+   * Detail error message
+   * @type {string}
+   * @memberof ServiceErrorDto
+   */
+  message: string
+  /**
+   * Status Code
+   * @type {number}
+   * @memberof ServiceErrorDto
+   */
+  statusCode: number
+  /**
+   *
+   * @type {SERVICEERROR}
+   * @memberof ServiceErrorDto
+   */
+  errorName: SERVICEERROR
+}
+
+/**
+ *
+ * @export
+ * @interface SystemErrorDto
+ */
+export interface SystemErrorDto {
+  /**
+   * Status in text
+   * @type {string}
+   * @memberof SystemErrorDto
+   */
+  status: string
+  /**
+   * Detail error message
+   * @type {string}
+   * @memberof SystemErrorDto
+   */
+  message: string
+  /**
+   * Status Code
+   * @type {number}
+   * @memberof SystemErrorDto
+   */
+  statusCode: number
+  /**
+   *
+   * @type {SYSTEMERROR}
+   * @memberof SystemErrorDto
+   */
+  errorName: SYSTEMERROR
+}
+
+/**
+ *
+ * @export
  * @interface TicketDto
  */
 export interface TicketDto {
@@ -863,6 +937,30 @@ export interface TicketDto {
    */
   bpkId?: string
   /**
+   * ID of the payment in paygate
+   * @type {string}
+   * @memberof TicketDto
+   */
+  paymentId?: string
+  /**
+   * URL address of the payment
+   * @type {string}
+   * @memberof TicketDto
+   */
+  paymentUrl?: string
+  /**
+   *
+   * @type {PaymentStatus}
+   * @memberof TicketDto
+   */
+  paymentStatus?: PaymentStatus
+  /**
+   * Date of the cancellation
+   * @type {string}
+   * @memberof TicketDto
+   */
+  canceledAt?: string
+  /**
    * Date of the last change
    * @type {string}
    * @memberof TicketDto
@@ -875,6 +973,7 @@ export interface TicketDto {
    */
   createdAt: string
 }
+
 /**
  *
  * @export
@@ -901,12 +1000,6 @@ export interface TicketsResponseDto {
  */
 export interface UnexpectedErrorDto {
   /**
-   * Status Code
-   * @type {number}
-   * @memberof UnexpectedErrorDto
-   */
-  statusCode: number
-  /**
    * Status in text
    * @type {string}
    * @memberof UnexpectedErrorDto
@@ -918,6 +1011,12 @@ export interface UnexpectedErrorDto {
    * @memberof UnexpectedErrorDto
    */
   message: string
+  /**
+   * Status Code
+   * @type {number}
+   * @memberof UnexpectedErrorDto
+   */
+  statusCode: number
   /**
    * Exact error name
    * @type {string}
@@ -2561,6 +2660,101 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary Process ticket prolongation payment
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerProcessTicketProlongationPayment: async (
+      paymentResponseQueryDto: PaymentResponseQueryDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'paymentResponseQueryDto' is not null or undefined
+      assertParamExists(
+        'ticketsControllerProcessTicketProlongationPayment',
+        'paymentResponseQueryDto',
+        paymentResponseQueryDto,
+      )
+      const localVarPath = `/tickets/payment/prolongation/process`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        paymentResponseQueryDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary WIP: Shorten existing ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerShortenTicket: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerShortenTicket', 'id', id)
+      const localVarPath = `/tickets/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)))
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
      * @param {number} [page] Page number
@@ -2722,6 +2916,41 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Process ticket prolongation payment
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerProcessTicketProlongationPayment(
+      paymentResponseQueryDto: PaymentResponseQueryDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerProcessTicketProlongationPayment(
+          paymentResponseQueryDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary WIP: Shorten existing ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerShortenTicket(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerShortenTicket(
+        id,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get tickets paginated
      * @param {boolean} active True to load active tickets, false to load past tickets
      * @param {number} [page] Page number
@@ -2830,6 +3059,36 @@ export const TicketsApiFactory = function (
     ): AxiosPromise<TicketDto> {
       return localVarFp
         .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Process ticket prolongation payment
+     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerProcessTicketProlongationPayment(
+      paymentResponseQueryDto: PaymentResponseQueryDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketDto> {
+      return localVarFp
+        .ticketsControllerProcessTicketProlongationPayment(paymentResponseQueryDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary WIP: Shorten existing ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerShortenTicket(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketDto> {
+      return localVarFp
+        .ticketsControllerShortenTicket(id, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -2943,6 +3202,37 @@ export class TicketsApi extends BaseAPI {
   ) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Process ticket prolongation payment
+   * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerProcessTicketProlongationPayment(
+    paymentResponseQueryDto: PaymentResponseQueryDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerProcessTicketProlongationPayment(paymentResponseQueryDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary WIP: Shorten existing ticket
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerShortenTicket(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerShortenTicket(id, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
