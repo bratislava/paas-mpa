@@ -2,13 +2,17 @@ import { useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { WebView } from 'react-native-webview'
 
+import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
+import { useTranslation } from '@/hooks/useTranslation'
 
 type PaymentSearchParams = {
   paymentUrl: string
 }
 
-const Payment = () => {
+// TODO wrap also invalid states into ScreenView (this adds title)
+const PaymentScreen = () => {
+  const t = useTranslation('PurchaseScreen')
   const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
 
   if (!paymentUrl) {
@@ -21,7 +25,11 @@ const Payment = () => {
     return <Typography>Invalid payment url.</Typography>
   }
 
-  return <WebView source={{ uri: paymentUrlDecoded }} className="flex-1" />
+  return (
+    <ScreenView title={t('titlePayment')}>
+      <WebView source={{ uri: paymentUrlDecoded }} className="flex-1" />
+    </ScreenView>
+  )
 }
 
-export default Payment
+export default PaymentScreen

@@ -30,7 +30,7 @@ type Props = {
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
   ({ priceData, isLoading, priceRequestBody }, ref) => {
-    const t = useTranslation('PurchaseScreen')
+    const t = useTranslation('PurchaseBottomSheet')
     const insets = useSafeAreaInsets()
     // TODO tmp for now - fixed height from figma
     const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
@@ -93,7 +93,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
             <BottomSheetContent cn="g-3" hideSpacer>
               <FlexRow>
                 <Typography variant="default">
-                  Parkovanie {formatDuration(durationFromPriceDate ?? 0)}
+                  {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
                 </Typography>
                 <Typography variant="default-bold">
                   {formatPrice(priceData.priceWithoutDiscount)}
@@ -103,7 +103,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
               {/* Show creditNpkUsed only if it is defined and "non-zero" */}
               {!priceData.creditNpkUsed || priceData.creditNpkUsed === 'PT0S' ? null : (
                 <FlexRow>
-                  <Typography variant="default">Stiahnuté z návštevníckej karty</Typography>
+                  <Typography variant="default">{t('creditNpkUsed')}</Typography>
                   <Typography variant="default-bold">
                     {formatPeriodOfTime(priceData.creditNpkUsed)}
                   </Typography>
@@ -113,7 +113,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
               {/* Show creditBpkUsed only if it is defined and "non-zero" */}
               {!priceData.creditBpkUsed || priceData.creditBpkUsed === 'PT0S' ? null : (
                 <FlexRow>
-                  <Typography variant="default">Stiahnuté z bonusovej karty</Typography>
+                  <Typography variant="default">{t('creditBpkUsed')}</Typography>
                   <Typography variant="default-bold">
                     {formatPeriodOfTime(priceData.creditBpkUsed)}
                   </Typography>
@@ -123,7 +123,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
               {/* Check if it is present (null/undefined, but show if it is 0) */}
               {priceData.tax == null ? null : (
                 <FlexRow>
-                  <Typography variant="default">Dan</Typography>
+                  <Typography variant="default">{t('tax')}</Typography>
                   <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
                 </FlexRow>
               )}
