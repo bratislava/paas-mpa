@@ -4,7 +4,8 @@
   },
   "Common": {
     "loading": "Loading",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "hide": "Hide"
   },
   "Typography": {
     "test": "EN translation"
@@ -212,5 +213,13 @@
       "parkingType": "Parking type",
       "zones": "Zones"
     }
+  },
+  "Errors": {
+    "422": "An error occurred while processing your request. Please try again later.",
+    "axiosGeneric": "An error occurred while processing your request. Please try again later.",
+    "generic": "An error occured.",
+    "DATABASE ERROR": "database error",
+    "MAILGUN_ERROR": "mailgun error",
+    "RABBIT_MQ_ERROR": "rabbit mq error"
   }
 }

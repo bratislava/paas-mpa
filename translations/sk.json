@@ -4,7 +4,8 @@
   },
   "Common": {
     "loading": "Načítavam",
-    "cancel": "Zrušiť"
+    "cancel": "Zrušiť",
+    "hide": "Skryť"
   },
   "Typography": {
     "test": "SK preklad"
@@ -191,5 +192,13 @@
       "parkingType": "Typ parkovania",
       "zones": "Zóny"
     }
+  },
+  "Errors": {
+    "422": "Vyskytla sa chyba pri spracovaní vašej požiadavky. Skúste to prosím neskôr.",
+    "axiosGeneric": "Pri spracovaní vašej požiadavky sa vyskytla chyba. Skúste to prosím neskôr.",
+    "generic": "Vyskytla sa chyba.",
+    "DATABASE ERROR": "chyba databázy",
+    "MAILGUN_ERROR": "chyba mailgunu",
+    "RABBIT_MQ_ERROR": "chyba rabbit mq"
   }
 }
