@@ -1,5 +1,4 @@
 import { Link } from 'expo-router'
-import React from 'react'
 import { FlatList, TouchableOpacity, View } from 'react-native'
 
 import Typography from '@/components/shared/Typography'
@@ -55,6 +54,11 @@ const menuItems: MenuItem[] = [
     title: 'Modal',
     subtitle: 'Modal examples',
     route: '/examples/modal',
+  },
+  {
+    title: 'Snackbar',
+    subtitle: 'Snackbar examples',
+    route: '/examples/snackbar',
   },
   {
     title: 'Purchase',
