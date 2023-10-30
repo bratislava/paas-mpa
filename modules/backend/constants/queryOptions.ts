@@ -45,22 +45,23 @@ export const verifiedEmailsOptions = ({
     select: (res) => res.data,
   })
 
-export const ticketPriceOptions = ({
-  udr,
-  licencePlate,
-  duration,
-  npk,
-  requestBody,
-}: {
-  udr: NormalizedUdrZone | null
-  licencePlate: string
-  duration: number
-  npk: ParkingCardDto | null
-  requestBody: GetTicketPriceRequestDto
-}) =>
+export const ticketPriceOptions = (
+  body: GetTicketPriceRequestDto,
+  {
+    udr,
+    licencePlate,
+    duration,
+    npk,
+  }: {
+    udr: NormalizedUdrZone | null
+    licencePlate: string
+    duration: number
+    npk: ParkingCardDto | null
+  },
+) =>
   queryOptions({
     queryKey: ['TicketPrice', udr, licencePlate, duration, npk],
-    queryFn: () => clientApi.ticketsControllerGetTicketPrice(requestBody),
+    queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
