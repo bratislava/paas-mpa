@@ -27,13 +27,22 @@ const Page = () => {
   // TODO add email validation
   const isValid = email.includes('@')
 
+  // TODO deduplicate this mutation (it's also used in link-expired.tsx)
   const mutation = useMutation({
     mutationFn: (bodyInner: VerifyEmailsDto) =>
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
-    onError: (error) => {
-      // TODO handle error, show snackbar?
-      // Handled in mutation to be sure that snackbar is shown on error
-      console.log('error', error)
+    onSuccess: (res) => {
+      const tmpVerificationToken = res.data[0].token
+      const tmpVerificationKey = res.data[0].key
+
+      router.push({
+        pathname: '/parking-cards/verification/verification-sent',
+        params: {
+          emailToVerify: email,
+          tmpVerificationKey,
+          tmpVerificationToken,
+        },
+      })
     },
   })
 
@@ -42,17 +51,7 @@ const Page = () => {
       emails: [email],
     }
 
-    mutation.mutate(body, {
-      onSuccess: (res) => {
-        const tmpVerificationToken = res.data[0].token
-        const verificationKey = res.data[0].key
-        console.log('success', tmpVerificationToken, verificationKey)
-        router.push({
-          pathname: '/parking-cards/verification-sent',
-          params: { emailToVerify: email, verificationKey, tmpVerificationToken },
-        })
-      },
-    })
+    mutation.mutate(body)
   }
 
   return (

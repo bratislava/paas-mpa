@@ -31,7 +31,7 @@ const Page = () => {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Link asChild href="/parking-cards/enter-paas-account">
+            <Link asChild href="/parking-cards/verification">
               <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
             </Link>
           ),

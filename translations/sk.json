@@ -147,6 +147,23 @@
       "removeEmail": "Odstrániť e-mail"
     }
   },
+  "VerificationResult": {
+    "verified": {
+      "title": "Parkovacie karty pridané",
+      "text": "Vaše parkovacie karty pre e-mailovú adresu {{email}} boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
+      "actionButtonLabel": "Pokračovať"
+    },
+    "verified-no-cards": {
+      "title": "Žiadne parkovacie karty",
+      "text": "Pre e-mailovú adresu {{email}} neboli nájdené žiadne parkovacie karty.\n\nProsím, skúste kontaktovať podporu paas.sk.",
+      "actionButtonLabel": "Pokračovať"
+    },
+    "link-expired": {
+      "title": "Platnosť vypršala",
+      "text": "Je nám ľúto, ale platnosť odkazu na overenie vašej e-mailovej adresy vypršala. Zopakujte odoslanie e-mailu na adresu {{email}}.\n\nKliknutím na tlačidlo Overiť pridáme vaše parkovacie karty priamo do aplikácie.",
+      "actionButtonLabel": "Opätovne odoslať a pokračovať"
+    }
+  },
   "ZoneBottomSheet": {
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",

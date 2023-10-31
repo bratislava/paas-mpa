@@ -147,6 +147,23 @@
       "removeEmail": "Remove e-mail address"
     }
   },
+  "VerificationResult": {
+    "verified": {
+      "title": "Parking card added",
+      "text": "Your parking cards e-mail {{email}} has been added. You can see your cards in the Parking cards section.",
+      "actionButtonLabel": "Continue"
+    },
+    "verified-no-cards": {
+      "title": "No parking cards",
+      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact paas.sk support.",
+      "actionButtonLabel": "Continue"
+    },
+    "link-expired": {
+      "title": "Link expired",
+      "text": "We are sorry, but link to verify your e-mail has expired. Resend e-mail to {{email}} and verify it again.\n\nClick on Verify button in the e-mail to approve verification and we will then add parking cards directly to the app.",
+      "actionButtonLabel": "Resend & continue"
+    }
+  },
   "TimeSelector": {
     "addTimeButton": "Add 15 minutes",
     "subtractTimeButton": "Subtract 15 minutes",
