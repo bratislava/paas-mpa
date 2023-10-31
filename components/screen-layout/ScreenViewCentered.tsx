@@ -1,6 +1,6 @@
 import ScreenView, { ScreenViewProps } from '@/components/screen-layout/ScreenView'
 
-const CenteredScreenView = ({
+const ScreenViewCentered = ({
   children,
   backgroundVariant = 'dots',
   contentPosition = 'center',
@@ -13,4 +13,4 @@ const CenteredScreenView = ({
   )
 }
 
-export default CenteredScreenView
+export default ScreenViewCentered
