@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
-import CenteredScreenView from '@/components/screen-layout/CenteredScreenView'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
+import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 
 type Props = {
   title: string
@@ -13,14 +13,14 @@ type Props = {
 
 const EmptyStateScreen = ({ title, text, button, buttonPosition = 'bottom' }: Props) => {
   return (
-    <CenteredScreenView actionButton={buttonPosition === 'bottom' && button ? button : undefined}>
+    <ScreenViewCentered actionButton={buttonPosition === 'bottom' && button ? button : undefined}>
       <ContentWithAvatar
         title={title}
         text={text}
         customAvatarComponent={<EmptyStateAvatar />}
         actionButton={buttonPosition === 'insideContent' && button ? button : undefined}
       />
-    </CenteredScreenView>
+    </ScreenViewCentered>
   )
 }
 
