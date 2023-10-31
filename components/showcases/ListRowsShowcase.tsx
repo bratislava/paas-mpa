@@ -2,8 +2,8 @@
 import React, { Fragment } from 'react'
 import { View } from 'react-native'
 
-import ActionRow, { ActionRowProps } from '@/components/actions/ActionRow'
-import ListRow, { ListRowProps } from '@/components/actions/ListRow'
+import ActionRow, { ActionRowProps } from '@/components/list-rows/ActionRow'
+import ListRow, { ListRowProps } from '@/components/list-rows/ListRow'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 

@@ -4,9 +4,9 @@ import { ScrollView } from 'react-native'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from 'utils/errors'
 
 import TextInput from '@/components/inputs/TextInput'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 

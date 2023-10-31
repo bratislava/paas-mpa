@@ -2,11 +2,12 @@ import { Link } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
 
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import Button from '@/components/shared/Button'
 import FlexRow from '@/components/shared/FlexRow'
 import IconButton from '@/components/shared/IconButton'
-import Modal, { ModalContentWithActions } from '@/components/shared/Modal'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
@@ -46,7 +47,7 @@ const TicketCard = ({ ticket }: Props) => {
             <IconButton name="more-vert" accessibilityLabel={t('more')} />
           </FlexRow>
           <View className="items-start g-1">
-            <SegmentBadge label={ticket.udr} />
+            <ZoneBadge label={ticket.udr} />
             <Typography variant="small">
               {zone?.cityDistrict} – {zone?.name}
             </Typography>

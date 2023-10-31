@@ -7,7 +7,7 @@ type Props = {
   label: string
 }
 
-const SegmentBadge = ({ label }: Props) => {
+const ZoneBadge = ({ label }: Props) => {
   return (
     <View className="rounded-sm bg-green-light px-2">
       <Typography variant="default-bold" className="text-green">
@@ -17,4 +17,4 @@ const SegmentBadge = ({ label }: Props) => {
   )
 }
 
-export default SegmentBadge
+export default ZoneBadge

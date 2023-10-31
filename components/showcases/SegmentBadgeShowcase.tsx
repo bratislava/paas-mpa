@@ -1,12 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
 
 const SegmentBadgeShowcase = () => {
   return (
     <View className="items-start p-4 g-4">
-      <SegmentBadge label="1045" />
+      <ZoneBadge label="1045" />
     </View>
   )
 }

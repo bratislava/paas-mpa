@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
-import ContentWithAvatar from '@/components/layout/ContentWithAvatar'
-import CenteredScreenView from '@/components/shared/CenteredScreenView'
+import CenteredScreenView from '@/components/screen-layout/CenteredScreenView'
+import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 
 type Props = {
   title: string

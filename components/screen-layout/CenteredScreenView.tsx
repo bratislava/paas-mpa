@@ -1,4 +1,4 @@
-import ScreenView, { ScreenViewProps } from '@/components/shared/ScreenView'
+import ScreenView, { ScreenViewProps } from '@/components/screen-layout/ScreenView'
 
 const CenteredScreenView = ({
   children,

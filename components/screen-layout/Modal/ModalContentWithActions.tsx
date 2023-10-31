@@ -1,49 +1,10 @@
-import { clsx } from 'clsx'
-import React, { ReactNode } from 'react'
-import { Modal as ModalRN, ModalProps, View, ViewProps } from 'react-native'
+import { ReactNode } from 'react'
+import { View, ViewProps } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
+import ModalContent from '@/components/screen-layout/Modal/ModalContent'
 import Button from '@/components/shared/Button'
-import IconButton from '@/components/shared/IconButton'
 import Typography from '@/components/shared/Typography'
-
-export const ModalBackdrop = ({ className, ...rest }: ViewProps) => {
-  return (
-    <View
-      {...rest}
-      className={clsx('flex-1 items-center justify-center bg-dark/50 p-5', className)}
-    />
-  )
-}
-
-type ModalContainerProps = {
-  onRequestClose: ModalProps['onRequestClose']
-} & ViewProps
-
-export const ModalContainer = ({
-  className,
-  onRequestClose,
-  children,
-  ...rest
-}: ModalContainerProps) => {
-  return (
-    <View {...rest} className={clsx('w-full overflow-hidden rounded bg-white', className)}>
-      {children}
-      <IconButton
-        name="close"
-        // TODO translation
-        // TODO add option to hide this button
-        accessibilityLabel="Close dialog"
-        className="absolute right-4 top-4"
-        onPress={onRequestClose}
-      />
-    </View>
-  )
-}
-
-export const ModalContent = ({ className, ...rest }: ViewProps) => {
-  return <View {...rest} className={clsx('px-5 py-6 g-4', className)} />
-}
 
 type PrimaryActionProps =
   | {
@@ -65,7 +26,7 @@ type SecondaryActionProps =
       secondaryActionLabel?: never
     }
 
-type ConfirmModalProps = {
+type ModalContentWithActionsProps = {
   title: string
   text?: string
   variant?: 'success' | 'error'
@@ -75,7 +36,7 @@ type ConfirmModalProps = {
   SecondaryActionProps &
   ViewProps
 
-export const ModalContentWithActions = ({
+const ModalContentWithActions = ({
   title,
   text,
   className,
@@ -88,7 +49,7 @@ export const ModalContentWithActions = ({
   secondaryActionOnPress,
   secondaryActionLabel,
   ...rest
-}: ConfirmModalProps) => {
+}: ModalContentWithActionsProps) => {
   return (
     <ModalContent {...rest} className="g-6">
       {hideAvatar ? null : customAvatarComponent ?? <AvatarCircle variant={variant} />}
@@ -121,14 +82,4 @@ export const ModalContentWithActions = ({
   )
 }
 
-const Modal = ({ children, ...props }: ModalProps) => {
-  return (
-    <ModalRN transparent animationType="fade" {...props}>
-      <ModalBackdrop>
-        <ModalContainer onRequestClose={props.onRequestClose}>{children}</ModalContainer>
-      </ModalBackdrop>
-    </ModalRN>
-  )
-}
-
-export default Modal
+export default ModalContentWithActions

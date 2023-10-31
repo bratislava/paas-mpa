@@ -13,9 +13,9 @@ import {
   PPLusRIcon,
   SellingPointIcon,
 } from '@/assets/map'
-import SelectRow from '@/components/actions/SelectRow'
+import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
-import ScreenView from '@/components/shared/ScreenView'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapFilters, MapPointIconEnum, MapZoneStatusEnum } from '@/modules/map/constants'

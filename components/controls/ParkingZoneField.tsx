@@ -1,6 +1,6 @@
 import { Link } from 'expo-router'
 
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
@@ -26,7 +26,7 @@ const ParkingZoneField = ({ zone }: Props) => {
           <Link asChild href="/">
             <PressableStyled>
               {/* TODO remove casting number/string */}
-              <SegmentBadge label={zone.udrId.toString()} />
+              <ZoneBadge label={zone.udrId.toString()} />
             </PressableStyled>
           </Link>
         ) : null

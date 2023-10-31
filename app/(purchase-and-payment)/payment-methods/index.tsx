@@ -3,9 +3,9 @@ import { ScrollView } from 'react-native'
 
 import MethodsField from '@/components/controls/payment-methods/MethodsField'
 import VisitorCardsField from '@/components/controls/payment-methods/VisitorCardsField'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation } from '@/hooks/useTranslation'
 
 // TODO discuss what should be displayed on this screen

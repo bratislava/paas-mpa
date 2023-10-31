@@ -2,9 +2,9 @@ import { Link } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { getCurrentAuthenticatedUser, signOut } from '@/modules/cognito/utils'
 

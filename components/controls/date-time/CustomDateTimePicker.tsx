@@ -4,11 +4,11 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useSta
 import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 
-import Button from '@/components/shared/Button'
 import ScrollPickerNative, {
   ScrollHandle,
   ScrollPickerProps as ScrollPickerNativeProps,
-} from '@/components/shared/ScrollViewPicker'
+} from '@/components/controls/date-time/lib/ScrollViewPicker'
+import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import colors from '@/tailwind.config.colors'

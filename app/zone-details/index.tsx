@@ -1,12 +1,12 @@
 import { useLocalSearchParams } from 'expo-router'
 import { View } from 'react-native'
 
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
@@ -31,7 +31,7 @@ const ZoneDetailsScreen = () => {
     <ScreenView title={t('ZoneDetailsScreen.title')}>
       <ScreenContent>
         <FlexRow className="py-4">
-          <SegmentBadge label={zone.udrId.toString()} />
+          <ZoneBadge label={zone.udrId.toString()} />
           <Typography className="flex-1">{zone.name}</Typography>
           <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>

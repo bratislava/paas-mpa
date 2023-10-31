@@ -2,7 +2,7 @@ import { AxiosResponse, isAxiosError } from 'axios'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useSnackbar } from '@/hooks/useSnackbar'
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { useTranslation as useLocalTranslation } from '@/hooks/useTranslation'
 import { axiosInstance } from '@/modules/backend/axios-instance'
 

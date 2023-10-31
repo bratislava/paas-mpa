@@ -5,7 +5,7 @@ import { forwardRef, useMemo } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import BottomSheetContent from '@/components/shared/BottomSheetContent'
+import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'

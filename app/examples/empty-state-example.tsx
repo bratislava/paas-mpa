@@ -1,7 +1,7 @@
 import React from 'react'
 
-import EmptyStateScreen from '@/components/layout/EmptyStateScreen'
 import ContinueButton from '@/components/navigation/ContinueButton'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 
 const EmptyStateExampleScreen = () => (
   <EmptyStateScreen

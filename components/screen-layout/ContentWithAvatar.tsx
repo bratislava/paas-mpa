@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
 
@@ -23,7 +24,7 @@ const ContentWithAvatar = ({
   ...rest
 }: ContentWithAvatarProps) => {
   return (
-    <View {...rest} className="w-full bg-white px-5 py-8 g-6">
+    <View {...rest} className={clsx('w-full bg-white px-5 py-8 g-6', className)}>
       <View className="items-center">
         {customAvatarComponent ?? <AvatarCircle variant={variant} />}
       </View>
