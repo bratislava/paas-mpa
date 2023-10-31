@@ -4,10 +4,10 @@ import { ScrollView } from 'react-native'
 
 import LanguageSelect from '@/components/controls/LanguageSelect'
 import NotificationSettings from '@/components/controls/notifications/NotificationSettings'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
 
 const SettingsPage = () => {

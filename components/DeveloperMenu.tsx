@@ -16,11 +16,6 @@ const menuItems: MenuItem[] = [
     route: '/examples/styleguide',
   },
   {
-    title: 'Map',
-    subtitle: 'Mapbox & bottom sheet',
-    route: '/examples/map',
-  },
-  {
     title: 'Phone number login/register',
     subtitle: 'Cognito integration',
     route: '/examples/login',
@@ -48,17 +43,17 @@ const menuItems: MenuItem[] = [
   {
     title: 'Bottom sheet',
     subtitle: 'Bottom sheet examples',
-    route: '/examples/bottom-sheet',
+    route: '/examples/bottom-sheet-example',
   },
   {
     title: 'Modal',
     subtitle: 'Modal examples',
-    route: '/examples/modal',
+    route: '/examples/modal-example',
   },
   {
     title: 'Snackbar',
     subtitle: 'Snackbar examples',
-    route: '/examples/snackbar',
+    route: '/examples/snackbar-example',
   },
   {
     title: 'Purchase',
@@ -66,15 +61,14 @@ const menuItems: MenuItem[] = [
     route: '/purchase',
   },
   {
-    title: 'Address / zone search screen',
-    subtitle:
-      'Search by address (places integration) or zone name (be integration) with autocomplete',
-    route: '/examples/search',
-  },
-  {
     title: 'Healthcheck BE',
     subtitle: 'Check if BE is running',
     route: '/examples/healthcheck',
+  },
+  {
+    title: 'Empty state screen',
+    subtitle: 'Centered screen with sad smiley',
+    route: '/examples/empty-state-example',
   },
 ]
 

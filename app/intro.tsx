@@ -1,12 +1,18 @@
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
+import { Link } from 'expo-router'
+
+import ContinueButton from '@/components/navigation/ContinueButton'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 
 const Page = () => {
   return (
     <ScreenView>
-      <ScreenContent continueProps={{ href: '/auth' }}>
+      <ScreenContent>
         <Typography>Intro</Typography>
+        <Link asChild href="/auth">
+          <ContinueButton />
+        </Link>
       </ScreenContent>
     </ScreenView>
   )

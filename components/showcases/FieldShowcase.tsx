@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
 import TextInput from '@/components/inputs/TextInput'
 import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
@@ -26,7 +26,7 @@ const FieldShowcase = () => {
           </Panel>
         </PressableStyled>
       </Field>
-      <Field label="Field with labelInsertArea" labelInsertArea={<SegmentBadge label="1059" />}>
+      <Field label="Field with labelInsertArea" labelInsertArea={<ZoneBadge label="1059" />}>
         <PressableStyled>
           <Panel>
             <Typography variant="default-bold">Some control</Typography>

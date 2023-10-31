@@ -1,11 +1,13 @@
 import React from 'react'
 
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContent from '@/components/screen-layout/Modal/ModalContent'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
+import { useModal } from '@/components/screen-layout/Modal/useModal'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
-import Modal, { ModalContent, ModalContentWithActions } from '@/components/shared/Modal'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
-import { useModal } from '@/hooks/useModal'
 
 const ModalScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()

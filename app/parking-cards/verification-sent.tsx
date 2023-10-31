@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
-import { router, useLocalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
+import ContinueButton from '@/components/navigation/ContinueButton'
+import CenteredScreenView from '@/components/screen-layout/CenteredScreenView'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
 import Button from '@/components/shared/Button'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -54,10 +55,12 @@ const Page = () => {
 
   return (
     // TODO add dynamic href
-    <ScreenView
-      variant="centered"
-      backgroundVariant="dots"
-      continueProps={{ href: '/parking-cards' }}
+    <CenteredScreenView
+      actionButton={
+        <Link asChild href={{ pathname: '/parking-cards' }}>
+          <ContinueButton />
+        </Link>
+      }
     >
       <ScreenContent variant="center">
         {/* TODO replace by icon */}
@@ -68,7 +71,7 @@ const Page = () => {
 
         <TmpVerifyButton />
       </ScreenContent>
-    </ScreenView>
+    </CenteredScreenView>
   )
 }
 

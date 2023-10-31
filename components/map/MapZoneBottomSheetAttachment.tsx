@@ -8,7 +8,7 @@ import { View } from 'react-native'
 import { MapRef } from '@/components/map/Map'
 import BottomSheetTopAttachment, {
   BottomSheetTopAttachmentProps,
-} from '@/components/shared/BottomSheetTopAttachment'
+} from '@/components/screen-layout/BottomSheet/BottomSheetTopAttachment'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { ToastOptions, ToastProps } from 'react-native-toast-notifications/lib/typescript/toast'
 
-import Snackbar, { SnackbarTypes } from '@/components/actions/Snackbar'
+import Snackbar, { SnackbarTypes } from '@/components/screen-layout/Snackbar/Snackbar'
 
 export const useToastProviderProps = (): Partial<ToastProps> =>
   useMemo(

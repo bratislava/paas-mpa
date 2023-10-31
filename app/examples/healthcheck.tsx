@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { clientApi } from '@/modules/backend/client-api'
 

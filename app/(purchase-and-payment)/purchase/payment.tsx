@@ -2,7 +2,7 @@ import { useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { WebView } from 'react-native-webview'
 
-import ScreenView from '@/components/shared/ScreenView'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 

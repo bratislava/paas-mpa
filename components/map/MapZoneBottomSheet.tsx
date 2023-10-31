@@ -8,11 +8,11 @@ import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { ZoneDetailsParamas } from '@/app/zone-details'
-import SegmentBadge from '@/components/info/SegmentBadge'
+import ZoneBadge from '@/components/info/ZoneBadge'
 import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
 import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAttachment'
-import BottomSheetContent from '@/components/shared/BottomSheetContent'
+import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -174,7 +174,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                 <Panel className="g-4">
                   <FlexRow>
                     <Typography>{selectedZone.name}</Typography>
-                    <SegmentBadge label={selectedZone.udrId.toString()} />
+                    <ZoneBadge label={selectedZone.udrId.toString()} />
                   </FlexRow>
                   <Divider />
                   <FlexRow>

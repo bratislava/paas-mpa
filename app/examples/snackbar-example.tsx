@@ -1,8 +1,8 @@
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
 import Typography from '@/components/shared/Typography'
-import { useSnackbar } from '@/hooks/useSnackbar'
 
 const SnackbarScreen = () => {
   const { show } = useSnackbar()

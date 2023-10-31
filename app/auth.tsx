@@ -3,9 +3,9 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
-import Button from '@/components/shared/Button'
-import ScreenContent from '@/components/shared/ScreenContent'
-import ScreenView from '@/components/shared/ScreenView'
+import ContinueButton from '@/components/navigation/ContinueButton'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
+import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
@@ -13,7 +13,7 @@ import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStor
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
 const Page = () => {
-  const t = useTranslation()
+  const t = useTranslation('EnterPhoneNumber')
 
   const [phone, setPhone] = useState('+421')
 
@@ -65,14 +65,13 @@ const Page = () => {
   return (
     <ScreenView>
       <ScreenContent>
-        <Typography variant="h1">{t('EnterPhoneNumber.enterPhoneNumber')}</Typography>
+        <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
         <TextInput keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
 
-        <Typography>{t('EnterPhoneNumber.consent')}</Typography>
+        <Typography>{t('consent')}</Typography>
 
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <Button onPress={attemptSignInOrSignUp}>{t('Navigation.continue')}</Button>
+        <ContinueButton onPress={attemptSignInOrSignUp} />
       </ScreenContent>
     </ScreenView>
   )

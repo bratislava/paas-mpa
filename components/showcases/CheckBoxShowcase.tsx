@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
 
-import SelectRow from '@/components/actions/SelectRow'
+import SelectRow from '@/components/list-rows/SelectRow'
 import CheckBox from '@/components/shared/CheckBox'
 import Typography from '@/components/shared/Typography'
 
