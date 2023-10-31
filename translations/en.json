@@ -145,11 +145,15 @@
     "openEmailActions": "Manage e-mail address",
     "emailActions": {
       "removeEmail": "Remove e-mail address"
-    }
+    },
+    "noEmailsTitle": "No parking cards",
+    "noEmailsText": "To add your cards to the app, please connect with your PAAS account.",
+    "noActiveCardsTitle": "No active parking cards",
+    "noActiveCardsText": "All parking cards expired. Once you’ll buy new parking card, it will show here."
   },
   "VerificationResult": {
     "verified": {
-      "title": "Parking card added",
+      "title": "Parking cards added",
       "text": "Your parking cards e-mail {{email}} has been added. You can see your cards in the Parking cards section.",
       "actionButtonLabel": "Continue"
     },

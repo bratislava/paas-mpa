@@ -67,7 +67,15 @@ const Page = () => {
       <ScreenContent>
         <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
-        <TextInput keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
+        {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad". */}
+        {/* https://reactnative.dev/docs/textinput#onsubmitediting  */}
+        <TextInput
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+          autoComplete="tel"
+          onSubmitEditing={attemptSignInOrSignUp}
+        />
 
         <Typography>{t('consent')}</Typography>
 

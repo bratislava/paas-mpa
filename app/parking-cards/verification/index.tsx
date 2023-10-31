@@ -46,7 +46,7 @@ const Page = () => {
     },
   })
 
-  const handlePress = () => {
+  const handleSendVerificationEmail = () => {
     const body: VerifyEmailsDto = {
       emails: [email],
     }
@@ -59,10 +59,13 @@ const Page = () => {
       <ScreenContent>
         <Field label={t('emailField')}>
           <TextInput
-            keyboardType="email-address"
-            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect={false}
+            onSubmitEditing={handleSendVerificationEmail}
           />
         </Field>
 
@@ -70,7 +73,11 @@ const Page = () => {
           <Typography>{t('instructions')}</Typography>
         </Panel>
 
-        <ContinueButton onPress={handlePress} disabled={!isValid} loading={mutation.isPending} />
+        <ContinueButton
+          onPress={handleSendVerificationEmail}
+          disabled={!isValid}
+          loading={mutation.isPending}
+        />
       </ScreenContent>
     </ScreenView>
   )

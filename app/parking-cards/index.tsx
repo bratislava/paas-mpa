@@ -3,8 +3,10 @@ import { Link, Stack } from 'expo-router'
 import { FlatList } from 'react-native'
 
 import ListRow from '@/components/list-rows/ListRow'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
@@ -26,15 +28,31 @@ const Page = () => {
     return <Typography>Error: {error.message}</Typography>
   }
 
+  if (data.verifiedEmails.length === 0) {
+    return (
+      <EmptyStateScreen
+        title={t('noEmailsTitle')}
+        text={t('noEmailsText')}
+        button={
+          <Link asChild href="/parking-cards/verification">
+            <Button>{t('addParkingCards')}</Button>
+          </Link>
+        }
+        buttonPosition="insideContent"
+      />
+    )
+  }
+
   return (
     <ScreenView title={t('paasEmailsTitle')}>
       <Stack.Screen
         options={{
-          headerRight: () => (
-            <Link asChild href="/parking-cards/verification">
-              <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
-            </Link>
-          ),
+          headerRight: () =>
+            data.verifiedEmails.length > 0 ? (
+              <Link asChild href="/parking-cards/verification">
+                <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
+              </Link>
+            ) : null,
         }}
       />
 
