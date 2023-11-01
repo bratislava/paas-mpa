@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useStaticArcgisData } from '@/modules/arcgis/hooks/useStaticArcgisData'
+import { useArcgisData } from '@/modules/arcgis/hooks/useArcgisData'
 import { ArcgisData } from '@/modules/arcgis/types'
 import { processData } from '@/modules/map/utils/processData'
 import { MapFeatureHashMap } from '@/state/MapZonesProvider/types'
@@ -28,7 +28,7 @@ export const useProcessedArcgisData = () => {
     rawBranchesData,
     rawUdrData,
     rawOdpData,
-  }: ArcgisData = useStaticArcgisData()
+  }: ArcgisData = useArcgisData()
 
   useEffect(() => {
     if (
