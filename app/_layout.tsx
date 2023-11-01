@@ -21,7 +21,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ToastProvider } from 'react-native-toast-notifications'
 
 import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSnackbar'
-import AxiosResponseInterceptors from '@/components/special/AxiosResponseInterceptors'
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import { environment } from '@/environment'
 import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
@@ -92,7 +91,6 @@ const RootLayout = () => {
             <SafeAreaProvider>
               <GestureHandlerRootView className="flex-1">
                 <PortalProvider>
-                  <AxiosResponseInterceptors />
                   <OmnipresentComponent />
                   <Stack
                     screenOptions={{

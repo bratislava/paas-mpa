@@ -17,39 +17,44 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawZonesData } = useQuery({
     queryKey: ['RawZonesData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Polygon, GeoJsonProperties>>(
-        `${STATIC_ARCGIS_URL}/udr_p.geojson`,
-      ),
+      axios.get<FeatureCollection<Polygon, GeoJsonProperties>>(`${STATIC_ARCGIS_URL}/okp.geojson`),
     select: (data) => data.data,
   })
 
   const { data: rawAssistantsData } = useQuery({
     queryKey: ['RawAssistantsData'],
-    queryFn: () => axios.get<FeatureCollection<Point, AssistantPoint>>(`${STATIC_ARCGIS_URL}`),
+    queryFn: () =>
+      axios.get<FeatureCollection<Point, AssistantPoint>>(`${STATIC_ARCGIS_URL}/asistenti.geojson`),
     select: (data) => data.data,
   })
 
   const { data: rawParkomatsData } = useQuery({
     queryKey: ['RawParkomatsData'],
-    queryFn: () => axios.get<FeatureCollection<Point, ParkomatPoint>>(`${STATIC_ARCGIS_URL}`),
+    queryFn: () =>
+      axios.get<FeatureCollection<Point, ParkomatPoint>>(`${STATIC_ARCGIS_URL}/parkomaty.geojson`),
     select: (data) => data.data,
   })
 
   const { data: rawPartnersData } = useQuery({
-    queryKey: ['RawPartnersDat'],
-    queryFn: () => axios.get<FeatureCollection<Point, PartnerPoint>>(`${STATIC_ARCGIS_URL}`),
+    queryKey: ['RawPartnersData'],
+    queryFn: () =>
+      axios.get<FeatureCollection<Point, PartnerPoint>>(`${STATIC_ARCGIS_URL}/partneri.geojson`),
     select: (data) => data.data,
   })
 
   const { data: rawParkingLotsData } = useQuery({
     queryKey: ['RawParkingLotsData'],
-    queryFn: () => axios.get<FeatureCollection<Point, ParkingLotPoint>>(`${STATIC_ARCGIS_URL}`),
+    queryFn: () =>
+      axios.get<FeatureCollection<Point, ParkingLotPoint>>(
+        `${STATIC_ARCGIS_URL}/parkoviska.geojson`,
+      ),
     select: (data) => data.data,
   })
 
   const { data: rawBranchesData } = useQuery({
     queryKey: ['RawBranchesData'],
-    queryFn: () => axios.get<FeatureCollection<Point, BranchPoint>>(`${STATIC_ARCGIS_URL}`),
+    queryFn: () =>
+      axios.get<FeatureCollection<Point, BranchPoint>>(`${STATIC_ARCGIS_URL}/pobocky.geojson`),
     select: (data) => data.data,
   })
 
@@ -62,7 +67,8 @@ export const useStaticArcgisData = (): ArcgisData => {
 
   const { data: rawOdpData } = useQuery({
     queryKey: ['RawOdpData'],
-    queryFn: () => axios.get<FeatureCollection<Polygon, GeoJsonProperties>>(`${STATIC_ARCGIS_URL}`),
+    queryFn: () =>
+      axios.get<FeatureCollection<Polygon, GeoJsonProperties>>(`${STATIC_ARCGIS_URL}/odp.geojson`),
     select: (data) => data.data,
   })
 

@@ -11,7 +11,7 @@ import { axiosInstance } from '@/modules/backend/axios-instance'
 export const useAxiosResponseInterceptors = () => {
   const snackbar = useSnackbar()
   const t = useLocalTranslation('Errors')
-  const [, i18n] = useTranslation()
+  const { i18n } = useTranslation()
   useEffect(() => {
     const successInterceptor = (response: AxiosResponse) => {
       return response
@@ -36,7 +36,9 @@ export const useAxiosResponseInterceptors = () => {
             default:
               break
           }
-          snackbarMessage ??= t(status.toString())
+          if (i18n.exists(`'Errors'.${status.toString()}`)) {
+            snackbarMessage ??= t(status.toString())
+          }
         }
         snackbarMessage ??= t('axiosGeneric')
       }
