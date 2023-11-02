@@ -52,7 +52,8 @@ const RootLayout = () => {
 
   const queryClient = new QueryClient({
     // TODO, set to 1 to prevent confusion during development, may be set to default for production
-    defaultOptions: { queries: { retry: 1 } },
+    // `gcTime` = `cacheTime` in v5: https://tanstack.com/query/latest/docs/react/guides/caching
+    defaultOptions: { queries: { retry: 1, gcTime: 1000 * 60 * 60 } },
   })
 
   useEffect(() => {
