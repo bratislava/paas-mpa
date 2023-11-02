@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useQuery } from '@tanstack/react-query'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
 import { ScrollView, useWindowDimensions, View } from 'react-native'
@@ -12,6 +11,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
 import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { parkingCardsOptions } from '@/modules/backend/constants/queryOptions'
 
@@ -23,7 +23,9 @@ export type ParkingCardsLocalSearchParams = {
 const Active = () => {
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
-  const { data, isPending, isError, error } = useQuery(parkingCardsOptions({ email }))
+  const { data, isPending, isError, error } = useQueryWithFocusRefetch(
+    parkingCardsOptions({ email }),
+  )
 
   if (isPending) {
     return <Typography>Loading...</Typography>
