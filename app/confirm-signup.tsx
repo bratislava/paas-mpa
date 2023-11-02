@@ -7,6 +7,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
+import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { GENERIC_ERROR_MESSAGE, isError } from '@/utils/errors'
@@ -16,13 +17,16 @@ const Page = () => {
   const [code, setCode] = useState('')
 
   const { signUpPhone, setSignUpPhone } = useGlobalStoreContext()
+  const { attemptSignInOrSignUp } = useSignInOrSignUp()
 
   const confirmSignUp = async () => {
     try {
       if (signUpPhone) {
         await Auth.confirmSignUp(signUpPhone, code)
+        /* Try to sign in (second sms code will be sent) */
+        await attemptSignInOrSignUp(signUpPhone)
         setSignUpPhone(null)
-        router.push('/')
+        router.push('/confirm-signin')
       } else {
         console.log('Unexpected error, no signUpPhone provided in GlobalStore.')
       }
@@ -49,6 +53,7 @@ const Page = () => {
           keyboardType="number-pad"
           autoComplete="one-time-code"
           textAlign="center"
+          autoFocus
           onSubmitEditing={confirmSignUp}
         />
 
