@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useCallback, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
@@ -10,12 +9,13 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import TicketCard from '@/components/tickets/TicketCard'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
 const ActiveTicketsRoute = () => {
-  const { data: ticketsResponse } = useQuery(ticketsOptions({ active: true }))
+  const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: true }))
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
@@ -58,7 +58,7 @@ const ActiveTicketsRoute = () => {
 }
 
 const HistoryRoute = () => {
-  const { data: ticketsResponse } = useQuery(ticketsOptions({ active: false }))
+  const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: false }))
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],

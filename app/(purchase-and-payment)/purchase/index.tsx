@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
@@ -15,6 +14,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
@@ -70,7 +70,7 @@ const PurchaseScreen = () => {
   }
 
   // TODO handleError
-  const { data, isError, error, isFetching } = useQuery(
+  const { data, isError, error, isFetching } = useQueryWithFocusRefetch(
     ticketPriceOptions(body, { udr, npk, licencePlate, duration }),
   )
 

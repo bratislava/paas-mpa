@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router'
 
 import VisitorCardMethod from '@/components/controls/payment-methods/VisitorCardMethod'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
@@ -17,7 +17,12 @@ const VisitorCardsField = () => {
   // TODO potentially get value and setValue functions by props
   const { npk, setNpk } = usePurchaseStoreContext()
 
-  const { data: visitorCards, isPending, isError, error } = useQuery(visitorCardsOptions())
+  const {
+    data: visitorCards,
+    isPending,
+    isError,
+    error,
+  } = useQueryWithFocusRefetch(visitorCardsOptions())
 
   const handleCardPress = (card: ParkingCardDto) => {
     console.log('handleCardPress', card.identificator)

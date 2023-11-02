@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { Link, Stack } from 'expo-router'
 import { FlatList } from 'react-native'
 
@@ -11,6 +10,7 @@ import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
 
@@ -18,7 +18,7 @@ const Page = () => {
   const t = useTranslation('ParkingCards')
 
   // TODO invalidate/refresh query on add/remove
-  const { data, isPending, isError, error } = useQuery(verifiedEmailsOptions())
+  const { data, isPending, isError, error } = useQueryWithFocusRefetch(verifiedEmailsOptions())
 
   if (isPending) {
     return <Typography>Loading...</Typography>

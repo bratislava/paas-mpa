@@ -1,8 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
 import Field from '@/components/shared/Field'
 import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { notificationSettingsOptions } from '@/modules/backend/constants/queryOptions'
@@ -30,7 +31,12 @@ const NotificationSettings = () => {
   const t = useTranslation('Settings')
   const queryClient = useQueryClient()
 
-  const { data: settings, isPending, isError, error } = useQuery(notificationSettingsOptions())
+  const {
+    data: settings,
+    isPending,
+    isError,
+    error,
+  } = useQueryWithFocusRefetch(notificationSettingsOptions())
 
   const mutation = useMutation({
     mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
