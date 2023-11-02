@@ -49,6 +49,7 @@ const Page = () => {
           keyboardType="number-pad"
           autoComplete="one-time-code"
           textAlign="center"
+          autoFocus
           onSubmitEditing={confirmSignIn}
         />
 
