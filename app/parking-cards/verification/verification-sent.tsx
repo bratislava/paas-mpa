@@ -12,29 +12,28 @@ import { clientApi } from '@/modules/backend/client-api'
 
 // TODO remove - this button simulates email verification
 const TmpVerifyButton = () => {
-  const { tmpVerificationToken, verificationKey } = useLocalSearchParams<{
+  const { tmpVerificationToken, tmpVerificationKey, emailToVerify } = useLocalSearchParams<{
+    emailToVerify: string
     tmpVerificationToken: string
-    verificationKey: string
+    tmpVerificationKey: string
   }>()
 
   const mutation = useMutation({
     mutationFn: () =>
       clientApi.verifiedEmailsControllerVerifyEmail(
         tmpVerificationToken ?? '',
-        verificationKey ?? '',
+        tmpVerificationKey ?? '',
       ),
-    onError: (error) => {
-      // TODO handle error, show snackbar?
-      // Handled in mutation to be sure that snackbar is shown on error
-      console.log('error', error)
-    },
   })
 
   const handlePressVerify = () => {
     mutation.mutate(undefined, {
       onSuccess: (res) => {
         console.log('success', res.status)
-        router.push('/parking-cards')
+        router.push({
+          pathname: '/parking-cards/verification/verification-result',
+          params: { email: emailToVerify, status: 'verified' },
+        })
       },
     })
   }

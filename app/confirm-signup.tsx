@@ -43,7 +43,14 @@ const Page = () => {
       <ScreenContent>
         <Typography variant="h1">{t('EnterVerificationCode.enterVerificationCode')}</Typography>
 
-        <TextInput keyboardType="number-pad" value={code} onChangeText={setCode} />
+        <TextInput
+          value={code}
+          onChangeText={setCode}
+          keyboardType="number-pad"
+          autoComplete="one-time-code"
+          textAlign="center"
+          onSubmitEditing={confirmSignUp}
+        />
 
         <Typography>{t('EnterVerificationCode.instructions')}</Typography>
 

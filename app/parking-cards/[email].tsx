@@ -7,6 +7,7 @@ import { SceneMap, TabView } from 'react-native-tab-view'
 import TabBar from '@/components/navigation/TabBar'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
@@ -21,6 +22,7 @@ export type ParkingCardsLocalSearchParams = {
 }
 
 const Active = () => {
+  const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(
@@ -36,6 +38,10 @@ const Active = () => {
   }
 
   const cards = data.parkingCards
+
+  if (cards.length === 0) {
+    return <EmptyStateScreen title={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
+  }
 
   // TODO pagination
   return (

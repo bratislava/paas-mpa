@@ -27,32 +27,31 @@ const Page = () => {
   // TODO add email validation
   const isValid = email.includes('@')
 
+  // TODO deduplicate this mutation (it's also used in link-expired.tsx)
   const mutation = useMutation({
     mutationFn: (bodyInner: VerifyEmailsDto) =>
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
-    onError: (error) => {
-      // TODO handle error, show snackbar?
-      // Handled in mutation to be sure that snackbar is shown on error
-      console.log('error', error)
+    onSuccess: (res) => {
+      const tmpVerificationToken = res.data[0].token
+      const tmpVerificationKey = res.data[0].key
+
+      router.push({
+        pathname: '/parking-cards/verification/verification-sent',
+        params: {
+          emailToVerify: email,
+          tmpVerificationKey,
+          tmpVerificationToken,
+        },
+      })
     },
   })
 
-  const handlePress = () => {
+  const handleSendVerificationEmail = () => {
     const body: VerifyEmailsDto = {
       emails: [email],
     }
 
-    mutation.mutate(body, {
-      onSuccess: (res) => {
-        const tmpVerificationToken = res.data[0].token
-        const verificationKey = res.data[0].key
-        console.log('success', tmpVerificationToken, verificationKey)
-        router.push({
-          pathname: '/parking-cards/verification-sent',
-          params: { emailToVerify: email, verificationKey, tmpVerificationToken },
-        })
-      },
-    })
+    mutation.mutate(body)
   }
 
   return (
@@ -60,10 +59,13 @@ const Page = () => {
       <ScreenContent>
         <Field label={t('emailField')}>
           <TextInput
-            keyboardType="email-address"
-            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect={false}
+            onSubmitEditing={handleSendVerificationEmail}
           />
         </Field>
 
@@ -71,7 +73,11 @@ const Page = () => {
           <Typography>{t('instructions')}</Typography>
         </Panel>
 
-        <ContinueButton onPress={handlePress} disabled={!isValid} loading={mutation.isPending} />
+        <ContinueButton
+          onPress={handleSendVerificationEmail}
+          disabled={!isValid}
+          loading={mutation.isPending}
+        />
       </ScreenContent>
     </ScreenView>
   )
