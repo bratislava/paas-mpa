@@ -156,6 +156,7 @@ const AutocompleteInner = <O,>(
         autoFocus={autoFocus}
         selection={textSelection}
         onSelectionChange={handleSelectionChange}
+        returnKeyType="search"
       />
       <View>
         {optionsPortalName ? (

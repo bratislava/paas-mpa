@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import React, { forwardRef, useCallback } from 'react'
 
@@ -9,20 +9,24 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
+import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
 
 // TODO FIXME bottom sheet is empty on Android
 const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
+  const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
 
   const mutation = useMutation({
     mutationFn: (id: number) => clientApi.verifiedEmailsControllerDeleteVerifiedEmail(id),
-    onError: (error) => {
-      // TODO handle error, show snackbar?
-      // Handled in mutation to be sure that snackbar is shown on error
-      console.log('error deleting email', error)
+    onSuccess: async () => {
+      // Refetch verified emails
+      await queryClient.refetchQueries({
+        queryKey: verifiedEmailsOptions().queryKey,
+        type: 'active',
+      })
     },
   })
 
