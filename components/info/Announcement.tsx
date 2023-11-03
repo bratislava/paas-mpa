@@ -32,8 +32,8 @@ const Announcement = ({ announcement, isNew = true }: Props) => {
         <View>
           <SeveritySquare variant={severity} />
           {isNew && (
-            <View className="absolute -left-1 -top-1 rounded bg-white p-1">
-              <View className="h-2 w-2 rounded bg-warning" />
+            <View className="absolute -left-1 -top-1 rounded-full bg-white p-1">
+              <View className="h-2 w-2 rounded-full bg-warning" />
             </View>
           )}
         </View>

@@ -109,14 +109,21 @@ const IndexScreen = () => {
       <MapScreen />
 
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
-        <IconButton
-          name="menu"
-          // TODO translation
-          accessibilityLabel="Open menu"
-          variant="white-raised-small"
-          onPress={handlePressOpen}
-          onLongPress={handleLongPress}
-        />
+        <View>
+          <IconButton
+            name="menu"
+            // TODO translation
+            accessibilityLabel="Open menu"
+            variant="white-raised-small"
+            onPress={handlePressOpen}
+            onLongPress={handleLongPress}
+          />
+          {newAnnouncementsCount ? (
+            <View className="absolute right-2 top-2 rounded-full bg-white p-1">
+              <View className="h-2 w-2 rounded-full bg-warning" />
+            </View>
+          ) : null}
+        </View>
 
         {/* <Link asChild href="/user"> */}
         {/*   <IconButton */}
