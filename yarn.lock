@@ -10733,7 +10733,7 @@ react-native-get-random-values@^1.4.0:
   dependencies:
     fast-base64-decode "^1.0.0"
 
-react-native-markdown-display@^7.0.0-alpha.2:
+react-native-markdown-display@~7.0.0-alpha.2:
   version "7.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.2.tgz#a48a70d3cb5c510a52ecf7f1509a4a3d14d728aa"
   integrity sha512-Od1a4wJEcVGwO1bh02sHivsEkKKpu99+ew/OtmVTPRmfT8V3B0aTut7k7ICV0Vej9F4ZjylRHvm28/maYUBeGw==
