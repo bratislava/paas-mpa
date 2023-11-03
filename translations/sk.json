@@ -228,5 +228,10 @@
     "DATABASE ERROR": "chyba databázy",
     "MAILGUN_ERROR": "chyba mailgunu",
     "RABBIT_MQ_ERROR": "chyba rabbit mq"
+  },
+  "Announcements": {
+    "title": "Oznámenia",
+    "noAnnouncementsTitle": "Žiadne oznámenia",
+    "learnMore": "Viac informácií"
   }
 }

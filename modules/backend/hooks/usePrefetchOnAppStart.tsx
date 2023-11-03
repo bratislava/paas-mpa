@@ -2,7 +2,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect } from 'react'
 import { InteractionManager } from 'react-native'
 
+import { mockedAnnouncements } from '@/app/announcements'
 import {
+  announcementsOptions,
   notificationSettingsOptions,
   parkingCardsOptions,
   verifiedEmailsOptions,
@@ -14,7 +16,16 @@ export const usePrefetchOnAppStart = () => {
 
   const prefetch = useCallback(async () => {
     const verifiedEmails = verifiedEmailsOptions()
-    const queries = [notificationSettingsOptions(), verifiedEmails, visitorCardsOptions()]
+    const queries = [
+      notificationSettingsOptions(),
+      verifiedEmails,
+      visitorCardsOptions(),
+      // TODO: Remove mocked data
+      {
+        ...announcementsOptions(),
+        queryFn: () => Promise.resolve({ data: { announcements: mockedAnnouncements } }),
+      },
+    ]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all(queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)))
     const emails = await queryClient.fetchQuery(verifiedEmails)

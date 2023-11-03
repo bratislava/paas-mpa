@@ -74,3 +74,13 @@ export const visitorCardsOptions = () =>
     queryFn: () => clientApi.parkingCardsControllerGetActiveVisitorCards(),
     select: (res) => res.data,
   })
+
+export const announcementsOptions = ({
+  page = 1,
+  pageSize = 10,
+}: PaginationOptions | undefined = {}) =>
+  queryOptions({
+    queryKey: ['Announcements'],
+    queryFn: () => clientApi.announcementsControllerAnnouncementsGetMany(page, pageSize),
+    select: (res) => res.data,
+  })

@@ -249,5 +249,10 @@
     "DATABASE ERROR": "database error",
     "MAILGUN_ERROR": "mailgun error",
     "RABBIT_MQ_ERROR": "rabbit mq error"
+  },
+  "Announcements": {
+    "title": "Announcements",
+    "noAnnouncementsTitle": "No announcements",
+    "learnMore": "Learn more"
   }
 }

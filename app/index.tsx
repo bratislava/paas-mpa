@@ -71,6 +71,11 @@ const IndexScreen = () => {
       path: '/settings',
     },
     {
+      label: t('Announcements.title'),
+      icon: 'notifications',
+      path: '/announcements',
+    },
+    {
       label: 'Purchase DEV',
       icon: 'payment',
       path: '/purchase',
