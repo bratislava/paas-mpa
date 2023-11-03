@@ -9,49 +9,7 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
-import { AnnouncementDto, AnnouncementType } from '@/modules/backend/openapi-generated'
-
-export const mockedAnnouncements: AnnouncementDto[] = [
-  {
-    title: 'New feature release',
-    content: 'We are excited to announce the release of our new feature. Check it out now!',
-    type: AnnouncementType.Info,
-    externalUrl: 'https://example.com/new-feature',
-    id: 5,
-    createdAt: '2022-01-20T00:00:00.000Z',
-  },
-  {
-    title: 'New feature release',
-    content: 'We are excited to announce the release of our new feature. Check it out now!',
-    type: AnnouncementType.Info,
-    externalUrl: 'https://example.com/new-feature',
-    id: 4,
-    createdAt: '2022-01-20T00:00:00.000Z',
-  },
-  {
-    title: 'Holiday sale',
-    content: "Get 20% off on all products during our holiday sale. Don't miss out!",
-    type: AnnouncementType.Error,
-    id: 3,
-    createdAt: '2022-01-15T00:00:00.000Z',
-  },
-  {
-    title: 'Important notice',
-    content:
-      'We will be performing maintenance on our servers on January 15th. Expect some downtime during this period.',
-    type: AnnouncementType.Warn,
-    id: 2,
-    createdAt: '2022-01-10T00:00:00.000Z',
-  },
-  {
-    title: 'New blog post',
-    content: 'We have **published** a new blog post on our website. Check it out now!',
-    type: AnnouncementType.Info,
-    externalUrl: 'https://example.com/blog/new-post',
-    id: 1,
-    createdAt: '2022-01-05T00:00:00.000Z',
-  },
-]
+import { AnnouncementDto } from '@/modules/backend/openapi-generated'
 
 const AnnouncementsScreen = () => {
   const t = useTranslation('Announcements')
