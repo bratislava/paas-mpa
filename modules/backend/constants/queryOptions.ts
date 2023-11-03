@@ -83,4 +83,6 @@ export const announcementsOptions = ({
     queryKey: ['Announcements'],
     queryFn: () => clientApi.announcementsControllerAnnouncementsGetMany(page, pageSize),
     select: (res) => res.data,
+    // TODO: remove this when the backend has test announcements data
+    enabled: false,
   })

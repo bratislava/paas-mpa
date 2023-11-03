@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
-import { useMMKVObject } from 'react-native-mmkv'
 
 import Announcement from '@/components/info/Announcement'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
@@ -9,6 +8,7 @@ import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
+import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
 import { AnnouncementDto, AnnouncementType } from '@/modules/backend/openapi-generated'
 
 export const mockedAnnouncements: AnnouncementDto[] = [
@@ -48,13 +48,9 @@ export const mockedAnnouncements: AnnouncementDto[] = [
 const AnnouncementsScreen = () => {
   const t = useTranslation('Announcements')
 
-  const { data, isPending, isError, error } = useQueryWithFocusRefetch({
-    ...announcementsOptions(),
-    enabled: false,
-  })
+  const { data, isPending, isError, error } = useQueryWithFocusRefetch(announcementsOptions())
 
-  const [lastReadAnnouncementId, setLastReadAnnouncementId] =
-    useMMKVObject<number>('lastReadAnnouncementId')
+  const [lastReadAnnouncementId, setLastReadAnnouncementId] = useLastReadAnnouncementIdStorage()
 
   const resaveLastReadAnnouncementId = useRef(() => {
     if (data?.announcements && data.announcements.length > 0) {
