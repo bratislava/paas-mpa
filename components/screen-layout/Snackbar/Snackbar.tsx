@@ -53,7 +53,7 @@ const Snackbar = ({
               'text-green': variant === 'success' || variant === 'info',
             })}
           />
-          <Typography numberOfLines={2} className="flex-1 py-2">
+          <Typography numberOfLines={3} className="flex-1 py-2">
             {message}
           </Typography>
           <PressableStyled className="px-2 py-4" onPress={handlePress}>

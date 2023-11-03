@@ -23,15 +23,3 @@ axiosInstance.interceptors.request.use(async (request) => {
 
   return request
 })
-
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  // (error) => {
-  //   if (error.response.status === 401) {
-  //     // handle 401 error here
-  //     window.location.assign('/auth/signin')
-  //   }
-  //
-  //   return Promise.reject(error)
-  // },
-)
