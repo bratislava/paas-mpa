@@ -11,6 +11,7 @@
     "index.d.ts",
     "app.d.ts",
     "declarations.d.ts",
+    "markdown.d.ts",
     "**/*.ts",
     "**/*.js",
     "**/*.tsx",

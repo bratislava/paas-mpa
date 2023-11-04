@@ -3,6 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { InteractionManager } from 'react-native'
 
 import {
+  announcementsOptions,
   notificationSettingsOptions,
   parkingCardsOptions,
   verifiedEmailsOptions,
@@ -14,7 +15,12 @@ export const usePrefetchOnAppStart = () => {
 
   const prefetch = useCallback(async () => {
     const verifiedEmails = verifiedEmailsOptions()
-    const queries = [notificationSettingsOptions(), verifiedEmails, visitorCardsOptions()]
+    const queries = [
+      notificationSettingsOptions(),
+      verifiedEmails,
+      visitorCardsOptions(),
+      announcementsOptions(),
+    ]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all(queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)))
     const emails = await queryClient.fetchQuery(verifiedEmails)

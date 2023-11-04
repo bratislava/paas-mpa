@@ -2,7 +2,7 @@ import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet'
 import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
 import { PortalHost } from '@gorhom/portal'
 import { Link, router, Stack } from 'expo-router'
-import { useCallback, useMemo, useRef } from 'react'
+import { ReactNode, useCallback, useMemo, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -12,7 +12,11 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import { IconName } from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
+import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
+import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
+import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
 
 const handleLongPress = () => {
   router.push('/dev')
@@ -40,10 +44,19 @@ const IndexScreen = () => {
     bottomSheetRef.current?.close()
   }
 
+  const [lastReadAnnouncementId] = useLastReadAnnouncementIdStorage()
+  const { data: announcementsData } = useQueryWithFocusRefetch(announcementsOptions())
+  const newAnnouncementsCount = lastReadAnnouncementId
+    ? announcementsData?.announcements?.filter(
+        (announcement) => announcement.id > lastReadAnnouncementId,
+      ).length
+    : announcementsData?.announcements.length
+
   const menuItems: {
     label: string
     icon: IconName
     path: string
+    endSlot?: ReactNode
   }[] = [
     {
       label: t('VehiclesScreen.title'),
@@ -71,6 +84,18 @@ const IndexScreen = () => {
       path: '/settings',
     },
     {
+      label: t('Announcements.title'),
+      icon: 'notifications',
+      path: '/announcements',
+      endSlot: newAnnouncementsCount ? (
+        <View className="h-6 w-6 items-center justify-center rounded-full bg-warning">
+          <Typography variant="small" className="leading-6 text-white">
+            {newAnnouncementsCount}
+          </Typography>
+        </View>
+      ) : undefined,
+    },
+    {
       label: 'Purchase DEV',
       icon: 'payment',
       path: '/purchase',
@@ -84,14 +109,21 @@ const IndexScreen = () => {
       <MapScreen />
 
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
-        <IconButton
-          name="menu"
-          // TODO translation
-          accessibilityLabel="Open menu"
-          variant="white-raised-small"
-          onPress={handlePressOpen}
-          onLongPress={handleLongPress}
-        />
+        <View>
+          <IconButton
+            name="menu"
+            // TODO translation
+            accessibilityLabel="Open menu"
+            variant="white-raised-small"
+            onPress={handlePressOpen}
+            onLongPress={handleLongPress}
+          />
+          {newAnnouncementsCount ? (
+            <View className="absolute right-2 top-2 rounded-full bg-white p-1">
+              <View className="h-2 w-2 rounded-full bg-warning" />
+            </View>
+          ) : null}
+        </View>
 
         {/* <Link asChild href="/user"> */}
         {/*   <IconButton */}
@@ -133,8 +165,11 @@ const IndexScreen = () => {
                 href={item.path}
                 onPress={() => bottomSheetRef.current?.close()}
               >
-                <PressableStyled>
-                  <ActionRow startIcon={item.icon} label={item.label} />
+                <PressableStyled className="flex-row items-center">
+                  <View className="flex-1">
+                    <ActionRow startIcon={item.icon} label={item.label} />
+                  </View>
+                  {item.endSlot}
                 </PressableStyled>
               </Link>
             ))}
