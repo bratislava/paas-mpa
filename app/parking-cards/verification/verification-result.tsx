@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, router, Stack, useLocalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -10,14 +10,11 @@ import { clientApi } from '@/modules/backend/client-api'
 import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
 import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
 
-/**
- * This page handles redirects from BE to show email verification result.
- *
- * Do not change the path unless it's changed in BE as well!
- *
+/*
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=1300%3A11943&mode=dev
  */
 
+// TODO may need update depending on changes in figma
 type VerificationResultSearchParams = {
   email: string
   status: 'verified' | 'verified-no-cards' | 'link-expired'
@@ -34,17 +31,10 @@ const VerificationResultPage = () => {
   const mutation = useMutation({
     mutationFn: (bodyInner: VerifyEmailsDto) =>
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
-    onSuccess: (res) => {
-      const tmpVerificationToken = res.data[0].token
-      const tmpVerificationKey = res.data[0].key
-
-      router.push({
+    onSuccess: () => {
+      router.replace({
         pathname: '/parking-cards/verification/verification-sent',
-        params: {
-          emailToVerify: email,
-          tmpVerificationKey,
-          tmpVerificationToken,
-        },
+        params: { email },
       })
     },
   })
@@ -71,7 +61,7 @@ const VerificationResultPage = () => {
         )
       }
     >
-      <Stack.Screen options={{ headerShown: false }} />
+      {/* <Stack.Screen options={{ headerShown: false }} /> */}
 
       {email && status ? (
         <ContentWithAvatar
