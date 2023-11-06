@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import TextInput from '@/components/inputs/TextInput'
+import CodeInput from '@/components/inputs/CodeInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -20,15 +20,7 @@ const Page = () => {
       <ScreenContent>
         <Typography variant="h1">{t('enterVerificationCode')}</Typography>
 
-        <TextInput
-          value={code}
-          onChangeText={setCode}
-          keyboardType="number-pad"
-          autoComplete="one-time-code"
-          textAlign="center"
-          autoFocus
-          onSubmitEditing={() => confirmSignIn(code)}
-        />
+        <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
 
         <Typography>{t('instructions')}</Typography>
 
