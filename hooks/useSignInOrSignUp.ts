@@ -6,6 +6,7 @@ import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
+// TODO add explanation to comments
 export const useSignInOrSignUp = () => {
   const snackbar = useSnackbar()
 
@@ -39,9 +40,11 @@ export const useSignInOrSignUp = () => {
       }
     } catch (error) {
       if (isError(error)) {
+        // TODO translation
         console.error(`Login Error:`, error)
         snackbar.show(`Login Error: ${error.message}`, { variant: 'danger' })
       } else {
+        // TODO translation
         console.error(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in signUp:`, error)
         snackbar.show(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in signUp.`, {
           variant: 'danger',
@@ -57,6 +60,7 @@ export const useSignInOrSignUp = () => {
         setSignInResult(null)
         router.push('/')
       } else {
+        // TODO translation
         console.log('Unexpected error, no loginResult provided in GlobalStore.')
       }
     } catch (error) {
@@ -64,16 +68,19 @@ export const useSignInOrSignUp = () => {
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]
       if (isErrorWithCode(error) && error.code === 'CodeMismatchException') {
+        // TODO translation
         console.log('Code mismatch', error)
         snackbar.show(`Code mismatch: ${error.message}`, { variant: 'warning' })
       } else if (isError(error)) {
+        // TODO translation
         console.log('Confirm Error', error)
         snackbar.show(`Confirm Error: ${error.message}`, { variant: 'danger' })
       } else {
+        // TODO translation
         snackbar.show(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in confirmSignIn.`, {
           variant: 'danger',
         })
-
+        // TODO translation
         console.log(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in confirmSignIn:`, error)
       }
     }
