@@ -39,13 +39,6 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
     const durationFromPriceDate = getDurationFromPriceData(priceData)
 
-    const body: InitiatePaymentRequestDto = {
-      ticket: priceRequestBody,
-      price: priceData?.priceTotal ?? 0,
-      priceBpk: priceData?.creditBpkUsed ?? '',
-      priceNpk: priceData?.creditNpkUsed ?? '',
-    }
-
     const mutation = useMutation({
       mutationFn: (bodyInner: InitiatePaymentRequestDto) =>
         clientApi.ticketsControllerInitiateTicketPayment(bodyInner),
@@ -53,7 +46,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const handlePressPay = () => {
-      mutation.mutate(body, {
+      mutation.mutate(priceRequestBody, {
         onSuccess: (data) => {
           console.log('onSuccess', JSON.stringify(data.data, undefined, 2))
           router.push({

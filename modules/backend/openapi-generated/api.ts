@@ -179,13 +179,6 @@ export interface EmailVerificationResult {
    * @deprecated
    */
   token: string
-  /**
-   * Key which is sent to the email - only avaialble for test purposes
-   * @type {string}
-   * @memberof EmailVerificationResult
-   * @deprecated
-   */
-  key: string
 }
 /**
  *
@@ -282,11 +275,23 @@ export interface GetTicketPriceResponseDto {
    */
   creditBpkUsed: string
   /**
+   * Credits used in case of bonnus parking in seconds
+   * @type {number}
+   * @memberof GetTicketPriceResponseDto
+   */
+  creditBpkUsedSeconds: number
+  /**
    * NPK - Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof GetTicketPriceResponseDto
    */
   creditNpkUsed: string
+  /**
+   * Credits used in case of bonnus parking in seconds
+   * @type {number}
+   * @memberof GetTicketPriceResponseDto
+   */
+  creditNpkUsedSeconds: number
   /**
    * The date and time when parking starts (UTC time in ISO8601 format)
    * @type {string}
@@ -341,7 +346,7 @@ export interface GetTicketPriceTicketInfoRequestDto {
    * @type {string}
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
-  parkingStart?: string
+  parkingStart: string
 }
 /**
  *
@@ -369,29 +374,17 @@ export interface GetTicketProlongationPriceRequestDto {
  */
 export interface InitiatePaymentRequestDto {
   /**
+   * Value of NPK UUID
+   * @type {string}
+   * @memberof InitiatePaymentRequestDto
+   */
+  npkId?: string
+  /**
    *
-   * @type {GetTicketPriceRequestDto}
+   * @type {GetTicketPriceTicketInfoRequestDto}
    * @memberof InitiatePaymentRequestDto
    */
-  ticket: GetTicketPriceRequestDto
-  /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket
-   * @type {number}
-   * @memberof InitiatePaymentRequestDto
-   */
-  price: number
-  /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the BPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof InitiatePaymentRequestDto
-   */
-  priceBpk: string
-  /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof InitiatePaymentRequestDto
-   */
-  priceNpk: string
+  ticket: GetTicketPriceTicketInfoRequestDto
 }
 /**
  *
@@ -400,29 +393,17 @@ export interface InitiatePaymentRequestDto {
  */
 export interface InitiateProlongationRequestDto {
   /**
-   *
-   * @type {GetTicketProlongationPriceRequestDto}
+   * The date and time when parking ends (UTC time in ISO8601 format)
+   * @type {string}
    * @memberof InitiateProlongationRequestDto
    */
-  ticket: GetTicketProlongationPriceRequestDto
+  newParkingEnd: string
   /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket
+   * Id of the ticket to be prolonged
    * @type {number}
    * @memberof InitiateProlongationRequestDto
    */
-  price: number
-  /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the BPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof InitiateProlongationRequestDto
-   */
-  priceBpk: string
-  /**
-   * Price coming from the FE what the user seen last time and accepted to pay for the ticket from the NPK credit (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof InitiateProlongationRequestDto
-   */
-  priceNpk: string
+  ticketId: number
 }
 /**
  *
@@ -574,11 +555,23 @@ export interface ParkingCardDto {
    */
   balance?: string
   /**
-   * Balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * Balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof ParkingCardDto
+   */
+  balanceSeconds?: number
+  /**
+   * Original balance available on the visitor card (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof ParkingCardDto
    */
   originalBalance?: string
+  /**
+   * Original balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof ParkingCardDto
+   */
+  originalBalanceSeconds?: number
   /**
    * List of Internal ids of the parking space.
    * @type {Array<string>}
@@ -635,55 +628,6 @@ export interface ParkingCardsResponseDto {
    * @memberof ParkingCardsResponseDto
    */
   paginationInfo: PaginationInfo
-}
-/**
- *
- * @export
- * @interface PaymentResponseQueryDto
- */
-export interface PaymentResponseQueryDto {
-  /**
-   * Operation text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  OPERATION: string
-  /**
-   * Ordernumber text coming from the paygate return url query param (13 characters long number)
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  ORDERNUMBER: string
-  /**
-   * Prcode text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  PRCODE: string
-  /**
-   * Srcode text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  SRCODE: string
-  /**
-   * Digest text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  DIGEST: string
-  /**
-   * Digest1 text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  DIGEST1: string
-  /**
-   * Result text coming from the paygate return url query param
-   * @type {string}
-   * @memberof PaymentResponseQueryDto
-   */
-  RESULTTEXT: string
 }
 /**
  *
@@ -919,11 +863,23 @@ export interface TicketDto {
    */
   bpkCreditUsed?: string
   /**
+   * Credits used in case of bonnus parking in seconds
+   * @type {number}
+   * @memberof TicketDto
+   */
+  bpkCreditUsedSeconds: number
+  /**
    * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
    * @memberof TicketDto
    */
   npkCreditUsed?: string
+  /**
+   * Credits used in case of visitor parking in seconds
+   * @type {number}
+   * @memberof TicketDto
+   */
+  npkCreditUsedSeconds: number
   /**
    * ID of the visitor card (GUID)
    * @type {string}
@@ -1347,10 +1303,6 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
       const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
-
-      // authentication azure required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
       localVarHeaderParameter['Content-Type'] = 'application/json'
 
@@ -2607,21 +2559,41 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
-     * @summary Process ticket payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketPayment: async (
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'paymentResponseQueryDto' is not null or undefined
-      assertParamExists(
-        'ticketsControllerProcessTicketPayment',
-        'paymentResponseQueryDto',
-        paymentResponseQueryDto,
-      )
+      // verify required parameter 'oPERATION' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'oPERATION', oPERATION)
+      // verify required parameter 'oRDERNUMBER' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'oRDERNUMBER', oRDERNUMBER)
+      // verify required parameter 'pRCODE' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'pRCODE', pRCODE)
+      // verify required parameter 'sRCODE' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'sRCODE', sRCODE)
+      // verify required parameter 'dIGEST' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'dIGEST', dIGEST)
+      // verify required parameter 'dIGEST1' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'dIGEST1', dIGEST1)
+      // verify required parameter 'rESULTTEXT' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'rESULTTEXT', rESULTTEXT)
       const localVarPath = `/tickets/payment/process`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -2630,15 +2602,37 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication cognito required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+      if (oPERATION !== undefined) {
+        localVarQueryParameter['OPERATION'] = oPERATION
+      }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json'
+      if (oRDERNUMBER !== undefined) {
+        localVarQueryParameter['ORDERNUMBER'] = oRDERNUMBER
+      }
+
+      if (pRCODE !== undefined) {
+        localVarQueryParameter['PRCODE'] = pRCODE
+      }
+
+      if (sRCODE !== undefined) {
+        localVarQueryParameter['SRCODE'] = sRCODE
+      }
+
+      if (dIGEST !== undefined) {
+        localVarQueryParameter['DIGEST'] = dIGEST
+      }
+
+      if (dIGEST1 !== undefined) {
+        localVarQueryParameter['DIGEST1'] = dIGEST1
+      }
+
+      if (rESULTTEXT !== undefined) {
+        localVarQueryParameter['RESULTTEXT'] = rESULTTEXT
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -2647,11 +2641,6 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         ...headersFromBaseOptions,
         ...options.headers,
       }
-      localVarRequestOptions.data = serializeDataIfNeeded(
-        paymentResponseQueryDto,
-        localVarRequestOptions,
-        configuration,
-      )
 
       return {
         url: toPathString(localVarUrlObj),
@@ -2660,20 +2649,48 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
-     * @summary Process ticket prolongation payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketProlongationPayment: async (
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'paymentResponseQueryDto' is not null or undefined
+      // verify required parameter 'oPERATION' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'oPERATION', oPERATION)
+      // verify required parameter 'oRDERNUMBER' is not null or undefined
       assertParamExists(
         'ticketsControllerProcessTicketProlongationPayment',
-        'paymentResponseQueryDto',
-        paymentResponseQueryDto,
+        'oRDERNUMBER',
+        oRDERNUMBER,
+      )
+      // verify required parameter 'pRCODE' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'pRCODE', pRCODE)
+      // verify required parameter 'sRCODE' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'sRCODE', sRCODE)
+      // verify required parameter 'dIGEST' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'dIGEST', dIGEST)
+      // verify required parameter 'dIGEST1' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'dIGEST1', dIGEST1)
+      // verify required parameter 'rESULTTEXT' is not null or undefined
+      assertParamExists(
+        'ticketsControllerProcessTicketProlongationPayment',
+        'rESULTTEXT',
+        rESULTTEXT,
       )
       const localVarPath = `/tickets/payment/prolongation/process`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2683,15 +2700,37 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         baseOptions = configuration.baseOptions
       }
 
-      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
-      // authentication cognito required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+      if (oPERATION !== undefined) {
+        localVarQueryParameter['OPERATION'] = oPERATION
+      }
 
-      localVarHeaderParameter['Content-Type'] = 'application/json'
+      if (oRDERNUMBER !== undefined) {
+        localVarQueryParameter['ORDERNUMBER'] = oRDERNUMBER
+      }
+
+      if (pRCODE !== undefined) {
+        localVarQueryParameter['PRCODE'] = pRCODE
+      }
+
+      if (sRCODE !== undefined) {
+        localVarQueryParameter['SRCODE'] = sRCODE
+      }
+
+      if (dIGEST !== undefined) {
+        localVarQueryParameter['DIGEST'] = dIGEST
+      }
+
+      if (dIGEST1 !== undefined) {
+        localVarQueryParameter['DIGEST1'] = dIGEST1
+      }
+
+      if (rESULTTEXT !== undefined) {
+        localVarQueryParameter['RESULTTEXT'] = rESULTTEXT
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -2700,11 +2739,6 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         ...headersFromBaseOptions,
         ...options.headers,
       }
-      localVarRequestOptions.data = serializeDataIfNeeded(
-        paymentResponseQueryDto,
-        localVarRequestOptions,
-        configuration,
-      )
 
       return {
         url: toPathString(localVarUrlObj),
@@ -2898,36 +2932,72 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary Process ticket payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerProcessTicketPayment(
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.ticketsControllerProcessTicketPayment(
-          paymentResponseQueryDto,
+          oPERATION,
+          oRDERNUMBER,
+          pRCODE,
+          sRCODE,
+          dIGEST,
+          dIGEST1,
+          rESULTTEXT,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
      *
-     * @summary Process ticket prolongation payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerProcessTicketProlongationPayment(
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.ticketsControllerProcessTicketProlongationPayment(
-          paymentResponseQueryDto,
+          oPERATION,
+          oRDERNUMBER,
+          pRCODE,
+          sRCODE,
+          dIGEST,
+          dIGEST1,
+          rESULTTEXT,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3048,32 +3118,74 @@ export const TicketsApiFactory = function (
     },
     /**
      *
-     * @summary Process ticket payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketPayment(
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<TicketDto> {
+    ): AxiosPromise<void> {
       return localVarFp
-        .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
+        .ticketsControllerProcessTicketPayment(
+          oPERATION,
+          oRDERNUMBER,
+          pRCODE,
+          sRCODE,
+          dIGEST,
+          dIGEST1,
+          rESULTTEXT,
+          options,
+        )
         .then((request) => request(axios, basePath))
     },
     /**
      *
-     * @summary Process ticket prolongation payment
-     * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+     * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
+     * @param {string} oPERATION Operation text coming from the paygate return url query param
+     * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+     * @param {string} pRCODE Prcode text coming from the paygate return url query param
+     * @param {string} sRCODE Srcode text coming from the paygate return url query param
+     * @param {string} dIGEST Digest text coming from the paygate return url query param
+     * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+     * @param {string} rESULTTEXT Result text coming from the paygate return url query param
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerProcessTicketProlongationPayment(
-      paymentResponseQueryDto: PaymentResponseQueryDto,
+      oPERATION: string,
+      oRDERNUMBER: string,
+      pRCODE: string,
+      sRCODE: string,
+      dIGEST: string,
+      dIGEST1: string,
+      rESULTTEXT: string,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<TicketDto> {
+    ): AxiosPromise<void> {
       return localVarFp
-        .ticketsControllerProcessTicketProlongationPayment(paymentResponseQueryDto, options)
+        .ticketsControllerProcessTicketProlongationPayment(
+          oPERATION,
+          oRDERNUMBER,
+          pRCODE,
+          sRCODE,
+          dIGEST,
+          dIGEST1,
+          rESULTTEXT,
+          options,
+        )
         .then((request) => request(axios, basePath))
     },
     /**
@@ -3190,35 +3302,77 @@ export class TicketsApi extends BaseAPI {
 
   /**
    *
-   * @summary Process ticket payment
-   * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+   * @summary Process ticket payment. This endpoint is called by the payment gate.
+   * @param {string} oPERATION Operation text coming from the paygate return url query param
+   * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+   * @param {string} pRCODE Prcode text coming from the paygate return url query param
+   * @param {string} sRCODE Srcode text coming from the paygate return url query param
+   * @param {string} dIGEST Digest text coming from the paygate return url query param
+   * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+   * @param {string} rESULTTEXT Result text coming from the paygate return url query param
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
   public ticketsControllerProcessTicketPayment(
-    paymentResponseQueryDto: PaymentResponseQueryDto,
+    oPERATION: string,
+    oRDERNUMBER: string,
+    pRCODE: string,
+    sRCODE: string,
+    dIGEST: string,
+    dIGEST1: string,
+    rESULTTEXT: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
-      .ticketsControllerProcessTicketPayment(paymentResponseQueryDto, options)
+      .ticketsControllerProcessTicketPayment(
+        oPERATION,
+        oRDERNUMBER,
+        pRCODE,
+        sRCODE,
+        dIGEST,
+        dIGEST1,
+        rESULTTEXT,
+        options,
+      )
       .then((request) => request(this.axios, this.basePath))
   }
 
   /**
    *
-   * @summary Process ticket prolongation payment
-   * @param {PaymentResponseQueryDto} paymentResponseQueryDto
+   * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
+   * @param {string} oPERATION Operation text coming from the paygate return url query param
+   * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
+   * @param {string} pRCODE Prcode text coming from the paygate return url query param
+   * @param {string} sRCODE Srcode text coming from the paygate return url query param
+   * @param {string} dIGEST Digest text coming from the paygate return url query param
+   * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
+   * @param {string} rESULTTEXT Result text coming from the paygate return url query param
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
   public ticketsControllerProcessTicketProlongationPayment(
-    paymentResponseQueryDto: PaymentResponseQueryDto,
+    oPERATION: string,
+    oRDERNUMBER: string,
+    pRCODE: string,
+    sRCODE: string,
+    dIGEST: string,
+    dIGEST1: string,
+    rESULTTEXT: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
-      .ticketsControllerProcessTicketProlongationPayment(paymentResponseQueryDto, options)
+      .ticketsControllerProcessTicketProlongationPayment(
+        oPERATION,
+        oRDERNUMBER,
+        pRCODE,
+        sRCODE,
+        dIGEST,
+        dIGEST1,
+        rESULTTEXT,
+        options,
+      )
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -4173,19 +4327,15 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
      *
      * @summary Verifies an email with token
      * @param {string} token
-     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifyEmail: async (
       token: string,
-      key: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'token' is not null or undefined
       assertParamExists('verifiedEmailsControllerVerifyEmail', 'token', token)
-      // verify required parameter 'key' is not null or undefined
-      assertParamExists('verifiedEmailsControllerVerifyEmail', 'key', key)
       const localVarPath = `/verified-emails/verify`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -4198,12 +4348,12 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
       if (token !== undefined) {
         localVarQueryParameter['token'] = token
-      }
-
-      if (key !== undefined) {
-        localVarQueryParameter['key'] = key
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -4328,18 +4478,15 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
      *
      * @summary Verifies an email with token
      * @param {string} token
-     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async verifiedEmailsControllerVerifyEmail(
       token: string,
-      key: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ParkingCardDto>>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.verifiedEmailsControllerVerifyEmail(
         token,
-        key,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -4441,17 +4588,15 @@ export const VerifiedEmailsApiFactory = function (
      *
      * @summary Verifies an email with token
      * @param {string} token
-     * @param {string} key
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     verifiedEmailsControllerVerifyEmail(
       token: string,
-      key: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<Array<ParkingCardDto>> {
       return localVarFp
-        .verifiedEmailsControllerVerifyEmail(token, key, options)
+        .verifiedEmailsControllerVerifyEmail(token, options)
         .then((request) => request(axios, basePath))
     },
   }
@@ -4552,18 +4697,13 @@ export class VerifiedEmailsApi extends BaseAPI {
    *
    * @summary Verifies an email with token
    * @param {string} token
-   * @param {string} key
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof VerifiedEmailsApi
    */
-  public verifiedEmailsControllerVerifyEmail(
-    token: string,
-    key: string,
-    options?: AxiosRequestConfig,
-  ) {
+  public verifiedEmailsControllerVerifyEmail(token: string, options?: AxiosRequestConfig) {
     return VerifiedEmailsApiFp(this.configuration)
-      .verifiedEmailsControllerVerifyEmail(token, key, options)
+      .verifiedEmailsControllerVerifyEmail(token, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }

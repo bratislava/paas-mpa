@@ -33,13 +33,11 @@ const Page = () => {
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
     onSuccess: (res) => {
       const tmpVerificationToken = res.data[0].token
-      const tmpVerificationKey = res.data[0].key
 
-      router.push({
+      router.replace({
         pathname: '/parking-cards/verification/verification-sent',
         params: {
-          emailToVerify: email,
-          tmpVerificationKey,
+          email,
           tmpVerificationToken,
         },
       })

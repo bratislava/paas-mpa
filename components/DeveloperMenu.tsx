@@ -56,6 +56,11 @@ const menuItems: MenuItem[] = [
     route: '/examples/snackbar-example',
   },
   {
+    title: 'Code input',
+    subtitle: 'Code input examples',
+    route: '/examples/codeinput-example',
+  },
+  {
     title: 'Purchase',
     subtitle: 'Whole flow of ticket purchase',
     route: '/purchase',
