@@ -9,7 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
-import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
+import { formatBalance } from '@/utils/formatBalance'
 
 const VisitorCardsField = () => {
   const t = useTranslation('PaymentMethods')
@@ -48,17 +48,21 @@ const VisitorCardsField = () => {
 
   return (
     <Field label={t('fieldVisitorCards')}>
-      {visitorCards.map((card) => (
-        <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
-          <VisitorCardMethod
-            email={card.name ?? ''}
-            balance={`${formatPeriodOfTime(card.balance)} / ${formatPeriodOfTime(
-              card.originalBalance,
-            )}`}
-            selected={card.identificator === npk?.identificator}
-          />
-        </PressableStyled>
-      ))}
+      {visitorCards.map((card) => {
+        return (
+          <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
+            <VisitorCardMethod
+              email={card.name ?? ''}
+              balance={
+                card.balanceSeconds
+                  ? formatBalance(card.balanceSeconds, card.originalBalanceSeconds)
+                  : ''
+              }
+              selected={card.identificator === npk?.identificator}
+            />
+          </PressableStyled>
+        )
+      })}
     </Field>
   )
 }
