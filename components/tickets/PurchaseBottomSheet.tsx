@@ -19,7 +19,6 @@ import {
   InitiatePaymentRequestDto,
 } from '@/modules/backend/openapi-generated'
 import { formatDuration } from '@/utils/formatDuration'
-import { formatPeriodOfTime } from '@/utils/formatPeriodOfTime'
 import { formatPrice } from '@/utils/formatPrice'
 
 type Props = {
@@ -93,25 +92,23 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
                 </Typography>
               </FlexRow>
 
-              {/* Show creditNpkUsed only if it is defined and "non-zero" */}
-              {!priceData.creditNpkUsed || priceData.creditNpkUsed === 'PT0S' ? null : (
+              {priceData.creditNpkUsedSeconds ? (
                 <FlexRow>
                   <Typography variant="default">{t('creditNpkUsed')}</Typography>
                   <Typography variant="default-bold">
-                    {formatPeriodOfTime(priceData.creditNpkUsed)}
+                    {formatDuration(priceData.creditNpkUsedSeconds)}
                   </Typography>
                 </FlexRow>
-              )}
+              ) : null}
 
-              {/* Show creditBpkUsed only if it is defined and "non-zero" */}
-              {!priceData.creditBpkUsed || priceData.creditBpkUsed === 'PT0S' ? null : (
+              {priceData.creditBpkUsedSeconds ? (
                 <FlexRow>
                   <Typography variant="default">{t('creditBpkUsed')}</Typography>
                   <Typography variant="default-bold">
-                    {formatPeriodOfTime(priceData.creditBpkUsed)}
+                    {formatDuration(priceData.creditBpkUsedSeconds)}
                   </Typography>
                 </FlexRow>
-              )}
+              ) : null}
 
               {/* Check if it is present (null/undefined, but show if it is 0) */}
               {priceData.tax == null ? null : (
