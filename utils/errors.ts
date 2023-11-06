@@ -16,7 +16,7 @@ export const isError = (error: unknown): error is Error =>
   'message' in error &&
   typeof error.message === 'string'
 
-// we don't need instance of ErrorWithCode - we just need to access the code property
+// we don't need an instance of ErrorWithCode - we just need to access the code property
 // i.e. many of errors returned by amplify-js return code on their errors which we match with translation keys
 export const isErrorWithCode = (error: unknown): error is ErrorWithCode =>
   isError(error) && 'code' in error && typeof error.code === 'string'

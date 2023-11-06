@@ -17,22 +17,24 @@ export const useAxiosResponseInterceptors = () => {
       return response
     }
 
+    // TODO handle other use cases
     const errorInterceptor = (error: unknown) => {
       let snackbarMessage = null
       if (isAxiosError(error)) {
         const { status, data } = error.response ?? {}
+        const { errorName, message }: { errorName?: string; message?: string } = data
+
         if (status) {
           // eslint-disable-next-line sonarjs/no-small-switch
           switch (status) {
-            // eslint-disable-next-line switch-case/no-case-curly
-            case 422: {
-              const { errorName, message }: { errorName?: string; message?: string } = data
+            case 422:
+            case 424:
               if (errorName || message) {
                 snackbarMessage =
                   errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
               }
               break
-            }
+
             default:
               break
           }
@@ -44,6 +46,7 @@ export const useAxiosResponseInterceptors = () => {
       }
 
       snackbarMessage ??= t('generic')
+
       snackbar.show(snackbarMessage, { variant: 'danger' })
 
       return Promise.reject(error)

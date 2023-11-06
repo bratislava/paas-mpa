@@ -23,6 +23,6 @@ Amplify.configure({
 
     // OPTIONAL - This is used when autoSignIn is enabled for Auth.signUp
     // 'code' is used for Auth.confirmSignUp, 'link' is used for email link verification
-    signUpVerificationMethod: 'code',
+    // signUpVerificationMethod: 'code',
   },
 })

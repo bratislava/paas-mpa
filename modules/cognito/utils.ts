@@ -12,8 +12,10 @@ export const getAccessTokenOrLogout = async () => {
     return jwtToken
   } catch (error) {
     console.log('error getting access token - redirect to login', error)
-    // TODO redirect
-    throw error
+
+    // TODO ?
+    return null
+    // throw error
   }
 }
 

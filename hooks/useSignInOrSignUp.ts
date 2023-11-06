@@ -1,55 +1,90 @@
 import { Auth } from 'aws-amplify'
 import { router } from 'expo-router'
 
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
+// TODO add explanation to comments
 export const useSignInOrSignUp = () => {
-  const { setSignInResult, setSignUpPhone } = useGlobalStoreContext()
+  const snackbar = useSnackbar()
+
+  const { signInResult, setSignInResult } = useGlobalStoreContext()
+
+  const signInAndRedirectToConfirm = async (phone: string) => {
+    const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
+
+    if (signInResultInner) {
+      setSignInResult(signInResultInner)
+      router.push('/confirm-signin')
+    }
+  }
 
   const attemptSignInOrSignUp = async (phone: string) => {
     try {
       try {
-        const loginResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
-        if (loginResultInner) {
-          setSignInResult(loginResultInner)
-          router.push('/confirm-signin')
-        }
+        await signInAndRedirectToConfirm(phone)
       } catch (error) {
-        if (
-          isError(error) &&
-          isErrorWithCode(error) &&
-          error.code === 'UserNotConfirmedException'
-        ) {
-          console.log('UserNotConfirmedException')
-          // TODO @mpinter investigate autoSignIn after resendSignUp
-          setSignUpPhone(phone)
-          await Auth.resendSignUp(phone)
-          router.push({ pathname: '/confirm-signup' })
-        } else {
-          // TODO @mpinter only sing up on some errors, not on all, throw the rest
-          console.log('Other errors - TODO chose which to handle and which to throw.')
-
-          setSignUpPhone(phone)
+        // TODO NotAuthorizedException is thrown not only for unregistered users
+        if (isErrorWithCode(error) && error.code === 'NotAuthorizedException') {
           await Auth.signUp({
             username: phone,
             password: STATIC_TEMP_PASS,
-            // autoSignIn: {
-            //   enabled: true,
-            // },
           })
-          router.push({ pathname: '/confirm-signup' })
+
+          await signInAndRedirectToConfirm(phone)
+        } else {
+          throw error
         }
       }
     } catch (error) {
       if (isError(error)) {
+        // TODO translation
         console.error(`Login Error:`, error)
+        snackbar.show(`Login Error: ${error.message}`, { variant: 'danger' })
       } else {
+        // TODO translation
         console.error(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in signUp:`, error)
+        snackbar.show(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in signUp.`, {
+          variant: 'danger',
+        })
       }
     }
   }
 
-  return { attemptSignInOrSignUp }
+  const confirmSignIn = async (code: string) => {
+    try {
+      if (signInResult) {
+        await Auth.confirmSignIn(signInResult, code)
+        setSignInResult(null)
+        router.push('/')
+      } else {
+        // TODO translation
+        console.log('Unexpected error, no loginResult provided in GlobalStore.')
+      }
+    } catch (error) {
+      // TODO
+      // [NotAuthorizedException: Invalid session for the user, session is expired.]
+      // [CodeMismatchException: Invalid code or auth state for the user.]
+      if (isErrorWithCode(error) && error.code === 'CodeMismatchException') {
+        // TODO translation
+        console.log('Code mismatch', error)
+        snackbar.show(`Code mismatch: ${error.message}`, { variant: 'warning' })
+      } else if (isError(error)) {
+        // TODO translation
+        console.log('Confirm Error', error)
+        snackbar.show(`Confirm Error: ${error.message}`, { variant: 'danger' })
+      } else {
+        // TODO translation
+        snackbar.show(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in confirmSignIn.`, {
+          variant: 'danger',
+        })
+        // TODO translation
+        console.log(`${GENERIC_ERROR_MESSAGE} - unexpected object thrown in confirmSignIn:`, error)
+      }
+    }
+  }
+
+  return { attemptSignInOrSignUp, confirmSignIn }
 }
