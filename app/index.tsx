@@ -14,7 +14,7 @@ import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
 
@@ -24,6 +24,7 @@ const handleLongPress = () => {
 
 const IndexScreen = () => {
   const t = useTranslation()
+  const locale = useLocale()
   const bottomSheetRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
 
@@ -45,7 +46,7 @@ const IndexScreen = () => {
   }
 
   const [lastReadAnnouncementId] = useLastReadAnnouncementIdStorage()
-  const { data: announcementsData } = useQueryWithFocusRefetch(announcementsOptions())
+  const { data: announcementsData } = useQueryWithFocusRefetch(announcementsOptions(locale))
   const newAnnouncementsCount = lastReadAnnouncementId
     ? announcementsData?.announcements?.filter(
         (announcement) => announcement.id > lastReadAnnouncementId,

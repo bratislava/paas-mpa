@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
+import BonusCardMethod from '@/components/controls/payment-methods/BonusCardMethod'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -98,6 +99,11 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
+              {data?.creditBpkUsedSeconds ? (
+                // TODO props
+                <BonusCardMethod balance="balance" validUntil="validUntil" />
+              ) : null}
+
               <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
                   <PaymentMethodsFieldControl card={npk} />

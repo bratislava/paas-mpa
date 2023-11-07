@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect } from 'react'
 import { InteractionManager } from 'react-native'
 
+import { useLocale } from '@/hooks/useTranslation'
 import {
   announcementsOptions,
   notificationSettingsOptions,
@@ -13,6 +14,7 @@ import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
 
 export const usePrefetchOnAppStart = () => {
   const queryClient = useQueryClient()
+  const locale = useLocale()
 
   const prefetch = useCallback(async () => {
     const token = await getAccessTokenOrLogout()
@@ -27,7 +29,7 @@ export const usePrefetchOnAppStart = () => {
       notificationSettingsOptions(),
       verifiedEmails,
       visitorCardsOptions(),
-      announcementsOptions(),
+      announcementsOptions(locale),
     ]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all(queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)))
@@ -38,7 +40,7 @@ export const usePrefetchOnAppStart = () => {
           queryClient.prefetchQuery(parkingCardsOptions({ email: emailDto.email })),
         ),
       )
-  }, [queryClient])
+  }, [locale, queryClient])
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => prefetch())

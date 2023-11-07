@@ -10,7 +10,7 @@ export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdr
     price: zone.Zakladna_cena,
     paidHours: isEnglish ? zone.Cas_spoplatnenia_en : zone.Cas_spoplatnenia_sk,
     parkingDurationLimit: zone.Casove_obmedzenie_dlzky_park,
-    additionalInformation: isEnglish ? zone.Doplnkova_informacia_en : zone.Cas_spoplatnenia_sk,
+    additionalInformation: isEnglish ? zone.Doplnkova_informacia_en : zone.Doplnkova_informacia_sk,
     rpkInformation: isEnglish ? zone.Informacia_RPK_en : zone.Informacia_RPK_sk,
     npkInformation: isEnglish ? zone.Informacia_NPK_en : zone.Informacia_NPK_sk,
     code: zone.Kod_rezidentskej_zony,
