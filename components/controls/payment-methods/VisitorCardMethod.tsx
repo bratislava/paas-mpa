@@ -32,7 +32,6 @@ type Props = AdditionalProps & {
   balance: string
 }
 
-// TODO props
 const VisitorCardMethod = ({ email, balance, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 

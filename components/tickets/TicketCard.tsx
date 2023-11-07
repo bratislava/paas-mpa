@@ -24,8 +24,8 @@ type Props = {
 }
 
 const TicketCard = ({ ticket }: Props) => {
-  const fromDateTime = new Date(ticket.parkingStart.replace('Z', ''))
-  const toDateTime = new Date(ticket.parkingEnd.replace('Z', ''))
+  const parkingStartDate = new Date(ticket.parkingStart)
+  const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
   const t = useTranslation('TicketCard')
   const locale = useLocale()
@@ -41,18 +41,23 @@ const TicketCard = ({ ticket }: Props) => {
       <Panel className="border border-divider bg-white">
         <View className="g-4">
           <FlexRow>
-            <Typography variant="default-bold">
-              {formatDateTime(fromDateTime, locale)} – {formatDateTime(toDateTime, locale)}
+            {/* "flex-1" fixes text width to not overflow */}
+            <Typography variant="default-bold" className="flex-1">
+              {formatDateTime(parkingStartDate, locale)} – {formatDateTime(parkingEndDate, locale)}
             </Typography>
             <IconButton name="more-vert" accessibilityLabel={t('more')} />
           </FlexRow>
+
           <View className="items-start g-1">
             <ZoneBadge label={ticket.udr} />
-            <Typography variant="small">
-              {zone?.cityDistrict} – {zone?.name}
-            </Typography>
+            {zone ? (
+              <Typography variant="small">
+                {zone.cityDistrict} – {zone.name}
+              </Typography>
+            ) : null}
             <Typography variant="small">Licence plate number</Typography>
           </View>
+
           <View className="g-2">
             <Link asChild href="/purchase">
               <Button>{t('prolong')}</Button>
@@ -63,6 +68,7 @@ const TicketCard = ({ ticket }: Props) => {
           </View>
         </View>
       </Panel>
+
       <Modal visible={isTerminateModalVisible} onRequestClose={handleTerminateModalClose}>
         <ModalContentWithActions
           variant="error"

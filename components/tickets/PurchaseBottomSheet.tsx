@@ -9,6 +9,7 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { getDurationFromPriceData } from '@/components/tickets/getDurationFromPriceData'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -18,6 +19,7 @@ import {
   GetTicketPriceResponseDto,
   InitiatePaymentRequestDto,
 } from '@/modules/backend/openapi-generated'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
 import { formatPrice } from '@/utils/formatPrice'
 
@@ -30,6 +32,7 @@ type Props = {
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
   ({ priceData, isLoading, priceRequestBody }, ref) => {
     const t = useTranslation('PurchaseBottomSheet')
+    const { udr } = usePurchaseStoreContext()
     const insets = useSafeAreaInsets()
     // TODO tmp for now - fixed height from figma
     const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
@@ -43,7 +46,6 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         clientApi.ticketsControllerInitiateTicketPayment(bodyInner),
     })
 
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     const handlePressPay = () => {
       mutation.mutate(priceRequestBody, {
         onSuccess: (data) => {
@@ -91,6 +93,26 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
                   {formatPrice(priceData.priceWithoutDiscount)}
                 </Typography>
               </FlexRow>
+
+              {/* Is this ever used? */}
+              {udr?.rpkInformation ? (
+                <Panel className="bg-warning-light">
+                  <Typography>{udr.rpkInformation}</Typography>
+                </Panel>
+              ) : null}
+
+              {udr?.npkInformation ? (
+                <Panel className="bg-warning-light">
+                  <Typography>{udr.npkInformation}</Typography>
+                </Panel>
+              ) : null}
+
+              {/* This usually says you cannot use BPK (in 2e zones) */}
+              {udr?.additionalInformation ? (
+                <Panel className="bg-warning-light">
+                  <Typography>{udr.additionalInformation}</Typography>
+                </Panel>
+              ) : null}
 
               {priceData.creditNpkUsedSeconds ? (
                 <FlexRow>

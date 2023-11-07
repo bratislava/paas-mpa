@@ -10,13 +10,11 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 /*
- *  Figma:
- *  https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3230%3A21389&mode=dev
- *  https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=2677%3A22038&mode=dev
+ *  Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3708%3A25139&mode=dev
  */
 
 // Ensure that only one of these props is set at a time
-type Props =
+type AdditionalProps =
   | {
       selected?: boolean
       showControlChevron?: never
@@ -26,9 +24,13 @@ type Props =
       showControlChevron?: boolean
     }
 
-// TODO props
 // TODO this component probably does not need selected/showControlChevron props
-const BonusCardMethod = ({ selected, showControlChevron }: Props) => {
+type Props = AdditionalProps & {
+  balance: string
+  validUntil: string
+}
+
+const BonusCardMethod = ({ balance, validUntil, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 
   return (
@@ -45,11 +47,11 @@ const BonusCardMethod = ({ selected, showControlChevron }: Props) => {
         <Divider />
         <FlexRow>
           <Typography variant="small">{t('todayRemaining')}</Typography>
-          <Typography variant="small-bold">120 min</Typography>
+          <Typography variant="small-bold">{balance}</Typography>
         </FlexRow>
         <FlexRow>
           <Typography variant="small">{t('validUntil')}</Typography>
-          <Typography variant="small-bold">April 12, 2024</Typography>
+          <Typography variant="small-bold">{validUntil}</Typography>
         </FlexRow>
       </View>
     </Panel>

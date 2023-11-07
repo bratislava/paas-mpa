@@ -52,6 +52,12 @@ export interface AnnouncementDto {
    */
   content: string
   /**
+   * Language of the announcement in ISO 639-1 language code
+   * @type {string}
+   * @memberof AnnouncementDto
+   */
+  language: string
+  /**
    *
    * @type {AnnouncementType}
    * @memberof AnnouncementDto
@@ -650,17 +656,16 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
  */
 
 export const SERVICEERROR = {
-  Token: 'TOKEN',
-  TokenIncorrect: 'TOKEN_INCORRECT',
-  TokenExpired: 'TOKEN_EXPIRED',
   PricingApiError: 'PRICING_API_ERROR',
   ParkdotsError: 'PARKDOTS_ERROR',
   ParkdotsTokenError: 'PARKDOTS_TOKEN_ERROR',
-  PriceMismatch: 'PRICE_MISMATCH',
   PaymentInit: 'PAYMENT_INIT',
   PaymentValdation: 'PAYMENT_VALDATION',
-  Ticket: 'TICKET',
-  Mpa: 'MPA',
+  EmailVerificationTokenIncorrect: 'EMAIL_VERIFICATION_TOKEN_INCORRECT',
+  EmailAlreadyVerified: 'EMAIL_ALREADY_VERIFIED',
+  TicketProlongationNonActive: 'TICKET_PROLONGATION_NON_ACTIVE',
+  TicketMissingParkdotsId: 'TICKET_MISSING_PARKDOTS_ID',
+  PaymentResponseIncorrect: 'PAYMENT_RESPONSE_INCORRECT',
 } as const
 
 export type SERVICEERROR = (typeof SERVICEERROR)[keyof typeof SERVICEERROR]
@@ -697,6 +702,12 @@ export interface SaveAnnouncementDto {
    * @memberof SaveAnnouncementDto
    */
   content: string
+  /**
+   * Language of the announcement in ISO 639-1 language code
+   * @type {string}
+   * @memberof SaveAnnouncementDto
+   */
+  language: string
   /**
    *
    * @type {AnnouncementType}
@@ -1183,16 +1194,20 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
     /**
      *
      * @summary Get all announcements paginated
+     * @param {string} language Language of the announcement in ISO 639-1 language code
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany: async (
+      language: string,
       page?: number,
       pageSize?: number,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
+      // verify required parameter 'language' is not null or undefined
+      assertParamExists('announcementsControllerAnnouncementsGetMany', 'language', language)
       const localVarPath = `/announcements`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -1215,6 +1230,10 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
 
       if (pageSize !== undefined) {
         localVarQueryParameter['pageSize'] = pageSize
+      }
+
+      if (language !== undefined) {
+        localVarQueryParameter['language'] = language
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -1304,6 +1323,10 @@ export const AnnouncementsApiAxiosParamCreator = function (configuration?: Confi
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
       localVarHeaderParameter['Content-Type'] = 'application/json'
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -1337,12 +1360,14 @@ export const AnnouncementsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all announcements paginated
+     * @param {string} language Language of the announcement in ISO 639-1 language code
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async announcementsControllerAnnouncementsGetMany(
+      language: string,
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
@@ -1351,6 +1376,7 @@ export const AnnouncementsApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.announcementsControllerAnnouncementsGetMany(
+          language,
           page,
           pageSize,
           options,
@@ -1407,18 +1433,20 @@ export const AnnouncementsApiFactory = function (
     /**
      *
      * @summary Get all announcements paginated
+     * @param {string} language Language of the announcement in ISO 639-1 language code
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     announcementsControllerAnnouncementsGetMany(
+      language: string,
       page?: number,
       pageSize?: number,
       options?: AxiosRequestConfig,
     ): AxiosPromise<AnnouncementsResponseDto> {
       return localVarFp
-        .announcementsControllerAnnouncementsGetMany(page, pageSize, options)
+        .announcementsControllerAnnouncementsGetMany(language, page, pageSize, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -1464,6 +1492,7 @@ export class AnnouncementsApi extends BaseAPI {
   /**
    *
    * @summary Get all announcements paginated
+   * @param {string} language Language of the announcement in ISO 639-1 language code
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.
@@ -1471,12 +1500,13 @@ export class AnnouncementsApi extends BaseAPI {
    * @memberof AnnouncementsApi
    */
   public announcementsControllerAnnouncementsGetMany(
+    language: string,
     page?: number,
     pageSize?: number,
     options?: AxiosRequestConfig,
   ) {
     return AnnouncementsApiFp(this.configuration)
-      .announcementsControllerAnnouncementsGetMany(page, pageSize, options)
+      .announcementsControllerAnnouncementsGetMany(language, page, pageSize, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -2793,6 +2823,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @param {boolean} active True to load active tickets, false to load past tickets
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [ecv] ECV of the vehicle which has the ticket
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2800,6 +2831,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       active: boolean,
       page?: number,
       pageSize?: number,
+      ecv?: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'active' is not null or undefined
@@ -2830,6 +2862,10 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
 
       if (active !== undefined) {
         localVarQueryParameter['active'] = active
+      }
+
+      if (ecv !== undefined) {
+        localVarQueryParameter['ecv'] = ecv
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -3025,6 +3061,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @param {boolean} active True to load active tickets, false to load past tickets
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [ecv] ECV of the vehicle which has the ticket
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3032,12 +3069,14 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       active: boolean,
       page?: number,
       pageSize?: number,
+      ecv?: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketsResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerTicketsGetMany(
         active,
         page,
         pageSize,
+        ecv,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3209,6 +3248,7 @@ export const TicketsApiFactory = function (
      * @param {boolean} active True to load active tickets, false to load past tickets
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [ecv] ECV of the vehicle which has the ticket
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3216,10 +3256,11 @@ export const TicketsApiFactory = function (
       active: boolean,
       page?: number,
       pageSize?: number,
+      ecv?: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<TicketsResponseDto> {
       return localVarFp
-        .ticketsControllerTicketsGetMany(active, page, pageSize, options)
+        .ticketsControllerTicketsGetMany(active, page, pageSize, ecv, options)
         .then((request) => request(axios, basePath))
     },
   }
@@ -3396,6 +3437,7 @@ export class TicketsApi extends BaseAPI {
    * @param {boolean} active True to load active tickets, false to load past tickets
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
+   * @param {string} [ecv] ECV of the vehicle which has the ticket
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
@@ -3404,10 +3446,11 @@ export class TicketsApi extends BaseAPI {
     active: boolean,
     page?: number,
     pageSize?: number,
+    ecv?: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
-      .ticketsControllerTicketsGetMany(active, page, pageSize, options)
+      .ticketsControllerTicketsGetMany(active, page, pageSize, ecv, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }

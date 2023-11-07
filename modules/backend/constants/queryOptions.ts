@@ -75,13 +75,13 @@ export const visitorCardsOptions = () =>
     select: (res) => res.data,
   })
 
-export const announcementsOptions = ({
-  page = 1,
-  pageSize = 10,
-}: PaginationOptions | undefined = {}) =>
+export const announcementsOptions = (
+  language: string,
+  { page, pageSize }: PaginationOptions | undefined = {},
+) =>
   queryOptions({
     queryKey: ['Announcements'],
-    queryFn: () => clientApi.announcementsControllerAnnouncementsGetMany(page, pageSize),
+    queryFn: () => clientApi.announcementsControllerAnnouncementsGetMany(language, page, pageSize),
     select: (res) => res.data,
     // TODO: remove this when the backend has test announcements data
     enabled: false,
