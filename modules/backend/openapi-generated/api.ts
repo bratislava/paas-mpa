@@ -652,6 +652,31 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 /**
  *
  * @export
+ * @interface PaymentUrls
+ */
+export interface PaymentUrls {
+  /**
+   * URL address of the payment for Card
+   * @type {string}
+   * @memberof PaymentUrls
+   */
+  paymentUrlCard: string
+  /**
+   * URL address of the payment for APAY
+   * @type {string}
+   * @memberof PaymentUrls
+   */
+  paymentUrlAPAY: string
+  /**
+   * URL address of the payment for GPAY
+   * @type {string}
+   * @memberof PaymentUrls
+   */
+  paymentUrlGPAY: string
+}
+/**
+ *
+ * @export
  * @enum {string}
  */
 
@@ -850,6 +875,12 @@ export interface TicketDto {
    */
   udr: string
   /**
+   * Parking vehicle registration number
+   * @type {string}
+   * @memberof TicketDto
+   */
+  ecv: string
+  /**
    * Start of the parking
    * @type {string}
    * @memberof TicketDto
@@ -910,12 +941,6 @@ export interface TicketDto {
    */
   paymentId?: string
   /**
-   * URL address of the payment
-   * @type {string}
-   * @memberof TicketDto
-   */
-  paymentUrl?: string
-  /**
    *
    * @type {PaymentStatus}
    * @memberof TicketDto
@@ -939,6 +964,116 @@ export interface TicketDto {
    * @memberof TicketDto
    */
   createdAt: string
+}
+
+/**
+ *
+ * @export
+ * @interface TicketInitDto
+ */
+export interface TicketInitDto {
+  /**
+   * Unique identification of parking slot (specific section of parking regulation)
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  udr: string
+  /**
+   * Parking vehicle registration number
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  ecv: string
+  /**
+   * Start of the parking
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  parkingStart: string
+  /**
+   * End of the parking
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  parkingEnd: string
+  /**
+   * Price of the parking
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  price?: number
+  /**
+   * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  bpkCreditUsed?: string
+  /**
+   * Credits used in case of bonnus parking in seconds
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  bpkCreditUsedSeconds: number
+  /**
+   * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  npkCreditUsed?: string
+  /**
+   * Credits used in case of visitor parking in seconds
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  npkCreditUsedSeconds: number
+  /**
+   * ID of the visitor card (GUID)
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  npkId?: string
+  /**
+   * ID of the bonus card (GUID)
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  bpkId?: string
+  /**
+   * ID of the payment in paygate
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  paymentId?: string
+  /**
+   *
+   * @type {PaymentStatus}
+   * @memberof TicketInitDto
+   */
+  paymentStatus?: PaymentStatus
+  /**
+   * Date of the cancellation
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  canceledAt?: string
+  /**
+   * Date of the last change
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  updatedAt: string
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  createdAt: string
+  /**
+   *
+   * @type {PaymentUrls}
+   * @memberof TicketInitDto
+   */
+  paymentUrls?: PaymentUrls
 }
 
 /**
@@ -2597,6 +2732,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2608,6 +2744,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'oPERATION' is not null or undefined
@@ -2624,6 +2761,8 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       assertParamExists('ticketsControllerProcessTicketPayment', 'dIGEST1', dIGEST1)
       // verify required parameter 'rESULTTEXT' is not null or undefined
       assertParamExists('ticketsControllerProcessTicketPayment', 'rESULTTEXT', rESULTTEXT)
+      // verify required parameter 'mD' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketPayment', 'mD', mD)
       const localVarPath = `/tickets/payment/process`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -2664,6 +2803,10 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         localVarQueryParameter['RESULTTEXT'] = rESULTTEXT
       }
 
+      if (mD !== undefined) {
+        localVarQueryParameter['MD'] = mD
+      }
+
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
       localVarRequestOptions.headers = {
@@ -2687,6 +2830,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2698,6 +2842,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'oPERATION' is not null or undefined
@@ -2722,6 +2867,8 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         'rESULTTEXT',
         rESULTTEXT,
       )
+      // verify required parameter 'mD' is not null or undefined
+      assertParamExists('ticketsControllerProcessTicketProlongationPayment', 'mD', mD)
       const localVarPath = `/tickets/payment/prolongation/process`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -2760,6 +2907,10 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
 
       if (rESULTTEXT !== undefined) {
         localVarQueryParameter['RESULTTEXT'] = rESULTTEXT
+      }
+
+      if (mD !== undefined) {
+        localVarQueryParameter['MD'] = mD
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -2940,7 +3091,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     async ticketsControllerInitiateTicketPayment(
       initiatePaymentRequestDto: InitiatePaymentRequestDto,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketInitDto>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.ticketsControllerInitiateTicketPayment(
           initiatePaymentRequestDto,
@@ -2958,7 +3109,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     async ticketsControllerInitiateTicketProlongationPayment(
       initiateProlongationRequestDto: InitiateProlongationRequestDto,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketInitDto>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.ticketsControllerInitiateTicketProlongationPayment(
           initiateProlongationRequestDto,
@@ -2976,6 +3127,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2987,6 +3139,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
@@ -2998,6 +3151,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
           dIGEST,
           dIGEST1,
           rESULTTEXT,
+          mD,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3012,6 +3166,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3023,6 +3178,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
@@ -3034,6 +3190,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
           dIGEST,
           dIGEST1,
           rESULTTEXT,
+          mD,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3135,7 +3292,7 @@ export const TicketsApiFactory = function (
     ticketsControllerInitiateTicketPayment(
       initiatePaymentRequestDto: InitiatePaymentRequestDto,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<TicketDto> {
+    ): AxiosPromise<TicketInitDto> {
       return localVarFp
         .ticketsControllerInitiateTicketPayment(initiatePaymentRequestDto, options)
         .then((request) => request(axios, basePath))
@@ -3150,7 +3307,7 @@ export const TicketsApiFactory = function (
     ticketsControllerInitiateTicketProlongationPayment(
       initiateProlongationRequestDto: InitiateProlongationRequestDto,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<TicketDto> {
+    ): AxiosPromise<TicketInitDto> {
       return localVarFp
         .ticketsControllerInitiateTicketProlongationPayment(initiateProlongationRequestDto, options)
         .then((request) => request(axios, basePath))
@@ -3165,6 +3322,7 @@ export const TicketsApiFactory = function (
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3176,6 +3334,7 @@ export const TicketsApiFactory = function (
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<void> {
       return localVarFp
@@ -3187,6 +3346,7 @@ export const TicketsApiFactory = function (
           dIGEST,
           dIGEST1,
           rESULTTEXT,
+          mD,
           options,
         )
         .then((request) => request(axios, basePath))
@@ -3201,6 +3361,7 @@ export const TicketsApiFactory = function (
      * @param {string} dIGEST Digest text coming from the paygate return url query param
      * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
      * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+     * @param {string} mD Custom data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3212,6 +3373,7 @@ export const TicketsApiFactory = function (
       dIGEST: string,
       dIGEST1: string,
       rESULTTEXT: string,
+      mD: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<void> {
       return localVarFp
@@ -3223,6 +3385,7 @@ export const TicketsApiFactory = function (
           dIGEST,
           dIGEST1,
           rESULTTEXT,
+          mD,
           options,
         )
         .then((request) => request(axios, basePath))
@@ -3351,6 +3514,7 @@ export class TicketsApi extends BaseAPI {
    * @param {string} dIGEST Digest text coming from the paygate return url query param
    * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
    * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+   * @param {string} mD Custom data
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
@@ -3363,6 +3527,7 @@ export class TicketsApi extends BaseAPI {
     dIGEST: string,
     dIGEST1: string,
     rESULTTEXT: string,
+    mD: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -3374,6 +3539,7 @@ export class TicketsApi extends BaseAPI {
         dIGEST,
         dIGEST1,
         rESULTTEXT,
+        mD,
         options,
       )
       .then((request) => request(this.axios, this.basePath))
@@ -3389,6 +3555,7 @@ export class TicketsApi extends BaseAPI {
    * @param {string} dIGEST Digest text coming from the paygate return url query param
    * @param {string} dIGEST1 Digest1 text coming from the paygate return url query param
    * @param {string} rESULTTEXT Result text coming from the paygate return url query param
+   * @param {string} mD Custom data
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
@@ -3401,6 +3568,7 @@ export class TicketsApi extends BaseAPI {
     dIGEST: string,
     dIGEST1: string,
     rESULTTEXT: string,
+    mD: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -3412,6 +3580,7 @@ export class TicketsApi extends BaseAPI {
         dIGEST,
         dIGEST1,
         rESULTTEXT,
+        mD,
         options,
       )
       .then((request) => request(this.axios, this.basePath))
