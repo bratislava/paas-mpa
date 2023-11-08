@@ -44,15 +44,23 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
     const mutation = useMutation({
       mutationFn: (bodyInner: InitiatePaymentRequestDto) =>
         clientApi.ticketsControllerInitiateTicketPayment(bodyInner),
+      onMutate: (ctx) => {
+        console.log('onMutate', JSON.stringify(ctx, undefined, 2))
+      },
     })
 
+    // TODO determine Card/APAY/GPAY
     const handlePressPay = () => {
       mutation.mutate(priceRequestBody, {
-        onSuccess: (data) => {
-          console.log('onSuccess', JSON.stringify(data.data, undefined, 2))
+        onSuccess: ({ data }) => {
+          console.log(
+            'onSuccess',
+            JSON.stringify(priceRequestBody, undefined, 2),
+            JSON.stringify(data, undefined, 2),
+          )
           router.push({
             pathname: '/purchase/payment',
-            params: { paymentUrl: encodeURI(data.data.paymentUrl ?? '') },
+            params: { paymentUrl: data?.paymentUrls?.paymentUrlCard },
           })
         },
       })
