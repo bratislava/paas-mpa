@@ -113,7 +113,12 @@
     "validUntil": "Platná do"
   },
   "Tickets": {
-    "title": "Parkovacie lístky"
+    "title": "Parkovacie lístky",
+    "activeTickets": "Aktívne lístky",
+    "history": "História",
+    "noActiveTickets": "Žiadne aktívne lístky",
+    "noActiveTicketsText": "Po zakúpení parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
+    "buyTicket": "Kúpiť lístok"
   },
   "TicketCard": {
     "prolong": "Predĺžiť",

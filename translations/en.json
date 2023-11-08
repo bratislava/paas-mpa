@@ -113,7 +113,12 @@
     "validUntil": "Valid until"
   },
   "Tickets": {
-    "title": "Parking tickets"
+    "title": "Parking tickets",
+    "activeTickets": "Active tickets",
+    "history": "History",
+    "noActiveTickets": "No active tickets",
+    "noActiveTicketsText": "After you buy your parking ticket it will show here.",
+    "buyTicket": "Buy ticket"
   },
   "TicketCard": {
     "prolong": "Prolong",

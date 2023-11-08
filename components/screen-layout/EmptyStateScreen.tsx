@@ -5,20 +5,29 @@ import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 
 type Props = {
-  title: string
+  contentTitle: string
   text?: string
-  button?: ReactNode
-  buttonPosition?: 'insideContent' | 'bottom'
+  actionButton?: ReactNode
+  actionButtonPosition?: 'insideContent' | 'bottom'
 }
 
-const EmptyStateScreen = ({ title, text, button, buttonPosition = 'bottom' }: Props) => {
+const EmptyStateScreen = ({
+  contentTitle,
+  text,
+  actionButton,
+  actionButtonPosition = 'bottom',
+}: Props) => {
   return (
-    <ScreenViewCentered actionButton={buttonPosition === 'bottom' && button ? button : undefined}>
+    <ScreenViewCentered
+      actionButton={actionButtonPosition === 'bottom' && actionButton ? actionButton : undefined}
+    >
       <ContentWithAvatar
-        title={title}
+        title={contentTitle}
         text={text}
         customAvatarComponent={<EmptyStateAvatar />}
-        actionButton={buttonPosition === 'insideContent' && button ? button : undefined}
+        actionButton={
+          actionButtonPosition === 'insideContent' && actionButton ? actionButton : undefined
+        }
       />
     </ScreenViewCentered>
   )

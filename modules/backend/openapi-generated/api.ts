@@ -484,6 +484,31 @@ export interface MobileDeviceResponseDto {
 /**
  *
  * @export
+ * @enum {string}
+ */
+
+export const PRICINGAPIERROR = {
+  InvalidParkingStart: 'InvalidParkingStart',
+  InvalidParkingEnd: 'InvalidParkingEnd',
+  InvalidParkingTime: 'InvalidParkingTime',
+  TooLongParkingTime: 'TooLongParkingTime',
+  TooShortParkingTime: 'TooShortParkingTime',
+  FreeTicket: 'FreeTicket',
+  InsufficientCredit: 'InsufficientCredit',
+  NoUsableParkingCardFound: 'NoUsableParkingCardFound',
+  PermitCardActive: 'PermitCardActive',
+  TicketAlreadyExists: 'TicketAlreadyExists',
+  BadDateFormat: 'BadDateFormat',
+  CardNotValid: 'CardNotValid',
+  TicketAlreadyShortened: 'TicketAlreadyShortened',
+  BadRequest: 'BadRequest',
+} as const
+
+export type PRICINGAPIERROR = (typeof PRICINGAPIERROR)[keyof typeof PRICINGAPIERROR]
+
+/**
+ *
+ * @export
  * @interface PaginationInfo
  */
 export interface PaginationInfo {
@@ -687,6 +712,7 @@ export const SERVICEERROR = {
   PaymentInit: 'PAYMENT_INIT',
   PaymentValdation: 'PAYMENT_VALDATION',
   EmailVerificationTokenIncorrect: 'EMAIL_VERIFICATION_TOKEN_INCORRECT',
+  EmailVerificationTokenExpired: 'EMAIL_VERIFICATION_TOKEN_EXPIRED',
   EmailAlreadyVerified: 'EMAIL_ALREADY_VERIFIED',
   TicketProlongationNonActive: 'TICKET_PROLONGATION_NON_ACTIVE',
   TicketMissingParkdotsId: 'TICKET_MISSING_PARKDOTS_ID',
@@ -828,6 +854,38 @@ export interface ServiceErrorDto {
    * @memberof ServiceErrorDto
    */
   errorName: SERVICEERROR
+}
+
+/**
+ *
+ * @export
+ * @interface ServicePricingErrorDto
+ */
+export interface ServicePricingErrorDto {
+  /**
+   * Status in text
+   * @type {string}
+   * @memberof ServicePricingErrorDto
+   */
+  status: string
+  /**
+   * Detail error message
+   * @type {string}
+   * @memberof ServicePricingErrorDto
+   */
+  message: string
+  /**
+   * Status Code
+   * @type {number}
+   * @memberof ServicePricingErrorDto
+   */
+  statusCode: number
+  /**
+   *
+   * @type {PRICINGAPIERROR}
+   * @memberof ServicePricingErrorDto
+   */
+  errorName: PRICINGAPIERROR
 }
 
 /**
@@ -1074,6 +1132,38 @@ export interface TicketInitDto {
    * @memberof TicketInitDto
    */
   paymentUrls?: PaymentUrls
+}
+
+/**
+ *
+ * @export
+ * @interface TicketsControllerGetTicketPrice422Response
+ */
+export interface TicketsControllerGetTicketPrice422Response {
+  /**
+   * Status in text
+   * @type {string}
+   * @memberof TicketsControllerGetTicketPrice422Response
+   */
+  status: string
+  /**
+   * Detail error message
+   * @type {string}
+   * @memberof TicketsControllerGetTicketPrice422Response
+   */
+  message: string
+  /**
+   * Status Code
+   * @type {number}
+   * @memberof TicketsControllerGetTicketPrice422Response
+   */
+  statusCode: number
+  /**
+   *
+   * @type {PRICINGAPIERROR}
+   * @memberof TicketsControllerGetTicketPrice422Response
+   */
+  errorName: PRICINGAPIERROR
 }
 
 /**
