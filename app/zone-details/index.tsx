@@ -17,42 +17,41 @@ export type ZoneDetailsParamas = {
 }
 
 const ZoneDetailsScreen = () => {
-  // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
-  const zoneDetailsParams = useLocalSearchParams<ZoneDetailsParamas>()
-  const t = useTranslation()
+  const t = useTranslation('ZoneDetailsScreen')
 
-  const zone = useMapZone(zoneDetailsParams.udrId ?? null, true)
+  // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
+  const { udrId } = useLocalSearchParams<ZoneDetailsParamas>()
+
+  const zone = useMapZone(udrId ?? null, true)
 
   if (!zone) {
     return null
   }
 
   return (
-    <ScreenView title={t('ZoneDetailsScreen.title')}>
+    <ScreenView title={t('title')}>
       <ScreenContent>
-        <FlexRow className="py-4">
-          <ZoneBadge label={zone.udrId.toString()} />
+        <FlexRow>
+          <ZoneBadge label={zone.udrId} />
           <Typography className="flex-1">{zone.name}</Typography>
           <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>
 
         <Divider />
 
-        <FlexRow className="justify-start py-4">
-          <View
-            className="h-6 w-6 items-center justify-center bg-dark"
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{ borderRadius: 12 }}
-          >
+        <FlexRow className="justify-start">
+          <View className="h-6 w-6 items-center justify-center rounded-full bg-dark">
             <Icon name="local-parking" size={12} className="text-white" />
           </View>
           <Typography variant="default-bold">{zone.reservedParking}</Typography>
         </FlexRow>
+
         <Divider />
-        {zone.additionalInformation ? (
-          <FlexRow className="justify-start py-4">
+
+        {zone.paidHours ? (
+          <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
-            <Typography>{zone.additionalInformation}</Typography>
+            <Typography>{zone.paidHours}</Typography>
           </FlexRow>
         ) : null}
       </ScreenContent>

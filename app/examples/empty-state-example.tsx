@@ -5,10 +5,10 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 
 const EmptyStateExampleScreen = () => (
   <EmptyStateScreen
-    title="No entities"
+    contentTitle="No entities"
     text="This is an empty state with quite long text to see how it looks like."
-    button={<ContinueButton />}
-    buttonPosition="insideContent"
+    actionButton={<ContinueButton />}
+    actionButtonPosition="insideContent"
   />
 )
 

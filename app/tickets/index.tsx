@@ -1,13 +1,12 @@
-import clsx from 'clsx'
 import { useCallback, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
-import { EmptyStateAvatar } from '@/assets/avatars'
 import TabBar from '@/components/navigation/TabBar'
-import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Button from '@/components/shared/Button'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -15,50 +14,41 @@ import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
 const ActiveTicketsRoute = () => {
+  const t = useTranslation('Tickets')
+
   const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: true }))
+  const { tickets } = ticketsResponse ?? {}
+
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
   )
 
-  const tickets = ticketsResponse?.tickets
-
-  const isShowingTickets = tickets && tickets.length > 0
+  if (!tickets?.length) {
+    return (
+      <EmptyStateScreen
+        contentTitle={t('noActiveTickets')}
+        text={t('noActiveTicketsText')}
+        actionButton={<Button variant="primary">{t('buyTicket')}</Button>}
+      />
+    )
+  }
 
   return (
-    <ScreenContent
-      className={clsx('h-full px-0', !isShowingTickets && 'justify-center bg-transparent')}
-    >
-      {isShowingTickets ? (
-        <View className="h-full bg-white px-5">
-          <FlatList
-            // eslint-disable-next-line react-native/no-inline-styles
-            contentContainerStyle={{ gap: 12 }}
-            data={tickets}
-            renderItem={renderItem}
-          />
-        </View>
-      ) : (
-        <ModalContentWithActions
-          variant="success"
-          title="No active tickets"
-          text="Blababalalalabablal"
-          primaryActionLabel="Buy a ticket"
-          primaryActionOnPress={() => false}
-          customAvatarComponent={
-            <View className="w-full items-center">
-              <EmptyStateAvatar />
-            </View>
-          }
-          className="bg-white"
-        />
-      )}
+    <ScreenContent>
+      <FlatList
+        // eslint-disable-next-line react-native/no-inline-styles
+        contentContainerStyle={{ gap: 12 }}
+        data={tickets}
+        renderItem={renderItem}
+      />
     </ScreenContent>
   )
 }
 
 const HistoryRoute = () => {
   const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: false }))
+
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
@@ -92,8 +82,8 @@ const Page = () => {
 
   const [index, setIndex] = useState(0)
   const [routes] = useState([
-    { key: 'active', title: 'Active tickets' },
-    { key: 'history', title: 'History' },
+    { key: 'active', title: t('activeTickets') },
+    { key: 'history', title: t('history') },
   ])
 
   return (

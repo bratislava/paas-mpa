@@ -40,7 +40,7 @@ const Active = () => {
   const cards = data.parkingCards
 
   if (cards.length === 0) {
-    return <EmptyStateScreen title={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
+    return <EmptyStateScreen contentTitle={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
   }
 
   // TODO pagination

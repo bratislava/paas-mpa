@@ -56,7 +56,7 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return <EmptyStateScreen title={t('noAnnouncementsTitle')} />
+    return <EmptyStateScreen contentTitle={t('noAnnouncementsTitle')} />
   }
 
   return (

@@ -31,14 +31,14 @@ const Page = () => {
   if (data.verifiedEmails.length === 0) {
     return (
       <EmptyStateScreen
-        title={t('noEmailsTitle')}
+        contentTitle={t('noEmailsTitle')}
         text={t('noEmailsText')}
-        button={
+        actionButton={
           <Link asChild href="/parking-cards/verification">
             <Button>{t('addParkingCards')}</Button>
           </Link>
         }
-        buttonPosition="insideContent"
+        actionButtonPosition="insideContent"
       />
     )
   }
