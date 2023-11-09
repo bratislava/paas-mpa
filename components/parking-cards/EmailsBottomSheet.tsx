@@ -1,7 +1,8 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import React, { forwardRef, useCallback } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
+import { Platform } from 'react-native'
 
 import { ParkingCardsLocalSearchParams } from '@/app/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -16,6 +17,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
+  const snapPoints = useMemo(() => [120], [])
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
 
@@ -56,8 +58,8 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
     <BottomSheet
       ref={ref}
       index={-1}
-      enableDynamicSizing
-      enablePanDownToClose
+      snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
+      enablePanDownToClose={Platform.OS === 'ios'}
       backdropComponent={renderBackdrop}
     >
       <BottomSheetContent>
