@@ -98,16 +98,22 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
 
     const renderResults: NonNullable<Props['renderResults']> = useCallback(
       (options, optionsListProps) => {
+        const [zones, geocodingFeatures] = options
+        const shownOptions: (GeocodingFeature | NormalizedUdrZone)[] = [
+          ...zones.slice(0, 3),
+          ...geocodingFeatures,
+        ]
+
         return (
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
-              <BottomSheetFlatList className="flex-1" data={options[0]} {...optionsListProps} />
-              <BottomSheetFlatList className="flex-1" data={options[1]} {...optionsListProps} />
+              <Typography variant="h2">{t('searchResults')}</Typography>
+              <BottomSheetFlatList className="flex-1" data={shownOptions} {...optionsListProps} />
             </View>
           </Portal>
         )
       },
-      [optionsPortalName],
+      [optionsPortalName, t],
     )
 
     return (
@@ -120,7 +126,6 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           }
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}
-          resultsHeader={<Typography variant="h2">{t('searchResults')}</Typography>}
           renderItem={renderItem}
           ListComponent={BottomSheetFlatList}
           renderResults={renderResults}

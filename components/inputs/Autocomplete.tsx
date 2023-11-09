@@ -99,9 +99,13 @@ const AutocompleteInner = <L extends any[], O>(
   }: AutocompleteProps<L, O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
+  const emptyOptions = useMemo(
+    // for now supports only 2 sources
+    () => (multiSourceMode ? ([[], []] as L) : ([] as unknown as L)),
+    [multiSourceMode],
+  )
   const [input, setInput] = useState(defaultValue)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const [options, setOptions] = useState<L>([] as any)
+  const [options, setOptions] = useState<L>(emptyOptions)
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
   const [textSelection, setTextSelection] = useState<TextSelection>()
 
@@ -124,10 +128,9 @@ const AutocompleteInner = <L extends any[], O>(
       setLastSearchText(input)
       setInput(getOptionLabel(option))
       onValueChange(option)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setOptions([] as any)
+      setOptions(emptyOptions)
     },
-    [getOptionLabel, onValueChange, input],
+    [getOptionLabel, onValueChange, input, emptyOptions],
   )
 
   const handleFocus = useCallback(async () => {

@@ -16,6 +16,7 @@ export const useProcessedArcgisData = () => {
   const [zonesData, setZonesData] = useState<ProcessDataReturn['zonesData'] | null>(null)
   const [udrData, setUdrData] = useState<ProcessDataReturn['udrData'] | null>(null)
   const [odpData, setOdpData] = useState<ProcessDataReturn['odpData'] | null>(null)
+  const [isProcessingFinished, setIsProcessingFinished] = useState(false)
 
   const { setMapZones } = useMapZonesUpdateContext()
 
@@ -41,6 +42,7 @@ export const useProcessedArcgisData = () => {
       rawOdpData &&
       rawZonesData
     ) {
+      if (isProcessingFinished) return
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { markersData, udrData, odpData, zonesData } = processData({
         rawZonesData,
@@ -65,6 +67,7 @@ export const useProcessedArcgisData = () => {
         }
       })
       setMapZones(featuresHashMap)
+      setIsProcessingFinished(true)
     }
   }, [
     rawAssistantsData,
@@ -76,6 +79,7 @@ export const useProcessedArcgisData = () => {
     rawOdpData,
     rawZonesData,
     setMapZones,
+    isProcessingFinished,
   ])
 
   return { isLoading, markersData, zonesData, udrData, odpData }
