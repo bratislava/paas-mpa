@@ -90,7 +90,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         return (
           <View className="border-b border-divider py-4">
             <FlexRow className="items-center">
-              <ZoneBadge label={zone.udrId.toString()} />
+              <ZoneBadge label={zone.udrId} />
               <Typography className="flex-1" numberOfLines={1}>
                 {zone.name}
               </Typography>
