@@ -35,7 +35,7 @@ const ScreenView = ({
 
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
-      <Stack.Screen options={{ title }} />
+      {title?.length ? <Stack.Screen options={{ title }} /> : null}
 
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />

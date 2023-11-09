@@ -112,7 +112,7 @@ const IndexScreen = () => {
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
         <View>
           <IconButton
-            name="menu"
+            name="more-vert"
             // TODO translation
             accessibilityLabel="Open menu"
             variant="white-raised-small"

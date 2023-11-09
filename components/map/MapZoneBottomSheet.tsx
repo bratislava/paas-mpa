@@ -26,8 +26,8 @@ import { GeocodingFeature, NormalizedUdrZone } from '@/modules/map/types'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
-  noZone: 220,
-  zone: 320,
+  noZone: 216,
+  zone: 282,
   searchExpanded: '100%',
 }
 
@@ -44,23 +44,27 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
-  const { top } = useSafeAreaInsets()
+  const { top, bottom } = useSafeAreaInsets()
   const refSetter = useMultipleRefsSetter(ref, localRef)
   const isZoneSelected = Boolean(selectedZone)
   const [isFullHeightEnabled, setIsFullHeightEnabled] = useState(false)
   const inputRef = useRef<TextInput>(null)
 
   const snapPoints = useMemo(() => {
-    const newSnapPoints: (string | number)[] = [SNAP_POINTS.noZone]
+    const newSnapPoints: (string | number)[] = []
+
+    if (!isZoneSelected) {
+      newSnapPoints.push(SNAP_POINTS.noZone + bottom)
+    }
     if (isZoneSelected) {
-      newSnapPoints.push(SNAP_POINTS.zone)
+      newSnapPoints.push(SNAP_POINTS.zone + bottom)
     }
     if (isFullHeightEnabled) {
       newSnapPoints.push(SNAP_POINTS.searchExpanded)
     }
 
     return newSnapPoints
-  }, [isZoneSelected, isFullHeightEnabled])
+  }, [isZoneSelected, isFullHeightEnabled, bottom])
 
   useEffect(() => {
     if (snapPoints.at(-1) === SNAP_POINTS.searchExpanded) {
