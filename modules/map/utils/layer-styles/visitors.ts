@@ -23,6 +23,16 @@ const styles = [
     },
   },
   {
+    id: 'udr-line-selected',
+    type: 'line',
+    paint: {
+      lineColor: colors.orange,
+      lineDasharray: [1, 0],
+      lineWidth: ['interpolate', ['linear'], ['zoom'], 11, 1, 20, 3],
+      lineOpacity: 0.4,
+    },
+  },
+  {
     id: 'udr-fill',
     type: 'fill',
     paint: {
