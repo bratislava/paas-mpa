@@ -178,7 +178,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                 <Panel className="g-4">
                   <FlexRow>
                     <Typography>{selectedZone.name}</Typography>
-                    <ZoneBadge label={selectedZone.udrId.toString()} />
+                    <ZoneBadge label={selectedZone.udrId} />
                   </FlexRow>
                   <Divider />
                   <FlexRow>
@@ -190,7 +190,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                       href={{
                         pathname: '/zone-details',
                         params: {
-                          udrId: selectedZone.udrId.toString(),
+                          udrId: selectedZone.udrId,
                         } satisfies ZoneDetailsParamas,
                       }}
                     >
@@ -210,7 +210,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   asChild
                   href={{
                     pathname: '/purchase',
-                    params: { udrId: selectedZone.udrId.toString() },
+                    params: { udrId: selectedZone.udrId },
                   }}
                 >
                   <Button variant="primary">{t('Navigation.continue')}</Button>

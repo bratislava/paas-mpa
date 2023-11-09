@@ -25,8 +25,7 @@ const ParkingZoneField = ({ zone }: Props) => {
         zone ? (
           <Link asChild href="/">
             <PressableStyled>
-              {/* TODO remove casting number/string */}
-              <ZoneBadge label={zone.udrId.toString()} />
+              <ZoneBadge label={zone.udrId} />
             </PressableStyled>
           </Link>
         ) : null

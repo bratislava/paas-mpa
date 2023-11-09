@@ -32,7 +32,7 @@ const ZoneDetailsScreen = () => {
     <ScreenView title={t('title')}>
       <ScreenContent>
         <FlexRow>
-          <ZoneBadge label={zone.udrId.toString()} />
+          <ZoneBadge label={zone.udrId} />
           <Typography className="flex-1">{zone.name}</Typography>
           <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
         </FlexRow>
