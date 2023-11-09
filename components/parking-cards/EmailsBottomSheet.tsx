@@ -1,12 +1,14 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { forwardRef, useCallback, useMemo } from 'react'
+import { forwardRef, useCallback, useMemo, useState } from 'react'
 import { Platform } from 'react-native'
 
 import { ParkingCardsLocalSearchParams } from '@/app/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -18,6 +20,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
   const snapPoints = useMemo(() => [120], [])
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
 
@@ -49,25 +52,49 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
     [],
   )
 
+  const handleModalClose = useCallback(() => {
+    setIsModalVisible(false)
+  }, [])
+  const handleModalOpen = useCallback(() => {
+    setIsModalVisible(true)
+  }, [])
+
   // Double-check if emailId is valid number
   if (!parsedEmailId || Number.isNaN(parsedEmailId)) {
     return null
   }
 
   return (
-    <BottomSheet
-      ref={ref}
-      index={-1}
-      snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
-      enablePanDownToClose={Platform.OS === 'ios'}
-      backdropComponent={renderBackdrop}
-    >
-      <BottomSheetContent>
-        <PressableStyled onPress={() => handleRemoveEmailAccount(parsedEmailId)}>
-          <ActionRow variant="negative" startIcon="delete" label={t('emailActions.removeEmail')} />
-        </PressableStyled>
-      </BottomSheetContent>
-    </BottomSheet>
+    <>
+      <BottomSheet
+        ref={ref}
+        index={-1}
+        snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
+        enablePanDownToClose={Platform.OS === 'ios'}
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetContent>
+          <PressableStyled onPress={handleModalOpen}>
+            <ActionRow
+              variant="negative"
+              startIcon="delete"
+              label={t('emailActions.removeEmail')}
+            />
+          </PressableStyled>
+        </BottomSheetContent>
+      </BottomSheet>
+      <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
+        <ModalContentWithActions
+          variant="error"
+          title={t('removeEmailTitle')}
+          text={t('removeEmailText')}
+          primaryActionLabel={t('removeEmailConfirm')}
+          secondaryActionLabel={t('removeEmailCancel')}
+          primaryActionOnPress={() => handleRemoveEmailAccount(parsedEmailId)}
+          secondaryActionOnPress={handleModalClose}
+        />
+      </Modal>
+    </>
   )
 })
 

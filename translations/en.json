@@ -154,7 +154,11 @@
     "noEmailsTitle": "No parking cards",
     "noEmailsText": "To add your cards to the app, please connect with your PAAS account.",
     "noActiveCardsTitle": "No active parking cards",
-    "noActiveCardsText": "All parking cards expired. Once you’ll buy new parking card, it will show here."
+    "noActiveCardsText": "All parking cards expired. Once you’ll buy new parking card, it will show here.",
+    "removeEmailTitle": "Remove e-mail address",
+    "removeEmailText": "Are you sure you want to remove this e-mail address? Without an e-mail address, it will not be possible to view or use your parking cards.",
+    "removeEmailConfirm": "Yes, remove e-mail",
+    "removeEmailCancel": "No, keep e-mail"
   },
   "VerificationResult": {
     "verified": {

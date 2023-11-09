@@ -1,5 +1,4 @@
 import { clsx } from 'clsx'
-import React from 'react'
 import { View } from 'react-native'
 
 import Icon from '@/components/shared/Icon'
@@ -36,7 +35,7 @@ const AvatarCircle = ({ variant = 'info' }: Props) => {
 
   return (
     <View
-      className={clsx('flex items-center justify-center rounded-full p-4', {
+      className={clsx('flex items-center justify-center self-center rounded-full p-4', {
         'bg-info-light': variant === 'info',
         'bg-green-light': variant === 'success' || variant === 'thumbUp',
         'bg-warning-light': variant === 'warning',
