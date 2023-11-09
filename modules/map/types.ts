@@ -52,7 +52,7 @@ export type NormalizedUdrZone = {
   npkInformation: string
   code: string
   status: string
-  udrId: number
+  udrId: string
   udrUuid: string
   odpRpk: string
   restrictionOnlyRpk: string
