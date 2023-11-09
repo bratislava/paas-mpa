@@ -54,14 +54,17 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         input: string,
       ): Promise<[NormalizedUdrZone[], Unpromise<ReturnType<typeof forwardGeocode>>]> => {
         const filteredMapZones: NormalizedUdrZone[] = []
-        if (mapZones) {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const [, zone] of mapZones) {
-            if (normalizeString(zone.properties.Nazov).includes(normalizeString(input))) {
+        if (mapZones && input) {
+          const normalizedInput = normalizeString(input)
+          mapZones.forEach((zone) => {
+            if (
+              normalizeString(zone.properties.Nazov).includes(normalizedInput) ||
+              normalizeString(zone.properties.UDR_ID.toString()).includes(normalizedInput)
+            ) {
               const nomralizedZone = normalizeZone(zone.properties, locale)
               filteredMapZones.push(nomralizedZone)
             }
-          }
+          })
         }
 
         return [filteredMapZones, await forwardGeocode(input)]
@@ -107,7 +110,9 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         return (
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
-              <Typography variant="h2">{t('searchResults')}</Typography>
+              {shownOptions.length > 0 && (
+                <Typography variant="h2">{t('searchResults')}</Typography>
+              )}
               <BottomSheetFlatList className="flex-1" data={shownOptions} {...optionsListProps} />
             </View>
           </Portal>
