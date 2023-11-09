@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Portal } from '@gorhom/portal'
@@ -25,10 +26,16 @@ type TextSelection =
     }
   | undefined
 
-export type AutocompleteProps<O> = {
+type ExtractUnionType<T> = T extends [infer X, ...infer Rest]
+  ? X extends any[]
+    ? X[number] | ExtractUnionType<Rest>
+    : never
+  : never
+
+type BaseAutocompleteProps<L extends any[], O = L[number]> = {
   onValueChange: (value: O) => void
   defaultValue?: string
-  getOptions: (search: string) => Promise<O[]>
+  getOptions: (search: string) => Promise<L>
   areOptionsEqual?: (optionA: O, optionB: O) => boolean
   getOptionLabel: (option: O) => string
   debounce?: number
@@ -41,9 +48,35 @@ export type AutocompleteProps<O> = {
   optionsPortalName?: string
   ListComponent?: React.ComponentType<FlatListProps<O>>
   listProps?: Partial<FlatListProps<O>>
+  multiSourceMode?: boolean
+  renderResults?: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
 } & TextInputProps
 
-const AutocompleteInner = <O,>(
+type MultiAutocompleteProps<L extends any[][], O = ExtractUnionType<L>> = {
+  onValueChange: (value: O) => void
+  defaultValue?: string
+  getOptions: (search: string) => Promise<L>
+  areOptionsEqual?: (optionA: O, optionB: O) => boolean
+  getOptionLabel: (option: O) => string
+  debounce?: number
+  renderItem?: ListRenderItem<O> | null
+  onFocus?: () => void
+  onBlur?: () => void
+  leftIcon?: ReactNode
+  autoFocus?: boolean
+  resultsHeader?: ReactNode
+  optionsPortalName?: never
+  ListComponent?: React.ComponentType<FlatListProps<O>>
+  listProps?: Partial<FlatListProps<O>>
+  multiSourceMode: true
+  renderResults: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
+} & TextInputProps
+
+export type AutocompleteProps<L extends any[], O> =
+  | MultiAutocompleteProps<L, O>
+  | BaseAutocompleteProps<L, O>
+
+const AutocompleteInner = <L extends any[], O>(
   {
     onValueChange,
     defaultValue = '',
@@ -60,12 +93,15 @@ const AutocompleteInner = <O,>(
     optionsPortalName,
     ListComponent = FlatList,
     listProps = {},
+    multiSourceMode,
+    renderResults,
     ...restProps
-  }: AutocompleteProps<O>,
+  }: AutocompleteProps<L, O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
   const [input, setInput] = useState(defaultValue)
-  const [options, setOptions] = useState<O[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const [options, setOptions] = useState<L>([] as any)
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
   const [textSelection, setTextSelection] = useState<TextSelection>()
 
@@ -88,7 +124,8 @@ const AutocompleteInner = <O,>(
       setLastSearchText(input)
       setInput(getOptionLabel(option))
       onValueChange(option)
-      setOptions([])
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setOptions([] as any)
     },
     [getOptionLabel, onValueChange, input],
   )
@@ -159,7 +196,9 @@ const AutocompleteInner = <O,>(
         returnKeyType="search"
       />
       <View>
-        {optionsPortalName ? (
+        {multiSourceMode ? (
+          renderResults?.(options, optionsListProps)
+        ) : optionsPortalName ? (
           <Portal hostName={optionsPortalName}>
             {options.length > 0 && (resultsHeader ?? null)}
             <ListComponent data={options} {...optionsListProps} />
@@ -177,8 +216,8 @@ const AutocompleteInner = <O,>(
 
 // The best, most reliable, and achievable solution is type assertion
 // https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
-const Autocomplete = forwardRef(AutocompleteInner) as <O>(
-  p: AutocompleteProps<O> & { ref?: Ref<View> },
+const Autocomplete = forwardRef(AutocompleteInner) as <L extends any[], O>(
+  p: AutocompleteProps<L, O> & { ref?: Ref<View> },
 ) => ReactElement
 
 export default Autocomplete
