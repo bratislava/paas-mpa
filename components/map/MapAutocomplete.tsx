@@ -1,5 +1,6 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
+import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback } from 'react'
 import { TextInput as RNTextInput, View } from 'react-native'
 
@@ -9,7 +10,7 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { GeocodingFeature, NormalizedUdrZone } from '@/modules/map/types'
+import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
@@ -19,16 +20,10 @@ type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never
 
 type Props = Partial<
   AutocompleteProps<
-    [NormalizedUdrZone[], Unpromise<ReturnType<typeof forwardGeocode>>],
-    GeocodingFeature | NormalizedUdrZone
+    [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
+    GeocodingFeature | Feature<Polygon, MapUdrZone>
   >
 >
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isGeocodingFeature = (value: any): value is GeocodingFeature => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return value?.place_name !== undefined
-}
 
 const normalizeString = (str: string) =>
   str
@@ -40,7 +35,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
     const handleValueChange = useCallback(
-      (value: GeocodingFeature | NormalizedUdrZone) => {
+      (value: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
         onValueChange?.(value)
       },
       [onValueChange],
@@ -52,8 +47,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     const getOptions = useCallback(
       async (
         input: string,
-      ): Promise<[NormalizedUdrZone[], Unpromise<ReturnType<typeof forwardGeocode>>]> => {
-        const filteredMapZones: NormalizedUdrZone[] = []
+      ): Promise<
+        [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>]
+      > => {
+        const filteredMapZones: Feature<Polygon, MapUdrZone>[] = []
         if (mapZones && input) {
           const normalizedInput = normalizeString(input)
           mapZones.forEach((zone) => {
@@ -61,48 +58,54 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
               normalizeString(zone.properties.Nazov).includes(normalizedInput) ||
               normalizeString(zone.properties.UDR_ID.toString()).includes(normalizedInput)
             ) {
-              const nomralizedZone = normalizeZone(zone.properties, locale)
-              filteredMapZones.push(nomralizedZone)
+              filteredMapZones.push(zone)
             }
           })
         }
 
         return [filteredMapZones, await forwardGeocode(input)]
       },
-      [mapZones, locale],
+      [mapZones],
     )
 
     const renderItem: NonNullable<Props['renderItem']> = useCallback(
-      ({ item }) =>
-        isGeocodingFeature(item) ? (
-          <View className="border-b border-divider py-4">
-            <FlexRow className="items-center g-4">
-              <Icon name="location-pin" />
-              <View className="flex-1">
-                <Typography numberOfLines={1}>{item.text}</Typography>
-                <Typography numberOfLines={1}>{item.place_name}</Typography>
-              </View>
-              <Icon name="chevron-right" />
-            </FlexRow>
-          </View>
-        ) : (
+      ({ item }) => {
+        if (isGeocodingFeature(item)) {
+          return (
+            <View className="border-b border-divider py-4">
+              <FlexRow className="items-center g-4">
+                <Icon name="location-pin" />
+                <View className="flex-1">
+                  <Typography numberOfLines={1}>{item.text}</Typography>
+                  <Typography numberOfLines={1}>{item.place_name}</Typography>
+                </View>
+                <Icon name="chevron-right" />
+              </FlexRow>
+            </View>
+          )
+        }
+
+        const zone = normalizeZone(item.properties, locale)
+
+        return (
           <View className="border-b border-divider py-4">
             <FlexRow className="items-center">
-              <ZoneBadge label={item.udrId.toString()} />
+              <ZoneBadge label={zone.udrId.toString()} />
               <Typography className="flex-1" numberOfLines={1}>
-                {item.name}
+                {zone.name}
               </Typography>
               <Icon name="chevron-right" />
             </FlexRow>
           </View>
-        ),
-      [],
+        )
+      },
+      [locale],
     )
 
     const renderResults: NonNullable<Props['renderResults']> = useCallback(
       (options, optionsListProps) => {
         const [zones, geocodingFeatures] = options
-        const shownOptions: (GeocodingFeature | NormalizedUdrZone)[] = [
+        const shownOptions: (GeocodingFeature | Feature<Polygon, MapUdrZone>)[] = [
           ...zones.slice(0, 3),
           ...geocodingFeatures,
         ]
@@ -127,7 +130,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           ref={ref}
           getOptions={getOptions}
           getOptionLabel={(option) =>
-            isGeocodingFeature(option) ? option.place_name || option.text : option.name
+            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.Nazov
           }
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}
