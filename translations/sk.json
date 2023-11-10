@@ -28,7 +28,7 @@
   "PurchaseScreen": {
     "title": "Nákup lístka",
     "titlePayment": "Platba",
-    "segmentFieldLabel": "Segment",
+    "segmentFieldLabel": "Úsek",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
@@ -110,7 +110,18 @@
     "bonusCard": "Bonusová karta",
     "remaining": "Zostáva",
     "todayRemaining": "Dnes zostáva",
-    "validUntil": "Platná do"
+    "validUntil": "Platná do",
+    "methods": {
+      "payment-card": "Kartou online",
+      "apple-pay": "Apple Pay",
+      "google-pay": "Google Pay"
+    },
+    "defaultPaymentOption": "Predvolené",
+    "otherPaymentOptions": "Ostatné",
+    "openContextMenu": "Upraviť spôsob platby",
+    "actions": {
+      "saveAsDefault": "Uložiť ako predvolené"
+    }
   },
   "Tickets": {
     "title": "Parkovacie lístky",

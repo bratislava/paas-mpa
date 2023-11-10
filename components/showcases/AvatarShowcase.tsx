@@ -2,7 +2,10 @@ import React from 'react'
 import { View } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
+import AvatarCircleFeedback from '@/components/info/AvatarCircleFeedback'
+import AvatarCircleLocationOff from '@/components/info/AvatarCircleLocationOff'
 import AvatarSquare from '@/components/info/AvatarSquare'
+import Panel from '@/components/shared/Panel'
 
 const AvatarShowcase = () => {
   return (
@@ -11,11 +14,16 @@ const AvatarShowcase = () => {
       <AvatarCircle variant="success" />
       <AvatarCircle variant="warning" />
       <AvatarCircle variant="error" />
-      <AvatarCircle variant="thumbUp" />
-      <AvatarCircle variant="noGps" />
 
-      <AvatarSquare variant="payment-gate" />
-      <AvatarSquare variant="visitor-card" />
+      <AvatarCircleFeedback />
+      <AvatarCircleLocationOff />
+
+      <Panel className="flex-row flex-wrap g-4">
+        <AvatarSquare variant="payment-card" />
+        <AvatarSquare variant="visitor-card" />
+        <AvatarSquare variant="apple-pay" />
+        <AvatarSquare variant="google-pay" />
+      </Panel>
     </View>
   )
 }

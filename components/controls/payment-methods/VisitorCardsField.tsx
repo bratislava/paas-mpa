@@ -1,6 +1,6 @@
 import { router } from 'expo-router'
 
-import VisitorCardMethod from '@/components/controls/payment-methods/VisitorCardMethod'
+import VisitorCardRow from '@/components/controls/payment-methods/rows/VisitorCardRow'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
@@ -15,7 +15,7 @@ const VisitorCardsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { npk, setNpk } = usePurchaseStoreContext()
+  const { npk, setNpk, setPaymentOption } = usePurchaseStoreContext()
 
   const {
     data: visitorCards,
@@ -25,8 +25,8 @@ const VisitorCardsField = () => {
   } = useQueryWithFocusRefetch(visitorCardsOptions())
 
   const handleCardPress = (card: ParkingCardDto) => {
-    console.log('handleCardPress', card.identificator)
     setNpk(card)
+    setPaymentOption(null)
     router.push('/purchase')
   }
 
@@ -51,7 +51,7 @@ const VisitorCardsField = () => {
       {visitorCards.map((card) => {
         return (
           <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
-            <VisitorCardMethod
+            <VisitorCardRow
               email={card.name ?? ''}
               balance={
                 card.balanceSeconds

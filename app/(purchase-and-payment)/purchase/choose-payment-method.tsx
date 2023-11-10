@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
 
-import MethodsField from '@/components/controls/payment-methods/MethodsField'
+import PaymentOptionsField from '@/components/controls/payment-methods/PaymentOptionsField'
 import VisitorCardsField from '@/components/controls/payment-methods/VisitorCardsField'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -15,7 +15,7 @@ const Page = () => {
     <ScreenView title={t('title')}>
       <ScrollView>
         <ScreenContent>
-          <MethodsField />
+          <PaymentOptionsField />
 
           <Divider />
 
