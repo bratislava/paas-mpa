@@ -26,6 +26,7 @@ type TextSelection =
     }
   | undefined
 
+/** Extracts the types of sub arrays inside of an array into a union type. Example: `[string[], number[]]` -> `string | number` */
 type ExtractUnionType<T> = T extends [infer X, ...infer Rest]
   ? X extends any[]
     ? X[number] | ExtractUnionType<Rest>
@@ -219,6 +220,8 @@ const AutocompleteInner = <L extends any[], O>(
 
 // The best, most reliable, and achievable solution is type assertion
 // https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
+/** `L` (as list) is the type of the options, this can either be an array or an array of arrays when `multiSourceMode` is `true`.
+ *  `O` is the type of an option, is automatically inferred from `L`.  */
 const Autocomplete = forwardRef(AutocompleteInner) as <L extends any[], O>(
   p: AutocompleteProps<L, O> & { ref?: Ref<View> },
 ) => ReactElement

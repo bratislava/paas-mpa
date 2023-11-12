@@ -205,7 +205,9 @@
   },
   "ZoneDetailsScreen": {
     "title": "Detail úseku",
-    "showResults": "Ukázať výsledky"
+    "showResults": "Ukázať výsledky",
+    "zones": "Parkovacie zóny",
+    "addresses": "Adresy"
   },
   "FiltersScreen": {
     "title": "Filtre",

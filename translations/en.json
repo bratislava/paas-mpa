@@ -226,7 +226,9 @@
   },
   "ZoneDetailsScreen": {
     "title": "Zone details",
-    "searchResults": "Search results"
+    "searchResults": "Search results",
+    "zones": "Parking zones",
+    "addresses": "Addresses"
   },
   "FiltersScreen": {
     "title": "Filters",

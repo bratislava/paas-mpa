@@ -1,4 +1,4 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import { BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback } from 'react'
@@ -14,6 +14,8 @@ import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
+
+const ZONES_LIMIT = 10
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never
@@ -105,18 +107,37 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     const renderResults: NonNullable<Props['renderResults']> = useCallback(
       (options, optionsListProps) => {
         const [zones, geocodingFeatures] = options
-        const shownOptions: (GeocodingFeature | Feature<Polygon, MapUdrZone>)[] = [
-          ...zones.slice(0, 3),
-          ...geocodingFeatures,
-        ]
+        const sections: {
+          title: string
+          data: (GeocodingFeature | Feature<Polygon, MapUdrZone>)[]
+        }[] = []
+
+        if (zones.length > 0) {
+          sections.push({ title: t('zones'), data: zones.slice(0, ZONES_LIMIT) })
+        }
+        if (geocodingFeatures.length > 0) {
+          sections.push({ title: t('addresses'), data: geocodingFeatures })
+        }
 
         return (
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
-              {shownOptions.length > 0 && (
-                <Typography variant="h2">{t('searchResults')}</Typography>
+              {(zones.length > 0 || geocodingFeatures.length > 0) && (
+                <>
+                  <Typography variant="h2">{t('searchResults')}</Typography>
+                  <BottomSheetSectionList
+                    className="flex-1"
+                    sections={sections}
+                    keyboardShouldPersistTaps="always"
+                    renderItem={optionsListProps.renderItem!}
+                    renderSectionHeader={({ section: { title } }) => (
+                      <Typography variant="h3" className="border-b-2 border-divider pb-2 pt-6">
+                        {title}
+                      </Typography>
+                    )}
+                  />
+                </>
               )}
-              <BottomSheetFlatList className="flex-1" data={shownOptions} {...optionsListProps} />
             </View>
           </Portal>
         )
