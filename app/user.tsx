@@ -1,17 +1,20 @@
 import { Link } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
-import { getCurrentAuthenticatedUser, signOut } from '@/modules/cognito/utils'
+import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
+import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
 // TODO this is just temporary page
 const Page = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null)
+
+  const signOut = useSignOut()
 
   useEffect(() => {
     getCurrentAuthenticatedUser()

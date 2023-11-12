@@ -1,3 +1,4 @@
+import { CognitoUser } from '@aws-amplify/auth'
 import { Auth } from 'aws-amplify'
 import { router } from 'expo-router'
 
@@ -10,7 +11,7 @@ import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 export const useSignInOrSignUp = () => {
   const snackbar = useSnackbar()
 
-  const { signInResult, setSignInResult } = useGlobalStoreContext()
+  const { signInResult, setSignInResult, setUser } = useGlobalStoreContext()
 
   const signInAndRedirectToConfirm = async (phone: string) => {
     const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
@@ -57,6 +58,7 @@ export const useSignInOrSignUp = () => {
     try {
       if (signInResult) {
         await Auth.confirmSignIn(signInResult, code)
+        setUser(signInResult as CognitoUser)
         setSignInResult(null)
         router.push('/')
       } else {
