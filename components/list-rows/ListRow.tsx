@@ -21,7 +21,7 @@ export type ListRowProps = {
  */
 const ListRow = ({ icon, label, labelClassName, ...rest }: ListRowProps) => {
   return (
-    <View className="flex-row gap-3 py-4" {...rest}>
+    <View className="flex-row gap-4 py-4" {...rest}>
       {icon ? <Icon name={icon} /> : null}
 
       <Typography className={clsx('flex-1', labelClassName)}>{label}</Typography>

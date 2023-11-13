@@ -7,6 +7,7 @@ import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import ActionRow from '@/components/list-rows/ActionRow'
+import MenuRow from '@/components/list-rows/MenuRow'
 import MapScreen from '@/components/map/MapScreen'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import { IconName } from '@/components/shared/Icon'
@@ -171,11 +172,8 @@ const IndexScreen = () => {
                 href={item.path}
                 onPress={() => bottomSheetRef.current?.close()}
               >
-                <PressableStyled className="flex-row items-center">
-                  <View className="flex-1">
-                    <ActionRow startIcon={item.icon} label={item.label} />
-                  </View>
-                  {item.endSlot}
+                <PressableStyled>
+                  <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
                 </PressableStyled>
               </Link>
             ))}
