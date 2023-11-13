@@ -6,9 +6,12 @@ import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
+/** This function removes the diacritical marks from the string and changes it to lower-case */
 const normalizeString = (str: string) =>
   str
+    // normalize into a form where letters are separate unicode characters from diacritical marks
     .normalize('NFD')
+    // remove the diacritical marks
     .replaceAll(/[\u0300-\u036F]/g, '')
     .toLowerCase()
 

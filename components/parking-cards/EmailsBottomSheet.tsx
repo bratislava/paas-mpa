@@ -69,8 +69,10 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
       <BottomSheet
         ref={ref}
         index={-1}
+        // Bug fix: disable dynamic sizing on android, add snap points
         snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
-        enablePanDownToClose={Platform.OS === 'ios'}
+        enableDynamicSizing={Platform.OS === 'ios'}
+        enablePanDownToClose
         backdropComponent={renderBackdrop}
       >
         <BottomSheetContent>
@@ -83,6 +85,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheet>
+
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
         <ModalContentWithActions
           variant="error"

@@ -8,5 +8,7 @@ export type Vehicle = {
 }
 
 export const useVehiclesStorage = () => {
-  return useMMKVObject<Vehicle[]>('vehicles', useUserMMKVInstance())
+  const storage = useUserMMKVInstance()
+
+  return useMMKVObject<Vehicle[]>('vehicles', storage)
 }

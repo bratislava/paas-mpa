@@ -4,10 +4,12 @@ import {
   Dispatch,
   PropsWithChildren,
   SetStateAction,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
-import { MMKV } from 'react-native-mmkv'
+
+import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
 type ContextProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,7 +20,6 @@ type ContextProps = {
   setSignUpPhone: Dispatch<SetStateAction<string | null>>
   user: CognitoUser | null
   setUser: Dispatch<SetStateAction<CognitoUser | null>>
-  mmkvStorage: MMKV
 }
 
 export const GlobalStoreContext = createContext({} as ContextProps)
@@ -32,15 +33,13 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
 
   const [user, setUser] = useState<CognitoUser | null>(null)
 
-  const mmkvStorage = useMemo(() => {
-    if (user) {
-      const username = user.getUsername()
-
-      return new MMKV({ id: `user-${username}-storage` })
-    }
-
-    return new MMKV()
-  }, [user])
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    ;(async () => {
+      const currentUser = await getCurrentAuthenticatedUser()
+      setUser(currentUser as CognitoUser)
+    })()
+  }, [])
 
   const value = useMemo(
     () => ({
@@ -50,9 +49,8 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
       setSignUpPhone,
       user,
       setUser,
-      mmkvStorage,
     }),
-    [signInResult, signUpPhone, user, mmkvStorage],
+    [signInResult, signUpPhone, user],
   )
 
   return <GlobalStoreContext.Provider value={value}>{children}</GlobalStoreContext.Provider>

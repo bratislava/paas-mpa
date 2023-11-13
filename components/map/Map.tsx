@@ -153,6 +153,7 @@ const Map = forwardRef(
           {udrData && <MapZones udrData={udrData} />}
           <ShapeSource
             id="highlight"
+            // the shape cannot be null or undefined, but we must render the ShapeSource, because if it is rendered later the z-index breaks
             shape={selectedPolygon ?? { coordinates: [], type: 'Polygon' }}
           >
             <FillLayer

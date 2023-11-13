@@ -1,7 +1,9 @@
+import { useMMKV } from 'react-native-mmkv'
+
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 export const useUserMMKVInstance = () => {
-  const { mmkvStorage } = useGlobalStoreContext()
+  const { user } = useGlobalStoreContext()
 
-  return mmkvStorage
+  return useMMKV({ id: user ? `${user?.getUsername()}.storage` : 'mmkv.default' })
 }
