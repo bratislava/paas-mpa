@@ -6,23 +6,37 @@ import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 
 export type MenuRowProps = {
-  startIcon?: IconName
-  endSlot?: ReactNode
   label: string
+  variant?: 'default' | 'negative'
+  startIcon?: IconName
+  endIcon?: IconName
+  endSlot?: ReactNode
 } & ViewProps
 
 // Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=2677%3A22255&mode=dev
 
-const MenuRow = ({ startIcon, endSlot, label, className, ...rest }: MenuRowProps) => {
+const MenuRow = ({
+  label,
+  startIcon,
+  endIcon,
+  endSlot,
+  variant,
+  className,
+  ...rest
+}: MenuRowProps) => {
+  const textColor = variant === 'negative' ? 'text-negative' : ''
+
   return (
     <View className={clsx('flex-row items-center gap-3 py-2', className)} {...rest}>
-      {startIcon && <Icon name={startIcon} size={20} />}
+      {startIcon && <Icon name={startIcon} className={textColor} size={20} />}
 
-      <Typography variant="default-semibold" className="flex-1">
+      <Typography variant="default-semibold" className={clsx('flex-1', textColor)}>
         {label}
       </Typography>
 
       {endSlot}
+
+      {endIcon && <Icon name={endIcon} className={textColor} size={20} />}
     </View>
   )
 }

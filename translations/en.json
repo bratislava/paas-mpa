@@ -1,6 +1,8 @@
 {
   "Navigation": {
-    "continue": "Continue"
+    "continue": "Continue",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "Common": {
     "loading": "Loading",
@@ -10,13 +12,13 @@
   "Typography": {
     "test": "EN translation"
   },
-  "EnterPhoneNumber": {
+  "Auth": {
     "enterPhoneNumber": "Enter phone number",
-    "consent": "I confirm my understanding of the personal data processing terms in Bratislava. I'm aware that the parking policy conditions may change under Regulation No. 6/2023 and the Operating Regulations."
-  },
-  "EnterVerificationCode": {
+    "consent": "I confirm my understanding of the personal data processing terms in Bratislava. I'm aware that the parking policy conditions may change under Regulation No. 6/2023 and the Operating Regulations.",
     "enterVerificationCode": "Enter 6-digit code",
-    "instructions": "Continue by entering 6-digit code from message we’ve sent."
+    "verificationText": "Continue by entering 6-digit code from message we’ve sent.",
+    "signIn": "Log in",
+    "signOut": "Log out"
   },
   "AddParkingCards": {
     "addCardsTitle": "Add parking cards",

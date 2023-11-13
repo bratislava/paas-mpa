@@ -1,4 +1,5 @@
 import { Auth } from 'aws-amplify'
+import { router } from 'expo-router'
 
 export const getAccessTokenOrLogout = async () => {
   try {
@@ -11,10 +12,9 @@ export const getAccessTokenOrLogout = async () => {
     return jwtToken
   } catch (error) {
     console.log('error getting access token - redirect to login', error)
+    router.replace('/sign-in')
 
-    // TODO ?
     return null
-    // throw error
   }
 }
 

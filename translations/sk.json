@@ -1,6 +1,8 @@
 {
   "Navigation": {
-    "continue": "Pokračovať"
+    "continue": "Pokračovať",
+    "openMenu": "Otvoriť menu",
+    "closeMenu": "Zatvoriť menu"
   },
   "Common": {
     "loading": "Načítavam",
@@ -10,13 +12,13 @@
   "Typography": {
     "test": "SK preklad"
   },
-  "EnterPhoneNumber": {
+  "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s podmienkami spracúvania osobných údajov hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy VZN č. 6/2023 a Prevádzkového poriadku."
-  },
-  "EnterVerificationCode": {
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s podmienkami spracúvania osobných údajov hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy VZN č. 6/2023 a Prevádzkového poriadku.",
     "enterVerificationCode": "Zadajte 6-miestny kód",
-    "instructions": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou."
+    "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
+    "signIn": "Prihlásiť sa",
+    "signOut": "Odhlásiť sa"
   },
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",

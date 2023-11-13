@@ -10,7 +10,7 @@ export const useSignOut = () => {
     try {
       await Auth.signOut()
       setUser(null)
-      router.push('/')
+      router.push('/sign-in')
     } catch (error) {
       console.log('error signing out', error)
     }

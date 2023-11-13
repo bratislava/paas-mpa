@@ -9,7 +9,7 @@ import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('EnterVerificationCode')
+  const t = useTranslation('Auth')
 
   const [code, setCode] = useState('')
 
@@ -22,7 +22,7 @@ const Page = () => {
 
         <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
 
-        <Typography>{t('instructions')}</Typography>
+        <Typography>{t('verificationText')}</Typography>
 
         <ContinueButton onPress={() => confirmSignIn(code)} />
       </ScreenContent>

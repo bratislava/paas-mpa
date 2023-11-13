@@ -28,7 +28,6 @@ export type PurchaseSearchParams = {
   udrId?: string
 }
 
-// TODO TimeSelector chips sometimes collapses - investigate
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
