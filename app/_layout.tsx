@@ -14,6 +14,7 @@ import { PortalProvider } from '@gorhom/portal'
 import Mapbox from '@rnmapbox/maps'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
+import { NativeWindStyleSheet } from 'nativewind'
 import { useEffect, useState } from 'react'
 import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -28,6 +29,10 @@ import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
+
+/* Quickfix - https://github.com/marklawlor/nativewind/issues/308
+   see "Base scaling has changed" and "rem Units" sections */
+NativeWindStyleSheet.setVariables({ '--rem': 16 })
 
 const { UIManager } = NativeModules
 
