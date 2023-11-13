@@ -72,7 +72,7 @@ const IndexScreen = () => {
     {
       label: t('PaymentMethods.title'),
       icon: 'payment',
-      path: '/payment-methods',
+      path: '/payment-options',
     },
     {
       label: t('Tickets.title'),

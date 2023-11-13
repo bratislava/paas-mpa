@@ -110,7 +110,18 @@
     "bonusCard": "Bonus card",
     "remaining": "Remaining",
     "todayRemaining": "Today remaining",
-    "validUntil": "Valid until"
+    "validUntil": "Valid until",
+    "methods": {
+      "payment-card": "Card online",
+      "apple-pay": "Apple Pay",
+      "google-pay": "Google Pay"
+    },
+    "defaultPaymentOption": "Default",
+    "otherPaymentOptions": "Other",
+    "openContextMenu": "Edit payment option",
+    "actions": {
+      "saveAsDefault": "Save as default"
+    }
   },
   "Tickets": {
     "title": "Parking tickets",
@@ -230,7 +241,9 @@
   },
   "ZoneDetailsScreen": {
     "title": "Zone details",
-    "searchResults": "Search results"
+    "searchResults": "Search results",
+    "zones": "Parking zones",
+    "addresses": "Addresses"
   },
   "FiltersScreen": {
     "title": "Filters",

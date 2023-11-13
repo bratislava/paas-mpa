@@ -11,6 +11,7 @@ import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
 import { useLocale } from '@/hooks/useTranslation'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
+import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 
@@ -57,6 +58,8 @@ const MapScreen = () => {
     [selectedZone, locale],
   )
 
+  const { isLoading, ...processedData } = useProcessedArcgisData()
+
   return (
     <View className="flex-1 items-stretch">
       <Map
@@ -64,6 +67,7 @@ const MapScreen = () => {
         onZoneChange={handleZoneChange}
         onPointPress={handlePointPress}
         filters={filters}
+        processedData={processedData}
       />
       <Portal hostName="index">
         <MapZoneBottomSheet

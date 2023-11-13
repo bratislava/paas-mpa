@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Portal } from '@gorhom/portal'
@@ -25,10 +26,17 @@ type TextSelection =
     }
   | undefined
 
-export type AutocompleteProps<O> = {
+/** Extracts the types of sub arrays inside of an array into a union type. Example: `[string[], number[]]` -> `string | number` */
+type ExtractUnionType<T> = T extends [infer X, ...infer Rest]
+  ? X extends any[]
+    ? X[number] | ExtractUnionType<Rest>
+    : never
+  : never
+
+type BaseAutocompleteProps<L extends any[], O = L[number]> = {
   onValueChange: (value: O) => void
   defaultValue?: string
-  getOptions: (search: string) => Promise<O[]>
+  getOptions: (search: string) => Promise<L>
   areOptionsEqual?: (optionA: O, optionB: O) => boolean
   getOptionLabel: (option: O) => string
   debounce?: number
@@ -41,9 +49,35 @@ export type AutocompleteProps<O> = {
   optionsPortalName?: string
   ListComponent?: React.ComponentType<FlatListProps<O>>
   listProps?: Partial<FlatListProps<O>>
+  multiSourceMode?: boolean
+  renderResults?: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
 } & TextInputProps
 
-const AutocompleteInner = <O,>(
+type MultiAutocompleteProps<L extends any[][], O = ExtractUnionType<L>> = {
+  onValueChange: (value: O) => void
+  defaultValue?: string
+  getOptions: (search: string) => Promise<L>
+  areOptionsEqual?: (optionA: O, optionB: O) => boolean
+  getOptionLabel: (option: O) => string
+  debounce?: number
+  renderItem?: ListRenderItem<O> | null
+  onFocus?: () => void
+  onBlur?: () => void
+  leftIcon?: ReactNode
+  autoFocus?: boolean
+  resultsHeader?: ReactNode
+  optionsPortalName?: never
+  ListComponent?: React.ComponentType<FlatListProps<O>>
+  listProps?: Partial<FlatListProps<O>>
+  multiSourceMode: true
+  renderResults: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
+} & TextInputProps
+
+export type AutocompleteProps<L extends any[], O> =
+  | MultiAutocompleteProps<L, O>
+  | BaseAutocompleteProps<L, O>
+
+const AutocompleteInner = <L extends any[], O>(
   {
     onValueChange,
     defaultValue = '',
@@ -60,12 +94,19 @@ const AutocompleteInner = <O,>(
     optionsPortalName,
     ListComponent = FlatList,
     listProps = {},
+    multiSourceMode,
+    renderResults,
     ...restProps
-  }: AutocompleteProps<O>,
+  }: AutocompleteProps<L, O>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
+  const emptyOptions = useMemo(
+    // for now supports only 2 sources
+    () => (multiSourceMode ? ([[], []] as L) : ([] as unknown as L)),
+    [multiSourceMode],
+  )
   const [input, setInput] = useState(defaultValue)
-  const [options, setOptions] = useState<O[]>([])
+  const [options, setOptions] = useState<L>(emptyOptions)
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
   const [textSelection, setTextSelection] = useState<TextSelection>()
 
@@ -88,9 +129,9 @@ const AutocompleteInner = <O,>(
       setLastSearchText(input)
       setInput(getOptionLabel(option))
       onValueChange(option)
-      setOptions([])
+      setOptions(emptyOptions)
     },
-    [getOptionLabel, onValueChange, input],
+    [getOptionLabel, onValueChange, input, emptyOptions],
   )
 
   const handleFocus = useCallback(async () => {
@@ -159,7 +200,9 @@ const AutocompleteInner = <O,>(
         returnKeyType="search"
       />
       <View>
-        {optionsPortalName ? (
+        {multiSourceMode ? (
+          renderResults?.(options, optionsListProps)
+        ) : optionsPortalName ? (
           <Portal hostName={optionsPortalName}>
             {options.length > 0 && (resultsHeader ?? null)}
             <ListComponent data={options} {...optionsListProps} />
@@ -177,8 +220,10 @@ const AutocompleteInner = <O,>(
 
 // The best, most reliable, and achievable solution is type assertion
 // https://fettblog.eu/typescript-react-generic-forward-refs/#option-1%3A-type-assertion
-const Autocomplete = forwardRef(AutocompleteInner) as <O>(
-  p: AutocompleteProps<O> & { ref?: Ref<View> },
+/** `L` (as list) is the type of the options, this can either be an array or an array of arrays when `multiSourceMode` is `true`.
+ *  `O` is the type of an option, is automatically inferred from `L`.  */
+const Autocomplete = forwardRef(AutocompleteInner) as <L extends any[], O>(
+  p: AutocompleteProps<L, O> & { ref?: Ref<View> },
 ) => ReactElement
 
 export default Autocomplete

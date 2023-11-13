@@ -4,10 +4,9 @@ import { View } from 'react-native'
 import Icon from '@/components/shared/Icon'
 
 type Props = {
-  variant?: 'info' | 'success' | 'warning' | 'error' | 'thumbUp' | 'noGps'
+  variant?: 'info' | 'success' | 'warning' | 'error'
 }
 
-// TODO icon size and color
 const AvatarCircle = ({ variant = 'info' }: Props) => {
   const iconName =
     (
@@ -16,8 +15,6 @@ const AvatarCircle = ({ variant = 'info' }: Props) => {
         success: 'check',
         warning: 'warning', // TODO outline warning
         error: 'error-outline',
-        thumbUp: 'thumb-up',
-        noGps: 'location-disabled',
       } as const
     )[variant] ?? 'info'
 
@@ -28,22 +25,19 @@ const AvatarCircle = ({ variant = 'info' }: Props) => {
         success: 'text-green',
         warning: 'text-warning',
         error: 'text-negative',
-        thumbUp: 'text-green',
-        noGps: 'text-black',
       } as const
     )[variant] ?? 'info'
 
   return (
     <View
-      className={clsx('flex items-center justify-center self-center rounded-full p-4', {
+      className={clsx('flex items-center justify-center rounded-full p-6', {
         'bg-info-light': variant === 'info',
-        'bg-green-light': variant === 'success' || variant === 'thumbUp',
+        'bg-green-light': variant === 'success',
         'bg-warning-light': variant === 'warning',
         'bg-negative-light': variant === 'error',
-        'bg-light': variant === 'noGps',
       })}
     >
-      <Icon name={iconName} className={iconClassName} />
+      <Icon name={iconName} className={iconClassName} size={40} />
     </View>
   )
 }

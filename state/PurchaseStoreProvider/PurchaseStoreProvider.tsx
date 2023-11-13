@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useMemo, useState } from 'react'
 
+import { PaymentOption } from '@/components/controls/payment-methods/types'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
@@ -15,6 +16,9 @@ type ContextProps = {
 
   duration: number
   setDuration: (duration: number) => void
+
+  paymentOption: PaymentOption | null
+  setPaymentOption: (paymentOption: PaymentOption | null) => void
 }
 
 export const PurchaseStoreContext = createContext({} as ContextProps)
@@ -25,6 +29,7 @@ const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
   const [npk, setNpk] = useState<ParkingCardDto | null>(null)
   const [licencePlate, setLicencePlate] = useState<string>('')
   const [duration, setDuration] = useState<number>(60 * 60) // 1 hour
+  const [paymentOption, setPaymentOption] = useState<PaymentOption | null>(null)
 
   const value = useMemo(
     () => ({
@@ -36,8 +41,10 @@ const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
       setLicencePlate,
       duration,
       setDuration,
+      paymentOption,
+      setPaymentOption,
     }),
-    [duration, licencePlate, npk, udr],
+    [duration, licencePlate, npk, paymentOption, udr],
   )
 
   return <PurchaseStoreContext.Provider value={value}>{children}</PurchaseStoreContext.Provider>

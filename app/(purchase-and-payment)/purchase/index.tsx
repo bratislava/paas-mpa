@@ -7,14 +7,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
-import BonusCardMethod from '@/components/controls/payment-methods/BonusCardMethod'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
+import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
+import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
@@ -35,9 +36,10 @@ const PurchaseScreen = () => {
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
-  const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk } =
+  const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk, paymentOption } =
     usePurchaseStoreContext()
   const { getVehicle, defaultVehicle } = useVehicles()
+  const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
 
@@ -101,12 +103,15 @@ const PurchaseScreen = () => {
             <Field label={t('paymentMethodsFieldLabel')}>
               {data?.creditBpkUsedSeconds ? (
                 // TODO props
-                <BonusCardMethod balance="balance" validUntil="validUntil" />
+                <BonusCardRow balance="balance" validUntil="validUntil" />
               ) : null}
 
               <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
-                  <PaymentMethodsFieldControl card={npk} />
+                  <PaymentMethodsFieldControl
+                    visitorCard={npk}
+                    paymentOption={paymentOption ?? defaultPaymentOption}
+                  />
                 </PressableStyled>
               </Link>
             </Field>

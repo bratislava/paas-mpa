@@ -1,54 +1,164 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import { BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet'
+import { Portal } from '@gorhom/portal'
+import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback } from 'react'
-import { ListRenderItem, TextInput as RNTextInput, View } from 'react-native'
+import { TextInput as RNTextInput, View } from 'react-native'
 
+import ZoneBadge from '@/components/info/ZoneBadge'
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
-import { GeocodingFeature } from '@/modules/map/types'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
+import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 
-type Props = Partial<AutocompleteProps<GeocodingFeature>>
+const ZONES_LIMIT = 10
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never
+
+type Props = Partial<
+  AutocompleteProps<
+    [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
+    GeocodingFeature | Feature<Polygon, MapUdrZone>
+  >
+>
+
+const normalizeString = (str: string) =>
+  str
+    .normalize('NFD')
+    .replaceAll(/[\u0300-\u036F]/g, '')
+    .toLowerCase()
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
-  ({ onValueChange, ...restProps }: Props, ref) => {
+  ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
     const handleValueChange = useCallback(
-      (value: GeocodingFeature) => {
+      (value: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
         onValueChange?.(value)
       },
       [onValueChange],
     )
 
-    const renderItem: ListRenderItem<GeocodingFeature> = useCallback(
-      ({ item }) => (
-        <View className="border-b border-divider py-4">
-          <FlexRow className="items-center g-4">
-            <Icon name="location-pin" />
-            <View className="flex-1">
-              <Typography numberOfLines={1}>{item.text}</Typography>
-              <Typography numberOfLines={1}>{item.place_name}</Typography>
+    const { mapZones } = useMapZonesContext()
+    const locale = useLocale()
+
+    const getOptions = useCallback(
+      async (
+        input: string,
+      ): Promise<
+        [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>]
+      > => {
+        const filteredMapZones: Feature<Polygon, MapUdrZone>[] = []
+        if (mapZones && input) {
+          const normalizedInput = normalizeString(input)
+          mapZones.forEach((zone) => {
+            if (
+              normalizeString(zone.properties.Nazov).includes(normalizedInput) ||
+              normalizeString(zone.properties.UDR_ID.toString()).includes(normalizedInput)
+            ) {
+              filteredMapZones.push(zone)
+            }
+          })
+        }
+
+        return [filteredMapZones, await forwardGeocode(input)]
+      },
+      [mapZones],
+    )
+
+    const renderItem: NonNullable<Props['renderItem']> = useCallback(
+      ({ item }) => {
+        if (isGeocodingFeature(item)) {
+          return (
+            <View className="border-b border-divider py-4">
+              <FlexRow className="items-center g-4">
+                <Icon name="location-pin" />
+                <View className="flex-1">
+                  <Typography numberOfLines={1}>{item.text}</Typography>
+                  <Typography numberOfLines={1}>{item.place_name}</Typography>
+                </View>
+                <Icon name="chevron-right" />
+              </FlexRow>
             </View>
-            <Icon name="chevron-right" />
-          </FlexRow>
-        </View>
-      ),
-      [],
+          )
+        }
+
+        const zone = normalizeZone(item.properties, locale)
+
+        return (
+          <View className="border-b border-divider py-4">
+            <FlexRow className="items-center">
+              <ZoneBadge label={zone.udrId} />
+              <Typography className="flex-1" numberOfLines={1}>
+                {zone.name}
+              </Typography>
+              <Icon name="chevron-right" />
+            </FlexRow>
+          </View>
+        )
+      },
+      [locale],
+    )
+
+    const renderResults: NonNullable<Props['renderResults']> = useCallback(
+      (options, optionsListProps) => {
+        const [zones, geocodingFeatures] = options
+        const sections: {
+          title: string
+          data: (GeocodingFeature | Feature<Polygon, MapUdrZone>)[]
+        }[] = []
+
+        if (zones.length > 0) {
+          sections.push({ title: t('zones'), data: zones.slice(0, ZONES_LIMIT) })
+        }
+        if (geocodingFeatures.length > 0) {
+          sections.push({ title: t('addresses'), data: geocodingFeatures })
+        }
+
+        return (
+          <Portal hostName={optionsPortalName}>
+            <View className="flex-1">
+              {(zones.length > 0 || geocodingFeatures.length > 0) && (
+                <>
+                  <Typography variant="h2">{t('searchResults')}</Typography>
+                  <BottomSheetSectionList
+                    className="flex-1"
+                    sections={sections}
+                    keyboardShouldPersistTaps="always"
+                    renderItem={optionsListProps.renderItem!}
+                    renderSectionHeader={({ section: { title } }) => (
+                      <Typography variant="h3" className="border-b-2 border-divider pb-2 pt-6">
+                        {title}
+                      </Typography>
+                    )}
+                  />
+                </>
+              )}
+            </View>
+          </Portal>
+        )
+      },
+      [optionsPortalName, t],
     )
 
     return (
       <View>
         <Autocomplete
           ref={ref}
-          getOptions={forwardGeocode}
-          getOptionLabel={(option) => option.place_name || option.text}
+          getOptions={getOptions}
+          getOptionLabel={(option) =>
+            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.Nazov
+          }
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}
-          resultsHeader={<Typography variant="h2">{t('searchResults')}</Typography>}
           renderItem={renderItem}
           ListComponent={BottomSheetFlatList}
+          renderResults={renderResults}
+          multiSourceMode
           // disabledIndication={false}
           {...restProps}
         />

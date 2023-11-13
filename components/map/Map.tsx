@@ -29,7 +29,7 @@ import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
-import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
+import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
@@ -38,6 +38,7 @@ type Props = {
   onZoneChange?: (feature: MapUdrZone | null) => void
   onPointPress?: (point: MapInterestPoint) => void
   filters: MapFilters
+  processedData: ProcessedMapData
 }
 
 export type MapRef = {
@@ -48,7 +49,7 @@ const ZOOM_ON_CLUSTER_PRESS = 1.5
 const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
-  ({ onZoneChange, onPointPress, filters }: Props, ref: ForwardedRef<MapRef>) => {
+  ({ onZoneChange, onPointPress, filters, processedData }: Props, ref: ForwardedRef<MapRef>) => {
     const camera = useRef<Camera>(null)
     const map = useRef<MapView>(null)
     const [followingUser, setFollowingUser] = useState(true)
@@ -63,8 +64,6 @@ const Map = forwardRef(
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
-
-    const { isLoading, ...processedData } = useProcessedArcgisData()
 
     const { markersData, udrData } = useFilteredMapData(processedData, filters)
 

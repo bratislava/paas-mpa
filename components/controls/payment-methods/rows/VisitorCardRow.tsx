@@ -32,7 +32,7 @@ type Props = AdditionalProps & {
   balance: string
 }
 
-const VisitorCardMethod = ({ email, balance, selected, showControlChevron }: Props) => {
+const VisitorCardRow = ({ email, balance, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 
   return (
@@ -62,4 +62,4 @@ const VisitorCardMethod = ({ email, balance, selected, showControlChevron }: Pro
   )
 }
 
-export default VisitorCardMethod
+export default VisitorCardRow
