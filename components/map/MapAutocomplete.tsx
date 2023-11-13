@@ -10,15 +10,13 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { useMapAutocompleteGetOptions } from '@/modules/map/hooks/useMapAutocompleteGetOptions'
 import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
-import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
+import { Unpromise } from '@/utils/types'
 
 const ZONES_LIMIT = 10
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never
 
 type Props = Partial<
   AutocompleteProps<
@@ -26,12 +24,6 @@ type Props = Partial<
     GeocodingFeature | Feature<Polygon, MapUdrZone>
   >
 >
-
-const normalizeString = (str: string) =>
-  str
-    .normalize('NFD')
-    .replaceAll(/[\u0300-\u036F]/g, '')
-    .toLowerCase()
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
@@ -43,32 +35,9 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
       [onValueChange],
     )
 
-    const { mapZones } = useMapZonesContext()
     const locale = useLocale()
 
-    const getOptions = useCallback(
-      async (
-        input: string,
-      ): Promise<
-        [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>]
-      > => {
-        const filteredMapZones: Feature<Polygon, MapUdrZone>[] = []
-        if (mapZones && input) {
-          const normalizedInput = normalizeString(input)
-          mapZones.forEach((zone) => {
-            if (
-              normalizeString(zone.properties.Nazov).includes(normalizedInput) ||
-              normalizeString(zone.properties.UDR_ID.toString()).includes(normalizedInput)
-            ) {
-              filteredMapZones.push(zone)
-            }
-          })
-        }
-
-        return [filteredMapZones, await forwardGeocode(input)]
-      },
-      [mapZones],
-    )
+    const getOptions = useMapAutocompleteGetOptions()
 
     const renderItem: NonNullable<Props['renderItem']> = useCallback(
       ({ item }) => {
@@ -159,7 +128,6 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           ListComponent={BottomSheetFlatList}
           renderResults={renderResults}
           multiSourceMode
-          // disabledIndication={false}
           {...restProps}
         />
       </View>
