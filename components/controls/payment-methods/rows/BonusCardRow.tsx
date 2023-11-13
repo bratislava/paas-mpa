@@ -30,7 +30,7 @@ type Props = AdditionalProps & {
   validUntil: string
 }
 
-const BonusCardMethod = ({ balance, validUntil, selected, showControlChevron }: Props) => {
+const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
 
   return (
@@ -58,4 +58,4 @@ const BonusCardMethod = ({ balance, validUntil, selected, showControlChevron }: 
   )
 }
 
-export default BonusCardMethod
+export default BonusCardRow
