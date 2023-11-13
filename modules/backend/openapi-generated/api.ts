@@ -927,6 +927,12 @@ export interface SystemErrorDto {
  */
 export interface TicketDto {
   /**
+   * Database id of the vehicle
+   * @type {number}
+   * @memberof TicketDto
+   */
+  id: number
+  /**
    * Unique identification of parking slot (specific section of parking regulation)
    * @type {string}
    * @memberof TicketDto
@@ -1030,6 +1036,12 @@ export interface TicketDto {
  * @interface TicketInitDto
  */
 export interface TicketInitDto {
+  /**
+   * Database id of the vehicle
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  id: number
   /**
    * Unique identification of parking slot (specific section of parking regulation)
    * @type {string}
@@ -1805,6 +1817,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         options: localVarRequestOptions,
       }
     },
+    /**
+     * Get information about the status of the parking system.
+     * @summary Healthcheck for parking system
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    appControllerHealthParkingSystem: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/healthcheck/parking-sytem`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
   }
 }
 
@@ -1825,6 +1871,20 @@ export const DefaultApiFp = function (configuration?: Configuration) {
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerHealth(options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Get information about the status of the parking system.
+     * @summary Healthcheck for parking system
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async appControllerHealthParkingSystem(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerHealthParkingSystem(
+        options,
+      )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
   }
@@ -1850,6 +1910,17 @@ export const DefaultApiFactory = function (
     appControllerHealth(options?: AxiosRequestConfig): AxiosPromise<void> {
       return localVarFp.appControllerHealth(options).then((request) => request(axios, basePath))
     },
+    /**
+     * Get information about the status of the parking system.
+     * @summary Healthcheck for parking system
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    appControllerHealthParkingSystem(options?: AxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .appControllerHealthParkingSystem(options)
+        .then((request) => request(axios, basePath))
+    },
   }
 }
 
@@ -1870,6 +1941,19 @@ export class DefaultApi extends BaseAPI {
   public appControllerHealth(options?: AxiosRequestConfig) {
     return DefaultApiFp(this.configuration)
       .appControllerHealth(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Get information about the status of the parking system.
+   * @summary Healthcheck for parking system
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public appControllerHealthParkingSystem(options?: AxiosRequestConfig) {
+    return DefaultApiFp(this.configuration)
+      .appControllerHealthParkingSystem(options)
       .then((request) => request(this.axios, this.basePath))
   }
 }
@@ -2602,6 +2686,51 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
   return {
     /**
      *
+     * @summary WIP: Get URL to ticket receipt
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetReceipt: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerGetReceipt', 'id', id)
+      const localVarPath = `/tickets/receipt/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get ticket price
      * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
      * @param {*} [options] Override http request option.
@@ -3122,6 +3251,48 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         options: localVarRequestOptions,
       }
     },
+    /**
+     *
+     * @summary Get single ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerTicketsGetOne: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerTicketsGetOne', 'id', id)
+      const localVarPath = `/tickets/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)))
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
   }
 }
 
@@ -3132,6 +3303,23 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
 export const TicketsApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = TicketsApiAxiosParamCreator(configuration)
   return {
+    /**
+     *
+     * @summary WIP: Get URL to ticket receipt
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGetReceipt(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerGetReceipt(
+        id,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
     /**
      *
      * @summary Get ticket price
@@ -3328,6 +3516,23 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
+    /**
+     *
+     * @summary Get single ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerTicketsGetOne(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerTicketsGetOne(
+        id,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
   }
 }
 
@@ -3342,6 +3547,18 @@ export const TicketsApiFactory = function (
 ) {
   const localVarFp = TicketsApiFp(configuration)
   return {
+    /**
+     *
+     * @summary WIP: Get URL to ticket receipt
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig): AxiosPromise<string> {
+      return localVarFp
+        .ticketsControllerGetReceipt(id, options)
+        .then((request) => request(axios, basePath))
+    },
     /**
      *
      * @summary Get ticket price
@@ -3516,6 +3733,21 @@ export const TicketsApiFactory = function (
         .ticketsControllerTicketsGetMany(active, page, pageSize, ecv, options)
         .then((request) => request(axios, basePath))
     },
+    /**
+     *
+     * @summary Get single ticket
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerTicketsGetOne(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketDto> {
+      return localVarFp
+        .ticketsControllerTicketsGetOne(id, options)
+        .then((request) => request(axios, basePath))
+    },
   }
 }
 
@@ -3526,6 +3758,20 @@ export const TicketsApiFactory = function (
  * @extends {BaseAPI}
  */
 export class TicketsApi extends BaseAPI {
+  /**
+   *
+   * @summary WIP: Get URL to ticket receipt
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGetReceipt(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
   /**
    *
    * @summary Get ticket price
@@ -3710,6 +3956,20 @@ export class TicketsApi extends BaseAPI {
   ) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerTicketsGetMany(active, page, pageSize, ecv, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get single ticket
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerTicketsGetOne(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerTicketsGetOne(id, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }
@@ -4428,64 +4688,6 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     },
     /**
      *
-     * @summary Get the target URL to route the user for email verification
-     * @param {string} userAgent
-     * @param {string} token
-     * @param {string} key
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    verifiedEmailsControllerGetVerificationUrl: async (
-      userAgent: string,
-      token: string,
-      key: string,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      // verify required parameter 'userAgent' is not null or undefined
-      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'userAgent', userAgent)
-      // verify required parameter 'token' is not null or undefined
-      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'token', token)
-      // verify required parameter 'key' is not null or undefined
-      assertParamExists('verifiedEmailsControllerGetVerificationUrl', 'key', key)
-      const localVarPath = `/verified-emails/verification-target`
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
-      let baseOptions
-      if (configuration) {
-        baseOptions = configuration.baseOptions
-      }
-
-      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
-      const localVarHeaderParameter = {} as any
-      const localVarQueryParameter = {} as any
-
-      if (token !== undefined) {
-        localVarQueryParameter['token'] = token
-      }
-
-      if (key !== undefined) {
-        localVarQueryParameter['key'] = key
-      }
-
-      if (userAgent != null) {
-        localVarHeaderParameter['user-agent'] = String(userAgent)
-      }
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter)
-      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      }
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      }
-    },
-    /**
-     *
      * @summary Refreshes all parking cards for the email
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4698,30 +4900,6 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary Get the target URL to route the user for email verification
-     * @param {string} userAgent
-     * @param {string} token
-     * @param {string} key
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async verifiedEmailsControllerGetVerificationUrl(
-      userAgent: string,
-      token: string,
-      key: string,
-      options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.verifiedEmailsControllerGetVerificationUrl(
-          userAgent,
-          token,
-          key,
-          options,
-        )
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
-    },
-    /**
-     *
      * @summary Refreshes all parking cards for the email
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4824,25 +5002,6 @@ export const VerifiedEmailsApiFactory = function (
     },
     /**
      *
-     * @summary Get the target URL to route the user for email verification
-     * @param {string} userAgent
-     * @param {string} token
-     * @param {string} key
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    verifiedEmailsControllerGetVerificationUrl(
-      userAgent: string,
-      token: string,
-      key: string,
-      options?: AxiosRequestConfig,
-    ): AxiosPromise<void> {
-      return localVarFp
-        .verifiedEmailsControllerGetVerificationUrl(userAgent, token, key, options)
-        .then((request) => request(axios, basePath))
-    },
-    /**
-     *
      * @summary Refreshes all parking cards for the email
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4922,27 +5081,6 @@ export class VerifiedEmailsApi extends BaseAPI {
   public verifiedEmailsControllerDeleteVerifiedEmail(id: number, options?: AxiosRequestConfig) {
     return VerifiedEmailsApiFp(this.configuration)
       .verifiedEmailsControllerDeleteVerifiedEmail(id, options)
-      .then((request) => request(this.axios, this.basePath))
-  }
-
-  /**
-   *
-   * @summary Get the target URL to route the user for email verification
-   * @param {string} userAgent
-   * @param {string} token
-   * @param {string} key
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof VerifiedEmailsApi
-   */
-  public verifiedEmailsControllerGetVerificationUrl(
-    userAgent: string,
-    token: string,
-    key: string,
-    options?: AxiosRequestConfig,
-  ) {
-    return VerifiedEmailsApiFp(this.configuration)
-      .verifiedEmailsControllerGetVerificationUrl(userAgent, token, key, options)
       .then((request) => request(this.axios, this.basePath))
   }
 

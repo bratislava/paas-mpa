@@ -68,6 +68,14 @@ export const ticketPriceOptions = (
     enabled: !!udr && !!licencePlate && !!duration,
   })
 
+export const getTicketOptions = (ticketId: number) =>
+  queryOptions({
+    queryKey: ['ticket', ticketId],
+    queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId),
+    select: (res) => res.data,
+    enabled: !!ticketId,
+  })
+
 export const visitorCardsOptions = () =>
   queryOptions({
     queryKey: ['VisitorCards'],

@@ -35,7 +35,17 @@
     "customParkingTimeTitle": "Custom time",
     "chooseVehicleFieldLabel": "Choose vehicle",
     "customParkingTimeFieldLabel": "Choose time",
-    "chooseParkingZoneEmptyControlLabel": "Choose parking zone"
+    "chooseParkingZoneEmptyControlLabel": "Choose parking zone",
+    "backToMap": "Back to map",
+    "paymentFailed": "Payment failed",
+    "paymentFailedText": "Your payment has failed. \nPlease try again.",
+    "paymentSuccessful": "Payment successful",
+    "paymentSuccessfulText": "Your payment ticket has been paid."
+  },
+  "BoughtTicket": {
+    "yourTicket": "Your ticket",
+    "licencePlate": "Car plate number",
+    "validUntil": "Valid to"
   },
   "PurchaseBottomSheet": {
     "pay": "Pay",

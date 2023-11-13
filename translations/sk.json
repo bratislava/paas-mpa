@@ -35,7 +35,17 @@
     "customParkingTimeTitle": "Vlastný čas",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "customParkingTimeFieldLabel": "Vyberte čas",
-    "chooseParkingZoneEmptyControlLabel": "Vyberte úsek parkovania"
+    "chooseParkingZoneEmptyControlLabel": "Vyberte úsek parkovania",
+    "backToMap": "Späť na mapu",
+    "paymentFailed": "Platba zlyhala",
+    "paymentFailedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova.",
+    "paymentSuccessful": "Úspešná platba",
+    "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený."
+  },
+  "BoughtTicket": {
+    "yourTicket": "Parkovací lístok",
+    "licencePlate": "Evidenčné číslo",
+    "validUntil": "Platnosť do"
   },
   "PurchaseBottomSheet": {
     "pay": "Zaplatiť",

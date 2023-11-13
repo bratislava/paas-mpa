@@ -55,7 +55,7 @@ const TicketCard = ({ ticket }: Props) => {
                 {zone.cityDistrict} – {zone.name}
               </Typography>
             ) : null}
-            <Typography variant="small">Licence plate number</Typography>
+            <Typography variant="small">{ticket.ecv}</Typography>
           </View>
 
           <View className="g-2">
