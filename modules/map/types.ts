@@ -1,6 +1,6 @@
 /* eslint-disable babel/camelcase */
 
-import { GeoJsonTypes, Geometry } from 'geojson'
+import { Feature, GeoJsonTypes, Geometry, Polygon } from 'geojson'
 
 import {
   MapLayerEnum,
@@ -229,4 +229,11 @@ export type GeocodingFeature = {
   routable_points?: {
     points?: { coordinates: [number, number] }[] | null
   }
+}
+
+export const isGeocodingFeature = (
+  value: GeocodingFeature | Feature<Polygon, MapUdrZone>,
+): value is GeocodingFeature => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+  return (value as any)?.place_name !== undefined
 }

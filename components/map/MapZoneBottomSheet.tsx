@@ -2,6 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
 import clsx from 'clsx'
 import { Link } from 'expo-router'
+import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
@@ -22,7 +23,13 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
-import { GeocodingFeature, NormalizedUdrZone } from '@/modules/map/types'
+import {
+  GeocodingFeature,
+  isGeocodingFeature,
+  MapUdrZone,
+  NormalizedUdrZone,
+} from '@/modules/map/types'
+import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
@@ -108,10 +115,14 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   }, [handleInputBlur])
 
   const handleChoice = useCallback(
-    (newValue: GeocodingFeature) => {
+    (newValue: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
       handleInputBlur()
       localRef.current?.collapse()
-      setFlyToCenter?.(newValue.center)
+      if (isGeocodingFeature(newValue)) {
+        setFlyToCenter?.(newValue.center)
+      } else {
+        setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+      }
     },
     [handleInputBlur, setFlyToCenter],
   )
