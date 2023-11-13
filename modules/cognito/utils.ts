@@ -1,5 +1,4 @@
 import { Auth } from 'aws-amplify'
-import { router } from 'expo-router'
 
 export const getAccessTokenOrLogout = async () => {
   try {
@@ -28,14 +27,5 @@ export const getCurrentAuthenticatedUser = async () => {
     return await Auth.currentAuthenticatedUser()
   } catch (error) {
     return null
-  }
-}
-
-export const signOut = async () => {
-  try {
-    await Auth.signOut()
-    router.push('/')
-  } catch (error) {
-    console.log('error signing out', error)
   }
 }

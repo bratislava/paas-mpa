@@ -1,6 +1,7 @@
 import {
   Camera,
   FillLayer,
+  LineLayer,
   MapView,
   ShapeSource,
   UserLocation,
@@ -150,14 +151,20 @@ const Map = forwardRef(
             animated
           />
           {udrData && <MapZones udrData={udrData} />}
-          {selectedPolygon && (
-            <ShapeSource id="highlight" shape={selectedPolygon}>
-              <FillLayer
-                id="highlight"
-                style={udrStyle.find((layerStyle) => layerStyle.id === 'udr-fill-selected')?.paint}
-              />
-            </ShapeSource>
-          )}
+          <ShapeSource
+            id="highlight"
+            // the shape cannot be null or undefined, but we must render the ShapeSource, because if it is rendered later the z-index breaks
+            shape={selectedPolygon ?? { coordinates: [], type: 'Polygon' }}
+          >
+            <FillLayer
+              id="highlight"
+              style={udrStyle.find((layerStyle) => layerStyle.id === 'udr-fill-selected')?.paint}
+            />
+            <LineLayer
+              id="higlight-lines"
+              style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-selected')?.paint}
+            />
+          </ShapeSource>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
         </MapView>

@@ -17,6 +17,7 @@
     "generate-clients": "yarn generate-client-paas-mpa"
   },
   "dependencies": {
+    "@aws-amplify/auth": "^5.6.6",
     "@expo-google-fonts/inter": "~0.2.3",
     "@expo/vector-icons": "~13.0.0",
     "@gorhom/bottom-sheet": "~4.5.1",

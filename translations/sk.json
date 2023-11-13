@@ -165,7 +165,11 @@
     "noEmailsTitle": "Žiadne parkovacie karty",
     "noEmailsText": "Ak chcete pridať svoje karty do aplikácie, overte sa e-mailovou adresou, ktorú ste zadali v PAAS.",
     "noActiveCardsTitle": "Žiadne aktívne karty",
-    "noActiveCardsText": "Platnosť všetkých parkovacích kariet vypršala. Po zakúpení novej parkovacej karty ju nájdete v tejto sekcii."
+    "noActiveCardsText": "Platnosť všetkých parkovacích kariet vypršala. Po zakúpení novej parkovacej karty ju nájdete v tejto sekcii.",
+    "removeEmailTitle": "Odstrániť e-mailovú adresu",
+    "removeEmailText": "Naozaj chcete odstrániť e-mailovú adresu? Bez e-mailovej adresy nebude možné zobraziť ani použiť Vaše parkovacie karty.",
+    "removeEmailConfirm": "Odstrániť",
+    "removeEmailCancel": "Ponechať"
   },
   "VerificationResult": {
     "verified": {

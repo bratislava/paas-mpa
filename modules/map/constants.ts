@@ -61,14 +61,14 @@ export type MapFilters = {
 }
 
 export const DEFAULT_FILTERS: MapFilters = {
-  'p-plus-r': 'true',
-  'parking-lot': 'true',
-  assistant: 'true',
-  branch: 'true',
-  garage: 'true',
-  parkomat: 'true',
-  partner: 'true',
+  'p-plus-r': 'false',
+  'parking-lot': 'false',
+  assistant: 'false',
+  branch: 'false',
+  garage: 'false',
+  parkomat: 'false',
+  partner: 'false',
   active: 'true',
-  inactive: 'true',
+  inactive: 'false',
   planned: 'true',
 }
