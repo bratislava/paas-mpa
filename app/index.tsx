@@ -97,6 +97,11 @@ const IndexScreen = () => {
       ) : undefined,
     },
     {
+      label: 'About',
+      icon: 'info',
+      path: '/about',
+    },
+    {
       label: 'Purchase DEV',
       icon: 'payment',
       path: '/purchase',

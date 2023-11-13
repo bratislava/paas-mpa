@@ -272,5 +272,26 @@
     "title": "Announcements",
     "noAnnouncementsTitle": "No announcements",
     "learnMore": "Learn more"
+  },
+  "AboutScreen": {
+    "title": "About",
+    "links": {
+      "termsAndConditions": {
+        "label": "Terms & conditions",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      },
+      "privacyPolicy": {
+        "label": "Privacy policy",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      },
+      "contactUs": {
+        "label": "Contact us",
+        "url": "https://paas.sk/kontakt/"
+      },
+      "rateTheApp": {
+        "label": "Rate the app",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      }
+    }
   }
 }

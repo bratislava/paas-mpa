@@ -251,5 +251,26 @@
     "title": "Oznámenia",
     "noAnnouncementsTitle": "Žiadne oznámenia",
     "learnMore": "Viac informácií"
+  },
+  "AboutScreen": {
+    "title": "O nás",
+    "links": {
+      "termsAndConditions": {
+        "label": "Všeobecné obchodné podmienky",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      },
+      "privacyPolicy": {
+        "label": "Ochrana osobných údajov",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      },
+      "contactUs": {
+        "label": "Kontakty",
+        "url": "https://paas.sk/kontakt/"
+      },
+      "rateTheApp": {
+        "label": "Ohodnoďte nás",
+        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      }
+    }
   }
 }
