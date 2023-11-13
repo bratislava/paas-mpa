@@ -22,7 +22,7 @@ const AvatarSquare = ({ variant }: Props) => {
 
   return (
     <View
-      className={clsx('flex h-[40px] w-[40px] items-center justify-center rounded p-2.5', {
+      className={clsx('flex h-10 w-10 items-center justify-center rounded p-2.5', {
         'bg-dark': variant === 'payment-card',
         'bg-visitorCard': variant === 'visitor-card',
         'bg-black': variant === 'apple-pay',
