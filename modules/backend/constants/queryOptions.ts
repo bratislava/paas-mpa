@@ -16,10 +16,42 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsOptions = ({ active }: { active: boolean } & PaginationOptions) =>
+export const ticketsOptions = ({
+  ecv,
+  parkingStartFrom,
+  parkingStartTo,
+  parkingEndFrom,
+  parkingEndTo,
+  page,
+  pageSize,
+}: {
+  ecv?: string
+  parkingStartFrom?: string
+  parkingStartTo?: string
+  parkingEndFrom?: string
+  parkingEndTo?: string
+} & PaginationOptions) =>
   queryOptions({
-    queryKey: ['Tickets', active ? 'active' : 'past'],
-    queryFn: () => clientApi.ticketsControllerTicketsGetMany(active),
+    queryKey: [
+      'Tickets',
+      ecv,
+      parkingStartFrom,
+      parkingStartTo,
+      parkingEndFrom,
+      parkingEndTo,
+      page,
+      pageSize,
+    ],
+    queryFn: () =>
+      clientApi.ticketsControllerTicketsGetMany(
+        page,
+        pageSize,
+        ecv,
+        parkingStartFrom,
+        parkingStartTo,
+        parkingEndFrom,
+        parkingEndTo,
+      ),
     select: (data) => data.data,
   })
 
@@ -29,18 +61,15 @@ export const parkingCardsOptions = ({
   pageSize = 10,
 }: { email: string | undefined } & PaginationOptions) =>
   queryOptions({
-    queryKey: ['ParkingCardsActive', email],
+    queryKey: ['ParkingCardsActive', email, page, pageSize],
     enabled: !!email,
     queryFn: () => clientApi.parkingCardsControllerGetParkingCards(email!, page, pageSize),
     select: (res) => res.data,
   })
 
-export const verifiedEmailsOptions = ({
-  page = 1,
-  pageSize = 10,
-}: PaginationOptions | undefined = {}) =>
+export const verifiedEmailsOptions = ({ page, pageSize }: PaginationOptions | undefined = {}) =>
   queryOptions({
-    queryKey: ['VerifiedEmails'],
+    queryKey: ['VerifiedEmails', page, pageSize],
     queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(page, pageSize),
     select: (res) => res.data,
   })
