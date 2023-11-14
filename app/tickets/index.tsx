@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
@@ -16,7 +16,12 @@ import { TicketDto } from '@/modules/backend/openapi-generated'
 const ActiveTicketsRoute = () => {
   const t = useTranslation('Tickets')
 
-  const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: true }))
+  const now = useMemo(() => new Date().toISOString(), [])
+  const { data: ticketsResponse } = useQueryWithFocusRefetch(
+    ticketsOptions({
+      parkingEndFrom: now,
+    }),
+  )
   const { tickets } = ticketsResponse ?? {}
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
@@ -47,7 +52,13 @@ const ActiveTicketsRoute = () => {
 }
 
 const HistoryRoute = () => {
-  const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: false }))
+  const now = useMemo(() => new Date().toISOString(), [])
+
+  const { data: ticketsResponse } = useQueryWithFocusRefetch(
+    ticketsOptions({
+      parkingEndTo: now,
+    }),
+  )
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
