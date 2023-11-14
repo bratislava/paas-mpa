@@ -36,7 +36,7 @@ const Page = () => {
       <ScrollView>
         <ScreenContent>
           <Typography variant="h1">User</Typography>
-          <Link asChild href="/auth" disabled={!!user}>
+          <Link asChild href="/sign-in" disabled={!!user}>
             <Button>Login</Button>
           </Link>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

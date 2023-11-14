@@ -18,7 +18,7 @@ export const useSignInOrSignUp = () => {
 
     if (signInResultInner) {
       setSignInResult(signInResultInner)
-      router.push('/confirm-signin')
+      router.push('/confirm-sign-in')
     }
   }
 

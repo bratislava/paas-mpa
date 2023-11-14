@@ -10,7 +10,7 @@ const Page = () => {
     <ScreenView>
       <ScreenContent>
         <Typography>Intro</Typography>
-        <Link asChild href="/auth">
+        <Link asChild href="/sign-in">
           <ContinueButton />
         </Link>
       </ScreenContent>

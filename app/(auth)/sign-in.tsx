@@ -9,7 +9,7 @@ import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('EnterPhoneNumber')
+  const t = useTranslation('Auth')
 
   const [phone, setPhone] = useState('+421')
 
