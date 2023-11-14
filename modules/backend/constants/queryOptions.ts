@@ -1,4 +1,4 @@
-import { keepPreviousData, queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
@@ -9,6 +9,18 @@ type PaginationOptions = {
   pageSize?: number
 }
 
+const getNextPageParam = (lastPage: {
+  paginationInfo: { currentPage: number; pageSize: number; total: number }
+}) => {
+  const { paginationInfo } = lastPage
+  // TODO: remove quick fix, currentPage and pageSize are strings
+  const currentPage = Number.parseInt(paginationInfo.currentPage as unknown as string, 10)
+  const pageSize = Number.parseInt(paginationInfo.pageSize as unknown as string, 10)
+  const total = Number.parseInt(paginationInfo.total as unknown as string, 10)
+
+  return currentPage < total / pageSize ? currentPage + 1 : null
+}
+
 export const notificationSettingsOptions = () =>
   queryOptions({
     queryKey: ['NotificationSetting'],
@@ -16,11 +28,34 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsOptions = ({ active }: { active: boolean } & PaginationOptions) =>
+export const ticketsOptions = ({
+  active,
+  page = 1,
+  pageSize = 1,
+}: { active: boolean } & PaginationOptions) =>
   queryOptions({
-    queryKey: ['Tickets', active ? 'active' : 'past'],
-    queryFn: () => clientApi.ticketsControllerTicketsGetMany(active),
+    queryKey: ['Tickets', active ? 'active' : 'past', page, pageSize],
+    queryFn: () => clientApi.ticketsControllerTicketsGetMany(active, page, pageSize),
     select: (data) => data.data,
+  })
+
+export const ticketsInfiniteOptions = ({
+  active,
+  pageSize = 10,
+}: {
+  active: boolean
+  pageSize?: number
+}) =>
+  infiniteQueryOptions({
+    queryKey: ['Tickets', active ? 'active' : 'past', 'infinite', pageSize],
+    queryFn: async ({ pageParam }) => {
+      const response = await clientApi.ticketsControllerTicketsGetMany(active, pageParam, pageSize)
+
+      return response.data
+    },
+    select: (data) => data.pages,
+    getNextPageParam,
+    initialPageParam: 1,
   })
 
 export const parkingCardsOptions = ({
@@ -29,7 +64,7 @@ export const parkingCardsOptions = ({
   pageSize = 10,
 }: { email: string | undefined } & PaginationOptions) =>
   queryOptions({
-    queryKey: ['ParkingCardsActive', email],
+    queryKey: ['ParkingCardsActive', email, page, pageSize],
     enabled: !!email,
     queryFn: () => clientApi.parkingCardsControllerGetParkingCards(email!, page, pageSize),
     select: (res) => res.data,

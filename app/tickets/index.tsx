@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useCallback, useMemo, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
@@ -7,22 +8,35 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import InfiniteScrollFlatList from '@/components/shared/InfiniteScrollFlatList'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
+import { ticketsInfiniteOptions, ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
 const ActiveTicketsRoute = () => {
   const t = useTranslation('Tickets')
 
-  const { data: ticketsResponse } = useQueryWithFocusRefetch(ticketsOptions({ active: true }))
-  const { tickets } = ticketsResponse ?? {}
+  const {
+    data: ticketsPages,
+    isFetching,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    ...ticketsInfiniteOptions({ active: true }),
+  })
+
+  const tickets = useMemo(
+    () => ticketsPages?.reduce((acc, page) => [...acc, ...page.tickets], [] as TicketDto[]),
+    [ticketsPages],
+  )
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} />,
     [],
   )
+
+  const renderSkeleton = useCallback(() => <View className="h-5 w-10 bg-green" />, [])
 
   if (!tickets?.length) {
     return (
@@ -36,11 +50,15 @@ const ActiveTicketsRoute = () => {
 
   return (
     <ScreenContent>
-      <FlatList
+      <InfiniteScrollFlatList
         // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ gap: 12 }}
         data={tickets}
         renderItem={renderItem}
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        fetchNextPage={fetchNextPage}
+        renderSkeleton={renderSkeleton}
+        isLoading={isFetching}
       />
     </ScreenContent>
   )

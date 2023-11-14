@@ -14,6 +14,16 @@ export const useAxiosResponseInterceptors = () => {
   const { i18n } = useTranslation()
   useEffect(() => {
     const successInterceptor = (response: AxiosResponse) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (response?.data?.paginationInfo?.currentPage) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        response.data.paginationInfo.currentPage = Number.parseInt(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          response.data.paginationInfo.currentPage as unknown as string,
+          10,
+        )
+      }
+
       return response
     }
 
