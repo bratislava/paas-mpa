@@ -1,4 +1,4 @@
-import { keepPreviousData, queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
@@ -6,6 +6,10 @@ import { NormalizedUdrZone } from '@/modules/map/types'
 
 type PaginationOptions = {
   page?: number
+  pageSize?: number
+}
+
+type PageSize = {
   pageSize?: number
 }
 
@@ -54,6 +58,51 @@ export const ticketsOptions = ({
       ),
     select: (data) => data.data,
   })
+
+export const ticketsInfiniteQuery = (
+  options?: {
+    ecv?: string
+    parkingStartFrom?: string
+    parkingStartTo?: string
+    parkingEndFrom?: string
+    parkingEndTo?: string
+  } & PageSize,
+) => {
+  const { ecv, parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo, pageSize } =
+    options ?? {}
+
+  return infiniteQueryOptions({
+    queryKey: [
+      'Tickets',
+      ecv,
+      parkingStartFrom,
+      parkingStartTo,
+      parkingEndFrom,
+      parkingEndTo,
+      pageSize,
+    ],
+    queryFn: ({ pageParam }) =>
+      clientApi.ticketsControllerTicketsGetMany(
+        pageParam,
+        pageSize,
+        ecv,
+        parkingStartFrom,
+        parkingStartTo,
+        parkingEndFrom,
+        parkingEndTo,
+      ),
+    initialPageParam: 1,
+    // TODO remove ts-ignore when types are fixed
+    getNextPageParam: (lastPage) => {
+      // @ts-ignore
+      const currentPage = parseInt(lastPage.data.paginationInfo.currentPage, 10)
+      // @ts-ignore
+      const total = parseInt(lastPage.data.paginationInfo.total, 10)
+
+      return currentPage < total ? currentPage + 1 : undefined // If there is not a next page, getNextPageParam will return undefined and the hasNextPage boolean will be set to 'false'
+    },
+  })
+}
 
 export const parkingCardsOptions = ({
   email,
