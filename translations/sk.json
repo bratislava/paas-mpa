@@ -202,6 +202,23 @@
       "actionButtonLabel": "Opätovne odoslať a pokračovať"
     }
   },
+  "TimeSelector": {
+    "addTimeButton": "Pridať 15 minút",
+    "subtractTimeButton": "Odobrať 15 minút",
+    "custom": "Vlastný",
+    "validUntil": "Platnosť do"
+  },
+  "DateTimePicker": {
+    "today": "Dnes",
+    "tomorrow": "Zajtra",
+    "now": "Teraz",
+    "set": "Nastaviť",
+    "abbr": {
+      "d": "d",
+      "h": "h",
+      "m": "m"
+    }
+  },
   "ZoneBottomSheet": {
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",

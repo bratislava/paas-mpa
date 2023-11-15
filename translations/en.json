@@ -213,10 +213,6 @@
     "tomorrow": "Tomorrow",
     "now": "Now",
     "set": "Set",
-    "FromToScreen": {
-      "arrivalAt": "Arrival at",
-      "departureAt": "Departure at"
-    },
     "abbr": {
       "d": "d",
       "h": "h",

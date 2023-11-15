@@ -48,32 +48,30 @@ const Page = () => {
   }
 
   return (
-    <>
-      <ScreenView title={t('title')}>
-        <ScrollView>
-          <ScreenContent>
-            {defaultPaymentOption ? (
-              <Field label={t('defaultPaymentOption')}>
-                <PaymentOptionRow variant={defaultPaymentOption} />
-              </Field>
-            ) : null}
-
-            <Field label={t('otherPaymentOptions')}>
-              {paymentOptions
-                .filter((option) => option !== defaultPaymentOption)
-                .map((option) => {
-                  return (
-                    <PaymentOptionRow
-                      key={option}
-                      variant={option}
-                      onContextMenuPress={() => handleContextMenuPress(option)}
-                    />
-                  )
-                })}
+    <ScreenView title={t('title')}>
+      <ScrollView>
+        <ScreenContent>
+          {defaultPaymentOption ? (
+            <Field label={t('defaultPaymentOption')}>
+              <PaymentOptionRow variant={defaultPaymentOption} />
             </Field>
-          </ScreenContent>
-        </ScrollView>
-      </ScreenView>
+          ) : null}
+
+          <Field label={t('otherPaymentOptions')}>
+            {paymentOptions
+              .filter((option) => option !== defaultPaymentOption)
+              .map((option) => {
+                return (
+                  <PaymentOptionRow
+                    key={option}
+                    variant={option}
+                    onContextMenuPress={() => handleContextMenuPress(option)}
+                  />
+                )
+              })}
+          </Field>
+        </ScreenContent>
+      </ScrollView>
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -88,7 +86,7 @@ const Page = () => {
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheet>
-    </>
+    </ScreenView>
   )
 }
 
