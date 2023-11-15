@@ -164,6 +164,8 @@
       "resident": "Rezidentská karta",
       "bonus": "Bonusová karta",
       "subscriber": "Abonentská karta",
+      "electric-car": "Elektromobil karta",
+      "tzp": "ŤZP karta",
       "other": "Iná karta"
     },
     "validUntil": "Platný do",

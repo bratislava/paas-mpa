@@ -1,7 +1,9 @@
 import BonusCard from '@/components/parking-cards/cards/BonusCard'
+import ElectricCarCard from '@/components/parking-cards/cards/ElectricCarCard'
 import OtherCard from '@/components/parking-cards/cards/OtherCard'
 import ResidentCard from '@/components/parking-cards/cards/ResidentCard'
 import SubscriberCard from '@/components/parking-cards/cards/SubscriberCard'
+import TzpCard from '@/components/parking-cards/cards/TzpCard'
 import VisitorCard from '@/components/parking-cards/cards/VisitorCard'
 import { ParkingCardDto, ParkingCardType } from '@/modules/backend/openapi-generated'
 
@@ -53,8 +55,22 @@ const ParkingCard = ({ card }: Props) => {
         />
       )
     // TODO style for these cards
-    // case ParkingCardType.Tzp:
-    // case ParkingCardType.Elektromobil:
+    case ParkingCardType.Tzp:
+      return (
+        <TzpCard
+          zoneName={card.name}
+          licencePlate={card.vehiclePlateNumber}
+          validUntil={card.validTo}
+        />
+      )
+    case ParkingCardType.Elektromobil:
+      return (
+        <ElectricCarCard
+          zoneName={card.name}
+          licencePlate={card.vehiclePlateNumber}
+          validUntil={card.validTo}
+        />
+      )
     // case ParkingCardType.Other:
     default:
       return (

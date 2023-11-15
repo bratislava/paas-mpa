@@ -164,6 +164,8 @@
       "resident": "Resident card",
       "bonus": "Bonus card",
       "subscriber": "Subscriber card",
+      "electric-car": "Electric car card",
+      "tzp": "ŤZP card",
       "other": "Other card"
     },
     "validUntil": "Valid until",

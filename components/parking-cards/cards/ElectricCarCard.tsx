@@ -9,22 +9,18 @@ import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { formatDate } from '@/utils/formatDate'
 
-type VisitorCardProps = Pick<
-  CommonParkingCardProps,
-  'cardNumber' | 'remainingCredit' | 'validUntil'
->
+type ElectricCarCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
 
-const VisitorCard = ({ cardNumber, remainingCredit, validUntil }: VisitorCardProps) => {
+const ElectricCarCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCardProps) => {
   const t = useTranslation('ParkingCards')
   const locale = useLocale()
 
   return (
-    <ParkingCardBase variant="visitor">
+    <ParkingCardBase variant="electric-car">
       <ParkingCardContent>
-        <Typography variant="small">{cardNumber}</Typography>
-        <Divider dividerClassname="bg-visitorCard" />
-        {/* TODO format remaining credit */}
-        <CardContentItem description={t('remainingCredit')} value={remainingCredit ?? ''} />
+        <Typography variant="small">{zoneName}</Typography>
+        <Typography variant="small">{licencePlate}</Typography>
+        <Divider dividerClassname="bg-electricCarCard" />
         {validUntil ? (
           <CardContentItem
             description={t('validUntil')}
@@ -36,4 +32,4 @@ const VisitorCard = ({ cardNumber, remainingCredit, validUntil }: VisitorCardPro
   )
 }
 
-export default VisitorCard
+export default ElectricCarCard

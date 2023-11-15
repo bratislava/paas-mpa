@@ -6,7 +6,8 @@ import ParkingCardContent from '@/components/parking-cards/base/ParkingCardConte
 import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatDate } from '@/utils/formatDate'
 
 // TODO - this is not in Figma, it's just a fallback for ParkingCardType === 'OTHER'
 
@@ -14,6 +15,7 @@ type OtherCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' |
 
 const OtherCard = ({ zoneName, licencePlate, validUntil }: OtherCardProps) => {
   const t = useTranslation('ParkingCards')
+  const locale = useLocale()
 
   return (
     <ParkingCardBase variant="other">
@@ -21,8 +23,12 @@ const OtherCard = ({ zoneName, licencePlate, validUntil }: OtherCardProps) => {
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
         <Divider dividerClassname="bg-divider" />
-        {/* TODO format date */}
-        <CardContentItem description={t('validUntil')} value={validUntil ?? ''} />
+        {validUntil ? (
+          <CardContentItem
+            description={t('validUntil')}
+            value={formatDate(new Date(validUntil), locale)}
+          />
+        ) : null}
       </ParkingCardContent>
     </ParkingCardBase>
   )
