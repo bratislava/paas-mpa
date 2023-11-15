@@ -18,7 +18,7 @@ const menuItems: MenuItem[] = [
   {
     title: 'Phone number login/register',
     subtitle: 'Cognito integration',
-    route: '/examples/login',
+    route: '/sign-in',
   },
   {
     title: 'Intro',

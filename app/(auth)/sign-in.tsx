@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -7,13 +8,19 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 
 const Page = () => {
   const t = useTranslation('Auth')
-
-  const [phone, setPhone] = useState('+421')
-
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
+
+  const [phone, setPhone] = useState('+')
+
+  /* Redirect to home screen if user is logged in */
+  const { user } = useGlobalStoreContext()
+  if (user) {
+    router.replace('/')
+  }
 
   return (
     <ScreenView>

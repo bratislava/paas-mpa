@@ -24,6 +24,7 @@ const IndexScreen = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
 
+  // TODO deduplicate (used also in `NewAnnouncementsBadge`)
   const [lastReadAnnouncementId] = useLastReadAnnouncementIdStorage()
   const { data: announcementsData } = useQueryWithFocusRefetch(announcementsOptions(locale))
   const newAnnouncementsCount = lastReadAnnouncementId

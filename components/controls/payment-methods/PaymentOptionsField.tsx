@@ -1,4 +1,5 @@
 import { router } from 'expo-router'
+import { Platform } from 'react-native'
 
 import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
 import { PaymentOption } from '@/components/controls/payment-methods/types'
@@ -12,7 +13,7 @@ const PaymentOptionsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { setNpk, paymentOption, setPaymentOption } = usePurchaseStoreContext()
+  const { setNpk, paymentOption, setPaymentOption, npk } = usePurchaseStoreContext()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const handlePanelPress = (variant: PaymentOption) => {
@@ -21,7 +22,12 @@ const PaymentOptionsField = () => {
     router.push('/purchase')
   }
 
-  const panels = ['payment-card', 'apple-pay', 'google-pay'] as const
+  const panels: PaymentOption[] = [
+    'payment-card',
+    ...(Platform.OS === 'ios' ? (['apple-pay'] as const) : []),
+    'google-pay',
+    // 'e-wallet'
+  ]
 
   return (
     <Field label={t('fieldPaymentMethods')}>
@@ -30,7 +36,7 @@ const PaymentOptionsField = () => {
           <PressableStyled key={panel} onPress={() => handlePanelPress(panel)}>
             <PaymentOptionRow
               variant={panel}
-              selected={(paymentOption ?? defaultPaymentOption) === panel}
+              selected={!npk && (paymentOption ?? defaultPaymentOption) === panel}
             />
           </PressableStyled>
         )

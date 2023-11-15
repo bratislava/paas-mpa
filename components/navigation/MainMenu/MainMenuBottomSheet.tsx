@@ -79,7 +79,7 @@ const MainMenuBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       endSlot: <NewAnnouncementsBadge />,
     },
     {
-      label: 'About',
+      label: t('About.title'),
       icon: 'info',
       path: '/about',
     },
