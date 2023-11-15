@@ -7,14 +7,20 @@ import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatBalance } from '@/utils/formatBalance'
 import { formatDate } from '@/utils/formatDate'
 
 type VisitorCardProps = Pick<
   CommonParkingCardProps,
-  'cardNumber' | 'remainingCredit' | 'validUntil'
+  'cardNumber' | 'balanceSeconds' | 'originalBalanceSeconds' | 'validUntil'
 >
 
-const VisitorCard = ({ cardNumber, remainingCredit, validUntil }: VisitorCardProps) => {
+const VisitorCard = ({
+  cardNumber,
+  balanceSeconds,
+  originalBalanceSeconds,
+  validUntil,
+}: VisitorCardProps) => {
   const t = useTranslation('ParkingCards')
   const locale = useLocale()
 
@@ -23,8 +29,12 @@ const VisitorCard = ({ cardNumber, remainingCredit, validUntil }: VisitorCardPro
       <ParkingCardContent>
         <Typography variant="small">{cardNumber}</Typography>
         <Divider dividerClassname="bg-visitorCard" />
-        {/* TODO format remaining credit */}
-        <CardContentItem description={t('remainingCredit')} value={remainingCredit ?? ''} />
+        <CardContentItem
+          description={t('remainingCredit')}
+          value={
+            balanceSeconds ? formatBalance(balanceSeconds, originalBalanceSeconds ?? undefined) : ''
+          }
+        />
         {validUntil ? (
           <CardContentItem
             description={t('validUntil')}
