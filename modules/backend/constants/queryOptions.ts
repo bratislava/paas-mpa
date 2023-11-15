@@ -97,23 +97,26 @@ export const ticketsInfiniteQuery = (
   })
 }
 
-export const parkingCardsOptions = ({
-  email,
-  page = 1,
-  pageSize = 10,
-}: { email: string | undefined } & PaginationOptions) =>
-  queryOptions({
-    queryKey: ['ParkingCardsActive', email, page, pageSize],
+export const parkingCardsInfiniteOptions = (
+  options?: { email: string | undefined } & PaginationOptions,
+) => {
+  const { email, pageSize } = options ?? {}
+
+  return infiniteQueryOptions({
+    queryKey: ['ParkingCardsInfinite', email, pageSize],
     enabled: !!email,
-    queryFn: () => clientApi.parkingCardsControllerGetParkingCards(email!, page, pageSize),
-    select: (res) => res.data,
+    queryFn: ({ pageParam }) =>
+      clientApi.parkingCardsControllerGetParkingCards(email!, pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
+}
 
 export const verifiedEmailsInfiniteOptions = (options?: PageSize) => {
   const { pageSize } = options ?? {}
 
   return infiniteQueryOptions({
-    queryKey: ['VerifiedEmailsInfinite'],
+    queryKey: ['VerifiedEmailsInfinite', pageSize],
     queryFn: ({ pageParam }) =>
       clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(pageParam, pageSize),
     initialPageParam: 1,

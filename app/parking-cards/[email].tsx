@@ -1,7 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
-import { ScrollView, useWindowDimensions, View } from 'react-native'
+import { FlatList, useWindowDimensions } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
@@ -12,22 +13,27 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
 import Typography from '@/components/shared/Typography'
-import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { parkingCardsOptions } from '@/modules/backend/constants/queryOptions'
+import { parkingCardsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 export type ParkingCardsLocalSearchParams = {
   email: string
   emailId: string
 }
 
-const Active = () => {
+const ActiveCards = () => {
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
-  const { data, isPending, isError, error } = useQueryWithFocusRefetch(
-    parkingCardsOptions({ email }),
+  const { data, isPending, isError, error, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    parkingCardsInfiniteOptions({ email }),
   )
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage()
+    }
+  }
 
   if (isPending) {
     return <Typography>Loading...</Typography>
@@ -37,41 +43,42 @@ const Active = () => {
     return <Typography>Error: {error.message}</Typography>
   }
 
-  const cards = data.parkingCards
+  const parkingCards = data.pages.flatMap((page) => page.data.parkingCards)
 
-  if (cards.length === 0) {
+  if (parkingCards.length === 0) {
     return <EmptyStateScreen contentTitle={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
   }
 
-  // TODO pagination
   return (
-    <ScrollView>
-      <ScreenContent>
-        <Typography>TODO pagination, showing only first 10 cards</Typography>
-
-        <View className="g-3">
-          {cards.map((card) => {
-            return <ParkingCard key={card.identificator} card={card} />
-          })}
-        </View>
-      </ScreenContent>
-    </ScrollView>
+    <ScreenContent>
+      <FlatList
+        data={parkingCards}
+        keyExtractor={(parkingCard) => parkingCard.identificator}
+        onEndReached={loadMore}
+        // eslint-disable-next-line react-native/no-inline-styles
+        contentContainerStyle={{ gap: 12 }}
+        renderItem={({ item: parkingCardItem }) => (
+          <ParkingCard key={parkingCardItem.identificator} card={parkingCardItem} />
+        )}
+      />
+    </ScreenContent>
   )
 }
 
-const Expired = () => {
-  return (
-    <ScrollView>
-      <ScreenContent>
-        <Typography>Expired cards TODO</Typography>
-      </ScreenContent>
-    </ScrollView>
-  )
-}
+// TODO Expired Cards - this have to be defined by Product manager
+// const ExpiredCards = () => {
+//   return (
+//     <ScrollView>
+//       <ScreenContent>
+//         <Typography>Expired cards</Typography>
+//       </ScreenContent>
+//     </ScrollView>
+//   )
+// }
 
 const renderScene = SceneMap({
-  active: Active,
-  expired: Expired,
+  active: ActiveCards,
+  // expired: ExpiredCards,
 })
 
 const Page = () => {
@@ -85,7 +92,7 @@ const Page = () => {
   const [index, setIndex] = useState(0)
   const [routes] = useState([
     { key: 'active', title: t('activeCards') },
-    { key: 'expired', title: t('expiredCards') },
+    // { key: 'expired', title: t('expiredCards') },
   ])
 
   return (

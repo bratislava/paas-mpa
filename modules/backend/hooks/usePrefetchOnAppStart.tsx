@@ -6,7 +6,7 @@ import { useLocale } from '@/hooks/useTranslation'
 import {
   announcementsOptions,
   notificationSettingsOptions,
-  parkingCardsOptions,
+  parkingCardsInfiniteOptions,
   verifiedEmailsInfiniteOptions,
   visitorCardsOptions,
 } from '@/modules/backend/constants/queryOptions'
@@ -24,33 +24,42 @@ export const usePrefetchOnAppStart = () => {
       return
     }
 
-    const verifiedEmails = verifiedEmailsInfiniteOptions()
-
-    const infiniteQueries = [verifiedEmails]
-
-    const queries = [
-      notificationSettingsOptions(),
-      visitorCardsOptions(),
-      announcementsOptions(locale),
-    ]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await Promise.all(queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)))
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await Promise.all(
-      infiniteQueries.map((infiniteQuery) =>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        queryClient.prefetchInfiniteQuery<any, any, any, any, any>(infiniteQuery),
-      ),
-    )
-
-    const emails = await queryClient.fetchInfiniteQuery(verifiedEmails)
-    if (emails.pages[0].data.verifiedEmails.length > 0)
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    try {
+      /* Define and prefetch standard queries */
+      const queries = [
+        notificationSettingsOptions(),
+        visitorCardsOptions(),
+        announcementsOptions(locale),
+      ]
       await Promise.all(
-        emails.pages[0].data.verifiedEmails.map((emailDto) =>
-          queryClient.prefetchQuery(parkingCardsOptions({ email: emailDto.email })),
+        queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)),
+      )
+
+      /* Define and prefetch infinite queries (must be prefetched separately by `prefetchInfiniteQuery`) */
+      const verifiedEmails = verifiedEmailsInfiniteOptions()
+      const infiniteQueries = [verifiedEmails]
+
+      await Promise.all(
+        infiniteQueries.map((infiniteQuery) =>
+          queryClient.prefetchInfiniteQuery<any, any, any, any, any>(infiniteQuery),
         ),
       )
+
+      /* Prefetch parking cards for first page of verified emails */
+      const emails = await queryClient.fetchInfiniteQuery(verifiedEmails)
+      if (emails.pages[0].data.verifiedEmails.length > 0)
+        await Promise.all(
+          emails.pages[0].data.verifiedEmails.map((emailDto) =>
+            queryClient.prefetchInfiniteQuery(
+              parkingCardsInfiniteOptions({ email: emailDto.email }),
+            ),
+          ),
+        )
+    } catch (error) {
+      console.log(error)
+    }
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   }, [locale, queryClient])
 
   useEffect(() => {
