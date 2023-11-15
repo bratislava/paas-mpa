@@ -7,7 +7,7 @@ import {
   announcementsOptions,
   notificationSettingsOptions,
   parkingCardsOptions,
-  verifiedEmailsOptions,
+  verifiedEmailsInfiniteOptions,
   visitorCardsOptions,
 } from '@/modules/backend/constants/queryOptions'
 import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
@@ -24,7 +24,7 @@ export const usePrefetchOnAppStart = () => {
       return
     }
 
-    const verifiedEmails = verifiedEmailsOptions()
+    const verifiedEmails = verifiedEmailsInfiniteOptions()
     const queries = [
       notificationSettingsOptions(),
       verifiedEmails,
@@ -36,7 +36,7 @@ export const usePrefetchOnAppStart = () => {
     const emails = await queryClient.fetchQuery(verifiedEmails)
     if (emails)
       await Promise.all(
-        emails.data.verifiedEmails.map((emailDto) =>
+        emails.pages[0].data.verifiedEmails.map((emailDto) =>
           queryClient.prefetchQuery(parkingCardsOptions({ email: emailDto.email })),
         ),
       )

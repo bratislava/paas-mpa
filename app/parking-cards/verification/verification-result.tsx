@@ -7,7 +7,7 @@ import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
+import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
 
 /*
@@ -25,7 +25,7 @@ const VerificationResultPage = () => {
   const queryClient = useQueryClient()
   const { email, status } = useLocalSearchParams<VerificationResultSearchParams>()
 
-  queryClient.refetchQueries({ queryKey: verifiedEmailsOptions().queryKey, type: 'active' })
+  queryClient.refetchQueries({ queryKey: verifiedEmailsInfiniteOptions().queryKey, type: 'active' })
 
   // TODO deduplicate this mutation (it's also used in ./index.tsx)
   const mutation = useMutation({

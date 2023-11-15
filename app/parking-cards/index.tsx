@@ -1,3 +1,4 @@
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link, Stack } from 'expo-router'
 import { FlatList } from 'react-native'
 
@@ -10,15 +11,21 @@ import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
+import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 const Page = () => {
   const t = useTranslation('ParkingCards')
 
-  // TODO invalidate/refresh query on add/remove
-  const { data, isPending, isError, error } = useQueryWithFocusRefetch(verifiedEmailsOptions())
+  const { data, isPending, isError, error, hasNextPage, fetchNextPage } = useInfiniteQuery(
+    verifiedEmailsInfiniteOptions(),
+  )
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage()
+    }
+  }
 
   if (isPending) {
     return <Typography>Loading...</Typography>
@@ -28,7 +35,9 @@ const Page = () => {
     return <Typography>Error: {error.message}</Typography>
   }
 
-  if (data.verifiedEmails.length === 0) {
+  const verifiedEmails = data.pages.flatMap((page) => page.data.verifiedEmails)
+
+  if (verifiedEmails.length === 0) {
     return (
       <EmptyStateScreen
         contentTitle={t('noEmailsTitle')}
@@ -48,7 +57,7 @@ const Page = () => {
       <Stack.Screen
         options={{
           headerRight: () =>
-            data.verifiedEmails.length > 0 ? (
+            verifiedEmails.length > 0 ? (
               <Link asChild href="/parking-cards/verification">
                 <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
               </Link>
@@ -58,9 +67,11 @@ const Page = () => {
 
       <ScreenContent>
         <Typography variant="default-bold">{t('paasEmailsList')}</Typography>
+
         <FlatList
-          data={data.verifiedEmails}
+          data={verifiedEmails}
           keyExtractor={(emailItem) => emailItem.email}
+          onEndReached={loadMore}
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item: emailItem }) => (
             <Link
