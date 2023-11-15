@@ -164,6 +164,8 @@
       "resident": "Rezidentská karta",
       "bonus": "Bonusová karta",
       "subscriber": "Abonentská karta",
+      "electric-car": "Elektromobil karta",
+      "tzp": "ŤZP karta",
       "other": "Iná karta"
     },
     "validUntil": "Platný do",
@@ -273,7 +275,7 @@
     "links": {
       "termsAndConditions": {
         "label": "Všeobecné obchodné podmienky",
-        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+        "url": "https://paas.sk/vseobecne-obchodne-podmienky/"
       },
       "privacyPolicy": {
         "label": "Ochrana osobných údajov",

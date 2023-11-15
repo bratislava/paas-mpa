@@ -6,7 +6,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
-  variant: 'visitor' | 'resident' | 'bonus' | 'subscriber' | 'other'
+  variant: 'visitor' | 'resident' | 'bonus' | 'subscriber' | 'electric-car' | 'tzp' | 'other'
   children: ReactNode
 }
 
@@ -20,6 +20,8 @@ const ParkingCardBase = ({ variant, children }: Props) => {
         'border-dark bg-dark-light': variant === 'resident',
         'border-divider bg-white': variant === 'bonus',
         'border-subscriberCard bg-subscriberCard-light': variant === 'subscriber',
+        'border-electricCarCard bg-electricCarCard-light': variant === 'electric-car',
+        'border-tzpCard bg-tzpCard-light': variant === 'tzp',
         'border-divider bg-dark-light': variant === 'other',
       })}
     >

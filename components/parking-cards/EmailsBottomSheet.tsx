@@ -12,7 +12,7 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
+import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 // TODO FIXME bottom sheet is empty on Android
 const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
@@ -29,7 +29,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
     onSuccess: async () => {
       // Refetch verified emails
       await queryClient.refetchQueries({
-        queryKey: verifiedEmailsOptions().queryKey,
+        queryKey: verifiedEmailsInfiniteOptions().queryKey,
         type: 'active',
       })
     },

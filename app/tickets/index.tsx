@@ -1,5 +1,6 @@
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
-import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
@@ -7,27 +8,62 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import Typography from '@/components/shared/Typography'
 import TicketCard from '@/components/tickets/TicketCard'
-import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
+import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
-const ActiveTicketsRoute = () => {
+type RouteProps =
+  | {
+      active: true
+    }
+  | {
+      active?: never
+      // TODO filters?
+    }
+
+const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
 
+  const renderItem: ListRenderItem<TicketDto> = useCallback(
+    ({ item }) => <TicketCard ticket={item} isActive={active} />,
+    [active],
+  )
+
   const now = useMemo(() => new Date().toISOString(), [])
-  const { data: ticketsResponse } = useQueryWithFocusRefetch(
-    ticketsOptions({
-      parkingEndFrom: now,
+
+  const {
+    data: ticketsDataInf,
+    isPending,
+    isError,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    ticketsInfiniteQuery({
+      parkingEndTo: active ? undefined : now,
+      parkingEndFrom: active ? now : undefined,
+      pageSize: 20,
     }),
   )
-  const { tickets } = ticketsResponse ?? {}
 
-  const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} />,
-    [],
-  )
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage()
+    }
+  }
+
+  if (isPending) {
+    return <Typography>Loading...</Typography>
+  }
+
+  if (isError) {
+    return <Typography>Error: {error.message}</Typography>
+  }
+
+  const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
 
   if (!tickets?.length) {
     return (
@@ -46,44 +82,19 @@ const ActiveTicketsRoute = () => {
         contentContainerStyle={{ gap: 12 }}
         data={tickets}
         renderItem={renderItem}
+        onEndReached={loadMore}
       />
+      {isFetchingNextPage && <Typography>Loading more...</Typography>}
     </ScreenContent>
   )
 }
 
-const HistoryRoute = () => {
-  const now = useMemo(() => new Date().toISOString(), [])
-
-  const { data: ticketsResponse } = useQueryWithFocusRefetch(
-    ticketsOptions({
-      parkingEndTo: now,
-    }),
-  )
-
-  const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} />,
-    [],
-  )
-
-  const tickets = ticketsResponse?.tickets ?? []
-
-  return (
-    <ScreenContent>
-      <View className="h-full bg-white">
-        <FlatList
-          // eslint-disable-next-line react-native/no-inline-styles
-          contentContainerStyle={{ gap: 12 }}
-          data={tickets}
-          renderItem={renderItem}
-        />
-      </View>
-    </ScreenContent>
-  )
-}
+const ActiveTicketsRoute = () => <TicketsRoute active />
+const HistoryTicketsRoute = () => <TicketsRoute />
 
 const renderScene = SceneMap({
   active: ActiveTicketsRoute,
-  history: HistoryRoute,
+  history: HistoryTicketsRoute,
 })
 
 // TODO
