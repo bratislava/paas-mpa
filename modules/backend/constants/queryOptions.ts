@@ -2,6 +2,7 @@ import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/
 
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
+import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
 type PaginationOptions = {
@@ -92,15 +93,7 @@ export const ticketsInfiniteQuery = (
         parkingEndTo,
       ),
     initialPageParam: 1,
-    // TODO remove ts-ignore when types are fixed
-    getNextPageParam: (lastPage) => {
-      // @ts-ignore
-      const currentPage = parseInt(lastPage.data.paginationInfo.currentPage, 10)
-      // @ts-ignore
-      const total = parseInt(lastPage.data.paginationInfo.total, 10)
-
-      return currentPage < total ? currentPage + 1 : undefined // If there is not a next page, getNextPageParam will return undefined and the hasNextPage boolean will be set to 'false'
-    },
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
 }
 
@@ -116,12 +109,17 @@ export const parkingCardsOptions = ({
     select: (res) => res.data,
   })
 
-export const verifiedEmailsOptions = ({ page, pageSize }: PaginationOptions | undefined = {}) =>
-  queryOptions({
-    queryKey: ['VerifiedEmails', page, pageSize],
-    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(page, pageSize),
-    select: (res) => res.data,
+export const verifiedEmailsInfiniteOptions = (options?: PageSize) => {
+  const { pageSize } = options ?? {}
+
+  return infiniteQueryOptions({
+    queryKey: ['VerifiedEmailsInfinite'],
+    queryFn: ({ pageParam }) =>
+      clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
+}
 
 export const ticketPriceOptions = (
   body: GetTicketPriceRequestDto,

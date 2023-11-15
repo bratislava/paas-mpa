@@ -28,7 +28,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} isActive={active} />,
-    [],
+    [active],
   )
 
   const now = useMemo(() => new Date().toISOString(), [])
@@ -38,13 +38,14 @@ const TicketsRoute = ({ active }: RouteProps) => {
     isPending,
     isError,
     error,
-    fetchNextPage,
     hasNextPage,
+    fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery(
     ticketsInfiniteQuery({
       parkingEndTo: active ? undefined : now,
       parkingEndFrom: active ? now : undefined,
+      pageSize: 20,
     }),
   )
 

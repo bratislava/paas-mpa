@@ -7,7 +7,7 @@ import {
   announcementsOptions,
   notificationSettingsOptions,
   parkingCardsOptions,
-  verifiedEmailsOptions,
+  verifiedEmailsInfiniteOptions,
   visitorCardsOptions,
 } from '@/modules/backend/constants/queryOptions'
 import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
@@ -19,24 +19,35 @@ export const usePrefetchOnAppStart = () => {
   const prefetch = useCallback(async () => {
     const token = await getAccessTokenOrLogout()
 
-    /* Do not prefetch if use is not logged in */
+    /* Do not prefetch if user is not logged in */
     if (!token) {
       return
     }
 
-    const verifiedEmails = verifiedEmailsOptions()
+    const verifiedEmails = verifiedEmailsInfiniteOptions()
+
+    const infiniteQueries = [verifiedEmails]
+
     const queries = [
       notificationSettingsOptions(),
-      verifiedEmails,
       visitorCardsOptions(),
       announcementsOptions(locale),
     ]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await Promise.all(queries.map((query) => queryClient.prefetchQuery<any, any, any, any>(query)))
-    const emails = await queryClient.fetchQuery(verifiedEmails)
-    if (emails)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await Promise.all(
+      infiniteQueries.map((infiniteQuery) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        queryClient.prefetchInfiniteQuery<any, any, any, any, any>(infiniteQuery),
+      ),
+    )
+
+    const emails = await queryClient.fetchInfiniteQuery(verifiedEmails)
+    if (emails.pages[0].data.verifiedEmails.length > 0)
       await Promise.all(
-        emails.data.verifiedEmails.map((emailDto) =>
+        emails.pages[0].data.verifiedEmails.map((emailDto) =>
           queryClient.prefetchQuery(parkingCardsOptions({ email: emailDto.email })),
         ),
       )

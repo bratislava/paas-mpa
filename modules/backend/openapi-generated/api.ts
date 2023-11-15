@@ -925,23 +925,11 @@ export interface TicketDto {
    */
   price?: number
   /**
-   * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof TicketDto
-   */
-  bpkCreditUsed?: string
-  /**
    * Credits used in case of bonnus parking in seconds
    * @type {number}
    * @memberof TicketDto
    */
   bpkCreditUsedSeconds: number
-  /**
-   * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof TicketDto
-   */
-  npkCreditUsed?: string
   /**
    * Credits used in case of visitor parking in seconds
    * @type {number}
@@ -1035,23 +1023,11 @@ export interface TicketInitDto {
    */
   price?: number
   /**
-   * Credits used in case of bonnus parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof TicketInitDto
-   */
-  bpkCreditUsed?: string
-  /**
    * Credits used in case of bonnus parking in seconds
    * @type {number}
    * @memberof TicketInitDto
    */
   bpkCreditUsedSeconds: number
-  /**
-   * Credits used in case of visitor parking (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof TicketInitDto
-   */
-  npkCreditUsed?: string
   /**
    * Credits used in case of visitor parking in seconds
    * @type {number}
