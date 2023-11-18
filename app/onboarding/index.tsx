@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { Image, ImageSourcePropType, useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,6 +15,7 @@ import {
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
 import Typography from '@/components/shared/Typography'
+import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type RouteKeys =
@@ -65,7 +66,7 @@ const OnboardingScreen = () => {
   const layout = useWindowDimensions()
   const t = useTranslation('OnboardingScreen')
   const insets = useSafeAreaInsets()
-  const router = useRouter()
+  const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
@@ -79,11 +80,19 @@ const OnboardingScreen = () => {
 
   const handlePressNext = useCallback(() => {
     if (index === routes.length - 1) {
-      router.push('/sign-in')
+      if (!isOnboardingFinished) {
+        setIsOnboardingFinished(true)
+      }
+      router.replace('/sign-in')
     } else if (index < routes.length - 1) {
       setIndex((prevIndex) => prevIndex + 1)
     }
-  }, [routes, index, router])
+  }, [routes, index, isOnboardingFinished, setIsOnboardingFinished])
+
+  if (isOnboardingFinished) {
+    // TODO: Uncomment for prod behavior
+    // router.replace('/sign-in')
+  }
 
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
 
