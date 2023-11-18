@@ -307,5 +307,35 @@
         "url": "https://paas.sk/ochrana-osobnych-udajov/"
       }
     }
+  },
+  "OnboardingScreen": {
+    "next": "Next",
+    "getStarted": "Get started",
+    "slides": {
+      "welcome": {
+        "title": "Welcome to the city PAAS application",
+        "text": "Through the application managed by the city of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card."
+      },
+      "dataSecurity": {
+        "title": "Data security and simplicity",
+        "text": "The application was created by the capital Bratislava with an emphasis on simplicity and intuitiveness."
+      },
+      "parkingCards": {
+        "title": "Using parking cards is easy",
+        "text": "By verifying your e-mail, which you used for PAAS, we can easily upload your parking cards and you can park with a discount."
+      },
+      "helpUsPlan": {
+        "title": "Help us plan Bratislava better",
+        "text": "Thanks to the use of this application, you support the creation of better transport and its planning in Bratislava."
+      },
+      "visitorsFree": {
+        "title": "Your visitors can park for free",
+        "text": "By applying for a visitor parking card, your loved ones and family can park for free."
+      },
+      "bonusCard": {
+        "title": "Park every day for 2 hours with a 100% discount",
+        "text": "By using the Bonus card, you can park in selected sections for 2 hours for free. In order to use the discount, it is necessary to verify the e-mail address to which the card was issued."
+      }
+    }
   }
 }
