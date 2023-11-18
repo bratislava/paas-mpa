@@ -1,8 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link, Stack } from 'expo-router'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 import ListRow from '@/components/list-rows/ListRow'
+import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -17,9 +19,8 @@ import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/query
 const Page = () => {
   const t = useTranslation('ParkingCards')
 
-  const { data, isPending, isError, error, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    verifiedEmailsInfiniteOptions(),
-  )
+  const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useInfiniteQuery(verifiedEmailsInfiniteOptions())
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -28,7 +29,11 @@ const Page = () => {
   }
 
   if (isPending) {
-    return <Typography>Loading...</Typography>
+    return (
+      <ScreenContent>
+        <SkeletonParkingCard />
+      </ScreenContent>
+    )
   }
 
   if (isError) {
@@ -71,8 +76,27 @@ const Page = () => {
         <FlatList
           data={verifiedEmails}
           keyExtractor={(emailItem) => emailItem.email}
+          onEndReachedThreshold={0.2}
           onEndReached={loadMore}
           ItemSeparatorComponent={() => <Divider />}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <View>
+                <Divider />
+                <SkeletonPlaceholder borderRadius={4}>
+                  <SkeletonPlaceholder.Item
+                    paddingVertical={16}
+                    gap={12}
+                    flexDirection="row"
+                    justifyContent="space-between"
+                  >
+                    <SkeletonPlaceholder.Item height={16} width={150} />
+                    <SkeletonPlaceholder.Item height={20} width={20} />
+                  </SkeletonPlaceholder.Item>
+                </SkeletonPlaceholder>
+              </View>
+            ) : null
+          }
           renderItem={({ item: emailItem }) => (
             <Link
               asChild
