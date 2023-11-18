@@ -14,7 +14,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s podmienkami spracúvania osobných údajov hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy VZN č. 6/2023 a Prevádzkového poriadku.",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://bratislava.sk/) hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
@@ -188,12 +188,12 @@
   "VerificationResult": {
     "verified": {
       "title": "Parkovacie karty pridané",
-      "text": "Vaše parkovacie karty pre e-mailovú adresu {{email}} boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
+      "text": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
       "actionButtonLabel": "Pokračovať"
     },
     "verified-no-cards": {
       "title": "Žiadne parkovacie karty",
-      "text": "Pre e-mailovú adresu {{email}} neboli nájdené žiadne parkovacie karty.\n\nProsím, skúste kontaktovať podporu paas.sk.",
+      "text": "Pre e-mailovú adresu {{email}} neboli nájdené žiadne parkovacie karty.\n\nProsím, skúste kontaktovať podporu [paas.sk](https://paas.sk/casto-kladene-otazky/).",
       "actionButtonLabel": "Pokračovať"
     },
     "link-expired": {

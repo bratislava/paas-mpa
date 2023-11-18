@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, router, useLocalSearchParams } from 'expo-router'
-import React from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -68,6 +67,7 @@ const VerificationResultPage = () => {
           variant={status.startsWith('verified') ? 'success' : 'error'}
           title={t(`${status}.title`)}
           text={t(`${status}.text`, { email })}
+          markdown
         />
       ) : (
         // TODO
