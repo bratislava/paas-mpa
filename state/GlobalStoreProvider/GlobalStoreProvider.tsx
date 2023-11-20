@@ -1,59 +1,51 @@
 import { CognitoUser } from '@aws-amplify/auth'
-import {
-  createContext,
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
-type ContextProps = {
+type GlobalContextProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signInResult: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setSignInResult: Dispatch<SetStateAction<any>>
   signUpPhone: string | null
-  setSignUpPhone: Dispatch<SetStateAction<string | null>>
   user: CognitoUser | null
-  setUser: Dispatch<SetStateAction<CognitoUser | null>>
 }
 
-export const GlobalStoreContext = createContext({} as ContextProps)
+export const GlobalStoreContext = createContext<GlobalContextProps | null>(null)
 GlobalStoreContext.displayName = 'GlobalStoreContext'
 
+export const GlobalStoreUpdateContext = createContext<
+  ((newValues: Partial<GlobalContextProps>) => void) | null
+>(null)
+
 const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [signInResult, setSignInResult] = useState<any>(null)
+  const [values, setValues] = useState<GlobalContextProps>({
+    signInResult: null,
+    signUpPhone: null,
+    user: null,
+  })
 
-  const [signUpPhone, setSignUpPhone] = useState<string | null>(null)
-
-  const [user, setUser] = useState<CognitoUser | null>(null)
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    ;(async () => {
-      const currentUser = await getCurrentAuthenticatedUser()
-      setUser(currentUser as CognitoUser)
-    })()
-  }, [])
-
-  const value = useMemo(
-    () => ({
-      signInResult,
-      setSignInResult,
-      signUpPhone,
-      setSignUpPhone,
-      user,
-      setUser,
-    }),
-    [signInResult, signUpPhone, user],
+  const onGlobalStoreUpdate = useCallback(
+    (newValues: Partial<GlobalContextProps>) => {
+      setValues((prevValues) => ({ ...prevValues, ...newValues }))
+    },
+    [setValues],
   )
 
-  return <GlobalStoreContext.Provider value={value}>{children}</GlobalStoreContext.Provider>
+  const onFetchUser = async () => {
+    const currentUser = await getCurrentAuthenticatedUser()
+    onGlobalStoreUpdate({ user: currentUser as CognitoUser })
+  }
+
+  useEffect(() => {
+    onFetchUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <GlobalStoreUpdateContext.Provider value={onGlobalStoreUpdate}>
+      <GlobalStoreContext.Provider value={values}>{children}</GlobalStoreContext.Provider>
+    </GlobalStoreUpdateContext.Provider>
+  )
 }
 
 export default GlobalStoreProvider
