@@ -14,7 +14,6 @@ export const useVehicles = () => {
   const setDefaultVehicle = (licencePlate: string) => {
     const vehicleToBeDefault = vehicles.find((vehicle) => vehicle.licencePlate === licencePlate)
     if (vehicleToBeDefault) {
-      deleteVehicle(licencePlate)
       setVehicles([
         vehicleToBeDefault,
         ...vehicles.filter((vehicle) => vehicle.licencePlate !== licencePlate),

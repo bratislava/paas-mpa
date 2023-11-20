@@ -16,7 +16,7 @@ const normalizeString = (str: string) =>
     .toLowerCase()
 
 export const useMapAutocompleteGetOptions = () => {
-  const { mapZones } = useMapZonesContext()
+  const mapZones = useMapZonesContext()
 
   return useCallback(
     async (

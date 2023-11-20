@@ -14,7 +14,7 @@ export function useMapZone(
   udrId: string | null,
   normalizedPropertiesOnly: boolean = false,
 ): NormalizedUdrZone | Feature<Polygon, MapUdrZone> | null {
-  const { mapZones } = useMapZonesContext()
+  const mapZones = useMapZonesContext()
   const locale = useLocale()
 
   return useMemo(() => {

@@ -1,53 +1,54 @@
-import { createContext, PropsWithChildren, useMemo, useState } from 'react'
+import { useGlobalSearchParams } from 'expo-router'
+import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
+import { PurchaseSearchParams } from '@/app/(purchase-and-payment)/purchase'
 import { PaymentOption } from '@/components/controls/payment-methods/types'
+import { useVehicles } from '@/hooks/useVehicles'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
-type ContextProps = {
+import { useMapZone } from '../MapZonesProvider/useMapZone'
+
+interface PurchaseStoreContextProps {
   udr: NormalizedUdrZone | null
-  setUdr: (udr: NormalizedUdrZone) => void
-
   npk: ParkingCardDto | null
-  setNpk: (npk: ParkingCardDto | null) => void
-
   licencePlate: string
-  setLicencePlate: (licencePlate: string) => void
-
   duration: number
-  setDuration: (duration: number) => void
-
   paymentOption: PaymentOption | null
-  setPaymentOption: (paymentOption: PaymentOption | null) => void
 }
 
-export const PurchaseStoreContext = createContext({} as ContextProps)
+export const PurchaseStoreContext = createContext<PurchaseStoreContextProps | null>(null)
 PurchaseStoreContext.displayName = 'PurchaseStoreContext'
 
-const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
-  const [udr, setUdr] = useState<NormalizedUdrZone | null>(null)
-  const [npk, setNpk] = useState<ParkingCardDto | null>(null)
-  const [licencePlate, setLicencePlate] = useState<string>('')
-  const [duration, setDuration] = useState<number>(60 * 60) // 1 hour
-  const [paymentOption, setPaymentOption] = useState<PaymentOption | null>(null)
+export const PurchaseStoreUpdateContext = createContext<
+  ((newValues: Partial<PurchaseStoreContextProps>) => void) | null
+>(null)
 
-  const value = useMemo(
-    () => ({
-      udr,
-      setUdr,
-      npk,
-      setNpk,
-      licencePlate,
-      setLicencePlate,
-      duration,
-      setDuration,
-      paymentOption,
-      setPaymentOption,
-    }),
-    [duration, licencePlate, npk, paymentOption, udr],
+const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
+  const { defaultVehicle } = useVehicles()
+  const { udrId: udrIdSearchParam } = useGlobalSearchParams<PurchaseSearchParams>()
+  const newUdrZone = useMapZone(udrIdSearchParam ?? null, true)
+
+  const [values, setValues] = useState<PurchaseStoreContextProps>({
+    udr: newUdrZone?.udrId ? newUdrZone : null,
+    npk: null,
+    licencePlate: defaultVehicle?.licencePlate || '',
+    duration: 60 * 60, // 1 hour
+    paymentOption: null,
+  })
+
+  const handleStoreUpdate = useCallback(
+    (newValues: Partial<PurchaseStoreContextProps>) => {
+      setValues((prevValues) => ({ ...prevValues, ...newValues }))
+    },
+    [setValues],
   )
 
-  return <PurchaseStoreContext.Provider value={value}>{children}</PurchaseStoreContext.Provider>
+  return (
+    <PurchaseStoreUpdateContext.Provider value={handleStoreUpdate}>
+      <PurchaseStoreContext.Provider value={values}>{children}</PurchaseStoreContext.Provider>
+    </PurchaseStoreUpdateContext.Provider>
+  )
 }
 
 export default PurchaseStoreProvider
