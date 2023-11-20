@@ -21,7 +21,7 @@ export const useVehicles = () => {
     }
   }
 
-  const defaultVehicle = vehicles.length > 0 ? vehicles[0] : null
+  const defaultVehicle = vehicles?.[0] || null
 
   const isVehiclePresent = (licencePlate: string) => {
     return vehicles.some((vehicle) => vehicle.licencePlate === licencePlate)

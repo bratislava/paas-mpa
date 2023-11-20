@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { isAxiosError } from 'axios'
 import { Link } from 'expo-router'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -36,9 +36,9 @@ const PurchaseScreen = () => {
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
   const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
-  const handleStoreChange = usePurchaseStoreUpdateContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { getVehicle } = useVehicles()
+  const { getVehicle, defaultVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const dateNow = Date.now()
@@ -55,6 +55,14 @@ const PurchaseScreen = () => {
     },
   }
 
+  // Set licencePlate to defaultVehicle if empty
+  useEffect(() => {
+    if (!(licencePlate && getVehicle(licencePlate)) && defaultVehicle) {
+      onPurchaseStoreUpdate({ licencePlate: defaultVehicle.licencePlate })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultVehicle])
+
   // TODO handleError
   const { data, isError, error, isFetching } = useQueryWithFocusRefetch(
     ticketPriceOptions(body, { udr, npk, licencePlate, duration }),
@@ -64,7 +72,7 @@ const PurchaseScreen = () => {
   console.log('data', data, isError, error, isAxiosError(error) && error.response?.data)
 
   const onSelectTime = (value: number) => {
-    handleStoreChange({ duration: value })
+    onPurchaseStoreUpdate({ duration: value })
   }
 
   return (

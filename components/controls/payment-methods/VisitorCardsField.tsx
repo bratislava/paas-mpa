@@ -17,7 +17,7 @@ const VisitorCardsField = () => {
 
   // TODO potentially get value and setValue functions by props
   const { npk } = usePurchaseStoreContext()
-  const handleStoreUpdate = usePurchaseStoreUpdateContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const {
     data: visitorCards,
@@ -27,7 +27,7 @@ const VisitorCardsField = () => {
   } = useQueryWithFocusRefetch(visitorCardsOptions())
 
   const handleCardPress = (card: ParkingCardDto) => {
-    handleStoreUpdate({ npk: card, paymentOption: null })
+    onPurchaseStoreUpdate({ npk: card, paymentOption: null })
     router.push('/purchase')
   }
 

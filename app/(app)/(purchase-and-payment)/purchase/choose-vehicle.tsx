@@ -17,12 +17,12 @@ const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
 
   const { licencePlate } = usePurchaseStoreContext()
-  const handleStoreUpdate = usePurchaseStoreUpdateContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { vehicles } = useVehicles()
 
   const handleChoseVehicle = (newLicencePlate: string) => {
-    handleStoreUpdate({ licencePlate: newLicencePlate })
+    onPurchaseStoreUpdate({ licencePlate: newLicencePlate })
     router.push('/purchase')
   }
 

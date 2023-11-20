@@ -8,7 +8,7 @@ import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-nat
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ZoneDetailsParamas } from '@/app/zone-details'
+import { ZoneDetailsParamas } from '@/app/(app)/zone-details'
 import ZoneBadge from '@/components/info/ZoneBadge'
 import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
@@ -30,6 +30,7 @@ import {
   NormalizedUdrZone,
 } from '@/modules/map/types'
 import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
@@ -48,6 +49,8 @@ const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter } = props
+
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
@@ -219,10 +222,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
                 <Link
                   asChild
-                  href={{
-                    pathname: '/purchase',
-                    params: { udrId: selectedZone.udrId },
-                  }}
+                  href="/purchase"
+                  onPress={() => onPurchaseStoreUpdate({ udr: selectedZone })}
                 >
                   <Button variant="primary">{t('Navigation.continue')}</Button>
                 </Link>

@@ -1,4 +1,4 @@
-import { router } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -24,6 +24,8 @@ const Page = () => {
 
   return (
     <ScreenView>
+      <Stack.Screen options={{ headerBackVisible: false }} />
+
       <ScreenContent>
         <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 

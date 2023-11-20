@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { forwardRef, useCallback, useMemo, useState } from 'react'
 import { Platform } from 'react-native'
 
-import { ParkingCardsLocalSearchParams } from '@/app/parking-cards/[email]'
+import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Modal from '@/components/screen-layout/Modal/Modal'

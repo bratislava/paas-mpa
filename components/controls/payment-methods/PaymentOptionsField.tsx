@@ -15,12 +15,12 @@ const PaymentOptionsField = () => {
 
   // TODO potentially get value and setValue functions by props
   const { paymentOption, npk } = usePurchaseStoreContext()
-  const handleStoreUpdate = usePurchaseStoreUpdateContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const handlePanelPress = (variant: PaymentOption) => {
-    handleStoreUpdate({ paymentOption: variant, npk: null })
+    onPurchaseStoreUpdate({ paymentOption: variant, npk: null })
     router.push('/purchase')
   }
 

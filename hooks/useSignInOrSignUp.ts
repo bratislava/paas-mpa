@@ -79,7 +79,7 @@ export const useSignInOrSignUp = () => {
         /* If sign in didn't throw an error, set the user to context provider */
         setUser(signInResult as CognitoUser)
         setSignInResult(null)
-        router.push('/')
+        router.replace('/')
       } else {
         // TODO translation
         console.log('Unexpected error, no loginResult provided in GlobalStore.')
