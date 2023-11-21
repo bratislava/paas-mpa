@@ -1,27 +1,12 @@
 import Mapbox from '@rnmapbox/maps'
-import { Redirect, SplashScreen, Stack } from 'expo-router'
-import { NativeWindStyleSheet } from 'nativewind'
+import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { NativeModules } from 'react-native'
 
 import { environment } from '@/environment'
 import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import colors from '@/tailwind.config.colors'
-
-SplashScreen.preventAutoHideAsync()
-
-/* Quickfix - https://github.com/marklawlor/nativewind/issues/308
-   see "Base scaling has changed" and "rem Units" sections */
-NativeWindStyleSheet.setVariables({ '--rem': 16 })
-
-const { UIManager } = NativeModules
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-if (UIManager.setLayoutAnimationEnabledExperimental)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-  UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const RootLayout = () => {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
