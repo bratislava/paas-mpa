@@ -14,7 +14,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Enter phone number",
-    "consent": "I confirm my understanding of the personal data processing terms in Bratislava. I'm aware that the parking policy conditions may change under Regulation No. 6/2023 and the Operating Regulations.",
+    "consent": "I confirm my understanding of [the personal data processing terms](https://bratislava.sk/) in Bratislava. I'm aware that the parking policy conditions may change under [Regulation No. 6/2023](https://bratislava.sk/) and the [Operating Regulations](https://bratislava.sk/).",
     "enterVerificationCode": "Enter 6-digit code",
     "verificationText": "Continue by entering 6-digit code from message we’ve sent.",
     "signIn": "Log in",
@@ -188,12 +188,12 @@
   "VerificationResult": {
     "verified": {
       "title": "Parking cards added",
-      "text": "Your parking cards e-mail {{email}} has been added. You can see your cards in the Parking cards section.",
+      "text": "Your parking cards e-mail **{{email}}** has been added. You can see your cards in the Parking cards section.",
       "actionButtonLabel": "Continue"
     },
     "verified-no-cards": {
       "title": "No parking cards",
-      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact paas.sk support.",
+      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact [paas.sk](https://paas.sk/casto-kladene-otazky/) support.",
       "actionButtonLabel": "Continue"
     },
     "link-expired": {

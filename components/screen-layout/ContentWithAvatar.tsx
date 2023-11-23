@@ -1,8 +1,9 @@
 import clsx from 'clsx'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
+import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 
 type ContentWithAvatarProps = {
@@ -11,6 +12,7 @@ type ContentWithAvatarProps = {
   variant?: 'success' | 'error'
   customAvatarComponent?: ReactNode
   actionButton?: ReactNode
+  asMarkdown?: boolean
 } & ViewProps
 
 const ContentWithAvatar = ({
@@ -21,6 +23,7 @@ const ContentWithAvatar = ({
   variant,
   customAvatarComponent,
   actionButton,
+  asMarkdown,
   ...rest
 }: ContentWithAvatarProps) => {
   return (
@@ -32,7 +35,13 @@ const ContentWithAvatar = ({
         <Typography variant="h1" className="text-center">
           {title}
         </Typography>
-        {text ? <Typography className="text-center">{text}</Typography> : null}
+        {text ? (
+          asMarkdown ? (
+            <Markdown textCenter>{text}</Markdown>
+          ) : (
+            <Typography className="text-center">{text}</Typography>
+          )
+        ) : null}
       </View>
       {children}
 

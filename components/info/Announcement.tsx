@@ -32,7 +32,7 @@ const Announcement = ({ announcement, isNew = true }: Props) => {
         </View>
         <View className="flex-1 g-3">
           <View className="flex-1">
-            <Markdown>{announcement.content}</Markdown>
+            <Markdown fontSize="small">{announcement.content}</Markdown>
             {announcement.externalUrl ? (
               <Link asChild href={announcement.externalUrl}>
                 <PressableStyled>

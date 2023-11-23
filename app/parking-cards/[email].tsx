@@ -8,6 +8,7 @@ import { SceneMap, TabView } from 'react-native-tab-view'
 import TabBar from '@/components/navigation/TabBar'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
+import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -25,9 +26,8 @@ const ActiveCards = () => {
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
-  const { data, isPending, isError, error, hasNextPage, fetchNextPage } = useInfiniteQuery(
-    parkingCardsInfiniteOptions({ email }),
-  )
+  const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useInfiniteQuery(parkingCardsInfiniteOptions({ email }))
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -54,9 +54,11 @@ const ActiveCards = () => {
       <FlatList
         data={parkingCards}
         keyExtractor={(parkingCard) => parkingCard.identificator}
+        onEndReachedThreshold={0.2}
         onEndReached={loadMore}
         // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ gap: 12 }}
+        ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
         renderItem={({ item: parkingCardItem }) => (
           <ParkingCard key={parkingCardItem.identificator} card={parkingCardItem} />
         )}

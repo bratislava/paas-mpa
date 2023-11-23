@@ -9,6 +9,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
+import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
@@ -56,7 +57,11 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   if (isPending) {
-    return <Typography>Loading...</Typography>
+    return (
+      <ScreenContent>
+        <SkeletonTicketCard />
+      </ScreenContent>
+    )
   }
 
   if (isError) {
@@ -82,9 +87,10 @@ const TicketsRoute = ({ active }: RouteProps) => {
         contentContainerStyle={{ gap: 12 }}
         data={tickets}
         renderItem={renderItem}
+        ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
+        onEndReachedThreshold={0.2}
         onEndReached={loadMore}
       />
-      {isFetchingNextPage && <Typography>Loading more...</Typography>}
     </ScreenContent>
   )
 }
