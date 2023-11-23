@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
-import { router, Stack } from 'expo-router'
+import { router } from 'expo-router'
 import { useRef } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -39,8 +39,6 @@ const IndexScreen = () => {
 
   return (
     <View className="flex-1">
-      <Stack.Screen options={{ headerShown: false }} />
-
       <MapScreen />
 
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>

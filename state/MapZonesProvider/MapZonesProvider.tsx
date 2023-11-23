@@ -2,29 +2,21 @@ import { createContext, Dispatch, PropsWithChildren, SetStateAction, useState } 
 
 import { MapFeatureHashMap } from '@/state/MapZonesProvider/types'
 
-type ValueContextProps = {
-  mapZones: MapFeatureHashMap | null
-}
-
-type UpdateContextProps = {
-  setMapZones: Dispatch<SetStateAction<MapFeatureHashMap | null>>
-}
-
-export const MapZonesContext = createContext({} as ValueContextProps)
+export const MapZonesContext = createContext<MapFeatureHashMap | null>(null)
 MapZonesContext.displayName = 'MapZonesContext'
 
-export const MapZonesUpdateContext = createContext({} as UpdateContextProps)
+export const MapZonesUpdateContext = createContext<Dispatch<
+  SetStateAction<MapFeatureHashMap | null>
+> | null>(null)
 MapZonesUpdateContext.displayName = 'MapZonesUpdateContext'
 
 const MapZonesProvider = ({ children }: PropsWithChildren) => {
   const [mapZones, setMapZones] = useState<MapFeatureHashMap | null>(null)
 
   return (
-    <MapZonesContext.Provider value={{ mapZones }}>
-      <MapZonesUpdateContext.Provider value={{ setMapZones }}>
-        {children}
-      </MapZonesUpdateContext.Provider>
-    </MapZonesContext.Provider>
+    <MapZonesUpdateContext.Provider value={setMapZones}>
+      <MapZonesContext.Provider value={mapZones}>{children}</MapZonesContext.Provider>
+    </MapZonesUpdateContext.Provider>
   )
 }
 

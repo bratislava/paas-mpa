@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { isAxiosError } from 'axios'
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -21,8 +21,8 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
 import { GetTicketPriceRequestDto } from '@/modules/backend/openapi-generated'
-import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 export type PurchaseSearchParams = {
   udrId?: string
@@ -35,27 +35,11 @@ const PurchaseScreen = () => {
   // height of the button + safeArea bottom inset
   const purchaseButtonContainerHeight = 48 + insets.bottom
 
-  const { udr, setUdr, licencePlate, setLicencePlate, duration, setDuration, npk, paymentOption } =
-    usePurchaseStoreContext()
+  const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+
   const { getVehicle, defaultVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
-
-  const { udrId: udrIdSearchParam } = useLocalSearchParams<PurchaseSearchParams>()
-
-  // Change zone when udrId from SearchParam changes
-  const newUdrZone = useMapZone(udrIdSearchParam ?? null, true)
-  useEffect(() => {
-    if (newUdrZone && newUdrZone.udrId !== udr?.udrId) {
-      setUdr(newUdrZone)
-    }
-  }, [newUdrZone, setUdr, udr?.udrId])
-
-  // Set licencePlate to defaultVehicle if empty
-  useEffect(() => {
-    if (!licencePlate && defaultVehicle) {
-      setLicencePlate(defaultVehicle.licencePlate)
-    }
-  }, [defaultVehicle, licencePlate, setLicencePlate])
 
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -71,6 +55,14 @@ const PurchaseScreen = () => {
     },
   }
 
+  // Set licencePlate to defaultVehicle if empty
+  useEffect(() => {
+    if (!(licencePlate && getVehicle(licencePlate)) && defaultVehicle) {
+      onPurchaseStoreUpdate({ licencePlate: defaultVehicle.licencePlate })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultVehicle])
+
   // TODO handleError
   const { data, isError, error, isFetching } = useQueryWithFocusRefetch(
     ticketPriceOptions(body, { udr, npk, licencePlate, duration }),
@@ -78,6 +70,10 @@ const PurchaseScreen = () => {
 
   // console.log('body', body)
   console.log('data', data, isError, error, isAxiosError(error) && error.response?.data)
+
+  const onSelectTime = (value: number) => {
+    onPurchaseStoreUpdate({ duration: value })
+  }
 
   return (
     <>
@@ -96,7 +92,7 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('parkingTimeFieldLabel')}>
-              <TimeSelector value={duration} onValueChange={setDuration} />
+              <TimeSelector value={duration} onValueChange={onSelectTime} />
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>

@@ -11,15 +11,18 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
 
-  const { licencePlate, setLicencePlate } = usePurchaseStoreContext()
+  const { licencePlate } = usePurchaseStoreContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+
   const { vehicles } = useVehicles()
 
   const handleChoseVehicle = (newLicencePlate: string) => {
-    setLicencePlate(newLicencePlate)
+    onPurchaseStoreUpdate({ licencePlate: newLicencePlate })
     router.push('/purchase')
   }
 

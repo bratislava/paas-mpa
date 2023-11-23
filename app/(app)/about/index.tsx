@@ -2,7 +2,7 @@ import { Link } from 'expo-router'
 import React from 'react'
 import { View } from 'react-native'
 
-import { WebviewSearchParams } from '@/app/about/webview'
+import { WebviewSearchParams } from '@/app/(app)/about/webview'
 import ListRow from '@/components/list-rows/ListRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'

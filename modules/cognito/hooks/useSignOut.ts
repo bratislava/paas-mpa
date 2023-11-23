@@ -1,15 +1,15 @@
 import { Auth } from 'aws-amplify'
 import { router } from 'expo-router'
 
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 
 export const useSignOut = () => {
-  const { setUser } = useGlobalStoreContext()
+  const onAuthStoreUpdate = useAuthStoreUpdateContext()
 
   return async () => {
     try {
       await Auth.signOut()
-      setUser(null)
+      onAuthStoreUpdate({ user: null })
       router.push('/sign-in')
     } catch (error) {
       console.log('error signing out', error)

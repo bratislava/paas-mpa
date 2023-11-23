@@ -1,6 +1,6 @@
 import { useMMKVObject } from 'react-native-mmkv'
 
-import { useUserMMKVInstance } from '@/state/GlobalStoreProvider/useUserMMKVInstance'
+import { useUserMMKVInstance } from '@/state/AuthStoreProvider/useUserMMKVInstance'
 
 export type Vehicle = {
   licencePlate: string

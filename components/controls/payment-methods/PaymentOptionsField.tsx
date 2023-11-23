@@ -8,17 +8,19 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 const PaymentOptionsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { setNpk, paymentOption, setPaymentOption, npk } = usePurchaseStoreContext()
+  const { paymentOption, npk } = usePurchaseStoreContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const handlePanelPress = (variant: PaymentOption) => {
-    setNpk(null)
-    setPaymentOption(variant)
+    onPurchaseStoreUpdate({ paymentOption: variant, npk: null })
     router.push('/purchase')
   }
 

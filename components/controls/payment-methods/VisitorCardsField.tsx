@@ -9,13 +9,15 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatBalance } from '@/utils/formatBalance'
 
 const VisitorCardsField = () => {
   const t = useTranslation('PaymentMethods')
 
   // TODO potentially get value and setValue functions by props
-  const { npk, setNpk, setPaymentOption } = usePurchaseStoreContext()
+  const { npk } = usePurchaseStoreContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const {
     data: visitorCards,
@@ -25,8 +27,7 @@ const VisitorCardsField = () => {
   } = useQueryWithFocusRefetch(visitorCardsOptions())
 
   const handleCardPress = (card: ParkingCardDto) => {
-    setNpk(card)
-    setPaymentOption(null)
+    onPurchaseStoreUpdate({ npk: card, paymentOption: null })
     router.push('/purchase')
   }
 

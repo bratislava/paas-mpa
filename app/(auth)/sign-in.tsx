@@ -1,4 +1,4 @@
-import { router } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -9,7 +9,7 @@ import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 const Page = () => {
   const t = useTranslation('Auth')
@@ -18,13 +18,15 @@ const Page = () => {
   const [phone, setPhone] = useState('+')
 
   /* Redirect to home screen if user is logged in */
-  const { user } = useGlobalStoreContext()
+  const { user } = useAuthStoreContext()
   if (user) {
     router.replace('/')
   }
 
   return (
     <ScreenView>
+      <Stack.Screen options={{ headerBackVisible: false }} />
+
       <ScreenContent>
         <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
