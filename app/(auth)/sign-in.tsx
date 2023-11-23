@@ -5,6 +5,7 @@ import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -40,7 +41,7 @@ const Page = () => {
           onSubmitEditing={() => attemptSignInOrSignUp(phone)}
         />
 
-        <Typography>{t('consent')}</Typography>
+        <Markdown>{t('consent')}</Markdown>
 
         <ContinueButton onPress={() => attemptSignInOrSignUp(phone)} />
       </ScreenContent>

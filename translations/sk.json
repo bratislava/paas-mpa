@@ -14,7 +14,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s podmienkami spracúvania osobných údajov hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy VZN č. 6/2023 a Prevádzkového poriadku.",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://bratislava.sk/) hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
@@ -188,12 +188,12 @@
   "VerificationResult": {
     "verified": {
       "title": "Parkovacie karty pridané",
-      "text": "Vaše parkovacie karty pre e-mailovú adresu {{email}} boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
+      "text": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
       "actionButtonLabel": "Pokračovať"
     },
     "verified-no-cards": {
       "title": "Žiadne parkovacie karty",
-      "text": "Pre e-mailovú adresu {{email}} neboli nájdené žiadne parkovacie karty.\n\nProsím, skúste kontaktovať podporu paas.sk.",
+      "text": "Pre e-mailovú adresu {{email}} neboli nájdené žiadne parkovacie karty.\n\nProsím, skúste kontaktovať podporu [paas.sk](https://paas.sk/casto-kladene-otazky/).",
       "actionButtonLabel": "Pokračovať"
     },
     "link-expired": {
@@ -305,6 +305,36 @@
       "rateTheApp": {
         "label": "Ohodnoďte nás",
         "url": "https://paas.sk/ochrana-osobnych-udajov/"
+      }
+    }
+  },
+  "OnboardingScreen": {
+    "next": "Ďalej",
+    "getStarted": "Začať",
+    "slides": {
+      "welcome": {
+        "title": "Vitajte v mestskej aplikácii PAAS",
+        "text": "Prostredníctvom aplikácie spravovanej mestom Bratislava môžete uhradiť hodinové parkovné, či využiť bonusovú alebo návštevnícku parkovaciu kartu."
+      },
+      "dataSecurity": {
+        "title": "Dátová bezpečnosť a jednoduché používanie",
+        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania."
+      },
+      "parkingCards": {
+        "title": "Jednoduché použitie parkovacích kariet",
+        "text": "Po overení e-mailovej adresy, ktorú používate pre PAAS, vieme jednoducho nahrať vaše parkovacie karty a vy môžete parkovať so zľavou."
+      },
+      "helpUsPlan": {
+        "title": "Pomôžte nám lepšie plánovať Bratislavu",
+        "text": "Vďaka využívaniu tejto aplikácie podporujete tvorbu lepšej dopravy a jej plánovanie v Bratislave."
+      },
+      "visitorsFree": {
+        "title": "Vaše návštevy môžu parkovať zdarma",
+        "text": "Využitím návštevníckej parkovacej karty môžu vaši blízki a rodina parkovať zadarmo."
+      },
+      "bonusCard": {
+        "title": "Parkujte každý deň 2 hodiny so 100% zľavou",
+        "text": "Využitím bonusovej karty viete parkovať vo vybraných úsekoch 2 hodiny zadarmo. Pre využitie zľavy je potrebné overiť e-mailovú adresu, na ktorú bola karta vydaná."
       }
     }
   }
