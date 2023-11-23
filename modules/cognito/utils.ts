@@ -12,7 +12,7 @@ export const getAccessTokenOrLogout = async () => {
     return jwtToken
   } catch (error) {
     console.log('error getting access token - redirect to login', error)
-    router.replace('/sign-in')
+    router.replace('/onboarding')
 
     return null
   }

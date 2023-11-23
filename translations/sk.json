@@ -307,5 +307,35 @@
         "url": "https://paas.sk/ochrana-osobnych-udajov/"
       }
     }
+  },
+  "OnboardingScreen": {
+    "next": "Ďalej",
+    "getStarted": "Začať",
+    "slides": {
+      "welcome": {
+        "title": "Vitajte v mestskej aplikácii PAAS",
+        "text": "Prostredníctvom aplikácie spravovanej mestom Bratislava môžete uhradiť hodinové parkovné, či využiť bonusovú alebo návštevnícku parkovaciu kartu."
+      },
+      "dataSecurity": {
+        "title": "Dátová bezpečnosť a jednoduché používanie",
+        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania."
+      },
+      "parkingCards": {
+        "title": "Jednoduché použitie parkovacích kariet",
+        "text": "Po overení e-mailovej adresy, ktorú používate pre PAAS, vieme jednoducho nahrať vaše parkovacie karty a vy môžete parkovať so zľavou."
+      },
+      "helpUsPlan": {
+        "title": "Pomôžte nám lepšie plánovať Bratislavu",
+        "text": "Vďaka využívaniu tejto aplikácie podporujete tvorbu lepšej dopravy a jej plánovanie v Bratislave."
+      },
+      "visitorsFree": {
+        "title": "Vaše návštevy môžu parkovať zdarma",
+        "text": "Využitím návštevníckej parkovacej karty môžu vaši blízki a rodina parkovať zadarmo."
+      },
+      "bonusCard": {
+        "title": "Parkujte každý deň 2 hodiny so 100% zľavou",
+        "text": "Využitím bonusovej karty viete parkovať vo vybraných úsekoch 2 hodiny zadarmo. Pre využitie zľavy je potrebné overiť e-mailovú adresu, na ktorú bola karta vydaná."
+      }
+    }
   }
 }
