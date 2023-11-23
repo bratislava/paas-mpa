@@ -33,7 +33,7 @@ module.exports = {
     /** To remove optional parameter warning e.g. { page?: number } */
     'react/require-default-props': 'off',
     /** Include Typography as allowed text component */
-    'react-native/no-raw-text': ['error', { skip: ['Typography', 'Button'] }],
+    'react-native/no-raw-text': ['error', { skip: ['Typography', 'Button', 'FloatingButton'] }],
     'eslint-comments/disable-enable-pair': ['error', { allowWholeFile: true }],
     'switch-case/newline-between-switch-case': 'off',
     // This rule disallows lexical declarations (let, const, function and class) in case/default clauses.
