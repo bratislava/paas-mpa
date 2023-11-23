@@ -12,7 +12,7 @@ type ContentWithAvatarProps = {
   variant?: 'success' | 'error'
   customAvatarComponent?: ReactNode
   actionButton?: ReactNode
-  markdown?: boolean
+  asMarkdown?: boolean
 } & ViewProps
 
 const ContentWithAvatar = ({
@@ -23,7 +23,7 @@ const ContentWithAvatar = ({
   variant,
   customAvatarComponent,
   actionButton,
-  markdown,
+  asMarkdown,
   ...rest
 }: ContentWithAvatarProps) => {
   return (
@@ -36,7 +36,7 @@ const ContentWithAvatar = ({
           {title}
         </Typography>
         {text ? (
-          markdown ? (
+          asMarkdown ? (
             <Markdown textCenter>{text}</Markdown>
           ) : (
             <Typography className="text-center">{text}</Typography>

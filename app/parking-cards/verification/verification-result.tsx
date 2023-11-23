@@ -67,7 +67,7 @@ const VerificationResultPage = () => {
           variant={status.startsWith('verified') ? 'success' : 'error'}
           title={t(`${status}.title`)}
           text={t(`${status}.text`, { email })}
-          markdown
+          asMarkdown
         />
       ) : (
         // TODO
