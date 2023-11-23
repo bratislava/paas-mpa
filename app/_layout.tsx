@@ -1,3 +1,6 @@
+// Route layout is based on documentation in expo-router:
+// https://docs.expo.dev/router/reference/authentication/
+
 import 'intl-pluralrules'
 import '@/modules/cognito/amplify'
 import '../i18n.config.js'
@@ -22,7 +25,7 @@ import { ToastProvider } from 'react-native-toast-notifications'
 
 import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSnackbar'
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
-import GlobalStoreProvider from '@/state/GlobalStoreProvider/GlobalStoreProvider'
+import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
@@ -73,7 +76,7 @@ const RootLayout = () => {
   return (
     <ToastProvider {...toastProviderProps}>
       <QueryClientProvider client={queryClient}>
-        <GlobalStoreProvider>
+        <AuthStoreProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView className="flex-1">
               <PortalProvider>
@@ -94,7 +97,7 @@ const RootLayout = () => {
               </PortalProvider>
             </GestureHandlerRootView>
           </SafeAreaProvider>
-        </GlobalStoreProvider>
+        </AuthStoreProvider>
       </QueryClientProvider>
     </ToastProvider>
   )

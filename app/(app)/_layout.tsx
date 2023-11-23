@@ -1,9 +1,12 @@
+// Route layout is based on documentation in expo-router:
+// https://docs.expo.dev/router/reference/authentication/
+
 import Mapbox from '@rnmapbox/maps'
 import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 
 import { environment } from '@/environment'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import colors from '@/tailwind.config.colors'
@@ -11,7 +14,7 @@ import colors from '@/tailwind.config.colors'
 const RootLayout = () => {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
   const [mapboxError, setMapboxError] = useState<Error | null>(null)
-  const { user } = useGlobalStoreContext()
+  const { user } = useAuthStoreContext()
 
   useEffect(() => {
     Mapbox.setAccessToken(environment.mapboxPublicKey)

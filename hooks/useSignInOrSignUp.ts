@@ -3,8 +3,8 @@ import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
-import { useGlobalStoreUpdateContext } from '@/state/GlobalStoreProvider/useGlobalStoreUpdateContext'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
+import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
 /**
@@ -25,15 +25,15 @@ import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 export const useSignInOrSignUp = () => {
   const snackbar = useSnackbar()
 
-  const { signInResult } = useGlobalStoreContext()
-  const onGlobalStoreUpdate = useGlobalStoreUpdateContext()
+  const { signInResult } = useAuthStoreContext()
+  const onAuthStoreUpdate = useAuthStoreUpdateContext()
 
   const signInAndRedirectToConfirm = async (phone: string) => {
     const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
 
     if (signInResultInner) {
       /* Sign in result is needed for `confirmSignIn` function */
-      onGlobalStoreUpdate({ signInResult: signInResultInner })
+      onAuthStoreUpdate({ signInResult: signInResultInner })
       router.push('/confirm-sign-in')
     }
   }
@@ -78,11 +78,11 @@ export const useSignInOrSignUp = () => {
       if (signInResult) {
         await Auth.confirmSignIn(signInResult, code)
         /* If sign in didn't throw an error, set the user to context provider */
-        onGlobalStoreUpdate({ signInResult: null, user: signInResult })
+        onAuthStoreUpdate({ signInResult: null, user: signInResult })
         router.replace('/')
       } else {
         // TODO translation
-        console.log('Unexpected error, no loginResult provided in GlobalStore.')
+        console.log('Unexpected error, no loginResult provided in AuthStore.')
       }
     } catch (error) {
       // TODO

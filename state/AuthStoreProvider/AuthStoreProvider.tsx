@@ -10,21 +10,21 @@ type GlobalContextProps = {
   user: CognitoUser | null
 }
 
-export const GlobalStoreContext = createContext<GlobalContextProps | null>(null)
-GlobalStoreContext.displayName = 'GlobalStoreContext'
+export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
+AuthStoreContext.displayName = 'AuthStoreContext'
 
-export const GlobalStoreUpdateContext = createContext<
+export const AuthStoreUpdateContext = createContext<
   ((newValues: Partial<GlobalContextProps>) => void) | null
 >(null)
 
-const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
+const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   const [values, setValues] = useState<GlobalContextProps>({
     signInResult: null,
     signUpPhone: null,
     user: null,
   })
 
-  const onGlobalStoreUpdate = useCallback(
+  const onAuthStoreUpdate = useCallback(
     (newValues: Partial<GlobalContextProps>) => {
       setValues((prevValues) => ({ ...prevValues, ...newValues }))
     },
@@ -33,7 +33,7 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
 
   const onFetchUser = async () => {
     const currentUser = await getCurrentAuthenticatedUser()
-    onGlobalStoreUpdate({ user: currentUser as CognitoUser })
+    onAuthStoreUpdate({ user: currentUser as CognitoUser })
   }
 
   useEffect(() => {
@@ -42,10 +42,10 @@ const GlobalStoreProvider = ({ children }: PropsWithChildren) => {
   }, [])
 
   return (
-    <GlobalStoreUpdateContext.Provider value={onGlobalStoreUpdate}>
-      <GlobalStoreContext.Provider value={values}>{children}</GlobalStoreContext.Provider>
-    </GlobalStoreUpdateContext.Provider>
+    <AuthStoreUpdateContext.Provider value={onAuthStoreUpdate}>
+      <AuthStoreContext.Provider value={values}>{children}</AuthStoreContext.Provider>
+    </AuthStoreUpdateContext.Provider>
   )
 }
 
-export default GlobalStoreProvider
+export default AuthStoreProvider
