@@ -1,10 +1,12 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
+import clsx from 'clsx'
 import { router } from 'expo-router'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { ErrorMessage } from '@/components/info/ErrorMessage'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
@@ -27,16 +29,16 @@ type Props = {
   priceData: GetTicketPriceResponseDto | undefined
   isLoading?: boolean
   priceRequestBody: GetTicketPriceRequestDto
+  error?: { errorName: string }
 }
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
-  ({ priceData, isLoading, priceRequestBody }, ref) => {
+  ({ priceData, isLoading, error, priceRequestBody }, ref) => {
     const t = useTranslation('PurchaseBottomSheet')
     const { udr } = usePurchaseStoreContext()
     const insets = useSafeAreaInsets()
-    // TODO tmp for now - fixed height from figma
-    const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
-    // 24 is handle height
+    const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
+
     const snapPoints = useMemo(() => [24], [])
 
     const durationFromPriceDate = getDurationFromPriceData(priceData)
@@ -84,14 +86,29 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
     return (
       <>
-        <BottomSheet
-          ref={ref}
-          enableDynamicSizing
-          // footerComponent={renderFooter}
-          bottomInset={purchaseButtonContainerHeight}
-          snapPoints={snapPoints}
-        >
-          {priceData ? (
+        {priceData ? (
+          <BottomSheet
+            ref={ref}
+            enableDynamicSizing
+            // footerComponent={renderFooter}
+            bottomInset={purchaseButtonContainerHeight}
+            snapPoints={snapPoints}
+            // issue in lib, because it wants border to be number, but it doesn't work with number :( only with strings
+            // @ts-ignore
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{
+              shadowColor: 'black',
+              shadowOffset: {
+                width: 0,
+                height: -12,
+              },
+              shadowOpacity: 0.08,
+              shadowRadius: 24,
+              elevation: 0,
+              borderTopLeftRadius: '20px',
+              borderTopRightRadius: '20px',
+            }}
+          >
             <BottomSheetContent cn="g-3" hideSpacer>
               <FlexRow>
                 <Typography variant="default">
@@ -150,17 +167,28 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
               <Divider />
             </BottomSheetContent>
-          ) : null}
-        </BottomSheet>
+          </BottomSheet>
+        ) : null}
 
-        <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
+        <View
+          style={{ paddingBottom: insets.bottom }}
+          className={clsx('bg-white px-5 g-3', {
+            'rounded-t-lg pt-4 shadow': !priceData,
+          })}
+          onLayout={(event) => {
+            setPurchaseButtonContainerHeight(event.nativeEvent.layout.height)
+          }}
+        >
           {/* Toggling visibility instead hiding by "display: none" prevents layout shifts */}
-          <FlexRow className={priceData ? 'visible' : 'invisible'}>
-            <Typography variant="default-bold">{t('summary')}</Typography>
-            {priceData ? (
+
+          {priceData ? (
+            <FlexRow>
+              <Typography variant="default-bold">{t('summary')}</Typography>
               <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
-            ) : null}
-          </FlexRow>
+            </FlexRow>
+          ) : null}
+
+          {error ? <ErrorMessage message={t(`Errors.${error.errorName}`)} /> : null}
 
           <Button onPress={handlePressPay} disabled={!priceData} loading={isLoading}>
             {t('pay')}

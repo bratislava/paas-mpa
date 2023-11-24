@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { isAxiosError } from 'axios'
+import { AxiosResponse, isAxiosError } from 'axios'
 import { Link } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -117,6 +117,7 @@ const PurchaseScreen = () => {
       <PurchaseBottomSheet
         ref={bottomSheetRef}
         priceData={data}
+        error={error?.response?.data}
         isLoading={isFetching}
         priceRequestBody={body}
       />

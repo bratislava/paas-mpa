@@ -55,7 +55,20 @@
     "parkingTime": "Parking {{time}}",
     "creditNpkUsed": "Visitor card",
     "creditBpkUsed": "Bonus card",
-    "tax": "Tax"
+    "tax": "Tax",
+    "Errors": {
+      "TooLongParkingTime": "Maximum parking time is 48 hours",
+      "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
+      "InsufficientCredit": "There is no sufficent credit on NPK card for this parking",
+      "CardNotValid": "NPK card is not valid",
+      "NoUsableParkingCardFound": "Invalid parking card type / parking card not found",
+      "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
+      "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
+      "InvalidParkingStart": "Ticket start is after ticket End",
+      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
+      "TicketAllreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
+      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format"
+    }
   },
   "VehiclesScreen": {
     "title": "Vehicles",
