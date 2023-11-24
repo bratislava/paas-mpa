@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { router } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
-import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native'
+import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
@@ -8,6 +10,7 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import FloatingButton from '@/components/shared/FloatingButton'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
@@ -21,11 +24,11 @@ type RouteProps =
     }
   | {
       active?: never
-      // TODO filters?
     }
 
 const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
+  const insets = useSafeAreaInsets()
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} isActive={active} />,
@@ -56,6 +59,11 @@ const TicketsRoute = ({ active }: RouteProps) => {
     }
   }
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const handleFiltersPress = () => {
+    router.push('/tickets/filters')
+  }
+
   if (isPending) {
     return (
       <ScreenContent>
@@ -81,16 +89,31 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   return (
-    <ScreenContent>
-      <FlatList
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{ gap: 12 }}
-        data={tickets}
-        renderItem={renderItem}
-        ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
-        onEndReachedThreshold={0.2}
-        onEndReached={loadMore}
-      />
+    <ScreenContent variant="center">
+      <View className="w-full">
+        <FlatList
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{ gap: 12 }}
+          data={tickets}
+          renderItem={renderItem}
+          ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
+          onEndReachedThreshold={0.2}
+          onEndReached={loadMore}
+        />
+      </View>
+
+      {!active && (
+        <View
+          // TODO: Padding and insets
+          className="absolute items-center pb-8"
+          pointerEvents="box-none"
+          style={{ bottom: insets.bottom }}
+        >
+          <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
+            {t('filters')}
+          </FloatingButton>
+        </View>
+      )}
     </ScreenContent>
   )
 }
