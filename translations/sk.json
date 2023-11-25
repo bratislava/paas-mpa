@@ -60,7 +60,7 @@
   "VehiclesScreen": {
     "title": "Vozidlá",
     "addVehicleTitle": "Pridať vozidlo",
-    "addVehicle": "Pridať vozidlo",
+    "addVehicle": "Pridať",
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
@@ -69,6 +69,8 @@
     "default": "Predvolené",
     "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
+    "noVehicles": "Žiadne vozidlá",
+    "noVehiclesText": "Kliknutím na „Pridať “ pridáte svoje prvé vozidlo.",
     "deleteVehicleConfirmModal": {
       "title": "Vymazať vozidlo",
       "message": "Naozaj si prajete vymazať vozidlo {{licencePlate}}?",

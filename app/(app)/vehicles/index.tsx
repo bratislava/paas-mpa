@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { FlatList } from 'react-native'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
@@ -61,19 +61,23 @@ const VehiclesScreen = () => {
     closeModal()
   }
 
+  if (vehicles.length === 0) {
+    return (
+      <ScreenView title={t('title')} backgroundVariant="dots">
+        <NoVehicles />
+      </ScreenView>
+    )
+  }
+
   return (
     <ScreenView title={t('title')}>
       <ScreenContent>
-        {vehicles.length > 0 ? (
-          <Field label={t('myDefaultVehicle')}>
-            <VehicleRow
-              vehicle={vehicles[0]}
-              onContextMenuPress={() => handleContextMenuPress(vehicles[0].licencePlate)}
-            />
-          </Field>
-        ) : (
-          <NoVehicles />
-        )}
+        <Field label={t('myDefaultVehicle')}>
+          <VehicleRow
+            vehicle={vehicles[0]}
+            onContextMenuPress={() => handleContextMenuPress(vehicles[0].licencePlate)}
+          />
+        </Field>
 
         {vehicles.length > 1 ? (
           <Field label={t('myOtherVehicles')}>
