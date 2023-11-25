@@ -1,7 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
 import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
@@ -72,7 +73,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   if (isPending) {
     return (
-      <ScreenContent>
+      <ScreenContent className="bg-transparent">
         <SkeletonTicketCard />
       </ScreenContent>
     )
@@ -84,18 +85,35 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
 
-  if (!tickets?.length) {
+  if (active && !tickets?.length) {
     return (
       <EmptyStateScreen
         contentTitle={t('noActiveTickets')}
         text={t('noActiveTicketsText')}
-        actionButton={<Button variant="primary">{t('buyTicket')}</Button>}
+        actionButton={
+          <Link href="/purchase" asChild>
+            <Button variant="primary">{t('buyTicket')}</Button>
+          </Link>
+        }
+      />
+    )
+  }
+  if (!active && !tickets?.length) {
+    return (
+      <EmptyStateScreen
+        contentTitle={t('noHistoryTickets')}
+        text={t('noHistoryTicketsText')}
+        actionButton={
+          <Button variant="primary" onPress={handleFiltersPress}>
+            {t('filters')}
+          </Button>
+        }
       />
     )
   }
 
   return (
-    <ScreenContent variant="center">
+    <ScreenContent variant="center" className="flex-1">
       <View className="w-full">
         <FlatList
           // eslint-disable-next-line react-native/no-inline-styles
@@ -109,16 +127,17 @@ const TicketsRoute = ({ active }: RouteProps) => {
       </View>
 
       {!active && (
-        <View
+        <LinearGradient
           // TODO: Padding and insets
-          className="absolute items-center pb-8"
+          className="absolute w-full items-center pb-6"
           pointerEvents="box-none"
           style={{ bottom: insets.bottom }}
+          colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
         >
           <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
             {t('filters')}
           </FloatingButton>
-        </View>
+        </LinearGradient>
       )}
     </ScreenContent>
   )

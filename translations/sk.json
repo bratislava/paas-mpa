@@ -143,7 +143,9 @@
     "history": "História",
     "noActiveTickets": "Žiadne aktívne lístky",
     "noActiveTicketsText": "Po zakúpení parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
-    "buyTicket": "Kúpiť lístok"
+    "buyTicket": "Kúpiť lístok",
+    "noHistoryTickets": "Žiadne lístky",
+    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom."
   },
   "TicketCard": {
     "prolong": "Predĺžiť",

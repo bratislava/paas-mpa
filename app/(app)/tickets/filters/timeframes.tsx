@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { View } from 'react-native'
 
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -13,9 +13,11 @@ import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStore
 
 const TicketsFiltersTimeframesScreen = () => {
   const t = useTranslation('TicketsFilters')
-  const snapPoints = [350]
+  const snapPoints = [300]
+  const ref = useRef<BottomSheet>(null)
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
+
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
@@ -26,6 +28,7 @@ const TicketsFiltersTimeframesScreen = () => {
   const handleOptionPress = useCallback(
     (timeframe: FilteringTimeframesEnum) => () => {
       onPurchaseStoreUpdate({ timeframe })
+      ref.current?.close()
     },
     [onPurchaseStoreUpdate],
   )
@@ -38,6 +41,7 @@ const TicketsFiltersTimeframesScreen = () => {
 
   return (
     <BottomSheet
+      ref={ref}
       backdropComponent={renderBackdrop}
       index={0}
       snapPoints={snapPoints}
@@ -45,7 +49,7 @@ const TicketsFiltersTimeframesScreen = () => {
       enablePanDownToClose
     >
       <BottomSheetContent>
-        <View className="h-[350px]">
+        <View>
           {Object.values(FilteringTimeframesEnum).map((timeframe) => (
             <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
               <ActionRow

@@ -50,7 +50,7 @@ const TicketsFiltersScreen = () => {
           ),
         }}
       />
-      <View className="py-5 pl-6 pr-4">
+      <View className="py-5 pl-6 pr-4 g-5">
         {fields.map(({ key, path, value }) => (
           <Field key={key} label={t(key)}>
             <Link asChild href={{ pathname: path }}>

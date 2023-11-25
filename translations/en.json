@@ -144,7 +144,9 @@
     "noActiveTickets": "No active tickets",
     "noActiveTicketsText": "After you buy your parking ticket it will show here.",
     "buyTicket": "Buy ticket",
-    "filters": "Filters"
+    "filters": "Filters",
+    "noHistoryTickets": "No tickets found",
+    "noHistoryTicketsText": "No past tickets matching the selected filters found."
   },
   "TicketCard": {
     "prolong": "Prolong",

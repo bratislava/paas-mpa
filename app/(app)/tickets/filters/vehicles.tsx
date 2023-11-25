@@ -5,6 +5,7 @@ import { FlatList, ListRenderItem, View } from 'react-native'
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -70,7 +71,11 @@ const TicketsFiltersVehiclesScreen = () => {
         }}
       />
       <View className="py-5 pl-6 pr-4">
-        <FlatList data={vehicles} renderItem={renderItem} />
+        <FlatList
+          data={vehicles}
+          renderItem={renderItem}
+          ItemSeparatorComponent={() => <Divider />}
+        />
       </View>
     </ScreenView>
   )
