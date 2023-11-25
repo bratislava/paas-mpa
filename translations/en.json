@@ -7,7 +7,9 @@
   "Common": {
     "loading": "Loading",
     "cancel": "Cancel",
-    "hide": "Hide"
+    "hide": "Hide",
+    "apply": "Apply",
+    "showResults": "Show results"
   },
   "Typography": {
     "test": "EN translation"
@@ -258,7 +260,6 @@
   },
   "FiltersScreen": {
     "title": "Filters",
-    "showResults": "Show results",
     "filteringOptions": {
       "assistant": "Assistant",
       "parkomat": "Parkomat",
@@ -349,6 +350,8 @@
       "lastMonth": "Last month",
       "thisYear": "This year",
       "lastYear": "Last year"
-    }
+    },
+    "selectAll": "Select all",
+    "all": "All"
   }
 }

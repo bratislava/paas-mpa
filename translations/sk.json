@@ -7,7 +7,9 @@
   "Common": {
     "loading": "Načítavam",
     "cancel": "Zrušiť",
-    "hide": "Skryť"
+    "hide": "Skryť",
+    "apply": "Vybrať",
+    "showResults": "Zobraziť"
   },
   "Typography": {
     "test": "SK preklad"
@@ -251,13 +253,12 @@
   },
   "ZoneDetailsScreen": {
     "title": "Detail úseku",
-    "showResults": "Ukázať výsledky",
+    "searchResults": "Výsledky vyhľadávania",
     "zones": "Parkovacie zóny",
     "addresses": "Adresy"
   },
   "FiltersScreen": {
     "title": "Filtre",
-    "showResults": "Zobraziť",
     "filteringOptions": {
       "assistant": "Asistenti",
       "parkomat": "Parkomaty",
@@ -337,5 +338,19 @@
         "text": "Využitím bonusovej karty viete parkovať vo vybraných úsekoch 2 hodiny zadarmo. Pre využitie zľavy je potrebné overiť e-mailovú adresu, na ktorú bola karta vydaná."
       }
     }
+  },
+  "TicketsFilters": {
+    "title": "Filter",
+    "reset": "Resetovať",
+    "vehicles": "Vozidlá",
+    "fromTo": "Od - do",
+    "timeframes": {
+      "thisMonth": "Tento mesiac",
+      "lastMonth": "Minulý mesiac",
+      "thisYear": "Tento rok",
+      "lastYear": "Minulý rok"
+    },
+    "selectAll": "Všetky",
+    "all": "Všetky"
   }
 }

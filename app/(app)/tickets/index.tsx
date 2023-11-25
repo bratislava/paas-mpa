@@ -17,6 +17,8 @@ import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
+import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
 type RouteProps =
   | {
@@ -29,13 +31,16 @@ type RouteProps =
 const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
   const insets = useSafeAreaInsets()
+  const filters = useTicketsFiltersStoreContext()
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} isActive={active} />,
     [active],
   )
 
-  const now = useMemo(() => new Date().toISOString(), [])
+  const now = useMemo(() => new Date(), [])
+
+  const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
 
   const {
     data: ticketsDataInf,
@@ -47,9 +52,10 @@ const TicketsRoute = ({ active }: RouteProps) => {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ticketsInfiniteQuery({
-      parkingEndTo: active ? undefined : now,
-      parkingEndFrom: active ? now : undefined,
+      parkingEndFrom: active ? now : fromTo.parkingEndFrom,
+      parkingEndTo: active ? undefined : fromTo.parkingEndTo,
       pageSize: 20,
+      ecv: filters.ecv ?? undefined,
     }),
   )
 

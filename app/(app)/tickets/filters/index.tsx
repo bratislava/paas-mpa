@@ -1,7 +1,8 @@
-import { Link, Stack } from 'expo-router'
-import { useCallback } from 'react'
+import { Link, router, Stack } from 'expo-router'
+import { useCallback, useMemo } from 'react'
 import { View } from 'react-native'
 
+import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
@@ -14,8 +15,9 @@ import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersS
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreUpdateContext'
 
-const TicketsFilters = () => {
+const TicketsFiltersScreen = () => {
   const t = useTranslation('TicketsFilters')
+  const tCommon = useTranslation('Common')
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecv, timeframe } = useTicketsFiltersStoreContext()
@@ -24,8 +26,21 @@ const TicketsFilters = () => {
     onPurchaseStoreUpdate(defaultTicketsFiltersStoreContextValues)
   }, [onPurchaseStoreUpdate])
 
+  const fields = useMemo(
+    () => [
+      { key: 'vehicles', path: '/tickets/filters/vehicles', value: ecv ?? t('all') },
+      { key: 'fromTo', path: '/tickets/filters/timeframes', value: t(`timeframes.${timeframe}`) },
+    ],
+    [t, ecv, timeframe],
+  )
+
+  const actionButton = useMemo(
+    () => <ContinueButton onPress={router.back}>{tCommon('showResults')}</ContinueButton>,
+    [tCommon],
+  )
+
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} actionButton={actionButton}>
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -36,34 +51,23 @@ const TicketsFilters = () => {
         }}
       />
       <View className="py-5 pl-6 pr-4">
-        <Field label={t('vehicles')}>
-          <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
-            <PressableStyled>
-              <Panel>
-                <FlexRow>
-                  <Typography variant="default-bold">{ecv}</Typography>
-                  <Icon name="expand-more" />
-                </FlexRow>
-              </Panel>
-            </PressableStyled>
-          </Link>
-        </Field>
-
-        <Field label={t('fromTo')}>
-          <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
-            <PressableStyled>
-              <Panel>
-                <FlexRow>
-                  <Typography variant="default-bold">{timeframe}</Typography>
-                  <Icon name="expand-more" />
-                </FlexRow>
-              </Panel>
-            </PressableStyled>
-          </Link>
-        </Field>
+        {fields.map(({ key, path, value }) => (
+          <Field key={key} label={t(key)}>
+            <Link asChild href={{ pathname: path }}>
+              <PressableStyled>
+                <Panel>
+                  <FlexRow>
+                    <Typography variant="default-bold">{value}</Typography>
+                    <Icon name="expand-more" />
+                  </FlexRow>
+                </Panel>
+              </PressableStyled>
+            </Link>
+          </Field>
+        ))}
       </View>
     </ScreenView>
   )
 }
 
-export default TicketsFilters
+export default TicketsFiltersScreen

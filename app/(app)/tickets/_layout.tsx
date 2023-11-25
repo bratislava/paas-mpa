@@ -15,7 +15,15 @@ const TicketsLayout = () => {
           headerTintColor: colors.dark.DEFAULT,
         }}
       >
-        <Stack.Screen name="filters" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="filters/index" options={{ presentation: 'modal' }} />
+        <Stack.Screen
+          name="filters/timeframes"
+          options={{
+            headerShown: false,
+            presentation: 'transparentModal',
+            animation: 'none',
+          }}
+        />
       </Stack>
     </TicketsFiltersStoreProvider>
   )

@@ -77,7 +77,7 @@ const PurchaseScreen = () => {
 
   return (
     <>
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('vehicles')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
