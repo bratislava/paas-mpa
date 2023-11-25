@@ -68,5 +68,7 @@ module.exports = {
     'sonarjs/cognitive-complexity': 'warn',
     '@typescript-eslint/no-misused-promises': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
+    // many times you dont want to add everything to deps to avoid unnecessary triggers of hooks. for example useEffect.
+    'react-hooks/exhaustive-deps': 'off',
   },
 }

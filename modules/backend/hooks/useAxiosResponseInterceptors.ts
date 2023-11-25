@@ -8,55 +8,53 @@ import { axiosInstance } from '@/modules/backend/axios-instance'
 
 // https://dev.to/arianhamdi/react-hooks-in-axios-interceptors-3e1h
 
+const successInterceptor = (response: AxiosResponse) => {
+  return response
+}
+
 export const useAxiosResponseInterceptors = () => {
   const snackbar = useSnackbar()
   const t = useLocalTranslation('Errors')
   const { i18n } = useTranslation()
-  useEffect(() => {
-    const successInterceptor = (response: AxiosResponse) => {
-      return response
-    }
 
-    // TODO handle other use cases
-    const errorInterceptor = (error: unknown) => {
-      let snackbarMessage = null
-      if (isAxiosError(error)) {
-        const { status, data } = error.response ?? {}
-        const { errorName, message }: { errorName?: string; message?: string } = data
+  const errorInterceptor = (error: unknown) => {
+    let snackbarMessage = null
+    if (isAxiosError(error)) {
+      const { status, data } = error.response ?? {}
+      const { errorName, message }: { errorName?: string; message?: string } = data
 
-        if (status) {
-          // eslint-disable-next-line sonarjs/no-small-switch
-          switch (status) {
-            case 422:
-            case 424:
-              if (errorName || message) {
-                snackbarMessage =
-                  errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
-              }
-              break
-
-            default:
-              break
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (status) {
+        case 422:
+          break
+        case 424:
+          if (errorName || message) {
+            snackbarMessage =
+              errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
           }
-          if (i18n.exists(`'Errors'.${status.toString()}`)) {
+          break
+
+        default:
+          if (status && i18n.exists(`'Errors'.${status?.toString()}`)) {
             snackbarMessage ??= t(status.toString())
           }
-        }
-        snackbarMessage ??= t('axiosGeneric')
+
+          snackbarMessage ??= t('axiosGeneric')
+          break
       }
+    } else snackbarMessage ??= t('generic')
 
-      snackbarMessage ??= t('generic')
+    if (snackbarMessage) snackbar.show(snackbarMessage, { variant: 'danger' })
 
-      snackbar.show(snackbarMessage, { variant: 'danger' })
+    return Promise.reject(error)
+  }
 
-      return Promise.reject(error)
-    }
-
+  useEffect(() => {
     const interceptor = axiosInstance.interceptors.response.use(
       successInterceptor,
       errorInterceptor,
     )
 
     return () => axiosInstance.interceptors.response.eject(interceptor)
-  }, [t, snackbar, i18n])
+  }, [])
 }
