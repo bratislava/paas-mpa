@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import Field from '@/components/shared/Field'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
@@ -78,7 +79,7 @@ const NotificationSettings = () => {
   })
 
   if (isPending) {
-    return <Typography>Loading...</Typography>
+    return <LoadingScreen />
   }
 
   if (isError) {

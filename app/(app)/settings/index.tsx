@@ -1,5 +1,4 @@
 import { Link } from 'expo-router'
-import React from 'react'
 import { ScrollView } from 'react-native'
 
 import LanguageSelect from '@/components/controls/LanguageSelect'
@@ -15,8 +14,9 @@ const SettingsPage = () => {
 
   return (
     <ScreenView title={t('title')}>
-      <ScrollView>
-        <ScreenContent>
+      <ScreenContent className="flex-1">
+        {/* eslint-disable-next-line react-native/no-inline-styles */}
+        <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
           <Field label={t('language')}>
             <Link asChild href="/settings/language">
               <PressableStyled>
@@ -26,8 +26,8 @@ const SettingsPage = () => {
           </Field>
 
           <NotificationSettings />
-        </ScreenContent>
-      </ScrollView>
+        </ScrollView>
+      </ScreenContent>
     </ScreenView>
   )
 }
