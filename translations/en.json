@@ -255,7 +255,10 @@
     "title": "Zone details",
     "searchResults": "Search results",
     "zones": "Parking zones",
-    "addresses": "Addresses"
+    "addresses": "Addresses",
+    "noResults": "No results",
+    "startTyping": "Start typing",
+    "typeSomething": "Type something to begin searching"
   },
   "FiltersScreen": {
     "title": "Filters",

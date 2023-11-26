@@ -6,6 +6,8 @@ import { TextInput as RNTextInput, View } from 'react-native'
 
 import ZoneBadge from '@/components/info/ZoneBadge'
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
@@ -74,7 +76,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     )
 
     const renderResults: NonNullable<Props['renderResults']> = useCallback(
-      (options, optionsListProps) => {
+      ({ options, optionsListProps, isFetching, input }) => {
         const [zones, geocodingFeatures] = options
         const sections: {
           title: string
@@ -91,7 +93,15 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         return (
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
-              {(zones.length > 0 || geocodingFeatures.length > 0) && (
+              {sections.length === 0 ? (
+                isFetching ? (
+                  <LoadingScreen />
+                ) : input ? (
+                  <EmptyStateScreen contentTitle={t('noResults')} />
+                ) : (
+                  <EmptyStateScreen contentTitle={t('startTyping')} text={t('typeSomething')} />
+                )
+              ) : (
                 <>
                   <Typography variant="h2">{t('searchResults')}</Typography>
                   <BottomSheetSectionList

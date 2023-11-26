@@ -255,7 +255,10 @@
     "title": "Detail úseku",
     "showResults": "Ukázať výsledky",
     "zones": "Parkovacie zóny",
-    "addresses": "Adresy"
+    "addresses": "Adresy",
+    "noResults": "Žiadne výsledky",
+    "startTyping": "Začnite písať",
+    "typeSomething": "Napíšte niečo a začnite vyhľadávať"
   },
   "FiltersScreen": {
     "title": "Filtre",
