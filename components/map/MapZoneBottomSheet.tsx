@@ -14,6 +14,7 @@ import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
 import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAttachment'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -145,6 +146,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         onChange={handleChange}
         // eslint-disable-next-line react-native/no-inline-styles
         handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
+        handleComponent={BottomSheetHandleWithShadow}
         animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>

@@ -6,6 +6,7 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -90,6 +91,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
           // footerComponent={renderFooter}
           bottomInset={purchaseButtonContainerHeight}
           snapPoints={snapPoints}
+          handleComponent={BottomSheetHandleWithShadow}
         >
           {priceData ? (
             <BottomSheetContent cn="g-3" hideSpacer>
