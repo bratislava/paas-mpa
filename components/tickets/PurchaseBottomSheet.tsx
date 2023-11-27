@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { router } from 'expo-router'
-import { forwardRef, useMemo, useState } from 'react'
+import { Dispatch, forwardRef, useMemo } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -30,14 +30,25 @@ type Props = {
   isLoading?: boolean
   priceRequestBody: GetTicketPriceRequestDto
   error?: { errorName: string }
+  purchaseButtonContainerHeight: number
+  setPurchaseButtonContainerHeight: Dispatch<number>
 }
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
-  ({ priceData, isLoading, error, priceRequestBody }, ref) => {
+  (
+    {
+      priceData,
+      isLoading,
+      error,
+      priceRequestBody,
+      purchaseButtonContainerHeight,
+      setPurchaseButtonContainerHeight,
+    },
+    ref,
+  ) => {
     const t = useTranslation('PurchaseBottomSheet')
     const { udr } = usePurchaseStoreContext()
     const insets = useSafeAreaInsets()
-    const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
     const snapPoints = useMemo(() => [24], [])
 
@@ -164,14 +175,14 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         >
           {/* Toggling visibility instead hiding by "display: none" prevents layout shifts */}
 
-          {priceData ? (
-            <FlexRow>
-              <Typography variant="default-bold">{t('summary')}</Typography>
+          <FlexRow className={priceData ? 'visible' : 'hidden'}>
+            <Typography variant="default-bold">{t('summary')}</Typography>
+            {priceData && (
               <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
-            </FlexRow>
-          ) : null}
+            )}
+          </FlexRow>
 
-          {error ? <ErrorMessage message={t(`Errors.${error.errorName}`)} /> : null}
+          {error && !priceData ? <ErrorMessage message={t(`Errors.${error.errorName}`)} /> : null}
 
           <Button onPress={handlePressPay} disabled={!priceData} loading={isLoading}>
             {t('pay')}
