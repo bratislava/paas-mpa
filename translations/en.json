@@ -60,7 +60,7 @@
   "VehiclesScreen": {
     "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
-    "addVehicle": "Add vehicle",
+    "addVehicle": "Add new",
     "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
@@ -69,6 +69,8 @@
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
     "chooseVehicleFieldLabel": "Choose vehicle",
+    "noVehicles": "No vehicles",
+    "noVehiclesText": "Tap on “Add new” to add your first vehicle.",
     "deleteVehicleConfirmModal": {
       "title": "Delete vehicle",
       "message": "Do you really want to delete vehicle {{licencePlate}}?",
@@ -253,7 +255,10 @@
     "title": "Zone details",
     "searchResults": "Search results",
     "zones": "Parking zones",
-    "addresses": "Addresses"
+    "addresses": "Addresses",
+    "noResults": "No results",
+    "startTyping": "Start typing",
+    "typeSomething": "Type something to begin searching"
   },
   "FiltersScreen": {
     "title": "Filters",
