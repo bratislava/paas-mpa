@@ -3,6 +3,7 @@ import { FlatList, ListRenderItem } from 'react-native'
 
 import Announcement from '@/components/info/Announcement'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
@@ -48,7 +49,7 @@ const AnnouncementsScreen = () => {
   )
 
   if (isPending) {
-    return <Typography>Loading...</Typography>
+    return <LoadingScreen asScreenView />
   }
 
   if (isError) {

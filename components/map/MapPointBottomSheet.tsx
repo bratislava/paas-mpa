@@ -3,6 +3,7 @@ import { forwardRef, Ref, useCallback, useEffect, useMemo, useRef, useState } fr
 import { LayoutAnimation, View } from 'react-native'
 
 import NavigateBottomSheetFooter from '@/components/map/NavigateBottomSheetFooter'
+import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
 import Icon from '@/components/shared/Icon'
@@ -79,6 +80,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
       ref={setRefs}
       snapPoints={snapPoints}
       footerComponent={renderFooter}
+      handleComponent={BottomSheetHandleWithShadow}
     >
       <View className="flex-1">
         <View className="flex-row justify-center border-b border-b-divider pb-3">

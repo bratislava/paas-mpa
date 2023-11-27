@@ -31,18 +31,20 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
     return (
       <Pressable onPress={handlePress}>
         <View
-          className={clsx('flex-row rounded border bg-white px-4 py-3 g-3', {
+          className={clsx('flex-row items-center rounded border bg-white px-4 py-3 g-3', {
             'border-divider focus:border-dark': !isDisabled && !hasError,
             'border-negative': hasError && !isDisabled,
             'border-divider bg-[#D6D6D6]': isDisabled,
           })}
         >
           {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
-          {/* TODO font size in input */}
+          {/* TODO lineHeight does not work properly on ios, see issue: https://github.com/facebook/react-native/issues/39145 */}
+          {/* Quick-fix by setting height instead of lineHeight */}
+          {/* Instead of "h-[24px] text-[16px]", it should use only predefined "text-16" */}
           <TextInputNative
             ref={refSetter}
             editable={!isDisabled}
-            className="flex-1 font-inter-400regular text-16"
+            className="h-[24px] flex-1 font-inter-400regular text-[16px]"
             {...rest}
           />
         </View>
