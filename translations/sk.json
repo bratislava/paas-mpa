@@ -2,14 +2,14 @@
   "Navigation": {
     "continue": "Pokračovať",
     "openMenu": "Otvoriť menu",
-    "closeMenu": "Zatvoriť menu"
+    "closeMenu": "Zatvoriť menu",
+    "apply": "Vybrať",
+    "showResults": "Zobraziť"
   },
   "Common": {
     "loading": "Načítavam",
     "cancel": "Zrušiť",
-    "hide": "Skryť",
-    "apply": "Vybrať",
-    "showResults": "Zobraziť"
+    "hide": "Skryť"
   },
   "Typography": {
     "test": "SK preklad"

@@ -18,7 +18,7 @@ import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
-import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
 type RouteProps =

@@ -12,12 +12,11 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
-import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
-import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreUpdateContext'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
+import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersScreen = () => {
   const t = useTranslation('TicketsFilters')
-  const tCommon = useTranslation('Common')
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecv, timeframe } = useTicketsFiltersStoreContext()
@@ -35,8 +34,8 @@ const TicketsFiltersScreen = () => {
   )
 
   const actionButton = useMemo(
-    () => <ContinueButton onPress={router.back}>{tCommon('showResults')}</ContinueButton>,
-    [tCommon],
+    () => <ContinueButton onPress={router.back} translationKey="showResults" />,
+    [],
   )
 
   return (
@@ -45,7 +44,7 @@ const TicketsFiltersScreen = () => {
         options={{
           headerRight: () => (
             <PressableStyled onPress={handleReset}>
-              <Typography>{t('reset')}</Typography>
+              <Typography variant="default-bold">{t('reset')}</Typography>
             </PressableStyled>
           ),
         }}

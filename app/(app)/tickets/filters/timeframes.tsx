@@ -8,8 +8,8 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { FilteringTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
-import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
-import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreUpdateContext'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
+import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersTimeframesScreen = () => {
   const t = useTranslation('TicketsFilters')

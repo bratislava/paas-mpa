@@ -2,14 +2,14 @@
   "Navigation": {
     "continue": "Continue",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "apply": "Apply",
+    "showResults": "Show results"
   },
   "Common": {
     "loading": "Loading",
     "cancel": "Cancel",
-    "hide": "Hide",
-    "apply": "Apply",
-    "showResults": "Show results"
+    "hide": "Hide"
   },
   "Typography": {
     "test": "EN translation"
@@ -267,6 +267,7 @@
   },
   "FiltersScreen": {
     "title": "Filters",
+    "showResults": "Show results",
     "filteringOptions": {
       "assistant": "Assistant",
       "parkomat": "Parkomat",

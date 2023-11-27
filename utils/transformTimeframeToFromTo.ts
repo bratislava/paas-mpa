@@ -2,9 +2,8 @@ import { FilteringTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/Tic
 
 export const transformTimeframeToFromTo = (
   timeframe: FilteringTimeframesEnum | null,
-  overrideNow?: Date,
+  now: Date,
 ) => {
-  const now = overrideNow ?? new Date()
   switch (timeframe) {
     case FilteringTimeframesEnum.thisMonth:
       return {

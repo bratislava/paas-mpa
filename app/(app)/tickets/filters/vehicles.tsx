@@ -10,12 +10,11 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehiclesStorage, Vehicle } from '@/hooks/useVehiclesStorage'
-import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreContext'
-import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/usePurchaseStoreUpdateContext'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
+import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersVehiclesScreen = () => {
   const t = useTranslation('TicketsFilters')
-  const tCommon = useTranslation('Common')
 
   const [vehicles] = useVehiclesStorage()
 
@@ -48,15 +47,14 @@ const TicketsFiltersVehiclesScreen = () => {
   const actionButton = useMemo(
     () => (
       <ContinueButton
+        translationKey="apply"
         onPress={() => {
           onPurchaseStoreUpdate({ ecv: localEcv })
           router.back()
         }}
-      >
-        {tCommon('apply')}
-      </ContinueButton>
+      />
     ),
-    [tCommon, localEcv, onPurchaseStoreUpdate],
+    [localEcv, onPurchaseStoreUpdate],
   )
 
   return (
@@ -65,7 +63,7 @@ const TicketsFiltersVehiclesScreen = () => {
         options={{
           headerRight: () => (
             <PressableStyled onPress={handleSelectAll}>
-              <Typography>{t('selectAll')}</Typography>
+              <Typography variant="default-bold">{t('selectAll')}</Typography>
             </PressableStyled>
           ),
         }}
