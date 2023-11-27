@@ -6,7 +6,6 @@ import { Dispatch, forwardRef, useMemo } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ErrorMessage } from '@/components/info/ErrorMessage'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
@@ -104,66 +103,68 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
           bottomInset={purchaseButtonContainerHeight}
           snapPoints={snapPoints}
         >
-          {priceData ? (
-            <BottomSheetContent cn="g-3" hideSpacer>
-              <FlexRow>
-                <Typography variant="default">
-                  {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
-                </Typography>
-                <Typography variant="default-bold">
-                  {formatPrice(priceData.priceWithoutDiscount)}
-                </Typography>
-              </FlexRow>
-
-              {/* Is this ever used? */}
-              {udr?.rpkInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.rpkInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {udr?.npkInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.npkInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {/* This usually says you cannot use BPK (in 2e zones) */}
-              {udr?.additionalInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.additionalInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {priceData.creditNpkUsedSeconds ? (
+          <BottomSheetContent cn="g-3" hideSpacer>
+            {priceData ? (
+              <>
                 <FlexRow>
-                  <Typography variant="default">{t('creditNpkUsed')}</Typography>
+                  <Typography variant="default">
+                    {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
+                  </Typography>
                   <Typography variant="default-bold">
-                    {formatDuration(priceData.creditNpkUsedSeconds)}
+                    {formatPrice(priceData.priceWithoutDiscount)}
                   </Typography>
                 </FlexRow>
-              ) : null}
 
-              {priceData.creditBpkUsedSeconds ? (
-                <FlexRow>
-                  <Typography variant="default">{t('creditBpkUsed')}</Typography>
-                  <Typography variant="default-bold">
-                    {formatDuration(priceData.creditBpkUsedSeconds)}
-                  </Typography>
-                </FlexRow>
-              ) : null}
+                {/* Is this ever used? */}
+                {udr?.rpkInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.rpkInformation}</Typography>
+                  </Panel>
+                ) : null}
 
-              {/* Check if it is present (null/undefined, but show if it is 0) */}
-              {priceData.tax == null ? null : (
-                <FlexRow>
-                  <Typography variant="default">{t('tax')}</Typography>
-                  <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
-                </FlexRow>
-              )}
+                {udr?.npkInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.npkInformation}</Typography>
+                  </Panel>
+                ) : null}
 
-              <Divider />
-            </BottomSheetContent>
-          ) : null}
+                {/* This usually says you cannot use BPK (in 2e zones) */}
+                {udr?.additionalInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.additionalInformation}</Typography>
+                  </Panel>
+                ) : null}
+
+                {priceData.creditNpkUsedSeconds ? (
+                  <FlexRow>
+                    <Typography variant="default">{t('creditNpkUsed')}</Typography>
+                    <Typography variant="default-bold">
+                      {formatDuration(priceData.creditNpkUsedSeconds)}
+                    </Typography>
+                  </FlexRow>
+                ) : null}
+
+                {priceData.creditBpkUsedSeconds ? (
+                  <FlexRow>
+                    <Typography variant="default">{t('creditBpkUsed')}</Typography>
+                    <Typography variant="default-bold">
+                      {formatDuration(priceData.creditBpkUsedSeconds)}
+                    </Typography>
+                  </FlexRow>
+                ) : null}
+
+                {/* Check if it is present (null/undefined, but show if it is 0) */}
+                {priceData.tax == null ? null : (
+                  <FlexRow>
+                    <Typography variant="default">{t('tax')}</Typography>
+                    <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
+                  </FlexRow>
+                )}
+
+                <Divider />
+              </>
+            ) : null}
+          </BottomSheetContent>
         </BottomSheet>
 
         <View
@@ -174,15 +175,18 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
           }}
         >
           {/* Toggling visibility instead hiding by "display: none" prevents layout shifts */}
-
           <FlexRow className={priceData ? 'visible' : 'hidden'}>
             <Typography variant="default-bold">{t('summary')}</Typography>
-            {priceData && (
+            {priceData ? (
               <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
-            )}
+            ) : null}
           </FlexRow>
 
-          {error && !priceData ? <ErrorMessage message={t(`Errors.${error.errorName}`)} /> : null}
+          {error && !priceData ? (
+            <Panel className="bg-negative-light px-5 py-4">
+              <Typography>{t(`Errors.${error.errorName}`)}</Typography>
+            </Panel>
+          ) : null}
 
           <Button onPress={handlePressPay} disabled={!priceData} loading={isLoading}>
             {t('pay')}

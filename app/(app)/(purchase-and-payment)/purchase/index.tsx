@@ -27,18 +27,11 @@ export type PurchaseSearchParams = {
   udrId?: string
 }
 
-interface IPriceError {
-  response?: {
-    data?: {
-      errorName: string
-    }
-  }
-}
-
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
   // height of the button + safeArea bottom inset
+  // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
   const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
@@ -123,7 +116,7 @@ const PurchaseScreen = () => {
       <PurchaseBottomSheet
         ref={bottomSheetRef}
         priceData={data}
-        error={(error as IPriceError)?.response?.data}
+        error={isAxiosError(error) && error.response?.data}
         isLoading={isFetching}
         priceRequestBody={body}
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
