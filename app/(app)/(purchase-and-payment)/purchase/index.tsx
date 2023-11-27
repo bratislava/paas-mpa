@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { AxiosResponse, isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { Link } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -26,6 +26,14 @@ import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/use
 
 export type PurchaseSearchParams = {
   udrId?: string
+}
+
+interface IPriceError {
+  response?: {
+    data?: {
+      errorName: string
+    }
+  }
 }
 
 const PurchaseScreen = () => {
@@ -117,7 +125,7 @@ const PurchaseScreen = () => {
       <PurchaseBottomSheet
         ref={bottomSheetRef}
         priceData={data}
-        error={error?.response?.data}
+        error={(error as IPriceError).response?.data}
         isLoading={isFetching}
         priceRequestBody={body}
       />

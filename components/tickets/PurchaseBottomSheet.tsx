@@ -86,29 +86,14 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
     return (
       <>
-        {priceData ? (
-          <BottomSheet
-            ref={ref}
-            enableDynamicSizing
-            // footerComponent={renderFooter}
-            bottomInset={purchaseButtonContainerHeight}
-            snapPoints={snapPoints}
-            // issue in lib, because it wants border to be number, but it doesn't work with number :( only with strings
-            // @ts-ignore
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              shadowColor: 'black',
-              shadowOffset: {
-                width: 0,
-                height: -12,
-              },
-              shadowOpacity: 0.08,
-              shadowRadius: 24,
-              elevation: 0,
-              borderTopLeftRadius: '20px',
-              borderTopRightRadius: '20px',
-            }}
-          >
+        <BottomSheet
+          ref={ref}
+          enableDynamicSizing
+          // footerComponent={renderFooter}
+          bottomInset={purchaseButtonContainerHeight}
+          snapPoints={snapPoints}
+        >
+          {priceData ? (
             <BottomSheetContent cn="g-3" hideSpacer>
               <FlexRow>
                 <Typography variant="default">
@@ -167,14 +152,12 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
               <Divider />
             </BottomSheetContent>
-          </BottomSheet>
-        ) : null}
+          ) : null}
+        </BottomSheet>
 
         <View
           style={{ paddingBottom: insets.bottom }}
-          className={clsx('bg-white px-5 g-3', {
-            'rounded-t-lg pt-4 shadow': !priceData,
-          })}
+          className={clsx('bg-white px-5 g-3')}
           onLayout={(event) => {
             setPurchaseButtonContainerHeight(event.nativeEvent.layout.height)
           }}
