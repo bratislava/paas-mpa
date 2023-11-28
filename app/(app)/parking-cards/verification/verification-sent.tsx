@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
+import { KeyboardAvoidingView, Platform } from 'react-native'
 
 import { EmailAvatar } from '@/assets/avatars'
 import CodeInput from '@/components/inputs/CodeInput'
@@ -38,16 +39,21 @@ const Page = () => {
   }
 
   return (
-    <ScreenViewCentered actionButton={<Button onPress={handleVerify}>Verify</Button>}>
-      <ContentWithAvatar
-        title={t('verifyYourEmail')}
-        text={t('verifyYourEmailInfo', { email })}
-        customAvatarComponent={<EmailAvatar />}
-      >
-        <Typography>{tmpVerificationToken}</Typography>
-        <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
-      </ContentWithAvatar>
-    </ScreenViewCentered>
+    <KeyboardAvoidingView
+      className="h-full"
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScreenViewCentered actionButton={<Button onPress={handleVerify}>Verify</Button>}>
+        <ContentWithAvatar
+          title={t('verifyYourEmail')}
+          text={t('verifyYourEmailInfo', { email })}
+          customAvatarComponent={<EmailAvatar />}
+        >
+          <Typography>{tmpVerificationToken}</Typography>
+          <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
+        </ContentWithAvatar>
+      </ScreenViewCentered>
+    </KeyboardAvoidingView>
   )
 }
 
