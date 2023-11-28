@@ -1,9 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { isAxiosError } from 'axios'
 import { Link } from 'expo-router'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
@@ -31,9 +30,9 @@ export type PurchaseSearchParams = {
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const insets = useSafeAreaInsets()
   // height of the button + safeArea bottom inset
-  const purchaseButtonContainerHeight = 48 + insets.bottom
+  // TODO: find solution for height of bottom content with drawing
+  const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
   const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -80,7 +79,7 @@ const PurchaseScreen = () => {
       <ScreenView title={t('title')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
-          <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight + 150 }}>
+          <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
 
             <Field label={t('chooseVehicleFieldLabel')}>
@@ -117,8 +116,11 @@ const PurchaseScreen = () => {
       <PurchaseBottomSheet
         ref={bottomSheetRef}
         priceData={data}
+        error={isAxiosError(error) && error.response?.data}
         isLoading={isFetching}
         priceRequestBody={body}
+        setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
+        purchaseButtonContainerHeight={purchaseButtonContainerHeight}
       />
     </>
   )
