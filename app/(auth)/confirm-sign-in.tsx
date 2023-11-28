@@ -5,6 +5,7 @@ import CodeInput from '@/components/inputs/CodeInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -23,17 +24,19 @@ const Page = () => {
   }
 
   return (
-    <ScreenView>
-      <ScreenContent>
-        <Typography variant="h1">{t('enterVerificationCode')}</Typography>
+    <DismissKeyboard>
+      <ScreenView>
+        <ScreenContent>
+          <Typography variant="h1">{t('enterVerificationCode')}</Typography>
 
-        <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
+          <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
 
-        <Typography>{t('verificationText')}</Typography>
+          <Typography>{t('verificationText')}</Typography>
 
-        <ContinueButton onPress={() => confirmSignIn(code)} />
-      </ScreenContent>
-    </ScreenView>
+          <ContinueButton onPress={() => confirmSignIn(code)} />
+        </ScreenContent>
+      </ScreenView>
+    </DismissKeyboard>
   )
 }
 

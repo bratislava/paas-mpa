@@ -9,6 +9,7 @@ import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
@@ -52,59 +53,61 @@ const AddVehicleScreen = () => {
   }
 
   return (
-    <ScreenView title={t('addVehicleTitle')}>
-      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
-      {/* eslint-disable-next-line react/style-prop-object */}
-      <StatusBar style="light" />
+    <DismissKeyboard>
+      <ScreenView title={t('addVehicleTitle')}>
+        {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
+        {/* eslint-disable-next-line react/style-prop-object */}
+        <StatusBar style="light" />
 
-      <ScreenContent>
-        <Field label={t('licencePlateFieldLabel')} errorMessage={error}>
-          <TextInput
-            autoCapitalize="characters"
-            autoCorrect={false}
-            value={licencePlateInput}
-            onChangeText={setLicencePlateInput}
-            hasError={error.length > 0}
-          />
-        </Field>
+        <ScreenContent>
+          <Field label={t('licencePlateFieldLabel')} errorMessage={error}>
+            <TextInput
+              autoCapitalize="characters"
+              autoCorrect={false}
+              value={licencePlateInput}
+              onChangeText={setLicencePlateInput}
+              hasError={error.length > 0}
+            />
+          </Field>
 
-        <Field
-          label={t('vehicleNameFieldLabel')}
-          labelInsertArea={<Typography>{t('optional')}</Typography>}
-        >
-          <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
-        </Field>
+          <Field
+            label={t('vehicleNameFieldLabel')}
+            labelInsertArea={<Typography>{t('optional')}</Typography>}
+          >
+            <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
+          </Field>
 
-        <Button disabled={!isValid} onPress={openModal}>
-          {t('addVehicle')}
-        </Button>
+          <Button disabled={!isValid} onPress={openModal}>
+            {t('addVehicle')}
+          </Button>
 
-        {!isPresented && (
-          <Link href="/" asChild>
-            <Button variant="plain-dark">Dismiss</Button>
-          </Link>
-        )}
-      </ScreenContent>
-
-      <Modal visible={isModalVisible} onRequestClose={toggleModal}>
-        <ModalContentWithActions
-          variant="success"
-          title={t('addVehicleConfirmModal.title')}
-          text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
-          hideAvatar
-          primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
-          primaryActionOnPress={() => handleSaveVehicle()}
-          secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
-          secondaryActionOnPress={closeModal}
-        >
-          {isStandardFormat(sanitizedLicencePlate) ? null : (
-            <Panel className="bg-warning-light">
-              <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
-            </Panel>
+          {!isPresented && (
+            <Link href="/" asChild>
+              <Button variant="plain-dark">Dismiss</Button>
+            </Link>
           )}
-        </ModalContentWithActions>
-      </Modal>
-    </ScreenView>
+        </ScreenContent>
+
+        <Modal visible={isModalVisible} onRequestClose={toggleModal}>
+          <ModalContentWithActions
+            variant="success"
+            title={t('addVehicleConfirmModal.title')}
+            text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
+            hideAvatar
+            primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
+            primaryActionOnPress={() => handleSaveVehicle()}
+            secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
+            secondaryActionOnPress={closeModal}
+          >
+            {isStandardFormat(sanitizedLicencePlate) ? null : (
+              <Panel className="bg-warning-light">
+                <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
+              </Panel>
+            )}
+          </ModalContentWithActions>
+        </Modal>
+      </ScreenView>
+    </DismissKeyboard>
   )
 }
 

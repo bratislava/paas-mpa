@@ -6,6 +6,7 @@ import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
@@ -53,31 +54,33 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('addCardsTitle')}>
-      <ScreenContent>
-        <Field label={t('emailField')}>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoComplete="email"
-            autoCorrect={false}
-            onSubmitEditing={handleSendVerificationEmail}
+    <DismissKeyboard>
+      <ScreenView title={t('addCardsTitle')}>
+        <ScreenContent>
+          <Field label={t('emailField')}>
+            <TextInput
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect={false}
+              onSubmitEditing={handleSendVerificationEmail}
+            />
+          </Field>
+
+          <Panel>
+            <Typography>{t('instructions')}</Typography>
+          </Panel>
+
+          <ContinueButton
+            onPress={handleSendVerificationEmail}
+            disabled={!isValid}
+            loading={mutation.isPending}
           />
-        </Field>
-
-        <Panel>
-          <Typography>{t('instructions')}</Typography>
-        </Panel>
-
-        <ContinueButton
-          onPress={handleSendVerificationEmail}
-          disabled={!isValid}
-          loading={mutation.isPending}
-        />
-      </ScreenContent>
-    </ScreenView>
+        </ScreenContent>
+      </ScreenView>
+    </DismissKeyboard>
   )
 }
 

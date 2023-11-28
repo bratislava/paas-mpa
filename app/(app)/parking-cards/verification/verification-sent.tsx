@@ -8,6 +8,7 @@ import CodeInput from '@/components/inputs/CodeInput'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import Button from '@/components/shared/Button'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -43,16 +44,18 @@ const Page = () => {
       className="h-full"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScreenViewCentered actionButton={<Button onPress={handleVerify}>Verify</Button>}>
-        <ContentWithAvatar
-          title={t('verifyYourEmail')}
-          text={t('verifyYourEmailInfo', { email })}
-          customAvatarComponent={<EmailAvatar />}
-        >
-          <Typography>{tmpVerificationToken}</Typography>
-          <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
-        </ContentWithAvatar>
-      </ScreenViewCentered>
+      <DismissKeyboard>
+        <ScreenViewCentered actionButton={<Button onPress={handleVerify}>Verify</Button>}>
+          <ContentWithAvatar
+            title={t('verifyYourEmail')}
+            text={t('verifyYourEmailInfo', { email })}
+            customAvatarComponent={<EmailAvatar />}
+          >
+            <Typography>{tmpVerificationToken}</Typography>
+            <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
+          </ContentWithAvatar>
+        </ScreenViewCentered>
+      </DismissKeyboard>
     </KeyboardAvoidingView>
   )
 }
