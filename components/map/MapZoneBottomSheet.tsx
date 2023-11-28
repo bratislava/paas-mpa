@@ -36,7 +36,7 @@ import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
   noZone: 216,
-  zone: 282,
+  zone: 306,
   searchExpanded: '100%',
 }
 
@@ -48,6 +48,7 @@ type Props = {
 const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
+// TODO refactor to reduce complexity, separate some components, simplify logic
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter } = props
 
