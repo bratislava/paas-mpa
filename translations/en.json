@@ -2,7 +2,9 @@
   "Navigation": {
     "continue": "Continue",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "apply": "Apply",
+    "showResults": "Show results"
   },
   "Common": {
     "loading": "Loading",
@@ -143,7 +145,10 @@
     "history": "History",
     "noActiveTickets": "No active tickets",
     "noActiveTicketsText": "After you buy your parking ticket it will show here.",
-    "buyTicket": "Buy ticket"
+    "buyTicket": "Buy ticket",
+    "filters": "Filters",
+    "noHistoryTickets": "No tickets found",
+    "noHistoryTicketsText": "No past tickets matching the selected filters found."
   },
   "TicketCard": {
     "prolong": "Prolong",
@@ -342,5 +347,19 @@
         "text": "By using the Bonus card, you can park in selected sections for 2 hours for free. In order to use the discount, it is necessary to verify the e-mail address to which the card was issued."
       }
     }
+  },
+  "TicketsFilters": {
+    "title": "Filters",
+    "reset": "Reset",
+    "vehicles": "Vehicles",
+    "fromTo": "From - to",
+    "timeframes": {
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "selectAll": "Select all",
+    "all": "All"
   }
 }

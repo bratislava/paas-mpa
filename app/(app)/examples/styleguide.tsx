@@ -1,4 +1,3 @@
-import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import AvatarShowcase from '@/components/showcases/AvatarShowcase'
@@ -7,10 +6,12 @@ import CheckBoxShowcase from '@/components/showcases/CheckBoxShowcase'
 import ChipShowcase from '@/components/showcases/ChipShowcase'
 import DividerShowcase from '@/components/showcases/DividerShowcase'
 import FieldShowcase from '@/components/showcases/FieldShowcase'
+import FloatingButtonShowcase from '@/components/showcases/FloatingButtonShowcase'
 import IconShowCase from '@/components/showcases/IconShowCase'
 import ListRowsShowcase from '@/components/showcases/ListRowsShowcase'
 import ParkingCardsShowcase from '@/components/showcases/ParkingCardsShowcase'
 import SegmentBadgeShowcase from '@/components/showcases/SegmentBadgeShowcase'
+import SelectButtonShowcase from '@/components/showcases/SelectButtonShowcase'
 import SurfaceShowcase from '@/components/showcases/SurfaceShowcase'
 import SwitchShowcase from '@/components/showcases/SwitchShowcase'
 import TextInputShowcase from '@/components/showcases/TextInputShowcase'
@@ -21,7 +22,9 @@ const StyleguideScreen = () => (
   <ScrollView className="flex bg-white">
     <TypographyShowcase />
     <ButtonShowcase />
+    <FloatingButtonShowcase />
     <TextInputShowcase />
+    <SelectButtonShowcase />
     <FieldShowcase />
     <SurfaceShowcase />
     <DividerShowcase />
