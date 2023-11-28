@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { Image, ImageSourcePropType, useWindowDimensions, View } from 'react-native'
@@ -43,7 +44,7 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
 
   return (
     <View className="flex-1">
-      <Image source={image} className="w-full" />
+      <Image source={image} className="w-full flex-shrink" />
       <View className="p-5 g-2">
         <Typography className="text-center" variant="h1">
           {t(`slides.${slide}.title`)}
@@ -97,7 +98,7 @@ const OnboardingScreen = () => {
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
 
   return (
-    <View className="flex-1">
+    <View className="flex-1" style={{ paddingBottom: insets.bottom }}>
       <Stack.Screen options={{ headerShown: false }} />
 
       <TabView
@@ -111,7 +112,10 @@ const OnboardingScreen = () => {
         style={{ paddingTop: insets.top }}
       />
 
-      <ContinueButton className="mx-5 mb-5" onPress={handlePressNext}>
+      <ContinueButton
+        className={clsx('mx-5', { 'mb-5': !insets.bottom })}
+        onPress={handlePressNext}
+      >
         {buttonLabel}
       </ContinueButton>
     </View>
