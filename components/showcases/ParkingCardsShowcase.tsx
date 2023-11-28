@@ -10,7 +10,12 @@ import VisitorCard from '@/components/parking-cards/cards/VisitorCard'
 const ParkingCardsShowcase = () => {
   return (
     <View className="p-4 g-4">
-      <VisitorCard cardNumber="car number" remainingCredit="credit" validUntil="date" />
+      <VisitorCard
+        cardNumber="car number"
+        balanceSeconds={60 * 60 * 24}
+        originalBalanceSeconds={60 * 60 * 24 * 2}
+        validUntil="date"
+      />
       <ResidentCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />
       <SubscriberCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />
       <BonusCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />

@@ -12,44 +12,45 @@ export const useAxiosResponseInterceptors = () => {
   const snackbar = useSnackbar()
   const t = useLocalTranslation('Errors')
   const { i18n } = useTranslation()
-  useEffect(() => {
-    const successInterceptor = (response: AxiosResponse) => {
-      return response
-    }
 
-    // TODO handle other use cases
+  useEffect(() => {
     const errorInterceptor = (error: unknown) => {
       let snackbarMessage = null
       if (isAxiosError(error)) {
         const { status, data } = error.response ?? {}
         const { errorName, message }: { errorName?: string; message?: string } = data
 
-        if (status) {
-          // eslint-disable-next-line sonarjs/no-small-switch
-          switch (status) {
-            case 422:
-            case 424:
-              if (errorName || message) {
-                snackbarMessage =
-                  errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
-              }
-              break
+        // eslint-disable-next-line sonarjs/no-small-switch
+        switch (status) {
+          case 422:
+            // the 422 errors are handled localy
+            break
+          case 424:
+            if (errorName || message) {
+              snackbarMessage =
+                errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
+            }
+            break
 
-            default:
-              break
-          }
-          if (i18n.exists(`'Errors'.${status.toString()}`)) {
-            snackbarMessage ??= t(status.toString())
-          }
+          default:
+            if (status && i18n.exists(`'Errors'.${status?.toString()}`)) {
+              snackbarMessage ??= t(status.toString())
+            }
+
+            snackbarMessage ??= t('axiosGeneric')
+            break
         }
-        snackbarMessage ??= t('axiosGeneric')
+      } else snackbarMessage ??= t('generic')
+
+      if (snackbarMessage) {
+        snackbar.show(snackbarMessage, { variant: 'danger' })
       }
 
-      snackbarMessage ??= t('generic')
-
-      snackbar.show(snackbarMessage, { variant: 'danger' })
-
       return Promise.reject(error)
+    }
+
+    const successInterceptor = (response: AxiosResponse) => {
+      return response
     }
 
     const interceptor = axiosInstance.interceptors.response.use(
@@ -58,5 +59,5 @@ export const useAxiosResponseInterceptors = () => {
     )
 
     return () => axiosInstance.interceptors.response.eject(interceptor)
-  }, [t, snackbar, i18n])
+  }, [i18n, snackbar, t])
 }

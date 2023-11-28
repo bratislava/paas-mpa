@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -35,7 +35,12 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const { data: ticketsData } = useQueryWithFocusRefetch(ticketsOptions({ active: true }))
+  const now = useMemo(() => new Date().toISOString(), [])
+  const { data: ticketsData } = useQueryWithFocusRefetch(
+    ticketsOptions({
+      parkingEndFrom: now,
+    }),
+  )
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
   return (

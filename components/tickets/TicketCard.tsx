@@ -21,9 +21,10 @@ import { formatDateTime } from '@/utils/formatDateTime'
 
 type Props = {
   ticket: TicketDto
+  isActive?: boolean
 }
 
-const TicketCard = ({ ticket }: Props) => {
+const TicketCard = ({ ticket, isActive }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
@@ -58,14 +59,16 @@ const TicketCard = ({ ticket }: Props) => {
             <Typography variant="small">{ticket.ecv}</Typography>
           </View>
 
-          <View className="g-2">
-            <Link asChild href="/purchase">
-              <Button>{t('prolong')}</Button>
-            </Link>
-            <Button variant="secondary" onPress={handleTerminateModalOpen}>
-              {t('terminate')}
-            </Button>
-          </View>
+          {isActive ? (
+            <View className="g-2">
+              <Link asChild href="/purchase">
+                <Button>{t('prolong')}</Button>
+              </Link>
+              <Button variant="secondary" onPress={handleTerminateModalOpen}>
+                {t('terminate')}
+              </Button>
+            </View>
+          ) : null}
         </View>
       </Panel>
 

@@ -1,11 +1,16 @@
-import { keepPreviousData, queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
 import { clientApi } from '@/modules/backend/client-api'
 import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
+import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
 type PaginationOptions = {
   page?: number
+  pageSize?: number
+}
+
+type PageSize = {
   pageSize?: number
 }
 
@@ -16,34 +21,108 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsOptions = ({ active }: { active: boolean } & PaginationOptions) =>
+export const ticketsOptions = ({
+  ecv,
+  parkingStartFrom,
+  parkingStartTo,
+  parkingEndFrom,
+  parkingEndTo,
+  page,
+  pageSize,
+}: {
+  ecv?: string
+  parkingStartFrom?: string
+  parkingStartTo?: string
+  parkingEndFrom?: string
+  parkingEndTo?: string
+} & PaginationOptions) =>
   queryOptions({
-    queryKey: ['Tickets', active ? 'active' : 'past'],
-    queryFn: () => clientApi.ticketsControllerTicketsGetMany(active),
+    queryKey: [
+      'Tickets',
+      ecv,
+      parkingStartFrom,
+      parkingStartTo,
+      parkingEndFrom,
+      parkingEndTo,
+      page,
+      pageSize,
+    ],
+    queryFn: () =>
+      clientApi.ticketsControllerTicketsGetMany(
+        page,
+        pageSize,
+        ecv,
+        parkingStartFrom,
+        parkingStartTo,
+        parkingEndFrom,
+        parkingEndTo,
+      ),
     select: (data) => data.data,
   })
 
-export const parkingCardsOptions = ({
-  email,
-  page = 1,
-  pageSize = 10,
-}: { email: string | undefined } & PaginationOptions) =>
-  queryOptions({
-    queryKey: ['ParkingCardsActive', email],
-    enabled: !!email,
-    queryFn: () => clientApi.parkingCardsControllerGetParkingCards(email!, page, pageSize),
-    select: (res) => res.data,
-  })
+export const ticketsInfiniteQuery = (
+  options?: {
+    ecv?: string
+    parkingStartFrom?: Date
+    parkingStartTo?: Date
+    parkingEndFrom?: Date
+    parkingEndTo?: Date
+  } & PageSize,
+) => {
+  const { ecv, parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo, pageSize } =
+    options ?? {}
 
-export const verifiedEmailsOptions = ({
-  page = 1,
-  pageSize = 10,
-}: PaginationOptions | undefined = {}) =>
-  queryOptions({
-    queryKey: ['VerifiedEmails'],
-    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(page, pageSize),
-    select: (res) => res.data,
+  return infiniteQueryOptions({
+    queryKey: [
+      'Tickets',
+      ecv,
+      parkingStartFrom?.toISOString(),
+      parkingStartTo?.toISOString(),
+      parkingEndFrom?.toISOString(),
+      parkingEndTo?.toISOString(),
+      pageSize,
+    ],
+    queryFn: ({ pageParam }) =>
+      clientApi.ticketsControllerTicketsGetMany(
+        pageParam,
+        pageSize,
+        ecv,
+        parkingStartFrom?.toISOString(),
+        parkingStartTo?.toISOString(),
+        parkingEndFrom?.toISOString(),
+        parkingEndTo?.toISOString(),
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
+}
+
+export const parkingCardsInfiniteOptions = (
+  options?: { email: string | undefined } & PaginationOptions,
+) => {
+  const { email, pageSize } = options ?? {}
+
+  return infiniteQueryOptions({
+    queryKey: ['ParkingCardsInfinite', email, pageSize],
+    enabled: !!email,
+    queryFn: ({ pageParam }) =>
+      clientApi.parkingCardsControllerGetParkingCards(email!, pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
+  })
+}
+
+export const verifiedEmailsInfiniteOptions = (options?: PageSize) => {
+  const { pageSize } = options ?? {}
+
+  return infiniteQueryOptions({
+    queryKey: ['VerifiedEmailsInfinite', pageSize],
+    queryFn: ({ pageParam }) =>
+      clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
+  })
+}
 
 export const ticketPriceOptions = (
   body: GetTicketPriceRequestDto,

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Portal } from '@gorhom/portal'
+import { useQuery } from '@tanstack/react-query'
 import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useMemo, useState } from 'react'
 import {
   FlatList,
@@ -33,7 +34,7 @@ type ExtractUnionType<T> = T extends [infer X, ...infer Rest]
     : never
   : never
 
-type BaseAutocompleteProps<L extends any[], O = L[number]> = {
+type CommonProps<L, O> = {
   onValueChange: (value: O) => void
   defaultValue?: string
   getOptions: (search: string) => Promise<L>
@@ -50,28 +51,18 @@ type BaseAutocompleteProps<L extends any[], O = L[number]> = {
   ListComponent?: React.ComponentType<FlatListProps<O>>
   listProps?: Partial<FlatListProps<O>>
   multiSourceMode?: boolean
-  renderResults?: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
+  renderResults: (data: {
+    options: L
+    optionsListProps: Omit<FlatListProps<O>, 'data'>
+    isFetching: boolean
+    isFetched: boolean
+    input: string
+  }) => ReactNode
 } & TextInputProps
 
-type MultiAutocompleteProps<L extends any[][], O = ExtractUnionType<L>> = {
-  onValueChange: (value: O) => void
-  defaultValue?: string
-  getOptions: (search: string) => Promise<L>
-  areOptionsEqual?: (optionA: O, optionB: O) => boolean
-  getOptionLabel: (option: O) => string
-  debounce?: number
-  renderItem?: ListRenderItem<O> | null
-  onFocus?: () => void
-  onBlur?: () => void
-  leftIcon?: ReactNode
-  autoFocus?: boolean
-  resultsHeader?: ReactNode
-  optionsPortalName?: never
-  ListComponent?: React.ComponentType<FlatListProps<O>>
-  listProps?: Partial<FlatListProps<O>>
-  multiSourceMode: true
-  renderResults: (options: L, optionsListProps: Omit<FlatListProps<O>, 'data'>) => ReactNode
-} & TextInputProps
+type BaseAutocompleteProps<L extends any[], O = L[number]> = CommonProps<L, O>
+
+type MultiAutocompleteProps<L extends any[][], O = ExtractUnionType<L>> = CommonProps<L, O>
 
 export type AutocompleteProps<L extends any[], O> =
   | MultiAutocompleteProps<L, O>
@@ -110,9 +101,15 @@ const AutocompleteInner = <L extends any[], O>(
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
   const [textSelection, setTextSelection] = useState<TextSelection>()
 
+  const { refetch, isFetching, isFetched } = useQuery({
+    queryKey: ['Autocomplete', getOptions, input],
+    queryFn: () => getOptions(input),
+    enabled: false,
+  })
+
   const debouncedHandleChange = useDebouncedCallback(async (newInput: string) => {
-    const newOptions = await getOptions(newInput)
-    setOptions(newOptions)
+    const newOptions = await refetch()
+    setOptions(newOptions.data ?? emptyOptions)
   }, debounce)
 
   const handleChange = useCallback(
@@ -201,7 +198,7 @@ const AutocompleteInner = <L extends any[], O>(
       />
       <View>
         {multiSourceMode ? (
-          renderResults?.(options, optionsListProps)
+          renderResults?.({ options, optionsListProps, isFetching, isFetched, input })
         ) : optionsPortalName ? (
           <Portal hostName={optionsPortalName}>
             {options.length > 0 && (resultsHeader ?? null)}

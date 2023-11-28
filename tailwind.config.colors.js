@@ -36,6 +36,14 @@ module.exports = {
     DEFAULT: '#C3B26F',
     light: '#F5F2E8',
   },
+  electricCarCard: {
+    DEFAULT: '#0F9079',
+    light: '#DAFFF8',
+  },
+  tzpCard: {
+    DEFAULT: '#CA6337',
+    light: '#FFEFE8',
+  },
   parkingZone: '#71CA55',
   activeZone: '#F1B830',
 }

@@ -18,12 +18,12 @@ const menuItems: MenuItem[] = [
   {
     title: 'Phone number login/register',
     subtitle: 'Cognito integration',
-    route: '/examples/login',
+    route: '/sign-in',
   },
   {
-    title: 'Intro',
+    title: 'Onboarding',
     subtitle: 'Onboarding screens with swiper after splash screen',
-    route: '/intro',
+    route: '/onboarding',
   },
   {
     title: 'Parking cards',

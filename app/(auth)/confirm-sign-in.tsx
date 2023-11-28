@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 
 import CodeInput from '@/components/inputs/CodeInput'
@@ -7,13 +8,19 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 const Page = () => {
   const t = useTranslation('Auth')
+  const { confirmSignIn } = useSignInOrSignUp()
 
   const [code, setCode] = useState('')
 
-  const { confirmSignIn } = useSignInOrSignUp()
+  /* Redirect to home screen if user is logged in */
+  const { user } = useAuthStoreContext()
+  if (user) {
+    router.replace('/')
+  }
 
   return (
     <ScreenView>

@@ -6,12 +6,14 @@ import ParkingCardContent from '@/components/parking-cards/base/ParkingCardConte
 import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatDate } from '@/utils/formatDate'
 
 type SubscriberCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
 
 const SubscriberCard = ({ zoneName, licencePlate, validUntil }: SubscriberCardProps) => {
   const t = useTranslation('ParkingCards')
+  const locale = useLocale()
 
   return (
     <ParkingCardBase variant="subscriber">
@@ -19,8 +21,12 @@ const SubscriberCard = ({ zoneName, licencePlate, validUntil }: SubscriberCardPr
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
         <Divider dividerClassname="bg-subscriberCard" />
-        {/* TODO format date */}
-        <CardContentItem description={t('validUntil')} value={validUntil ?? ''} />
+        {validUntil ? (
+          <CardContentItem
+            description={t('validUntil')}
+            value={formatDate(new Date(validUntil), locale)}
+          />
+        ) : null}
       </ParkingCardContent>
     </ParkingCardBase>
   )

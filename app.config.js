@@ -3,14 +3,14 @@ module.exports = {
     name: 'PAAS - parkovanie v Bratislave',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.0.1',
+    version: '1.0.2',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/images/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#16254C',
     },
     assetBundlePatterns: ['**/*'],
     ios: {

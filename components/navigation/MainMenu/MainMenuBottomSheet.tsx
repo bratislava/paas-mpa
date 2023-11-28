@@ -14,7 +14,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
-import { useGlobalStoreContext } from '@/state/GlobalStoreProvider/useGlobalStoreContext'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 type Props = unknown
 
@@ -34,7 +34,7 @@ const MainMenuBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const localRef = useRef<BottomSheet>(null)
   const refSetter = useMultipleRefsSetter(ref, localRef)
 
-  const { user } = useGlobalStoreContext()
+  const { user } = useAuthStoreContext()
   const signOut = useSignOut()
 
   const menuItems: (
@@ -79,7 +79,7 @@ const MainMenuBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       endSlot: <NewAnnouncementsBadge />,
     },
     {
-      label: 'About',
+      label: t('AboutScreen.title'),
       icon: 'info',
       path: '/about',
     },

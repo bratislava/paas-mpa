@@ -18,7 +18,7 @@ export const useProcessedArcgisData = () => {
   const [odpData, setOdpData] = useState<ProcessDataReturn['odpData'] | null>(null)
   const [isProcessingFinished, setIsProcessingFinished] = useState(false)
 
-  const { setMapZones } = useMapZonesUpdateContext()
+  const setMapZones = useMapZonesUpdateContext()
 
   const {
     rawZonesData,

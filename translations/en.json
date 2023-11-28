@@ -2,7 +2,9 @@
   "Navigation": {
     "continue": "Continue",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "apply": "Apply",
+    "showResults": "Show results"
   },
   "Common": {
     "loading": "Loading",
@@ -14,7 +16,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Enter phone number",
-    "consent": "I confirm my understanding of the personal data processing terms in Bratislava. I'm aware that the parking policy conditions may change under Regulation No. 6/2023 and the Operating Regulations.",
+    "consent": "I confirm my understanding of [the personal data processing terms](https://bratislava.sk/) in Bratislava. I'm aware that the parking policy conditions may change under [Regulation No. 6/2023](https://bratislava.sk/) and the [Operating Regulations](https://bratislava.sk/).",
     "enterVerificationCode": "Enter 6-digit code",
     "verificationText": "Continue by entering 6-digit code from message we’ve sent.",
     "signIn": "Log in",
@@ -55,12 +57,25 @@
     "parkingTime": "Parking {{time}}",
     "creditNpkUsed": "Visitor card",
     "creditBpkUsed": "Bonus card",
-    "tax": "Tax"
+    "tax": "Tax",
+    "Errors": {
+      "TooLongParkingTime": "Maximum parking time is 48 hours",
+      "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
+      "InsufficientCredit": "There is no sufficent credit on NPK card for this parking",
+      "CardNotValid": "NPK card is not valid",
+      "NoUsableParkingCardFound": "Invalid parking card type / parking card not found",
+      "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
+      "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
+      "InvalidParkingStart": "Ticket start is after ticket End",
+      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
+      "TicketAllreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
+      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format"
+    }
   },
   "VehiclesScreen": {
     "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
-    "addVehicle": "Add vehicle",
+    "addVehicle": "Add new",
     "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
@@ -69,6 +84,8 @@
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
     "chooseVehicleFieldLabel": "Choose vehicle",
+    "noVehicles": "No vehicles",
+    "noVehiclesText": "Tap on “Add new” to add your first vehicle.",
     "deleteVehicleConfirmModal": {
       "title": "Delete vehicle",
       "message": "Do you really want to delete vehicle {{licencePlate}}?",
@@ -141,7 +158,10 @@
     "history": "History",
     "noActiveTickets": "No active tickets",
     "noActiveTicketsText": "After you buy your parking ticket it will show here.",
-    "buyTicket": "Buy ticket"
+    "buyTicket": "Buy ticket",
+    "filters": "Filters",
+    "noHistoryTickets": "No tickets found",
+    "noHistoryTicketsText": "No past tickets matching the selected filters found."
   },
   "TicketCard": {
     "prolong": "Prolong",
@@ -164,6 +184,8 @@
       "resident": "Resident card",
       "bonus": "Bonus card",
       "subscriber": "Subscriber card",
+      "electric-car": "Electric car card",
+      "tzp": "ŤZP card",
       "other": "Other card"
     },
     "validUntil": "Valid until",
@@ -186,12 +208,12 @@
   "VerificationResult": {
     "verified": {
       "title": "Parking cards added",
-      "text": "Your parking cards e-mail {{email}} has been added. You can see your cards in the Parking cards section.",
+      "text": "Your parking cards e-mail **{{email}}** has been added. You can see your cards in the Parking cards section.",
       "actionButtonLabel": "Continue"
     },
     "verified-no-cards": {
       "title": "No parking cards",
-      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact paas.sk support.",
+      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact [paas.sk](https://paas.sk/casto-kladene-otazky/) support.",
       "actionButtonLabel": "Continue"
     },
     "link-expired": {
@@ -211,10 +233,6 @@
     "tomorrow": "Tomorrow",
     "now": "Now",
     "set": "Set",
-    "FromToScreen": {
-      "arrivalAt": "Arrival at",
-      "departureAt": "Departure at"
-    },
     "abbr": {
       "d": "d",
       "h": "h",
@@ -255,7 +273,10 @@
     "title": "Zone details",
     "searchResults": "Search results",
     "zones": "Parking zones",
-    "addresses": "Addresses"
+    "addresses": "Addresses",
+    "noResults": "No results",
+    "startTyping": "Start typing",
+    "typeSomething": "Type something to begin searching"
   },
   "FiltersScreen": {
     "title": "Filters",
@@ -294,7 +315,7 @@
     "links": {
       "termsAndConditions": {
         "label": "Terms & conditions",
-        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+        "url": "https://paas.sk/vseobecne-obchodne-podmienky/"
       },
       "privacyPolicy": {
         "label": "Privacy policy",
@@ -309,5 +330,49 @@
         "url": "https://paas.sk/ochrana-osobnych-udajov/"
       }
     }
+  },
+  "OnboardingScreen": {
+    "next": "Next",
+    "getStarted": "Get started",
+    "slides": {
+      "welcome": {
+        "title": "Welcome to the city PAAS application",
+        "text": "Through the application managed by the city of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card."
+      },
+      "dataSecurity": {
+        "title": "Data security and simplicity",
+        "text": "The application was created by the capital Bratislava with an emphasis on simplicity and intuitiveness."
+      },
+      "parkingCards": {
+        "title": "Using parking cards is easy",
+        "text": "By verifying your e-mail, which you used for PAAS, we can easily upload your parking cards and you can park with a discount."
+      },
+      "helpUsPlan": {
+        "title": "Help us plan Bratislava better",
+        "text": "Thanks to the use of this application, you support the creation of better transport and its planning in Bratislava."
+      },
+      "visitorsFree": {
+        "title": "Your visitors can park for free",
+        "text": "By applying for a visitor parking card, your loved ones and family can park for free."
+      },
+      "bonusCard": {
+        "title": "Park every day for 2 hours with a 100% discount",
+        "text": "By using the Bonus card, you can park in selected sections for 2 hours for free. In order to use the discount, it is necessary to verify the e-mail address to which the card was issued."
+      }
+    }
+  },
+  "TicketsFilters": {
+    "title": "Filters",
+    "reset": "Reset",
+    "vehicles": "Vehicles",
+    "fromTo": "From - to",
+    "timeframes": {
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "selectAll": "Select all",
+    "all": "All"
   }
 }

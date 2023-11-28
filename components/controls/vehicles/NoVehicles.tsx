@@ -1,15 +1,22 @@
-import React from 'react'
-import { View } from 'react-native'
+import { Link } from 'expo-router'
 
-import Typography from '@/components/shared/Typography'
+import ContinueButton from '@/components/navigation/ContinueButton'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import { useTranslation } from '@/hooks/useTranslation'
 
-// TODO nicer design
 const NoVehicles = () => {
+  const t = useTranslation('VehiclesScreen')
+
   return (
-    <View className="py-3 g-3">
-      <Typography variant="h1">No vehicles</Typography>
-      <Typography>Tap on “Add new” to add your first vehicle.</Typography>
-    </View>
+    <EmptyStateScreen
+      contentTitle={t('noVehicles')}
+      text={t('noVehiclesText')}
+      actionButton={
+        <Link asChild href="/vehicles/add-vehicle">
+          <ContinueButton>{t('addVehicle')}</ContinueButton>
+        </Link>
+      }
+    />
   )
 }
 

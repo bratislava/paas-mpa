@@ -1,10 +1,9 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { forwardRef, useCallback, useMemo, useState } from 'react'
-import { Platform } from 'react-native'
+import { forwardRef, useCallback, useState } from 'react'
 
-import { ParkingCardsLocalSearchParams } from '@/app/parking-cards/[email]'
+import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Modal from '@/components/screen-layout/Modal/Modal'
@@ -12,14 +11,13 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { verifiedEmailsOptions } from '@/modules/backend/constants/queryOptions'
+import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 // TODO FIXME bottom sheet is empty on Android
 const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
-  const snapPoints = useMemo(() => [120], [])
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
@@ -29,7 +27,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
     onSuccess: async () => {
       // Refetch verified emails
       await queryClient.refetchQueries({
-        queryKey: verifiedEmailsOptions().queryKey,
+        queryKey: verifiedEmailsInfiniteOptions().queryKey,
         type: 'active',
       })
     },
@@ -69,9 +67,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
       <BottomSheet
         ref={ref}
         index={-1}
-        // Bug fix: disable dynamic sizing on android, add snap points
-        snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
-        enableDynamicSizing={Platform.OS === 'ios'}
+        enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
       >

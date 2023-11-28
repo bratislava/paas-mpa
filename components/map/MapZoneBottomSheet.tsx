@@ -8,12 +8,13 @@ import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-nat
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ZoneDetailsParamas } from '@/app/zone-details'
+import { ZoneDetailsParamas } from '@/app/(app)/zone-details'
 import ZoneBadge from '@/components/info/ZoneBadge'
 import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
 import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAttachment'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -30,11 +31,12 @@ import {
   NormalizedUdrZone,
 } from '@/modules/map/types'
 import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
   noZone: 216,
-  zone: 282,
+  zone: 306,
   searchExpanded: '100%',
 }
 
@@ -46,8 +48,11 @@ type Props = {
 const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
+// TODO refactor to reduce complexity, separate some components, simplify logic
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter } = props
+
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
@@ -66,18 +71,16 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     if (isZoneSelected) {
       newSnapPoints.push(SNAP_POINTS.zone + bottom)
     }
-    if (isFullHeightEnabled) {
-      newSnapPoints.push(SNAP_POINTS.searchExpanded)
-    }
+    newSnapPoints.push(SNAP_POINTS.searchExpanded)
 
     return newSnapPoints
-  }, [isZoneSelected, isFullHeightEnabled, bottom])
+  }, [isZoneSelected, bottom])
 
   useEffect(() => {
-    if (snapPoints.at(-1) === SNAP_POINTS.searchExpanded) {
+    if (isFullHeightEnabled) {
       localRef.current?.snapToPosition(SNAP_POINTS.searchExpanded)
     }
-  }, [snapPoints])
+  }, [isFullHeightEnabled])
 
   const handleInputBlur = useCallback(() => {
     if (inputRef.current?.isFocused()) {
@@ -96,6 +99,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
       LayoutAnimation.configureNext(animation)
       if (checkIfFullyExtended(newIndex, snapPoints)) {
+        setIsFullHeightEnabled(true)
         inputRef.current?.focus()
       } else {
         handleInputBlur()
@@ -103,6 +107,15 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       }
     },
     [snapPoints, handleInputBlur],
+  )
+
+  const handleAnimate = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      if (checkIfFullyExtended(toIndex, snapPoints)) {
+        setIsFullHeightEnabled(true)
+      }
+    },
+    [snapPoints],
   )
 
   const handleInputFocus = useCallback(() => {
@@ -142,6 +155,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         onChange={handleChange}
         // eslint-disable-next-line react-native/no-inline-styles
         handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
+        handleComponent={BottomSheetHandleWithShadow}
+        onAnimate={handleAnimate}
         animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
@@ -219,10 +234,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
                 <Link
                   asChild
-                  href={{
-                    pathname: '/purchase',
-                    params: { udrId: selectedZone.udrId },
-                  }}
+                  href="/purchase"
+                  onPress={() => onPurchaseStoreUpdate({ udr: selectedZone })}
                 >
                   <Button variant="primary">{t('Navigation.continue')}</Button>
                 </Link>
