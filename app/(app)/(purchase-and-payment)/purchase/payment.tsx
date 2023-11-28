@@ -6,7 +6,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
-type PaymentSearchParams = {
+export type PaymentSearchParams = {
   paymentUrl: string
 }
 

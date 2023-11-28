@@ -40,11 +40,30 @@
     "chooseVehicleFieldLabel": "Choose vehicle",
     "customParkingTimeFieldLabel": "Choose time",
     "chooseParkingZoneEmptyControlLabel": "Choose parking zone",
+    "pay": "Pay",
+    "summary": "Summary",
     "backToMap": "Back to map",
     "paymentFailed": "Payment failed",
     "paymentFailedText": "Your payment has failed. \nPlease try again.",
     "paymentSuccessful": "Payment successful",
-    "paymentSuccessfulText": "Your payment ticket has been paid."
+    "paymentSuccessfulText": "Your payment ticket has been paid.",
+    "Errors": {
+      "TooLongParkingTime": "Maximum parking time is 48 hours",
+      "TooShortParkingTime": "TooShortParkingTime TODO",
+      "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
+      "InsufficientCredit": "There is no sufficient credit on NPK card for this parking",
+      "CardNotValid": "NPK card is not valid",
+      "NoUsableParkingCardFound": "Invalid parking card type / parking card not found",
+      "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
+      "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
+      "InvalidParkingStart": "Ticket start is after ticket End",
+      "InvalidParkingEnd": "InvalidParkingEnd TODO",
+      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
+      "TicketAlreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
+      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format",
+      "TicketAlreadyShortened": "TicketAlreadyShortened TODO",
+      "BadRequest": "Bad request"
+    }
   },
   "BoughtTicket": {
     "yourTicket": "Your ticket",
@@ -52,25 +71,10 @@
     "validUntil": "Valid to"
   },
   "PurchaseBottomSheet": {
-    "pay": "Pay",
-    "summary": "Summary",
     "parkingTime": "Parking {{time}}",
     "creditNpkUsed": "Visitor card",
     "creditBpkUsed": "Bonus card",
-    "tax": "Tax",
-    "Errors": {
-      "TooLongParkingTime": "Maximum parking time is 48 hours",
-      "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
-      "InsufficientCredit": "There is no sufficent credit on NPK card for this parking",
-      "CardNotValid": "NPK card is not valid",
-      "NoUsableParkingCardFound": "Invalid parking card type / parking card not found",
-      "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
-      "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
-      "InvalidParkingStart": "Ticket start is after ticket End",
-      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
-      "TicketAllreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
-      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format"
-    }
+    "tax": "Tax"
   },
   "VehiclesScreen": {
     "title": "Vehicles",
@@ -300,8 +304,8 @@
   "Errors": {
     "422": "An error occurred while processing your request. Please try again later.",
     "axiosGeneric": "An error occurred while processing your request. Please try again later.",
-    "generic": "An error occured.",
-    "DATABASE ERROR": "database error",
+    "generic": "An error occurred.",
+    "DATABASE_ERROR": "database error",
     "MAILGUN_ERROR": "mailgun error",
     "RABBIT_MQ_ERROR": "rabbit mq error"
   },

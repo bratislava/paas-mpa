@@ -13,11 +13,16 @@ import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { formatDateTime } from '@/utils/formatDateTime'
 import { formatDuration } from '@/utils/formatDuration'
 
+/**
+ * Returns duration in seconds.
+ *
+ * @param date
+ */
 const getDuration = (date: Date) => {
   const now = new Date()
   const diff = date.getTime() - now.getTime()
 
-  return Math.ceil(diff / 1000 / 60)
+  return Math.ceil(diff / 1000)
 }
 
 type Props = {
@@ -78,6 +83,7 @@ const TimeSelector = ({ value, onValueChange }: Props) => {
 
   const handleDatePickerConfirm = (date: Date) => {
     const duration = getDuration(date)
+    console.log('confirm', date, duration)
     onValueChange(duration)
   }
 
