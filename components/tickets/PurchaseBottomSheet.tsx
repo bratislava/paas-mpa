@@ -1,11 +1,13 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
+import clsx from 'clsx'
 import { router } from 'expo-router'
-import { forwardRef, useMemo } from 'react'
+import { Dispatch, forwardRef, useMemo } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
@@ -27,16 +29,27 @@ type Props = {
   priceData: GetTicketPriceResponseDto | undefined
   isLoading?: boolean
   priceRequestBody: GetTicketPriceRequestDto
+  error?: { errorName: string }
+  purchaseButtonContainerHeight: number
+  setPurchaseButtonContainerHeight: Dispatch<number>
 }
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
-  ({ priceData, isLoading, priceRequestBody }, ref) => {
+  (
+    {
+      priceData,
+      isLoading,
+      error,
+      priceRequestBody,
+      purchaseButtonContainerHeight,
+      setPurchaseButtonContainerHeight,
+    },
+    ref,
+  ) => {
     const t = useTranslation('PurchaseBottomSheet')
     const { udr } = usePurchaseStoreContext()
     const insets = useSafeAreaInsets()
-    // TODO tmp for now - fixed height from figma
-    const purchaseButtonContainerHeight = 24 + 12 + 48 + insets.bottom
-    // 24 is handle height
+
     const snapPoints = useMemo(() => [24], [])
 
     const durationFromPriceDate = getDurationFromPriceData(priceData)
@@ -90,77 +103,92 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
           // footerComponent={renderFooter}
           bottomInset={purchaseButtonContainerHeight}
           snapPoints={snapPoints}
+          handleComponent={BottomSheetHandleWithShadow}
         >
-          {priceData ? (
-            <BottomSheetContent cn="g-3" hideSpacer>
-              <FlexRow>
-                <Typography variant="default">
-                  {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
-                </Typography>
-                <Typography variant="default-bold">
-                  {formatPrice(priceData.priceWithoutDiscount)}
-                </Typography>
-              </FlexRow>
-
-              {/* Is this ever used? */}
-              {udr?.rpkInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.rpkInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {udr?.npkInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.npkInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {/* This usually says you cannot use BPK (in 2e zones) */}
-              {udr?.additionalInformation ? (
-                <Panel className="bg-warning-light">
-                  <Typography>{udr.additionalInformation}</Typography>
-                </Panel>
-              ) : null}
-
-              {priceData.creditNpkUsedSeconds ? (
+          <BottomSheetContent cn="g-3" hideSpacer>
+            {priceData ? (
+              <>
                 <FlexRow>
-                  <Typography variant="default">{t('creditNpkUsed')}</Typography>
+                  <Typography variant="default">
+                    {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
+                  </Typography>
                   <Typography variant="default-bold">
-                    {formatDuration(priceData.creditNpkUsedSeconds)}
+                    {formatPrice(priceData.priceWithoutDiscount)}
                   </Typography>
                 </FlexRow>
-              ) : null}
 
-              {priceData.creditBpkUsedSeconds ? (
-                <FlexRow>
-                  <Typography variant="default">{t('creditBpkUsed')}</Typography>
-                  <Typography variant="default-bold">
-                    {formatDuration(priceData.creditBpkUsedSeconds)}
-                  </Typography>
-                </FlexRow>
-              ) : null}
+                {/* Is this ever used? */}
+                {udr?.rpkInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.rpkInformation}</Typography>
+                  </Panel>
+                ) : null}
 
-              {/* Check if it is present (null/undefined, but show if it is 0) */}
-              {priceData.tax == null ? null : (
-                <FlexRow>
-                  <Typography variant="default">{t('tax')}</Typography>
-                  <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
-                </FlexRow>
-              )}
+                {udr?.npkInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.npkInformation}</Typography>
+                  </Panel>
+                ) : null}
 
-              <Divider />
-            </BottomSheetContent>
-          ) : null}
+                {/* This usually says you cannot use BPK (in 2e zones) */}
+                {udr?.additionalInformation ? (
+                  <Panel className="bg-warning-light">
+                    <Typography>{udr.additionalInformation}</Typography>
+                  </Panel>
+                ) : null}
+
+                {priceData.creditNpkUsedSeconds ? (
+                  <FlexRow>
+                    <Typography variant="default">{t('creditNpkUsed')}</Typography>
+                    <Typography variant="default-bold">
+                      {formatDuration(priceData.creditNpkUsedSeconds)}
+                    </Typography>
+                  </FlexRow>
+                ) : null}
+
+                {priceData.creditBpkUsedSeconds ? (
+                  <FlexRow>
+                    <Typography variant="default">{t('creditBpkUsed')}</Typography>
+                    <Typography variant="default-bold">
+                      {formatDuration(priceData.creditBpkUsedSeconds)}
+                    </Typography>
+                  </FlexRow>
+                ) : null}
+
+                {/* Check if it is present (null/undefined, but show if it is 0) */}
+                {priceData.tax == null ? null : (
+                  <FlexRow>
+                    <Typography variant="default">{t('tax')}</Typography>
+                    <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
+                  </FlexRow>
+                )}
+
+                <Divider />
+              </>
+            ) : null}
+          </BottomSheetContent>
         </BottomSheet>
 
-        <View style={{ height: purchaseButtonContainerHeight }} className="bg-white px-5 g-3">
+        <View
+          style={{ paddingBottom: insets.bottom }}
+          className={clsx('bg-white px-5 g-3')}
+          onLayout={(event) => {
+            setPurchaseButtonContainerHeight(event.nativeEvent.layout.height)
+          }}
+        >
           {/* Toggling visibility instead hiding by "display: none" prevents layout shifts */}
-          <FlexRow className={priceData ? 'visible' : 'invisible'}>
+          <FlexRow className={priceData ? 'visible' : 'hidden'}>
             <Typography variant="default-bold">{t('summary')}</Typography>
             {priceData ? (
               <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
             ) : null}
           </FlexRow>
+
+          {error && !priceData ? (
+            <Panel className="bg-negative-light px-5 py-4">
+              <Typography>{t(`Errors.${error.errorName}`)}</Typography>
+            </Panel>
+          ) : null}
 
           <Button onPress={handlePressPay} disabled={!priceData} loading={isLoading}>
             {t('pay')}

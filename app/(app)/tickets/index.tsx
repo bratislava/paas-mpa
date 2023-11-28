@@ -1,6 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
-import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native'
+import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
@@ -8,12 +11,15 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import FloatingButton from '@/components/shared/FloatingButton'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
+import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
+import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
 type RouteProps =
   | {
@@ -21,18 +27,21 @@ type RouteProps =
     }
   | {
       active?: never
-      // TODO filters?
     }
 
 const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
+  const insets = useSafeAreaInsets()
+  const filters = useTicketsFiltersStoreContext()
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
     ({ item }) => <TicketCard ticket={item} isActive={active} />,
     [active],
   )
 
-  const now = useMemo(() => new Date().toISOString(), [])
+  const now = useMemo(() => new Date(), [])
+
+  const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
 
   const {
     data: ticketsDataInf,
@@ -44,9 +53,10 @@ const TicketsRoute = ({ active }: RouteProps) => {
     isFetchingNextPage,
   } = useInfiniteQuery(
     ticketsInfiniteQuery({
-      parkingEndTo: active ? undefined : now,
-      parkingEndFrom: active ? now : undefined,
+      parkingEndFrom: active ? now : fromTo.parkingEndFrom,
+      parkingEndTo: active ? undefined : fromTo.parkingEndTo,
       pageSize: 20,
+      ecv: filters.ecv ?? undefined,
     }),
   )
 
@@ -56,9 +66,14 @@ const TicketsRoute = ({ active }: RouteProps) => {
     }
   }
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const handleFiltersPress = () => {
+    router.push('/tickets/filters')
+  }
+
   if (isPending) {
     return (
-      <ScreenContent>
+      <ScreenContent className="bg-transparent">
         <SkeletonTicketCard />
       </ScreenContent>
     )
@@ -70,27 +85,60 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
 
-  if (!tickets?.length) {
+  if (active && !tickets?.length) {
     return (
       <EmptyStateScreen
         contentTitle={t('noActiveTickets')}
         text={t('noActiveTicketsText')}
-        actionButton={<Button variant="primary">{t('buyTicket')}</Button>}
+        actionButton={
+          <Link href="/purchase" asChild>
+            <Button variant="primary">{t('buyTicket')}</Button>
+          </Link>
+        }
+      />
+    )
+  }
+  if (!active && !tickets?.length) {
+    return (
+      <EmptyStateScreen
+        contentTitle={t('noHistoryTickets')}
+        text={t('noHistoryTicketsText')}
+        actionButton={
+          <Button variant="primary" onPress={handleFiltersPress}>
+            {t('filters')}
+          </Button>
+        }
       />
     )
   }
 
   return (
-    <ScreenContent>
-      <FlatList
-        // eslint-disable-next-line react-native/no-inline-styles
-        contentContainerStyle={{ gap: 12 }}
-        data={tickets}
-        renderItem={renderItem}
-        ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
-        onEndReachedThreshold={0.2}
-        onEndReached={loadMore}
-      />
+    <ScreenContent variant="center" className="flex-1">
+      <View className="w-full">
+        <FlatList
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{ gap: 12 }}
+          data={tickets}
+          renderItem={renderItem}
+          ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
+          onEndReachedThreshold={0.2}
+          onEndReached={loadMore}
+        />
+      </View>
+
+      {!active && (
+        <LinearGradient
+          // TODO: Padding and insets
+          className="absolute w-full items-center pb-6"
+          pointerEvents="box-none"
+          style={{ bottom: insets.bottom }}
+          colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        >
+          <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
+            {t('filters')}
+          </FloatingButton>
+        </LinearGradient>
+      )}
     </ScreenContent>
   )
 }

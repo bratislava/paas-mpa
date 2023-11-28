@@ -2,7 +2,9 @@
   "Navigation": {
     "continue": "Continue",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "apply": "Apply",
+    "showResults": "Show results"
   },
   "Common": {
     "loading": "Loading",
@@ -55,12 +57,25 @@
     "parkingTime": "Parking {{time}}",
     "creditNpkUsed": "Visitor card",
     "creditBpkUsed": "Bonus card",
-    "tax": "Tax"
+    "tax": "Tax",
+    "Errors": {
+      "TooLongParkingTime": "Maximum parking time is 48 hours",
+      "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
+      "InsufficientCredit": "There is no sufficent credit on NPK card for this parking",
+      "CardNotValid": "NPK card is not valid",
+      "NoUsableParkingCardFound": "Invalid parking card type / parking card not found",
+      "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
+      "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
+      "InvalidParkingStart": "Ticket start is after ticket End",
+      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
+      "TicketAllreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
+      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format"
+    }
   },
   "VehiclesScreen": {
     "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
-    "addVehicle": "Add vehicle",
+    "addVehicle": "Add new",
     "licencePlateFieldLabel": "Licence plate",
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
@@ -69,6 +84,8 @@
     "default": "Default",
     "licencePlateDuplicate": "Vehicle with this license plate already exists.",
     "chooseVehicleFieldLabel": "Choose vehicle",
+    "noVehicles": "No vehicles",
+    "noVehiclesText": "Tap on “Add new” to add your first vehicle.",
     "deleteVehicleConfirmModal": {
       "title": "Delete vehicle",
       "message": "Do you really want to delete vehicle {{licencePlate}}?",
@@ -141,7 +158,10 @@
     "history": "History",
     "noActiveTickets": "No active tickets",
     "noActiveTicketsText": "After you buy your parking ticket it will show here.",
-    "buyTicket": "Buy ticket"
+    "buyTicket": "Buy ticket",
+    "filters": "Filters",
+    "noHistoryTickets": "No tickets found",
+    "noHistoryTicketsText": "No past tickets matching the selected filters found."
   },
   "TicketCard": {
     "prolong": "Prolong",
@@ -253,7 +273,10 @@
     "title": "Zone details",
     "searchResults": "Search results",
     "zones": "Parking zones",
-    "addresses": "Addresses"
+    "addresses": "Addresses",
+    "noResults": "No results",
+    "startTyping": "Start typing",
+    "typeSomething": "Type something to begin searching"
   },
   "FiltersScreen": {
     "title": "Filters",
@@ -337,5 +360,19 @@
         "text": "By using the Bonus card, you can park in selected sections for 2 hours for free. In order to use the discount, it is necessary to verify the e-mail address to which the card was issued."
       }
     }
+  },
+  "TicketsFilters": {
+    "title": "Filters",
+    "reset": "Reset",
+    "vehicles": "Vehicles",
+    "fromTo": "From - to",
+    "timeframes": {
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "selectAll": "Select all",
+    "all": "All"
   }
 }

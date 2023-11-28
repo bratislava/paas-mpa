@@ -63,10 +63,10 @@ export const ticketsOptions = ({
 export const ticketsInfiniteQuery = (
   options?: {
     ecv?: string
-    parkingStartFrom?: string
-    parkingStartTo?: string
-    parkingEndFrom?: string
-    parkingEndTo?: string
+    parkingStartFrom?: Date
+    parkingStartTo?: Date
+    parkingEndFrom?: Date
+    parkingEndTo?: Date
   } & PageSize,
 ) => {
   const { ecv, parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo, pageSize } =
@@ -76,10 +76,10 @@ export const ticketsInfiniteQuery = (
     queryKey: [
       'Tickets',
       ecv,
-      parkingStartFrom,
-      parkingStartTo,
-      parkingEndFrom,
-      parkingEndTo,
+      parkingStartFrom?.toISOString(),
+      parkingStartTo?.toISOString(),
+      parkingEndFrom?.toISOString(),
+      parkingEndTo?.toISOString(),
       pageSize,
     ],
     queryFn: ({ pageParam }) =>
@@ -87,10 +87,10 @@ export const ticketsInfiniteQuery = (
         pageParam,
         pageSize,
         ecv,
-        parkingStartFrom,
-        parkingStartTo,
-        parkingEndFrom,
-        parkingEndTo,
+        parkingStartFrom?.toISOString(),
+        parkingStartTo?.toISOString(),
+        parkingEndFrom?.toISOString(),
+        parkingEndTo?.toISOString(),
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),

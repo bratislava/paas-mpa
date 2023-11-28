@@ -2,6 +2,7 @@ import { clsx } from 'clsx'
 import { Stack, useNavigation } from 'expo-router'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 const dottedBackground = require('@/assets/images/dotted-background.png')
@@ -33,6 +34,8 @@ const ScreenView = ({
     rootNavigation?.setOptions({ headerShown: false })
   }, [navigation])
 
+  const insets = useSafeAreaInsets()
+
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
       {title?.length ? <Stack.Screen options={{ title }} /> : null}
@@ -48,7 +51,11 @@ const ScreenView = ({
         {children}
       </View>
 
-      {actionButton ? <View className="p-5 pb-[50px]">{actionButton}</View> : null}
+      {actionButton ? (
+        <View className="p-5" style={{ paddingBottom: insets.bottom + 12 }}>
+          {actionButton}
+        </View>
+      ) : null}
     </View>
   )
 }

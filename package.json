@@ -36,7 +36,7 @@
     "@types/react": "~18.2.14",
     "amazon-cognito-identity-js": "~6.3.6",
     "aws-amplify": "~5.3.12",
-    "axios": "~1.5.1",
+    "axios": "~1.6.0",
     "clsx": "~2.0.0",
     "conditional-wrap": "~1.0.2",
     "expo": "~49.0.13",

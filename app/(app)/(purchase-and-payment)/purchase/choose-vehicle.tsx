@@ -1,7 +1,6 @@
 import { Link, router } from 'expo-router'
 import { FlatList } from 'react-native'
 
-import NoVehicles from '@/components/controls/vehicles/NoVehicles'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -41,7 +40,6 @@ const ChooseVehicleScreen = () => {
               />
             </PressableStyled>
           )}
-          ListEmptyComponent={() => <NoVehicles />}
         />
         <Link asChild href="/vehicles/add-vehicle">
           <Button variant="plain-dark" startIcon="add-circle-outline">

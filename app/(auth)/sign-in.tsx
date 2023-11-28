@@ -23,6 +23,8 @@ const Page = () => {
     router.replace('/')
   }
 
+  const phoneWithoutSpaces = phone.replaceAll(/\s/g, '')
+
   return (
     <ScreenView>
       <Stack.Screen options={{ headerBackVisible: false }} />
@@ -30,20 +32,21 @@ const Page = () => {
       <ScreenContent>
         <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
-        {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad". */}
-        {/* https://reactnative.dev/docs/textinput#onsubmitediting  */}
+        {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+        {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
         <TextInput
           value={phone}
           onChangeText={setPhone}
           keyboardType="phone-pad"
           autoComplete="tel"
           autoFocus
-          onSubmitEditing={() => attemptSignInOrSignUp(phone)}
+          returnKeyType="done"
+          onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
         />
 
         <Markdown>{t('consent')}</Markdown>
 
-        <ContinueButton onPress={() => attemptSignInOrSignUp(phone)} />
+        <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
       </ScreenContent>
     </ScreenView>
   )

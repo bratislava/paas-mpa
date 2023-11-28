@@ -1,8 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { forwardRef, useCallback, useMemo, useState } from 'react'
-import { Platform } from 'react-native'
+import { forwardRef, useCallback, useState } from 'react'
 
 import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -19,7 +18,6 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
-  const snapPoints = useMemo(() => [120], [])
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
@@ -69,9 +67,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
       <BottomSheet
         ref={ref}
         index={-1}
-        // Bug fix: disable dynamic sizing on android, add snap points
-        snapPoints={Platform.OS === 'android' ? snapPoints : undefined}
-        enableDynamicSizing={Platform.OS === 'ios'}
+        enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
       >

@@ -71,7 +71,7 @@ const FiltersScreen = () => {
       title={t('title')}
       actionButton={
         <Link asChild href={{ pathname: '/', params: filters }}>
-          <ContinueButton>{t('showResults')}</ContinueButton>
+          <ContinueButton translationKey="showResults" />
         </Link>
       }
     >

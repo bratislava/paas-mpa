@@ -2,7 +2,9 @@
   "Navigation": {
     "continue": "Pokračovať",
     "openMenu": "Otvoriť menu",
-    "closeMenu": "Zatvoriť menu"
+    "closeMenu": "Zatvoriť menu",
+    "apply": "Vybrať",
+    "showResults": "Zobraziť"
   },
   "Common": {
     "loading": "Načítavam",
@@ -55,12 +57,25 @@
     "parkingTime": "Parkovanie {{time}}",
     "creditNpkUsed": "Návštevnícka karta",
     "creditBpkUsed": "Bonusová karta",
-    "tax": "Daň"
+    "tax": "Daň",
+    "Errors": {
+      "TooLongParkingTime": "Prekročený maximálny čas na parkovanie",
+      "FreeTicket": "Parkovací lístok nie je možné zakúpiť. Parkovanie sa v určenom čase neplatí.",
+      "InsufficientCredit": "Pre toto parkovanie nie je na karte NPK dostatočný kredit",
+      "CardNotValid": "Návštevnícka parkovacia karta nie je platná",
+      "NoUsableParkingCardFound": "Neplatný typ parkovacej karty / parkovacia karta sa nenašla",
+      "PermitCardActive": "Na tomto parkovacom mieste a EČV je rezidentská alebo abonentská karta",
+      "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
+      "InvalidParkingStart": "Začiatok lístka je po ukončení lístka",
+      "parkingSpaceNotFound": "Parkovací segment neexistuje. Skúste iné ID parkovacieho segmentu.",
+      "TicketAllreadyExists": "Tento lístok pre ecv na parkovacom miest už existuje. Skončí o ...",
+      "BadDateFormat": "Premenná má zlý formát. Potrebujete formát ISO 8601"
+    }
   },
   "VehiclesScreen": {
     "title": "Vozidlá",
     "addVehicleTitle": "Pridať vozidlo",
-    "addVehicle": "Pridať vozidlo",
+    "addVehicle": "Pridať",
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
@@ -69,6 +84,8 @@
     "default": "Predvolené",
     "licencePlateDuplicate": "Vozidlo s týmto EČV už existuje.",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
+    "noVehicles": "Žiadne vozidlá",
+    "noVehiclesText": "Kliknutím na „Pridať “ pridáte svoje prvé vozidlo.",
     "deleteVehicleConfirmModal": {
       "title": "Vymazať vozidlo",
       "message": "Naozaj si prajete vymazať vozidlo {{licencePlate}}?",
@@ -141,7 +158,9 @@
     "history": "História",
     "noActiveTickets": "Žiadne aktívne lístky",
     "noActiveTicketsText": "Po zakúpení parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
-    "buyTicket": "Kúpiť lístok"
+    "buyTicket": "Kúpiť lístok",
+    "noHistoryTickets": "Žiadne lístky",
+    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom."
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
@@ -251,13 +270,15 @@
   },
   "ZoneDetailsScreen": {
     "title": "Detail úseku",
-    "showResults": "Ukázať výsledky",
+    "searchResults": "Výsledky vyhľadávania",
     "zones": "Parkovacie zóny",
-    "addresses": "Adresy"
+    "addresses": "Adresy",
+    "noResults": "Žiadne výsledky",
+    "startTyping": "Začnite písať",
+    "typeSomething": "Napíšte niečo a začnite vyhľadávať"
   },
   "FiltersScreen": {
     "title": "Filtre",
-    "showResults": "Zobraziť",
     "filteringOptions": {
       "assistant": "Asistenti",
       "parkomat": "Parkomaty",
@@ -337,5 +358,19 @@
         "text": "Využitím bonusovej karty viete parkovať vo vybraných úsekoch 2 hodiny zadarmo. Pre využitie zľavy je potrebné overiť e-mailovú adresu, na ktorú bola karta vydaná."
       }
     }
+  },
+  "TicketsFilters": {
+    "title": "Filter",
+    "reset": "Resetovať",
+    "vehicles": "Vozidlá",
+    "fromTo": "Od - do",
+    "timeframes": {
+      "thisMonth": "Tento mesiac",
+      "lastMonth": "Minulý mesiac",
+      "thisYear": "Tento rok",
+      "lastYear": "Minulý rok"
+    },
+    "selectAll": "Všetky",
+    "all": "Všetky"
   }
 }
