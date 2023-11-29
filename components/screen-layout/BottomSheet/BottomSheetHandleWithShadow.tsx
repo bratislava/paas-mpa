@@ -2,6 +2,8 @@
 import { BottomSheetHandle, BottomSheetHandleProps } from '@gorhom/bottom-sheet'
 import { Shadow } from 'react-native-shadow-2'
 
+export const HANDLE_HEIGHT = 24
+
 const BottomSheetHandleWithShadow = (props: BottomSheetHandleProps) => {
   return (
     <Shadow

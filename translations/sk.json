@@ -40,26 +40,16 @@
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "customParkingTimeFieldLabel": "Vyberte čas",
     "chooseParkingZoneEmptyControlLabel": "Vyberte úsek parkovania",
+    "pay": "Zaplatiť",
+    "summary": "Celkom",
     "backToMap": "Späť na mapu",
     "paymentFailed": "Platba zlyhala",
     "paymentFailedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova.",
     "paymentSuccessful": "Úspešná platba",
-    "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený."
-  },
-  "BoughtTicket": {
-    "yourTicket": "Parkovací lístok",
-    "licencePlate": "Evidenčné číslo",
-    "validUntil": "Platnosť do"
-  },
-  "PurchaseBottomSheet": {
-    "pay": "Zaplatiť",
-    "summary": "Celkom",
-    "parkingTime": "Parkovanie {{time}}",
-    "creditNpkUsed": "Návštevnícka karta",
-    "creditBpkUsed": "Bonusová karta",
-    "tax": "Daň",
+    "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
     "Errors": {
       "TooLongParkingTime": "Prekročený maximálny čas na parkovanie",
+      "TooShortParkingTime": "TooShortParkingTime TODO",
       "FreeTicket": "Parkovací lístok nie je možné zakúpiť. Parkovanie sa v určenom čase neplatí.",
       "InsufficientCredit": "Pre toto parkovanie nie je na karte NPK dostatočný kredit",
       "CardNotValid": "Návštevnícka parkovacia karta nie je platná",
@@ -67,10 +57,24 @@
       "PermitCardActive": "Na tomto parkovacom mieste a EČV je rezidentská alebo abonentská karta",
       "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
       "InvalidParkingStart": "Začiatok lístka je po ukončení lístka",
+      "InvalidParkingEnd": "InvalidParkingEnd TODO",
       "parkingSpaceNotFound": "Parkovací segment neexistuje. Skúste iné ID parkovacieho segmentu.",
-      "TicketAllreadyExists": "Tento lístok pre ecv na parkovacom miest už existuje. Skončí o ...",
-      "BadDateFormat": "Premenná má zlý formát. Potrebujete formát ISO 8601"
+      "TicketAlreadyExists": "Tento lístok pre ecv na parkovacom miest už existuje. Skončí o ... TODO",
+      "BadDateFormat": "Premenná má zlý formát. Potrebujete formát ISO 8601",
+      "TicketAlreadyShortened": "TicketAlreadyShortened TODO",
+      "BadRequest": "Bad request"
     }
+  },
+  "BoughtTicket": {
+    "yourTicket": "Parkovací lístok",
+    "licencePlate": "Evidenčné číslo",
+    "validUntil": "Platnosť do"
+  },
+  "PurchaseBottomSheet": {
+    "parkingTime": "Parkovanie {{time}}",
+    "creditNpkUsed": "Návštevnícka karta",
+    "creditBpkUsed": "Bonusová karta",
+    "tax": "Daň"
   },
   "VehiclesScreen": {
     "title": "Vozidlá",
@@ -299,7 +303,7 @@
     "422": "Vyskytla sa chyba pri spracovaní vašej požiadavky. Skúste to prosím neskôr.",
     "axiosGeneric": "Pri spracovaní vašej požiadavky sa vyskytla chyba. Skúste to prosím neskôr.",
     "generic": "Vyskytla sa chyba.",
-    "DATABASE ERROR": "chyba databázy",
+    "DATABASE_ERROR": "chyba databázy",
     "MAILGUN_ERROR": "chyba mailgunu",
     "RABBIT_MQ_ERROR": "chyba rabbit mq"
   },
