@@ -5,6 +5,7 @@ import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
@@ -26,29 +27,31 @@ const Page = () => {
   const phoneWithoutSpaces = phone.replaceAll(/\s/g, '')
 
   return (
-    <ScreenView>
-      <Stack.Screen options={{ headerBackVisible: false }} />
+    <DismissKeyboard>
+      <ScreenView>
+        <Stack.Screen options={{ headerBackVisible: false }} />
 
-      <ScreenContent>
-        <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
+        <ScreenContent>
+          <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
-        {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
-        {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-        <TextInput
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
-          autoComplete="tel"
-          autoFocus
-          returnKeyType="done"
-          onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
-        />
+          {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+          {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
+          <TextInput
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+            autoComplete="tel"
+            autoFocus
+            returnKeyType="done"
+            onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
+          />
 
-        <Markdown>{t('consent')}</Markdown>
+          <Markdown>{t('consent')}</Markdown>
 
-        <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
-      </ScreenContent>
-    </ScreenView>
+          <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
+        </ScreenContent>
+      </ScreenView>
+    </DismissKeyboard>
   )
 }
 
