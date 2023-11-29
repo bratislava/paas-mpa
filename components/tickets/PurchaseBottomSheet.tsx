@@ -15,6 +15,7 @@ import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
 import { formatPrice } from '@/utils/formatPrice'
+import { isDefined } from '@/utils/isDefined'
 
 type Props = {
   priceData: GetTicketPriceResponseDto | undefined
@@ -88,13 +89,12 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
                 </FlexRow>
               ) : null}
 
-              {/* Check if it is present (null/undefined, but show if it is 0) */}
-              {priceData.tax == null ? null : (
+              {isDefined(priceData.tax) ? (
                 <FlexRow>
                   <Typography variant="default">{t('tax')}</Typography>
                   <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
                 </FlexRow>
-              )}
+              ) : null}
 
               <Divider />
             </>

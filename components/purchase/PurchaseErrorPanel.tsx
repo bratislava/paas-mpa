@@ -15,12 +15,10 @@ type Props = {
 const PurchaseErrorPanel = ({ priceQuery }: Props) => {
   const t = useTranslation('PurchaseScreen')
 
-  // TODO simplify?
   return !priceQuery.data &&
     priceQuery.isError &&
     isAxiosError(priceQuery.error) &&
-    priceQuery.error.response &&
-    priceQuery.error.response.status === 422 &&
+    priceQuery.error.response?.status === 422 &&
     isPricingApiError(priceQuery.error.response.data) ? (
     <Panel className="bg-negative-light px-5 py-4">
       <Typography>{t(`Errors.${priceQuery.error.response.data.errorName}`)}</Typography>
