@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { Image, ImageSourcePropType, useWindowDimensions, View } from 'react-native'
+import { ImageSourcePropType, useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
@@ -15,7 +15,7 @@ import {
 } from '@/assets/images/marketing-slider'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
-import Typography from '@/components/shared/Typography'
+import { InfoSlide } from '@/components/screen-layout/InfoSlide'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -43,15 +43,7 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   )[slide]
 
   return (
-    <View className="flex-1">
-      <Image source={image} className="w-full flex-shrink" />
-      <View className="p-5 g-2">
-        <Typography className="text-center" variant="h1">
-          {t(`slides.${slide}.title`)}
-        </Typography>
-        <Typography className="text-center">{t(`slides.${slide}.text`)}</Typography>
-      </View>
-    </View>
+    <InfoSlide title={t(`slides.${slide}.title`)} text={t(`slides.${slide}.text`)} image={image} />
   )
 }
 

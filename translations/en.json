@@ -387,5 +387,15 @@
   },
   "AppVersion": {
     "appVersion": "App version {{version}}"
+  },
+  "PermissionsScreen": {
+    "location": {
+      "title": "Location services",
+      "description": "Enable location services so we can find the nearest parking lot for you."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Enable notifications to get alerts for offers and when your parking ends."
+    }
   }
 }

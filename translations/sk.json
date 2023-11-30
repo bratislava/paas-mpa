@@ -385,5 +385,15 @@
   },
   "AppVersion": {
     "appVersion": "Verzia aplikácie {{version}}"
+  },
+  "PermissionsScreen": {
+    "location": {
+      "title": "Lokalizačné služby",
+      "description": "Povoľťe lokalizačné služby, aby sme vám mohli nájsť najbližšie parkovisko."
+    },
+    "notifications": {
+      "title": "Upozornenia",
+      "description": "Budeme vás informovať o blížiacom sa ukončení parkovného či novinkách PAAS."
+    }
   }
 }
