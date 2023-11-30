@@ -6,11 +6,12 @@ type Props = {
   title: string
   text: string
   image: ImageSourcePropType
+  className?: string
 }
 
-export const InfoSlide = ({ title, text, image }: Props) => {
+export const InfoSlide = ({ title, text, image, className }: Props) => {
   return (
-    <View className="flex-1">
+    <View className={className}>
       <Image source={image} className="w-full flex-shrink" />
       <View className="p-5 g-2">
         <Typography className="text-center" variant="h1">

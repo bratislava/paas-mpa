@@ -43,7 +43,12 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   )[slide]
 
   return (
-    <InfoSlide title={t(`slides.${slide}.title`)} text={t(`slides.${slide}.text`)} image={image} />
+    <InfoSlide
+      className="flex-1"
+      title={t(`slides.${slide}.title`)}
+      text={t(`slides.${slide}.text`)}
+      image={image}
+    />
   )
 }
 

@@ -34,7 +34,7 @@ const NotificationsPermissionRoute = ({ jumpTo }: RouteProps) => {
   }, [permissionStatus, jumpTo])
 
   return (
-    <View>
+    <View className="flex-1 flex-col justify-start">
       <InfoSlide title={t('notifications.title')} text={t('notifications.text')} image={image} />
       <ContinueButton
         className={clsx('mx-5', { 'mb-5': !insets.bottom })}
