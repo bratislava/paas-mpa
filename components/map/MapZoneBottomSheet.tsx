@@ -1,26 +1,20 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
 import clsx from 'clsx'
-import { Link } from 'expo-router'
 import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Keyboard, LayoutAnimation, Pressable, TextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ZoneDetailsParamas } from '@/app/(app)/zone-details'
-import ZoneBadge from '@/components/info/ZoneBadge'
 import { MapRef } from '@/components/map/Map'
 import MapAutocomplete from '@/components/map/MapAutocomplete'
 import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAttachment'
+import MapZoneBottomSheetPanel from '@/components/map/MapZoneBottomSheetPanel'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import Button from '@/components/shared/Button'
-import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
-import Icon from '@/components/shared/Icon'
-import Panel from '@/components/shared/Panel'
-import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -31,8 +25,6 @@ import {
   NormalizedUdrZone,
 } from '@/modules/map/types'
 import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
-import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
-import { formatPricePerHour } from '@/utils/formatPricePerHour'
 
 const SNAP_POINTS = {
   noZone: 216,
@@ -52,35 +44,21 @@ const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter } = props
 
-  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
-
   const t = useTranslation()
   const localRef = useRef<BottomSheet>(null)
-  const { top, bottom } = useSafeAreaInsets()
-  const refSetter = useMultipleRefsSetter(ref, localRef)
-  const isZoneSelected = Boolean(selectedZone)
-  const [isFullHeightEnabled, setIsFullHeightEnabled] = useState(false)
   const inputRef = useRef<TextInput>(null)
+  const refSetter = useMultipleRefsSetter(ref, localRef)
 
-  const snapPoints = useMemo(() => {
-    const newSnapPoints: (string | number)[] = []
+  const { top, bottom } = useSafeAreaInsets()
+  const [isFullHeight, setIsFullHeight] = useState(false)
 
-    if (!isZoneSelected) {
-      newSnapPoints.push(SNAP_POINTS.noZone + bottom)
-    }
-    if (isZoneSelected) {
-      newSnapPoints.push(SNAP_POINTS.zone + bottom)
-    }
-    newSnapPoints.push(SNAP_POINTS.searchExpanded)
-
-    return newSnapPoints
-  }, [isZoneSelected, bottom])
-
-  useEffect(() => {
-    if (isFullHeightEnabled) {
-      localRef.current?.snapToPosition(SNAP_POINTS.searchExpanded)
-    }
-  }, [isFullHeightEnabled])
+  const snapPoints = useMemo(
+    () => [
+      (selectedZone ? SNAP_POINTS.zone : SNAP_POINTS.noZone) + bottom,
+      SNAP_POINTS.searchExpanded,
+    ],
+    [selectedZone, bottom],
+  )
 
   const handleInputBlur = useCallback(() => {
     if (inputRef.current?.isFocused()) {
@@ -90,20 +68,16 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     }
   }, [])
 
-  useEffect(() => {
-    localRef.current?.collapse()
-  }, [selectedZone])
-
   const handleChange = useCallback(
     (newIndex: number) => {
       const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
       LayoutAnimation.configureNext(animation)
       if (checkIfFullyExtended(newIndex, snapPoints)) {
-        setIsFullHeightEnabled(true)
+        setIsFullHeight(true)
         inputRef.current?.focus()
       } else {
         handleInputBlur()
-        setIsFullHeightEnabled(false)
+        setIsFullHeight(false)
       }
     },
     [snapPoints, handleInputBlur],
@@ -112,20 +86,19 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const handleAnimate = useCallback(
     (fromIndex: number, toIndex: number) => {
       if (checkIfFullyExtended(toIndex, snapPoints)) {
-        setIsFullHeightEnabled(true)
+        setIsFullHeight(true)
       }
     },
     [snapPoints],
   )
 
   const handleInputFocus = useCallback(() => {
-    setIsFullHeightEnabled(true)
+    setIsFullHeight(true)
   }, [])
 
   const handleCancel = useCallback(() => {
-    handleInputBlur()
     localRef.current?.collapse()
-  }, [handleInputBlur])
+  }, [])
 
   const handleChoice = useCallback(
     (newValue: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
@@ -140,33 +113,41 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     [handleInputBlur, setFlyToCenter],
   )
 
+  useEffect(() => {
+    localRef.current?.collapse()
+  }, [selectedZone])
+
+  useEffect(() => {
+    if (isFullHeight) {
+      localRef.current?.snapToPosition(SNAP_POINTS.searchExpanded)
+    }
+  }, [isFullHeight])
+
   const animatedPosition = useSharedValue(0)
 
   return (
     <>
-      {!isFullHeightEnabled && (
-        <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
-      )}
+      {!isFullHeight && <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />}
       <BottomSheet
         ref={refSetter}
         snapPoints={snapPoints}
-        topInset={top}
         keyboardBehavior="interactive"
         onChange={handleChange}
+        containerStyle={isFullHeight && { paddingTop: top }}
         // eslint-disable-next-line react-native/no-inline-styles
-        handleIndicatorStyle={isFullHeightEnabled && { opacity: 0 }}
+        handleIndicatorStyle={isFullHeight && { opacity: 0 }}
         handleComponent={BottomSheetHandleWithShadow}
         onAnimate={handleAnimate}
         animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
-          <View className={clsx(isFullHeightEnabled && 'flex-1')}>
+          <View className={clsx(isFullHeight && 'flex-1')}>
             <View>
               <FlexRow>
                 <View className="flex-1">
                   <Pressable onPress={handleInputFocus}>
-                    <View pointerEvents={isFullHeightEnabled ? 'auto' : 'none'}>
-                      {!isFullHeightEnabled && (
+                    <View pointerEvents={isFullHeight ? 'auto' : 'none'}>
+                      {!isFullHeight && (
                         <Typography variant="default-bold" className="pb-1">
                           {t('ZoneBottomSheet.title')}
                         </Typography>
@@ -179,72 +160,24 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     </View>
                   </Pressable>
                 </View>
-                {isFullHeightEnabled && (
-                  <Button variant="plain-dark" onPress={handleCancel}>
+                {isFullHeight && (
+                  <Button variant="plain-dark" onPress={handleCancel} onPressIn={handleInputBlur}>
                     {t('Common.cancel')}
                   </Button>
                 )}
               </FlexRow>
             </View>
             <View className="flex-1">
-              {isFullHeightEnabled && (
+              {isFullHeight && (
                 <Pressable onTouchStart={handleInputBlur}>
-                  <View className="h-full">
-                    <View className="flex-1 pt-5">
-                      <PortalHost name="mapAutocompleteOptions" />
-                    </View>
+                  <View className="h-full pt-5">
+                    <PortalHost name="mapAutocompleteOptions" />
                   </View>
                 </Pressable>
               )}
             </View>
           </View>
-          {!isFullHeightEnabled &&
-            (selectedZone ? (
-              <>
-                <Panel className="g-4">
-                  <FlexRow>
-                    <Typography>{selectedZone.name}</Typography>
-                    <ZoneBadge label={selectedZone.udrId} />
-                  </FlexRow>
-                  <Divider />
-                  <FlexRow>
-                    <Typography variant="default-bold">
-                      {formatPricePerHour(selectedZone.price)}
-                    </Typography>
-                    <Link
-                      asChild
-                      href={{
-                        pathname: '/zone-details',
-                        params: {
-                          udrId: selectedZone.udrId,
-                        } satisfies ZoneDetailsParamas,
-                      }}
-                    >
-                      <PressableStyled>
-                        <View className="flex-row">
-                          <Typography variant="default-bold">
-                            {t('ZoneBottomSheet.showDetails')}
-                          </Typography>
-                          <Icon name="expand-more" />
-                        </View>
-                      </PressableStyled>
-                    </Link>
-                  </FlexRow>
-                </Panel>
-
-                <Link
-                  asChild
-                  href="/purchase"
-                  onPress={() => onPurchaseStoreUpdate({ udr: selectedZone })}
-                >
-                  <Button variant="primary">{t('Navigation.continue')}</Button>
-                </Link>
-              </>
-            ) : (
-              <Panel className="bg-warning-light g-2">
-                <Typography>{t('ZoneBottomSheet.noZoneSelected')}</Typography>
-              </Panel>
-            ))}
+          {!isFullHeight && <MapZoneBottomSheetPanel selectedZone={selectedZone} />}
         </BottomSheetContent>
       </BottomSheet>
     </>
