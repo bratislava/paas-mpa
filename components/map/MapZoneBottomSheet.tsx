@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import clsx from 'clsx'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Keyboard, LayoutAnimation, TextInput } from 'react-native'
+import { Keyboard, LayoutAnimation, TextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -11,10 +11,13 @@ import MapZoneBottomSheetPanel from '@/components/map/MapZoneBottomSheetPanel'
 import MapZoneBottomSheetSearch from '@/components/map/MapZoneBottomSheetSearch'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
+import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
+import { useTranslation } from '@/hooks/useTranslation'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
 const SNAP_POINTS = {
+  zoomedOut: 100,
   noZone: 216,
   zone: 306,
   searchExpanded: '100%',
@@ -23,27 +26,32 @@ const SNAP_POINTS = {
 type Props = {
   zone: NormalizedUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
+  isZoomedOut?: boolean
 }
 
 const checkIfFullyExtended = (index: number, snapPoints: (number | string)[]) =>
   snapPoints.at(-1) === '100%' && (snapPoints.length === 3 ? index === 2 : index === 1)
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
-  const { zone: selectedZone, setFlyToCenter } = props
+  const { zone: selectedZone, setFlyToCenter, isZoomedOut } = props
 
   const localRef = useRef<BottomSheet>(null)
   const inputRef = useRef<TextInput>(null)
   const refSetter = useMultipleRefsSetter(ref, localRef)
 
+  const t = useTranslation('ZoneBottomSheet')
   const { top, bottom } = useSafeAreaInsets()
   const [isFullHeight, setIsFullHeight] = useState(false)
 
   const snapPoints = useMemo(
-    () => [
-      (selectedZone ? SNAP_POINTS.zone : SNAP_POINTS.noZone) + bottom,
-      SNAP_POINTS.searchExpanded,
-    ],
-    [selectedZone, bottom],
+    () =>
+      isZoomedOut
+        ? [SNAP_POINTS.zoomedOut]
+        : [
+            (selectedZone ? SNAP_POINTS.zone : SNAP_POINTS.noZone) + bottom,
+            SNAP_POINTS.searchExpanded,
+          ],
+    [selectedZone, bottom, isZoomedOut],
   )
 
   const handleInputBlur = useCallback(() => {
@@ -84,7 +92,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   useEffect(() => {
     if (isFullHeight) {
-      localRef.current?.snapToPosition(SNAP_POINTS.searchExpanded)
+      localRef.current?.expand()
     }
   }, [isFullHeight])
 
@@ -106,18 +114,26 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         animatedPosition={animatedPosition}
       >
         <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
-          <MapZoneBottomSheetSearch
-            {...{
-              ref: inputRef,
-              handleInputBlur,
-              isFullHeight,
-              setIsFullHeight,
-              selectedZone,
-              setFlyToCenter,
-              bottomSheetRef: localRef.current,
-            }}
-          />
-          {!isFullHeight && <MapZoneBottomSheetPanel selectedZone={selectedZone} />}
+          {isZoomedOut ? (
+            <View className="flex-col items-center">
+              <Typography>{t('zoomIn')}</Typography>
+            </View>
+          ) : (
+            <>
+              <MapZoneBottomSheetSearch
+                {...{
+                  ref: inputRef,
+                  handleInputBlur,
+                  isFullHeight,
+                  setIsFullHeight,
+                  selectedZone,
+                  setFlyToCenter,
+                  bottomSheetRef: localRef.current,
+                }}
+              />
+              {!isFullHeight && <MapZoneBottomSheetPanel selectedZone={selectedZone} />}
+            </>
+          )}
         </BottomSheetContent>
       </BottomSheet>
     </>

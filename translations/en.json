@@ -247,6 +247,7 @@
     "title": "Where are you parking?",
     "showDetails": "Show details",
     "noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
+    "zoomIn": "Zoom in to see all parking zones in this area.",
     "TopAttachment": {
       "tickets": "Tickets ({{count}})"
     }

@@ -28,6 +28,11 @@ const MapScreen = () => {
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
+  const [isMapPinShown, setIsMapPinShown] = useState(false)
+
+  const handleMapPinVisibilityChange = useCallback((isShown: boolean) => {
+    setIsMapPinShown(isShown)
+  }, [])
 
   const handleZoneChange = useCallback(
     (zone: MapUdrZone | null) => {
@@ -68,12 +73,14 @@ const MapScreen = () => {
         onPointPress={handlePointPress}
         filters={filters}
         processedData={processedData}
+        onMapPinVisibilityChange={handleMapPinVisibilityChange}
       />
       <Portal hostName="index">
         <MapZoneBottomSheet
           ref={zoneBottomSheetRef}
           zone={normalizedZone}
           setFlyToCenter={mapRef.current?.setFlyToCenter}
+          isZoomedOut={!isMapPinShown}
         />
       </Portal>
       {selectedPoint && (
