@@ -376,5 +376,8 @@
     },
     "selectAll": "Všetky",
     "all": "Všetky"
+  },
+  "AppVersion": {
+    "appVersion": "Verzia aplikácie {{version}}"
   }
 }
