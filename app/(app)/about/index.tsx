@@ -1,8 +1,9 @@
 import { Link } from 'expo-router'
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View } from 'react-native'
 
 import { WebviewSearchParams } from '@/app/(app)/about/webview'
+import AppVersion from '@/components/info/AppVersion'
 import ListRow from '@/components/list-rows/ListRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -42,13 +43,13 @@ const Page = () => {
   ] as const
 
   return (
-    <ScreenView title={t('title')}>
+    // TODO maybe rename actionButton to something like footer
+    <ScreenView title={t('title')} actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
           {links.map((link) => (
-            <>
+            <Fragment key={link.key}>
               <Link
-                key={link.key}
                 asChild
                 href={{
                   pathname: `/about/webview`,
@@ -60,7 +61,7 @@ const Page = () => {
                 </PressableStyled>
               </Link>
               <Divider />
-            </>
+            </Fragment>
           ))}
         </View>
       </ScreenContent>
