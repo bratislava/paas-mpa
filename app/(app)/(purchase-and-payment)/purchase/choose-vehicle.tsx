@@ -56,7 +56,7 @@ const ChooseVehicleScreen = () => {
               disabled={!oneTimeLicencePlate || !!oneTimeLicencePlateError}
               onPress={() => handleChoseVehicle(oneTimeLicencePlate)}
             >
-              Done
+              {t('actions.done')}
             </Button>
           ),
         }}

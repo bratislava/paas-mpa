@@ -110,7 +110,8 @@
     "openVehicleContextMenu": "Uprať vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
-      "deleteVehicle": "Odstrániť"
+      "deleteVehicle": "Odstrániť",
+      "done": "Hotovo"
     }
   },
   "Settings": {

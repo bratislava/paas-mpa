@@ -110,7 +110,8 @@
     "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
-      "deleteVehicle": "Delete"
+      "deleteVehicle": "Delete",
+      "done": "Done"
     }
   },
   "Settings": {
