@@ -35,7 +35,7 @@ const TicketPurchasePage = () => {
   )
 
   useEffect(() => {
-    // todo check if ticket is paid and reset store
+    // TODO check if ticket is paid and reset store
     if (data) {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
     }

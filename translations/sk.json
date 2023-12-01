@@ -86,6 +86,7 @@
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
     "oneTimeUse": "Jednorázové použitie",
+    "oneTimeAction": "Hotovo",
     "chooseOtherOption": "alebo vyberte inú možnosť",
     "myDefaultVehicle": "Predvolené",
     "myOtherVehicles": "Ostatné vozidlá",
@@ -110,8 +111,7 @@
     "openVehicleContextMenu": "Uprať vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
-      "deleteVehicle": "Odstrániť",
-      "done": "Hotovo"
+      "deleteVehicle": "Odstrániť"
     }
   },
   "Settings": {

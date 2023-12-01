@@ -86,6 +86,7 @@
     "vehicleNameFieldLabel": "Vehicle name",
     "optional": "Optional",
     "oneTimeUse": "One-time use",
+    "oneTimeAction": "Done",
     "chooseOtherOption": "or choose from a list",
     "myDefaultVehicle": "Default vehicle",
     "myOtherVehicles": "Other vehicles",
@@ -110,8 +111,7 @@
     "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
-      "deleteVehicle": "Delete",
-      "done": "Done"
+      "deleteVehicle": "Delete"
     }
   },
   "Settings": {

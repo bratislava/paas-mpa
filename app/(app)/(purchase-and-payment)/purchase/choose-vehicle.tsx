@@ -53,10 +53,13 @@ const ChooseVehicleScreen = () => {
           headerRight: () => (
             <Button
               variant="plain"
-              disabled={!oneTimeLicencePlate || !!oneTimeLicencePlateError}
-              onPress={() => handleChoseVehicle(oneTimeLicencePlate)}
+              disabled={
+                !!oneTimeLicencePlateError ||
+                !((licencePlate && !getVehicle(licencePlate)?.oneTimeUse) || oneTimeLicencePlate)
+              }
+              onPress={() => handleChoseVehicle(oneTimeLicencePlate || licencePlate)}
             >
-              {t('actions.done')}
+              {t('oneTimeAction')}
             </Button>
           ),
         }}
@@ -73,13 +76,13 @@ const ChooseVehicleScreen = () => {
         </Field>
 
         <View className="flex flex-row items-center">
-          <Divider dividerClassname="flex-grow" />
+          <Divider dividerClassname="grow" />
           <Typography className="px-4">{t('chooseOtherOption')}</Typography>
-          <Divider dividerClassname="flex-grow" />
+          <Divider dividerClassname="grow" />
         </View>
 
-        <View>
-          <Typography variant="default-bold" className="mb-2 grow">
+        <View className="flex-col g-2">
+          <Typography variant="default-bold" className="grow">
             {t('savedVehicles')}
           </Typography>
 
@@ -96,7 +99,8 @@ const ChooseVehicleScreen = () => {
               </PressableStyled>
             )}
           />
-          <View className="mt-2 flex items-start">
+
+          <View className="flex items-start">
             <Link asChild href="/vehicles/add-vehicle">
               <Button variant="plain-dark" startIcon="add-circle-outline">
                 {t('addNewVehicle')}
