@@ -8,7 +8,7 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { Vehicle } from '@/hooks/useVehiclesStorage'
+import { VehicleDto } from '@/modules/backend/openapi-generated'
 
 // Ensure that only one of these props is set at a time
 type AdditionalProps =
@@ -29,7 +29,7 @@ type AdditionalProps =
     }
 
 type Props = {
-  vehicle: Vehicle
+  vehicle: VehicleDto
 } & AdditionalProps
 
 const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron }: Props) => {
@@ -39,8 +39,12 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
     <Panel className={clsx(selected && 'border border-dark')}>
       <FlexRow className={clsx(!onContextMenuPress && 'items-center')}>
         <View>
-          <Typography variant="default-bold">{vehicle.licencePlate}</Typography>
-          {vehicle.vehicleName ? <Typography>{vehicle.vehicleName}</Typography> : null}
+          <Typography variant="default-bold">{vehicle.vehiclePlateNumber}</Typography>
+          {vehicle.name ? (
+            <Typography>
+              {vehicle.name} {vehicle.id} {vehicle.isDefault.toString()}
+            </Typography>
+          ) : null}
         </View>
         {selected && <Icon name="check-circle" />}
         {showControlChevron && <Icon name="expand-more" />}
@@ -48,7 +52,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
           <IconButton
             name="more-vert"
             accessibilityLabel={t('openVehicleContextMenu')}
-            onPress={() => onContextMenuPress(vehicle.licencePlate)}
+            onPress={() => onContextMenuPress(vehicle.vehiclePlateNumber)}
           />
         ) : null}
       </FlexRow>

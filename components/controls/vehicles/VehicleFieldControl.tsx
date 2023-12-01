@@ -6,10 +6,10 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { Vehicle } from '@/hooks/useVehiclesStorage'
+import { VehicleDto } from '@/modules/backend/openapi-generated'
 
 type Props = {
-  vehicle: Vehicle | null | undefined
+  vehicle: VehicleDto | null | undefined
 }
 
 const VehicleFieldControl = ({ vehicle }: Props) => {

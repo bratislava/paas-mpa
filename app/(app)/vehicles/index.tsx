@@ -26,11 +26,11 @@ const VehiclesScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
-  const { vehicles, deleteVehicle, setDefaultVehicle } = useVehicles()
-  const { licencePlate: storeLicencePlate } = usePurchaseStoreContext()
+  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle } = useVehicles()
+  const { licencePlateId: storeLicencePlateId } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const [activeVehicle, setActiveVehicle] = useState<null | string>(null)
+  const [activeVehicleId, setActiveVehicleId] = useState<null | number>(null)
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
@@ -41,8 +41,8 @@ const VehiclesScreen = () => {
     [],
   )
 
-  const handleContextMenuPress = (licencePlate: string) => {
-    setActiveVehicle(licencePlate)
+  const handleContextMenuPress = (id: number) => {
+    setActiveVehicleId(id)
     bottomSheetRef.current?.expand()
   }
 
@@ -51,18 +51,18 @@ const VehiclesScreen = () => {
     openModal()
   }
 
-  const handleActionSetDefault = () => {
-    if (activeVehicle) {
-      setDefaultVehicle(activeVehicle)
+  const handleActionSetDefault = async () => {
+    if (activeVehicleId) {
+      await setDefaultVehicle(activeVehicleId)
     }
     bottomSheetRef.current?.close()
   }
 
   const handleConfirmDelete = () => {
-    if (activeVehicle) {
-      deleteVehicle(activeVehicle)
-      if (activeVehicle === storeLicencePlate) {
-        onPurchaseStoreUpdate({ licencePlate: '' })
+    if (activeVehicleId) {
+      deleteVehicle(activeVehicleId)
+      if (activeVehicleId === storeLicencePlateId) {
+        onPurchaseStoreUpdate({ licencePlateId: null })
       }
     }
     closeModal()
@@ -79,23 +79,25 @@ const VehiclesScreen = () => {
   return (
     <ScreenView title={t('title')}>
       <ScreenContent>
-        <Field label={t('myDefaultVehicle')}>
-          <VehicleRow
-            vehicle={vehicles[0]}
-            onContextMenuPress={() => handleContextMenuPress(vehicles[0].licencePlate)}
-          />
-        </Field>
+        {defaultVehicle ? (
+          <Field label={t('myDefaultVehicle')}>
+            <VehicleRow
+              vehicle={defaultVehicle}
+              onContextMenuPress={() => handleContextMenuPress(defaultVehicle.id)}
+            />
+          </Field>
+        ) : null}
 
         {vehicles.length > 1 ? (
           <Field label={t('myOtherVehicles')}>
             <FlatList
-              data={vehicles.slice(1)}
-              keyExtractor={(vehicle) => vehicle.licencePlate}
+              data={vehicles.filter(({ isDefault }) => !isDefault)}
+              keyExtractor={(vehicle) => vehicle.id.toString()}
               ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
               renderItem={({ item }) => (
                 <VehicleRow
                   vehicle={item}
-                  onContextMenuPress={() => handleContextMenuPress(item.licencePlate)}
+                  onContextMenuPress={() => handleContextMenuPress(item.id)}
                 />
               )}
             />
@@ -131,7 +133,7 @@ const VehiclesScreen = () => {
         <ModalContentWithActions
           variant="error"
           title={t('deleteVehicleConfirmModal.title')}
-          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicle })}
+          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicleId })}
           primaryActionLabel={t('deleteVehicleConfirmModal.actionConfirm')}
           primaryActionOnPress={handleConfirmDelete}
           secondaryActionLabel={t('deleteVehicleConfirmModal.actionReject')}

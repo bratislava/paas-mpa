@@ -8,7 +8,7 @@ import { NormalizedUdrZone } from '@/modules/map/types'
 interface PurchaseStoreContextProps {
   udr: NormalizedUdrZone | null
   npk: ParkingCardDto | null
-  licencePlate: string
+  licencePlateId: number | null
   duration: number
   paymentOption: PaymentOption | null
 }
@@ -23,7 +23,7 @@ export const PurchaseStoreUpdateContext = createContext<
 export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
   udr: null,
   npk: null,
-  licencePlate: '',
+  licencePlateId: null,
   duration: 60 * 60, // 1 hour
   paymentOption: null,
 }
@@ -33,7 +33,7 @@ const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
 
   const [values, setValues] = useState<PurchaseStoreContextProps>({
     ...defaultInitialPurchaseStoreValues,
-    licencePlate: defaultVehicle?.licencePlate || '',
+    licencePlateId: defaultVehicle?.id || null,
   })
 
   const onPurchaseStoreUpdate = useCallback(

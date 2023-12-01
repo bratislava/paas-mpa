@@ -14,8 +14,7 @@ import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
-import { Vehicle } from '@/hooks/useVehiclesStorage'
+import { AddVehicle, useVehicles } from '@/hooks/useVehicles'
 import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const AddVehicleScreen = () => {
@@ -48,9 +47,9 @@ const AddVehicleScreen = () => {
   const isValid = sanitizedLicencePlate.length > 0 && error.length === 0
 
   const handleSaveVehicle = () => {
-    const newVehicle: Vehicle = {
+    const newVehicle: AddVehicle = {
       licencePlate: sanitizedLicencePlate,
-      vehicleName: vehicleName.length > 0 ? vehicleName : null,
+      vehicleName,
     }
     addVehicle(newVehicle)
     router.back()

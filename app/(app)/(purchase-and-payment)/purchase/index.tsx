@@ -40,11 +40,13 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const { udr, licencePlateId, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { getVehicle, defaultVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
+
+  const licencePlate = getVehicle(licencePlateId)?.vehiclePlateNumber
 
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -54,7 +56,7 @@ const PurchaseScreen = () => {
     ticket: {
       udr: String(udr?.udrId) ?? '',
       udrUuid: udr?.udrUuid ?? '',
-      ecv: licencePlate,
+      ecv: licencePlate || '',
       parkingStart,
       parkingEnd,
     },
@@ -62,8 +64,8 @@ const PurchaseScreen = () => {
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
-    if (!(licencePlate && getVehicle(licencePlate)) && defaultVehicle) {
-      onPurchaseStoreUpdate({ licencePlate: defaultVehicle.licencePlate })
+    if (!(licencePlateId && getVehicle(licencePlateId)) && defaultVehicle) {
+      onPurchaseStoreUpdate({ licencePlateId: defaultVehicle.id })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
@@ -121,7 +123,7 @@ const PurchaseScreen = () => {
             <Field label={t('chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl vehicle={getVehicle(licencePlate)} />
+                  <VehicleFieldControl vehicle={getVehicle(licencePlateId)} />
                 </PressableStyled>
               </Link>
             </Field>

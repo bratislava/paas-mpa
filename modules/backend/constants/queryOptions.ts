@@ -133,7 +133,7 @@ export const ticketPriceOptions = (
     npk,
   }: {
     udr: NormalizedUdrZone | null
-    licencePlate: string
+    licencePlate?: string
     duration: number
     npk: ParkingCardDto | null
   },
