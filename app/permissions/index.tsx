@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 import { PermissionStatus } from 'expo-modules-core'
 import { router, Stack } from 'expo-router'
-import { useEffect, useState } from 'react'
-import { ImageSourcePropType, useWindowDimensions, View } from 'react-native'
+import { useCallback, useEffect, useState } from 'react'
+import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
@@ -17,23 +17,38 @@ import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 
 type RouteKeys = 'notifications' | 'location'
-type RouteProps = {
-  onPermissionFinished: () => void
-  permissionStatus: PermissionStatus
-  getPermission: () => Promise<void>
-  image: ImageSourcePropType
-  translationKey: string
+type RouteProps = SceneRendererProps & {
+  route: {
+    key: RouteKeys
+  }
 }
 
-const PermissionsRoute = ({
-  onPermissionFinished,
-  permissionStatus,
-  getPermission,
-  image,
-  translationKey,
-}: RouteProps) => {
+const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const t = useTranslation('PermissionsScreen')
+
+  const {
+    permissionStatus: notificationsPermissionStatus,
+    getPermission: getNotificationsPermission,
+  } = useNotificationPermission()
+  const { permissionStatus: locationPermissionStatus, getPermission: getLocationPermission } =
+    useLocationPermission()
+
+  const image = {
+    notifications: PermissionsNotificationsImage,
+    location: PermissionsLocationImage,
+  }[route.key]
+  const permissionStatus =
+    route.key === 'notifications' ? notificationsPermissionStatus : locationPermissionStatus
+  const getPermission =
+    route.key === 'notifications' ? getNotificationsPermission : getLocationPermission
+  const onPermissionFinished = useCallback(() => {
+    if (route.key === 'notifications') {
+      jumpTo('location')
+    } else {
+      router.replace('/')
+    }
+  }, [route.key, jumpTo])
 
   useEffect(() => {
     if (permissionStatus !== PermissionStatus.UNDETERMINED) {
@@ -43,11 +58,7 @@ const PermissionsRoute = ({
 
   return (
     <View className="flex-1 flex-col justify-start">
-      <InfoSlide
-        title={t(`${translationKey}.title`)}
-        text={t(`${translationKey}.text`)}
-        image={image}
-      />
+      <InfoSlide title={t(`${route.key}.title`)} text={t(`${route.key}.text`)} image={image} />
       <ContinueButton
         className={clsx('mx-5', { 'mb-5': !insets.bottom })}
         onPress={getPermission}
@@ -56,52 +67,8 @@ const PermissionsRoute = ({
   )
 }
 
-const NotificationsPermissionRoute = ({ jumpTo }: { jumpTo: (key: RouteKeys) => void }) => {
-  const image = PermissionsNotificationsImage
-  const { permissionStatus, getPermission } = useNotificationPermission()
-
-  return (
-    <PermissionsRoute
-      permissionStatus={permissionStatus}
-      getPermission={getPermission}
-      onPermissionFinished={() => jumpTo('location')}
-      image={image}
-      translationKey="notifications"
-    />
-  )
-}
-
-const LocationPermissionRoute = () => {
-  const image = PermissionsLocationImage
-  const { permissionStatus, getPermission } = useLocationPermission()
-
-  return (
-    <PermissionsRoute
-      permissionStatus={permissionStatus}
-      getPermission={getPermission}
-      onPermissionFinished={() => router.replace('/')}
-      image={image}
-      translationKey="location"
-    />
-  )
-}
-
-const renderScene = ({
-  route,
-  jumpTo,
-}: SceneRendererProps & {
-  route: {
-    key: RouteKeys
-  }
-}) => {
-  switch (route.key) {
-    case 'notifications':
-      return <NotificationsPermissionRoute jumpTo={jumpTo} />
-    case 'location':
-      return <LocationPermissionRoute />
-    default:
-      return null
-  }
+const renderScene = (routeProps: RouteProps) => {
+  return <PermissionsRoute {...routeProps} />
 }
 
 const PermissionsScreen = () => {
