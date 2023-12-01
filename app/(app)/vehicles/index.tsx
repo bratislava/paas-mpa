@@ -18,6 +18,8 @@ import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 // TODO consider moving whole Delete modal with actions to separate component
 const VehiclesScreen = () => {
@@ -25,6 +27,8 @@ const VehiclesScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { vehicles, deleteVehicle, setDefaultVehicle } = useVehicles()
+  const { licencePlate: storeLicencePlate } = usePurchaseStoreContext()
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const [activeVehicle, setActiveVehicle] = useState<null | string>(null)
 
@@ -57,6 +61,9 @@ const VehiclesScreen = () => {
   const handleConfirmDelete = () => {
     if (activeVehicle) {
       deleteVehicle(activeVehicle)
+      if (activeVehicle === storeLicencePlate) {
+        onPurchaseStoreUpdate({ licencePlate: '' })
+      }
     }
     closeModal()
   }
