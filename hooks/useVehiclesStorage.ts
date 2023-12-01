@@ -4,7 +4,8 @@ import { useUserMMKVInstance } from '@/state/AuthStoreProvider/useUserMMKVInstan
 
 export type Vehicle = {
   licencePlate: string
-  vehicleName: string | null
+  vehicleName?: string | null
+  oneTimeUse?: boolean
 }
 
 export const useVehiclesStorage = () => {

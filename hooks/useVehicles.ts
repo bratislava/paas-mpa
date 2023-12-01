@@ -28,7 +28,12 @@ export const useVehicles = () => {
   }
 
   const getVehicle = (licencePlate: string) => {
-    return vehicles.find((vehicle) => vehicle.licencePlate === licencePlate) ?? null
+    return licencePlate
+      ? vehicles.find((vehicle) => vehicle.licencePlate === licencePlate) ?? {
+          licencePlate,
+          oneTimeUse: true,
+        }
+      : null
   }
 
   return {
