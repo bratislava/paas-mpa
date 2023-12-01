@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { PermissionStatus } from 'expo-modules-core'
 import { router, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { useWindowDimensions, View } from 'react-native'
+import { ImageSourcePropType, useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
@@ -18,24 +18,36 @@ import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPe
 
 type RouteKeys = 'notifications' | 'location'
 type RouteProps = {
-  jumpTo: (key: RouteKeys) => void
+  onPermissionFinished: () => void
+  permissionStatus: PermissionStatus
+  getPermission: () => Promise<void>
+  image: ImageSourcePropType
+  translationKey: string
 }
 
-const NotificationsPermissionRoute = ({ jumpTo }: RouteProps) => {
+const PermissionsRoute = ({
+  onPermissionFinished,
+  permissionStatus,
+  getPermission,
+  image,
+  translationKey,
+}: RouteProps) => {
   const insets = useSafeAreaInsets()
   const t = useTranslation('PermissionsScreen')
-  const image = PermissionsNotificationsImage
-  const { permissionStatus, getPermission } = useNotificationPermission()
 
   useEffect(() => {
     if (permissionStatus !== PermissionStatus.UNDETERMINED) {
-      jumpTo('location')
+      onPermissionFinished()
     }
-  }, [permissionStatus, jumpTo])
+  }, [onPermissionFinished, permissionStatus])
 
   return (
     <View className="flex-1 flex-col justify-start">
-      <InfoSlide title={t('notifications.title')} text={t('notifications.text')} image={image} />
+      <InfoSlide
+        title={t(`${translationKey}.title`)}
+        text={t(`${translationKey}.text`)}
+        image={image}
+      />
       <ContinueButton
         className={clsx('mx-5', { 'mb-5': !insets.bottom })}
         onPress={getPermission}
@@ -44,26 +56,33 @@ const NotificationsPermissionRoute = ({ jumpTo }: RouteProps) => {
   )
 }
 
+const NotificationsPermissionRoute = ({ jumpTo }: { jumpTo: (key: RouteKeys) => void }) => {
+  const image = PermissionsNotificationsImage
+  const { permissionStatus, getPermission } = useNotificationPermission()
+
+  return (
+    <PermissionsRoute
+      permissionStatus={permissionStatus}
+      getPermission={getPermission}
+      onPermissionFinished={() => jumpTo('location')}
+      image={image}
+      translationKey="notifications"
+    />
+  )
+}
+
 const LocationPermissionRoute = () => {
-  const insets = useSafeAreaInsets()
-  const t = useTranslation('PermissionsScreen')
   const image = PermissionsLocationImage
   const { permissionStatus, getPermission } = useLocationPermission()
 
-  useEffect(() => {
-    if (permissionStatus !== PermissionStatus.UNDETERMINED) {
-      router.replace('/')
-    }
-  }, [permissionStatus])
-
   return (
-    <View className="flex-1 flex-col justify-start">
-      <InfoSlide title={t('location.title')} text={t('location.text')} image={image} />
-      <ContinueButton
-        className={clsx('mx-5', { 'mb-5': !insets.bottom })}
-        onPress={getPermission}
-      />
-    </View>
+    <PermissionsRoute
+      permissionStatus={permissionStatus}
+      getPermission={getPermission}
+      onPermissionFinished={() => router.replace('/')}
+      image={image}
+      translationKey="location"
+    />
   )
 }
 
