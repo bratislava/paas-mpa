@@ -1,7 +1,11 @@
 import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
 import { clientApi } from '@/modules/backend/client-api'
-import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
+import {
+  GetTicketPriceRequestDto,
+  GetTicketProlongationPriceRequestDto,
+  ParkingCardDto,
+} from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
@@ -147,10 +151,10 @@ export const ticketPriceOptions = (
     enabled: !!udr && !!licencePlate && !!duration,
   })
 
-export const getTicketOptions = (ticketId: number) =>
+export const getTicketOptions = (ticketId?: number) =>
   queryOptions({
     queryKey: ['ticket', ticketId],
-    queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId),
+    queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId!),
     select: (res) => res.data,
     enabled: !!ticketId,
   })
@@ -172,4 +176,13 @@ export const announcementsOptions = (
     select: (res) => res.data,
     // TODO: remove this when the backend has test announcements data
     enabled: false,
+  })
+
+export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceRequestDto) =>
+  queryOptions({
+    queryKey: ['TicketProlongationPrice', body.ticketId],
+    queryFn: () => clientApi.ticketsControllerGetTicketProlongationPrice(body),
+    select: (res) => res.data,
+    placeholderData: keepPreviousData,
+    enabled: !!body.ticketId,
   })

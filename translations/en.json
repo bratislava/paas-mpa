@@ -30,12 +30,14 @@
     "verifyYourEmailInfo": "We’ve sent verification e-mail to \n{{email}} \n\nClick on Verify button in the e-mail to approve verification and we will then add parking card directly to the app."
   },
   "PurchaseScreen": {
+    "prolongate": "Prolongate ticket",
     "title": "Ticket purchase",
     "titlePayment": "Payment",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
+    "vehicle": "Vehicle",
     "customParkingTimeTitle": "Custom time",
     "chooseVehicleFieldLabel": "Choose vehicle",
     "customParkingTimeFieldLabel": "Choose time",

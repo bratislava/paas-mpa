@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
@@ -11,6 +12,7 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatDateTime } from '@/utils/formatDateTime'
@@ -31,11 +33,31 @@ const TicketCard = ({ ticket, isActive }: Props) => {
   const t = useTranslation('TicketCard')
   const locale = useLocale()
   const [isTerminateModalVisible, setIsTerminateModalVisible] = useState(false)
+  const queryClient = useQueryClient()
+
+  const shortenTicketMutation = useMutation({
+    mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
+  })
 
   const handleTerminateModalClose = () => setIsTerminateModalVisible(false)
   const handleTerminateModalOpen = () => setIsTerminateModalVisible(true)
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const handleTerminateTicket = () => false
+
+  const handleTerminateTicket = async () => {
+    shortenTicketMutation.mutate(ticket.id, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+
+        handleTerminateModalClose()
+      },
+      onError: (res) => {
+        console.log('err', res)
+      },
+    })
+  }
+
+  if (shortenTicketMutation.isError)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.log('error', shortenTicketMutation.error.response?.data)
 
   return (
     <>

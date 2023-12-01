@@ -1,15 +1,13 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
-import ParkingZoneField from '@/components/controls/ParkingZoneField'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
 import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
-import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import PurchaseErrorPanel from '@/components/purchase/PurchaseErrorPanel'
 import PurchaseSummaryRow from '@/components/purchase/PurchaseSummaryRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -23,61 +21,47 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
-import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
-import {
-  GetTicketPriceRequestDto,
-  InitiatePaymentRequestDto,
-} from '@/modules/backend/openapi-generated'
+import { ticketProlongationPriceOptions } from '@/modules/backend/constants/queryOptions'
+import { InitiateProlongationRequestDto, TicketDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { paymentRedirect } from '@/utils/paymentRedirect'
 
-const PurchaseScreen = () => {
+import VehicleRow from '../controls/vehicles/VehicleRow'
+
+type Props = {
+  ticket: TicketDto
+}
+
+const ProlongTicketForm = ({ ticket }: Props) => {
   const t = useTranslation('PurchaseScreen')
   const insets = useSafeAreaInsets()
   const bottomSheetRef = useRef<BottomSheet>(null)
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const { licencePlate, npk, paymentOption, duration } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { getVehicle, defaultVehicle } = useVehicles()
+  const { getVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const dateNow = Date.now()
-  const parkingStart = new Date(dateNow).toISOString()
+  const dateNow = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
   const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
-  const priceRequestBody: GetTicketPriceRequestDto = {
-    npkId: npk?.identificator || undefined,
-    ticket: {
-      udr: String(udr?.udrId) ?? '',
-      udrUuid: udr?.udrUuid ?? '',
-      ecv: licencePlate,
-      parkingStart,
-      parkingEnd,
-    },
+  const priceRequestBody: InitiateProlongationRequestDto = {
+    ticketId: ticket.id,
+    newParkingEnd: parkingEnd,
   }
 
-  /** Set licencePlate to defaultVehicle if empty */
-  useEffect(() => {
-    if (!(licencePlate && getVehicle(licencePlate)) && defaultVehicle) {
-      onPurchaseStoreUpdate({ licencePlate: defaultVehicle.licencePlate })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultVehicle])
-
-  const priceQuery = useQueryWithFocusRefetch(
-    ticketPriceOptions(priceRequestBody, { udr, npk, licencePlate, duration }),
-  )
+  const priceQuery = useQueryWithFocusRefetch(ticketProlongationPriceOptions(priceRequestBody))
 
   const handleSelectTime = (value: number) => {
     onPurchaseStoreUpdate({ duration: value })
   }
 
   const initPaymentMutation = useMutation({
-    mutationFn: (bodyInner: InitiatePaymentRequestDto) =>
-      clientApi.ticketsControllerInitiateTicketPayment(bodyInner),
+    mutationFn: (bodyInner: InitiateProlongationRequestDto) =>
+      clientApi.ticketsControllerInitiateTicketProlongationPayment(bodyInner),
   })
 
   const handlePressPay = () => {
@@ -88,21 +72,19 @@ const PurchaseScreen = () => {
     })
   }
 
+  const vehicle = getVehicle(licencePlate)
+
   return (
     <>
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('prolongate')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
-            <ParkingZoneField zone={udr} />
-
-            <Field label={t('chooseVehicleFieldLabel')}>
-              <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
-                <PressableStyled>
-                  <VehicleFieldControl vehicle={getVehicle(licencePlate)} />
-                </PressableStyled>
-              </Link>
-            </Field>
+            {vehicle ? (
+              <Field label={t('vehicle')}>
+                <VehicleRow vehicle={vehicle} showControlChevron />
+              </Field>
+            ) : null}
 
             <Field label={t('parkingTimeFieldLabel')}>
               <TimeSelector value={duration} onValueChange={handleSelectTime} />
@@ -156,4 +138,4 @@ const PurchaseScreen = () => {
   )
 }
 
-export default PurchaseScreen
+export default ProlongTicketForm

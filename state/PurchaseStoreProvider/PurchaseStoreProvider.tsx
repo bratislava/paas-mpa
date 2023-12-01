@@ -13,6 +13,10 @@ interface PurchaseStoreContextProps {
   paymentOption: PaymentOption | null
 }
 
+interface Props extends PropsWithChildren {
+  initialValues?: PurchaseStoreContextProps
+}
+
 export const PurchaseStoreContext = createContext<PurchaseStoreContextProps | null>(null)
 PurchaseStoreContext.displayName = 'PurchaseStoreContext'
 
@@ -20,16 +24,18 @@ export const PurchaseStoreUpdateContext = createContext<
   ((newValues: Partial<PurchaseStoreContextProps>) => void) | null
 >(null)
 
-const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
+const PurchaseStoreProvider = ({ children, initialValues }: Props) => {
   const { defaultVehicle } = useVehicles()
 
-  const [values, setValues] = useState<PurchaseStoreContextProps>({
-    udr: null,
-    npk: null,
-    licencePlate: defaultVehicle?.licencePlate || '',
-    duration: 60 * 60, // 1 hour
-    paymentOption: null,
-  })
+  const [values, setValues] = useState<PurchaseStoreContextProps>(
+    initialValues || {
+      udr: null,
+      npk: null,
+      licencePlate: defaultVehicle?.licencePlate || '',
+      duration: 60 * 60, // 1 hour
+      paymentOption: null,
+    },
+  )
 
   const onPurchaseStoreUpdate = useCallback(
     (newValues: Partial<PurchaseStoreContextProps>) => {

@@ -30,12 +30,14 @@
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
   },
   "PurchaseScreen": {
+    "prolongate": "Predĺžiť lístok",
     "title": "Nákup lístka",
     "titlePayment": "Platba",
     "segmentFieldLabel": "Úsek",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
+    "vehicle": "Vozidlo",
     "customParkingTimeTitle": "Vlastný čas",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "customParkingTimeFieldLabel": "Vyberte čas",
