@@ -20,15 +20,20 @@ export const PurchaseStoreUpdateContext = createContext<
   ((newValues: Partial<PurchaseStoreContextProps>) => void) | null
 >(null)
 
+export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
+  udr: null,
+  npk: null,
+  licencePlate: '',
+  duration: 60 * 60, // 1 hour
+  paymentOption: null,
+}
+
 const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
   const { defaultVehicle } = useVehicles()
 
   const [values, setValues] = useState<PurchaseStoreContextProps>({
-    udr: null,
-    npk: null,
+    ...defaultInitialPurchaseStoreValues,
     licencePlate: defaultVehicle?.licencePlate || '',
-    duration: 60 * 60, // 1 hour
-    paymentOption: null,
   })
 
   const onPurchaseStoreUpdate = useCallback(

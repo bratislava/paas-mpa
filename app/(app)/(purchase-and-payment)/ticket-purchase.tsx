@@ -1,5 +1,5 @@
 import { Link, useLocalSearchParams } from 'expo-router'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -10,6 +10,8 @@ import BoughtTicket from '@/components/tickets/BoughtTicket'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
+import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
+import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 export type TicketPurchaseSearchParams = {
   ticketId: string
@@ -26,10 +28,18 @@ const TicketPurchasePage = () => {
   const t = useTranslation('PurchaseScreen')
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(
     getTicketOptions(ticketIdParsed!),
   )
+
+  useEffect(() => {
+    // todo check if ticket is paid and reset store
+    if (data) {
+      onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+    }
+  }, [data, onPurchaseStoreUpdate])
 
   return (
     <ScreenViewCentered
