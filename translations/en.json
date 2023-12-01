@@ -383,5 +383,8 @@
     },
     "selectAll": "Select all",
     "all": "All"
+  },
+  "AppVersion": {
+    "appVersion": "App version {{version}}"
   }
 }

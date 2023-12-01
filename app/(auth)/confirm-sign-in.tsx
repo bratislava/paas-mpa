@@ -29,9 +29,9 @@ const Page = () => {
         <ScreenContent>
           <Typography variant="h1">{t('enterVerificationCode')}</Typography>
 
-          <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
-
           <Typography>{t('verificationText')}</Typography>
+
+          <CodeInput autoFocus value={code} setValue={setCode} onBlur={() => confirmSignIn(code)} />
 
           <ContinueButton onPress={() => confirmSignIn(code)} />
         </ScreenContent>
