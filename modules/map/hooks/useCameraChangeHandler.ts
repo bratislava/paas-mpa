@@ -1,6 +1,6 @@
 import MapView, { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
 import { Feature, Polygon } from 'geojson'
-import { Dispatch, SetStateAction, useCallback } from 'react'
+import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Keyboard, Platform } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -26,6 +26,7 @@ export const useCameraChangeHandler = ({
   setIsMapPinShown,
 }: Dependencies) => {
   const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
+  const [lastCenter, setLastCenter] = useState<number[]>([0, 0])
   const getCurrentPolygon = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (state: MapState) => {
@@ -55,6 +56,13 @@ export const useCameraChangeHandler = ({
 
   return useCallback(
     (state: MapState) => {
+      if (
+        lastCenter[0] === state.properties.center[0] &&
+        lastCenter[1] === state.properties.center[1]
+      ) {
+        return
+      }
+      setLastCenter(state.properties.center)
       if (!Keyboard.isVisible()) {
         debouncedHandleCameraChange(state)
         if (state.properties.zoom < HIDE_MARKER_ON_ZOOM_OVER) {
@@ -64,6 +72,6 @@ export const useCameraChangeHandler = ({
         }
       }
     },
-    [debouncedHandleCameraChange, setIsMapPinShown],
+    [debouncedHandleCameraChange, setIsMapPinShown, lastCenter],
   )
 }

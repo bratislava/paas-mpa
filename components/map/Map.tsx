@@ -39,6 +39,7 @@ type Props = {
   onPointPress?: (point: MapInterestPoint) => void
   filters: MapFilters
   processedData: ProcessedMapData
+  onMapPinVisibilityChange?: (isShown: boolean) => void
 }
 
 export type MapRef = {
@@ -49,7 +50,10 @@ const ZOOM_ON_CLUSTER_PRESS = 1.5
 const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
-  ({ onZoneChange, onPointPress, filters, processedData }: Props, ref: ForwardedRef<MapRef>) => {
+  (
+    { onZoneChange, onPointPress, filters, processedData, onMapPinVisibilityChange }: Props,
+    ref: ForwardedRef<MapRef>,
+  ) => {
     const camera = useRef<Camera>(null)
     const map = useRef<MapView>(null)
     const [followingUser, setFollowingUser] = useState(true)
@@ -70,6 +74,10 @@ const Map = forwardRef(
     useEffect(() => {
       onZoneChange?.(selectedPolygon?.properties ?? null)
     }, [selectedPolygon, onZoneChange])
+
+    useEffect(() => {
+      onMapPinVisibilityChange?.(isMapPinShown)
+    }, [onMapPinVisibilityChange, isMapPinShown])
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
       setFollowingUser(false)

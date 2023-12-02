@@ -250,6 +250,7 @@
   "ZoneBottomSheet": {
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",
+    "zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
     "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo umiestnite pin na parkovaciu zónu v blízkosti.",
     "TopAttachment": {
       "tickets": "Lístky ({{count}})"
