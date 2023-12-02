@@ -397,5 +397,17 @@
       "title": "Notifications",
       "text": "Enable notifications to get alerts for offers and when your parking ends."
     }
+  },
+  "LocationBottomSheet": {
+    "openSettings": "Open settings",
+    "dismiss": "Dismiss",
+    "locationDenied": {
+      "title": "Location access is denied",
+      "text": "To see nearby parking areas go to App settings in your phone and allow location permissions."
+    },
+    "locationOff": {
+      "title": "Location services is off",
+      "text": "To see nearby parking areas go to App settings in your phone and enable location services."
+    }
   }
 }

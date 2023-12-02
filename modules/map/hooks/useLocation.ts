@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
-export const useLocation = (): [Location.LocationObject | null, () => Promise<void>] => {
+export const useLocation = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const [permissionStatus] = useLocationPermission()
 
@@ -27,5 +27,5 @@ export const useLocation = (): [Location.LocationObject | null, () => Promise<vo
     })
   }, [permissionStatus, getLocation])
 
-  return [location, getLocation]
+  return [location, getLocation] as const
 }
