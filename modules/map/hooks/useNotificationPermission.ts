@@ -41,5 +41,5 @@ export const useNotificationPermission = ({ autoAsk }: Options = {}) => {
     }
   }, [getPermission, autoAsk])
 
-  return { permissionStatus, getPermission }
+  return [permissionStatus, getPermission] as const
 }

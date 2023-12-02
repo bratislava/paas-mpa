@@ -27,12 +27,8 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const t = useTranslation('PermissionsScreen')
 
-  const {
-    permissionStatus: notificationsPermissionStatus,
-    getPermission: getNotificationsPermission,
-  } = useNotificationPermission()
-  const { permissionStatus: locationPermissionStatus, getPermission: getLocationPermission } =
-    useLocationPermission()
+  const [notificationsPermissionStatus, getNotificationsPermission] = useNotificationPermission()
+  const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
 
   const image = {
     notifications: PermissionsNotificationsImage,

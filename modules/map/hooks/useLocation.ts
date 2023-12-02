@@ -5,7 +5,7 @@ import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission
 
 export const useLocation = (): [Location.LocationObject | null, () => Promise<void>] => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
-  const { permissionStatus } = useLocationPermission()
+  const [permissionStatus] = useLocationPermission()
 
   const getCurrentPosition = useCallback(async () => {
     const currentPosition = await Location.getCurrentPositionAsync()
