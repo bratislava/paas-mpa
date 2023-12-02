@@ -17,7 +17,6 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
 const SNAP_POINTS = {
-  zoomedOut: 100,
   noZone: 216,
   zone: 306,
   searchExpanded: '100%',
@@ -46,7 +45,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const snapPoints = useMemo(
     () =>
       isZoomedOut
-        ? [SNAP_POINTS.zoomedOut]
+        ? []
         : [
             (selectedZone ? SNAP_POINTS.zone : SNAP_POINTS.noZone) + bottom,
             SNAP_POINTS.searchExpanded,
@@ -97,6 +96,13 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   }, [isFullHeight])
 
   const animatedPosition = useSharedValue(0)
+  const searchProps = {
+    handleInputBlur,
+    isFullHeight,
+    setIsFullHeight,
+    selectedZone,
+    setFlyToCenter,
+  }
 
   return (
     <>
@@ -112,24 +118,21 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         handleComponent={BottomSheetHandleWithShadow}
         onAnimate={handleAnimate}
         animatedPosition={animatedPosition}
+        enableDynamicSizing={isZoomedOut}
       >
-        <BottomSheetContent cn={clsx('h-full bg-white', selectedZone ? 'g-2' : 'g-3')}>
+        <BottomSheetContent
+          cn={clsx('bg-white', !isZoomedOut && 'h-full', selectedZone ? 'g-2' : 'g-3')}
+        >
           {isZoomedOut ? (
             <View className="flex-col items-center">
-              <Typography>{t('zoomIn')}</Typography>
+              <Typography className="text-center">{t('zoomIn')}</Typography>
             </View>
           ) : (
             <>
               <MapZoneBottomSheetSearch
-                {...{
-                  ref: inputRef,
-                  handleInputBlur,
-                  isFullHeight,
-                  setIsFullHeight,
-                  selectedZone,
-                  setFlyToCenter,
-                  bottomSheetRef: localRef.current,
-                }}
+                {...searchProps}
+                ref={inputRef}
+                bottomSheetRef={localRef.current}
               />
               {!isFullHeight && <MapZoneBottomSheetPanel selectedZone={selectedZone} />}
             </>

@@ -75,6 +75,8 @@ const MapZoneBottomSheetSearch = forwardRef<TextInput, Props>((props, ref) => {
           )}
         </FlexRow>
       </View>
+      {/* Autocomplete results, they are in a Portal so that 
+      MapAutocomplete does not need to be remounted and lose state */}
       <View className="flex-1">
         {isFullHeight && (
           <Pressable onTouchStart={handleInputBlur}>
