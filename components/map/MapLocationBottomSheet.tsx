@@ -26,7 +26,6 @@ const MapLocationBottomSheet = () => {
 
   const appStateChangeHandler = useCallback(
     async (nextAppState: AppStateStatus) => {
-      console.log('nextAppState', nextAppState)
       if (nextAppState === 'active') {
         reloadLocationStatus()
       }
@@ -35,7 +34,6 @@ const MapLocationBottomSheet = () => {
   )
 
   const appFocusHandler = useCallback(async () => {
-    console.log('appFocusHandler')
     reloadLocationStatus()
   }, [reloadLocationStatus])
 
@@ -57,13 +55,13 @@ const MapLocationBottomSheet = () => {
   }, [])
 
   useEffect(() => {
-    const changeSubscription = AppState.addEventListener('change', appStateChangeHandler)
-    const focusSubscription =
-      Platform.OS === 'android' ? AppState.addEventListener('focus', appFocusHandler) : null
+    const subscription =
+      Platform.OS === 'ios'
+        ? AppState.addEventListener('change', appStateChangeHandler)
+        : AppState.addEventListener('focus', appFocusHandler)
 
     return () => {
-      changeSubscription.remove()
-      focusSubscription?.remove()
+      subscription.remove()
     }
   }, [appStateChangeHandler, appFocusHandler])
 
