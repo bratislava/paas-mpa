@@ -1,4 +1,4 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
@@ -15,6 +15,7 @@ export type AddVehicle = {
   vehicleName: string
   isDefault?: boolean
 }
+
 type VehiclesStoreContextProps = {
   vehicles: VehicleDto[]
   addVehicle: (vehicle: AddVehicle) => Promise<void>
@@ -24,16 +25,16 @@ type VehiclesStoreContextProps = {
   isVehiclePresent: (licencePlate: string) => boolean
   getVehicle: (id?: number | null) => VehicleDto | null | undefined
   isLoading?: boolean
+  isInitialLoading?: boolean
 }
 
 export const VehiclesStoreContext = createContext<VehiclesStoreContextProps | null>(null)
 VehiclesStoreContext.displayName = 'VehiclesStoreContext'
 
 const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['vehicles'],
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
-    placeholderData: keepPreviousData,
   })
 
   const queryClient = useQueryClient()
@@ -61,6 +62,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       }
     },
   })
+
   const deleteMutation = useMutation({
     mutationFn: (id: number) => clientApi.vehiclesControllerDeleteVehicle(id),
     onSuccess: async (response) => {
@@ -80,6 +82,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       }
     },
   })
+
   const updateMutation = useMutation({
     mutationFn: ({ id, updateVehicleDto }: { id: number; updateVehicleDto: UpdateVehicleDto }) =>
       clientApi.vehiclesControllerUpdateVehicle(id, updateVehicleDto),
@@ -181,6 +184,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       isVehiclePresent,
       isLoading: insertMutation.isPending || deleteMutation.isPending || updateMutation.isPending,
       getVehicle,
+      isInitialLoading: isPending,
     }),
     [
       addVehicle,
@@ -193,6 +197,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       insertMutation.isPending,
       deleteMutation.isPending,
       updateMutation.isPending,
+      isPending,
     ],
   )
 

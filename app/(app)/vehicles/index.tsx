@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { FlatList } from 'react-native'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
+import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -26,7 +27,8 @@ const VehiclesScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
-  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle } = useVehiclesStoreContext()
+  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, isInitialLoading } =
+    useVehiclesStoreContext()
   const { vehicle } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
@@ -66,6 +68,16 @@ const VehiclesScreen = () => {
       }
     }
     closeModal()
+  }
+
+  if (isInitialLoading) {
+    return (
+      <ScreenView title={t('title')}>
+        <ScreenContent>
+          <SkeletonVehicleRow />
+        </ScreenContent>
+      </ScreenView>
+    )
   }
 
   if (vehicles.length === 0) {
