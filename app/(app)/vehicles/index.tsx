@@ -27,7 +27,7 @@ const VehiclesScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle } = useVehicles()
-  const { licencePlateId: storeLicencePlateId } = usePurchaseStoreContext()
+  const { vehicle } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const [activeVehicleId, setActiveVehicleId] = useState<null | number>(null)
@@ -58,11 +58,11 @@ const VehiclesScreen = () => {
     bottomSheetRef.current?.close()
   }
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (activeVehicleId) {
-      deleteVehicle(activeVehicleId)
-      if (activeVehicleId === storeLicencePlateId) {
-        onPurchaseStoreUpdate({ licencePlateId: null })
+      await deleteVehicle(activeVehicleId)
+      if (activeVehicleId === vehicle?.id) {
+        onPurchaseStoreUpdate({ vehicle: null })
       }
     }
     closeModal()
@@ -88,11 +88,11 @@ const VehiclesScreen = () => {
           </Field>
         ) : null}
 
-        {vehicles.length > 1 ? (
+        {vehicles.length > (defaultVehicle ? 1 : 0) ? (
           <Field label={t('myOtherVehicles')}>
             <FlatList
               data={vehicles.filter(({ isDefault }) => !isDefault)}
-              keyExtractor={(vehicle) => vehicle.id.toString()}
+              keyExtractor={({ id }) => id.toString()}
               ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
               renderItem={({ item }) => (
                 <VehicleRow
@@ -117,11 +117,15 @@ const VehiclesScreen = () => {
         backdropComponent={renderBackdrop}
       >
         <BottomSheetContent>
-          <PressableStyled onPress={handleActionSetDefault}>
-            <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
-          </PressableStyled>
+          {activeVehicleId === defaultVehicle?.id ? null : (
+            <>
+              <PressableStyled onPress={handleActionSetDefault}>
+                <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
+              </PressableStyled>
 
-          <Divider />
+              <Divider />
+            </>
+          )}
 
           <PressableStyled onPress={handleActionDelete}>
             <ActionRow startIcon="delete" label={t('actions.deleteVehicle')} variant="negative" />

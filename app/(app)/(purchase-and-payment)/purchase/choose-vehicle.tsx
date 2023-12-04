@@ -13,24 +13,32 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehicles } from '@/hooks/useVehicles'
+import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
-  const { licencePlate } = usePurchaseStoreContext()
+  const { vehicle } = usePurchaseStoreContext()
   const { vehicles, isVehiclePresent, getVehicle } = useVehicles()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
-    getVehicle(licencePlate)?.oneTimeUse ? licencePlate : '',
+    vehicle?.oneTimeUse ? vehicle.vehiclePlateNumber : '',
   )
   const [oneTimeLicencePlateError, setOneTimeLicencePlateError] = useState('')
 
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const handleChoseVehicle = (newLicencePlate: string) => {
-    onPurchaseStoreUpdate({ licencePlate: newLicencePlate })
+  const handleChoseVehicle = (id?: number) => {
+    const apiVehicle = getVehicle(id)
+    if (id && apiVehicle) {
+      onPurchaseStoreUpdate({ vehicle: handleVehicleToContextVehicle(apiVehicle) })
+    } else if (oneTimeLicencePlate) {
+      onPurchaseStoreUpdate({
+        vehicle: { oneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
+      })
+    }
     router.push('/purchase')
   }
 
@@ -55,9 +63,9 @@ const ChooseVehicleScreen = () => {
               variant="plain"
               disabled={
                 !!oneTimeLicencePlateError ||
-                !((licencePlate && !getVehicle(licencePlate)?.oneTimeUse) || oneTimeLicencePlate)
+                !((vehicle && !vehicle?.oneTimeUse) || oneTimeLicencePlate)
               }
-              onPress={() => handleChoseVehicle(oneTimeLicencePlate || licencePlate)}
+              onPress={() => handleChoseVehicle()}
             >
               {t('oneTimeAction')}
             </Button>
@@ -88,14 +96,11 @@ const ChooseVehicleScreen = () => {
 
           <FlatList
             data={vehicles}
-            keyExtractor={(vehicle) => vehicle.licencePlate}
+            keyExtractor={({ id }) => id.toString()}
             ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-2" />}
             renderItem={({ item: vehicleItem }) => (
-              <PressableStyled onPress={() => handleChoseVehicle(vehicleItem.licencePlate)}>
-                <VehicleRow
-                  vehicle={vehicleItem}
-                  selected={licencePlate === vehicleItem.licencePlate}
-                />
+              <PressableStyled onPress={() => handleChoseVehicle(vehicleItem.id)}>
+                <VehicleRow vehicle={vehicleItem} selected={vehicle?.id === vehicleItem.id} />
               </PressableStyled>
             )}
           />

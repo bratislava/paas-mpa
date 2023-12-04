@@ -30,6 +30,7 @@ import {
   GetTicketPriceRequestDto,
   InitiatePaymentRequestDto,
 } from '@/modules/backend/openapi-generated'
+import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
@@ -40,13 +41,13 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { udr, licencePlateId, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const { udr, vehicle, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { getVehicle, defaultVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const licencePlate = getVehicle(licencePlateId)?.vehiclePlateNumber
+  const licencePlate = vehicle?.vehiclePlateNumber
 
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -64,8 +65,11 @@ const PurchaseScreen = () => {
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
-    if (!(licencePlateId && getVehicle(licencePlateId)) && defaultVehicle) {
-      onPurchaseStoreUpdate({ licencePlateId: defaultVehicle.id })
+    if (vehicle?.oneTimeUse) return
+    if (!(vehicle && getVehicle(vehicle.id)) && defaultVehicle) {
+      onPurchaseStoreUpdate({ vehicle: handleVehicleToContextVehicle(defaultVehicle) })
+    } else if (vehicle && !getVehicle(vehicle.id)) {
+      onPurchaseStoreUpdate({ vehicle: null })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
@@ -123,7 +127,9 @@ const PurchaseScreen = () => {
             <Field label={t('chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl vehicle={getVehicle(licencePlateId)} />
+                  <VehicleFieldControl
+                    vehicle={vehicle?.oneTimeUse ? vehicle : getVehicle(vehicle?.id)}
+                  />
                 </PressableStyled>
               </Link>
             </Field>

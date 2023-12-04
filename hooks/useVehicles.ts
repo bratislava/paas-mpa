@@ -1,7 +1,13 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 
 import { clientApi } from '@/modules/backend/client-api'
-import { CreateVehicleDto, UpdateVehicleDto, VehicleDto } from '@/modules/backend/openapi-generated'
+import {
+  CreateVehicleDto,
+  UpdateVehicleDto,
+  VehicleDto,
+  VehiclesResponseDto,
+} from '@/modules/backend/openapi-generated'
 
 export type AddVehicle = {
   licencePlate: string
@@ -10,7 +16,7 @@ export type AddVehicle = {
 }
 
 export const useVehicles = () => {
-  const { data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: ['vehicles'],
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
     placeholderData: keepPreviousData,
@@ -26,20 +32,36 @@ export const useVehicles = () => {
     onSuccess: async (response) => {
       if (response.data) {
         await queryClient.cancelQueries({ queryKey: ['vehicles'] })
-        const cacheData = queryClient.getQueryData(['vehicles'])
-
-        queryClient.setQueryData(['vehicles'], {
-          data: {
-            vehicles: [...cacheData?.data?.vehicles, response.data],
-          },
-        })
+        const cacheData = queryClient.getQueryData([
+          'vehicles',
+        ]) as AxiosResponse<VehiclesResponseDto>
+        if (cacheData) {
+          queryClient.setQueryData(['vehicles'], {
+            data: {
+              vehicles: [response.data, ...cacheData.data.vehicles],
+            },
+          })
+        }
       }
     },
   })
   const deleteMutation = useMutation({
     mutationFn: (id: number) => clientApi.vehiclesControllerDeleteVehicle(id),
-    onSuccess: async () => {
-      await refetch()
+    onSuccess: async (response) => {
+      if (response.data.deleted) {
+        await queryClient.cancelQueries({ queryKey: ['vehicles'] })
+        const cacheData = queryClient.getQueryData([
+          'vehicles',
+        ]) as AxiosResponse<VehiclesResponseDto>
+
+        if (cacheData) {
+          queryClient.setQueryData(['vehicles'], {
+            data: {
+              vehicles: cacheData.data.vehicles.filter(({ id }) => id !== response.data?.id),
+            },
+          })
+        }
+      }
     },
   })
   const updateMutation = useMutation({
@@ -48,17 +70,21 @@ export const useVehicles = () => {
     onSuccess: async (response) => {
       if (response.data) {
         await queryClient.cancelQueries({ queryKey: ['vehicles'] })
-        const cacheData = queryClient.getQueryData(['vehicles'])
+        const cacheData = queryClient.getQueryData([
+          'vehicles',
+        ]) as AxiosResponse<VehiclesResponseDto>
 
-        queryClient.setQueryData(['vehicles'], {
-          data: {
-            vehicles: cacheData?.data?.vehicles?.map((vehicle: VehicleDto) => ({
-              ...vehicle,
-              isDefault:
-                vehicle.id === response.data?.id ? response.data?.isDefault : vehicle.isDefault,
-            })),
-          },
-        })
+        if (cacheData) {
+          queryClient.setQueryData(['vehicles'], {
+            data: {
+              vehicles: cacheData?.data?.vehicles?.map((vehicle: VehicleDto) => ({
+                ...vehicle,
+                isDefault:
+                  vehicle.id === response.data?.id ? response.data?.isDefault : vehicle.isDefault,
+              })),
+            },
+          })
+        }
       }
     },
   })
@@ -71,7 +97,13 @@ export const useVehicles = () => {
     })
   }
 
-  const deleteVehicle = (id: number) => {
+  const deleteVehicle = async (id: number) => {
+    if (defaultVehicle?.id === id) {
+      const newDefaultVehicle = vehicles.find((vehicle) => vehicle.id !== defaultVehicle?.id)
+      if (newDefaultVehicle) {
+        await setDefaultVehicle(newDefaultVehicle.id)
+      }
+    }
     deleteMutation.mutate(id)
   }
   const defaultVehicle = vehicles?.find(({ isDefault }) => isDefault) || null
@@ -105,7 +137,7 @@ export const useVehicles = () => {
     return vehicles.some((vehicle) => vehicle.vehiclePlateNumber === licencePlate)
   }
 
-  const getVehicle = (id: number | null) => {
+  const getVehicle = (id?: number | null) => {
     return id ? vehicles.find((vehicle) => vehicle.id === id) : null
   }
 

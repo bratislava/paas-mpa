@@ -9,6 +9,7 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { VehicleDto } from '@/modules/backend/openapi-generated'
+import { WithRequired } from '@/utils/types'
 
 // Ensure that only one of these props is set at a time
 type AdditionalProps =
@@ -29,7 +30,7 @@ type AdditionalProps =
     }
 
 type Props = {
-  vehicle: VehicleDto
+  vehicle: WithRequired<Partial<VehicleDto>, 'vehiclePlateNumber'>
 } & AdditionalProps
 
 const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron }: Props) => {
@@ -40,11 +41,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
       <FlexRow className={clsx(!onContextMenuPress && 'items-center')}>
         <View>
           <Typography variant="default-bold">{vehicle.vehiclePlateNumber}</Typography>
-          {vehicle.name ? (
-            <Typography>
-              {vehicle.name} {vehicle.id} {vehicle.isDefault.toString()}
-            </Typography>
-          ) : null}
+          {vehicle.name ? <Typography>{vehicle.name}</Typography> : null}
         </View>
         {selected && <Icon name="check-circle" />}
         {showControlChevron && <Icon name="expand-more" />}
