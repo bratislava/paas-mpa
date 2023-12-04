@@ -14,14 +14,15 @@ import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { AddVehicle, useVehicles } from '@/hooks/useVehicles'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
+import { AddVehicle } from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
-  const { addVehicle, isVehiclePresent } = useVehicles()
+  const { addVehicle, isVehiclePresent, isLoading } = useVehiclesStoreContext()
 
   const [licencePlateInput, setLicencePlateInput] = useState('')
   const [vehicleName, setVehicleName] = useState('')
@@ -46,12 +47,12 @@ const AddVehicleScreen = () => {
 
   const isValid = sanitizedLicencePlate.length > 0 && error.length === 0
 
-  const handleSaveVehicle = () => {
+  const handleSaveVehicle = async () => {
     const newVehicle: AddVehicle = {
       licencePlate: sanitizedLicencePlate,
       vehicleName,
     }
-    addVehicle(newVehicle)
+    await addVehicle(newVehicle)
     router.back()
   }
 
@@ -97,8 +98,9 @@ const AddVehicleScreen = () => {
             title={t('addVehicleConfirmModal.title')}
             text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
             hideAvatar
+            isLoading={isLoading}
             primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
-            primaryActionOnPress={() => handleSaveVehicle()}
+            primaryActionOnPress={handleSaveVehicle}
             secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
             secondaryActionOnPress={closeModal}
           >

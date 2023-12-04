@@ -23,7 +23,6 @@ import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
 import {
@@ -33,6 +32,7 @@ import {
 import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
@@ -44,7 +44,7 @@ const PurchaseScreen = () => {
   const { udr, vehicle, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { getVehicle, defaultVehicle } = useVehicles()
+  const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const licencePlate = vehicle?.vehiclePlateNumber

@@ -1,7 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 import { PaymentOption } from '@/components/controls/payment-methods/types'
-import { useVehicles } from '@/hooks/useVehicles'
 import { ParkingCardDto, VehicleDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
@@ -42,12 +41,7 @@ export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
 }
 
 const PurchaseStoreProvider = ({ children }: PropsWithChildren) => {
-  const { defaultVehicle } = useVehicles()
-
-  const [values, setValues] = useState<PurchaseStoreContextProps>({
-    ...defaultInitialPurchaseStoreValues,
-    vehicle: defaultVehicle?.id ? handleVehicleToContextVehicle(defaultVehicle) : null,
-  })
+  const [values, setValues] = useState<PurchaseStoreContextProps>(defaultInitialPurchaseStoreValues)
 
   const onPurchaseStoreUpdate = useCallback(
     (newValues: Partial<PurchaseStoreContextProps>) => {

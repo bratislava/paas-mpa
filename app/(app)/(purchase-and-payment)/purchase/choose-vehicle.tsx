@@ -12,16 +12,16 @@ import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
 import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const ChooseVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { vehicle } = usePurchaseStoreContext()
-  const { vehicles, isVehiclePresent, getVehicle } = useVehicles()
+  const { vehicles, isVehiclePresent, getVehicle } = useVehiclesStoreContext()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
     vehicle?.oneTimeUse ? vehicle.vehiclePlateNumber : '',
