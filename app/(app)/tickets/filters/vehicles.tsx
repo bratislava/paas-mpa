@@ -9,14 +9,15 @@ import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehiclesStorage, Vehicle } from '@/hooks/useVehiclesStorage'
+import { VehicleDto } from '@/modules/backend/openapi-generated'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 
 const TicketsFiltersVehiclesScreen = () => {
   const t = useTranslation('TicketsFilters')
 
-  const [vehicles] = useVehiclesStorage()
+  const { vehicles } = useVehiclesStoreContext()
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecv } = useTicketsFiltersStoreContext()
@@ -33,12 +34,12 @@ const TicketsFiltersVehiclesScreen = () => {
     [],
   )
 
-  const renderItem: ListRenderItem<Vehicle> = useCallback(
-    ({ item: { licencePlate } }) => (
+  const renderItem: ListRenderItem<VehicleDto> = useCallback(
+    ({ item: { vehiclePlateNumber } }) => (
       <SelectRow
-        label={licencePlate}
-        value={localEcv ? localEcv === licencePlate : true}
-        onValueChange={handleValueChange(licencePlate)}
+        label={vehiclePlateNumber}
+        value={localEcv ? localEcv === vehiclePlateNumber : true}
+        onValueChange={handleValueChange(vehiclePlateNumber)}
       />
     ),
     [handleValueChange, localEcv],
