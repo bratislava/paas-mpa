@@ -1,11 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { isAxiosError } from 'axios'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
 import { clientApi } from '@/modules/backend/client-api'
 import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
 import { CreateVehicleDto, UpdateVehicleDto, VehicleDto } from '@/modules/backend/openapi-generated'
-import { isError } from '@/utils/errors'
 
 export type AddVehicle = {
   licencePlate: string
