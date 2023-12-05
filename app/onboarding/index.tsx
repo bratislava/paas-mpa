@@ -15,7 +15,7 @@ import {
 } from '@/assets/images/marketing-slider'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
-import { InfoSlide } from '@/components/screen-layout/InfoSlide'
+import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useTranslation } from '@/hooks/useTranslation'
 

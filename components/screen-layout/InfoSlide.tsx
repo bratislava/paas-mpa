@@ -9,7 +9,7 @@ type Props = {
   className?: string
 }
 
-export const InfoSlide = ({ title, text, image, className }: Props) => {
+const InfoSlide = ({ title, text, image, className }: Props) => {
   return (
     <View className={className}>
       <Image source={image} className="w-full flex-shrink" />
@@ -22,3 +22,5 @@ export const InfoSlide = ({ title, text, image, className }: Props) => {
     </View>
   )
 }
+
+export default InfoSlide

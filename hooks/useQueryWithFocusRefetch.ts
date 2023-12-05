@@ -5,9 +5,10 @@ import {
   useQuery,
   UseQueryOptions,
 } from '@tanstack/react-query'
-import { useFocusEffect } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { AppState } from 'react-native'
+
+import { useFocusEffect } from '@/hooks/useFocusEffect'
 
 // https://github.com/TanStack/query/discussions/296
 

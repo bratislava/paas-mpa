@@ -11,12 +11,14 @@ import {
   PermissionsNotificationsImage,
 } from '@/assets/images/permissions'
 import ContinueButton from '@/components/navigation/ContinueButton'
-import { InfoSlide } from '@/components/screen-layout/InfoSlide'
+import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 
 type RouteKeys = 'notifications' | 'location'
+// key is nested inside router, because this is how `renderScene` provides it
+// the type is generic and has to be manually set for handlers
 type RouteProps = SceneRendererProps & {
   route: {
     key: RouteKeys

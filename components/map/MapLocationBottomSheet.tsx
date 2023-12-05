@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises */
 import BottomSheet from '@gorhom/bottom-sheet'
 import * as Location from 'expo-location'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AppState, AppStateStatus, Linking, Platform, View } from 'react-native'
+import { Linking, Platform, View } from 'react-native'
 
 import AvatarCircleLocationOff from '@/components/info/AvatarCircleLocationOff'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import Button from '@/components/shared/Button'
+import { useFocusEffect } from '@/hooks/useFocusEffect'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
@@ -18,34 +18,26 @@ const MapLocationBottomSheet = () => {
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
 
-  const reloadLocationStatus = useCallback(async () => {
-    getLocationPermission()
-    const isEnabled = await Location.hasServicesEnabledAsync()
-    setIsLocationOn(isEnabled)
+  const reloadLocationStatus = useCallback(() => {
+    ;(async () => {
+      getLocationPermission()
+      const isEnabled = await Location.hasServicesEnabledAsync()
+      setIsLocationOn(isEnabled)
+    })()
   }, [getLocationPermission])
-
-  const appStateChangeHandler = useCallback(
-    async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active') {
-        reloadLocationStatus()
-      }
-    },
-    [reloadLocationStatus],
-  )
-
-  const appFocusHandler = useCallback(async () => {
-    reloadLocationStatus()
-  }, [reloadLocationStatus])
 
   const handleOpenSettingsPress = useCallback(async () => {
     if (locationPermissionStatus !== Location.PermissionStatus.GRANTED) {
       Linking.openSettings()
     } else if (!isLocationOn) {
+      // https://copyprogramming.com/howto/react-native-open-settings-through-linking-openurl-in-ios
       if (Platform.OS === 'android') {
         Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS')
       } else if (Platform.OS === 'ios') {
         // TODO: test on iOS
         Linking.openURL('App-Prefs:root=Privacy&path=LOCATION')
+        // Or this
+        // Linking.openURL('App-Prefs:Privacy&path=LOCATION')
       }
     }
   }, [locationPermissionStatus, isLocationOn])
@@ -54,16 +46,9 @@ const MapLocationBottomSheet = () => {
     ref.current?.close()
   }, [])
 
-  useEffect(() => {
-    const subscription =
-      Platform.OS === 'ios'
-        ? AppState.addEventListener('change', appStateChangeHandler)
-        : AppState.addEventListener('focus', appFocusHandler)
-
-    return () => {
-      subscription.remove()
-    }
-  }, [appStateChangeHandler, appFocusHandler])
+  // This is done so that when user changes the location settings and refocuses the app
+  // the bottom sheet will be updated
+  useFocusEffect(reloadLocationStatus)
 
   useEffect(() => {
     reloadLocationStatus()
