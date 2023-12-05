@@ -54,28 +54,30 @@ const Page = () => {
   }
 
   const handleConfirmSignIn = async () => {
-    try {
-      setLoading(true)
-      await confirmSignIn(code)
-    } catch (error) {
-      if (isErrorWithCode(error)) {
-        setErrorCode(error.code)
+    if (code.length === 6) {
+      try {
+        setLoading(true)
+        await confirmSignIn(code)
+      } catch (error) {
+        if (isErrorWithCode(error)) {
+          setErrorCode(error.code)
+        }
       }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
     <DismissKeyboard>
       <ScreenView>
         <ScreenContent>
-          <View className="flex-col g-2">
+          <View className="g-2">
             <Typography variant="h1">{t('enterVerificationCode')}</Typography>
 
             <Typography>{t('verificationText')}</Typography>
           </View>
 
-          <View className="flex-col g-4">
+          <View className="g-4">
             <CodeInput
               autoFocus
               error={errorCode ? t(`errors.${errorCode}`) : undefined}
@@ -85,7 +87,7 @@ const Page = () => {
               onBlur={handleConfirmSignIn}
             />
 
-            <View className="flex-col g-3">
+            <View className="g-3">
               {phone && errorCode === 'NotAuthorizedException' ? (
                 <Button variant="secondary" onPress={() => resendConfirmationCode(phone)}>
                   {t('resendCode')}

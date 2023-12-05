@@ -53,7 +53,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
   })
 
   return (
-    <View className="flex-col g-1">
+    <View className="g-1">
       <CodeField
         ref={ref}
         {...props}
