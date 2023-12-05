@@ -17,7 +17,6 @@ import { PortalProvider } from '@gorhom/portal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
 import { NativeWindStyleSheet } from 'nativewind'
-import { useEffect } from 'react'
 import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -57,13 +56,6 @@ const RootLayout = () => {
     // `gcTime` = `cacheTime` in v5: https://tanstack.com/query/latest/docs/react/guides/caching
     defaultOptions: { queries: { retry: 1, gcTime: 1000 * 60 * 60 } },
   })
-
-  useEffect(() => {
-    if (fontsLoaded) {
-      // Hide the splash screen after the fonts have loaded and the UI is ready.
-      SplashScreen.hideAsync()
-    }
-  }, [fontsLoaded])
 
   const toastProviderProps = useToastProviderProps()
 
