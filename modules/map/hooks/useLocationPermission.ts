@@ -1,29 +1,36 @@
 import * as Location from 'expo-location'
 import { useCallback, useEffect, useState } from 'react'
 
-export const useLocationPermission = () => {
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  const [permissionStatus, setPermissionStatus] = useState<Location.PermissionStatus | null>(null)
+type Options =
+  | {
+      autoAsk?: boolean
+    }
+  | undefined
+
+export const useLocationPermission = ({ autoAsk }: Options = {}) => {
+  const [permissionStatus, setPermissionStatus] = useState<Location.PermissionStatus>(
+    Location.PermissionStatus.UNDETERMINED,
+  )
+  const [doNotAskAgain, setDoNotAskAgain] = useState(false)
 
   const getPermission = useCallback(async () => {
-    const getResponse = await Location.getForegroundPermissionsAsync()
-    if (getResponse?.status === Location.PermissionStatus.GRANTED) {
-      setPermissionStatus(getResponse?.status)
-
-      return
+    const { status: existingStatus } = await Location.getForegroundPermissionsAsync()
+    let finalStatus = existingStatus
+    if (existingStatus !== Location.PermissionStatus.GRANTED && !doNotAskAgain) {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      finalStatus = status
+      setDoNotAskAgain(true)
     }
-    const { status } = await Location.requestForegroundPermissionsAsync()
-    setPermissionStatus(status)
-    if (status !== Location.PermissionStatus.GRANTED) {
-      setErrorMsg('Permission to access location was denied')
-    }
-  }, [])
+    setPermissionStatus(finalStatus)
+  }, [doNotAskAgain])
 
   useEffect(() => {
-    getPermission().catch((error) => {
-      console.warn(error)
-    })
-  }, [getPermission])
+    if (autoAsk) {
+      getPermission().catch((error) => {
+        console.warn(error)
+      })
+    }
+  }, [getPermission, autoAsk])
 
-  return { permissionStatus, errorMsg }
+  return [permissionStatus, getPermission] as const
 }

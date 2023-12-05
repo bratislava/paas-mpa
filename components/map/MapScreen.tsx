@@ -6,6 +6,7 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import Map, { MapRef } from '@/components/map/Map'
+import MapLocationBottomSheet from '@/components/map/MapLocationBottomSheet'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
@@ -88,6 +89,9 @@ const MapScreen = () => {
           <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
         </Portal>
       )}
+      <Portal hostName="index">
+        <MapLocationBottomSheet />
+      </Portal>
       <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton
