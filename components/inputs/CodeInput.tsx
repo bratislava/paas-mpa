@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import {
   CodeField,
   CodeFieldProps,
@@ -31,6 +31,7 @@ type CodeInputProps = Omit<
 > & {
   value: string
   setValue: (value: string) => void
+  error?: string
 }
 /**
  * Docs: https://github.com/retyui/react-native-confirmation-code-field/blob/c944750acb811d2cc7f2a45ae9e6982831297419/API.md
@@ -40,10 +41,11 @@ type CodeInputProps = Omit<
  * @param cellCount
  * @param value
  * @param setValue
+ * @param error string that will change border color to negative and show error message
  * @param props
  * @constructor
  */
-const CodeInput = ({ cellCount = 6, value, setValue, ...props }: CodeInputProps) => {
+const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInputProps) => {
   const ref = useBlurOnFulfill({ value, cellCount })
   const [focusCellProps, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -51,33 +53,38 @@ const CodeInput = ({ cellCount = 6, value, setValue, ...props }: CodeInputProps)
   })
 
   return (
-    <CodeField
-      ref={ref}
-      {...props}
-      {...focusCellProps}
-      // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
-      value={value}
-      onChangeText={setValue}
-      cellCount={cellCount}
-      keyboardType="number-pad"
-      autoComplete="one-time-code"
-      rootStyle={styles.rootStyle}
-      renderCell={({ index, symbol, isFocused }) => (
-        <Typography
-          key={index}
-          onLayout={getCellOnLayoutHandler(index)}
-          // TODO - sizes are little bit guessed, needs to be tested on multiple devices
-          className={clsx(
-            'h-[48px] w-[48px] items-center justify-center rounded border border-divider bg-white text-center text-[20px] leading-[44px]',
-            {
-              'border-dark': isFocused,
-            },
-          )}
-        >
-          {symbol || (isFocused ? <Cursor /> : null)}
-        </Typography>
-      )}
-    />
+    <View className="flex-col g-1">
+      <CodeField
+        ref={ref}
+        {...props}
+        {...focusCellProps}
+        // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+        value={value}
+        onChangeText={setValue}
+        cellCount={cellCount}
+        keyboardType="number-pad"
+        autoComplete="one-time-code"
+        rootStyle={styles.rootStyle}
+        renderCell={({ index, symbol, isFocused }) => (
+          <Typography
+            key={index}
+            onLayout={getCellOnLayoutHandler(index)}
+            // TODO - sizes are little bit guessed, needs to be tested on multiple devices
+            className={clsx(
+              'h-[48px] w-[48px] items-center justify-center rounded border border-divider bg-white text-center text-[20px] leading-[44px]',
+              {
+                'border-dark': isFocused,
+                'border-negative': !!error,
+              },
+            )}
+          >
+            {symbol || (isFocused ? <Cursor /> : null)}
+          </Typography>
+        )}
+      />
+
+      {error ? <Typography className="text-negative">{error}</Typography> : null}
+    </View>
   )
 }
 

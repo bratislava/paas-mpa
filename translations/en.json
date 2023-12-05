@@ -20,7 +20,12 @@
     "enterVerificationCode": "Enter 6-digit code",
     "verificationText": "Continue by entering 6-digit code from message we’ve sent.",
     "signIn": "Log in",
-    "signOut": "Log out"
+    "signOut": "Log out",
+    "resendCode": "Resend code",
+    "errors": {
+      "NotAuthorizedException": "Code expired",
+      "CodeMismatchException": "Invalid code"
+    }
   },
   "AddParkingCards": {
     "addCardsTitle": "Add parking cards",

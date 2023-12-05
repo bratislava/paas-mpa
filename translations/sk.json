@@ -20,7 +20,12 @@
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
-    "signOut": "Odhlásiť sa"
+    "signOut": "Odhlásiť sa",
+    "resendCode": "Odoslať kód znova",
+    "errors": {
+      "NotAuthorizedException": "Platnosť kódu vypršala",
+      "CodeMismatchException": "Neplatný kód"
+    }
   },
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",
