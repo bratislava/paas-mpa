@@ -31,7 +31,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
 
   const queryClient = useQueryClient()
 
-  const vehicles = useMemo(() => data?.vehicles ?? [], [data?.vehicles])
+  const vehicles = useMemo(() => data?.data.vehicles ?? [], [data?.data.vehicles])
 
   const defaultVehicle = vehicles?.find(({ isDefault }) => isDefault) ?? null
 
@@ -42,10 +42,11 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       if (response.data) {
         await queryClient.cancelQueries({ queryKey: vehiclesOptions().queryKey })
         const cacheData = queryClient.getQueryData(vehiclesOptions().queryKey)
+
         if (cacheData) {
           queryClient.setQueryData(vehiclesOptions().queryKey, {
             ...cacheData,
-            vehicles: [response.data, ...cacheData.vehicles],
+            data: { ...cacheData.data, vehicles: [response.data, ...cacheData.data.vehicles] },
           })
         }
       }
@@ -62,7 +63,10 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
         if (cacheData) {
           queryClient.setQueryData(vehiclesOptions().queryKey, {
             ...cacheData,
-            vehicles: cacheData.vehicles.filter(({ id }) => id !== response.data?.id),
+            data: {
+              ...cacheData.data,
+              vehicles: cacheData.data.vehicles.filter(({ id }) => id !== response.data?.id),
+            },
           })
         }
       }
@@ -80,11 +84,14 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
         if (cacheData) {
           queryClient.setQueryData(vehiclesOptions().queryKey, {
             ...cacheData,
-            vehicles: cacheData?.vehicles?.map((vehicle: VehicleDto) => ({
-              ...vehicle,
-              isDefault:
-                vehicle.id === response.data?.id ? response.data?.isDefault : vehicle.isDefault,
-            })),
+            data: {
+              ...cacheData.data,
+              vehicles: cacheData.data.vehicles?.map((vehicle: VehicleDto) => ({
+                ...vehicle,
+                isDefault:
+                  vehicle.id === response.data?.id ? response.data?.isDefault : vehicle.isDefault,
+              })),
+            },
           })
         }
       }

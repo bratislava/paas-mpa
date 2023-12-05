@@ -178,5 +178,4 @@ export const vehiclesOptions = () =>
   queryOptions({
     queryKey: ['Vehicles'],
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
-    select: (res) => res.data,
   })
