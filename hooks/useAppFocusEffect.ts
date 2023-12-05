@@ -4,7 +4,7 @@ import { AppState, AppStateStatus, Platform } from 'react-native'
 /** Run on app focus, does not run initially, substitute for `useFocusEffect` from 'expo-router'
  * which does not handle focus as well.
  */
-export const useFocusEffect = (onFocus: () => void) => {
+export const useAppFocusEffect = (onFocus: () => void) => {
   /** Check if the app is active again, works on iOS but on Android there is no `inactive` state,
    * so that if the app is still in foreground, but obstructed by another element, like the notification drawer,
    * the state change will not trigger.

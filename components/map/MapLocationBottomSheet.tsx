@@ -8,7 +8,7 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import Button from '@/components/shared/Button'
-import { useFocusEffect } from '@/hooks/useFocusEffect'
+import { useAppFocusEffect } from '@/hooks/useAppFocusEffect'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
@@ -48,7 +48,7 @@ const MapLocationBottomSheet = () => {
 
   // This is done so that when user changes the location settings and refocuses the app
   // the bottom sheet will be updated
-  useFocusEffect(reloadLocationStatus)
+  useAppFocusEffect(reloadLocationStatus)
 
   useEffect(() => {
     reloadLocationStatus()
