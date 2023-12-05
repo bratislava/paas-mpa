@@ -95,19 +95,11 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
 
   const addVehicle = useCallback(
     async (vehicle: AddVehicle) => {
-      try {
-        await insertMutation.mutateAsync({
-          vehiclePlateNumber: vehicle.licencePlate,
-          name: vehicle.vehicleName,
-          isDefault: vehicles.length === 0 || !!vehicle.isDefault,
-        })
-      } catch (error_) {
-        console.log('isError', isError(error_))
-        if (isAxiosError(error_)) {
-          // TODO translation
-          console.error(`Login Error:`, error_.response?.data)
-        }
-      }
+      await insertMutation.mutateAsync({
+        vehiclePlateNumber: vehicle.licencePlate,
+        name: vehicle.vehicleName,
+        isDefault: vehicles.length === 0 || !!vehicle.isDefault,
+      })
     },
     [insertMutation, vehicles],
   )
