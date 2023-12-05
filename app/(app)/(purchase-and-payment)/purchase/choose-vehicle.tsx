@@ -12,7 +12,6 @@ import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
@@ -24,7 +23,7 @@ const ChooseVehicleScreen = () => {
   const { vehicles, isVehiclePresent, getVehicle } = useVehiclesStoreContext()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
-    vehicle?.oneTimeUse ? vehicle.vehiclePlateNumber : '',
+    vehicle?.isOneTimeUse ? vehicle.vehiclePlateNumber : '',
   )
   const [oneTimeLicencePlateError, setOneTimeLicencePlateError] = useState('')
 
@@ -33,10 +32,10 @@ const ChooseVehicleScreen = () => {
   const handleChoseVehicle = (id?: number) => {
     const apiVehicle = getVehicle(id)
     if (id && apiVehicle) {
-      onPurchaseStoreUpdate({ vehicle: handleVehicleToContextVehicle(apiVehicle) })
+      onPurchaseStoreUpdate({ vehicle: apiVehicle })
     } else if (oneTimeLicencePlate) {
       onPurchaseStoreUpdate({
-        vehicle: { oneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
+        vehicle: { isOneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
       })
     }
     router.push('/purchase')
@@ -63,7 +62,7 @@ const ChooseVehicleScreen = () => {
               variant="plain"
               disabled={
                 !!oneTimeLicencePlateError ||
-                !((vehicle && !vehicle?.oneTimeUse) || oneTimeLicencePlate)
+                !((vehicle && !vehicle?.isOneTimeUse) || oneTimeLicencePlate)
               }
               onPress={() => handleChoseVehicle()}
             >

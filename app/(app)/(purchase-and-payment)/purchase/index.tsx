@@ -29,7 +29,6 @@ import {
   GetTicketPriceRequestDto,
   InitiatePaymentRequestDto,
 } from '@/modules/backend/openapi-generated'
-import { handleVehicleToContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
@@ -47,7 +46,7 @@ const PurchaseScreen = () => {
   const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const licencePlate = vehicle?.vehiclePlateNumber
+  const licencePlate = vehicle?.vehiclePlateNumber ?? ''
 
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -57,7 +56,7 @@ const PurchaseScreen = () => {
     ticket: {
       udr: String(udr?.udrId) ?? '',
       udrUuid: udr?.udrUuid ?? '',
-      ecv: licencePlate || '',
+      ecv: licencePlate ?? '',
       parkingStart,
       parkingEnd,
     },
@@ -65,9 +64,9 @@ const PurchaseScreen = () => {
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
-    if (vehicle?.oneTimeUse) return
+    if (vehicle?.isOneTimeUse) return
     if (!(vehicle && getVehicle(vehicle.id)) && defaultVehicle) {
-      onPurchaseStoreUpdate({ vehicle: handleVehicleToContextVehicle(defaultVehicle) })
+      onPurchaseStoreUpdate({ vehicle: defaultVehicle })
     } else if (vehicle && !getVehicle(vehicle.id)) {
       onPurchaseStoreUpdate({ vehicle: null })
     }
@@ -128,7 +127,7 @@ const PurchaseScreen = () => {
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
-                    vehicle={vehicle?.oneTimeUse ? vehicle : getVehicle(vehicle?.id)}
+                    vehicle={vehicle?.isOneTimeUse ? vehicle : getVehicle(vehicle?.id)}
                   />
                 </PressableStyled>
               </Link>

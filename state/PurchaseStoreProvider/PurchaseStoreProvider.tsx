@@ -1,26 +1,20 @@
 import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 import { PaymentOption } from '@/components/controls/payment-methods/types'
-import { ParkingCardDto, VehicleDto } from '@/modules/backend/openapi-generated'
+import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
-export type ContextVehicle = {
+export type PurchaseContextVehicle = {
   id?: number
   vehiclePlateNumber: string
   name?: string
-  oneTimeUse?: boolean
+  isOneTimeUse?: boolean
 }
-
-export const handleVehicleToContextVehicle = (vehicle: VehicleDto): ContextVehicle => ({
-  id: vehicle.id,
-  vehiclePlateNumber: vehicle.vehiclePlateNumber,
-  name: vehicle.name,
-})
 
 type PurchaseStoreContextProps = {
   udr: NormalizedUdrZone | null
   npk: ParkingCardDto | null
-  vehicle: ContextVehicle | null
+  vehicle: PurchaseContextVehicle | null
   duration: number
   paymentOption: PaymentOption | null
 }

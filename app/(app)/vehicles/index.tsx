@@ -33,6 +33,9 @@ const VehiclesScreen = () => {
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const [activeVehicleId, setActiveVehicleId] = useState<null | number>(null)
+  const activeVehicleLicencePlate = vehicles.find(
+    ({ id }) => id === activeVehicleId,
+  )?.vehiclePlateNumber
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
@@ -149,7 +152,7 @@ const VehiclesScreen = () => {
         <ModalContentWithActions
           variant="error"
           title={t('deleteVehicleConfirmModal.title')}
-          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicleId })}
+          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicleLicencePlate })}
           primaryActionLabel={t('deleteVehicleConfirmModal.actionConfirm')}
           primaryActionOnPress={handleConfirmDelete}
           secondaryActionLabel={t('deleteVehicleConfirmModal.actionReject')}

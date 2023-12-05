@@ -133,7 +133,7 @@ export const ticketPriceOptions = (
     npk,
   }: {
     udr: NormalizedUdrZone | null
-    licencePlate?: string
+    licencePlate: string
     duration: number
     npk: ParkingCardDto | null
   },
@@ -172,4 +172,11 @@ export const announcementsOptions = (
     select: (res) => res.data,
     // TODO: remove this when the backend has test announcements data
     enabled: false,
+  })
+
+export const vehiclesOptions = () =>
+  queryOptions({
+    queryKey: ['Vehicles'],
+    queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
+    select: (res) => res.data,
   })
