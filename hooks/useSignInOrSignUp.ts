@@ -7,6 +7,8 @@ import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreConte
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
+const SHOWN_ERROR_CODES = new Set(['NotAuthorizedException', 'CodeMismatchException'])
+
 /**
  * This hook is used to sign in user. If the user is not registered (it's the first time they entered their phone number),
  * we register them (sign up) and then we automatically fire sign in.
@@ -34,7 +36,8 @@ export const useSignInOrSignUp = () => {
     if (signInResultInner) {
       /* Sign in result is needed for `confirmSignIn` function */
       onAuthStoreUpdate({ signInResult: signInResultInner })
-      router.push('/confirm-sign-in')
+
+      router.push({ pathname: '/confirm-sign-in', params: { phone } })
     }
   }
 
@@ -85,14 +88,13 @@ export const useSignInOrSignUp = () => {
         console.log('Unexpected error, no loginResult provided in AuthStore.')
       }
     } catch (error) {
-      // TODO
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]
-      if (isErrorWithCode(error) && error.code === 'CodeMismatchException') {
-        // TODO translation
-        console.log('Code mismatch', error)
-        snackbar.show(`Code mismatch: ${error.message}`, { variant: 'warning' })
-      } else if (isError(error)) {
+      if (isErrorWithCode(error) && SHOWN_ERROR_CODES.has(error.code)) {
+        throw error
+      }
+
+      if (isError(error)) {
         // TODO translation
         console.log('Confirm Error', error)
         snackbar.show(`Confirm Error: ${error.message}`, { variant: 'danger' })
@@ -107,5 +109,14 @@ export const useSignInOrSignUp = () => {
     }
   }
 
-  return { attemptSignInOrSignUp, confirmSignIn }
+  const resendConfirmationCode = async (phone: string) => {
+    const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
+
+    if (signInResultInner) {
+      /* Sign in result is needed for `confirmSignIn` function */
+      onAuthStoreUpdate({ signInResult: signInResultInner })
+    }
+  }
+
+  return { attemptSignInOrSignUp, confirmSignIn, resendConfirmationCode }
 }
