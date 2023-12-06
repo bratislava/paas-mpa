@@ -6,6 +6,7 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import Map, { MapRef } from '@/components/map/Map'
+import MapLocationBottomSheet from '@/components/map/MapLocationBottomSheet'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
@@ -28,6 +29,11 @@ const MapScreen = () => {
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
+  const [isMapPinShown, setIsMapPinShown] = useState(false)
+
+  const handleMapPinVisibilityChange = useCallback((isShown: boolean) => {
+    setIsMapPinShown(isShown)
+  }, [])
 
   const handleZoneChange = useCallback(
     (zone: MapUdrZone | null) => {
@@ -68,12 +74,14 @@ const MapScreen = () => {
         onPointPress={handlePointPress}
         filters={filters}
         processedData={processedData}
+        onMapPinVisibilityChange={handleMapPinVisibilityChange}
       />
       <Portal hostName="index">
         <MapZoneBottomSheet
           ref={zoneBottomSheetRef}
           zone={normalizedZone}
           setFlyToCenter={mapRef.current?.setFlyToCenter}
+          isZoomedOut={!isMapPinShown}
         />
       </Portal>
       {selectedPoint && (
@@ -81,6 +89,9 @@ const MapScreen = () => {
           <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
         </Portal>
       )}
+      <Portal hostName="index">
+        <MapLocationBottomSheet />
+      </Portal>
       <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton

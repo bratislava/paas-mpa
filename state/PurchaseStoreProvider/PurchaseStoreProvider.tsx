@@ -1,14 +1,20 @@
 import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 import { PaymentOption } from '@/components/controls/payment-methods/types'
-import { useVehicles } from '@/hooks/useVehicles'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
-interface PurchaseStoreContextProps {
+export type PurchaseContextVehicle = {
+  id?: number
+  vehiclePlateNumber: string
+  name?: string
+  isOneTimeUse?: boolean
+}
+
+type PurchaseStoreContextProps = {
   udr: NormalizedUdrZone | null
   npk: ParkingCardDto | null
-  licencePlate: string
+  vehicle: PurchaseContextVehicle | null
   duration: number
   paymentOption: PaymentOption | null
 }
@@ -24,17 +30,17 @@ export const PurchaseStoreUpdateContext = createContext<
   ((newValues: Partial<PurchaseStoreContextProps>) => void) | null
 >(null)
 
-const PurchaseStoreProvider = ({ children, initialValues }: Props) => {
-  const { defaultVehicle } = useVehicles()
+export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
+  udr: null,
+  npk: null,
+  vehicle: null,
+  duration: 60 * 60, // 1 hour
+  paymentOption: null,
+}
 
+const PurchaseStoreProvider = ({ children, initialValues }: Props) => {
   const [values, setValues] = useState<PurchaseStoreContextProps>(
-    initialValues || {
-      udr: null,
-      npk: null,
-      licencePlate: defaultVehicle?.licencePlate || '',
-      duration: 60 * 60, // 1 hour
-      paymentOption: null,
-    },
+    initialValues ?? defaultInitialPurchaseStoreValues,
   )
 
   const onPurchaseStoreUpdate = useCallback(

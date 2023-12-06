@@ -186,3 +186,9 @@ export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceR
     placeholderData: keepPreviousData,
     enabled: !!body.ticketId,
   })
+
+export const vehiclesOptions = () =>
+  queryOptions({
+    queryKey: ['Vehicles'],
+    queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
+  })

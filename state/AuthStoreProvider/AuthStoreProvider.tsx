@@ -1,4 +1,5 @@
 import { CognitoUser } from '@aws-amplify/auth'
+import { SplashScreen } from 'expo-router'
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
@@ -34,6 +35,7 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   const onFetchUser = async () => {
     const currentUser = await getCurrentAuthenticatedUser()
     onAuthStoreUpdate({ user: currentUser as CognitoUser })
+    SplashScreen.hideAsync()
   }
 
   useEffect(() => {

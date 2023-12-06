@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
 import Modal from '@/components/screen-layout/Modal/Modal'
@@ -14,15 +14,15 @@ import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
-import { Vehicle } from '@/hooks/useVehiclesStorage'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
+import { AddVehicle } from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const AddVehicleScreen = () => {
   const t = useTranslation('VehiclesScreen')
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
-  const { addVehicle, isVehiclePresent } = useVehicles()
+  const { addVehicle, isVehiclePresent, isLoading } = useVehiclesStoreContext()
 
   const [licencePlateInput, setLicencePlateInput] = useState('')
   const [vehicleName, setVehicleName] = useState('')
@@ -30,12 +30,16 @@ const AddVehicleScreen = () => {
 
   const sanitizedLicencePlate = sanitizeLicencePlate(licencePlateInput)
 
-  useEffect(() => {
+  const handleLicencePlateChange = (newLicencePlate: string) => {
+    setLicencePlateInput(newLicencePlate)
+
+    const newSanitizedLicencePlate = sanitizeLicencePlate(newLicencePlate)
+
     setError('')
-    if (isVehiclePresent(sanitizedLicencePlate)) {
+    if (isVehiclePresent(newSanitizedLicencePlate)) {
       setError(t('licencePlateDuplicate'))
     }
-  }, [isVehiclePresent, sanitizedLicencePlate, t])
+  }
 
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
@@ -43,12 +47,12 @@ const AddVehicleScreen = () => {
 
   const isValid = sanitizedLicencePlate.length > 0 && error.length === 0
 
-  const handleSaveVehicle = () => {
-    const newVehicle: Vehicle = {
+  const handleSaveVehicle = async () => {
+    const newVehicle: AddVehicle = {
       licencePlate: sanitizedLicencePlate,
-      vehicleName: vehicleName.length > 0 ? vehicleName : null,
+      vehicleName,
     }
-    addVehicle(newVehicle)
+    await addVehicle(newVehicle)
     router.back()
   }
 
@@ -65,7 +69,7 @@ const AddVehicleScreen = () => {
               autoCapitalize="characters"
               autoCorrect={false}
               value={licencePlateInput}
-              onChangeText={setLicencePlateInput}
+              onChangeText={handleLicencePlateChange}
               hasError={error.length > 0}
             />
           </Field>
@@ -94,8 +98,9 @@ const AddVehicleScreen = () => {
             title={t('addVehicleConfirmModal.title')}
             text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
             hideAvatar
+            isLoading={isLoading}
             primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
-            primaryActionOnPress={() => handleSaveVehicle()}
+            primaryActionOnPress={handleSaveVehicle}
             secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
             secondaryActionOnPress={closeModal}
           >

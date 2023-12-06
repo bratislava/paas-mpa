@@ -20,7 +20,12 @@
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
-    "signOut": "Odhlásiť sa"
+    "signOut": "Odhlásiť sa",
+    "resendCode": "Odoslať kód znova",
+    "errors": {
+      "NotAuthorizedException": "Platnosť kódu vypršala",
+      "CodeMismatchException": "Neplatný kód"
+    }
   },
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",
@@ -82,9 +87,14 @@
     "title": "Vozidlá",
     "addVehicleTitle": "Pridať vozidlo",
     "addVehicle": "Pridať",
+    "addNewVehicle": "Pridať nové vozidlo",
+    "savedVehicles": "Uložené vozidlá",
     "licencePlateFieldLabel": "Evidenčné číslo vozidla",
     "vehicleNameFieldLabel": "Názov vozidla",
     "optional": "Voliteľné",
+    "oneTimeUse": "Jednorázové použitie",
+    "oneTimeAction": "Hotovo",
+    "chooseOtherOption": "alebo vyberte inú možnosť",
     "myDefaultVehicle": "Predvolené",
     "myOtherVehicles": "Ostatné vozidlá",
     "default": "Predvolené",
@@ -247,7 +257,8 @@
   "ZoneBottomSheet": {
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",
-    "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo premiestnite pin na parkovaciu zónu v blízkosti.",
+    "zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
+    "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo umiestnite pin na parkovaciu zónu v blízkosti.",
     "TopAttachment": {
       "tickets": "Lístky ({{count}})"
     }
@@ -378,5 +389,30 @@
     },
     "selectAll": "Všetky",
     "all": "Všetky"
+  },
+  "AppVersion": {
+    "appVersion": "Verzia aplikácie {{version}}"
+  },
+  "PermissionsScreen": {
+    "location": {
+      "title": "Lokalizačné služby",
+      "text": "Povoľťe lokalizačné služby, aby sme vám mohli nájsť najbližšie parkovisko."
+    },
+    "notifications": {
+      "title": "Upozornenia",
+      "text": "Budeme vás informovať o blížiacom sa ukončení parkovného či novinkách PAAS."
+    }
+  },
+  "LocationBottomSheet": {
+    "openSettings": "Nastavenia",
+    "dismiss": "Odmietnuť",
+    "locationDenied": {
+      "title": "Prístup k polohe odmietnutý",
+      "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte prístup k polohe."
+    },
+    "locationOff": {
+      "title": "Lokalizačné služby vypnuté",
+      "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte služby určovania polohy."
+    }
   }
 }
