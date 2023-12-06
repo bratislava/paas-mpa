@@ -1,5 +1,6 @@
 import {
   Camera,
+  CameraPadding,
   FillLayer,
   LineLayer,
   MapView,
@@ -19,7 +20,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Keyboard, View } from 'react-native'
+import { Keyboard, useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapMarkers from '@/components/map/MapMarkers'
@@ -29,6 +30,7 @@ import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
+import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
@@ -63,6 +65,7 @@ const Map = forwardRef(
       null,
     )
     const [isMapPinShown, setIsMapPinShown] = useState(false)
+    const dimensions = useWindowDimensions()
 
     const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
@@ -116,6 +119,15 @@ const Map = forwardRef(
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
+    const cameraPadding: CameraPadding = useMemo(() => {
+      return {
+        paddingBottom: getBottomMapPadding(dimensions.height),
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+      }
+    }, [dimensions])
+
     return (
       <View className="flex-1">
         <MapView
@@ -141,6 +153,7 @@ const Map = forwardRef(
               zoomLevel={cameraZoom}
               centerCoordinate={flyToCenter}
               maxBounds={CITY_BOUNDS}
+              padding={cameraPadding}
             />
           ) : (
             <Camera
@@ -150,6 +163,7 @@ const Map = forwardRef(
               zoomLevel={cameraZoom ?? 11.5}
               centerCoordinate={nonFollowingMapCenter}
               maxBounds={CITY_BOUNDS}
+              padding={cameraPadding}
             />
           )}
           <UserLocation

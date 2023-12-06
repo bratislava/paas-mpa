@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Keyboard, Platform } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
+import { useMapCenter } from '@/modules/map/hooks/useMapCenter'
 import { MapUdrZone } from '@/modules/map/types'
 import { interpolate } from '@/utils/interpolate'
 
@@ -27,7 +27,7 @@ export const useCameraChangeHandler = ({
   setSelectedPolygon,
   setIsMapPinShown,
 }: Dependencies) => {
-  const screenCenter = useScreenCenter({ scale: Platform.OS === 'android' })
+  const screenCenter = useMapCenter({ scale: Platform.OS === 'android' })
   const [lastCenter, setLastCenter] = useState<number[]>([0, 0])
   const getCurrentPolygon = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
