@@ -6,9 +6,11 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import { useScreenCenter } from '@/modules/map/hooks/useScreenCenter'
 import { MapUdrZone } from '@/modules/map/types'
+import { interpolate } from '@/utils/interpolate'
 
 const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 const DEBOUNCE_TIME = 50
+const QUERY_RECT_SIZE = 40
 
 type Dependencies = {
   map: MapView | null
@@ -30,8 +32,14 @@ export const useCameraChangeHandler = ({
   const getCurrentPolygon = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (state: MapState) => {
-      const featuresAtCenter = await map?.queryRenderedFeaturesAtPoint(
-        [screenCenter.left, screenCenter.top],
+      const rectHalfSize = interpolate(state.properties.zoom, [13.5, 15], [0, QUERY_RECT_SIZE / 2])
+      const featuresAtCenter = await map?.queryRenderedFeaturesInRect(
+        [
+          screenCenter.top + rectHalfSize,
+          screenCenter.left + rectHalfSize,
+          screenCenter.top - rectHalfSize,
+          screenCenter.left - rectHalfSize,
+        ],
         null,
         ['udrFill', 'udrFill2'],
       )
