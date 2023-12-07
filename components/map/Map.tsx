@@ -35,6 +35,7 @@ import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
+import { useMapSearchUpdateContext } from '@/state/MapSearchProvider/useMapSearchUpdateContext'
 
 type Props = {
   onZoneChange?: (feature: MapUdrZone | null) => void
@@ -61,6 +62,7 @@ const Map = forwardRef(
     const [followingUser, setFollowingUser] = useState(true)
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
+    const updateMapSearchContext = useMapSearchUpdateContext()
     const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
       null,
     )
@@ -86,6 +88,10 @@ const Map = forwardRef(
       setFlyToCenter(center)
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
+
+    useEffect(() => {
+      updateMapSearchContext({ flyToCenter: handleSetFlyToCenter })
+    }, [updateMapSearchContext, handleSetFlyToCenter])
 
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
       handleSetFlyToCenter,
@@ -126,6 +132,8 @@ const Map = forwardRef(
         paddingTop: 0,
       }
     }, [])
+
+    console.log('flyToCenter', flyToCenter)
 
     return (
       <View className="flex-1">

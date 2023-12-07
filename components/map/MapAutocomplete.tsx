@@ -1,8 +1,7 @@
-import { BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Feature, Polygon } from 'geojson'
 import { forwardRef, useCallback } from 'react'
-import { TextInput as RNTextInput, View } from 'react-native'
+import { FlatList, SectionList, TextInput as RNTextInput, View } from 'react-native'
 
 import ZoneBadge from '@/components/info/ZoneBadge'
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
@@ -104,7 +103,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
               ) : (
                 <>
                   <Typography variant="h2">{t('searchResults')}</Typography>
-                  <BottomSheetSectionList
+                  <SectionList
                     className="flex-1"
                     sections={sections}
                     keyboardShouldPersistTaps="always"
@@ -135,9 +134,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}
           renderItem={renderItem}
-          ListComponent={BottomSheetFlatList}
+          ListComponent={FlatList}
           renderResults={renderResults}
           multiSourceMode
+          autoFocus
           {...restProps}
         />
       </View>
