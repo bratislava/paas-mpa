@@ -61,7 +61,7 @@ const SettingsPage = () => {
           title: t('title'),
           headerRight: () => (
             <IconButton
-              name="more-vert"
+              name="more-horiz"
               accessibilityLabel={t('openVehicleContextMenu')}
               onPress={handleContextMenuPress}
             />
