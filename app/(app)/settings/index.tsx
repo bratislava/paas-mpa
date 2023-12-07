@@ -19,11 +19,9 @@ import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 
 const SettingsPage = () => {
   const t = useTranslationLocal('Settings')
-  const signOut = useSignOut()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -35,12 +33,11 @@ const SettingsPage = () => {
     [],
   )
 
-  const { mutate, isPending } = useMutation({
+  const deleteUserMutation = useMutation({
     mutationFn: () => clientApi.usersControllerDeleteUser(),
     onSuccess: async (response) => {
       if (response.data) {
-        const responsee = await Auth.deleteUser()
-        if (responsee === 'SUCCESS') await signOut()
+        await Auth.deleteUser()
       }
     },
   })
@@ -101,11 +98,11 @@ const SettingsPage = () => {
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions
           variant="error"
-          isLoading={isPending}
+          isLoading={deleteUserMutation.isPending}
           title={t('deleteAccountConfirmModal.title')}
           text={t('deleteAccountConfirmModal.message')}
           primaryActionLabel={t('deleteAccountConfirmModal.actionConfirm')}
-          primaryActionOnPress={mutate}
+          primaryActionOnPress={deleteUserMutation.mutate}
           secondaryActionLabel={t('deleteAccountConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         />
