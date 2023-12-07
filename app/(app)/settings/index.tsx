@@ -1,4 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 import { Link, Stack } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -16,6 +18,7 @@ import Field from '@/components/shared/Field'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 
 const SettingsPage = () => {
@@ -32,6 +35,16 @@ const SettingsPage = () => {
     [],
   )
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => clientApi.usersControllerDeleteUser(),
+    onSuccess: async (response) => {
+      if (response.data) {
+        const responsee = await Auth.deleteUser()
+        if (responsee === 'SUCCESS') await signOut()
+      }
+    },
+  })
+
   const handleContextMenuPress = () => {
     bottomSheetRef.current?.expand()
   }
@@ -39,10 +52,6 @@ const SettingsPage = () => {
   const handleActionDelete = () => {
     bottomSheetRef.current?.close()
     openModal()
-  }
-
-  const handleConfirmDelete = () => {
-    signOut()
   }
 
   return (
@@ -92,10 +101,11 @@ const SettingsPage = () => {
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions
           variant="error"
+          isLoading={isPending}
           title={t('deleteAccountConfirmModal.title')}
           text={t('deleteAccountConfirmModal.message')}
           primaryActionLabel={t('deleteAccountConfirmModal.actionConfirm')}
-          primaryActionOnPress={handleConfirmDelete}
+          primaryActionOnPress={mutate}
           secondaryActionLabel={t('deleteAccountConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         />
