@@ -58,34 +58,6 @@ const SettingsPage = () => {
     openModal()
   }
 
-  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
-  const bottomSheetRef = useRef<BottomSheet>(null)
-
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
-    ),
-    [],
-  )
-
-  const deleteUserMutation = useMutation({
-    mutationFn: () => clientApi.usersControllerDeleteUser(),
-    onSuccess: async (response) => {
-      if (response.data) {
-        await Auth.deleteUser()
-      }
-    },
-  })
-
-  const handleContextMenuPress = () => {
-    bottomSheetRef.current?.expand()
-  }
-
-  const handleActionDelete = () => {
-    bottomSheetRef.current?.close()
-    openModal()
-  }
-
   return (
     <ScreenView>
       <Stack.Screen
