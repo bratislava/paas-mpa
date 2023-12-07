@@ -173,3 +173,9 @@ export const announcementsOptions = (
     // TODO: remove this when the backend has test announcements data
     enabled: false,
   })
+
+export const vehiclesOptions = () =>
+  queryOptions({
+    queryKey: ['Vehicles'],
+    queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
+  })

@@ -23,7 +23,6 @@ import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
 import {
@@ -32,6 +31,7 @@ import {
 } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
+import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 
 const PurchaseScreen = () => {
   const t = useTranslation('PurchaseScreen')
@@ -40,11 +40,13 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { udr, licencePlate, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const { udr, vehicle, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { getVehicle, defaultVehicle } = useVehicles()
+  const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
   const [defaultPaymentOption] = useDefaultPaymentOption()
+
+  const licencePlate = vehicle?.vehiclePlateNumber ?? ''
 
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -54,7 +56,7 @@ const PurchaseScreen = () => {
     ticket: {
       udr: String(udr?.udrId) ?? '',
       udrUuid: udr?.udrUuid ?? '',
-      ecv: licencePlate,
+      ecv: licencePlate ?? '',
       parkingStart,
       parkingEnd,
     },
@@ -62,8 +64,11 @@ const PurchaseScreen = () => {
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
-    if (!(licencePlate && getVehicle(licencePlate)) && defaultVehicle) {
-      onPurchaseStoreUpdate({ licencePlate: defaultVehicle.licencePlate })
+    if (vehicle?.isOneTimeUse) return
+    if (!(vehicle && getVehicle(vehicle.id)) && defaultVehicle) {
+      onPurchaseStoreUpdate({ vehicle: defaultVehicle })
+    } else if (vehicle && !getVehicle(vehicle.id)) {
+      onPurchaseStoreUpdate({ vehicle: null })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
@@ -121,7 +126,9 @@ const PurchaseScreen = () => {
             <Field label={t('chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
-                  <VehicleFieldControl vehicle={getVehicle(licencePlate)} />
+                  <VehicleFieldControl
+                    vehicle={vehicle?.isOneTimeUse ? vehicle : getVehicle(vehicle?.id)}
+                  />
                 </PressableStyled>
               </Link>
             </Field>

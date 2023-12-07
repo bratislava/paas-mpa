@@ -10,6 +10,7 @@ import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreConte
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
+import VehiclesStoreProvider from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import colors from '@/tailwind.config.colors'
 
 const RootLayout = () => {
@@ -44,41 +45,43 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <MapZonesProvider>
-      <PurchaseStoreProvider>
-        <TicketsFiltersStoreProvider>
-          <Stack
-            screenOptions={{
-              headerBackTitleVisible: false,
-              headerTitleStyle: {
-                fontFamily: 'BelfastGrotesk_700Bold',
-              },
-              headerTintColor: colors.dark.DEFAULT,
-            }}
-          >
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-
-            <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-            <Stack.Screen
-              name="(purchase-and-payment)/purchase/choose-vehicle"
-              options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen
-              name="(purchase-and-payment)/purchase/choose-payment-method"
-              options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
-            <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
-            <Stack.Screen
-              name="tickets/filters/timeframes"
-              options={{
-                headerShown: false,
-                presentation: 'transparentModal',
-                animation: 'none',
+      <VehiclesStoreProvider>
+        <PurchaseStoreProvider>
+          <TicketsFiltersStoreProvider>
+            <Stack
+              screenOptions={{
+                headerBackTitleVisible: false,
+                headerTitleStyle: {
+                  fontFamily: 'BelfastGrotesk_700Bold',
+                },
+                headerTintColor: colors.dark.DEFAULT,
               }}
-            />
-          </Stack>
-        </TicketsFiltersStoreProvider>
-      </PurchaseStoreProvider>
+            >
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+
+              <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+              <Stack.Screen
+                name="(purchase-and-payment)/purchase/choose-vehicle"
+                options={{ presentation: 'modal' }}
+              />
+              <Stack.Screen
+                name="(purchase-and-payment)/purchase/choose-payment-method"
+                options={{ presentation: 'modal' }}
+              />
+              <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
+              <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
+              <Stack.Screen
+                name="tickets/filters/timeframes"
+                options={{
+                  headerShown: false,
+                  presentation: 'transparentModal',
+                  animation: 'none',
+                }}
+              />
+            </Stack>
+          </TicketsFiltersStoreProvider>
+        </PurchaseStoreProvider>
+      </VehiclesStoreProvider>
     </MapZonesProvider>
   )
 }

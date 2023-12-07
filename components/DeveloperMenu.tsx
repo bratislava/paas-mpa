@@ -26,6 +26,11 @@ const menuItems: MenuItem[] = [
     route: '/onboarding',
   },
   {
+    title: 'Permissions',
+    subtitle: 'Permissions screens',
+    route: '/permissions',
+  },
+  {
     title: 'Parking cards',
     subtitle: 'All parking cards + flow for adding cards',
     route: '/parking-cards',

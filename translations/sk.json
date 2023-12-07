@@ -20,7 +20,12 @@
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
-    "signOut": "Odhlásiť sa"
+    "signOut": "Odhlásiť sa",
+    "resendCode": "Odoslať kód znova",
+    "errors": {
+      "NotAuthorizedException": "Platnosť kódu vypršala",
+      "CodeMismatchException": "Neplatný kód"
+    }
   },
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",
@@ -394,5 +399,27 @@
   },
   "AppVersion": {
     "appVersion": "Verzia aplikácie {{version}}"
+  },
+  "PermissionsScreen": {
+    "location": {
+      "title": "Lokalizačné služby",
+      "text": "Povoľťe lokalizačné služby, aby sme vám mohli nájsť najbližšie parkovisko."
+    },
+    "notifications": {
+      "title": "Upozornenia",
+      "text": "Budeme vás informovať o blížiacom sa ukončení parkovného či novinkách PAAS."
+    }
+  },
+  "LocationBottomSheet": {
+    "openSettings": "Nastavenia",
+    "dismiss": "Odmietnuť",
+    "locationDenied": {
+      "title": "Prístup k polohe odmietnutý",
+      "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte prístup k polohe."
+    },
+    "locationOff": {
+      "title": "Lokalizačné služby vypnuté",
+      "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte služby určovania polohy."
+    }
   }
 }

@@ -32,6 +32,7 @@ type ModalContentWithActionsProps = {
   variant?: 'success' | 'error'
   hideAvatar?: boolean
   customAvatarComponent?: ReactNode
+  isLoading?: boolean
 } & PrimaryActionProps &
   SecondaryActionProps &
   ViewProps
@@ -48,6 +49,7 @@ const ModalContentWithActions = ({
   primaryActionLabel,
   secondaryActionOnPress,
   secondaryActionLabel,
+  isLoading,
   ...rest
 }: ModalContentWithActionsProps) => {
   return (
@@ -69,6 +71,7 @@ const ModalContentWithActions = ({
             <Button
               variant={variant === 'error' ? 'negative' : 'primary'}
               onPress={primaryActionOnPress}
+              loading={isLoading}
             >
               {primaryActionLabel}
             </Button>
