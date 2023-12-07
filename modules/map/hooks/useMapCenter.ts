@@ -7,8 +7,9 @@ type Options = {
   scale?: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getBottomMapPadding = (height: number) => {
+// TODO: make screen height dependent?
+export const getBottomMapPadding = () => {
+  // Half of the `MapZoneBottomSheet` height when zone is shown
   return 150
 }
 
@@ -17,10 +18,8 @@ export const useMapCenter = (options?: Options) => {
   const safeAreaFrame = useSafeAreaFrame()
   const dimensions = useWindowDimensions()
 
-  console.log('height', dimensions.height)
-
   return useMemo(() => {
-    const bottomPadding = getBottomMapPadding(dimensions.height)
+    const bottomPadding = getBottomMapPadding()
     const windowWidth = safeArea ? safeAreaFrame.width : dimensions.width
     const windowHeight = safeArea ? safeAreaFrame.height : dimensions.height
 

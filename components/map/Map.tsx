@@ -20,7 +20,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Keyboard, useWindowDimensions, View } from 'react-native'
+import { Keyboard, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapMarkers from '@/components/map/MapMarkers'
@@ -65,7 +65,6 @@ const Map = forwardRef(
       null,
     )
     const [isMapPinShown, setIsMapPinShown] = useState(false)
-    const dimensions = useWindowDimensions()
 
     const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
@@ -121,12 +120,12 @@ const Map = forwardRef(
 
     const cameraPadding: CameraPadding = useMemo(() => {
       return {
-        paddingBottom: getBottomMapPadding(dimensions.height),
+        paddingBottom: getBottomMapPadding(),
         paddingLeft: 0,
         paddingRight: 0,
         paddingTop: 0,
       }
-    }, [dimensions])
+    }, [])
 
     return (
       <View className="flex-1">

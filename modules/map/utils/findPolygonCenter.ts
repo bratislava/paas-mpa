@@ -18,9 +18,9 @@ export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [
   return [centerLon, centerLat]
 }
 
-// TODO: update this to always navigate to a point that is *inside* the zone, now it not always happends
-/** Finds the coordinate of the polygon that is closest to the center, used during navigating to a zone,
- * when choosing a point that is inside the zone it should be selected after naviagting to it */
+/** Finds the coordinate of a polygon or a multipolygon that is closest to the center, used during navigating to a zone,
+ * when choosing a point that is inside the zone it should be selected after naviagting to it
+ * @param coordinates A polygon or a multipolygon */
 export const findMostCenterPointInPolygon = (
   coordinates: number[][][] | number[][][][],
 ): [number, number] => {
@@ -28,6 +28,7 @@ export const findMostCenterPointInPolygon = (
   let nearestPoint: [number, number] = [0, 0]
   let minDistance = Number.MAX_VALUE
 
+  /** A multipolygon consists of an array of polygons which consist of an array of lines which consist of an array of points. Points themselves are an array of 2 numbers, a longitude and a latitude. */
   const isMultiPolygon = Array.isArray(coordinates[0][0][0])
 
   coordinates.flat(isMultiPolygon ? 2 : 1).forEach((point) => {
