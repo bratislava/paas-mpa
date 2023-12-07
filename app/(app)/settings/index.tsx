@@ -19,9 +19,11 @@ import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
+import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 
 const SettingsPage = () => {
   const t = useTranslationLocal('Settings')
+  const signOut = useSignOut()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -37,7 +39,12 @@ const SettingsPage = () => {
     mutationFn: () => clientApi.usersControllerDeleteUser(),
     onSuccess: async (response) => {
       if (response.data) {
-        await Auth.deleteUser()
+        const deleteUserAWSResponse = await Auth.deleteUser()
+
+        if (deleteUserAWSResponse === 'SUCCESS') {
+          // signout to remove all data of user from local storage
+          await signOut()
+        }
       }
     },
   })
