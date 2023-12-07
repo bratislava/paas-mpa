@@ -24,9 +24,10 @@ import { formatDateTime } from '@/utils/formatDateTime'
 type Props = {
   ticket: TicketDto
   isActive?: boolean
+  queryKey: (string | number | undefined)[]
 }
 
-const TicketCard = ({ ticket, isActive }: Props) => {
+const TicketCard = ({ ticket, isActive, queryKey }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
@@ -45,7 +46,7 @@ const TicketCard = ({ ticket, isActive }: Props) => {
   const handleTerminateTicket = async () => {
     shortenTicketMutation.mutate(ticket.id, {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+        await queryClient.invalidateQueries({ queryKey })
 
         handleTerminateModalClose()
       },
@@ -83,7 +84,7 @@ const TicketCard = ({ ticket, isActive }: Props) => {
 
           {isActive ? (
             <View className="g-2">
-              <Link asChild href="/purchase">
+              <Link asChild href={`/prolongate/${ticket.id}`}>
                 <Button>{t('prolong')}</Button>
               </Link>
               <Button variant="secondary" onPress={handleTerminateModalOpen}>
@@ -98,6 +99,7 @@ const TicketCard = ({ ticket, isActive }: Props) => {
         <ModalContentWithActions
           variant="error"
           title={t('terminationModal.title')}
+          isLoading={shortenTicketMutation.isPending}
           text={t('terminationModal.message')}
           primaryActionLabel={t('terminationModal.actionConfirm')}
           primaryActionOnPress={handleTerminateTicket}

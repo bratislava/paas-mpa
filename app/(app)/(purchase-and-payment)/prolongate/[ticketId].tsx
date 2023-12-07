@@ -22,7 +22,7 @@ const ProlongScreen = () => {
   const initialValues = useMemo(
     () => ({
       duration: 60 * 60,
-      licencePlate: ticket?.ecv ?? '',
+      vehicle: ticket?.ecv ? { vehiclePlateNumber: ticket?.ecv ?? '', isOneTimeUse: true } : null,
       npk: visitorCards?.find(({ identificator }) => ticket?.npkId === identificator) ?? null,
       paymentOption: defaultPaymentOption,
       udr: null,

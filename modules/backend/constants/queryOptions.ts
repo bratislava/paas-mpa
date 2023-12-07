@@ -180,7 +180,7 @@ export const announcementsOptions = (
 
 export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceRequestDto) =>
   queryOptions({
-    queryKey: ['TicketProlongationPrice', body.ticketId],
+    queryKey: ['TicketProlongationPrice', body.ticketId, body.newParkingEnd],
     queryFn: () => clientApi.ticketsControllerGetTicketProlongationPrice(body),
     select: (res) => res.data,
     placeholderData: keepPreviousData,

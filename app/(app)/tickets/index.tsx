@@ -34,14 +34,16 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const filters = useTicketsFiltersStoreContext()
 
-  const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} isActive={active} />,
-    [active],
-  )
-
   const now = useMemo(() => new Date(), [])
 
   const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
+
+  const ticketsQueryOptions = ticketsInfiniteQuery({
+    parkingEndFrom: active ? now : fromTo.parkingEndFrom,
+    parkingEndTo: active ? undefined : fromTo.parkingEndTo,
+    pageSize: 20,
+    ecv: filters.ecv ?? undefined,
+  })
 
   const {
     data: ticketsDataInf,
@@ -51,20 +53,20 @@ const TicketsRoute = ({ active }: RouteProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    ticketsInfiniteQuery({
-      parkingEndFrom: active ? now : fromTo.parkingEndFrom,
-      parkingEndTo: active ? undefined : fromTo.parkingEndTo,
-      pageSize: 20,
-      ecv: filters.ecv ?? undefined,
-    }),
-  )
+  } = useInfiniteQuery(ticketsQueryOptions)
 
   const loadMore = () => {
     if (hasNextPage) {
       fetchNextPage()
     }
   }
+
+  const renderItem: ListRenderItem<TicketDto> = useCallback(
+    ({ item }) => (
+      <TicketCard ticket={item} isActive={active} queryKey={ticketsQueryOptions.queryKey} />
+    ),
+    [active, ticketsQueryOptions.queryKey],
+  )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleFiltersPress = () => {
@@ -84,7 +86,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
-
   if (active && !tickets?.length) {
     return (
       <EmptyStateScreen

@@ -19,7 +19,6 @@ import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useVehicles } from '@/hooks/useVehicles'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketProlongationPriceOptions } from '@/modules/backend/constants/queryOptions'
 import { InitiateProlongationRequestDto, TicketDto } from '@/modules/backend/openapi-generated'
@@ -40,14 +39,14 @@ const ProlongTicketForm = ({ ticket }: Props) => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { licencePlate, npk, paymentOption, duration } = usePurchaseStoreContext()
+  const { vehicle, npk, paymentOption, duration } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { getVehicle } = useVehicles()
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const dateNow = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
   const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
+
   const priceRequestBody: InitiateProlongationRequestDto = {
     ticketId: ticket.id,
     newParkingEnd: parkingEnd,
@@ -72,8 +71,6 @@ const ProlongTicketForm = ({ ticket }: Props) => {
     })
   }
 
-  const vehicle = getVehicle(licencePlate)
-
   return (
     <>
       <ScreenView title={t('prolongate')}>
@@ -82,7 +79,7 @@ const ProlongTicketForm = ({ ticket }: Props) => {
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             {vehicle ? (
               <Field label={t('vehicle')}>
-                <VehicleRow vehicle={vehicle} showControlChevron />
+                <VehicleRow vehicle={vehicle} />
               </Field>
             ) : null}
 
