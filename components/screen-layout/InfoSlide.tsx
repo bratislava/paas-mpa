@@ -1,19 +1,24 @@
-import { Image, ImageSourcePropType, View } from 'react-native'
+import cslx from 'clsx'
+import { FC } from 'react'
+import { View } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import Typography from '@/components/shared/Typography'
 
 type Props = {
   title: string
   text: string
-  image: ImageSourcePropType
+  SvgImage: FC<SvgProps>
   className?: string
 }
 
-const InfoSlide = ({ title, text, image, className }: Props) => {
+const InfoSlide = ({ title, text, SvgImage, className }: Props) => {
   return (
-    <View className={className}>
-      <Image source={image} className="w-full flex-shrink" />
-      <View className="p-5 g-2">
+    <View className={cslx('min-h-0 flex-1', className)}>
+      <View className="min-h-0 w-full flex-shrink overflow-hidden">
+        <SvgImage preserveAspectRatio="xMaxYMid slice" width="100%" />
+      </View>
+      <View className="flex-0 p-5 g-2">
         <Typography className="text-center" variant="h1">
           {title}
         </Typography>
