@@ -142,6 +142,15 @@
         "title": "Parking ended",
         "description": "We will send you e-mail when your parking ends"
       }
+    },
+    "actions": {
+      "deleteAccount": "Delete account"
+    },
+    "deleteAccountConfirmModal": {
+      "title": "We’re sorry to see you go...",
+      "message": "Are you sure that you want to delete your personal data? All data will be deleted. This action cannot be reversed. To use the app again, you’ll need to create new account.",
+      "actionConfirm": "Delete account",
+      "actionReject": "Keep account"
     }
   },
   "PaymentMethods": {
