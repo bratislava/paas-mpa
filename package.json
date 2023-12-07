@@ -17,7 +17,7 @@
     "generate-clients": "yarn generate-client-paas-mpa"
   },
   "dependencies": {
-    "@aws-amplify/auth": "~5.6.6",
+    "@aws-amplify/react-native": "~1.0.6",
     "@expo-google-fonts/inter": "~0.2.3",
     "@expo/vector-icons": "~13.0.0",
     "@gorhom/bottom-sheet": "~4.5.1",
@@ -34,8 +34,7 @@
     "@turf/helpers": "^6.5.0",
     "@turf/intersect": "^6.5.0",
     "@types/react": "~18.2.14",
-    "amazon-cognito-identity-js": "~6.3.6",
-    "aws-amplify": "~5.3.12",
+    "aws-amplify": "~6.0.6",
     "axios": "~1.6.0",
     "clsx": "~2.0.0",
     "conditional-wrap": "~1.0.2",
@@ -64,6 +63,7 @@
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-date-picker": "~4.3.3",
     "react-native-gesture-handler": "~2.12.0",
+    "react-native-get-random-values": "~1.9.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-markdown-display": "~7.0.0-alpha.2",
     "react-native-mmkv": "~2.10.2",

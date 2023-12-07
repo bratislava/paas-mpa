@@ -1,15 +1,19 @@
-import { Auth } from 'aws-amplify'
+import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth'
 import { router } from 'expo-router'
 
+/**
+ * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/manage-user-session/#retrieve-a-user-session
+ */
 export const getAccessTokenOrLogout = async () => {
   try {
-    const session = await Auth.currentSession()
-    const jwtToken = session.getAccessToken().getJwtToken()
-    if (!jwtToken) {
+    const session = await fetchAuthSession()
+    const { accessToken } = session.tokens ?? {}
+
+    if (!accessToken) {
       throw new Error('no jwt token found in current session')
     }
 
-    return jwtToken
+    return accessToken
   } catch (error) {
     console.log('error getting access token - redirect to login', error)
     router.replace('/onboarding')
@@ -18,13 +22,18 @@ export const getAccessTokenOrLogout = async () => {
   }
 }
 
-// Auth.getCurrentAuthenticatedUser throws when not authenticated
-// this helper changes that and ignores any other potential errors
+/**
+ * This helper function ignores error thrown by `getCurrentUser` when not authenticated
+ * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/manage-user-session/#retrieve-your-current-authenticated-user
+ */
 export const getCurrentAuthenticatedUser = async () => {
   try {
-    // TODO should be solved in v6 release of aws-amplify
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return await Auth.currentAuthenticatedUser()
+    const user = await getCurrentUser()
+    console.log(`The username: ${user.username}`)
+    console.log(`The userId: ${user.userId}`)
+    console.log(`The signInDetails:`, user.signInDetails)
+
+    return user
   } catch (error) {
     return null
   }

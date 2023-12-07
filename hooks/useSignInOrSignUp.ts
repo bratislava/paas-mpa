@@ -1,13 +1,15 @@
-import { Auth } from 'aws-amplify'
+import { confirmSignIn, signIn, signOut, signUp } from 'aws-amplify/auth'
 import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
-import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
+import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { GENERIC_ERROR_MESSAGE, isError, isErrorWithCode } from '@/utils/errors'
 
 const SHOWN_ERROR_CODES = new Set(['NotAuthorizedException', 'CodeMismatchException'])
+
+const STATIC_PHONE = '+42100000000'
 
 /**
  * This hook is used to sign in user. If the user is not registered (it's the first time they entered their phone number),
@@ -27,16 +29,26 @@ const SHOWN_ERROR_CODES = new Set(['NotAuthorizedException', 'CodeMismatchExcept
 export const useSignInOrSignUp = () => {
   const snackbar = useSnackbar()
 
-  const { signInResult } = useAuthStoreContext()
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const signInAndRedirectToConfirm = async (phone: string) => {
-    const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
+    const user = await getCurrentAuthenticatedUser()
+    console.log('user', user)
 
-    if (signInResultInner) {
+    const { isSignedIn, nextStep } = await signIn({
+      username: phone,
+      ...(phone === STATIC_PHONE
+        ? { options: { authFlowType: 'CUSTOM_WITHOUT_SRP' } }
+        : { password: STATIC_TEMP_PASS }),
+    })
+
+    console.log('signInOutput', { isSignedIn, nextStep })
+    if (nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_SMS_CODE') {
       /* Sign in result is needed for `confirmSignIn` function */
-      onAuthStoreUpdate({ signInResult: signInResultInner })
-
+      router.push({ pathname: '/confirm-sign-in', params: { phone } })
+    }
+    if (nextStep.signInStep === 'DONE') {
       router.push({ pathname: '/confirm-sign-in', params: { phone } })
     }
   }
@@ -47,16 +59,36 @@ export const useSignInOrSignUp = () => {
         /* Try to sign in the user */
         await signInAndRedirectToConfirm(phone)
       } catch (error) {
+        console.log('signInError', error, JSON.stringify(error))
         /* If sign in throws error, try to sign up */
         // TODO NotAuthorizedException is thrown not only for unregistered users
-        if (isErrorWithCode(error) && error.code === 'NotAuthorizedException') {
-          await Auth.signUp({
+        if (
+          typeof error === 'object' &&
+          error !== null &&
+          'name' in error &&
+          typeof error.name === 'string' &&
+          error.name === 'NotAuthorizedException'
+        ) {
+          const signUpOutput = await signUp({
             username: phone,
             password: STATIC_TEMP_PASS,
           })
 
+          console.log('signUpOutput', signUpOutput)
+
+          // if (signUpOutput.nextStep === 'DONE') {
           /* If sign didn't throw an error, try to immediately sign in */
           await signInAndRedirectToConfirm(phone)
+          // }
+        } else if (
+          typeof error === 'object' &&
+          error !== null &&
+          'name' in error &&
+          typeof error.name === 'string' &&
+          error.name === 'UserAlreadyAuthenticatedException'
+        ) {
+          await signOut()
+          onAuthStoreUpdate({ user: null })
         } else {
           throw error
         }
@@ -76,17 +108,17 @@ export const useSignInOrSignUp = () => {
     }
   }
 
-  const confirmSignIn = async (code: string) => {
+  const attemptConfirmSignIn = async (code: string, phone: string) => {
     try {
-      if (signInResult) {
-        await Auth.confirmSignIn(signInResult, code)
-        /* If sign in didn't throw an error, set the user to context provider */
-        onAuthStoreUpdate({ signInResult: null, user: signInResult })
-        router.replace('/')
-      } else {
-        // TODO translation
-        console.log('Unexpected error, no loginResult provided in AuthStore.')
+      if (phone !== STATIC_PHONE) {
+        await confirmSignIn({ challengeResponse: code })
       }
+
+      /* If sign in didn't throw an error, set the user to context provider */
+      const user = await getCurrentAuthenticatedUser()
+      onAuthStoreUpdate({ user })
+
+      router.replace('/')
     } catch (error) {
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]
@@ -96,7 +128,7 @@ export const useSignInOrSignUp = () => {
 
       if (isError(error)) {
         // TODO translation
-        console.log('Confirm Error', error)
+        console.log('Confirm Error', error, JSON.stringify(error))
         snackbar.show(`Confirm Error: ${error.message}`, { variant: 'danger' })
       } else {
         // TODO translation
@@ -109,14 +141,19 @@ export const useSignInOrSignUp = () => {
     }
   }
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const resendConfirmationCode = async (phone: string) => {
-    const signInResultInner = await Auth.signIn(phone, STATIC_TEMP_PASS)
-
-    if (signInResultInner) {
-      /* Sign in result is needed for `confirmSignIn` function */
-      onAuthStoreUpdate({ signInResult: signInResultInner })
-    }
+    await signIn({
+      username: phone,
+      ...(phone === STATIC_PHONE
+        ? { options: { authFlowType: 'CUSTOM_WITHOUT_SRP' } }
+        : { password: STATIC_TEMP_PASS }),
+    })
   }
 
-  return { attemptSignInOrSignUp, confirmSignIn, resendConfirmationCode }
+  return {
+    attemptSignInOrSignUp,
+    attemptConfirmSignIn,
+    resendConfirmationCode,
+  }
 }

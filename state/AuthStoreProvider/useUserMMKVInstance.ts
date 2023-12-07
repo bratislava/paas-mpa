@@ -5,5 +5,5 @@ import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreConte
 export const useUserMMKVInstance = () => {
   const { user } = useAuthStoreContext()
 
-  return useMMKV({ id: user ? `${user?.getUsername()}.storage` : 'mmkv.default' })
+  return useMMKV({ id: user ? `${user?.username}.storage` : 'mmkv.default' })
 }

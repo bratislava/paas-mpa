@@ -1,6 +1,7 @@
 import * as Device from 'expo-device'
 import { PermissionStatus } from 'expo-modules-core'
 import * as Notifications from 'expo-notifications'
+import { router } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 
 type Options =
@@ -29,7 +30,8 @@ export const useNotificationPermission = ({ autoAsk }: Options = {}) => {
         // console.log(token)
       }
     } else {
-      console.warn('Must use physical device for Push Notifications')
+      console.warn('Must use physical device for Push Notifications, skipping.')
+      router.push('/')
     }
   }, [])
 
