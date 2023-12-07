@@ -36,7 +36,7 @@ const TicketPurchasePage = () => {
 
   useEffect(() => {
     // TODO check if ticket is paid and reset store
-    if (data) {
+    if (data?.paymentStatus === 'SUCCESS') {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
     }
   }, [data, onPurchaseStoreUpdate])
@@ -49,14 +49,13 @@ const TicketPurchasePage = () => {
         </Link>
       }
     >
-      {isPending ? (
+      {isPending || data?.paymentStatus === 'PENDING' ? (
         // TODO show this content when ticket status is PENDING
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
-      ) : isError ? (
-        // TODO show tis content when ticket status is FAIL
+      ) : isError || data.paymentStatus === 'FAIL' ? (
         <ContentWithAvatar variant="error" title={t('paymentFailed')} text={t('paymentFailedText')}>
           <Panel className="bg-negative-light">
-            <Typography>{error.message}</Typography>
+            <Typography>{data?.paymentFailReason || error?.message}</Typography>
           </Panel>
         </ContentWithAvatar>
       ) : (
