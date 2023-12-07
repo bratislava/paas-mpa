@@ -1,18 +1,18 @@
 import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { ImageSourcePropType, useWindowDimensions, View } from 'react-native'
+import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
 import {
-  MarketingSliderBonusCard,
-  MarketingSliderDataSecurity,
-  MarketingSliderHelpUsPlan,
-  MarketingSliderParkingCards,
-  MarketingSliderVisitorsFree,
-  MarketingSliderWelcome,
-} from '@/assets/images/marketing-slider'
+  SlideBonusCard,
+  SlideDataSecurity,
+  SlideHelpUsPlan,
+  SlideParkingCards,
+  SlideVisitorsFree,
+  SlideWelcome,
+} from '@/assets/onboarding-slides'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
@@ -31,23 +31,21 @@ type MarketingSliderRouteProps = {
 }
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   const t = useTranslation('OnboardingScreen')
-  const image = (
-    {
-      welcome: MarketingSliderWelcome,
-      dataSecurity: MarketingSliderDataSecurity,
-      parkingCards: MarketingSliderParkingCards,
-      helpUsPlan: MarketingSliderHelpUsPlan,
-      visitorsFree: MarketingSliderVisitorsFree,
-      bonusCard: MarketingSliderBonusCard,
-    } satisfies { [key in RouteKeys]: ImageSourcePropType }
-  )[slide]
+  const SvgImage = {
+    welcome: SlideWelcome,
+    dataSecurity: SlideDataSecurity,
+    parkingCards: SlideParkingCards,
+    helpUsPlan: SlideHelpUsPlan,
+    visitorsFree: SlideVisitorsFree,
+    bonusCard: SlideBonusCard,
+  }[slide]
 
   return (
     <InfoSlide
       className="flex-1"
       title={t(`slides.${slide}.title`)}
       text={t(`slides.${slide}.text`)}
-      image={image}
+      SvgImage={SvgImage}
     />
   )
 }

@@ -1,43 +1,49 @@
-export const findPolygonCenter = (coordinates: number[][][]): [number, number] => {
-  console.log(coordinates)
+export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [number, number] => {
   let sumLon = 0
   let sumLat = 0
   let pointCount = 0
 
-  coordinates.forEach((line) =>
-    line.forEach((point) => {
-      sumLon += point[0]
-      sumLat += point[1]
-      pointCount += 1
-    }),
-  )
+  const isMultiPolygon = Array.isArray(coordinates[0][0][0])
+
+  coordinates.flat(isMultiPolygon ? 2 : 1).forEach((point) => {
+    const [lon, lat] = point as number[]
+    sumLon += lon
+    sumLat += lat
+    pointCount += 1
+  })
 
   const centerLon = sumLon / pointCount
   const centerLat = sumLat / pointCount
 
-  console.log(centerLon, centerLat)
-
   return [centerLon, centerLat]
 }
 
-// TODO: update this to always navigate to a point that is *inside* the zone, now it not always happends
-/** Finds the coordinate of the polygon that is closest to the center, used during navigating to a zone,
- * when choosing a point that is inside the zone it should be selected after naviagting to it */
-export const findMostCenterPointInPolygon = (coordinates: number[][][]): [number, number] => {
+/** Finds the coordinate of a polygon or a multipolygon that is closest to the center, used during navigating to a zone,
+ * when choosing a point that is inside the zone it should be selected after naviagting to it
+ * @param coordinates A polygon or a multipolygon */
+export const findMostCenterPointInPolygon = (
+  coordinates: number[][][] | number[][][][],
+): [number, number] => {
   const center = findPolygonCenter(coordinates)
   let nearestPoint: [number, number] = [0, 0]
   let minDistance = Number.MAX_VALUE
 
-  coordinates.forEach((line) =>
-    line.forEach((point) => {
-      const distance = Math.hypot(point[0] - center[0], point[1] - center[1])
+  /** A multipolygon consists of an array of polygons which consist of an array of lines which consist of an array of points. Points themselves are an array of 2 numbers, a longitude and a latitude. */
+  const isMultiPolygon = Array.isArray(coordinates[0][0][0])
 
-      if (distance < minDistance) {
-        minDistance = distance
-        nearestPoint = point as [number, number]
-      }
-    }),
-  )
+  coordinates.flat(isMultiPolygon ? 2 : 1).forEach((point) => {
+    const [lon, lat] = point as number[]
+    const distance = Math.hypot(lon - center[0], lat - center[1])
+
+    if (distance < minDistance) {
+      minDistance = distance
+      nearestPoint = point as [number, number]
+    }
+  })
+
+  if (nearestPoint[0] === 0 || nearestPoint[1] === 0) {
+    return center
+  }
 
   return nearestPoint
 }

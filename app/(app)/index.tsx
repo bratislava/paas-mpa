@@ -51,9 +51,7 @@ const IndexScreen = () => {
             onLongPress={handleLongPress}
           />
           {newAnnouncementsCount ? (
-            <View className="absolute right-2 top-2 rounded-full bg-white p-1">
-              <View className="h-2 w-2 rounded-full bg-warning" />
-            </View>
+            <View className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-warning" />
           ) : null}
         </View>
       </View>
