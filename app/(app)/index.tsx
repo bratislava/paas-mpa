@@ -1,6 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
-import { router } from 'expo-router'
 import { useRef } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -12,10 +11,6 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
-
-const handleLongPress = () => {
-  router.push('/dev')
-}
 
 const IndexScreen = () => {
   const t = useTranslation()
@@ -48,7 +43,7 @@ const IndexScreen = () => {
             accessibilityLabel={t('Navigation.openMenu')}
             variant="white-raised-small"
             onPress={handlePressOpen}
-            onLongPress={handleLongPress}
+            // onLongPress={()=> router.push('/dev')}
           />
           {newAnnouncementsCount ? (
             <View className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-warning" />
