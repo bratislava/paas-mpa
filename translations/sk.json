@@ -145,6 +145,15 @@
         "title": "Parkovanie skončilo",
         "description": "Po vypršaní parkovacieho lístka vám pošleme e-mail"
       }
+    },
+    "actions": {
+      "deleteAccount": "Vymazať účet"
+    },
+    "deleteAccountConfirmModal": {
+      "title": "Je nám ľúto že odchádzate...",
+      "message": "Ste si istý, že chcete vymazať svoje osobné údaje? Všetky údaje budú vymazané. Táto akcia sa nedá vrátiť späť. Ak chcete aplikáciu znova používať, budete si musieť vytvoriť nový účet.",
+      "actionConfirm": "Vymazať účet",
+      "actionReject": "Ponechať účet"
     }
   },
   "PaymentMethods": {

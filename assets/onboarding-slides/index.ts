@@ -1,0 +1,8 @@
+export { default as SlideVisitorsFree } from './Asset_103_1.svg'
+export { default as SlideBonusCard } from './Asset_104_1.svg'
+export { default as SlideParkingCards } from './Asset_105_1.svg'
+export { default as SlideLocationPermissions } from './Asset_106_1.svg'
+export { default as SlideNotificationPermission } from './Asset_107_1.svg'
+export { default as SlideWelcome } from './Asset_108_1.svg'
+export { default as SlideDataSecurity } from './Asset_109_1.svg'
+export { default as SlideHelpUsPlan } from './Asset_110_1.svg'

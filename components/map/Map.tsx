@@ -1,5 +1,6 @@
 import {
   Camera,
+  CameraPadding,
   FillLayer,
   LineLayer,
   MapView,
@@ -25,10 +26,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
+import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
@@ -116,6 +118,15 @@ const Map = forwardRef(
 
     const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
 
+    const cameraPadding: CameraPadding = useMemo(() => {
+      return {
+        paddingBottom: getBottomMapPadding(),
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+      }
+    }, [])
+
     return (
       <View className="flex-1">
         <MapView
@@ -140,6 +151,8 @@ const Map = forwardRef(
               followZoomLevel={14}
               zoomLevel={cameraZoom}
               centerCoordinate={flyToCenter}
+              maxBounds={CITY_BOUNDS}
+              padding={cameraPadding}
             />
           ) : (
             <Camera
@@ -148,6 +161,8 @@ const Map = forwardRef(
               animationMode="flyTo"
               zoomLevel={cameraZoom ?? 11.5}
               centerCoordinate={nonFollowingMapCenter}
+              maxBounds={CITY_BOUNDS}
+              padding={cameraPadding}
             />
           )}
           <UserLocation
