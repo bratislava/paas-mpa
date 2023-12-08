@@ -13,7 +13,6 @@ export type PaymentSearchParams = {
 // disabled links to prevent user from navigating away from payment gateway
 const invalidPaymentGatewayLinks = ['globalpaymentsinc.com']
 
-// TODO wrap also invalid states into ScreenView (this adds title)
 const PaymentScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
