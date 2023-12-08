@@ -49,6 +49,12 @@ const TicketPurchasePage = () => {
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
+      ) : isError || data.paymentStatus === 'FAIL' ? (
+        <ContentWithAvatar variant="error" title={t('paymentFailed')} text={t('paymentFailedText')}>
+          <Panel className="bg-negative-light">
+            <Typography>{data?.paymentFailReason || error?.message}</Typography>
+          </Panel>
+        </ContentWithAvatar>
       ) : data?.paymentStatus === 'SUCCESS' ? (
         <ContentWithAvatar
           variant="success"
@@ -56,12 +62,6 @@ const TicketPurchasePage = () => {
           text={t('paymentSuccessfulText')}
         >
           <BoughtTicket ticket={data} />
-        </ContentWithAvatar>
-      ) : isError || data.paymentStatus === 'FAIL' ? (
-        <ContentWithAvatar variant="error" title={t('paymentFailed')} text={t('paymentFailedText')}>
-          <Panel className="bg-negative-light">
-            <Typography>{data?.paymentFailReason || error?.message}</Typography>
-          </Panel>
         </ContentWithAvatar>
       ) : null}
     </ScreenViewCentered>

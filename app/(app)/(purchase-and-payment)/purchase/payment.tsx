@@ -44,6 +44,7 @@ const PaymentScreen = () => {
         source={{ uri: paymentUrlDecoded }}
         className="flex-1"
         onNavigationStateChange={(e) => {
+          // if user navigates by clicking link to invalid link, stop loading and go back to previous page (gateway)
           if (invalidPaymentGatewayLinks.some((url) => e.url.includes(url))) {
             webviewRef.current?.stopLoading()
             webviewRef.current?.goBack()
