@@ -56,7 +56,6 @@ const ActiveCards = () => {
         keyExtractor={(parkingCard) => parkingCard.identificator}
         onEndReachedThreshold={0.2}
         onEndReached={loadMore}
-        // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ gap: 12 }}
         ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
         renderItem={({ item: parkingCardItem }) => (

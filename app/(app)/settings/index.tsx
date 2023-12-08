@@ -74,7 +74,6 @@ const SettingsPage = () => {
       />
 
       <ScreenContent className="flex-1">
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
         <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
           <Field label={t('language')}>
             <Link asChild href="/settings/language">

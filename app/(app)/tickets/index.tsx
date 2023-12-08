@@ -116,7 +116,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
     <ScreenContent variant="center" className="flex-1">
       <View className="w-full">
         <FlatList
-          // eslint-disable-next-line react-native/no-inline-styles
           contentContainerStyle={{ gap: 12 }}
           data={tickets}
           renderItem={renderItem}
