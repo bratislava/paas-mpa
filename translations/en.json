@@ -37,6 +37,7 @@
   "PurchaseScreen": {
     "title": "Ticket purchase",
     "titlePayment": "Payment",
+    "titleInvalidPaymentLink": "Invalid link",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
@@ -48,6 +49,8 @@
     "pay": "Pay",
     "summary": "Summary",
     "backToMap": "Back to map",
+    "noPaymentInitiated": "No payment initiated. Please try again",
+    "invalidPaymentLink": "Invalid payment url. Please try again",
     "paymentFailed": "Payment failed",
     "paymentFailedText": "Your payment has failed. \nPlease try again.",
     "paymentSuccessful": "Payment successful",

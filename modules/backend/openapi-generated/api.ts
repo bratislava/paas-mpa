@@ -999,6 +999,12 @@ export interface TicketDto {
    */
   paymentStatus?: PaymentStatus
   /**
+   * Reason of the payment failure. For example: The cardholder canceled the payment
+   * @type {string}
+   * @memberof TicketDto
+   */
+  paymentFailReason?: string
+  /**
    * Date of the cancellation
    * @type {string}
    * @memberof TicketDto
@@ -1096,6 +1102,12 @@ export interface TicketInitDto {
    * @memberof TicketInitDto
    */
   paymentStatus?: PaymentStatus
+  /**
+   * Reason of the payment failure. For example: The cardholder canceled the payment
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  paymentFailReason?: string
   /**
    * Date of the cancellation
    * @type {string}
