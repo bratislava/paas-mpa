@@ -426,5 +426,11 @@
       "title": "Location services is off",
       "text": "To see nearby parking areas go to App settings in your phone and enable location services."
     }
+  },
+  "useSignInOrSignUp": {
+    "signInError": "Sign In Error: {{message}}",
+    "unexpectedErrorObjectInSignIn": "Unexpected error. Unknown error object during sign in.",
+    "confirmError": "Confirm Error: {{message}}",
+    "unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow."
   }
 }

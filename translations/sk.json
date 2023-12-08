@@ -424,5 +424,11 @@
       "title": "Lokalizačné služby vypnuté",
       "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte služby určovania polohy."
     }
+  },
+  "useSignInOrSignUp": {
+    "signInError": "Chyba prihlásenia: {{message}}",
+    "unexpectedErrorObjectInSignIn": "Neočakávaná chyba. Neznámy error object počas prihlásenia.",
+    "confirmError": "Chyba pri potvrdení: {{message}}",
+    "unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia."
   }
 }
