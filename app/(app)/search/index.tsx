@@ -1,6 +1,5 @@
 import { PortalHost } from '@gorhom/portal'
 import { router } from 'expo-router'
-import { Feature, Polygon } from 'geojson'
 import { useCallback, useRef } from 'react'
 import { Pressable, TextInput, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -11,7 +10,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import FlexRow from '@/components/shared/FlexRow'
 import { useTranslation } from '@/hooks/useTranslation'
-import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import { GeocodingFeature, isGeocodingFeature, UdrZoneFeature } from '@/modules/map/types'
 import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
 import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
 
@@ -36,7 +35,7 @@ const SearchScreen = () => {
   }, [])
 
   const handleChoice = useCallback(
-    (newValue: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
+    (newValue: GeocodingFeature | UdrZoneFeature) => {
       handleInputBlur()
       if (isGeocodingFeature(newValue)) {
         flyToCenter?.(newValue.center)

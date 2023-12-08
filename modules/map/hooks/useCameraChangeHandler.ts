@@ -1,11 +1,10 @@
 import MapView, { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
-import { Feature, Polygon } from 'geojson'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Keyboard, Platform } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
 
 import { useMapCenter } from '@/modules/map/hooks/useMapCenter'
-import { MapUdrZone } from '@/modules/map/types'
+import { UdrZoneFeature } from '@/modules/map/types'
 import { interpolate } from '@/utils/interpolate'
 
 const HIDE_MARKER_ON_ZOOM_OVER = 13.5
@@ -15,8 +14,8 @@ const QUERY_RECT_SIZE = 40
 type Dependencies = {
   map: MapView | null
   isMapPinShown: boolean
-  selectedPolygon: Feature<Polygon, MapUdrZone> | null
-  setSelectedPolygon: Dispatch<SetStateAction<Feature<Polygon, MapUdrZone> | null>>
+  selectedPolygon: UdrZoneFeature | null
+  setSelectedPolygon: Dispatch<SetStateAction<UdrZoneFeature | null>>
   setIsMapPinShown: Dispatch<SetStateAction<boolean>>
   onStateChange?: (state: MapState) => void
 }
@@ -48,7 +47,7 @@ export const useCameraChangeHandler = ({
       if ((featuresAtCenter?.features?.length ?? 0) < 1) {
         setSelectedPolygon(null)
       } else if (isMapPinShown) {
-        const feature = featuresAtCenter!.features[0] as Feature<Polygon, MapUdrZone>
+        const feature = featuresAtCenter!.features[0] as UdrZoneFeature
         if (feature.properties.OBJECTID !== selectedPolygon?.properties.OBJECTID) {
           setSelectedPolygon(feature)
         }

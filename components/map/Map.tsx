@@ -10,7 +10,7 @@ import {
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { Feature, GeoJsonProperties, Point, Polygon, Position } from 'geojson'
+import { Feature, GeoJsonProperties, Point, Position } from 'geojson'
 import {
   ForwardedRef,
   forwardRef,
@@ -33,7 +33,7 @@ import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
-import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { MapInterestPoint, MapUdrZone, UdrZoneFeature } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 import { useMapSearchUpdateContext } from '@/state/MapSearchProvider/useMapSearchUpdateContext'
@@ -72,9 +72,7 @@ const Map = forwardRef(
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
     const updateMapSearchContext = useMapSearchUpdateContext()
-    const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
-      null,
-    )
+    const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
 
     const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()

@@ -13,6 +13,7 @@ import {
   MapInterestPoint,
   MapUdrZone,
   AssistantPoint,
+  UdrZoneFeature,
 } from '@/modules/map/types'
 
 const zoneMapping = {
@@ -245,7 +246,7 @@ export const processData = ({
               ...feature.properties,
               layer,
             },
-          } as Feature<Polygon, MapUdrZone>
+          } as UdrZoneFeature
         })
         .filter(
           (f) =>

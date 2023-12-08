@@ -1,6 +1,6 @@
 /* eslint-disable babel/camelcase */
 
-import { Feature, GeoJsonTypes, Geometry, Polygon } from 'geojson'
+import { Feature, GeoJsonTypes, Geometry, MultiPolygon, Polygon } from 'geojson'
 
 import {
   MapLayerEnum,
@@ -232,8 +232,10 @@ export type GeocodingFeature = {
 }
 
 export const isGeocodingFeature = (
-  value: GeocodingFeature | Feature<Polygon, MapUdrZone>,
+  value: GeocodingFeature | UdrZoneFeature,
 ): value is GeocodingFeature => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
   return (value as any)?.place_name !== undefined
 }
+
+export type UdrZoneFeature = Feature<Polygon | MultiPolygon, MapUdrZone>
