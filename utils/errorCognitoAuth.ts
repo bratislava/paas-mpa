@@ -1,4 +1,6 @@
-export class CognitoAuthError extends Error {
+import { isError } from '@/utils/errors'
+
+export class ErrorWithName extends Error {
   name: string
 
   constructor(message: string, name: string) {
@@ -7,5 +9,5 @@ export class CognitoAuthError extends Error {
   }
 }
 
-export const isErrorWithName = (error: unknown): error is CognitoAuthError =>
-  typeof error === 'object' && error !== null && 'name' in error && typeof error.name === 'string'
+export const isErrorWithName = (error: unknown): error is ErrorWithName =>
+  isError(error) && 'name' in error && typeof error.name === 'string'

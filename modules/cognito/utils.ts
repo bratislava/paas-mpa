@@ -1,5 +1,9 @@
-import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth'
+import { fetchAuthSession, getCurrentUser, signIn } from 'aws-amplify/auth'
 import { router } from 'expo-router'
+
+import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
+
+export const STATIC_PHONE = '+42100000000'
 
 /**
  * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/manage-user-session/#retrieve-a-user-session
@@ -36,5 +40,23 @@ export const getCurrentAuthenticatedUser = async () => {
     return user
   } catch (error) {
     return null
+  }
+}
+
+export const signInAndRedirectToConfirm = async (phone: string) => {
+  const { isSignedIn, nextStep } = await signIn({
+    username: phone,
+    ...(phone === STATIC_PHONE
+      ? { options: { authFlowType: 'CUSTOM_WITHOUT_SRP' } }
+      : { password: STATIC_TEMP_PASS }),
+  })
+
+  console.log('signInOutput', { isSignedIn, nextStep })
+  if (nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_SMS_CODE') {
+    /* Sign in result is needed for `confirmSignIn` function */
+    router.push({ pathname: '/confirm-sign-in', params: { phone } })
+  }
+  if (nextStep.signInStep === 'DONE') {
+    router.push({ pathname: '/confirm-sign-in', params: { phone } })
   }
 }

@@ -15,7 +15,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
-import { isErrorWithCode } from '@/utils/errors'
+import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 type ConfirmAuthSearchParams = {
   phone: string
@@ -62,8 +62,8 @@ const Page = () => {
         }
         await attemptConfirmSignIn(code, phone)
       } catch (error) {
-        if (isErrorWithCode(error)) {
-          setErrorCode(error.code)
+        if (isErrorWithName(error)) {
+          setErrorCode(error.name)
         }
       }
       setLoading(false)

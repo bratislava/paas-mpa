@@ -31,6 +31,7 @@ export const useNotificationPermission = ({ autoAsk }: Options = {}) => {
       }
     } else {
       console.warn('Must use physical device for Push Notifications, skipping.')
+      // If on simulator, continue to homepage
       router.push('/')
     }
   }, [])
