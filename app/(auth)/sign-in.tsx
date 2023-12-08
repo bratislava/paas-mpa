@@ -16,7 +16,7 @@ const Page = () => {
   const t = useTranslation('Auth')
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
 
-  const [phone, setPhone] = useState('+')
+  const [phone, setPhone] = useState('')
 
   /* Redirect to home screen if user is logged in */
   const { user } = useAuthStoreContext()
@@ -43,6 +43,7 @@ const Page = () => {
             autoComplete="tel"
             autoFocus
             returnKeyType="done"
+            placeholder="+421"
             onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
           />
 
