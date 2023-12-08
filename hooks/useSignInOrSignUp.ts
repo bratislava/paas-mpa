@@ -37,6 +37,7 @@ const CONFIRM_ERROR_CODES_TO_SHOW = new Set(['NotAuthorizedException', 'CodeMism
  * In both cases, we use static password, because it is required by Cognito.
  *
  * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/
+ * API: https://aws-amplify.github.io/amplify-js/api/globals.html
  */
 export const useSignInOrSignUp = () => {
   const t = useTranslation('useSignInOrSignUp')
