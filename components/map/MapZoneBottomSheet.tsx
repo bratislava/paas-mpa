@@ -113,7 +113,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         keyboardBehavior="interactive"
         onChange={handleChange}
         containerStyle={isFullHeight && { paddingTop: top }}
-        // eslint-disable-next-line react-native/no-inline-styles
         handleIndicatorStyle={isFullHeight && { opacity: 0 }}
         handleComponent={BottomSheetHandleWithShadow}
         onAnimate={handleAnimate}

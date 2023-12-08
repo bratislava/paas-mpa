@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles,no-underscore-dangle,sonarjs/cognitive-complexity */
+/* eslint-disable no-underscore-dangle,sonarjs/cognitive-complexity */
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import {
   Dimensions,

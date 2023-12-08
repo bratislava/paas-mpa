@@ -41,9 +41,7 @@ const Snackbar = ({
 
   return (
     <View className="w-full px-5 py-2">
-      {/* eslint-disable-next-line react-native/no-inline-styles */}
       <Shadow style={{ width: '100%' }} offset={[0, 2]}>
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
         <FlexRow className="w-full items-center rounded bg-white px-4">
           <Icon
             {...iconProps[variant]}
