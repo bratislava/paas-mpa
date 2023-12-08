@@ -21,10 +21,11 @@ type Props = {
   zone: NormalizedUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
   isZoomedOut?: boolean
+  address?: string
 }
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
-  const { zone: selectedZone, setFlyToCenter, isZoomedOut } = props
+  const { zone: selectedZone, setFlyToCenter, isZoomedOut, address } = props
 
   const localRef = useRef<BottomSheet>(null)
   const inputRef = useRef<RNTextInput>(null)
@@ -68,7 +69,12 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                 </Typography>
                 <PressableStyled onPress={handleInputFocus}>
                   <View pointerEvents="none">
-                    <TextInput ref={inputRef} returnKeyType="search" />
+                    <TextInput
+                      ref={inputRef}
+                      returnKeyType="search"
+                      value={address}
+                      selection={{ start: 0 }}
+                    />
                   </View>
                 </PressableStyled>
               </View>

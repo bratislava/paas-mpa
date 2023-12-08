@@ -18,6 +18,7 @@ type Dependencies = {
   selectedPolygon: Feature<Polygon, MapUdrZone> | null
   setSelectedPolygon: Dispatch<SetStateAction<Feature<Polygon, MapUdrZone> | null>>
   setIsMapPinShown: Dispatch<SetStateAction<boolean>>
+  onStateChange?: (state: MapState) => void
 }
 
 export const useCameraChangeHandler = ({
@@ -26,6 +27,7 @@ export const useCameraChangeHandler = ({
   selectedPolygon,
   setSelectedPolygon,
   setIsMapPinShown,
+  onStateChange,
 }: Dependencies) => {
   const screenCenter = useMapCenter({ scale: Platform.OS === 'android' })
   const [lastCenter, setLastCenter] = useState<number[]>([0, 0])
@@ -45,10 +47,7 @@ export const useCameraChangeHandler = ({
       )
       if ((featuresAtCenter?.features?.length ?? 0) < 1) {
         setSelectedPolygon(null)
-
-        return
-      }
-      if (isMapPinShown) {
+      } else if (isMapPinShown) {
         const feature = featuresAtCenter!.features[0] as Feature<Polygon, MapUdrZone>
         if (feature.properties.OBJECTID !== selectedPolygon?.properties.OBJECTID) {
           setSelectedPolygon(feature)
@@ -70,6 +69,7 @@ export const useCameraChangeHandler = ({
       ) {
         return
       }
+      onStateChange?.(state)
       setLastCenter(state.properties.center)
       if (!Keyboard.isVisible()) {
         debouncedHandleCameraChange(state)
@@ -80,6 +80,6 @@ export const useCameraChangeHandler = ({
         }
       }
     },
-    [debouncedHandleCameraChange, setIsMapPinShown, lastCenter],
+    [debouncedHandleCameraChange, setIsMapPinShown, lastCenter, onStateChange],
   )
 }

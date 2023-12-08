@@ -3,6 +3,7 @@ import {
   CameraPadding,
   FillLayer,
   LineLayer,
+  MapState,
   MapView,
   ShapeSource,
   UserLocation,
@@ -43,6 +44,7 @@ type Props = {
   filters: MapFilters
   processedData: ProcessedMapData
   onMapPinVisibilityChange?: (isShown: boolean) => void
+  onStateChange?: (mapState: MapState) => void
 }
 
 export type MapRef = {
@@ -54,7 +56,14 @@ const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
   (
-    { onZoneChange, onPointPress, filters, processedData, onMapPinVisibilityChange }: Props,
+    {
+      onZoneChange,
+      onPointPress,
+      filters,
+      processedData,
+      onMapPinVisibilityChange,
+      onStateChange,
+    }: Props,
     ref: ForwardedRef<MapRef>,
   ) => {
     const camera = useRef<Camera>(null)
@@ -103,6 +112,7 @@ const Map = forwardRef(
       selectedPolygon,
       setIsMapPinShown,
       setSelectedPolygon,
+      onStateChange,
     })
 
     const handlePointPress = useCallback(
@@ -132,8 +142,6 @@ const Map = forwardRef(
         paddingTop: 0,
       }
     }, [])
-
-    console.log('flyToCenter', flyToCenter)
 
     return (
       <View className="flex-1">
