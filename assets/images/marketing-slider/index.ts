@@ -1,6 +1,0 @@
-export { default as MarketingSliderBonusCard } from './paas_app_ilustracia-114.png'
-export { default as MarketingSliderVisitorsFree } from './paas_app_ilustracia-115.png'
-export { default as MarketingSliderHelpUsPlan } from './paas_app_ilustracia-116.png'
-export { default as MarketingSliderDataSecurity } from './paas_app_ilustracia-117.png'
-export { default as MarketingSliderWelcome } from './paas_app_ilustracia-118.png'
-export { default as MarketingSliderParkingCards } from './paas_app_ilustracia2-113.png'

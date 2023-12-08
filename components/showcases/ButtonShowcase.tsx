@@ -11,7 +11,6 @@ const handlePress = () => {
 }
 
 const ButtonShowcase = () => (
-  // eslint-disable-next-line react-native/no-inline-styles
   <View className="p-4 g-2">
     <FlexRow className="justify-start">
       <IconButton name="add" accessibilityLabel="Add" />

@@ -133,7 +133,7 @@ export interface CreateVehicleDto {
    * @type {string}
    * @memberof CreateVehicleDto
    */
-  name: string
+  name?: string
   /**
    * Set to true to be the default car
    * @type {boolean}
@@ -999,6 +999,12 @@ export interface TicketDto {
    */
   paymentStatus?: PaymentStatus
   /**
+   * Reason of the payment failure. For example: The cardholder canceled the payment
+   * @type {string}
+   * @memberof TicketDto
+   */
+  paymentFailReason?: string
+  /**
    * Date of the cancellation
    * @type {string}
    * @memberof TicketDto
@@ -1096,6 +1102,12 @@ export interface TicketInitDto {
    * @memberof TicketInitDto
    */
   paymentStatus?: PaymentStatus
+  /**
+   * Reason of the payment failure. For example: The cardholder canceled the payment
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  paymentFailReason?: string
   /**
    * Date of the cancellation
    * @type {string}
@@ -1289,7 +1301,7 @@ export interface VehicleDto {
    * @type {string}
    * @memberof VehicleDto
    */
-  name: string
+  name?: string
   /**
    * Set to true to be the default car
    * @type {boolean}
@@ -2662,7 +2674,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
   return {
     /**
      *
-     * @summary WIP: Get URL to ticket receipt
+     * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2674,6 +2686,51 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       // verify required parameter 'id' is not null or undefined
       assertParamExists('ticketsControllerGetReceipt', 'id', id)
       const localVarPath = `/tickets/receipt/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Get price of the ticket after a potenial ticket shortening
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetShortenTicketPrice: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerGetShortenTicketPrice', 'id', id)
+      const localVarPath = `/tickets/shorten/{id}/price`.replace(
         `{${'id'}}`,
         encodeURIComponent(String(id)),
       )
@@ -3123,7 +3180,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
-     * @summary WIP: Shorten existing ticket
+     * @summary Shorten existing ticket
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3300,7 +3357,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary WIP: Get URL to ticket receipt
+     * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3313,6 +3370,23 @@ export const TicketsApiFp = function (configuration?: Configuration) {
         id,
         options,
       )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get price of the ticket after a potenial ticket shortening
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGetShortenTicketPrice(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTicketPriceResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerGetShortenTicketPrice(id, options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -3470,7 +3544,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary WIP: Shorten existing ticket
+     * @summary Shorten existing ticket
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3553,7 +3627,7 @@ export const TicketsApiFactory = function (
   return {
     /**
      *
-     * @summary WIP: Get URL to ticket receipt
+     * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3561,6 +3635,21 @@ export const TicketsApiFactory = function (
     ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig): AxiosPromise<string> {
       return localVarFp
         .ticketsControllerGetReceipt(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Get price of the ticket after a potenial ticket shortening
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetShortenTicketPrice(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<GetTicketPriceResponseDto> {
+      return localVarFp
+        .ticketsControllerGetShortenTicketPrice(id, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -3703,7 +3792,7 @@ export const TicketsApiFactory = function (
     },
     /**
      *
-     * @summary WIP: Shorten existing ticket
+     * @summary Shorten existing ticket
      * @param {number} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3779,7 +3868,7 @@ export const TicketsApiFactory = function (
 export class TicketsApi extends BaseAPI {
   /**
    *
-   * @summary WIP: Get URL to ticket receipt
+   * @summary Get URL to ticket receipt
    * @param {number} id
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -3788,6 +3877,20 @@ export class TicketsApi extends BaseAPI {
   public ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerGetReceipt(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get price of the ticket after a potenial ticket shortening
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGetShortenTicketPrice(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGetShortenTicketPrice(id, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -3943,7 +4046,7 @@ export class TicketsApi extends BaseAPI {
 
   /**
    *
-   * @summary WIP: Shorten existing ticket
+   * @summary Shorten existing ticket
    * @param {number} id
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -4014,6 +4117,42 @@ export class TicketsApi extends BaseAPI {
  */
 export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
+    /**
+     *
+     * @summary Delete user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersControllerDeleteUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/user`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
     /**
      *
      * @summary Get user settings
@@ -4117,6 +4256,18 @@ export const UserApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Delete user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async usersControllerDeleteUser(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerDeleteUser(options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get user settings
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4162,6 +4313,17 @@ export const UserApiFactory = function (
   return {
     /**
      *
+     * @summary Delete user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersControllerDeleteUser(options?: AxiosRequestConfig): AxiosPromise<boolean> {
+      return localVarFp
+        .usersControllerDeleteUser(options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get user settings
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4196,6 +4358,19 @@ export const UserApiFactory = function (
  * @extends {BaseAPI}
  */
 export class UserApi extends BaseAPI {
+  /**
+   *
+   * @summary Delete user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UserApi
+   */
+  public usersControllerDeleteUser(options?: AxiosRequestConfig) {
+    return UserApiFp(this.configuration)
+      .usersControllerDeleteUser(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
   /**
    *
    * @summary Get user settings

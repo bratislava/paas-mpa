@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import { DateTimeFormatter, LocalDateTime } from '@js-joda/core'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { View } from 'react-native'

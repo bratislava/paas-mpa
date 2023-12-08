@@ -38,6 +38,7 @@
     "prolongate": "Predĺžiť lístok",
     "title": "Nákup lístka",
     "titlePayment": "Platba",
+    "titleInvalidPaymentLink": "Neplatný link",
     "segmentFieldLabel": "Úsek",
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
@@ -50,6 +51,8 @@
     "pay": "Zaplatiť",
     "summary": "Celkom",
     "backToMap": "Späť na mapu",
+    "noPaymentInitiated": "Platba nebola vytvorená. Vyskúšajte to prosím znova.",
+    "invalidPaymentLink": "Neplatný odkaz na platobnú bránu. Vyskúšajte to prosím znova",
     "paymentFailed": "Platba zlyhala",
     "paymentFailedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova.",
     "paymentSuccessful": "Úspešná platba",
@@ -144,6 +147,15 @@
         "title": "Parkovanie skončilo",
         "description": "Po vypršaní parkovacieho lístka vám pošleme e-mail"
       }
+    },
+    "actions": {
+      "deleteAccount": "Vymazať účet"
+    },
+    "deleteAccountConfirmModal": {
+      "title": "Je nám ľúto že odchádzate...",
+      "message": "Ste si istý, že chcete vymazať svoje osobné údaje? Všetky údaje budú vymazané. Táto akcia sa nedá vrátiť späť. Ak chcete aplikáciu znova používať, budete si musieť vytvoriť nový účet.",
+      "actionConfirm": "Vymazať účet",
+      "actionReject": "Ponechať účet"
     }
   },
   "PaymentMethods": {
@@ -414,5 +426,11 @@
       "title": "Lokalizačné služby vypnuté",
       "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte služby určovania polohy."
     }
+  },
+  "useSignInOrSignUp": {
+    "signInError": "Chyba prihlásenia: {{message}}",
+    "unexpectedErrorObjectInSignIn": "Neočakávaná chyba. Neznámy error object počas prihlásenia.",
+    "confirmError": "Chyba pri potvrdení: {{message}}",
+    "unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia."
   }
 }

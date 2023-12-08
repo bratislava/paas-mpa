@@ -6,10 +6,7 @@ import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
-import {
-  PermissionsLocationImage,
-  PermissionsNotificationsImage,
-} from '@/assets/images/permissions'
+import { SlideLocationPermissions, SlideNotificationPermission } from '@/assets/onboarding-slides'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -32,9 +29,9 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const [notificationsPermissionStatus, getNotificationsPermission] = useNotificationPermission()
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
 
-  const image = {
-    notifications: PermissionsNotificationsImage,
-    location: PermissionsLocationImage,
+  const SvgImage = {
+    notifications: SlideNotificationPermission,
+    location: SlideLocationPermissions,
   }[route.key]
   const permissionStatus =
     route.key === 'notifications' ? notificationsPermissionStatus : locationPermissionStatus
@@ -56,7 +53,11 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
 
   return (
     <View className="flex-1 flex-col justify-start">
-      <InfoSlide title={t(`${route.key}.title`)} text={t(`${route.key}.text`)} image={image} />
+      <InfoSlide
+        title={t(`${route.key}.title`)}
+        text={t(`${route.key}.text`)}
+        SvgImage={SvgImage}
+      />
       <ContinueButton
         className={clsx('mx-5', { 'mb-5': !insets.bottom })}
         onPress={getPermission}

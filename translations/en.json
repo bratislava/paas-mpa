@@ -38,6 +38,7 @@
     "prolongate": "Prolongate ticket",
     "title": "Ticket purchase",
     "titlePayment": "Payment",
+    "titleInvalidPaymentLink": "Invalid link",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
@@ -50,6 +51,8 @@
     "pay": "Pay",
     "summary": "Summary",
     "backToMap": "Back to map",
+    "noPaymentInitiated": "No payment initiated. Please try again",
+    "invalidPaymentLink": "Invalid payment url. Please try again",
     "paymentFailed": "Payment failed",
     "paymentFailedText": "Your payment has failed. \nPlease try again.",
     "paymentSuccessful": "Payment successful",
@@ -144,6 +147,15 @@
         "title": "Parking ended",
         "description": "We will send you e-mail when your parking ends"
       }
+    },
+    "actions": {
+      "deleteAccount": "Delete account"
+    },
+    "deleteAccountConfirmModal": {
+      "title": "We’re sorry to see you go...",
+      "message": "Are you sure that you want to delete your personal data? All data will be deleted. This action cannot be reversed. To use the app again, you’ll need to create new account.",
+      "actionConfirm": "Delete account",
+      "actionReject": "Keep account"
     }
   },
   "PaymentMethods": {
@@ -416,5 +428,11 @@
       "title": "Location services is off",
       "text": "To see nearby parking areas go to App settings in your phone and enable location services."
     }
+  },
+  "useSignInOrSignUp": {
+    "signInError": "Sign In Error: {{message}}",
+    "unexpectedErrorObjectInSignIn": "Unexpected error. Unknown error object during sign in.",
+    "confirmError": "Confirm Error: {{message}}",
+    "unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow."
   }
 }

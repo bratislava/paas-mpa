@@ -1,14 +1,12 @@
-import { CognitoUser } from '@aws-amplify/auth'
+import { AuthUser } from 'aws-amplify/auth'
 import { SplashScreen } from 'expo-router'
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
 type GlobalContextProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  signInResult: any
   signUpPhone: string | null
-  user: CognitoUser | null
+  user: AuthUser | null
 }
 
 export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
@@ -20,7 +18,6 @@ export const AuthStoreUpdateContext = createContext<
 
 const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   const [values, setValues] = useState<GlobalContextProps>({
-    signInResult: null,
     signUpPhone: null,
     user: null,
   })
@@ -34,7 +31,7 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
 
   const onFetchUser = async () => {
     const currentUser = await getCurrentAuthenticatedUser()
-    onAuthStoreUpdate({ user: currentUser as CognitoUser })
+    onAuthStoreUpdate({ user: currentUser })
     SplashScreen.hideAsync()
   }
 

@@ -19,27 +19,25 @@ export type TicketPurchaseSearchParams = {
 
 /**
  * This page takes care of redirect from Payment gate. Do not change its path, unless it's changes on BE too.
- *
- * @constructor
  */
-
-// TODO repeat request to BE until the state of ticket is SUCCESS or FAIL
 const TicketPurchasePage = () => {
   const t = useTranslation('PurchaseScreen')
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { data, isPending, isError, error } = useQueryWithFocusRefetch(
+  const { data, isPending, isError, error, refetch } = useQueryWithFocusRefetch(
     getTicketOptions(ticketIdParsed!),
   )
 
   useEffect(() => {
-    // TODO check if ticket is paid and reset store
-    if (data) {
+    if (data?.paymentStatus === 'SUCCESS') {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+    } else if (data?.paymentStatus === 'PENDING') {
+      refetch()
     }
-  }, [data, onPurchaseStoreUpdate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
   return (
     <ScreenViewCentered
@@ -49,18 +47,15 @@ const TicketPurchasePage = () => {
         </Link>
       }
     >
-      {isPending ? (
-        // TODO show this content when ticket status is PENDING
+      {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
-      ) : isError ? (
-        // TODO show tis content when ticket status is FAIL
+      ) : isError || data.paymentStatus === 'FAIL' ? (
         <ContentWithAvatar variant="error" title={t('paymentFailed')} text={t('paymentFailedText')}>
           <Panel className="bg-negative-light">
-            <Typography>{error.message}</Typography>
+            <Typography>{data?.paymentFailReason || error?.message}</Typography>
           </Panel>
         </ContentWithAvatar>
-      ) : (
-        // TODO show this content when ticket status is SUCCESS
+      ) : data?.paymentStatus === 'SUCCESS' ? (
         <ContentWithAvatar
           variant="success"
           title={t('paymentSuccessful')}
@@ -68,7 +63,7 @@ const TicketPurchasePage = () => {
         >
           <BoughtTicket ticket={data} />
         </ContentWithAvatar>
-      )}
+      ) : null}
     </ScreenViewCentered>
   )
 }

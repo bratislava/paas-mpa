@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import { BottomSheetHandle, BottomSheetHandleProps } from '@gorhom/bottom-sheet'
 import { Shadow } from 'react-native-shadow-2'
 
