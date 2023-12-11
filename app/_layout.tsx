@@ -26,6 +26,7 @@ import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSn
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
+import { stackHeaderBackButton } from '@/utils/stackHeaderBackButton'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -84,7 +85,10 @@ const RootLayout = () => {
                   }}
                 >
                   <Stack.Screen options={{ headerShown: true }} name="(auth)/sign-in" />
-                  <Stack.Screen options={{ headerShown: true }} name="(auth)/confirm-sign-in" />
+                  <Stack.Screen
+                    options={{ headerShown: true, headerLeft: stackHeaderBackButton }}
+                    name="(auth)/confirm-sign-in"
+                  />
                 </Stack>
               </PortalProvider>
             </GestureHandlerRootView>

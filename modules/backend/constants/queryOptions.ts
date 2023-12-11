@@ -25,41 +25,21 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsOptions = ({
-  ecv,
-  parkingStartFrom,
-  parkingStartTo,
+export const ticketsNumberOptions = ({
   parkingEndFrom,
-  parkingEndTo,
-  page,
-  pageSize,
 }: {
-  ecv?: string
-  parkingStartFrom?: string
-  parkingStartTo?: string
   parkingEndFrom?: string
-  parkingEndTo?: string
 } & PaginationOptions) =>
   queryOptions({
-    queryKey: [
-      'Tickets',
-      ecv,
-      parkingStartFrom,
-      parkingStartTo,
-      parkingEndFrom,
-      parkingEndTo,
-      page,
-      pageSize,
-    ],
+    queryKey: ['Tickets'],
     queryFn: () =>
       clientApi.ticketsControllerTicketsGetMany(
-        page,
-        pageSize,
-        ecv,
-        parkingStartFrom,
-        parkingStartTo,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         parkingEndFrom,
-        parkingEndTo,
       ),
     select: (data) => data.data,
   })

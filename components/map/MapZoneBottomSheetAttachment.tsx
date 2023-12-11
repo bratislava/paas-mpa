@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -15,7 +15,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
+import { ticketsNumberOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
@@ -35,12 +35,39 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const now = useMemo(() => new Date().toISOString(), [])
-  const { data: ticketsData } = useQueryWithFocusRefetch(
-    ticketsOptions({
-      parkingEndFrom: now,
+  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(
+    ticketsNumberOptions({
+      parkingEndFrom: new Date().toISOString(),
     }),
   )
+
+  const sortedTickets = useMemo(
+    () =>
+      ticketsData?.tickets.sort(
+        (a, b) => new Date(a.parkingEnd).getTime() - new Date(b.parkingEnd).getTime(),
+      ),
+    [ticketsData],
+  )
+
+  // refetch query when first ticket parking ends
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const time = sortedTickets ? new Date(sortedTickets[0]?.parkingEnd).getTime() - Date.now() : 0
+
+    if (time !== 0) {
+      console.log(time)
+
+      const timer = setTimeout(async () => {
+        refetch()
+      }, time)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortedTickets])
+
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
   return (
