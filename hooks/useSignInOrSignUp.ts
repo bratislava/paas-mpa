@@ -51,13 +51,11 @@ export const useSignInOrSignUp = () => {
         /** Try to sign in the user. Cognito will throw an error for non-registered user. */
         await signInAndRedirectToConfirm(phone)
       } catch (error) {
-        if (
-          isErrorWithName(error) &&
-          (error.name === 'NotAuthorizedException' || error.name === 'UserNotFoundException')
-        ) {
+        console.log('signInAndRedirectToConfirm error', error, JSON.stringify(error))
+        if (isErrorWithName(error) && error.name === 'UserNotFoundException') {
           /**
-           * If sign in throws error, try to sign up.
-           * Note: I'd expect "UserNotFoundException" for non-registered users, but it throws "NotAuthorizedException", but we handle both cases.
+           * If user does not exist (UserNotFoundException is thrown), try to sign up.
+           * Note: "Prevent user existence errors" must be disabled in Cognito user pool settings.
            */
 
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
