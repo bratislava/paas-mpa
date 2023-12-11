@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
+import React, { useRef } from 'react'
 import { WebView } from 'react-native-webview'
 
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -10,24 +10,47 @@ export type PaymentSearchParams = {
   paymentUrl: string
 }
 
-// TODO wrap also invalid states into ScreenView (this adds title)
+// disabled links to prevent user from navigating away from payment gateway
+const invalidPaymentGatewayLinks = ['globalpaymentsinc.com']
+
 const PaymentScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
 
+  const webviewRef = useRef<WebView>(null)
+
   if (!paymentUrl) {
-    return <Typography>No payment initiated.</Typography>
+    return (
+      <ScreenView title={t('titleInvalidPaymentLink')}>
+        <Typography className="mt-5 text-center">{t('noPaymentInitiated')}</Typography>
+      </ScreenView>
+    )
   }
 
   const paymentUrlDecoded = decodeURI(paymentUrl)
 
   if (!paymentUrlDecoded) {
-    return <Typography>Invalid payment url.</Typography>
+    return (
+      <ScreenView title={t('titleInvalidPaymentLink')}>
+        <Typography className="mt-5 text-center">{t('invalidPaymentLink')}</Typography>
+      </ScreenView>
+    )
   }
 
   return (
     <ScreenView title={t('titlePayment')}>
-      <WebView source={{ uri: paymentUrlDecoded }} className="flex-1" />
+      <WebView
+        ref={webviewRef}
+        source={{ uri: paymentUrlDecoded }}
+        className="flex-1"
+        onNavigationStateChange={(e) => {
+          // if user navigates by clicking link to invalid link, stop loading and go back to previous page (gateway)
+          if (invalidPaymentGatewayLinks.some((url) => e.url.includes(url))) {
+            webviewRef.current?.stopLoading()
+            webviewRef.current?.goBack()
+          }
+        }}
+      />
     </ScreenView>
   )
 }

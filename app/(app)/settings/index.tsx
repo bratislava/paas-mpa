@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
-import { Auth } from 'aws-amplify'
+import { deleteUser } from 'aws-amplify/auth'
 import { Link, Stack } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
@@ -35,16 +35,16 @@ const SettingsPage = () => {
     [],
   )
 
+  /**
+   * Delete user data on BE. If successful, delete user from Cognito.
+   * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/delete-user-account/#allow-my-users-to-delete-their-account
+   */
   const deleteUserMutation = useMutation({
     mutationFn: () => clientApi.usersControllerDeleteUser(),
     onSuccess: async (response) => {
       if (response.data) {
-        const deleteUserAWSResponse = await Auth.deleteUser()
-
-        if (deleteUserAWSResponse === 'SUCCESS') {
-          // signout to remove all data of user from local storage
-          await signOut()
-        }
+        await deleteUser()
+        await signOut()
       }
     },
   })
@@ -74,7 +74,6 @@ const SettingsPage = () => {
       />
 
       <ScreenContent className="flex-1">
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
         <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
           <Field label={t('language')}>
             <Link asChild href="/settings/language">

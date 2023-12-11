@@ -34,12 +34,12 @@ const Page = () => {
       url: t('links.contactUs.url'),
       icon: 'phone',
     },
-    {
-      key: 4,
-      label: t('links.rateTheApp.label'),
-      url: t('links.rateTheApp.url'),
-      icon: 'star',
-    },
+    // {
+    //   key: 4,
+    //   label: t('links.rateTheApp.label'),
+    //   url: t('links.rateTheApp.url'),
+    //   icon: 'star',
+    // },
   ] as const
 
   return (

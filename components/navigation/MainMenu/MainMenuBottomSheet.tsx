@@ -83,22 +83,22 @@ const MainMenuBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       icon: 'info',
       path: '/about',
     },
-    DIVIDER,
-    {
-      label: 'DEV Menu',
-      icon: 'developer-mode',
-      path: '/dev',
-    },
-    {
-      label: 'DEV Purchase',
-      icon: 'payment',
-      path: '/purchase',
-    },
-    {
-      label: 'DEV User',
-      icon: 'person',
-      path: '/examples/user',
-    },
+    // DIVIDER,
+    // {
+    //   label: 'DEV Menu',
+    //   icon: 'developer-mode',
+    //   path: '/dev',
+    // },
+    // {
+    //   label: 'DEV Purchase',
+    //   icon: 'payment',
+    //   path: '/purchase',
+    // },
+    // {
+    //   label: 'DEV User',
+    //   icon: 'person',
+    //   path: '/examples/user',
+    // },
   ]
 
   const renderBackdrop = useCallback(

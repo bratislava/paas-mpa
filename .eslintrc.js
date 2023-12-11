@@ -62,6 +62,8 @@ module.exports = {
     'react-native/no-color-literals': 'off',
     // too many false positives
     'pii/no-phone-number': 'off',
+    // Not relevant to force separation of styles, when we use nativewind
+    'react-native/no-inline-styles': 'off',
     'padding-line-between-statements': ['warn', { blankLine: 'always', prev: '*', next: 'return' }],
     '@typescript-eslint/no-floating-promises': 'warn',
     'const-case/uppercase': 'off',

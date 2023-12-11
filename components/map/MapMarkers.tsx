@@ -67,20 +67,14 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           onPress={handlePointPress}
           key={icon}
         >
-          <SymbolLayer
-            id={`${icon}MarkersSymbol`}
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={markersStyles.pin}
-          />
+          <SymbolLayer id={`${icon}MarkersSymbol`} style={markersStyles.pin} />
           <SymbolLayer
             id={`${icon}MarkersCluster`}
-            // eslint-disable-next-line react-native/no-inline-styles
             style={{ ...markersStyles.sellingPointCluster, iconImage: icon }}
             filter={['has', 'point_count']}
           />
           <SymbolLayer
             id={`${icon}MarkersClusterCount`}
-            // eslint-disable-next-line react-native/no-inline-styles
             style={markersStyles.clusterCount}
             filter={['has', 'point_count']}
           />

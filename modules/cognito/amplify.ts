@@ -7,22 +7,24 @@ import { environment } from '@/environment'
 
 export const STATIC_TEMP_PASS = '66febdf7-5b71-4c32-9272-b9d9dd703a60'
 
+/*
+ * See type `CognitoUserPoolConfig` here: https://github.com/aws-amplify/amplify-js/blob/main/packages/core/src/singleton/Auth/types.ts#L144
+ */
+
 Amplify.configure({
   Auth: {
-    // REQUIRED - Amazon Cognito Region
-    region: environment.awsRegion,
+    Cognito: {
+      // region is not used in v6
 
-    // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolId: environment.cognitoUserPoolId,
+      // OPTIONAL - Amazon Cognito User Pool ID
+      userPoolId: environment.cognitoUserPoolId,
 
-    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-    userPoolWebClientId: environment.cognitoClientId,
+      // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+      userPoolClientId: environment.cognitoClientId,
 
-    // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-    // mandatorySignIn: false,
-
-    // OPTIONAL - This is used when autoSignIn is enabled for Auth.signUp
-    // 'code' is used for Auth.confirmSignUp, 'link' is used for email link verification
-    // signUpVerificationMethod: 'code',
+      // OPTIONAL - This is used when autoSignIn is enabled for Auth.signUp
+      // 'code' is used for Auth.confirmSignUp, 'link' is used for email link verification
+      // signUpVerificationMethod: 'code',
+    },
   },
 })

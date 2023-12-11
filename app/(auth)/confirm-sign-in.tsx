@@ -15,7 +15,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
-import { isErrorWithCode } from '@/utils/errors'
+import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 type ConfirmAuthSearchParams = {
   phone: string
@@ -24,7 +24,7 @@ type ConfirmAuthSearchParams = {
 const Page = () => {
   const t = useTranslation('Auth')
 
-  const { confirmSignIn, resendConfirmationCode } = useSignInOrSignUp()
+  const { attemptConfirmSignIn, resendConfirmationCode } = useSignInOrSignUp()
   const { phone } = useLocalSearchParams<ConfirmAuthSearchParams>()
 
   const [locationPermissionStatus] = useLocationPermission()
@@ -57,10 +57,13 @@ const Page = () => {
     if (code.length === 6) {
       try {
         setLoading(true)
-        await confirmSignIn(code)
+        if (!phone) {
+          throw new Error('Phone was not found in URL params')
+        }
+        await attemptConfirmSignIn(code, phone)
       } catch (error) {
-        if (isErrorWithCode(error)) {
-          setErrorCode(error.code)
+        if (isErrorWithName(error)) {
+          setErrorCode(error.name)
         }
       }
       setLoading(false)
