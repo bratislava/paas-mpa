@@ -52,7 +52,6 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
 
     useEffect(() => {
       setLoadingNearyByZones(true)
-      console.log(location)
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       InteractionManager.runAfterInteractions(() => {
         if (mapZones && location) {

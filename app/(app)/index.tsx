@@ -45,7 +45,7 @@ const IndexScreen = () => {
             onPress={handlePressOpen}
             // onLongPress={()=> router.push('/dev')}
           />
-          {newAnnouncementsCount || true ? (
+          {newAnnouncementsCount ? (
             <View
               className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-warning"
               pointerEvents="box-none"

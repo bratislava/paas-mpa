@@ -18,7 +18,9 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
+/** Time after pressing the button when it cannot be pressed again */
 const LOCATION_REQUEST_THROTTLE = 5000 // ms
+const LOCATION_REQUEST_TIMEOUT = 5000 // ms
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
@@ -31,11 +33,17 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
     null,
   )
+  const [requestTimeout, setRequestTimeout] = useState<NodeJS.Timeout | null>(null)
 
   const onLocationPress = useCallback(async () => {
     if (permissionStatus !== Location.PermissionStatus.DENIED) {
       setIsButtonDisabled(true)
-      const location = await Location.getCurrentPositionAsync()
+      const location = await Promise.race<Location.LocationObject | null>([
+        Location.getCurrentPositionAsync(),
+        new Promise((resolve) => {
+          setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
+        }),
+      ])
       if (location) {
         setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
       }
@@ -63,6 +71,15 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
       }
     }
   }, [isButtonDisabledTimeout])
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (requestTimeout) {
+      return () => {
+        clearTimeout(requestTimeout)
+      }
+    }
+  }, [requestTimeout])
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 

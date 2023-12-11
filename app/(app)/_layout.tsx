@@ -2,11 +2,9 @@
 // https://docs.expo.dev/router/reference/authentication/
 
 import Mapbox from '@rnmapbox/maps'
-import { Redirect, router, Stack } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { Redirect, Stack } from 'expo-router'
+import { useEffect, useState } from 'react'
 
-import Icon from '@/components/shared/Icon'
-import PressableStyled from '@/components/shared/PressableStyled'
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapSearchProvider from '@/state/MapSearchProvider/MapSearchProvider'
@@ -28,26 +26,6 @@ const RootLayout = () => {
         setMapboxError(error instanceof Error ? error : new Error('Unknown error - init mapbox')),
       )
   }, [])
-
-  const xHeaderRight = useCallback(
-    // eslint-disable-next-line react/no-unused-prop-types
-    ({ canGoBack, tintColor }: { tintColor?: string; canGoBack: boolean }) => {
-      const onPress = () => {
-        if (canGoBack) {
-          router.back()
-        } else {
-          router.push('/')
-        }
-      }
-
-      return (
-        <PressableStyled accessibilityLabel="close" onPress={onPress}>
-          <Icon name="close" style={{ color: tintColor }} />
-        </PressableStyled>
-      )
-    },
-    [],
-  )
 
   // Prevent rendering until the font has loaded and mapbox has loaded
   if (!mapboxLoaded) {
@@ -107,8 +85,6 @@ const RootLayout = () => {
                   options={{
                     animation: 'slide_from_bottom',
                     headerShown: false,
-                    headerRight: xHeaderRight,
-                    headerBackButtonMenuEnabled: false,
                   }}
                 />
               </Stack>
