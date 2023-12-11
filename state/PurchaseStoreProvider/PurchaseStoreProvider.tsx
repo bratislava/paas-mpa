@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
 import { PaymentOption } from '@/components/controls/payment-methods/types'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
@@ -42,6 +42,10 @@ const PurchaseStoreProvider = ({ children, initialValues }: Props) => {
   const [values, setValues] = useState<PurchaseStoreContextProps>(
     initialValues ?? defaultInitialPurchaseStoreValues,
   )
+
+  useEffect(() => {
+    setValues(initialValues ?? defaultInitialPurchaseStoreValues)
+  }, [initialValues])
 
   const onPurchaseStoreUpdate = useCallback(
     (newValues: Partial<PurchaseStoreContextProps>) => {

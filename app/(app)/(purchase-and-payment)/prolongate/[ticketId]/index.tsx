@@ -1,41 +1,32 @@
-import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
-import { useRef, useState } from 'react'
-import { ScrollView, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useState } from 'react'
+import { ScrollView } from 'react-native'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
 import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
-import PurchaseErrorPanel from '@/components/purchase/PurchaseErrorPanel'
-import PurchaseSummaryRow from '@/components/purchase/PurchaseSummaryRow'
+import VehicleRow from '@/components/controls/vehicles/VehicleRow'
+import SkeletonPurchaseFields from '@/components/purchase/SkeletonPurchaseFields'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
-import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
+import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketProlongationPriceOptions } from '@/modules/backend/constants/queryOptions'
-import { InitiateProlongationRequestDto, TicketDto } from '@/modules/backend/openapi-generated'
+import { InitiateProlongationRequestDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
+import { useTicketContext } from '@/state/TicketProvider/useTicketContext'
 import { paymentRedirect } from '@/utils/paymentRedirect'
 
-import VehicleRow from '../controls/vehicles/VehicleRow'
-
-type Props = {
-  ticket: TicketDto
-}
-
-const ProlongTicketForm = ({ ticket }: Props) => {
+const ProlongTicketScreen = () => {
+  const ticket = useTicketContext()
   const t = useTranslation('PurchaseScreen')
-  const insets = useSafeAreaInsets()
-  const bottomSheetRef = useRef<BottomSheet>(null)
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -46,17 +37,6 @@ const ProlongTicketForm = ({ ticket }: Props) => {
 
   const dateNow = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
   const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
-
-  const priceRequestBody: InitiateProlongationRequestDto = {
-    ticketId: ticket.id,
-    newParkingEnd: parkingEnd,
-  }
-
-  const priceQuery = useQueryWithFocusRefetch(ticketProlongationPriceOptions(priceRequestBody))
-
-  const handleSelectTime = (value: number) => {
-    onPurchaseStoreUpdate({ duration: value })
-  }
 
   const initPaymentMutation = useMutation({
     mutationFn: (bodyInner: InitiateProlongationRequestDto) =>
@@ -69,6 +49,27 @@ const ProlongTicketForm = ({ ticket }: Props) => {
         paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
       },
     })
+  }
+
+  const priceRequestBody: InitiateProlongationRequestDto = {
+    ticketId: ticket?.id || 0,
+    newParkingEnd: parkingEnd,
+  }
+
+  const priceQuery = useQueryWithFocusRefetch(ticketProlongationPriceOptions(priceRequestBody))
+
+  if (!ticket) {
+    return (
+      <ScreenView title={t('prolongate')}>
+        <ScrollView>
+          <SkeletonPurchaseFields />
+        </ScrollView>
+      </ScreenView>
+    )
+  }
+
+  const handleSelectTime = (value: number) => {
+    onPurchaseStoreUpdate({ duration: value })
   }
 
   return (
@@ -87,52 +88,48 @@ const ProlongTicketForm = ({ ticket }: Props) => {
               <TimeSelector value={duration} onValueChange={handleSelectTime} />
             </Field>
 
-            <Field label={t('paymentMethodsFieldLabel')}>
-              {priceQuery.data?.creditBpkUsedSeconds ? (
-                // TODO props
-                <BonusCardRow balance="balance" validUntil="validUntil" />
-              ) : null}
+            {priceQuery.data ? (
+              <Field label={t('paymentMethodsFieldLabel')}>
+                {priceQuery.data?.creditBpkUsedSeconds ? (
+                  // TODO props
+                  <BonusCardRow balance="balance" validUntil="validUntil" />
+                ) : null}
 
-              <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
-                <PressableStyled>
+                {/* Allow to open select only if npk is not used (price is not free) */}
+                {priceQuery.data?.priceTotal === 0 ? (
                   <PaymentMethodsFieldControl
                     visitorCard={npk}
                     paymentOption={paymentOption ?? defaultPaymentOption}
+                    showControlChevron={false}
                   />
-                </PressableStyled>
-              </Link>
-            </Field>
+                ) : (
+                  <Link
+                    asChild
+                    href={{ pathname: `prolongate/${ticket.id}/choose-payment-method` }}
+                  >
+                    <PressableStyled>
+                      <PaymentMethodsFieldControl
+                        visitorCard={npk}
+                        paymentOption={paymentOption ?? defaultPaymentOption}
+                      />
+                    </PressableStyled>
+                  </Link>
+                )}
+              </Field>
+            ) : null}
           </ScreenContent>
         </ScrollView>
       </ScreenView>
 
-      <PurchaseBottomSheet
-        ref={bottomSheetRef}
-        priceData={priceQuery.data}
+      <PurchaseBottomContent
+        priceQuery={priceQuery}
+        handlePressPay={handlePressPay}
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}
+        setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
+        isLoading={initPaymentMutation.isPending}
       />
-
-      <View
-        style={{ paddingBottom: insets.bottom }}
-        className="bg-white px-5 g-3"
-        onLayout={(event) => {
-          setPurchaseButtonContainerHeight(event.nativeEvent.layout.height)
-        }}
-      >
-        <PurchaseSummaryRow priceData={priceQuery.data} />
-
-        <PurchaseErrorPanel priceQuery={priceQuery} />
-
-        <Button
-          onPress={handlePressPay}
-          disabled={!priceQuery.data}
-          loading={priceQuery.isFetching}
-        >
-          {t('pay')}
-        </Button>
-      </View>
     </>
   )
 }
 
-export default ProlongTicketForm
+export default ProlongTicketScreen

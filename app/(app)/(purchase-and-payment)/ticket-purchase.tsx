@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { Link, useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
 
@@ -26,13 +27,16 @@ const TicketPurchasePage = () => {
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
+  const queryClient = useQueryClient()
+
   const { data, isPending, isError, error, refetch } = useQueryWithFocusRefetch(
-    getTicketOptions(ticketIdParsed!),
+    getTicketOptions(ticketIdParsed),
   )
 
   useEffect(() => {
     if (data?.paymentStatus === 'SUCCESS') {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+      queryClient.invalidateQueries({ queryKey: ['Tickets'] })
     } else if (data?.paymentStatus === 'PENDING') {
       refetch()
     }

@@ -12,6 +12,7 @@ import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStorePr
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import VehiclesStoreProvider from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import colors from '@/tailwind.config.colors'
+import { stackHeaderBackButton } from '@/utils/stackHeaderBackButton'
 
 const RootLayout = () => {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
@@ -50,11 +51,11 @@ const RootLayout = () => {
           <TicketsFiltersStoreProvider>
             <Stack
               screenOptions={{
-                headerBackTitleVisible: false,
                 headerTitleStyle: {
                   fontFamily: 'BelfastGrotesk_700Bold',
                 },
                 headerTintColor: colors.dark.DEFAULT,
+                headerLeft: stackHeaderBackButton,
               }}
             >
               <Stack.Screen name="index" options={{ headerShown: false }} />

@@ -24,10 +24,9 @@ import { formatDateTime } from '@/utils/formatDateTime'
 type Props = {
   ticket: TicketDto
   isActive?: boolean
-  queryKey: (string | number | undefined)[]
 }
 
-const TicketCard = ({ ticket, isActive, queryKey }: Props) => {
+const TicketCard = ({ ticket, isActive }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
@@ -46,7 +45,7 @@ const TicketCard = ({ ticket, isActive, queryKey }: Props) => {
   const handleTerminateTicket = async () => {
     shortenTicketMutation.mutate(ticket.id, {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey })
+        await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
 
         handleTerminateModalClose()
       },

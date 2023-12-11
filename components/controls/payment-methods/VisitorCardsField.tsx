@@ -28,7 +28,7 @@ const VisitorCardsField = () => {
 
   const handleCardPress = (card: ParkingCardDto) => {
     onPurchaseStoreUpdate({ npk: card, paymentOption: null })
-    router.push('/purchase')
+    router.back()
   }
 
   if (isPending) {

@@ -1,23 +1,29 @@
-import { router, useLocalSearchParams } from 'expo-router'
+import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useMemo } from 'react'
 
-import ProlongTicketForm from '@/components/prolongate/ProlongateTicketForm'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { getTicketOptions, visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
+import TicketProvider from '@/state/TicketProvider/TicketProvider'
+import colors from '@/tailwind.config.colors'
+import { stackHeaderBackButton } from '@/utils/stackHeaderBackButton'
 
 type ProlongateLocalSearchParams = {
   ticketId: string
 }
 
-const ProlongScreen = () => {
+const ProlongateLayout = () => {
   const { ticketId } = useLocalSearchParams<ProlongateLocalSearchParams>()
+
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const { data: ticket } = useQueryWithFocusRefetch(getTicketOptions(ticketIdParsed))
-  const { data: visitorCards } = useQueryWithFocusRefetch(visitorCardsOptions())
+  const ticketQuery = useQueryWithFocusRefetch(getTicketOptions(ticketIdParsed))
+  const visitorCardsQuery = useQueryWithFocusRefetch(visitorCardsOptions())
+
+  const ticket = ticketQuery.data
+  const visitorCards = visitorCardsQuery.data
 
   const initialValues = useMemo(
     () => ({
@@ -38,11 +44,27 @@ const ProlongScreen = () => {
     return null
   }
 
-  return ticket ? (
+  return (
     <PurchaseStoreProvider initialValues={initialValues}>
-      <ProlongTicketForm ticket={ticket} />
+      <TicketProvider ticket={ticket}>
+        <Stack
+          screenOptions={{
+            headerTitleStyle: {
+              fontFamily: 'BelfastGrotesk_700Bold',
+            },
+            headerTintColor: colors.dark.DEFAULT,
+            headerLeft: stackHeaderBackButton,
+          }}
+        >
+          <Stack.Screen name="[ticketId]/index" />
+          <Stack.Screen
+            name="[ticketId]/choose-payment-method"
+            options={{ presentation: 'modal' }}
+          />
+        </Stack>
+      </TicketProvider>
     </PurchaseStoreProvider>
-  ) : null
+  )
 }
 
-export default ProlongScreen
+export default ProlongateLayout
