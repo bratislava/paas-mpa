@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import React, { forwardRef, ReactNode, useCallback, useMemo, useRef } from 'react'
+import { forwardRef, ReactNode, useCallback, useMemo, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -83,22 +83,22 @@ const MainMenuBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       icon: 'info',
       path: '/about',
     },
-    // DIVIDER,
-    // {
-    //   label: 'DEV Menu',
-    //   icon: 'developer-mode',
-    //   path: '/dev',
-    // },
-    // {
-    //   label: 'DEV Purchase',
-    //   icon: 'payment',
-    //   path: '/purchase',
-    // },
-    // {
-    //   label: 'DEV User',
-    //   icon: 'person',
-    //   path: '/examples/user',
-    // },
+    DIVIDER,
+    {
+      label: 'DEV Menu',
+      icon: 'developer-mode',
+      path: '/dev',
+    },
+    {
+      label: 'DEV Purchase',
+      icon: 'payment',
+      path: '/purchase',
+    },
+    {
+      label: 'DEV User',
+      icon: 'person',
+      path: '/examples/user',
+    },
   ]
 
   const renderBackdrop = useCallback(

@@ -18,7 +18,6 @@ import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisDa
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { reverseGeocode } from '@/modules/map/utils/reverseGeocode'
-import { useMapSearchUpdateContext } from '@/state/MapSearchProvider/useMapSearchUpdateContext'
 
 const MAP_STATE_DEBOUNCE_TIME = 500
 
@@ -31,7 +30,6 @@ const MapScreen = () => {
   const mapRef = useRef<MapRef>(null)
   const { top } = useSafeAreaInsets()
   const locale = useLocale()
-  const updateMapSearchContext = useMapSearchUpdateContext()
 
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
@@ -58,16 +56,12 @@ const MapScreen = () => {
     [setMapInterestPoint],
   )
 
-  const handleMapStateChange = useCallback(
-    async (mapState: MapState) => {
-      const geocodingResult = await reverseGeocode(mapState.properties.center)
-      if (geocodingResult.length > 0) {
-        setCurrentAddress(geocodingResult[0].place_name)
-      }
-      updateMapSearchContext({ mapCenter: mapState.properties.center })
-    },
-    [updateMapSearchContext],
-  )
+  const handleMapStateChange = useCallback(async (mapState: MapState) => {
+    const geocodingResult = await reverseGeocode(mapState.properties.center)
+    if (geocodingResult.length > 0) {
+      setCurrentAddress(geocodingResult[0].place_name)
+    }
+  }, [])
 
   const debouncedHandleStateChange = useDebouncedCallback(
     handleMapStateChange,

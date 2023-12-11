@@ -17,6 +17,7 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useMapAutocompleteGetOptions } from '@/modules/map/hooks/useMapAutocompleteGetOptions'
 import {
   GeocodingFeature,
@@ -27,7 +28,6 @@ import {
 import { findShapesInRadius } from '@/modules/map/utils/findShapesInRadius'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
-import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
@@ -43,30 +43,37 @@ type Props = Partial<
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
+    const mapZones = useMapZonesContext()
+    const [nearByZones, setNearByZones] = useState<UdrZoneFeature[]>([])
+    const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
+    const [location] = useLocation()
+    const locale = useLocale()
+    const getOptions = useMapAutocompleteGetOptions()
+
+    useEffect(() => {
+      setLoadingNearyByZones(true)
+      console.log(location)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      InteractionManager.runAfterInteractions(() => {
+        if (mapZones && location) {
+          setNearByZones(
+            findShapesInRadius(
+              [...mapZones.values()],
+              [location.coords.longitude, location.coords.latitude],
+              0.002,
+            ),
+          )
+          setLoadingNearyByZones(false)
+        }
+      })
+    }, [mapZones, location])
+
     const handleValueChange = useCallback(
       (value: GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>) => {
         onValueChange?.(value)
       },
       [onValueChange],
     )
-    const { mapCenter } = useMapSearchContext()
-    const mapZones = useMapZonesContext()
-    const [nearByZones, setNearByZones] = useState<UdrZoneFeature[]>([])
-    const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
-    useEffect(() => {
-      setLoadingNearyByZones(true)
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      InteractionManager.runAfterInteractions(() => {
-        if (mapZones && mapCenter) {
-          setNearByZones(findShapesInRadius([...mapZones.values()], mapCenter, 0.002))
-          setLoadingNearyByZones(false)
-        }
-      })
-    }, [mapZones, mapCenter])
-
-    const locale = useLocale()
-
-    const getOptions = useMapAutocompleteGetOptions()
 
     const renderItem: NonNullable<Props['renderItem']> = useCallback(
       ({ item }) => {
@@ -117,7 +124,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           sections.push({ title: t('addresses'), data: geocodingFeatures })
         }
         if (sections.length === 0 && nearByZones.length > 0) {
-          sections.push({ title: t('zones'), data: nearByZones })
+          sections.push({ title: t('nearByZones'), data: nearByZones })
         }
 
         return (
@@ -140,7 +147,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                     keyboardShouldPersistTaps="always"
                     renderItem={optionsListProps.renderItem!}
                     renderSectionHeader={({ section: { title } }) => (
-                      <Typography variant="h3" className="border-b-2 border-divider pb-2 pt-6">
+                      <Typography
+                        variant="h3"
+                        className="border-b-2 border-divider bg-white pb-2 pt-4"
+                      >
                         {title}
                       </Typography>
                     )}

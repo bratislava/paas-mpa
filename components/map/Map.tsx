@@ -75,7 +75,7 @@ const Map = forwardRef(
     const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
 
-    const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
+    const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
@@ -111,6 +111,7 @@ const Map = forwardRef(
       setIsMapPinShown,
       setSelectedPolygon,
       onStateChange,
+      setFlyToCenter,
     })
 
     const handlePointPress = useCallback(
@@ -164,7 +165,7 @@ const Map = forwardRef(
               animationMode="flyTo"
               followZoomLevel={14}
               zoomLevel={cameraZoom}
-              centerCoordinate={flyToCenter}
+              centerCoordinate={flyToCenter ?? undefined}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
             />

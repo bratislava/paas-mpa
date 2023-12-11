@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -18,6 +18,8 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
+const LOCATION_REQUEST_THROTTLE = 5000 // ms
+
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
 }
@@ -25,13 +27,24 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
   const t = useTranslation('ZoneBottomSheet.TopAttachment')
   const [permissionStatus] = useLocationPermission()
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
+    null,
+  )
+
   const onLocationPress = useCallback(async () => {
-    if (permissionStatus === Location.PermissionStatus.GRANTED) {
-      let location = await Location.getLastKnownPositionAsync()
-      if (!location) {
-        location = await Location.getCurrentPositionAsync()
+    if (permissionStatus !== Location.PermissionStatus.DENIED) {
+      setIsButtonDisabled(true)
+      const location = await Location.getCurrentPositionAsync()
+      if (location) {
+        setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
       }
-      setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
+      setIsButtonDisabledTimeout(
+        setTimeout(() => {
+          setIsButtonDisabled(false)
+          setIsButtonDisabledTimeout(null)
+        }, LOCATION_REQUEST_THROTTLE),
+      )
     }
   }, [setFlyToCenter, permissionStatus])
 
@@ -41,6 +54,16 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
       parkingEndFrom: now,
     }),
   )
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (isButtonDisabledTimeout) {
+      return () => {
+        clearTimeout(isButtonDisabledTimeout)
+      }
+    }
+  }, [isButtonDisabledTimeout])
+
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
   return (
@@ -65,14 +88,17 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
           </View>
         ) : null}
 
-        <IconButton
-          name="gps-fixed"
-          // TODO translation
-          accessibilityLabel="Go to user location"
-          variant="white-raised"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onPress={onLocationPress}
-        />
+        <View>
+          <IconButton
+            name="gps-fixed"
+            // TODO translation
+            accessibilityLabel="Go to user location"
+            variant="white-raised"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onPress={onLocationPress}
+            disabled={isButtonDisabled}
+          />
+        </View>
       </FlexRow>
     </BottomSheetTopAttachment>
   )
