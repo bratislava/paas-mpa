@@ -15,6 +15,7 @@ import FloatingButton from '@/components/shared/FloatingButton'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
+import { useQueryRefetchOnTicketExpire } from '@/hooks/useQueryRefetchOnTicketExpire'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
@@ -53,7 +54,12 @@ const TicketsRoute = ({ active }: RouteProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery(ticketsQueryOptions)
+
+  const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
+
+  useQueryRefetchOnTicketExpire(refetch, active ? tickets : undefined)
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -62,10 +68,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => (
-      <TicketCard ticket={item} isActive={active} queryKey={ticketsQueryOptions.queryKey} />
-    ),
-    [active, ticketsQueryOptions.queryKey],
+    ({ item }) => <TicketCard ticket={item} isActive={active} />,
+    [active],
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -85,7 +89,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
     return <Typography>Error: {error.message}</Typography>
   }
 
-  const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
   if (active && !tickets?.length) {
     return (
       <EmptyStateScreen

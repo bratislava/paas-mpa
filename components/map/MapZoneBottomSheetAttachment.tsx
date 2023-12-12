@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -13,6 +13,7 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useQueryRefetchOnTicketExpire } from '@/hooks/useQueryRefetchOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsNumberOptions } from '@/modules/backend/constants/queryOptions'
@@ -41,32 +42,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }),
   )
 
-  const sortedTickets = useMemo(
-    () =>
-      ticketsData?.tickets.sort(
-        (a, b) => new Date(a.parkingEnd).getTime() - new Date(b.parkingEnd).getTime(),
-      ),
-    [ticketsData],
-  )
-
-  // refetch query when first ticket parking ends
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    const time = sortedTickets ? new Date(sortedTickets[0]?.parkingEnd).getTime() - Date.now() : 0
-
-    if (time !== 0) {
-      console.log(time)
-
-      const timer = setTimeout(async () => {
-        refetch()
-      }, time)
-
-      return () => {
-        clearTimeout(timer)
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortedTickets])
+  useQueryRefetchOnTicketExpire(refetch, ticketsData?.tickets)
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 

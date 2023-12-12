@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link, Stack, useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -8,6 +8,7 @@ import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import BoughtTicket from '@/components/tickets/BoughtTicket'
+import { usePreventGoBack } from '@/hooks/usePreventGoBack'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
@@ -26,7 +27,7 @@ const TicketPurchasePage = () => {
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
-
+  usePreventGoBack()
   const queryClient = useQueryClient()
 
   const { data, isPending, isError, error, refetch } = useQueryWithFocusRefetch(
@@ -51,6 +52,7 @@ const TicketPurchasePage = () => {
         </Link>
       }
     >
+      <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} />
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
       ) : isError || data.paymentStatus === 'FAIL' ? (
