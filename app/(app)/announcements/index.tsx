@@ -1,4 +1,3 @@
-import { Stack } from 'expo-router'
 import { useCallback, useEffect, useRef } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 
