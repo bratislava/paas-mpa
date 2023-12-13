@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(async (request) => {
   const accessToken = await getAccessTokenOrLogout()
 
   if (accessToken) {
-    request.headers.Authorization = `Bearer ${accessToken}`
+    request.headers.Authorization = `Bearer ${accessToken.toString()}`
   }
 
   console.log('fetching:', request.url)
