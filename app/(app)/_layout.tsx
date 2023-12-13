@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
+import MapSearchProvider from '@/state/MapSearchProvider/MapSearchProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
@@ -47,43 +48,52 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <MapZonesProvider>
-      <VehiclesStoreProvider>
-        <PurchaseStoreProvider>
-          <TicketsFiltersStoreProvider>
-            <Stack
-              screenOptions={{
-                headerBackTitleVisible: false,
-                headerTitleStyle: {
-                  fontFamily: 'BelfastGrotesk_700Bold',
-                },
-                headerTintColor: colors.dark.DEFAULT,
-              }}
-            >
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-
-              <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-              <Stack.Screen
-                name="(purchase-and-payment)/purchase/choose-vehicle"
-                options={{ presentation: 'modal' }}
-              />
-              <Stack.Screen
-                name="(purchase-and-payment)/purchase/choose-payment-method"
-                options={{ presentation: 'modal' }}
-              />
-              <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
-              <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
-              <Stack.Screen
-                name="tickets/filters/timeframes"
-                options={{
-                  headerShown: false,
-                  presentation: 'transparentModal',
-                  animation: 'none',
+      <MapSearchProvider>
+        <VehiclesStoreProvider>
+          <PurchaseStoreProvider>
+            <TicketsFiltersStoreProvider>
+              <Stack
+                screenOptions={{
+                  headerBackTitleVisible: false,
+                  headerTitleStyle: {
+                    fontFamily: 'BelfastGrotesk_700Bold',
+                  },
+                  headerTintColor: colors.dark.DEFAULT,
                 }}
-              />
-            </Stack>
-          </TicketsFiltersStoreProvider>
-        </PurchaseStoreProvider>
-      </VehiclesStoreProvider>
+              >
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+
+                <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+                <Stack.Screen
+                  name="(purchase-and-payment)/purchase/choose-vehicle"
+                  options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen
+                  name="(purchase-and-payment)/purchase/choose-payment-method"
+                  options={{ presentation: 'modal' }}
+                />
+                <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
+                <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
+                <Stack.Screen
+                  name="tickets/filters/timeframes"
+                  options={{
+                    headerShown: false,
+                    presentation: 'transparentModal',
+                    animation: 'none',
+                  }}
+                />
+                <Stack.Screen
+                  name="search/index"
+                  options={{
+                    animation: 'slide_from_bottom',
+                    headerShown: false,
+                  }}
+                />
+              </Stack>
+            </TicketsFiltersStoreProvider>
+          </PurchaseStoreProvider>
+        </VehiclesStoreProvider>
+      </MapSearchProvider>
     </MapZonesProvider>
   )
 }

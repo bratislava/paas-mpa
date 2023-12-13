@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -19,6 +19,10 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsNumberOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
+/** Time after pressing the button when it cannot be pressed again */
+const LOCATION_REQUEST_THROTTLE = 5000 // ms
+const LOCATION_REQUEST_TIMEOUT = 5000 // ms
+
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
 }
@@ -26,13 +30,30 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
   const t = useTranslation('ZoneBottomSheet.TopAttachment')
   const [permissionStatus] = useLocationPermission()
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
+    null,
+  )
+  const [requestTimeout, setRequestTimeout] = useState<NodeJS.Timeout | null>(null)
+
   const onLocationPress = useCallback(async () => {
-    if (permissionStatus === Location.PermissionStatus.GRANTED) {
-      let location = await Location.getLastKnownPositionAsync()
-      if (!location) {
-        location = await Location.getCurrentPositionAsync()
+    if (permissionStatus !== Location.PermissionStatus.DENIED) {
+      setIsButtonDisabled(true)
+      const location = await Promise.race<Location.LocationObject | null>([
+        Location.getCurrentPositionAsync(),
+        new Promise((resolve) => {
+          setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
+        }),
+      ])
+      if (location) {
+        setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
       }
-      setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
+      setIsButtonDisabledTimeout(
+        setTimeout(() => {
+          setIsButtonDisabled(false)
+          setIsButtonDisabledTimeout(null)
+        }, LOCATION_REQUEST_THROTTLE),
+      )
     }
   }, [setFlyToCenter, permissionStatus])
 
@@ -43,6 +64,24 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   )
 
   useQueryInvalidateOnTicketExpire(ticketsData?.tickets ?? null, refetch, ['Tickets'])
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (isButtonDisabledTimeout) {
+      return () => {
+        clearTimeout(isButtonDisabledTimeout)
+      }
+    }
+  }, [isButtonDisabledTimeout])
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (requestTimeout) {
+      return () => {
+        clearTimeout(requestTimeout)
+      }
+    }
+  }, [requestTimeout])
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
@@ -68,14 +107,17 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
           </View>
         ) : null}
 
-        <IconButton
-          name="gps-fixed"
-          // TODO translation
-          accessibilityLabel="Go to user location"
-          variant="white-raised"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onPress={onLocationPress}
-        />
+        <View>
+          <IconButton
+            name="gps-fixed"
+            // TODO translation
+            accessibilityLabel="Go to user location"
+            variant="white-raised"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onPress={onLocationPress}
+            disabled={isButtonDisabled}
+          />
+        </View>
       </FlexRow>
     </BottomSheetTopAttachment>
   )

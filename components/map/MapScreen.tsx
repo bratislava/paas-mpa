@@ -1,9 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
+import { MapState } from '@rnmapbox/maps'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useDebouncedCallback } from 'use-debounce'
 
 import Map, { MapRef } from '@/components/map/Map'
 import MapLocationBottomSheet from '@/components/map/MapLocationBottomSheet'
@@ -15,6 +17,9 @@ import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { reverseGeocode } from '@/modules/map/utils/reverseGeocode'
+
+const MAP_STATE_DEBOUNCE_TIME = 500
 
 type MapScreenParams = MapFilters
 
@@ -30,6 +35,7 @@ const MapScreen = () => {
   const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
   const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
   const [isMapPinShown, setIsMapPinShown] = useState(false)
+  const [currentAddress, setCurrentAddress] = useState<string>()
 
   const handleMapPinVisibilityChange = useCallback((isShown: boolean) => {
     setIsMapPinShown(isShown)
@@ -48,6 +54,18 @@ const MapScreen = () => {
       zoneBottomSheetRef.current?.snapToIndex(0)
     },
     [setMapInterestPoint],
+  )
+
+  const handleMapStateChange = useCallback(async (mapState: MapState) => {
+    const geocodingResult = await reverseGeocode(mapState.properties.center)
+    if (geocodingResult.length > 0) {
+      setCurrentAddress(geocodingResult[0].place_name)
+    }
+  }, [])
+
+  const debouncedHandleStateChange = useDebouncedCallback(
+    handleMapStateChange,
+    MAP_STATE_DEBOUNCE_TIME,
   )
 
   const stringifiedParams = JSON.stringify(params)
@@ -75,6 +93,7 @@ const MapScreen = () => {
         filters={filters}
         processedData={processedData}
         onMapPinVisibilityChange={handleMapPinVisibilityChange}
+        onStateChange={debouncedHandleStateChange}
       />
       <Portal hostName="index">
         <MapZoneBottomSheet
@@ -82,6 +101,7 @@ const MapScreen = () => {
           zone={normalizedZone}
           setFlyToCenter={mapRef.current?.setFlyToCenter}
           isZoomedOut={!isMapPinShown}
+          address={currentAddress}
         />
       </Portal>
       {selectedPoint && (

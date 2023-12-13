@@ -1,8 +1,13 @@
-import { BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
-import { Feature, Polygon } from 'geojson'
-import { forwardRef, useCallback } from 'react'
-import { TextInput as RNTextInput, View } from 'react-native'
+import { Feature, MultiPolygon, Polygon } from 'geojson'
+import { forwardRef, useCallback, useEffect, useState } from 'react'
+import {
+  FlatList,
+  InteractionManager,
+  SectionList,
+  TextInput as RNTextInput,
+  View,
+} from 'react-native'
 
 import ZoneBadge from '@/components/info/ZoneBadge'
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
@@ -12,34 +17,62 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useMapAutocompleteGetOptions } from '@/modules/map/hooks/useMapAutocompleteGetOptions'
-import { GeocodingFeature, isGeocodingFeature, MapUdrZone } from '@/modules/map/types'
+import {
+  GeocodingFeature,
+  isGeocodingFeature,
+  MapUdrZone,
+  UdrZoneFeature,
+} from '@/modules/map/types'
+import { findShapesInRadius } from '@/modules/map/utils/findShapesInRadius'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
 const ZONES_LIMIT = 10
 
 type Props = Partial<
   AutocompleteProps<
-    [Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
-    GeocodingFeature | Feature<Polygon, MapUdrZone>
+    [Feature<Polygon | MultiPolygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
+    GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>
   >
 >
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
+    const mapZones = useMapZonesContext()
+    const [nearByZones, setNearByZones] = useState<UdrZoneFeature[]>([])
+    const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
+    const [location] = useLocation()
+    const locale = useLocale()
+    const getOptions = useMapAutocompleteGetOptions()
+
+    useEffect(() => {
+      setLoadingNearyByZones(true)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      InteractionManager.runAfterInteractions(() => {
+        if (mapZones && location) {
+          setNearByZones(
+            findShapesInRadius(
+              [...mapZones.values()],
+              [location.coords.longitude, location.coords.latitude],
+              0.002,
+            ),
+          )
+          setLoadingNearyByZones(false)
+        }
+      })
+    }, [mapZones, location])
+
     const handleValueChange = useCallback(
-      (value: GeocodingFeature | Feature<Polygon, MapUdrZone>) => {
+      (value: GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>) => {
         onValueChange?.(value)
       },
       [onValueChange],
     )
-
-    const locale = useLocale()
-
-    const getOptions = useMapAutocompleteGetOptions()
 
     const renderItem: NonNullable<Props['renderItem']> = useCallback(
       ({ item }) => {
@@ -80,7 +113,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         const [zones, geocodingFeatures] = options
         const sections: {
           title: string
-          data: (GeocodingFeature | Feature<Polygon, MapUdrZone>)[]
+          data: (GeocodingFeature | UdrZoneFeature)[]
         }[] = []
 
         if (zones.length > 0) {
@@ -88,6 +121,9 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         }
         if (geocodingFeatures.length > 0) {
           sections.push({ title: t('addresses'), data: geocodingFeatures })
+        }
+        if (sections.length === 0 && nearByZones.length > 0) {
+          sections.push({ title: t('nearByZones'), data: nearByZones })
         }
 
         return (
@@ -99,18 +135,21 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 ) : input ? (
                   <EmptyStateScreen contentTitle={t('noResults')} />
                 ) : (
-                  <EmptyStateScreen contentTitle={t('startTyping')} text={t('typeSomething')} />
+                  loadingNearyByZones && <LoadingScreen />
                 )
               ) : (
                 <>
                   <Typography variant="h2">{t('searchResults')}</Typography>
-                  <BottomSheetSectionList
+                  <SectionList
                     className="flex-1"
                     sections={sections}
                     keyboardShouldPersistTaps="always"
                     renderItem={optionsListProps.renderItem!}
                     renderSectionHeader={({ section: { title } }) => (
-                      <Typography variant="h3" className="border-b-2 border-divider pb-2 pt-6">
+                      <Typography
+                        variant="h3"
+                        className="border-b-2 border-divider bg-white pb-2 pt-4"
+                      >
                         {title}
                       </Typography>
                     )}
@@ -121,7 +160,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           </Portal>
         )
       },
-      [optionsPortalName, t],
+      [optionsPortalName, t, nearByZones, loadingNearyByZones],
     )
 
     return (
@@ -135,9 +174,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}
           renderItem={renderItem}
-          ListComponent={BottomSheetFlatList}
+          ListComponent={FlatList}
           renderResults={renderResults}
           multiSourceMode
+          autoFocus
           {...restProps}
         />
       </View>

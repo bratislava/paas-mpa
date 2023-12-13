@@ -3,13 +3,14 @@ import {
   CameraPadding,
   FillLayer,
   LineLayer,
+  MapState,
   MapView,
   ShapeSource,
   UserLocation,
   UserLocationRenderMode,
   UserTrackingMode,
 } from '@rnmapbox/maps'
-import { Feature, GeoJsonProperties, Point, Polygon, Position } from 'geojson'
+import { Feature, GeoJsonProperties, Point, Position } from 'geojson'
 import {
   ForwardedRef,
   forwardRef,
@@ -32,9 +33,10 @@ import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
-import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
+import { MapInterestPoint, MapUdrZone, UdrZoneFeature } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
+import { useMapSearchUpdateContext } from '@/state/MapSearchProvider/useMapSearchUpdateContext'
 
 type Props = {
   onZoneChange?: (feature: MapUdrZone | null) => void
@@ -42,6 +44,7 @@ type Props = {
   filters: MapFilters
   processedData: ProcessedMapData
   onMapPinVisibilityChange?: (isShown: boolean) => void
+  onStateChange?: (mapState: MapState) => void
 }
 
 export type MapRef = {
@@ -53,7 +56,14 @@ const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
   (
-    { onZoneChange, onPointPress, filters, processedData, onMapPinVisibilityChange }: Props,
+    {
+      onZoneChange,
+      onPointPress,
+      filters,
+      processedData,
+      onMapPinVisibilityChange,
+      onStateChange,
+    }: Props,
     ref: ForwardedRef<MapRef>,
   ) => {
     const camera = useRef<Camera>(null)
@@ -61,12 +71,11 @@ const Map = forwardRef(
     const [followingUser, setFollowingUser] = useState(true)
     const [location] = useLocation()
     const insets = useSafeAreaInsets()
-    const [selectedPolygon, setSelectedPolygon] = useState<Feature<Polygon, MapUdrZone> | null>(
-      null,
-    )
+    const updateMapSearchContext = useMapSearchUpdateContext()
+    const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
 
-    const [flyToCenter, setFlyToCenter] = useState<Position | undefined>()
+    const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
@@ -87,6 +96,10 @@ const Map = forwardRef(
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
 
+    useEffect(() => {
+      updateMapSearchContext({ flyToCenter: handleSetFlyToCenter })
+    }, [updateMapSearchContext, handleSetFlyToCenter])
+
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
       handleSetFlyToCenter,
     ])
@@ -97,6 +110,8 @@ const Map = forwardRef(
       selectedPolygon,
       setIsMapPinShown,
       setSelectedPolygon,
+      onStateChange,
+      setFlyToCenter,
     })
 
     const handlePointPress = useCallback(
@@ -150,7 +165,7 @@ const Map = forwardRef(
               animationMode="flyTo"
               followZoomLevel={14}
               zoomLevel={cameraZoom}
-              centerCoordinate={flyToCenter}
+              centerCoordinate={flyToCenter ?? undefined}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
             />
