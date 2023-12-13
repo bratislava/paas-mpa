@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
-import React, { forwardRef, ReactNode, useCallback, useMemo, useRef } from 'react'
+import { forwardRef, ReactNode, useCallback, useMemo, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 

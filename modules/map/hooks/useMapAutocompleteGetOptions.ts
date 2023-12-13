@@ -1,7 +1,6 @@
-import { Feature, Polygon } from 'geojson'
 import { useCallback } from 'react'
 
-import { MapUdrZone } from '@/modules/map/types'
+import { UdrZoneFeature } from '@/modules/map/types'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
@@ -21,8 +20,8 @@ export const useMapAutocompleteGetOptions = () => {
   return useCallback(
     async (
       input: string,
-    ): Promise<[Feature<Polygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>]> => {
-      const filteredMapZones: Feature<Polygon, MapUdrZone>[] = []
+    ): Promise<[UdrZoneFeature[], Unpromise<ReturnType<typeof forwardGeocode>>]> => {
+      const filteredMapZones: UdrZoneFeature[] = []
       if (mapZones && input) {
         const normalizedInput = normalizeString(input)
         mapZones.forEach((zone) => {

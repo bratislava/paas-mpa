@@ -1,5 +1,3 @@
-import { Feature, Polygon } from 'geojson'
+import { UdrZoneFeature } from '@/modules/map/types'
 
-import { MapUdrZone } from '@/modules/map/types'
-
-export type MapFeatureHashMap = Map<string, Feature<Polygon, MapUdrZone>>
+export type MapFeatureHashMap = Map<string, UdrZoneFeature>

@@ -13,7 +13,7 @@ export const useLocation = () => {
   }, [])
 
   const getLocation = useCallback(async () => {
-    if (permissionStatus !== Location.PermissionStatus.GRANTED) return
+    if (permissionStatus === Location.PermissionStatus.DENIED) return
     const lastKnownPosition = await Location.getLastKnownPositionAsync()
     setLocation(lastKnownPosition)
     getCurrentPosition()

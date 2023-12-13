@@ -1,19 +1,18 @@
-import { Feature, Polygon } from 'geojson'
 import { useMemo } from 'react'
 
 import { useLocale } from '@/hooks/useTranslation'
-import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
+import { NormalizedUdrZone, UdrZoneFeature } from '@/modules/map/types'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 
 export function useMapZone<NormalizePropertiesOnly extends boolean>(
   udrId: string | null,
   normalizedPropertiesOnly: NormalizePropertiesOnly,
-): (NormalizePropertiesOnly extends true ? NormalizedUdrZone : Feature<Polygon, MapUdrZone>) | null
+): (NormalizePropertiesOnly extends true ? NormalizedUdrZone : UdrZoneFeature) | null
 export function useMapZone(
   udrId: string | null,
   normalizedPropertiesOnly: boolean = false,
-): NormalizedUdrZone | Feature<Polygon, MapUdrZone> | null {
+): NormalizedUdrZone | UdrZoneFeature | null {
   const mapZones = useMapZonesContext()
   const locale = useLocale()
 
