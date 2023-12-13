@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
@@ -39,6 +39,8 @@ const TicketCard = ({ ticket, isActive, refetch }: Props) => {
     mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
   })
 
+  const queryClient = useQueryClient()
+
   const handleTerminateModalClose = () => setIsTerminateModalVisible(false)
   const handleTerminateModalOpen = () => setIsTerminateModalVisible(true)
 
@@ -46,6 +48,7 @@ const TicketCard = ({ ticket, isActive, refetch }: Props) => {
     shortenTicketMutation.mutate(ticket.id, {
       onSuccess: () => {
         refetch()
+        queryClient.removeQueries({ queryKey: ['Tickets'] })
 
         handleTerminateModalClose()
       },

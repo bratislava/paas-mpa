@@ -1,3 +1,4 @@
+import { Stack } from 'expo-router'
 import { useCallback, useEffect, useRef } from 'react'
 import { FlatList, ListRenderItem } from 'react-native'
 
@@ -57,9 +58,7 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return (
-      <EmptyStateScreen hasBackButton title={t('title')} contentTitle={t('noAnnouncementsTitle')} />
-    )
+    return <EmptyStateScreen title=" " hasBackButton contentTitle={t('noAnnouncementsTitle')} />
   }
 
   return (
