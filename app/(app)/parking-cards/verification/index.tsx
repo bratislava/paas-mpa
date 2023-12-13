@@ -55,7 +55,7 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('addCardsTitle')}>
+      <ScreenView title={t('addCardsTitle')} hasBackButton>
         <ScreenContent>
           <Field label={t('emailField')}>
             <TextInput

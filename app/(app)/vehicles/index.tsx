@@ -92,7 +92,7 @@ const VehiclesScreen = () => {
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} hasBackButton>
       <ScreenContent>
         {defaultVehicle ? (
           <Field label={t('myDefaultVehicle')}>

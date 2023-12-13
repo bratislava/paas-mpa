@@ -57,11 +57,13 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return <EmptyStateScreen contentTitle={t('noAnnouncementsTitle')} />
+    return (
+      <EmptyStateScreen hasBackButton title={t('title')} contentTitle={t('noAnnouncementsTitle')} />
+    )
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} hasBackButton>
       <FlatList data={data.announcements} renderItem={renderItem} />
     </ScreenView>
   )

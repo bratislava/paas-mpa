@@ -23,7 +23,6 @@ export const useQueryInvalidateOnTicketExpire = (
 
   const queryClient = useQueryClient()
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null
     const time = sortedTickets?.length

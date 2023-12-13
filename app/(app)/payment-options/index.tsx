@@ -48,7 +48,7 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} hasBackButton>
       <ScrollView>
         <ScreenContent>
           {defaultPaymentOption ? (

@@ -1,10 +1,11 @@
-import { router, Stack } from 'expo-router'
+import { router } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
 import { FlatList, ListRenderItem, View } from 'react-native'
 
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
@@ -60,7 +61,7 @@ const TicketsFiltersVehiclesScreen = () => {
 
   return (
     <ScreenView title={t('vehicles')} actionButton={actionButton}>
-      <Stack.Screen
+      <StackScreenWithHeader
         options={{
           headerRight: () => (
             <PressableStyled onPress={handleSelectAll}>

@@ -1,6 +1,6 @@
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 
-import { stackHeaderBackButton } from '@/utils/stackHeaderBackButton'
+import IconButton from '../shared/IconButton'
 
 type Props = (typeof Stack.Screen)['prototype']['props']
 
@@ -12,7 +12,10 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
     <Stack.Screen
       options={{
         headerShown: true,
-        headerLeft: stackHeaderBackButton,
+        headerLeft: ({ canGoBack }) =>
+          canGoBack ? (
+            <IconButton onPress={router.back} accessibilityLabel="arrow-back" name="arrow-back" />
+          ) : null,
         headerShadowVisible: false,
         ...options,
       }}

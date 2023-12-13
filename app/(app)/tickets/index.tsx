@@ -170,7 +170,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')} backgroundVariant="dots">
+    <ScreenView title={t('title')} backgroundVariant="dots" hasBackButton>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

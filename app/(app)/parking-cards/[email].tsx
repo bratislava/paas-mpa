@@ -98,7 +98,7 @@ const Page = () => {
 
   return (
     <>
-      <ScreenView title={email}>
+      <ScreenView title={email} hasBackButton>
         <Stack.Screen
           options={{
             headerRight: () => (

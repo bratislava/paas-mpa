@@ -21,7 +21,7 @@ const PaymentScreen = () => {
 
   if (!paymentUrl) {
     return (
-      <ScreenView title={t('titleInvalidPaymentLink')}>
+      <ScreenView title={t('titleInvalidPaymentLink')} hasBackButton>
         <Typography className="mt-5 text-center">{t('noPaymentInitiated')}</Typography>
       </ScreenView>
     )
@@ -31,14 +31,14 @@ const PaymentScreen = () => {
 
   if (!paymentUrlDecoded) {
     return (
-      <ScreenView title={t('titleInvalidPaymentLink')}>
+      <ScreenView title={t('titleInvalidPaymentLink')} hasBackButton>
         <Typography className="mt-5 text-center">{t('invalidPaymentLink')}</Typography>
       </ScreenView>
     )
   }
 
   return (
-    <ScreenView title={t('titlePayment')}>
+    <ScreenView title={t('titlePayment')} hasBackButton>
       <WebView
         ref={webviewRef}
         source={{ uri: paymentUrlDecoded }}

@@ -4,6 +4,8 @@ import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import StackScreenWithHeader from './StackScreenWithHeader'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires, unicorn/prefer-module
 const dottedBackground = require('@/assets/images/dotted-background.png')
 
@@ -13,6 +15,7 @@ export type ScreenViewProps = {
   contentPosition?: 'default' | 'center'
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
+  hasBackButton?: boolean
 } & ViewProps
 
 const ScreenView = ({
@@ -22,6 +25,7 @@ const ScreenView = ({
   contentPosition = 'default',
   backgroundVariant = 'white',
   actionButton,
+  hasBackButton,
   ...rest
 }: ScreenViewProps) => {
   const navigation = useNavigation()
@@ -38,7 +42,17 @@ const ScreenView = ({
 
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
-      {title?.length ? <Stack.Screen options={{ title }} /> : null}
+      {title?.length ? (
+        hasBackButton ? (
+          <StackScreenWithHeader
+            options={{
+              title,
+            }}
+          />
+        ) : (
+          <Stack.Screen options={{ title }} />
+        )
+      ) : null}
 
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />

@@ -53,7 +53,12 @@ const ProlongateLayout = () => {
             },
             headerTintColor: colors.dark.DEFAULT,
           }}
-        />
+        >
+          <Stack.Screen
+            name="[ticketId]/choose-payment-method"
+            options={{ presentation: 'modal' }}
+          />
+        </Stack>
       </TicketProvider>
     </PurchaseStoreProvider>
   )

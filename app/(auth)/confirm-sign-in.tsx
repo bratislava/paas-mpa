@@ -7,7 +7,6 @@ import CodeInput from '@/components/inputs/CodeInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
@@ -79,13 +78,7 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView>
-        <StackScreenWithHeader
-          options={{
-            title: '',
-          }}
-        />
-
+      <ScreenView title=" " hasBackButton>
         <ScreenContent>
           <View className="g-2">
             <Typography variant="h1">{t('enterVerificationCode')}</Typography>

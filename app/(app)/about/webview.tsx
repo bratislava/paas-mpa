@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { WebView } from 'react-native-webview'
 
@@ -24,10 +24,7 @@ const Page = () => {
   }
 
   return (
-    <ScreenView>
-      {/* TODO find a nicer way how to hide header title */}
-      <Stack.Screen options={{ headerTitle: () => <Typography /> }} />
-
+    <ScreenView title=" " hasBackButton>
       <WebView source={{ uri: uriDecoded }} className="flex-1" />
     </ScreenView>
   )

@@ -7,16 +7,16 @@ import { useEffect } from 'react'
  * <Stack.Screen options={{ gestureEnabled: false }} />
  */
 export const usePreventGoBack = () => {
-  // Navigation
   const navigation = useNavigation()
 
-  // Effect
   useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
+    const preventEventHandler = (e: Pick<Event, 'preventDefault'>) => {
       e.preventDefault()
-    })
+    }
 
-    return () => navigation.removeListener('beforeRemove', () => {})
+    navigation.addListener('beforeRemove', preventEventHandler)
+
+    return () => navigation.removeListener('beforeRemove', preventEventHandler)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
