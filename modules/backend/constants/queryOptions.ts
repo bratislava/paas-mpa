@@ -51,10 +51,18 @@ export const ticketsInfiniteQuery = (
     parkingStartTo?: Date
     parkingEndFrom?: Date
     parkingEndTo?: Date
+    isActive?: boolean
   } & PageSize,
 ) => {
-  const { ecv, parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo, pageSize } =
-    options ?? {}
+  const {
+    ecv,
+    parkingStartFrom,
+    parkingStartTo,
+    parkingEndFrom,
+    parkingEndTo,
+    pageSize,
+    isActive,
+  } = options ?? {}
 
   return infiniteQueryOptions({
     queryKey: [
@@ -62,7 +70,8 @@ export const ticketsInfiniteQuery = (
       ecv,
       parkingStartFrom?.toISOString(),
       parkingStartTo?.toISOString(),
-      parkingEndFrom?.toISOString(),
+      // if isActive is true, parkingEndShould be the current datetime and it changes with every second, so the query keeps refetching
+      isActive ? null : parkingEndFrom?.toISOString(),
       parkingEndTo?.toISOString(),
       pageSize,
     ],

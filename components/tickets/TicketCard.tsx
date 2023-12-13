@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
@@ -24,16 +24,16 @@ import { formatDateTime } from '@/utils/formatDateTime'
 type Props = {
   ticket: TicketDto
   isActive?: boolean
+  refetch: () => void
 }
 
-const TicketCard = ({ ticket, isActive }: Props) => {
+const TicketCard = ({ ticket, isActive, refetch }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
   const t = useTranslation('TicketCard')
   const locale = useLocale()
   const [isTerminateModalVisible, setIsTerminateModalVisible] = useState(false)
-  const queryClient = useQueryClient()
 
   const shortenTicketMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
@@ -44,20 +44,17 @@ const TicketCard = ({ ticket, isActive }: Props) => {
 
   const handleTerminateTicket = async () => {
     shortenTicketMutation.mutate(ticket.id, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+      onSuccess: () => {
+        refetch()
 
         handleTerminateModalClose()
-      },
-      onError: (res) => {
-        console.log('err', res)
       },
     })
   }
 
-  if (shortenTicketMutation.isError)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    console.log('error', shortenTicketMutation.error.response?.data)
+  // ticket can be terminated if there is no cancelledAt or duration is at least 15 minutes (parkingEnd - parkingStart)
+  const canTerminate =
+    !ticket.canceledAt || parkingEndDate.getTime() - parkingStartDate.getTime() > 15 * 60 * 1000
 
   return (
     <>
@@ -81,7 +78,7 @@ const TicketCard = ({ ticket, isActive }: Props) => {
             <Typography variant="small">{ticket.ecv}</Typography>
           </View>
 
-          {isActive ? (
+          {isActive && canTerminate ? (
             <View className="g-2">
               <Link asChild href={`/prolongate/${ticket.id}`}>
                 <Button>{t('prolong')}</Button>

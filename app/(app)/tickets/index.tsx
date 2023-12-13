@@ -40,10 +40,11 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
 
   const ticketsQueryOptions = ticketsInfiniteQuery({
-    parkingEndFrom: active ? now : fromTo.parkingEndFrom,
+    parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
     parkingEndTo: active ? undefined : fromTo.parkingEndTo,
     pageSize: 20,
     ecv: filters.ecv ?? undefined,
+    isActive: active,
   })
 
   const {
@@ -54,11 +55,13 @@ const TicketsRoute = ({ active }: RouteProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isRefetching,
+    refetch,
   } = useInfiniteQuery(ticketsQueryOptions)
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
 
-  useQueryInvalidateOnTicketExpire(['Tickets'], active ? tickets : undefined)
+  useQueryInvalidateOnTicketExpire(active ? tickets ?? null : null, refetch, ['Tickets'])
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -67,8 +70,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} isActive={active} />,
-    [active],
+    ({ item }) => <TicketCard ticket={item} isActive={active} refetch={refetch} />,
+    [active, refetch],
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -125,6 +128,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
           ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
           onEndReachedThreshold={0.2}
           onEndReached={loadMore}
+          onRefresh={refetch}
+          refreshing={isRefetching}
         />
       </View>
 

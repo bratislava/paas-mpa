@@ -37,7 +37,7 @@ const TicketPurchasePage = () => {
   useEffect(() => {
     if (data?.paymentStatus === 'SUCCESS') {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
-      queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+      queryClient.removeQueries({ queryKey: ['Tickets'] })
     } else if (data?.paymentStatus === 'PENDING') {
       refetch()
     }

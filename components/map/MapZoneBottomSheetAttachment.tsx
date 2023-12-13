@@ -36,13 +36,13 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const { data: ticketsData } = useQueryWithFocusRefetch(
+  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(
     ticketsNumberOptions({
       parkingEndFrom: new Date().toISOString(),
     }),
   )
 
-  useQueryInvalidateOnTicketExpire(['Tickets'], ticketsData?.tickets)
+  useQueryInvalidateOnTicketExpire(ticketsData?.tickets ?? null, refetch, ['Tickets'])
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
