@@ -1,4 +1,4 @@
-import { QueryObserverResult } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 
 import { TicketDto } from '@/modules/backend/openapi-generated'
@@ -8,15 +8,14 @@ import { TicketDto } from '@/modules/backend/openapi-generated'
  * @param tickets the tickets array to check earliest expiry time
  * @param refetch function to refetch query from useQuery hook
  */
-export const useQueryRefetchOnTicketExpire = (
-  refetch: () => Promise<QueryObserverResult>,
-  tickets?: TicketDto[],
-) => {
+export const useQueryInvalidateOnTicketExpire = (queryKey: string[], tickets?: TicketDto[]) => {
   const sortedTickets = useMemo(
     () =>
       tickets?.sort((a, b) => new Date(a.parkingEnd).getTime() - new Date(b.parkingEnd).getTime()),
     [tickets],
   )
+
+  const queryClient = useQueryClient()
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -27,7 +26,7 @@ export const useQueryRefetchOnTicketExpire = (
 
     if (time !== 0) {
       timer = setTimeout(async () => {
-        refetch()
+        queryClient.invalidateQueries({ queryKey })
       }, time)
     }
 

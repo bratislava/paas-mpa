@@ -7,7 +7,6 @@ import { getTicketOptions, visitorCardsOptions } from '@/modules/backend/constan
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import TicketProvider from '@/state/TicketProvider/TicketProvider'
 import colors from '@/tailwind.config.colors'
-import { stackHeaderBackButton } from '@/utils/stackHeaderBackButton'
 
 type ProlongateLocalSearchParams = {
   ticketId: string
@@ -53,15 +52,8 @@ const ProlongateLayout = () => {
               fontFamily: 'BelfastGrotesk_700Bold',
             },
             headerTintColor: colors.dark.DEFAULT,
-            headerLeft: stackHeaderBackButton,
           }}
-        >
-          <Stack.Screen name="[ticketId]/index" />
-          <Stack.Screen
-            name="[ticketId]/choose-payment-method"
-            options={{ presentation: 'modal' }}
-          />
-        </Stack>
+        />
       </TicketProvider>
     </PurchaseStoreProvider>
   )

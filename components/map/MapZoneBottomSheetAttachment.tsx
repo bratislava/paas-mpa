@@ -13,7 +13,7 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useQueryRefetchOnTicketExpire } from '@/hooks/useQueryRefetchOnTicketExpire'
+import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsNumberOptions } from '@/modules/backend/constants/queryOptions'
@@ -36,13 +36,13 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(
+  const { data: ticketsData } = useQueryWithFocusRefetch(
     ticketsNumberOptions({
       parkingEndFrom: new Date().toISOString(),
     }),
   )
 
-  useQueryRefetchOnTicketExpire(refetch, ticketsData?.tickets)
+  useQueryInvalidateOnTicketExpire(['Tickets'], ticketsData?.tickets)
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 

@@ -1,3 +1,4 @@
+import { Stack } from 'expo-router'
 import React from 'react'
 import { ScrollView } from 'react-native'
 
@@ -13,6 +14,7 @@ const ChoosePaymentMethodContent = () => {
 
   return (
     <ScreenView title={t('title')}>
+      <Stack.Screen options={{ presentation: 'modal' }} />
       <ScrollView>
         <ScreenContent>
           <PaymentOptionsField />

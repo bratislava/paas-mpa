@@ -15,7 +15,7 @@ import FloatingButton from '@/components/shared/FloatingButton'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
-import { useQueryRefetchOnTicketExpire } from '@/hooks/useQueryRefetchOnTicketExpire'
+import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
@@ -54,12 +54,11 @@ const TicketsRoute = ({ active }: RouteProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    refetch,
   } = useInfiniteQuery(ticketsQueryOptions)
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
 
-  useQueryRefetchOnTicketExpire(refetch, active ? tickets : undefined)
+  useQueryInvalidateOnTicketExpire(['Tickets'], active ? tickets : undefined)
 
   const loadMore = () => {
     if (hasNextPage) {

@@ -10,6 +10,7 @@ import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import SkeletonPurchaseFields from '@/components/purchase/SkeletonPurchaseFields'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
@@ -75,6 +76,8 @@ const ProlongTicketScreen = () => {
   return (
     <>
       <ScreenView title={t('prolongate')}>
+        <StackScreenWithHeader />
+
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
