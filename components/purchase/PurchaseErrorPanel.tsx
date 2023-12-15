@@ -6,6 +6,7 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
+import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { isPricingApiError } from '@/utils/errorPricingApi'
 
 type Props = {
@@ -14,15 +15,20 @@ type Props = {
 
 const PurchaseErrorPanel = ({ priceQuery }: Props) => {
   const t = useTranslation('PurchaseScreen')
+  const { udr, vehicle } = usePurchaseStoreContext()
 
-  // TODO: change isPricingApiError after api fixes issue with wrong error fields
   return !priceQuery.data &&
     priceQuery.isError &&
     isAxiosError(priceQuery.error) &&
     priceQuery.error.response?.status === 422 &&
     isPricingApiError(priceQuery.error.response.data) ? (
     <Panel className="bg-negative-light px-5 py-4">
-      <Typography>{t(`Errors.${priceQuery.error.response.data.status}`)}</Typography>
+      <Typography>
+        {t(`Errors.${priceQuery.error.response.data.status}`, {
+          ecv: vehicle?.vehiclePlateNumber,
+          udr: udr?.name,
+        })}
+      </Typography>
     </Panel>
   ) : null
 }

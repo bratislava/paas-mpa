@@ -59,7 +59,6 @@
     "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
     "Errors": {
       "TooLongParkingTime": "Prekročený maximálny čas na parkovanie",
-      "TooShortParkingTime": "TooShortParkingTime TODO",
       "FreeTicket": "Parkovací lístok nie je možné zakúpiť. Parkovanie sa v určenom čase neplatí.",
       "InsufficientCredit": "Pre toto parkovanie nie je na karte NPK dostatočný kredit",
       "CardNotValid": "Návštevnícka parkovacia karta nie je platná",
@@ -67,10 +66,10 @@
       "PermitCardActive": "Na tomto parkovacom mieste a EČV je rezidentská alebo abonentská karta",
       "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
       "InvalidParkingStart": "Začiatok lístka je po ukončení lístka",
-      "InvalidParkingEnd": "InvalidParkingEnd TODO",
-      "parkingSpaceNotFound": "Parkovací segment neexistuje. Skúste iné ID parkovacieho segmentu.",
-      "TicketAlreadyExists": "Tento lístok pre ecv na parkovacom miest už existuje. Skončí o ... TODO",
+      "TicketAlreadyExists": "Tento lístok pre {{ecv}} na parkovacom miest {{udr}} už existuje.",
       "BadDateFormat": "Premenná má zlý formát. Potrebujete formát ISO 8601",
+      "TooShortParkingTime": "TooShortParkingTime TODO",
+      "InvalidParkingEnd": "InvalidParkingEnd TODO",
       "TicketAlreadyShortened": "TicketAlreadyShortened TODO",
       "BadRequest": "Bad request"
     }

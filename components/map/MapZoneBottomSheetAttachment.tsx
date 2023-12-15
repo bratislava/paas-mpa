@@ -16,7 +16,7 @@ import Typography from '@/components/shared/Typography'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsNumberOptions } from '@/modules/backend/constants/queryOptions'
+import { ticketsCountOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 /** Time after pressing the button when it cannot be pressed again */
@@ -58,7 +58,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   }, [setFlyToCenter, permissionStatus])
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(
-    ticketsNumberOptions({
+    ticketsCountOptions({
       parkingEndFrom: new Date().toISOString(),
     }),
   )

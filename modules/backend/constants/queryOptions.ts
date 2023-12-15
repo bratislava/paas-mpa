@@ -25,7 +25,7 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsNumberOptions = ({
+export const ticketsCountOptions = ({
   parkingEndFrom,
 }: {
   parkingEndFrom?: string
