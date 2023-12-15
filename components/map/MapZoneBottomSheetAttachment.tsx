@@ -16,7 +16,7 @@ import Typography from '@/components/shared/Typography'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsCountOptions } from '@/modules/backend/constants/queryOptions'
+import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 /** Time after pressing the button when it cannot be pressed again */
@@ -57,13 +57,13 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(
-    ticketsCountOptions({
-      parkingEndFrom: new Date().toISOString(),
-    }),
-  )
+  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
 
-  useQueryInvalidateOnTicketExpire(ticketsData?.tickets ?? null, refetch, ['Tickets'])
+  useQueryInvalidateOnTicketExpire(
+    ticketsData?.tickets ?? null,
+    refetch,
+    activeTicketsOptions().queryKey,
+  )
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {

@@ -19,7 +19,7 @@ type PurchaseStoreContextProps = {
   paymentOption: PaymentOption | null
 }
 
-interface Props extends PropsWithChildren {
+interface Props {
   initialValues?: PurchaseStoreContextProps
 }
 
@@ -38,7 +38,7 @@ export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
   paymentOption: null,
 }
 
-const PurchaseStoreProvider = ({ children, initialValues }: Props) => {
+const PurchaseStoreProvider = ({ children, initialValues }: PropsWithChildren<Props>) => {
   const [values, setValues] = useState<PurchaseStoreContextProps>(
     initialValues ?? defaultInitialPurchaseStoreValues,
   )

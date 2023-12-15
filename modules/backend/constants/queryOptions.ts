@@ -25,11 +25,7 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsCountOptions = ({
-  parkingEndFrom,
-}: {
-  parkingEndFrom?: string
-} & PaginationOptions) =>
+export const activeTicketsOptions = () =>
   queryOptions({
     queryKey: ['Tickets'],
     queryFn: () =>
@@ -39,7 +35,7 @@ export const ticketsCountOptions = ({
         undefined,
         undefined,
         undefined,
-        parkingEndFrom,
+        new Date().toISOString(),
       ),
     select: (data) => data.data,
   })

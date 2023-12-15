@@ -9,7 +9,8 @@
   "Common": {
     "loading": "Loading",
     "cancel": "Cancel",
-    "hide": "Hide"
+    "hide": "Hide",
+    "goBack": "Go back"
   },
   "Typography": {
     "test": "EN translation"
@@ -192,7 +193,7 @@
   },
   "TicketCard": {
     "prolong": "Prolong",
-    "terminate": "Terminate",
+    "shorten": "Terminate",
     "more": "More",
     "terminationModal": {
       "title": "Terminate parking ticket",

@@ -33,7 +33,7 @@ const TicketCard = ({ ticket, isActive, refetch }: Props) => {
   const zone = useMapZone(ticket.udr, true)
   const t = useTranslation('TicketCard')
   const locale = useLocale()
-  const [isTerminateModalVisible, setIsTerminateModalVisible] = useState(false)
+  const [isShortenModalVisible, setIsShortenModalVisible] = useState(false)
 
   const shortenTicketMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
@@ -41,22 +41,22 @@ const TicketCard = ({ ticket, isActive, refetch }: Props) => {
 
   const queryClient = useQueryClient()
 
-  const handleTerminateModalClose = () => setIsTerminateModalVisible(false)
-  const handleTerminateModalOpen = () => setIsTerminateModalVisible(true)
+  const handleShortenModalClose = () => setIsShortenModalVisible(false)
+  const handleShortenModalOpen = () => setIsShortenModalVisible(true)
 
-  const handleTerminateTicket = async () => {
+  const handleShortenTicket = async () => {
     shortenTicketMutation.mutate(ticket.id, {
       onSuccess: () => {
         refetch()
         queryClient.removeQueries({ queryKey: ['Tickets'] })
 
-        handleTerminateModalClose()
+        handleShortenModalClose()
       },
     })
   }
 
-  // ticket can be terminated if there is no cancelledAt or duration is at least 15 minutes (parkingEnd - parkingStart)
-  const canTerminate =
+  // ticket can be shortened if there is no cancelledAt or duration is at least 15 minutes (parkingEnd - parkingStart)
+  const canShorten =
     !ticket.canceledAt || parkingEndDate.getTime() - parkingStartDate.getTime() > 15 * 60 * 1000
 
   return (
@@ -81,29 +81,29 @@ const TicketCard = ({ ticket, isActive, refetch }: Props) => {
             <Typography variant="small">{ticket.ecv}</Typography>
           </View>
 
-          {isActive && canTerminate ? (
+          {isActive && canShorten ? (
             <View className="g-2">
               <Link asChild href={`/prolongate/${ticket.id}`}>
                 <Button>{t('prolong')}</Button>
               </Link>
-              <Button variant="secondary" onPress={handleTerminateModalOpen}>
-                {t('terminate')}
+              <Button variant="secondary" onPress={handleShortenModalOpen}>
+                {t('shorten')}
               </Button>
             </View>
           ) : null}
         </View>
       </Panel>
 
-      <Modal visible={isTerminateModalVisible} onRequestClose={handleTerminateModalClose}>
+      <Modal visible={isShortenModalVisible} onRequestClose={handleShortenModalClose}>
         <ModalContentWithActions
           variant="error"
           title={t('terminationModal.title')}
           isLoading={shortenTicketMutation.isPending}
           text={t('terminationModal.message')}
           primaryActionLabel={t('terminationModal.actionConfirm')}
-          primaryActionOnPress={handleTerminateTicket}
+          primaryActionOnPress={handleShortenTicket}
           secondaryActionLabel={t('terminationModal.actionCancel')}
-          secondaryActionOnPress={handleTerminateModalClose}
+          secondaryActionOnPress={handleShortenModalClose}
         />
       </Modal>
     </>

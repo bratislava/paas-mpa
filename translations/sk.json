@@ -9,7 +9,8 @@
   "Common": {
     "loading": "Načítavam",
     "cancel": "Zrušiť",
-    "hide": "Skryť"
+    "hide": "Skryť",
+    "goBack": "Späť"
   },
   "Typography": {
     "test": "SK preklad"
@@ -191,7 +192,7 @@
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
-    "terminate": "Predčasne ukončiť",
+    "shorten": "Predčasne ukončiť",
     "more": "Viac",
     "terminationModal": {
       "title": "Predčasne ukončiť",
