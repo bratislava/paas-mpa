@@ -16,7 +16,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://bratislava.sk/) hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
@@ -56,21 +56,21 @@
     "paymentSuccessful": "Úspešná platba",
     "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
     "Errors": {
-      "TooLongParkingTime": "Prekročený maximálny čas na parkovanie",
-      "TooShortParkingTime": "TooShortParkingTime TODO",
-      "FreeTicket": "Parkovací lístok nie je možné zakúpiť. Parkovanie sa v určenom čase neplatí.",
-      "InsufficientCredit": "Pre toto parkovanie nie je na karte NPK dostatočný kredit",
-      "CardNotValid": "Návštevnícka parkovacia karta nie je platná",
-      "NoUsableParkingCardFound": "Neplatný typ parkovacej karty / parkovacia karta sa nenašla",
-      "PermitCardActive": "Na tomto parkovacom mieste a EČV je rezidentská alebo abonentská karta",
+      "TooLongParkingTime": "Doba parkovania prekročila maximálny možný čas. Maximálna dĺžka parkovacieho lístka je 48 hodín.",
+      "TooShortParkingTime": "Minimálna doba parkovania je 15 minút.",
+      "FreeTicket": "Úsek parkovania je v tomto čase nespoplatnený. Parkovacii lístok nie je možné zakúpiť.",
+      "InsufficientCredit": "Na Návštevníckej parkovacej karte nie je dostatok kreditu.",
+      "CardNotValid": "Návštevnícka parkovacia karta nie je platná.",
+      "NoUsableParkingCardFound": "Parkovacia karta sa nenašla alebo nie je platná.",
+      "PermitCardActive": "Lístok vo vlastnej zóne nie je možné zakúpiť. Pre toto evidenčné číslo vozidla {{EČV}} a túto zónu už existuje Rezidentská alebo Abonentská parkovacia karta.",
       "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
-      "InvalidParkingStart": "Začiatok lístka je po ukončení lístka",
-      "InvalidParkingEnd": "InvalidParkingEnd TODO",
-      "parkingSpaceNotFound": "Parkovací segment neexistuje. Skúste iné ID parkovacieho segmentu.",
-      "TicketAlreadyExists": "Tento lístok pre ecv na parkovacom miest už existuje. Skončí o ... TODO",
-      "BadDateFormat": "Premenná má zlý formát. Potrebujete formát ISO 8601",
-      "TicketAlreadyShortened": "TicketAlreadyShortened TODO",
-      "BadRequest": "Bad request"
+      "InvalidParkingStart": "Neplatná doba parkovania, začiatok nového lístka môže nastať až po ukončení pôvodného lístka.",
+      "InvalidParkingEnd": "Parkovacii lístok nie je možné v tomto čase predčasne ukončiť.",
+      "parkingSpaceNotFound": "Úsek parkovania neexistuje. Skúste iný parkovacii úsek.",
+      "TicketAlreadyExists": "Parkovacii lístok pre úsek {{UDR}} a evidenčné číslo vozidla {{EČV}} už existuje.",
+      "BadDateFormat": "Formát dátumu je nesprávny.",
+      "TicketAlreadyShortened": "Parkovacii lístok bol už raz predčasne ukončený",
+      "BadRequest": "Nesprávna požiadavka."
     }
   },
   "BoughtTicket": {
@@ -216,7 +216,7 @@
     "validUntil": "Platný do",
     "remainingCredit": "Zostávajúci kredit",
     "activeCards": "Aktívne karty",
-    "expiredCards": "Exspirované karty",
+    "expiredCards": "Neplatné karty",
     "openEmailActions": "Spravovať e-mail",
     "emailActions": {
       "removeEmail": "Odstrániť e-mail"
