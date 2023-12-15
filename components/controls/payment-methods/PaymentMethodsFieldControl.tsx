@@ -9,9 +9,14 @@ import { formatBalance } from '@/utils/formatBalance'
 type Props = {
   visitorCard: ParkingCardDto | null
   paymentOption: PaymentOption | undefined
+  showControlChevron?: boolean
 }
 
-const PaymentMethodsFieldControl = ({ visitorCard, paymentOption = 'payment-card' }: Props) => {
+const PaymentMethodsFieldControl = ({
+  visitorCard,
+  paymentOption = 'payment-card',
+  showControlChevron = true,
+}: Props) => {
   return visitorCard ? (
     <VisitorCardRow
       email={visitorCard.name ?? ''}
@@ -20,10 +25,10 @@ const PaymentMethodsFieldControl = ({ visitorCard, paymentOption = 'payment-card
           ? formatBalance(visitorCard.balanceSeconds, visitorCard.originalBalanceSeconds)
           : ''
       }
-      showControlChevron
+      showControlChevron={showControlChevron}
     />
   ) : (
-    <PaymentOptionRow variant={paymentOption} showControlChevron />
+    <PaymentOptionRow variant={paymentOption} showControlChevron={showControlChevron} />
   )
 }
 

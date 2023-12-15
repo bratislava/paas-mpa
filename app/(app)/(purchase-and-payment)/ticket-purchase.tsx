@@ -1,4 +1,6 @@
-import { Link, useLocalSearchParams } from 'expo-router'
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
+import { Link, Stack, useLocalSearchParams, useNavigation } from 'expo-router'
 import React, { useEffect } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -10,6 +12,7 @@ import BoughtTicket from '@/components/tickets/BoughtTicket'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
+import { TicketsResponseDto } from '@/modules/backend/openapi-generated'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
@@ -24,20 +27,43 @@ const TicketPurchasePage = () => {
   const t = useTranslation('PurchaseScreen')
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
+
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+  const queryClient = useQueryClient()
+  const navigation = useNavigation()
 
   const { data, isPending, isError, error, refetch } = useQueryWithFocusRefetch(
-    getTicketOptions(ticketIdParsed!),
+    getTicketOptions(ticketIdParsed),
   )
 
   useEffect(() => {
     if (data?.paymentStatus === 'SUCCESS') {
       onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+
+      const cacheData = queryClient.getQueryData(['Tickets']) as AxiosResponse<TicketsResponseDto>
+
+      if (cacheData) {
+        queryClient.setQueryData(['Tickets'], {
+          ...cacheData,
+          data: { ...cacheData.data, tickets: [data, ...cacheData.data.tickets] },
+        })
+      }
+
+      queryClient.removeQueries({ queryKey: ['TicketPrice'] })
     } else if (data?.paymentStatus === 'PENDING') {
       refetch()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data, onPurchaseStoreUpdate, queryClient, refetch])
+
+  useEffect(() => {
+    const state = navigation.getState()
+
+    navigation.reset({
+      ...state,
+      index: 1,
+      routes: [state.routes[0], state.routes.at(-1)!],
+    })
+  }, [navigation])
 
   return (
     <ScreenViewCentered
@@ -47,6 +73,7 @@ const TicketPurchasePage = () => {
         </Link>
       }
     >
+      <Stack.Screen options={{ headerShown: false }} />
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
       ) : isError || data.paymentStatus === 'FAIL' ? (

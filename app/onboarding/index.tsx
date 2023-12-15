@@ -62,7 +62,7 @@ const OnboardingScreen = () => {
   const layout = useWindowDimensions()
   const t = useTranslation('OnboardingScreen')
   const insets = useSafeAreaInsets()
-  const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
+  const [isOnboardingFinished] = useIsOnboardingFinished()
 
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
@@ -76,14 +76,11 @@ const OnboardingScreen = () => {
 
   const handlePressNext = useCallback(() => {
     if (index === routes.length - 1) {
-      if (!isOnboardingFinished) {
-        setIsOnboardingFinished(true)
-      }
-      router.replace('/sign-in')
+      router.push('/sign-in')
     } else if (index < routes.length - 1) {
       setIndex((prevIndex) => prevIndex + 1)
     }
-  }, [routes, index, isOnboardingFinished, setIsOnboardingFinished])
+  }, [routes, index])
 
   if (isOnboardingFinished) {
     // TODO: Uncomment for prod behavior

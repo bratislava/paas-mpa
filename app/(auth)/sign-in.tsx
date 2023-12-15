@@ -1,13 +1,16 @@
-import { router, Stack } from 'expo-router'
+import { router } from 'expo-router'
 import { useState } from 'react'
+import { SafeAreaView } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
+import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
@@ -15,6 +18,7 @@ import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreConte
 const Page = () => {
   const t = useTranslation('Auth')
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
+  const [isOnboardingFinished] = useIsOnboardingFinished()
 
   const [phone, setPhone] = useState('')
 
@@ -29,28 +33,35 @@ const Page = () => {
   return (
     <DismissKeyboard>
       <ScreenView>
-        <Stack.Screen options={{ headerBackVisible: false }} />
-
-        <ScreenContent>
-          <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
-
-          {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
-          {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-          <TextInput
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            autoFocus
-            returnKeyType="done"
-            placeholder="+421"
-            onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
+        <SafeAreaView>
+          <StackScreenWithHeader
+            options={{
+              title: '',
+              headerShown: !isOnboardingFinished,
+            }}
           />
 
-          <Markdown>{t('consent')}</Markdown>
+          <ScreenContent>
+            <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
-          <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
-        </ScreenContent>
+            {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+            {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
+            <TextInput
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+              autoFocus
+              returnKeyType="done"
+              placeholder="+421"
+              onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
+            />
+
+            <Markdown>{t('consent')}</Markdown>
+
+            <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
+          </ScreenContent>
+        </SafeAreaView>
       </ScreenView>
     </DismissKeyboard>
   )

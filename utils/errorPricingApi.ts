@@ -2,16 +2,17 @@ import { PRICINGAPIERROR } from '@/modules/backend/openapi-generated'
 import { isError } from '@/utils/errors'
 
 export class PricingApiError extends Error {
-  errorName: PRICINGAPIERROR
+  status: PRICINGAPIERROR
 
-  constructor(message: string, errorName: PRICINGAPIERROR) {
+  constructor(message: string, status: PRICINGAPIERROR) {
     super(message)
-    this.errorName = errorName
+    this.status = status
   }
 }
 
 export const isPricingApiError = (error: unknown): error is PricingApiError =>
   isError(error) &&
   'errorName' in error &&
-  typeof error.errorName === 'string' &&
-  error.errorName in PRICINGAPIERROR
+  'status' in error &&
+  typeof error.status === 'string' &&
+  error.status in PRICINGAPIERROR

@@ -44,7 +44,7 @@ const Page = () => {
 
   return (
     // TODO maybe rename actionButton to something like footer
-    <ScreenView title={t('title')} actionButton={<AppVersion />}>
+    <ScreenView title={t('title')} hasBackButton actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
           {links.map((link) => (

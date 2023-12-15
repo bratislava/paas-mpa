@@ -1,7 +1,11 @@
 import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
 import { clientApi } from '@/modules/backend/client-api'
-import { GetTicketPriceRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
+import {
+  GetTicketPriceRequestDto,
+  GetTicketProlongationPriceRequestDto,
+  ParkingCardDto,
+} from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
@@ -21,41 +25,17 @@ export const notificationSettingsOptions = () =>
     select: (data) => data.data,
   })
 
-export const ticketsOptions = ({
-  ecv,
-  parkingStartFrom,
-  parkingStartTo,
-  parkingEndFrom,
-  parkingEndTo,
-  page,
-  pageSize,
-}: {
-  ecv?: string
-  parkingStartFrom?: string
-  parkingStartTo?: string
-  parkingEndFrom?: string
-  parkingEndTo?: string
-} & PaginationOptions) =>
+export const activeTicketsOptions = () =>
   queryOptions({
-    queryKey: [
-      'Tickets',
-      ecv,
-      parkingStartFrom,
-      parkingStartTo,
-      parkingEndFrom,
-      parkingEndTo,
-      page,
-      pageSize,
-    ],
+    queryKey: ['Tickets'],
     queryFn: () =>
       clientApi.ticketsControllerTicketsGetMany(
-        page,
-        pageSize,
-        ecv,
-        parkingStartFrom,
-        parkingStartTo,
-        parkingEndFrom,
-        parkingEndTo,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        new Date().toISOString(),
       ),
     select: (data) => data.data,
   })
@@ -67,10 +47,18 @@ export const ticketsInfiniteQuery = (
     parkingStartTo?: Date
     parkingEndFrom?: Date
     parkingEndTo?: Date
+    isActive?: boolean
   } & PageSize,
 ) => {
-  const { ecv, parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo, pageSize } =
-    options ?? {}
+  const {
+    ecv,
+    parkingStartFrom,
+    parkingStartTo,
+    parkingEndFrom,
+    parkingEndTo,
+    pageSize,
+    isActive,
+  } = options ?? {}
 
   return infiniteQueryOptions({
     queryKey: [
@@ -78,7 +66,8 @@ export const ticketsInfiniteQuery = (
       ecv,
       parkingStartFrom?.toISOString(),
       parkingStartTo?.toISOString(),
-      parkingEndFrom?.toISOString(),
+      // if isActive is true, parkingEndShould be the current datetime and it changes with every second, so the query keeps refetching
+      isActive ? null : parkingEndFrom?.toISOString(),
       parkingEndTo?.toISOString(),
       pageSize,
     ],
@@ -147,10 +136,10 @@ export const ticketPriceOptions = (
     enabled: !!udr && !!licencePlate && !!duration,
   })
 
-export const getTicketOptions = (ticketId: number) =>
+export const getTicketOptions = (ticketId?: number) =>
   queryOptions({
     queryKey: ['ticket', ticketId],
-    queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId),
+    queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId!),
     select: (res) => res.data,
     enabled: !!ticketId,
   })
@@ -172,6 +161,15 @@ export const announcementsOptions = (
     select: (res) => res.data,
     // TODO: remove this when the backend has test announcements data
     enabled: false,
+  })
+
+export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceRequestDto) =>
+  queryOptions({
+    queryKey: ['TicketProlongationPrice', body.ticketId, body.newParkingEnd],
+    queryFn: () => clientApi.ticketsControllerGetTicketProlongationPrice(body),
+    select: (res) => res.data,
+    placeholderData: keepPreviousData,
+    enabled: !!body.ticketId,
   })
 
 export const vehiclesOptions = () =>

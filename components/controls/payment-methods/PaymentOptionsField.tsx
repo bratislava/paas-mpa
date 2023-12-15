@@ -21,7 +21,7 @@ const PaymentOptionsField = () => {
 
   const handlePanelPress = (variant: PaymentOption) => {
     onPurchaseStoreUpdate({ paymentOption: variant, npk: null })
-    router.push('/purchase')
+    router.back()
   }
 
   const panels: PaymentOption[] = [
