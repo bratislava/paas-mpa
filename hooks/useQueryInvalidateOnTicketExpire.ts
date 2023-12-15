@@ -41,6 +41,5 @@ export const useQueryInvalidateOnTicketExpire = (
         clearTimeout(timer)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortedTickets])
+  }, [queryClient, queryKey, refetch, sortedTickets])
 }
