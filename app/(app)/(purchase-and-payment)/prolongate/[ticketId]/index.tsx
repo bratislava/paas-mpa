@@ -35,13 +35,18 @@ const ProlongTicketScreen = () => {
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const dateNow = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
-  const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
+  const activeTicketEnd = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
+  const parkingEnd = new Date(activeTicketEnd + duration * 1000).toISOString()
 
   const initPaymentMutation = useMutation({
     mutationFn: (bodyInner: InitiateProlongationRequestDto) =>
       clientApi.ticketsControllerInitiateTicketProlongationPayment(bodyInner),
   })
+
+  const priceRequestBody: InitiateProlongationRequestDto = {
+    ticketId: ticket?.id || 0,
+    newParkingEnd: parkingEnd,
+  }
 
   const handlePressPay = () => {
     initPaymentMutation.mutate(priceRequestBody, {
@@ -49,11 +54,6 @@ const ProlongTicketScreen = () => {
         paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
       },
     })
-  }
-
-  const priceRequestBody: InitiateProlongationRequestDto = {
-    ticketId: ticket?.id || 0,
-    newParkingEnd: parkingEnd,
   }
 
   const priceQuery = useQueryWithFocusRefetch(ticketProlongationPriceOptions(priceRequestBody))
