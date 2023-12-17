@@ -27,6 +27,7 @@ const getRules = (fontSize: FontSize, textCenter?: boolean): RenderRules => ({
       </Typography>
     </Link>
   ),
+  // Solution by: https://github.com/iamacup/react-native-markdown-display/issues/49#issuecomment-1336334137
   html_inline: (node, children, parent) => {
     // we check that the parent array contans a td because <br> in paragraph setting will create a html_inlinde surrounded by a soft break, try removing the clause to see what happens (double spacing on the <br> between 'top one' and 'bottom one')
     if (node.content.trim() === '<br>' && hasParents(parent, 'td')) {
