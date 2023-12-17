@@ -89,6 +89,14 @@ const RootLayout = () => {
                     headerShown: false,
                   }}
                 />
+                <Stack.Screen
+                  name="menu"
+                  options={{
+                    headerShown: false,
+                    presentation: 'transparentModal',
+                    animation: 'slide_from_right',
+                  }}
+                />
               </Stack>
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>

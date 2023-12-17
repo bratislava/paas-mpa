@@ -1,5 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
+import { router } from 'expo-router'
 import { useRef } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -28,8 +29,9 @@ const IndexScreen = () => {
       ).length
     : announcementsData?.announcements.length
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handlePressOpen = () => {
-    bottomSheetRef.current?.expand()
+    router.push('/menu')
   }
 
   return (
