@@ -15,7 +15,7 @@ import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCen
 import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
 
 const SearchScreen = () => {
-  const { flyToCenter } = useMapSearchContext()
+  const { setFlyToCenter } = useMapSearchContext()
 
   const t = useTranslation()
   const insets = useSafeAreaInsets()
@@ -38,17 +38,17 @@ const SearchScreen = () => {
     (newValue: GeocodingFeature | UdrZoneFeature) => {
       handleInputBlur()
       if (isGeocodingFeature(newValue)) {
-        flyToCenter?.(newValue.center)
+        setFlyToCenter?.(newValue.center)
       } else {
-        flyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+        setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
       }
       handleCancel()
     },
-    [handleInputBlur, flyToCenter, handleCancel],
+    [handleInputBlur, setFlyToCenter, handleCancel],
   )
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView>
       <ScreenContent className="flex-1" style={{ paddingTop: insets.top }}>
         <View className="flex-1">
           <View>

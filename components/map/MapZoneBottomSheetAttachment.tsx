@@ -65,19 +65,17 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     activeTicketsOptions().queryKey,
   )
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (isButtonDisabledTimeout) {
-      return () => {
+    return () => {
+      if (isButtonDisabledTimeout) {
         clearTimeout(isButtonDisabledTimeout)
       }
     }
   }, [isButtonDisabledTimeout])
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (requestTimeout) {
-      return () => {
+    return () => {
+      if (requestTimeout) {
         clearTimeout(requestTimeout)
       }
     }
