@@ -1,20 +1,17 @@
 import clsx from 'clsx'
 import { Link } from 'expo-router'
 import { useMemo } from 'react'
-import MarkdownNative, { RenderRules } from 'react-native-markdown-display'
+import { Text, View } from 'react-native'
+import MarkdownNative, { hasParents, MarkdownIt, RenderRules } from 'react-native-markdown-display'
 
 import Typography from '@/components/shared/Typography'
 
 type FontSize = 'default' | 'small'
 
 const getRules = (fontSize: FontSize, textCenter?: boolean): RenderRules => ({
-  body: (node, children) => (
-    <Typography key={node.key} variant={fontSize} className={clsx(textCenter && 'text-center')}>
-      {children}
-    </Typography>
-  ),
+  body: (node, children) => <View key={node.key}>{children}</View>,
   paragraph: (node, children) => (
-    <Typography key={node.key} variant={fontSize}>
+    <Typography key={node.key} variant={fontSize} className={clsx(textCenter && 'text-center')}>
       {children}
     </Typography>
   ),
@@ -30,7 +27,29 @@ const getRules = (fontSize: FontSize, textCenter?: boolean): RenderRules => ({
       </Typography>
     </Link>
   ),
+  html_inline: (node, children, parent) => {
+    // we check that the parent array contans a td because <br> in paragraph setting will create a html_inlinde surrounded by a soft break, try removing the clause to see what happens (double spacing on the <br> between 'top one' and 'bottom one')
+    if (node.content.trim() === '<br>' && hasParents(parent, 'td')) {
+      return <Text key={node.key}>{'\n'}</Text>
+    }
+
+    return null
+  },
 })
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+const markdownInstance = new MarkdownIt({ typographer: true, breaks: true, html: true })
+
+const pushBr = (str: string) => {
+  return str
+    .split('\n')
+    .map((e) => {
+      if (e === '') return '<br>'
+
+      return e
+    })
+    .join('\n')
+}
 
 type Props = {
   children: string
@@ -41,7 +60,11 @@ type Props = {
 const Markdown = ({ children, fontSize = 'default', textCenter }: Props) => {
   const rules = useMemo(() => getRules(fontSize, textCenter), [fontSize, textCenter])
 
-  return <MarkdownNative rules={rules}>{children}</MarkdownNative>
+  return (
+    <MarkdownNative rules={rules} markdownit={markdownInstance} debugPrintTree>
+      {pushBr(children)}
+    </MarkdownNative>
+  )
 }
 
 export default Markdown
