@@ -68,24 +68,25 @@ const MainMenuScreen = () => {
       icon: 'info',
       path: '/about',
     },
-    DIVIDER,
-    {
-      label: 'DEV Menu',
-      icon: 'developer-mode',
-      path: '/dev',
-    },
-    {
-      label: 'DEV Purchase',
-      icon: 'payment',
-      path: '/purchase',
-    },
-    {
-      label: 'DEV User',
-      icon: 'person',
-      path: '/examples/user',
-    },
+    // DIVIDER,
+    // {
+    //   label: 'DEV Menu',
+    //   icon: 'developer-mode',
+    //   path: '/dev',
+    // },
+    // {
+    //   label: 'DEV Purchase',
+    //   icon: 'payment',
+    //   path: '/purchase',
+    // },
+    // {
+    //   label: 'DEV User',
+    //   icon: 'person',
+    //   path: '/examples/user',
+    // },
   ]
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handlePressClose = () => {
     if (router.canGoBack()) {
       router.back()
