@@ -42,7 +42,7 @@ const Page = () => {
   ] as const
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} hasBackButton>
       <ScreenContent>
         <View>
           <PressableStyled onPress={setSystemLanguage} className="py-4">

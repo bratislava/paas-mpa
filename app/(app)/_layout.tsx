@@ -17,7 +17,7 @@ import colors from '@/tailwind.config.colors'
 const RootLayout = () => {
   const [mapboxLoaded, setMapboxLoaded] = useState(false)
   const [mapboxError, setMapboxError] = useState<Error | null>(null)
-  const { user } = useAuthStoreContext()
+  const { user, isLoading } = useAuthStoreContext()
 
   useEffect(() => {
     Mapbox.setAccessToken(environment.mapboxPublicKey)
@@ -36,6 +36,8 @@ const RootLayout = () => {
   if (mapboxError) {
     throw mapboxError
   }
+
+  if (isLoading) return null
 
   if (!user) {
     // On web, static rendering will stop here as the user is not authenticated

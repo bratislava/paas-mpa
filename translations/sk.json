@@ -9,7 +9,8 @@
   "Common": {
     "loading": "Načítavam",
     "cancel": "Zrušiť",
-    "hide": "Skryť"
+    "hide": "Skryť",
+    "goBack": "Späť"
   },
   "Typography": {
     "test": "SK preklad"
@@ -35,6 +36,7 @@
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
   },
   "PurchaseScreen": {
+    "prolongate": "Predĺžiť lístok",
     "title": "Nákup lístka",
     "titlePayment": "Platba",
     "titleInvalidPaymentLink": "Neplatný link",
@@ -42,6 +44,7 @@
     "parkingTimeFieldLabel": "Doba parkovania",
     "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
+    "vehicle": "Vozidlo",
     "customParkingTimeTitle": "Vlastný čas",
     "chooseVehicleFieldLabel": "Vyberte vozidlo",
     "customParkingTimeFieldLabel": "Vyberte čas",
@@ -62,12 +65,12 @@
       "InsufficientCredit": "Na Návštevníckej parkovacej karte nie je dostatok kreditu.",
       "CardNotValid": "Návštevnícka parkovacia karta nie je platná.",
       "NoUsableParkingCardFound": "Parkovacia karta sa nenašla alebo nie je platná.",
-      "PermitCardActive": "Lístok vo vlastnej zóne nie je možné zakúpiť. Pre toto evidenčné číslo vozidla {{EČV}} a túto zónu už existuje Rezidentská alebo Abonentská parkovacia karta.",
+      "PermitCardActive": "Lístok vo vlastnej zóne nie je možné zakúpiť. Pre toto evidenčné číslo vozidla {{ecv}} a túto zónu už existuje Rezidentská alebo Abonentská parkovacia karta.",
       "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
       "InvalidParkingStart": "Neplatná doba parkovania, začiatok nového lístka môže nastať až po ukončení pôvodného lístka.",
       "InvalidParkingEnd": "Parkovacii lístok nie je možné v tomto čase predčasne ukončiť.",
       "parkingSpaceNotFound": "Úsek parkovania neexistuje. Skúste iný parkovacii úsek.",
-      "TicketAlreadyExists": "Parkovacii lístok pre úsek {{UDR}} a evidenčné číslo vozidla {{EČV}} už existuje.",
+      "TicketAlreadyExists": "Parkovacii lístok pre úsek {{udr}} a evidenčné číslo vozidla {{ecv}} už existuje.",
       "BadDateFormat": "Formát dátumu je nesprávny.",
       "TicketAlreadyShortened": "Parkovacii lístok bol už raz predčasne ukončený",
       "BadRequest": "Nesprávna požiadavka."
@@ -190,7 +193,7 @@
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
-    "terminate": "Predčasne ukončiť",
+    "shorten": "Predčasne ukončiť",
     "more": "Viac",
     "terminationModal": {
       "title": "Predčasne ukončiť",

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
 import { clientApi } from '@/modules/backend/client-api'
@@ -27,9 +27,7 @@ export const VehiclesStoreContext = createContext<VehiclesStoreContextProps | nu
 VehiclesStoreContext.displayName = 'VehiclesStoreContext'
 
 const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
-  const { data, isPending } = useQuery(vehiclesOptions())
-
-  const queryClient = useQueryClient()
+  const { data, isPending, refetch } = useQuery(vehiclesOptions())
 
   const vehicles = useMemo(() => data?.data.vehicles ?? [], [data?.data.vehicles])
 
@@ -40,15 +38,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       clientApi.vehiclesControllerInsertVehicle(bodyInner),
     onSuccess: async (response) => {
       if (response.data) {
-        await queryClient.cancelQueries({ queryKey: vehiclesOptions().queryKey })
-        const cacheData = queryClient.getQueryData(vehiclesOptions().queryKey)
-
-        if (cacheData) {
-          queryClient.setQueryData(vehiclesOptions().queryKey, {
-            ...cacheData,
-            data: { ...cacheData.data, vehicles: [response.data, ...cacheData.data.vehicles] },
-          })
-        }
+        await refetch()
       }
     },
   })
@@ -57,18 +47,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     mutationFn: (id: number) => clientApi.vehiclesControllerDeleteVehicle(id),
     onSuccess: async (response) => {
       if (response.data.deleted) {
-        await queryClient.cancelQueries({ queryKey: vehiclesOptions().queryKey })
-        const cacheData = queryClient.getQueryData(vehiclesOptions().queryKey)
-
-        if (cacheData) {
-          queryClient.setQueryData(vehiclesOptions().queryKey, {
-            ...cacheData,
-            data: {
-              ...cacheData.data,
-              vehicles: cacheData.data.vehicles.filter(({ id }) => id !== response.data?.id),
-            },
-          })
-        }
+        await refetch()
       }
     },
   })
@@ -78,22 +57,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       clientApi.vehiclesControllerUpdateVehicle(id, updateVehicleDto),
     onSuccess: async (response) => {
       if (response.data) {
-        await queryClient.cancelQueries({ queryKey: vehiclesOptions().queryKey })
-        const cacheData = queryClient.getQueryData(vehiclesOptions().queryKey)
-
-        if (cacheData) {
-          queryClient.setQueryData(vehiclesOptions().queryKey, {
-            ...cacheData,
-            data: {
-              ...cacheData.data,
-              vehicles: cacheData.data.vehicles?.map((vehicle: VehicleDto) => ({
-                ...vehicle,
-                isDefault:
-                  vehicle.id === response.data?.id ? response.data?.isDefault : vehicle.isDefault,
-              })),
-            },
-          })
-        }
+        await refetch()
       }
     },
   })
@@ -113,17 +77,6 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     async (vehicleId: number) => {
       const vehicle = vehicles.find(({ id }) => vehicleId === id)
       if (vehicle) {
-        if (defaultVehicle && defaultVehicle?.id !== vehicleId) {
-          await updateMutation.mutateAsync({
-            id: defaultVehicle.id,
-            updateVehicleDto: {
-              vehiclePlateNumber: defaultVehicle.vehiclePlateNumber,
-              name: defaultVehicle.name,
-              isDefault: false,
-            },
-          })
-        }
-
         await updateMutation.mutateAsync({
           id: vehicleId,
           updateVehicleDto: {
@@ -134,7 +87,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
         })
       }
     },
-    [defaultVehicle, updateMutation, vehicles],
+    [updateMutation, vehicles],
   )
 
   const deleteVehicle = useCallback(

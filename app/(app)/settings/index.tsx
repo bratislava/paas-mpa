@@ -59,10 +59,9 @@ const SettingsPage = () => {
   }
 
   return (
-    <ScreenView>
+    <ScreenView title={t('title')} hasBackButton>
       <Stack.Screen
         options={{
-          title: t('title'),
           headerRight: () => (
             <IconButton
               name="more-horiz"

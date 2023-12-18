@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { MapRef } from '@/components/map/Map'
@@ -13,9 +13,10 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { ticketsOptions } from '@/modules/backend/constants/queryOptions'
+import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 /** Time after pressing the button when it cannot be pressed again */
@@ -56,11 +57,12 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     }
   }, [setFlyToCenter, permissionStatus])
 
-  const now = useMemo(() => new Date().toISOString(), [])
-  const { data: ticketsData } = useQueryWithFocusRefetch(
-    ticketsOptions({
-      parkingEndFrom: now,
-    }),
+  const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
+
+  useQueryInvalidateOnTicketExpire(
+    ticketsData?.tickets ?? null,
+    refetch,
+    activeTicketsOptions().queryKey,
   )
 
   // eslint-disable-next-line consistent-return

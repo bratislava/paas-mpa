@@ -82,10 +82,7 @@ const RootLayout = () => {
                     },
                     headerTintColor: colors.dark.DEFAULT,
                   }}
-                >
-                  <Stack.Screen options={{ headerShown: true }} name="(auth)/sign-in" />
-                  <Stack.Screen options={{ headerShown: true }} name="(auth)/confirm-sign-in" />
-                </Stack>
+                />
               </PortalProvider>
             </GestureHandlerRootView>
           </SafeAreaProvider>

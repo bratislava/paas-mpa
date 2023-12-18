@@ -10,6 +10,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
+import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
@@ -29,6 +30,7 @@ const Page = () => {
 
   const [locationPermissionStatus] = useLocationPermission()
   const [notificationsPermissionStatus] = useNotificationPermission()
+  const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState('')
@@ -66,13 +68,17 @@ const Page = () => {
           setErrorCode(error.name)
         }
       }
+
+      if (!isOnboardingFinished) {
+        setIsOnboardingFinished(true)
+      }
       setLoading(false)
     }
   }
 
   return (
     <DismissKeyboard>
-      <ScreenView>
+      <ScreenView title=" " hasBackButton>
         <ScreenContent>
           <View className="g-2">
             <Typography variant="h1">{t('enterVerificationCode')}</Typography>

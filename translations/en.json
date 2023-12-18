@@ -9,7 +9,8 @@
   "Common": {
     "loading": "Loading",
     "cancel": "Cancel",
-    "hide": "Hide"
+    "hide": "Hide",
+    "goBack": "Go back"
   },
   "Typography": {
     "test": "EN translation"
@@ -35,6 +36,7 @@
     "verifyYourEmailInfo": "We’ve sent verification e-mail to \n{{email}} \n\nClick on Verify button in the e-mail to approve verification and we will then add parking card directly to the app."
   },
   "PurchaseScreen": {
+    "prolongate": "Prolongate ticket",
     "title": "Ticket purchase",
     "titlePayment": "Payment",
     "titleInvalidPaymentLink": "Invalid link",
@@ -42,6 +44,7 @@
     "parkingTimeFieldLabel": "Parking duration",
     "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
     "addVehicle": "Add vehicle",
+    "vehicle": "Vehicle",
     "customParkingTimeTitle": "Custom time",
     "chooseVehicleFieldLabel": "Choose vehicle",
     "customParkingTimeFieldLabel": "Choose time",
@@ -56,8 +59,7 @@
     "paymentSuccessful": "Payment successful",
     "paymentSuccessfulText": "Your payment ticket has been paid.",
     "Errors": {
-      "TooLongParkingTime": "Maximum parking time is 48 hours",
-      "TooShortParkingTime": "TooShortParkingTime TODO",
+      "TooLongParkingTime": "Maximum parking time exceeded.",
       "FreeTicket": "Not possible to buy parking ticket. Parking is not paid at specified time.",
       "InsufficientCredit": "There is no sufficient credit on NPK card for this parking",
       "CardNotValid": "NPK card is not valid",
@@ -65,10 +67,10 @@
       "PermitCardActive": "There is resident or abonent card on this Parking Space and ECV",
       "InvalidParkingTime": "Invalid parking time, parking must end in the future.",
       "InvalidParkingStart": "Ticket start is after ticket End",
+      "TicketAlreadyExists": "This ticket for ecv {{ecv}} in parking space {{udr}} now already exists.",
+      "BadDateFormat": "Variable has a bad format. You need ISO 8601 format.",
+      "TooShortParkingTime": "TooShortParkingTime TODO",
       "InvalidParkingEnd": "InvalidParkingEnd TODO",
-      "parkingSpaceNotFound": "Parking segment does not exist. Please try different parking segment ID.",
-      "TicketAlreadyExists": "This ticket for ecv {{ecv}} in parking space {{data.udr}} now already exists. It will end at {{data.parkingEnd}}",
-      "BadDateFormat": "Variable {{dateType}} has a bad format. You need ISO 8601 format",
       "TicketAlreadyShortened": "TicketAlreadyShortened TODO",
       "BadRequest": "Bad request"
     }
@@ -191,7 +193,7 @@
   },
   "TicketCard": {
     "prolong": "Prolong",
-    "terminate": "Terminate",
+    "shorten": "Terminate",
     "more": "More",
     "terminationModal": {
       "title": "Terminate parking ticket",

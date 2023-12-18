@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
@@ -11,6 +12,7 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatDateTime } from '@/utils/formatDateTime'
@@ -22,20 +24,40 @@ import { formatDateTime } from '@/utils/formatDateTime'
 type Props = {
   ticket: TicketDto
   isActive?: boolean
+  refetch: () => void
 }
 
-const TicketCard = ({ ticket, isActive }: Props) => {
+const TicketCard = ({ ticket, isActive, refetch }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
   const t = useTranslation('TicketCard')
   const locale = useLocale()
-  const [isTerminateModalVisible, setIsTerminateModalVisible] = useState(false)
+  const [isShortenModalVisible, setIsShortenModalVisible] = useState(false)
 
-  const handleTerminateModalClose = () => setIsTerminateModalVisible(false)
-  const handleTerminateModalOpen = () => setIsTerminateModalVisible(true)
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const handleTerminateTicket = () => false
+  const shortenTicketMutation = useMutation({
+    mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
+  })
+
+  const queryClient = useQueryClient()
+
+  const handleShortenModalClose = () => setIsShortenModalVisible(false)
+  const handleShortenModalOpen = () => setIsShortenModalVisible(true)
+
+  const handleShortenTicket = async () => {
+    shortenTicketMutation.mutate(ticket.id, {
+      onSuccess: () => {
+        refetch()
+        queryClient.removeQueries({ queryKey: ['Tickets'] })
+
+        handleShortenModalClose()
+      },
+    })
+  }
+
+  // ticket can be shortened if there is no cancelledAt or duration is at least 15 minutes (parkingEnd - parkingStart)
+  const canShorten =
+    !ticket.canceledAt || parkingEndDate.getTime() - parkingStartDate.getTime() > 15 * 60 * 1000
 
   return (
     <>
@@ -59,28 +81,29 @@ const TicketCard = ({ ticket, isActive }: Props) => {
             <Typography variant="small">{ticket.ecv}</Typography>
           </View>
 
-          {isActive ? (
+          {isActive && canShorten ? (
             <View className="g-2">
-              <Link asChild href="/purchase">
+              <Link asChild href={`/prolongate/${ticket.id}`}>
                 <Button>{t('prolong')}</Button>
               </Link>
-              <Button variant="secondary" onPress={handleTerminateModalOpen}>
-                {t('terminate')}
+              <Button variant="secondary" onPress={handleShortenModalOpen}>
+                {t('shorten')}
               </Button>
             </View>
           ) : null}
         </View>
       </Panel>
 
-      <Modal visible={isTerminateModalVisible} onRequestClose={handleTerminateModalClose}>
+      <Modal visible={isShortenModalVisible} onRequestClose={handleShortenModalClose}>
         <ModalContentWithActions
           variant="error"
           title={t('terminationModal.title')}
+          isLoading={shortenTicketMutation.isPending}
           text={t('terminationModal.message')}
           primaryActionLabel={t('terminationModal.actionConfirm')}
-          primaryActionOnPress={handleTerminateTicket}
+          primaryActionOnPress={handleShortenTicket}
           secondaryActionLabel={t('terminationModal.actionCancel')}
-          secondaryActionOnPress={handleTerminateModalClose}
+          secondaryActionOnPress={handleShortenModalClose}
         />
       </Modal>
     </>

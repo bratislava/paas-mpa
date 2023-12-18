@@ -15,6 +15,7 @@ import FloatingButton from '@/components/shared/FloatingButton'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
+import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
@@ -34,14 +35,17 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const filters = useTicketsFiltersStoreContext()
 
-  const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} isActive={active} />,
-    [active],
-  )
-
   const now = useMemo(() => new Date(), [])
 
   const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
+
+  const ticketsQueryOptions = ticketsInfiniteQuery({
+    parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
+    parkingEndTo: active ? undefined : fromTo.parkingEndTo,
+    pageSize: 20,
+    ecv: filters.ecv ?? undefined,
+    isActive: active,
+  })
 
   const {
     data: ticketsDataInf,
@@ -51,20 +55,24 @@ const TicketsRoute = ({ active }: RouteProps) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery(
-    ticketsInfiniteQuery({
-      parkingEndFrom: active ? now : fromTo.parkingEndFrom,
-      parkingEndTo: active ? undefined : fromTo.parkingEndTo,
-      pageSize: 20,
-      ecv: filters.ecv ?? undefined,
-    }),
-  )
+    isRefetching,
+    refetch,
+  } = useInfiniteQuery(ticketsQueryOptions)
+
+  const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
+
+  useQueryInvalidateOnTicketExpire(active ? tickets ?? null : null, refetch, ['Tickets'])
 
   const loadMore = () => {
     if (hasNextPage) {
       fetchNextPage()
     }
   }
+
+  const renderItem: ListRenderItem<TicketDto> = useCallback(
+    ({ item }) => <TicketCard ticket={item} isActive={active} refetch={refetch} />,
+    [active, refetch],
+  )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleFiltersPress = () => {
@@ -82,8 +90,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
   if (isError) {
     return <Typography>Error: {error.message}</Typography>
   }
-
-  const tickets = ticketsDataInf.pages.flatMap((page) => page.data.tickets)
 
   if (active && !tickets?.length) {
     return (
@@ -122,6 +128,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
           ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
           onEndReachedThreshold={0.2}
           onEndReached={loadMore}
+          onRefresh={refetch}
+          refreshing={isRefetching}
         />
       </View>
 
@@ -162,7 +170,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')} backgroundVariant="dots">
+    <ScreenView title={t('title')} backgroundVariant="dots" hasBackButton>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

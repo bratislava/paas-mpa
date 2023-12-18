@@ -7,6 +7,7 @@ import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 type GlobalContextProps = {
   signUpPhone: string | null
   user: AuthUser | null
+  isLoading: boolean
 }
 
 export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
@@ -20,6 +21,7 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   const [values, setValues] = useState<GlobalContextProps>({
     signUpPhone: null,
     user: null,
+    isLoading: true,
   })
 
   const onAuthStoreUpdate = useCallback(
@@ -31,7 +33,7 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
 
   const onFetchUser = async () => {
     const currentUser = await getCurrentAuthenticatedUser()
-    onAuthStoreUpdate({ user: currentUser })
+    onAuthStoreUpdate({ user: currentUser, isLoading: false })
     SplashScreen.hideAsync()
   }
 

@@ -69,6 +69,7 @@ const FiltersScreen = () => {
   return (
     <ScreenView
       title={t('title')}
+      hasBackButton
       actionButton={
         <Link asChild href={{ pathname: '/', params: filters }}>
           <ContinueButton translationKey="showResults" />
