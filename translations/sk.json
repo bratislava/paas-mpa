@@ -55,9 +55,13 @@
     "noPaymentInitiated": "Platba nebola vytvorená. Vyskúšajte to prosím znova.",
     "invalidPaymentLink": "Neplatný odkaz na platobnú bránu. Vyskúšajte to prosím znova",
     "paymentFailed": "Platba zlyhala",
+    "prolongationFailed": "Predĺženie zlýhalo",
     "paymentFailedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova.",
+    "prolongationFailedText": "Mrzí nás to, vaše predĺženie zlyhalo. \nProsím, skúste to znova.",
     "paymentSuccessful": "Úspešná platba",
+    "prolongationSuccessful": "Predĺženie úspešné",
     "paymentSuccessfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
+    "prolongationSuccessfulText": "Váš parkovacií lístok bol predĺžený",
     "Errors": {
       "TooLongParkingTime": "Doba parkovania prekročila maximálny možný čas. Maximálna dĺžka parkovacieho lístka je 48 hodín.",
       "TooShortParkingTime": "Minimálna doba parkovania je 15 minút.",
