@@ -25,7 +25,8 @@
     "resendCode": "Odoslať kód znova",
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
-      "CodeMismatchException": "Neplatný kód"
+      "CodeMismatchException": "Neplatný kód",
+      "InvalidParameterException": "Telefónne číslo je neplatné. Uistite sa prosím, že ste zadali správny formát."
     }
   },
   "AddParkingCards": {

@@ -1,6 +1,5 @@
-import { router } from 'expo-router'
 import { useState } from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -13,22 +12,48 @@ import Typography from '@/components/shared/Typography'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
+import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 const Page = () => {
   const t = useTranslation('Auth')
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
+  const [loading, setLoading] = useState(false)
+  const [errorCode, setErrorCode] = useState('')
   const [phone, setPhone] = useState('')
 
-  /* Redirect to home screen if user is logged in */
-  const { user } = useAuthStoreContext()
-  if (user) {
-    router.replace('/')
+  const handleInputFocus = () => {
+    if (errorCode) {
+      setErrorCode('')
+    }
   }
 
   const phoneWithoutSpaces = phone.replaceAll(/\s/g, '')
+
+  const handleSignIn = async () => {
+    try {
+      setLoading(true)
+      if (!phoneWithoutSpaces) {
+        throw new Error('No phone number')
+      }
+
+      await attemptSignInOrSignUp(phoneWithoutSpaces)
+    } catch (error) {
+      if (isErrorWithName(error)) {
+        setErrorCode(error.name)
+      }
+    }
+
+    setLoading(false)
+  }
+
+  const handleChangeText = (value: string) => {
+    if (errorCode) {
+      setErrorCode('')
+    }
+    setPhone(value)
+  }
 
   return (
     <DismissKeyboard>
@@ -44,22 +69,34 @@ const Page = () => {
           <ScreenContent>
             <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
-            {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
-            {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-            <TextInput
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-              autoComplete="tel"
-              autoFocus
-              returnKeyType="done"
-              placeholder="+421"
-              onSubmitEditing={() => attemptSignInOrSignUp(phoneWithoutSpaces)}
-            />
+            <View className="g-1">
+              {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+              {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
+              <TextInput
+                value={phone}
+                onChangeText={handleChangeText}
+                keyboardType="phone-pad"
+                autoComplete="tel"
+                hasError={!!errorCode}
+                onFocus={handleInputFocus}
+                autoFocus
+                returnKeyType="done"
+                placeholder="+421"
+                onSubmitEditing={handleSignIn}
+              />
+
+              {errorCode ? (
+                <Typography className="text-negative">{t(`errors.${errorCode}`)}</Typography>
+              ) : null}
+            </View>
 
             <Markdown>{t('consent')}</Markdown>
 
-            <ContinueButton onPress={() => attemptSignInOrSignUp(phoneWithoutSpaces)} />
+            <ContinueButton
+              loading={loading}
+              disabled={!phoneWithoutSpaces}
+              onPress={handleSignIn}
+            />
           </ScreenContent>
         </SafeAreaView>
       </ScreenView>
