@@ -25,7 +25,8 @@
     "resendCode": "Resend code",
     "errors": {
       "NotAuthorizedException": "Code expired",
-      "CodeMismatchException": "Invalid code"
+      "CodeMismatchException": "Invalid code",
+      "InvalidParameterException": "Phone number is invalid. Make sure you entered correct format."
     }
   },
   "AddParkingCards": {
