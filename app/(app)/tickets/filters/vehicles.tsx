@@ -22,41 +22,50 @@ const TicketsFiltersVehiclesScreen = () => {
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecv } = useTicketsFiltersStoreContext()
-  const [localEcv, setLocalEcv] = useState(ecv)
+  const [localEcvs, setLocalEcvs] = useState<string[] | null>(ecv ?? null)
 
   const handleSelectAll = useCallback(() => {
-    setLocalEcv(null)
+    setLocalEcvs(null)
   }, [])
 
   const handleValueChange = useCallback(
     (selectedEcv: string) => () => {
-      setLocalEcv(selectedEcv)
+      if (localEcvs === null) {
+        setLocalEcvs([])
+      } else {
+        setLocalEcvs((prev) =>
+          prev?.includes(selectedEcv)
+            ? prev.filter((prevEcv) => prevEcv !== selectedEcv)
+            : [...(prev || []), selectedEcv],
+        )
+      }
     },
-    [],
+    [localEcvs],
   )
 
   const renderItem: ListRenderItem<VehicleDto> = useCallback(
     ({ item: { vehiclePlateNumber } }) => (
       <SelectRow
         label={vehiclePlateNumber}
-        value={localEcv ? localEcv === vehiclePlateNumber : true}
+        value={!!localEcvs?.includes(vehiclePlateNumber)}
         onValueChange={handleValueChange(vehiclePlateNumber)}
       />
     ),
-    [handleValueChange, localEcv],
+    [handleValueChange, localEcvs],
   )
 
   const actionButton = useMemo(
     () => (
       <ContinueButton
         translationKey="apply"
+        disabled={!localEcvs}
         onPress={() => {
-          onPurchaseStoreUpdate({ ecv: localEcv })
+          onPurchaseStoreUpdate({ ecv: localEcvs?.length ? localEcvs : null })
           router.back()
         }}
       />
     ),
-    [localEcv, onPurchaseStoreUpdate],
+    [localEcvs, onPurchaseStoreUpdate],
   )
 
   return (

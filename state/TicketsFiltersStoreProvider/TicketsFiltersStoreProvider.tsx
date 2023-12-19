@@ -10,7 +10,7 @@ export enum FilteringTimeframesEnum {
 
 interface TicketsFiltersStoreContextProps {
   timeframe: FilteringTimeframesEnum | null
-  ecv: string | null
+  ecv: string[] | null
 }
 
 export const TicketsFiltersStoreContext = createContext<TicketsFiltersStoreContextProps | null>(
