@@ -13,6 +13,7 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useAppFocusEffect } from '@/hooks/useAppFocusEffect'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -29,7 +30,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
   const t = useTranslation('ZoneBottomSheet.TopAttachment')
-  const [permissionStatus] = useLocationPermission()
+  const [permissionStatus, getPermissionStatus] = useLocationPermission()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
     null,
@@ -39,21 +40,25 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   const onLocationPress = useCallback(async () => {
     if (permissionStatus !== Location.PermissionStatus.DENIED) {
       setIsButtonDisabled(true)
-      const location = await Promise.race<Location.LocationObject | null>([
-        Location.getCurrentPositionAsync(),
-        new Promise((resolve) => {
-          setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
-        }),
-      ])
-      if (location) {
-        setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
+      try {
+        const location = await Promise.race<Location.LocationObject | null>([
+          Location.getCurrentPositionAsync(),
+          new Promise((resolve) => {
+            setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
+          }),
+        ])
+        if (location) {
+          setFlyToCenter?.([location.coords.longitude, location.coords.latitude])
+        }
+        setIsButtonDisabledTimeout(
+          setTimeout(() => {
+            setIsButtonDisabled(false)
+            setIsButtonDisabledTimeout(null)
+          }, LOCATION_REQUEST_THROTTLE),
+        )
+      } catch (error) {
+        setIsButtonDisabled(false)
       }
-      setIsButtonDisabledTimeout(
-        setTimeout(() => {
-          setIsButtonDisabled(false)
-          setIsButtonDisabledTimeout(null)
-        }, LOCATION_REQUEST_THROTTLE),
-      )
     }
   }, [setFlyToCenter, permissionStatus])
 
@@ -65,25 +70,29 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     activeTicketsOptions().queryKey,
   )
 
-  // eslint-disable-next-line consistent-return
+  useAppFocusEffect(getPermissionStatus)
+
   useEffect(() => {
-    if (isButtonDisabledTimeout) {
-      return () => {
+    return () => {
+      if (isButtonDisabledTimeout) {
         clearTimeout(isButtonDisabledTimeout)
       }
     }
   }, [isButtonDisabledTimeout])
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (requestTimeout) {
-      return () => {
+    return () => {
+      if (requestTimeout) {
         clearTimeout(requestTimeout)
       }
     }
   }, [requestTimeout])
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
+
+  if (permissionStatus === Location.PermissionStatus.DENIED) {
+    return null
+  }
 
   return (
     <BottomSheetTopAttachment {...restProps}>

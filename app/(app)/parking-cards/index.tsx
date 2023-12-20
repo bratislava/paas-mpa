@@ -45,6 +45,7 @@ const Page = () => {
   if (verifiedEmails.length === 0) {
     return (
       <EmptyStateScreen
+        title={t('paasEmailsTitle')}
         contentTitle={t('noEmailsTitle')}
         text={t('noEmailsText')}
         actionButton={
