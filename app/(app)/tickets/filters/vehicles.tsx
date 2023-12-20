@@ -21,8 +21,8 @@ const TicketsFiltersVehiclesScreen = () => {
   const { vehicles } = useVehiclesStoreContext()
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
-  const { ecv } = useTicketsFiltersStoreContext()
-  const [localEcvs, setLocalEcvs] = useState<string[] | null>(ecv ?? null)
+  const { ecvs } = useTicketsFiltersStoreContext()
+  const [localEcvs, setLocalEcvs] = useState<string[] | null>(ecvs ?? null)
 
   const handleSelectAll = useCallback(() => {
     setLocalEcvs(null)
@@ -31,7 +31,11 @@ const TicketsFiltersVehiclesScreen = () => {
   const handleValueChange = useCallback(
     (selectedEcv: string) => () => {
       if (localEcvs === null) {
-        setLocalEcvs([])
+        setLocalEcvs(
+          vehicles
+            .map(({ vehiclePlateNumber }) => vehiclePlateNumber)
+            .filter((ecv) => ecv !== selectedEcv),
+        )
       } else {
         setLocalEcvs((prev) =>
           prev?.includes(selectedEcv)
@@ -40,14 +44,14 @@ const TicketsFiltersVehiclesScreen = () => {
         )
       }
     },
-    [localEcvs],
+    [localEcvs, vehicles],
   )
 
   const renderItem: ListRenderItem<VehicleDto> = useCallback(
     ({ item: { vehiclePlateNumber } }) => (
       <SelectRow
         label={vehiclePlateNumber}
-        value={!!localEcvs?.includes(vehiclePlateNumber)}
+        value={!!localEcvs?.includes(vehiclePlateNumber) || !localEcvs}
         onValueChange={handleValueChange(vehiclePlateNumber)}
       />
     ),
@@ -58,9 +62,9 @@ const TicketsFiltersVehiclesScreen = () => {
     () => (
       <ContinueButton
         translationKey="apply"
-        disabled={!localEcvs}
+        disabled={localEcvs?.length === 0}
         onPress={() => {
-          onPurchaseStoreUpdate({ ecv: localEcvs?.length ? localEcvs : null })
+          onPurchaseStoreUpdate({ ecvs: localEcvs?.length ? localEcvs : null })
           router.back()
         }}
       />

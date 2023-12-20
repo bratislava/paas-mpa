@@ -20,6 +20,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
+import { isErrorWithCode } from '@/utils/errors'
 import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
 type RouteProps =
@@ -43,7 +44,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
     parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
     parkingEndTo: active ? undefined : fromTo.parkingEndTo,
     pageSize: 20,
-    ecv: filters.ecv ?? undefined,
+    ecv: filters.ecvs ?? undefined,
     isActive: active,
   })
 
@@ -60,6 +61,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
   } = useInfiniteQuery(ticketsQueryOptions)
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
+  console.log(error, isErrorWithCode(error) ? error.code : null)
 
   useQueryInvalidateOnTicketExpire(active ? tickets ?? null : null, refetch, ['Tickets'])
 

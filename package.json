@@ -13,7 +13,7 @@
     "lint:fix": "yarn eslint --fix",
     "doctor": "expo install --check",
     "doctor:fix": "expo install --fix",
-    "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.dev.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
+    "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.staging.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
     "generate-clients": "yarn generate-client-paas-mpa"
   },
   "dependencies": {
