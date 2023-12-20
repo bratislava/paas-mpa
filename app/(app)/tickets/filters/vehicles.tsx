@@ -64,7 +64,7 @@ const TicketsFiltersVehiclesScreen = () => {
         translationKey="apply"
         disabled={localEcvs?.length === 0}
         onPress={() => {
-          onPurchaseStoreUpdate({ ecvs: localEcvs?.length ? localEcvs : null })
+          onPurchaseStoreUpdate({ ecvs: localEcvs })
           router.back()
         }}
       />

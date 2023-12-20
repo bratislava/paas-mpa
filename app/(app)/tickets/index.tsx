@@ -61,7 +61,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
   } = useInfiniteQuery(ticketsQueryOptions)
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
-  console.log(error, isErrorWithCode(error) ? error.code : null)
 
   useQueryInvalidateOnTicketExpire(active ? tickets ?? null : null, refetch, ['Tickets'])
 
