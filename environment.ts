@@ -24,4 +24,5 @@ export const environment = {
     process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
   ),
   awsRegion: assertEnv('EXPO_PUBLIC_AWS_REGION', process.env.EXPO_PUBLIC_AWS_REGION),
+  apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
 }
