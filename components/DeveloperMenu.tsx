@@ -80,6 +80,11 @@ const menuItems: MenuItem[] = [
     subtitle: 'Centered screen with sad smiley',
     route: '/examples/empty-state-example',
   },
+  {
+    title: 'Markdown',
+    subtitle: 'Markdown examples',
+    route: '/examples/markdown-example',
+  },
 ]
 
 const DeveloperMenu = () => {

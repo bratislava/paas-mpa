@@ -1,4 +1,5 @@
 import { confirmSignIn, signIn, signOut, signUp } from 'aws-amplify/auth'
+import { PermissionStatus } from 'expo-modules-core'
 import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
@@ -9,11 +10,16 @@ import {
   signInAndRedirectToConfirm,
   STATIC_PHONE,
 } from '@/modules/cognito/utils'
+import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
+import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 import { isError } from '@/utils/errors'
 
+import { useIsOnboardingFinished } from './useIsOnboardingFinished'
+
 const CONFIRM_ERROR_CODES_TO_SHOW = new Set(['NotAuthorizedException', 'CodeMismatchException'])
+const SIGNIN_ERROR_CODES_TO_SHOW = new Set(['InvalidParameterException'])
 
 // TODO simplify, unify error handling, consider to move `useSignOut` to this file or move to /modules/cognito...
 // TODO add static code verification for static phone
@@ -42,6 +48,11 @@ const CONFIRM_ERROR_CODES_TO_SHOW = new Set(['NotAuthorizedException', 'CodeMism
 export const useSignInOrSignUp = () => {
   const t = useTranslation('useSignInOrSignUp')
   const snackbar = useSnackbar()
+
+  const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
+
+  const [locationPermissionStatus] = useLocationPermission()
+  const [notificationsPermissionStatus] = useNotificationPermission()
 
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
 
@@ -87,6 +98,13 @@ export const useSignInOrSignUp = () => {
         }
       }
     } catch (error) {
+      // [InvalidParameterException: Invalid phone number.]
+      if (isErrorWithName(error) && SIGNIN_ERROR_CODES_TO_SHOW.has(error.name)) {
+        /**
+         * Pass the errors we want to handle on FE to the next catch block.
+         */
+        throw error
+      }
       // TODO Logging
       /** Log unexpected errors and show generic error message to the user */
       if (isError(error)) {
@@ -110,7 +128,18 @@ export const useSignInOrSignUp = () => {
       /** If sign in didn't throw an error, set the user to context provider and redirect to home screen */
       const user = await getCurrentAuthenticatedUser()
       onAuthStoreUpdate({ user })
-      router.replace('/')
+      if (!isOnboardingFinished) {
+        setIsOnboardingFinished(true)
+      }
+
+      if (
+        locationPermissionStatus === PermissionStatus.UNDETERMINED ||
+        notificationsPermissionStatus === PermissionStatus.UNDETERMINED
+      ) {
+        router.replace('/permissions')
+      } else {
+        router.replace('/')
+      }
     } catch (error) {
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]

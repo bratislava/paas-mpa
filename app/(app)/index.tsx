@@ -1,11 +1,9 @@
-import BottomSheet from '@gorhom/bottom-sheet'
 import { PortalHost } from '@gorhom/portal'
-import { useRef } from 'react'
+import { router } from 'expo-router'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapScreen from '@/components/map/MapScreen'
-import MainMenuBottomSheet from '@/components/navigation/MainMenu/MainMenuBottomSheet'
 import IconButton from '@/components/shared/IconButton'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
@@ -15,8 +13,6 @@ import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLas
 const IndexScreen = () => {
   const t = useTranslation()
   const locale = useLocale()
-
-  const bottomSheetRef = useRef<BottomSheet>(null)
   const { top } = useSafeAreaInsets()
 
   // TODO deduplicate (used also in `NewAnnouncementsBadge`)
@@ -28,8 +24,9 @@ const IndexScreen = () => {
       ).length
     : announcementsData?.announcements.length
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handlePressOpen = () => {
-    bottomSheetRef.current?.expand()
+    router.push('/menu')
   }
 
   return (
@@ -55,8 +52,6 @@ const IndexScreen = () => {
       </View>
 
       <PortalHost name="index" />
-
-      <MainMenuBottomSheet ref={bottomSheetRef} />
     </View>
   )
 }

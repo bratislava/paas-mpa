@@ -97,7 +97,7 @@ const Map = forwardRef(
     }, [])
 
     useEffect(() => {
-      updateMapSearchContext({ flyToCenter: handleSetFlyToCenter })
+      updateMapSearchContext({ setFlyToCenter: handleSetFlyToCenter })
     }, [updateMapSearchContext, handleSetFlyToCenter])
 
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [

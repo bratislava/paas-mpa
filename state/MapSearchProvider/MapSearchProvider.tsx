@@ -2,7 +2,7 @@ import { Position } from 'geojson'
 import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 type MapSearchContextProps = {
-  flyToCenter: ((center: Position) => void) | null
+  setFlyToCenter: ((center: Position) => void) | null
 }
 
 export const MapSearchContext = createContext<MapSearchContextProps | null>(null)
@@ -14,7 +14,7 @@ export const MapSearchUpdateContext = createContext<
 MapSearchUpdateContext.displayName = 'MapSearchUpdateContext'
 
 const defaultInitialMapSearchValues: MapSearchContextProps = {
-  flyToCenter: null,
+  setFlyToCenter: null,
 }
 
 const MapSearchProvider = ({ children }: PropsWithChildren) => {

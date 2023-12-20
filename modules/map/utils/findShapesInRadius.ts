@@ -2,13 +2,28 @@ import { Feature, MultiPolygon, Polygon, Position } from 'geojson'
 
 import { MapUdrZone } from '@/modules/map/types'
 
-function getDistance(point1: Position, point2: Position): number {
-  const [x1, y1] = point1
-  const [x2, y2] = point2
+const calculateHaversineDistance = (point1: Position, point2: Position) => {
+  const [lon1, lat1] = point1
+  const [lon2, lat2] = point2
 
-  return Math.hypot(x2 - x1, y2 - y1)
+  const earthRadius = 6371 // in kilometers
+
+  const dLat = (lat2 - lat1) * (Math.PI / 180)
+  const dLon = (lon2 - lon1) * (Math.PI / 180)
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+  return earthRadius * c
 }
 
+/** @param radius Radius around the center in km */
 export const findShapesInRadius = (
   shapes: Feature<Polygon | MultiPolygon, MapUdrZone>[],
   center: Position,
@@ -24,7 +39,7 @@ export const findShapesInRadius = (
 
       const pointsWithDistance = points.map((point) => {
         const [lon, lat] = point
-        const distance = getDistance([lon, lat], center)
+        const distance = calculateHaversineDistance([lon, lat], center)
 
         return { point, distance }
       })

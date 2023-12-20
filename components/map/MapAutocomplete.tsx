@@ -32,6 +32,7 @@ import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
 const ZONES_LIMIT = 10
+const NEARBY_ZONE_RADIUS = 0.2 // km
 
 type Props = Partial<
   AutocompleteProps<
@@ -44,7 +45,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
     const t = useTranslation('ZoneDetailsScreen')
     const mapZones = useMapZonesContext()
-    const [nearByZones, setNearByZones] = useState<UdrZoneFeature[]>([])
+    const [nearByZones, setNearbyZones] = useState<UdrZoneFeature[]>([])
     const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
     const [location] = useLocation()
     const locale = useLocale()
@@ -55,11 +56,11 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       InteractionManager.runAfterInteractions(() => {
         if (mapZones && location) {
-          setNearByZones(
+          setNearbyZones(
             findShapesInRadius(
               [...mapZones.values()],
               [location.coords.longitude, location.coords.latitude],
-              0.002,
+              NEARBY_ZONE_RADIUS,
             ),
           )
           setLoadingNearyByZones(false)
@@ -130,13 +131,11 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
               {sections.length === 0 ? (
-                isFetching ? (
+                isFetching || loadingNearyByZones ? (
                   <LoadingScreen />
                 ) : input ? (
                   <EmptyStateScreen contentTitle={t('noResults')} />
-                ) : (
-                  loadingNearyByZones && <LoadingScreen />
-                )
+                ) : null
               ) : (
                 <>
                   <Typography variant="h2">{t('searchResults')}</Typography>

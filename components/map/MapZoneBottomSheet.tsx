@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import clsx from 'clsx'
 import { router } from 'expo-router'
 import { forwardRef, useCallback, useRef } from 'react'
-import { LayoutAnimation, TextInput as RNTextInput, View } from 'react-native'
+import { TextInput as RNTextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
 import TextInput from '@/components/inputs/TextInput'
@@ -33,12 +33,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   const t = useTranslation('ZoneBottomSheet')
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleChange = useCallback((newIndex: number) => {
-    const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
-    LayoutAnimation.configureNext(animation)
-  }, [])
-
   const handleInputFocus = useCallback(() => {
     router.push('/search')
   }, [])
@@ -51,7 +45,6 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       <BottomSheet
         ref={refSetter}
         keyboardBehavior="interactive"
-        onChange={handleChange}
         handleComponent={BottomSheetHandleWithShadow}
         animatedPosition={animatedPosition}
         enableDynamicSizing

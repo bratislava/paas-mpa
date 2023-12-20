@@ -15,7 +15,7 @@ import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCen
 import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
 
 const SearchScreen = () => {
-  const { flyToCenter } = useMapSearchContext()
+  const { setFlyToCenter } = useMapSearchContext()
 
   const t = useTranslation()
   const insets = useSafeAreaInsets()
@@ -38,18 +38,18 @@ const SearchScreen = () => {
     (newValue: GeocodingFeature | UdrZoneFeature) => {
       handleInputBlur()
       if (isGeocodingFeature(newValue)) {
-        flyToCenter?.(newValue.center)
+        setFlyToCenter?.(newValue.center)
       } else {
-        flyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+        setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
       }
       handleCancel()
     },
-    [handleInputBlur, flyToCenter, handleCancel],
+    [handleInputBlur, setFlyToCenter, handleCancel],
   )
 
   return (
-    <ScreenView title={t('title')}>
-      <ScreenContent className="flex-1" style={{ paddingTop: insets.top }}>
+    <ScreenView>
+      <ScreenContent className="flex-1" style={{ paddingTop: insets.top + 20 }}>
         <View className="flex-1">
           <View>
             <FlexRow>
@@ -65,7 +65,7 @@ const SearchScreen = () => {
               </Button>
             </FlexRow>
           </View>
-          {/* Autocomplete results, they are in a Portal so that 
+          {/* Autocomplete results, they are in a Portal so that
         MapAutocomplete does not need to be remounted and lose state */}
           <View className="flex-1">
             <Pressable onTouchStart={handleInputBlur}>
