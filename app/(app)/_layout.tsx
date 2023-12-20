@@ -92,8 +92,10 @@ const RootLayout = () => {
                 <Stack.Screen
                   name="menu"
                   options={{
-                    headerShown: false,
-                    presentation: 'transparentModal',
+                    // TODO On ios, animation from right is ignored when presentation is transparentModal
+                    // For now, implemented as full screen page with animation from right
+                    // headerShown: false,
+                    // presentation: 'transparentModal',
                     animation: 'slide_from_right',
                   }}
                 />

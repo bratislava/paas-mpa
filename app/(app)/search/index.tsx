@@ -49,7 +49,7 @@ const SearchScreen = () => {
 
   return (
     <ScreenView>
-      <ScreenContent className="flex-1" style={{ paddingTop: insets.top }}>
+      <ScreenContent className="flex-1" style={{ paddingTop: insets.top + 20 }}>
         <View className="flex-1">
           <View>
             <FlexRow>
@@ -65,7 +65,7 @@ const SearchScreen = () => {
               </Button>
             </FlexRow>
           </View>
-          {/* Autocomplete results, they are in a Portal so that 
+          {/* Autocomplete results, they are in a Portal so that
         MapAutocomplete does not need to be remounted and lose state */}
           <View className="flex-1">
             <Pressable onTouchStart={handleInputBlur}>

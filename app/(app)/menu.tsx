@@ -1,6 +1,6 @@
-import { Link, router } from 'expo-router'
+import { Link, router, Stack } from 'expo-router'
 import { ReactNode } from 'react'
-import { Pressable, View } from 'react-native'
+import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MenuRow from '@/components/list-rows/MenuRow'
@@ -8,6 +8,7 @@ import NewAnnouncementsBadge from '@/components/navigation/MainMenu/NewAnnouncem
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import { IconName } from '@/components/shared/Icon'
+import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
@@ -17,7 +18,7 @@ const DIVIDER = 'divider'
 
 const MainMenuScreen = () => {
   const t = useTranslation()
-  const { top } = useSafeAreaInsets()
+  const { bottom } = useSafeAreaInsets()
 
   const { user } = useAuthStoreContext()
   const signOut = useSignOut()
@@ -90,6 +91,8 @@ const MainMenuScreen = () => {
   const handlePressClose = () => {
     if (router.canGoBack()) {
       router.back()
+    } else {
+      router.replace('/')
     }
   }
 
@@ -98,13 +101,20 @@ const MainMenuScreen = () => {
     signOut()
   }
 
+  // TODO see comments in _layout about animation and transparentModal on ios
   return (
-    <View className="flex-1 flex-row">
-      <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} />
-      <ScreenView
-        className="min-w-[250px] flex-grow px-5"
-        style={{ paddingBottom: 50, paddingTop: top + 80 }}
-      >
+    <View className="flex-1">
+      {/* <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} /> */}
+      <ScreenView className="grow p-5" style={{ paddingBottom: bottom + 20 }} title="Menu">
+        <Stack.Screen
+          options={{
+            headerRight: () => (
+              <IconButton name="close" accessibilityLabel="Close menu" onPress={handlePressClose} />
+            ),
+            headerBackVisible: false,
+          }}
+        />
+
         <View className="flex-1 justify-between">
           <View>
             {menuItems.map((item, index) =>
