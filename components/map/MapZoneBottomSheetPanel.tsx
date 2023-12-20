@@ -27,8 +27,12 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
       <>
         <Panel className="g-4">
           <FlexRow>
-            <Typography>{selectedZone.name}</Typography>
-            <ZoneBadge label={selectedZone.udrId} />
+            <Typography numberOfLines={1} className="flex-1 text-ellipsis">
+              {selectedZone.name}
+            </Typography>
+            <View className="flex-0">
+              <ZoneBadge label={selectedZone.udrId} />
+            </View>
           </FlexRow>
           <Divider />
           <FlexRow>
