@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Link, Stack } from 'expo-router'
+import { Link } from 'expo-router'
 import { FlatList, View } from 'react-native'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 

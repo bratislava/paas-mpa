@@ -55,14 +55,18 @@
     "backToMap": "Back to map",
     "noPaymentInitiated": "No payment initiated. Please try again",
     "invalidPaymentLink": "Invalid payment url. Please try again",
-    "paymentFailed": "Payment failed",
-    "prolongationFailed": "Prolongation failed",
-    "paymentFailedText": "Your payment has failed. \nPlease try again.",
-    "prolongationFailedText": "Your prolongation has failed. \nPlease try again.",
-    "paymentSuccessful": "Payment successful",
-    "prolongationSuccessful": "Prolongation successful",
-    "paymentSuccessfulText": "Your payment ticket has been paid.",
-    "prolongationSuccessfulText": "Your ticket has been prolongated.",
+    "payment": {
+      "failed": "Payment failed",
+      "successful": "Payment successful",
+      "failedText": "Your payment has failed. \nPlease try again.",
+      "successfulText": "Your payment ticket has been paid."
+    },
+    "prolongation": {
+      "failed": "Prolongation failed",
+      "successful": "Prolongation successful",
+      "failedText": "Your prolongation has failed. \nPlease try again.",
+      "successfulText": "Your ticket has been prolongated."
+    },
     "Errors": {
       "TooLongParkingTime": "The parking time has exceeded the maximum possible duration. The maximum length of a parking ticket is 48 hours.",
       "FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",

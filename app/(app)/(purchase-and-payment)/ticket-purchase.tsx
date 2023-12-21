@@ -71,8 +71,7 @@ const TicketPurchasePage = () => {
     })
   }, [navigation])
 
-  const getTranslationName = (text: string) =>
-    `${isProlongation ? 'prolongation' : 'payment'}${text}`
+  const translationKey = isProlongation ? 'prolongation' : 'payment'
 
   return (
     <ScreenViewCentered
@@ -88,18 +87,18 @@ const TicketPurchasePage = () => {
       ) : isError || data.paymentStatus === 'FAIL' ? (
         <ContentWithAvatar
           variant="error"
-          title={t(getTranslationName('Failed'))}
-          text={t(getTranslationName('FailedText'))}
+          title={t(`${translationKey}.failed`)}
+          text={t(`${translationKey}.failedText`)}
         >
           <Panel className="bg-negative-light">
-            <Typography>{data?.paymentFailReason || error?.message}</Typography>
+            <Typography>{data?.paymentFailReason ?? error?.message}</Typography>
           </Panel>
         </ContentWithAvatar>
       ) : data?.paymentStatus === 'SUCCESS' ? (
         <ContentWithAvatar
           variant="success"
-          title={t(getTranslationName('Successful'))}
-          text={t(getTranslationName('SuccessfulText'))}
+          title={t(`${translationKey}.successful`)}
+          text={t(`${translationKey}.successfulText`)}
         >
           <BoughtTicket ticket={data} />
         </ContentWithAvatar>

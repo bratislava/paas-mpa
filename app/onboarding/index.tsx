@@ -65,7 +65,7 @@ const OnboardingScreen = () => {
   const insets = useSafeAreaInsets()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
-  const jumpToRef = useRef<(key: string) => void>()
+  const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
     { key: 'welcome' },

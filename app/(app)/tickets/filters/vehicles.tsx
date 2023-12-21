@@ -22,26 +22,26 @@ const TicketsFiltersVehiclesScreen = () => {
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecvs } = useTicketsFiltersStoreContext()
-  const [localEcvs, setLocalEcvs] = useState<string[] | null>(ecvs ?? null)
+  const [localEcvs, setLocalEcvs] = useState<string[] | 'all'>(ecvs)
 
   const handleSelectAll = useCallback(() => {
-    setLocalEcvs(null)
+    setLocalEcvs('all')
   }, [])
 
   const handleValueChange = useCallback(
     (selectedEcv: string) => () => {
-      if (localEcvs === null) {
+      if (localEcvs === 'all') {
         setLocalEcvs(
           vehicles
             .map(({ vehiclePlateNumber }) => vehiclePlateNumber)
             .filter((ecv) => ecv !== selectedEcv),
         )
       } else {
-        setLocalEcvs((prev) =>
-          prev?.includes(selectedEcv)
-            ? prev.filter((prevEcv) => prevEcv !== selectedEcv)
-            : [...(prev || []), selectedEcv],
-        )
+        const newLocalEcvs = localEcvs.includes(selectedEcv)
+          ? localEcvs.filter((prevEcv) => prevEcv !== selectedEcv)
+          : [...localEcvs, selectedEcv]
+
+        setLocalEcvs(newLocalEcvs)
       }
     },
     [localEcvs, vehicles],
@@ -51,7 +51,7 @@ const TicketsFiltersVehiclesScreen = () => {
     ({ item: { vehiclePlateNumber } }) => (
       <SelectRow
         label={vehiclePlateNumber}
-        value={!!localEcvs?.includes(vehiclePlateNumber) || !localEcvs}
+        value={localEcvs.includes(vehiclePlateNumber) || localEcvs === 'all'}
         onValueChange={handleValueChange(vehiclePlateNumber)}
       />
     ),
@@ -64,7 +64,7 @@ const TicketsFiltersVehiclesScreen = () => {
         translationKey="apply"
         disabled={localEcvs?.length === 0}
         onPress={() => {
-          onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? null : localEcvs })
+          onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? 'all' : localEcvs })
           router.back()
         }}
       />

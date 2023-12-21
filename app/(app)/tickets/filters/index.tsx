@@ -27,7 +27,11 @@ const TicketsFiltersScreen = () => {
 
   const fields = useMemo(
     () => [
-      { key: 'vehicles', path: '/tickets/filters/vehicles', value: ecvs?.join(', ') ?? t('all') },
+      {
+        key: 'vehicles',
+        path: '/tickets/filters/vehicles',
+        value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
+      },
       { key: 'fromTo', path: '/tickets/filters/timeframes', value: t(`timeframes.${timeframe}`) },
     ],
     [t, ecvs, timeframe],
@@ -56,7 +60,13 @@ const TicketsFiltersScreen = () => {
               <PressableStyled>
                 <Panel>
                   <FlexRow>
-                    <Typography variant="default-bold">{value}</Typography>
+                    <Typography
+                      variant="default-bold"
+                      numberOfLines={1}
+                      className="shrink text-ellipsis"
+                    >
+                      {value}
+                    </Typography>
                     <Icon name="expand-more" />
                   </FlexRow>
                 </Panel>
