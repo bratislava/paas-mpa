@@ -85,7 +85,7 @@ const OnboardingScreen = () => {
     }
   }, [routes, index])
 
-  if (isOnboardingFinished && environment.nodeEnv !== 'development') {
+  if (isOnboardingFinished && environment.deployment !== 'development') {
     router.replace('/sign-in')
   }
 

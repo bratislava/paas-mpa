@@ -85,7 +85,11 @@ const ProlongTicketScreen = () => {
             ) : null}
 
             <Field label={t('parkingTimeFieldLabel')}>
-              <TimeSelector value={duration} onValueChange={handleSelectTime} />
+              <TimeSelector
+                value={duration}
+                onValueChange={handleSelectTime}
+                timeCalculationBase={activeTicketEnd}
+              />
             </Field>
 
             {priceQuery.data ? (

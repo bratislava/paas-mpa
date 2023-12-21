@@ -3240,7 +3240,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @summary Get tickets paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
-     * @param {Array<string>} [ecv] ECV of the vehicle which has the ticket
+     * @param {string} [ecv] ECV of the vehicle which has the ticket (support a list of values, separated by comma)
      * @param {string} [parkingStartFrom] Lower bound for parking start
      * @param {string} [parkingStartTo] Upper bound for parking start
      * @param {string} [parkingEndFrom] Lower bound for parking end
@@ -3251,7 +3251,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     ticketsControllerTicketsGetMany: async (
       page?: number,
       pageSize?: number,
-      ecv?: Array<string>,
+      ecv?: string,
       parkingStartFrom?: string,
       parkingStartTo?: string,
       parkingEndFrom?: string,
@@ -3282,7 +3282,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         localVarQueryParameter['pageSize'] = pageSize
       }
 
-      if (ecv) {
+      if (ecv !== undefined) {
         localVarQueryParameter['ecv'] = ecv
       }
 
@@ -3576,7 +3576,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @summary Get tickets paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
-     * @param {Array<string>} [ecv] ECV of the vehicle which has the ticket
+     * @param {string} [ecv] ECV of the vehicle which has the ticket (support a list of values, separated by comma)
      * @param {string} [parkingStartFrom] Lower bound for parking start
      * @param {string} [parkingStartTo] Upper bound for parking start
      * @param {string} [parkingEndFrom] Lower bound for parking end
@@ -3587,7 +3587,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     async ticketsControllerTicketsGetMany(
       page?: number,
       pageSize?: number,
-      ecv?: Array<string>,
+      ecv?: string,
       parkingStartFrom?: string,
       parkingStartTo?: string,
       parkingEndFrom?: string,
@@ -3822,7 +3822,7 @@ export const TicketsApiFactory = function (
      * @summary Get tickets paginated
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
-     * @param {Array<string>} [ecv] ECV of the vehicle which has the ticket
+     * @param {string} [ecv] ECV of the vehicle which has the ticket (support a list of values, separated by comma)
      * @param {string} [parkingStartFrom] Lower bound for parking start
      * @param {string} [parkingStartTo] Upper bound for parking start
      * @param {string} [parkingEndFrom] Lower bound for parking end
@@ -3833,7 +3833,7 @@ export const TicketsApiFactory = function (
     ticketsControllerTicketsGetMany(
       page?: number,
       pageSize?: number,
-      ecv?: Array<string>,
+      ecv?: string,
       parkingStartFrom?: string,
       parkingStartTo?: string,
       parkingEndFrom?: string,
@@ -4075,7 +4075,7 @@ export class TicketsApi extends BaseAPI {
    * @summary Get tickets paginated
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
-   * @param {Array<string>} [ecv] ECV of the vehicle which has the ticket
+   * @param {string} [ecv] ECV of the vehicle which has the ticket (support a list of values, separated by comma)
    * @param {string} [parkingStartFrom] Lower bound for parking start
    * @param {string} [parkingStartTo] Upper bound for parking start
    * @param {string} [parkingEndFrom] Lower bound for parking end
@@ -4087,7 +4087,7 @@ export class TicketsApi extends BaseAPI {
   public ticketsControllerTicketsGetMany(
     page?: number,
     pageSize?: number,
-    ecv?: Array<string>,
+    ecv?: string,
     parkingStartFrom?: string,
     parkingStartTo?: string,
     parkingEndFrom?: string,
