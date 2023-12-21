@@ -16,6 +16,7 @@ import {
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
+import { environment } from '@/environment'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -82,9 +83,8 @@ const OnboardingScreen = () => {
     }
   }, [routes, index])
 
-  if (isOnboardingFinished) {
-    // TODO: Uncomment for prod behavior
-    // router.replace('/sign-in')
+  if (isOnboardingFinished && environment.nodeEnv !== 'development') {
+    router.replace('/sign-in')
   }
 
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')

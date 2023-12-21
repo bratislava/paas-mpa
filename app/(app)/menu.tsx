@@ -10,11 +10,21 @@ import Divider from '@/components/shared/Divider'
 import { IconName } from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
+import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 const DIVIDER = 'divider'
+
+type MenuItemsType =
+  | {
+      label: string
+      icon: IconName
+      path: string
+      endSlot?: ReactNode
+    }
+  | typeof DIVIDER
 
 const MainMenuScreen = () => {
   const t = useTranslation()
@@ -23,15 +33,7 @@ const MainMenuScreen = () => {
   const { user } = useAuthStoreContext()
   const signOut = useSignOut()
 
-  const menuItems: (
-    | {
-        label: string
-        icon: IconName
-        path: string
-        endSlot?: ReactNode
-      }
-    | typeof DIVIDER
-  )[] = [
+  const menuItems: MenuItemsType[] = [
     {
       label: t('VehiclesScreen.title'),
       icon: 'directions-car',
@@ -69,22 +71,26 @@ const MainMenuScreen = () => {
       icon: 'info',
       path: '/about',
     },
-    // DIVIDER,
-    // {
-    //   label: 'DEV Menu',
-    //   icon: 'developer-mode',
-    //   path: '/dev',
-    // },
-    // {
-    //   label: 'DEV Purchase',
-    //   icon: 'payment',
-    //   path: '/purchase',
-    // },
-    // {
-    //   label: 'DEV User',
-    //   icon: 'person',
-    //   path: '/examples/user',
-    // },
+    ...(environment.nodeEnv === 'development'
+      ? ([
+          DIVIDER,
+          {
+            label: 'DEV Menu',
+            icon: 'developer-mode',
+            path: '/dev',
+          },
+          {
+            label: 'DEV Purchase',
+            icon: 'payment',
+            path: '/purchase',
+          },
+          {
+            label: 'DEV User',
+            icon: 'person',
+            path: '/examples/user',
+          },
+        ] as MenuItemsType[])
+      : []),
   ]
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
