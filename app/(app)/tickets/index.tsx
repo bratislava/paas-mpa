@@ -43,7 +43,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
     parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
     parkingEndTo: active ? undefined : fromTo.parkingEndTo,
     pageSize: 20,
-    ecv: filters.ecvs === 'all' ? undefined : filters.ecvs,
+    ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
     isActive: active,
   })
 
