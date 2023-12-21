@@ -10,14 +10,29 @@ import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { MapPointKindEnum } from '@/modules/map/constants'
 import { useNormalizedPoint } from '@/modules/map/hooks/useNormalizedPoint'
-import { MapInterestPoint } from '@/modules/map/types'
+import { MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
 
 type Props = {
   point: MapInterestPoint
 }
 
-const EXCLUDED_ATTRIBUTES = new Set(['address', 'name', 'navigation', 'kind', 'id'])
+const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
+  [MapPointKindEnum.parkomat]: ['location', 'parkomatId'],
+  [MapPointKindEnum.assistant]: ['udrId'],
+  [MapPointKindEnum.partner]: ['name', 'address', 'openingHours'],
+  [MapPointKindEnum.garage]: ['name', 'address', 'openingHours'],
+  [MapPointKindEnum.pPlusR]: [
+    'name',
+    'parkingSpotCount',
+    'publicTransportLines',
+    'distanceToPublicTransport',
+    'publicTransportTravelTime',
+  ],
+  [MapPointKindEnum.parkingLot]: ['name', 'address', 'openingHours'],
+  [MapPointKindEnum.branch]: ['name', 'address', 'place', 'openingHours', 'addressDetail'],
+}
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const t = useTranslation('PointBottomSheet')
@@ -71,7 +86,10 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     localRef.current?.collapse()
   }, [point])
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isExpanded = index === 1
+
+  const attributes = ATTRIBUTES_MAP[formattedMapPoint.kind]
 
   return (
     <BottomSheet
@@ -89,7 +107,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
               <Icon name="close" />
             </PressableStyled>
           </View>
-          <Typography variant="h1">{t('title')}</Typography>
+          <Typography variant="h1">{t(`kinds.${formattedMapPoint.kind}`)}</Typography>
         </View>
         <BottomSheetScrollView
           className="bg-white"
@@ -103,37 +121,22 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
             </View>
             <View className="px-5 pb-4 pt-5 g-4">
               <View>
-                {formattedMapPoint.address && (
-                  <Field label={t('fields.address')}>
-                    <Typography>{formattedMapPoint.address}</Typography>
+                {attributes.includes('name') && formattedMapPoint.name ? (
+                  <Field label={t('fields.name')}>
+                    <Typography>{formattedMapPoint.name}</Typography>
                   </Field>
-                )}
+                ) : null}
               </View>
-              {isExpanded ? (
-                Object.keys(formattedMapPoint)
-                  .filter((k) => !EXCLUDED_ATTRIBUTES.has(k))
-                  .map((k) => (
-                    <View key={k} className="g-4">
-                      <Divider />
-                      <Field label={t(`fields.${k}`)}>
-                        <Typography>
-                          {formattedMapPoint[k as keyof typeof formattedMapPoint]}
-                        </Typography>
-                      </Field>
-                    </View>
-                  ))
-              ) : (
-                <>
-                  {formattedMapPoint.address && <Divider />}
-                  <View>
-                    {formattedMapPoint.id && (
-                      <Field label="ID">
-                        <Typography>{formattedMapPoint.id}</Typography>
-                      </Field>
-                    )}
+              {attributes
+                .filter((att) => att !== 'name')
+                .map((att) => (
+                  <View key={att} className="g-4">
+                    <Divider />
+                    <Field label={t(`fields.${att}`)}>
+                      <Typography>{formattedMapPoint[att]}</Typography>
+                    </Field>
                   </View>
-                </>
-              )}
+                ))}
             </View>
           </View>
         </BottomSheetScrollView>
