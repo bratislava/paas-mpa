@@ -55,10 +55,18 @@
     "backToMap": "Back to map",
     "noPaymentInitiated": "No payment initiated. Please try again",
     "invalidPaymentLink": "Invalid payment url. Please try again",
-    "paymentFailed": "Payment failed",
-    "paymentFailedText": "Your payment has failed. \nPlease try again.",
-    "paymentSuccessful": "Payment successful",
-    "paymentSuccessfulText": "Your payment ticket has been paid.",
+    "payment": {
+      "failed": "Payment failed",
+      "successful": "Payment successful",
+      "failedText": "Your payment has failed. \nPlease try again.",
+      "successfulText": "Your payment ticket has been paid."
+    },
+    "prolongation": {
+      "failed": "Prolongation failed",
+      "successful": "Prolongation successful",
+      "failedText": "Your prolongation has failed. \nPlease try again.",
+      "successfulText": "Your ticket has been prolongated."
+    },
     "Errors": {
       "TooLongParkingTime": "The parking time has exceeded the maximum possible duration. The maximum length of a parking ticket is 48 hours.",
       "FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",
@@ -235,6 +243,7 @@
     "removeEmailCancel": "No, keep e-mail"
   },
   "VerificationResult": {
+    "verificationResult": "Verification result",
     "verified": {
       "title": "Parking cards added",
       "text": "Your parking cards e-mail **{{email}}** has been added. You can see your cards in the Parking cards section.",
@@ -364,6 +373,7 @@
   },
   "OnboardingScreen": {
     "next": "Next",
+    "skip": "Skip",
     "getStarted": "Get started",
     "slides": {
       "welcome": {

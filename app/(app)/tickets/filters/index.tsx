@@ -19,7 +19,7 @@ const TicketsFiltersScreen = () => {
   const t = useTranslation('TicketsFilters')
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
-  const { ecv, timeframe } = useTicketsFiltersStoreContext()
+  const { ecvs, timeframe } = useTicketsFiltersStoreContext()
 
   const handleReset = useCallback(() => {
     onPurchaseStoreUpdate(defaultTicketsFiltersStoreContextValues)
@@ -27,10 +27,14 @@ const TicketsFiltersScreen = () => {
 
   const fields = useMemo(
     () => [
-      { key: 'vehicles', path: '/tickets/filters/vehicles', value: ecv ?? t('all') },
+      {
+        key: 'vehicles',
+        path: '/tickets/filters/vehicles',
+        value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
+      },
       { key: 'fromTo', path: '/tickets/filters/timeframes', value: t(`timeframes.${timeframe}`) },
     ],
-    [t, ecv, timeframe],
+    [t, ecvs, timeframe],
   )
 
   const actionButton = useMemo(
@@ -56,7 +60,13 @@ const TicketsFiltersScreen = () => {
               <PressableStyled>
                 <Panel>
                   <FlexRow>
-                    <Typography variant="default-bold">{value}</Typography>
+                    <Typography
+                      variant="default-bold"
+                      numberOfLines={1}
+                      className="shrink text-ellipsis"
+                    >
+                      {value}
+                    </Typography>
                     <Icon name="expand-more" />
                   </FlexRow>
                 </Panel>

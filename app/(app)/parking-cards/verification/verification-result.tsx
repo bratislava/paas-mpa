@@ -48,6 +48,8 @@ const VerificationResultPage = () => {
 
   return (
     <ScreenViewCentered
+      title={t('verificationResult')}
+      hasBackButton
       actionButton={
         status === 'link-expired' ? (
           <ContinueButton onPress={handleResendVerification}>

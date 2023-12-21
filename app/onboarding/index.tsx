@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
@@ -16,6 +16,7 @@ import {
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
+import Button from '@/components/shared/Button'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -64,6 +65,7 @@ const OnboardingScreen = () => {
   const insets = useSafeAreaInsets()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
+  const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
     { key: 'welcome' },
@@ -77,8 +79,8 @@ const OnboardingScreen = () => {
   const handlePressNext = useCallback(() => {
     if (index === routes.length - 1) {
       router.push('/sign-in')
-    } else if (index < routes.length - 1) {
-      setIndex((prevIndex) => prevIndex + 1)
+    } else if (index < routes.length - 1 && jumpToRef.current) {
+      jumpToRef.current(routes[index + 1].key)
     }
   }, [routes, index])
 
@@ -95,7 +97,13 @@ const OnboardingScreen = () => {
 
       <TabView
         navigationState={{ index, routes }}
-        renderScene={renderScene}
+        renderScene={(props) => {
+          if (!jumpToRef.current) {
+            jumpToRef.current = props.jumpTo
+          }
+
+          return renderScene(props)
+        }}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
         renderTabBar={(props) => <MarketingTabBar {...props} />}
@@ -110,6 +118,12 @@ const OnboardingScreen = () => {
       >
         {buttonLabel}
       </ContinueButton>
+
+      {index === routes.length - 1 ? null : (
+        <Button className="mt-2" variant="plain" onPress={() => router.push('/sign-in')}>
+          {t('skip')}
+        </Button>
+      )}
     </View>
   )
 }

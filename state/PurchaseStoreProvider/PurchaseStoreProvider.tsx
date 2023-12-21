@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
 import { PaymentOption } from '@/components/controls/payment-methods/types'
+import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { NormalizedUdrZone } from '@/modules/map/types'
 
@@ -42,10 +43,18 @@ const PurchaseStoreProvider = ({ children, initialValues }: PropsWithChildren<Pr
   const [values, setValues] = useState<PurchaseStoreContextProps>(
     initialValues ?? defaultInitialPurchaseStoreValues,
   )
+  const [defaultPaymentOption] = useDefaultPaymentOption()
 
   useEffect(() => {
     setValues(initialValues ?? defaultInitialPurchaseStoreValues)
   }, [initialValues])
+
+  useEffect(() => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      paymentOption: defaultPaymentOption,
+    }))
+  }, [defaultPaymentOption])
 
   const onPurchaseStoreUpdate = useCallback(
     (newValues: Partial<PurchaseStoreContextProps>) => {

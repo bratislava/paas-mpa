@@ -42,7 +42,7 @@ export const activeTicketsOptions = () =>
 
 export const ticketsInfiniteQuery = (
   options?: {
-    ecv?: string
+    ecv?: string[]
     parkingStartFrom?: Date
     parkingStartTo?: Date
     parkingEndFrom?: Date

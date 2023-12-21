@@ -105,7 +105,12 @@ const MainMenuScreen = () => {
   return (
     <View className="flex-1">
       {/* <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} /> */}
-      <ScreenView className="grow p-5" style={{ paddingBottom: bottom + 20 }} title="Menu">
+      <ScreenView
+        className="grow p-5"
+        style={{ paddingBottom: bottom + 20 }}
+        hasBackButton
+        title="Menu"
+      >
         <Stack.Screen
           options={{
             headerRight: () => (

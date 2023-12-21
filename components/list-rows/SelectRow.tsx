@@ -42,7 +42,7 @@ const SelectRow = ({
       </Typography>
 
       {/* TODO CheckBox size */}
-      <CheckBox value={value} onValueChange={onValueChange} disabled={disabled} />
+      <CheckBox value={value} disabled={disabled} />
     </Pressable>
   )
 }
