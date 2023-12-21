@@ -3,13 +3,12 @@ import { Dispatch, SetStateAction } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import PurchaseErrorPanel from '@/components/purchase/PurchaseErrorPanel'
+import PurchaseSummaryRow from '@/components/purchase/PurchaseSummaryRow'
+import Button from '@/components/shared/Button'
+import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
-
-import PurchaseErrorPanel from '../purchase/PurchaseErrorPanel'
-import PurchaseSummaryRow from '../purchase/PurchaseSummaryRow'
-import Button from '../shared/Button'
-import PurchaseBottomSheet from './PurchaseBottomSheet'
 
 type Props = {
   priceQuery: UseQueryResult<GetTicketPriceResponseDto, Error>

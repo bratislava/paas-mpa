@@ -36,20 +36,26 @@ const TicketPurchasePage = () => {
     getTicketOptions(ticketIdParsed),
   )
 
+  const isProlongation = !!data?.lastProlongationTicketId
+
   useEffect(() => {
     if (data?.paymentStatus === 'SUCCESS') {
-      onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+      if (data.lastProlongationTicketId) {
+        queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+      } else {
+        onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
 
-      const cacheData = queryClient.getQueryData(['Tickets']) as AxiosResponse<TicketsResponseDto>
+        const cacheData = queryClient.getQueryData(['Tickets']) as AxiosResponse<TicketsResponseDto>
 
-      if (cacheData) {
-        queryClient.setQueryData(['Tickets'], {
-          ...cacheData,
-          data: { ...cacheData.data, tickets: [data, ...cacheData.data.tickets] },
-        })
+        if (cacheData) {
+          queryClient.setQueryData(['Tickets'], {
+            ...cacheData,
+            data: { ...cacheData.data, tickets: [data, ...cacheData.data.tickets] },
+          })
+        }
+
+        queryClient.removeQueries({ queryKey: ['TicketPrice'] })
       }
-
-      queryClient.removeQueries({ queryKey: ['TicketPrice'] })
     } else if (data?.paymentStatus === 'PENDING') {
       refetch()
     }
@@ -65,6 +71,8 @@ const TicketPurchasePage = () => {
     })
   }, [navigation])
 
+  const translationKey = isProlongation ? 'prolongation' : 'payment'
+
   return (
     <ScreenViewCentered
       actionButton={
@@ -77,16 +85,20 @@ const TicketPurchasePage = () => {
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
       ) : isError || data.paymentStatus === 'FAIL' ? (
-        <ContentWithAvatar variant="error" title={t('paymentFailed')} text={t('paymentFailedText')}>
+        <ContentWithAvatar
+          variant="error"
+          title={t(`${translationKey}.failed`)}
+          text={t(`${translationKey}.failedText`)}
+        >
           <Panel className="bg-negative-light">
-            <Typography>{data?.paymentFailReason || error?.message}</Typography>
+            <Typography>{data?.paymentFailReason ?? error?.message}</Typography>
           </Panel>
         </ContentWithAvatar>
       ) : data?.paymentStatus === 'SUCCESS' ? (
         <ContentWithAvatar
           variant="success"
-          title={t('paymentSuccessful')}
-          text={t('paymentSuccessfulText')}
+          title={t(`${translationKey}.successful`)}
+          text={t(`${translationKey}.successfulText`)}
         >
           <BoughtTicket ticket={data} />
         </ContentWithAvatar>

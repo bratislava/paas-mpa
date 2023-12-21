@@ -21,42 +21,55 @@ const TicketsFiltersVehiclesScreen = () => {
   const { vehicles } = useVehiclesStoreContext()
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
-  const { ecv } = useTicketsFiltersStoreContext()
-  const [localEcv, setLocalEcv] = useState(ecv)
+  const { ecvs } = useTicketsFiltersStoreContext()
+  const [localEcvs, setLocalEcvs] = useState<string[] | 'all'>(ecvs)
 
   const handleSelectAll = useCallback(() => {
-    setLocalEcv(null)
+    setLocalEcvs('all')
   }, [])
 
   const handleValueChange = useCallback(
     (selectedEcv: string) => () => {
-      setLocalEcv(selectedEcv)
+      if (localEcvs === 'all') {
+        setLocalEcvs(
+          vehicles
+            .map(({ vehiclePlateNumber }) => vehiclePlateNumber)
+            .filter((ecv) => ecv !== selectedEcv),
+        )
+      } else {
+        const newLocalEcvs = localEcvs.includes(selectedEcv)
+          ? localEcvs.filter((prevEcv) => prevEcv !== selectedEcv)
+          : [...localEcvs, selectedEcv]
+
+        setLocalEcvs(newLocalEcvs)
+      }
     },
-    [],
+    [localEcvs, vehicles],
   )
 
   const renderItem: ListRenderItem<VehicleDto> = useCallback(
     ({ item: { vehiclePlateNumber } }) => (
       <SelectRow
         label={vehiclePlateNumber}
-        value={localEcv ? localEcv === vehiclePlateNumber : true}
+        value={localEcvs.includes(vehiclePlateNumber) || localEcvs === 'all'}
         onValueChange={handleValueChange(vehiclePlateNumber)}
       />
     ),
-    [handleValueChange, localEcv],
+    [handleValueChange, localEcvs],
   )
 
   const actionButton = useMemo(
     () => (
       <ContinueButton
         translationKey="apply"
+        disabled={localEcvs?.length === 0}
         onPress={() => {
-          onPurchaseStoreUpdate({ ecv: localEcv })
+          onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? 'all' : localEcvs })
           router.back()
         }}
       />
     ),
-    [localEcv, onPurchaseStoreUpdate],
+    [localEcvs, vehicles.length, onPurchaseStoreUpdate],
   )
 
   return (
