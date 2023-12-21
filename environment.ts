@@ -14,6 +14,7 @@ function assertEnv<T>(variable: string, value: T) {
 
 export const environment = {
   nodeEnv: assertEnv('NODE_ENV', process.env.NODE_ENV),
+  deployment: assertEnv('EXPO_PUBLIC_DEPLOYMENT', process.env.EXPO_PUBLIC_DEPLOYMENT),
   mapboxPublicKey: assertEnv('EXPO_PUBLIC_MAPBOX_KEY', process.env.EXPO_PUBLIC_MAPBOX_KEY),
   cognitoUserPoolId: assertEnv(
     'EXPO_PUBLIC_COGNITO_USER_POOL_ID',
