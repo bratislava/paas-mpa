@@ -43,6 +43,9 @@ export const normalizePoint = (point: MapInterestPoint, language: string): Norma
             Number.parseInt(point.Pocet_parkovacich_miest, 10)
           : undefined,
         publicTransportLines: point.Verejna_doprava,
+        publicTransportTravelTime: point.Dojazdova_doba,
+        rpkInformation: language === 'sk' ? point.Informacia_RPK_sk : point.Informacia_RPK_en,
+        npkInformation: language === 'sk' ? point.Informacia_NPK_sk : point.Informacia_NPK_en,
       }
     case isPointOfKind(point, MapPointKindEnum.parkomat):
       return {

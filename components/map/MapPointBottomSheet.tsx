@@ -30,7 +30,13 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
     'distanceToPublicTransport',
     'publicTransportTravelTime',
   ],
-  [MapPointKindEnum.parkingLot]: ['name', 'address', 'openingHours'],
+  [MapPointKindEnum.parkingLot]: [
+    'name',
+    'parkingSpotCount',
+    'publicTransportLines',
+    'distanceToPublicTransport',
+    'publicTransportTravelTime',
+  ],
   [MapPointKindEnum.branch]: ['name', 'address', 'place', 'openingHours', 'addressDetail'],
 }
 
@@ -114,24 +120,17 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
           contentContainerStyle={{ paddingBottom: footerHeight }}
         >
           <View>
-            <View className="px-5 pt-3">
-              <Field label={formattedMapPoint.name} variant="h1">
-                <Typography>{t(`kinds.${formattedMapPoint.kind}`)}</Typography>
-              </Field>
-            </View>
             <View className="px-5 pb-4 pt-5 g-4">
               <View>
                 {attributes.includes('name') && formattedMapPoint.name ? (
-                  <Field label={t('fields.name')}>
-                    <Typography>{formattedMapPoint.name}</Typography>
-                  </Field>
+                  <Typography variant="h2">{formattedMapPoint.name}</Typography>
                 ) : null}
               </View>
               {attributes
-                .filter((att) => att !== 'name')
-                .map((att) => (
+                .filter((att) => att !== 'name' && formattedMapPoint[att])
+                .map((att, ix) => (
                   <View key={att} className="g-4">
-                    <Divider />
+                    {!!ix && <Divider />}
                     <Field label={t(`fields.${att}`)}>
                       <Typography>{formattedMapPoint[att]}</Typography>
                     </Field>
