@@ -67,6 +67,11 @@ const MainMenuScreen = () => {
       endSlot: <NewAnnouncementsBadge />,
     },
     {
+      label: t('FeedbackScreen.title'),
+      icon: 'feedback',
+      path: '/feedback',
+    },
+    {
       label: t('AboutScreen.title'),
       icon: 'info',
       path: '/about',
