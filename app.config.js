@@ -5,10 +5,10 @@ module.exports = {
     scheme: 'paasmpa',
     version: '1.0.5',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/images/splash.png',
+      image: './assets/app/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#16254C',
     },
@@ -19,8 +19,10 @@ module.exports = {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#ffffff',
+        foregroundImage: './assets/app/adaptive-icon.png',
+        backgroundColor: '#16254C',
+        // We can safely use the same image as monochrome image
+        monochromeImage: './assets/app/adaptive-icon.png',
       },
       package: 'com.bratislava.paas',
     },
