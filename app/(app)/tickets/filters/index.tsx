@@ -19,7 +19,7 @@ const TicketsFiltersScreen = () => {
   const t = useTranslation('TicketsFilters')
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
-  const { ecv, timeframe } = useTicketsFiltersStoreContext()
+  const { ecvs, timeframe } = useTicketsFiltersStoreContext()
 
   const handleReset = useCallback(() => {
     onPurchaseStoreUpdate(defaultTicketsFiltersStoreContextValues)
@@ -27,10 +27,10 @@ const TicketsFiltersScreen = () => {
 
   const fields = useMemo(
     () => [
-      { key: 'vehicles', path: '/tickets/filters/vehicles', value: ecv ?? t('all') },
+      { key: 'vehicles', path: '/tickets/filters/vehicles', value: ecvs?.join(', ') ?? t('all') },
       { key: 'fromTo', path: '/tickets/filters/timeframes', value: t(`timeframes.${timeframe}`) },
     ],
-    [t, ecv, timeframe],
+    [t, ecvs, timeframe],
   )
 
   const actionButton = useMemo(
