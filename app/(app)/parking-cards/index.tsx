@@ -8,6 +8,7 @@ import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
@@ -54,13 +55,14 @@ const Page = () => {
           </Link>
         }
         actionButtonPosition="insideContent"
+        hasBackButton
       />
     )
   }
 
   return (
     <ScreenView title={t('paasEmailsTitle')}>
-      <Stack.Screen
+      <StackScreenWithHeader
         options={{
           headerRight: () =>
             verifiedEmails.length > 0 ? (

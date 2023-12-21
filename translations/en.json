@@ -239,6 +239,7 @@
     "removeEmailCancel": "No, keep e-mail"
   },
   "VerificationResult": {
+    "verificationResult": "Verification result",
     "verified": {
       "title": "Parking cards added",
       "text": "Your parking cards e-mail **{{email}}** has been added. You can see your cards in the Parking cards section.",

@@ -239,6 +239,7 @@
     "removeEmailCancel": "Ponechať"
   },
   "VerificationResult": {
+    "verificationResult": "Výsledok overenia",
     "verified": {
       "title": "Parkovacie karty pridané",
       "text": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",

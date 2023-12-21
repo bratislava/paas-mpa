@@ -45,7 +45,11 @@ const Page = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <DismissKeyboard>
-        <ScreenViewCentered actionButton={<Button onPress={handleVerify}>Verify</Button>}>
+        <ScreenViewCentered
+          hasBackButton
+          title={t('verifyYourEmail')}
+          actionButton={<Button onPress={handleVerify}>Verify</Button>}
+        >
           <ContentWithAvatar
             title={t('verifyYourEmail')}
             text={t('verifyYourEmailInfo', { email })}
