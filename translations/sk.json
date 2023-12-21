@@ -367,6 +367,7 @@
   },
   "OnboardingScreen": {
     "next": "Ďalej",
+    "skip": "Preskočiť",
     "getStarted": "Začať",
     "slides": {
       "welcome": {

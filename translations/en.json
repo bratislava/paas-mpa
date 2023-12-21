@@ -368,6 +368,7 @@
   },
   "OnboardingScreen": {
     "next": "Next",
+    "skip": "Skip",
     "getStarted": "Get started",
     "slides": {
       "welcome": {

@@ -82,7 +82,7 @@ const OnboardingScreen = () => {
     } else if (index < routes.length - 1 && jumpToRef.current) {
       jumpToRef.current(routes[index + 1].key)
     }
-  }, [routes, index, jumpToRef.current])
+  }, [routes, index])
 
   if (isOnboardingFinished) {
     // TODO: Uncomment for prod behavior
@@ -101,6 +101,7 @@ const OnboardingScreen = () => {
           if (!jumpToRef.current) {
             jumpToRef.current = props.jumpTo
           }
+
           return renderScene(props)
         }}
         onIndexChange={setIndex}
@@ -120,7 +121,7 @@ const OnboardingScreen = () => {
 
       {index === routes.length - 1 ? null : (
         <Button className="mt-2" variant="plain" onPress={() => router.push('/sign-in')}>
-          Skip
+          {t('skip')}
         </Button>
       )}
     </View>
