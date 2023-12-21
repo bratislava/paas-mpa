@@ -1,3 +1,5 @@
+import { environment } from '@/environment'
+
 import { axiosInstance } from './axios-instance'
 import {
   AnnouncementsApiFactory,
@@ -11,9 +13,7 @@ import {
   VerifiedEmailsApiFactory,
 } from './openapi-generated'
 
-export const apiUrl = 'https://paas-mpa-backend.dev.bratislava.sk' // TODO move to env
-
-const args = [{} as Configuration, apiUrl, axiosInstance] as const
+const args = [{} as Configuration, environment.apiUrl, axiosInstance] as const
 
 export const clientApi = {
   ...DefaultApiFactory(...args),

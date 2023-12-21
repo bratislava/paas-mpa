@@ -10,6 +10,7 @@ import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
+import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
@@ -55,7 +56,9 @@ const Page = () => {
             text={t('verifyYourEmailInfo', { email })}
             customAvatarComponent={<EmailAvatar />}
           >
-            <Typography>{tmpVerificationToken}</Typography>
+            {environment.nodeEnv === 'development' ? (
+              <Typography>{tmpVerificationToken}</Typography>
+            ) : null}
             <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
           </ContentWithAvatar>
         </ScreenViewCentered>
