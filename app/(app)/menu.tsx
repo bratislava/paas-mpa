@@ -71,7 +71,7 @@ const MainMenuScreen = () => {
       icon: 'info',
       path: '/about',
     },
-    ...(environment.nodeEnv === 'development'
+    ...(environment.deployment === 'development'
       ? ([
           DIVIDER,
           {

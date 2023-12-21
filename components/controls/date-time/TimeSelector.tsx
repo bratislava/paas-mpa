@@ -27,17 +27,18 @@ const getDuration = (date: Date) => {
 
 type Props = {
   value: number // number of minutes
+  timeCalculationBase?: number
   onValueChange: (value: number) => void
 }
 
-const TimeSelector = ({ value, onValueChange }: Props) => {
+const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
   const validUntil = useMemo(
-    () => formatDateTime(new Date(Date.now() + value * 1000), locale),
-    [locale, value],
+    () => formatDateTime(new Date((timeCalculationBase || Date.now()) + value * 1000), locale),
+    [locale, value, timeCalculationBase],
   )
 
   /**
