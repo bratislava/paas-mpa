@@ -89,6 +89,12 @@
     "licencePlate": "Car plate number",
     "validUntil": "Valid to"
   },
+  "ShortenTicket": {
+    "title": "Terminate ticket",
+    "infoText": "Cancel your parking ticket hassle-free. Are you sure you want to terminate your parking ticket?",
+    "actionConfirm": "Continue",
+    "shortenConditions": "Termination conditions"
+  },
   "PurchaseBottomSheet": {
     "parkingTime": "Parking {{time}}",
     "creditNpkUsed": "Visitor card",
@@ -203,13 +209,7 @@
   "TicketCard": {
     "prolong": "Prolong",
     "shorten": "Terminate",
-    "more": "More",
-    "terminationModal": {
-      "title": "Terminate parking ticket",
-      "message": "Are you sure you want to terminate your parking ticket?",
-      "actionConfirm": "Terminate ticket",
-      "actionCancel": "Keep ticket"
-    }
+    "more": "More"
   },
   "ParkingCards": {
     "title": "Parking cards",

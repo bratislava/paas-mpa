@@ -70,8 +70,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} isActive={active} refetch={refetch} />,
-    [active, refetch],
+    ({ item }) => <TicketCard ticket={item} isActive={active} />,
+    [active],
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping

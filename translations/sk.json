@@ -90,6 +90,12 @@
     "licencePlate": "Evidenčné číslo",
     "validUntil": "Platnosť do"
   },
+  "ShortenTicket": {
+    "title": "Predčasne ukončiť",
+    "infoText": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
+    "actionConfirm": "Pokračovať",
+    "shortenConditions": "Podmienky ukončenia"
+  },
   "PurchaseBottomSheet": {
     "parkingTime": "Parkovanie {{time}}",
     "creditNpkUsed": "Návštevnícka karta",
@@ -203,13 +209,7 @@
   "TicketCard": {
     "prolong": "Predĺžiť",
     "shorten": "Predčasne ukončiť",
-    "more": "Viac",
-    "terminationModal": {
-      "title": "Predčasne ukončiť",
-      "message": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
-      "actionConfirm": "Ukončiť",
-      "actionCancel": "Zrušiť"
-    }
+    "more": "Viac"
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
