@@ -42,7 +42,6 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const t = useTranslation('PointBottomSheet')
-  const [index, setIndex] = useState(-1)
   const [footerHeight, setFooterHeight] = useState(0)
 
   const formattedMapPoint = useNormalizedPoint(point)
@@ -63,10 +62,9 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     [ref],
   )
 
-  const handleChange = useCallback((newIndex: number) => {
+  const handleChange = useCallback(() => {
     const animation = LayoutAnimation.create(200, 'easeInEaseOut', 'opacity')
     LayoutAnimation.configureNext(animation)
-    setIndex(newIndex)
   }, [])
 
   const renderFooter = useCallback(
@@ -91,9 +89,6 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   useEffect(() => {
     localRef.current?.collapse()
   }, [point])
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const isExpanded = index === 1
 
   const attributes = ATTRIBUTES_MAP[formattedMapPoint.kind]
 
