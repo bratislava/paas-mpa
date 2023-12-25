@@ -296,7 +296,14 @@
       "parkingSpotCount": "Parking spot count",
       "publicTransportLines": "Public transport lines",
       "distanceToCenter": "Distance to the city center",
-      "distanceToPublicTransport": "Distance to public transport"
+      "distanceToPublicTransport": "Distance to public transport",
+      "name": "Name",
+      "parkomatId": "Parkomat ID",
+      "location": "Location",
+      "udrId": "Residential zone",
+      "publicTransportTravelTime": "Travel time to the center",
+      "place": "Place",
+      "addressDetail": "Address detail"
     },
     "kinds": {
       "assistants": "Assistant",
