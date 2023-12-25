@@ -4,7 +4,7 @@ import {
   AssistantPoint,
   BranchPoint,
   MapUdrZone,
-  ParkingLotPoint,
+  ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
 } from '@/modules/map/types'
@@ -13,7 +13,7 @@ export interface ArcgisData {
   rawAssistantsData?: FeatureCollection<Point, AssistantPoint>
   rawParkomatsData?: FeatureCollection<Point, ParkomatPoint>
   rawPartnersData?: FeatureCollection<Point, PartnerPoint>
-  rawParkingLotsData?: FeatureCollection<Point, ParkingLotPoint>
+  rawParkingLotsData?: FeatureCollection<Point, ParkingPoint>
   rawBranchesData?: FeatureCollection<Point, BranchPoint>
   rawUdrData?: FeatureCollection<Polygon, MapUdrZone>
   rawOdpData?: FeatureCollection<Polygon, GeoJsonProperties>

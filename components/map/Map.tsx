@@ -156,6 +156,7 @@ const Map = forwardRef(
           // 44 is the size of the menu icon, 10 margin
           compassPosition={{ top: insets.top + 44 + 10, right: 5 }}
           compassFadeWhenNorth
+          pitchEnabled={false}
         >
           {location && isWithinCity ? (
             <Camera

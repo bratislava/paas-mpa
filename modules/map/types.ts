@@ -77,11 +77,14 @@ export type BranchPoint = MapInterestPoint & {
   Nazov: string // "PAAS Centrum"
   Otvaracie_hodiny_en: string // "Mo 8:30-17:00, Tu-Th 8:30-16:00, Fr 8:30-15:00"
   Otvaracie_hodiny_sk: string // "Po 8:30-17:00, Ut-Št 8:30-16:00, Pi 8:30-15:00"
+  Spresnujuce_informacie_en: string
+  Spresnujuce_informacie_sk: string
 }
 
 export type AssistantPoint = MapInterestPoint & {
   Rezidenstka_zona: string
   Interny_nazov: string
+  Rezidentska_zona: string
   web: string
 }
 
@@ -106,75 +109,50 @@ export type ParkomatPoint = MapInterestPoint & {
   Navigacia: never
 }
 
-export type GaragePoint = MapInterestPoint & {
-  Adresa: string // "Námestie Martina Benku"
-  Informacia_NPK_en: string // "Visitor parking fee: weekdays from 8am-6pm - €1.80/h, weekdays from 6pm-8am + weekends and holidays - €1.20/h."
-  Informacia_NPK_sk: string // "Návštevnícke parkovné: pracovné dni od 08:00-18:00 - 1,80 €/h., pracovné dni od 18:00-08:00 + víkendy a sviatky - 1,20 €/h. "
-  Informacia_RPK_en: string // "For SM1 resident parking card holders - weekdays 5pm-8am + weekends and holidays are free."
-  Informacia_RPK_sk: string // "Pre držiteľov rezidentskej parkovacej karty SM1 - pracovné dni 17:00-08:00 + víkendy a sviatky zadarmo."
-  Nazov_en: string // "Underground garage Krížna"
-  Nazov_sk: string // "Podzemná garáž Krížna"
-  Povrch_en: string // "underground parking"
-  Povrch_sk: string // "podzemná garáž"
-  Prevadzkova_doba: string // "Nonstop"
-  Stav_en: string // "existing"
-  Stav_sk: string // "existujúce"
-  Typ_en: string // "garage"
-  Typ_sk: string // "garáž"
-  web?: string // Optional field
-  zone: string // "SM1"
-}
-
-export type PPlusRPoinit = MapInterestPoint & {
-  Dojazdova_doba: string // "23 min"
-  Nazov_en: string // "P+R Tesco Lamač"
-  Nazov_sk: string // "P+R Tesco Lamač"
-  Pocet_parkovacich_miest: string // "33"
-  Povrch_en: string // "parking lot"
-  Povrch_sk: string // "parkovisko"
-  Prevadzkova_doba: string // "Neobmedzene"
-  Stav_en: string // "existing"
-  Stav_sk: string // "existujúce"
-  Typ_en: string // "P+R"
-  Typ_sk: string // "P+R"
-  Verejna_doprava: string // "20, 37, 45, 63, 130"
-  Vzdialenost: string // "<100 m"
-  web?: string // Optional field
-  icon: string // "p-plus-r"
-  kind: string // "p-plus-r"
-}
-
-export type ParkingLotPoint = MapInterestPoint & {
-  Dojazdova_doba: string // "4 min"
-  Nazov_en: string // "Parking lot Černyševského"
-  Nazov_sk: string // "Záchytné parkovisko Černyševského"
-  Pocet_parkovacich_miest: string // "59"
-  Povrch_en: string // "parking lot"
-  Povrch_sk: string // "parkovisko"
-  Prevadzkova_doba: string // "V pracovné dni: Od 05:00-24:00 pre návštevníkov zadarmo. Od 00:00-05:00 len pre držiteľov rezidentskej karty.\nVíkendy: zadarmo."
-  Stav_en: string // "new"
-  Stav_sk: string // "nové"
-  Typ_en: string // "parking lot"
-  Typ_sk: string // "parkovisko"
-  Verejna_doprava: string // "3, 84, 95, 99"
-  Vzdialenost: string // ">500 m"
-  web?: string // Optional field
-  icon: string // "parking-lot"
-  kind: string // "parking-lots"
-  zone: string // "PE1"
+export type ParkingPoint = MapInterestPoint & {
+  Nazov_sk: string // 'P+R Komisárky'
+  Pocet_parkovacich_miest: string // '163'
+  Verejna_doprava: string // '3'
+  Vzdialenost: string // '\u003C250 m'
+  Dojazdova_doba: string // '28 min'
+  Stav_sk: string // 'nové'
+  ORIG_FID: number // 0
+  web?: string // 'ano'
+  Povrch_sk: string // 'parkovisko'
+  Spadova_oblast: string | null // null
+  Prevadzkova_doba: string // 'Parkovanie povolené v pracovné dni od 05:00 do 24:00, cez víkendy a sviatky v čase 00:00-24:00. Parkovanie je bezplatné.'
+  Informacia_RPK_sk: string | null // null
+  Informacia_NPK_sk: string | null // null
+  Typ_sk: string // 'P+R'
+  Adresa: string | null // null
+  Typ_en: string // 'P+R'
+  Nazov_en: string // 'P+R Komisárky'
+  Stav_en: string // 'new'
+  Povrch_en: string // 'parking lot'
+  Informacia_RPK_en: string | null // null
+  Informacia_NPK_en: string | null // null
+  Partneri: string | null // null
 }
 
 export type NormalizedPoint = {
   id: number
   name: string
-  navigation?: string
-  openingHours?: string
   kind: MapPointKindEnum
-  address?: string
+  udrId?: string | null
+  parkomatId?: string | null
+  location?: string
+  navigation?: string | null
+  openingHours?: string | null
+  address?: string | null
+  addressDetail?: string
+  place?: string
   parkingSpotCount?: number
-  publicTransportLines?: string
-  distanceToCenter?: string
-  distanceToPublicTransport?: string
+  publicTransportLines?: string | null
+  publicTransportTravelTime?: string | null
+  distanceToCenter?: string | null
+  distanceToPublicTransport?: string | null
+  npkInformation?: string | null
+  rpkInformation?: string | null
 }
 
 type PointTypes = {
@@ -182,9 +160,9 @@ type PointTypes = {
   [MapPointKindEnum.branch]: BranchPoint
   [MapPointKindEnum.parkomat]: ParkomatPoint
   [MapPointKindEnum.partner]: PartnerPoint
-  [MapPointKindEnum.pPlusR]: PPlusRPoinit
-  [MapPointKindEnum.garage]: GaragePoint
-  [MapPointKindEnum.parkingLot]: ParkingLotPoint
+  [MapPointKindEnum.pPlusR]: ParkingPoint
+  [MapPointKindEnum.garage]: ParkingPoint
+  [MapPointKindEnum.parkingLot]: ParkingPoint
 }
 
 // Type guard function using conditional types

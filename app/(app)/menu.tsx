@@ -118,7 +118,7 @@ const MainMenuScreen = () => {
       {/* <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} /> */}
       <ScreenView
         className="grow p-5"
-        style={{ paddingBottom: bottom + 20 }}
+        style={{ paddingBottom: bottom + 20 }} // 20 is same as pb-5
         hasBackButton
         title="Menu"
       >

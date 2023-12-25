@@ -7,7 +7,7 @@ import {
   AssistantPoint,
   BranchPoint,
   MapUdrZone,
-  ParkingLotPoint,
+  ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
 } from '@/modules/map/types'
@@ -53,7 +53,7 @@ export const useArcgisData = (): ArcgisData => {
     rawAssistantsData: rawAssistantsData as FeatureCollection<Point, AssistantPoint> | undefined,
     rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint> | undefined,
     rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint> | undefined,
-    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingLotPoint> | undefined,
+    rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingPoint> | undefined,
     rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint> | undefined,
     rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone> | undefined,
     rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties> | undefined,
