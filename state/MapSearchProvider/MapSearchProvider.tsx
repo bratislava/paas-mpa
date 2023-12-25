@@ -3,6 +3,7 @@ import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 type MapSearchContextProps = {
   setFlyToCenter: ((center: Position) => void) | null
+  rotateToNorth: (() => void) | null
 }
 
 export const MapSearchContext = createContext<MapSearchContextProps | null>(null)
@@ -15,6 +16,7 @@ MapSearchUpdateContext.displayName = 'MapSearchUpdateContext'
 
 const defaultInitialMapSearchValues: MapSearchContextProps = {
   setFlyToCenter: null,
+  rotateToNorth: null,
 }
 
 const MapSearchProvider = ({ children }: PropsWithChildren) => {

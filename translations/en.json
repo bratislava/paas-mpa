@@ -453,5 +453,8 @@
     "unexpectedErrorObjectInSignIn": "Unexpected error. Unknown error object during sign in.",
     "confirmError": "Confirm Error: {{message}}",
     "unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow."
+  },
+  "MapScreen": {
+    "compass": "Compass"
   }
 }

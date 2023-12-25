@@ -452,5 +452,8 @@
     "unexpectedErrorObjectInSignIn": "Neočakávaná chyba. Neznámy error object počas prihlásenia.",
     "confirmError": "Chyba pri potvrdení: {{message}}",
     "unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia."
+  },
+  "MapScreen": {
+    "compass": "Kompas"
   }
 }

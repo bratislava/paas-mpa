@@ -45,6 +45,7 @@ type Props = {
   processedData: ProcessedMapData
   onMapPinVisibilityChange?: (isShown: boolean) => void
   onStateChange?: (mapState: MapState) => void
+  onCenterChange?: (center: Position) => void
 }
 
 export type MapRef = {
@@ -63,6 +64,7 @@ const Map = forwardRef(
       processedData,
       onMapPinVisibilityChange,
       onStateChange,
+      onCenterChange,
     }: Props,
     ref: ForwardedRef<MapRef>,
   ) => {
@@ -77,6 +79,7 @@ const Map = forwardRef(
 
     const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
+    const [cameraHeading, setCameraHeading] = useState<number>(0)
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -95,10 +98,17 @@ const Map = forwardRef(
       setFlyToCenter(center)
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
+    const handleRotateToNorth = useCallback(() => {
+      console.log('setting camera heading to 0')
+      setCameraHeading(0)
+    }, [])
 
     useEffect(() => {
-      updateMapSearchContext({ setFlyToCenter: handleSetFlyToCenter })
-    }, [updateMapSearchContext, handleSetFlyToCenter])
+      updateMapSearchContext({
+        setFlyToCenter: handleSetFlyToCenter,
+        rotateToNorth: handleRotateToNorth,
+      })
+    }, [updateMapSearchContext, handleSetFlyToCenter, handleRotateToNorth])
 
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
       handleSetFlyToCenter,
@@ -112,6 +122,8 @@ const Map = forwardRef(
       setSelectedPolygon,
       onStateChange,
       setFlyToCenter,
+      onCenterChange,
+      setCameraHeading,
     })
 
     const handlePointPress = useCallback(
@@ -169,6 +181,7 @@ const Map = forwardRef(
               centerCoordinate={flyToCenter ?? undefined}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
+              heading={cameraHeading}
             />
           ) : (
             <Camera
@@ -179,6 +192,7 @@ const Map = forwardRef(
               centerCoordinate={nonFollowingMapCenter}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
+              heading={cameraHeading}
             />
           )}
           <UserLocation
