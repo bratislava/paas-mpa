@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native'
 
 import { CompassIcon } from '@/assets/map'
 import { useTranslation } from '@/hooks/useTranslation'
-import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
+import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
 
 type Props = {
   heading: number
@@ -12,11 +12,15 @@ type Props = {
 
 const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
   const t = useTranslation('MapScreen')
-  const { rotateToNorth } = useMapSearchContext()
+  const { rotateToNorth } = useMapStoreContext()
 
   const handlePress = useCallback(() => {
     rotateToNorth?.()
   }, [rotateToNorth])
+
+  if (heading === 0) {
+    return null
+  }
 
   return (
     <Pressable
@@ -28,9 +32,9 @@ const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
     >
       {({ pressed }) => (
         <CompassIcon
-          width={48}
-          height={48}
-          style={{ transform: [{ rotate: `${heading}deg` }] }}
+          width={44}
+          height={44}
+          style={{ transform: [{ rotate: `-${heading}deg` }] }}
           className={clsx('text-dark', pressed && 'text-dark/50')}
         />
       )}

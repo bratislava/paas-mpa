@@ -22,7 +22,6 @@ type Dependencies = {
   onStateChange?: (state: MapState) => void
   setFlyToCenter: Dispatch<SetStateAction<Position | null>>
   onCenterChange?: (center: Position) => void
-  setCameraHeading?: Dispatch<SetStateAction<number>>
 }
 
 export const useCameraChangeHandler = ({
@@ -34,7 +33,6 @@ export const useCameraChangeHandler = ({
   onStateChange,
   setFlyToCenter,
   onCenterChange,
-  setCameraHeading,
 }: Dependencies) => {
   const { scale } = useWindowDimensions()
   const screenCenter = useMapCenter({ scale: Platform.OS === 'android' })
@@ -77,7 +75,6 @@ export const useCameraChangeHandler = ({
   return useCallback(
     (state: MapState) => {
       onStateChange?.(state)
-      setCameraHeading?.(state.properties.heading)
       if (
         lastCenter[0] === state.properties.center[0] &&
         lastCenter[1] === state.properties.center[1]
@@ -103,7 +100,6 @@ export const useCameraChangeHandler = ({
       onStateChange,
       resetFlyToCenterHandler,
       onCenterChange,
-      setCameraHeading,
     ],
   )
 }

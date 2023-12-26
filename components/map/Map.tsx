@@ -22,7 +22,6 @@ import {
   useState,
 } from 'react'
 import { Keyboard, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
@@ -36,7 +35,7 @@ import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapInterestPoint, MapUdrZone, UdrZoneFeature } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
-import { useMapSearchUpdateContext } from '@/state/MapSearchProvider/useMapSearchUpdateContext'
+import { useMapStoreUpdateContext } from '@/state/MapStoreProvider/useMapStoreUpdateContext'
 
 type Props = {
   onZoneChange?: (feature: MapUdrZone | null) => void
@@ -72,14 +71,13 @@ const Map = forwardRef(
     const map = useRef<MapView>(null)
     const [followingUser, setFollowingUser] = useState(true)
     const [location] = useLocation()
-    const insets = useSafeAreaInsets()
-    const updateMapSearchContext = useMapSearchUpdateContext()
+    const updateMapStoreContext = useMapStoreUpdateContext()
     const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
 
     const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
-    const [cameraHeading, setCameraHeading] = useState<number>(0)
+    const [newCameraHeading, setNewCameraHeading] = useState<number | null>(null)
 
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
@@ -99,16 +97,24 @@ const Map = forwardRef(
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
     const handleRotateToNorth = useCallback(() => {
-      console.log('setting camera heading to 0')
-      setCameraHeading(0)
+      setFollowingUser(false)
+      setNewCameraHeading(0)
     }, [])
+    useEffect(() => {
+      if (newCameraHeading !== null) {
+        camera.current?.setCamera({
+          heading: newCameraHeading,
+        })
+        setNewCameraHeading(null)
+      }
+    }, [newCameraHeading])
 
     useEffect(() => {
-      updateMapSearchContext({
+      updateMapStoreContext({
         setFlyToCenter: handleSetFlyToCenter,
         rotateToNorth: handleRotateToNorth,
       })
-    }, [updateMapSearchContext, handleSetFlyToCenter, handleRotateToNorth])
+    }, [updateMapStoreContext, handleSetFlyToCenter, handleRotateToNorth])
 
     useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
       handleSetFlyToCenter,
@@ -123,7 +129,6 @@ const Map = forwardRef(
       onStateChange,
       setFlyToCenter,
       onCenterChange,
-      setCameraHeading,
     })
 
     const handlePointPress = useCallback(
@@ -164,10 +169,6 @@ const Map = forwardRef(
           onCameraChanged={handleCameraChange}
           onPress={Keyboard.dismiss}
           scaleBarEnabled={false}
-          compassEnabled
-          // 44 is the size of the menu icon, 10 margin
-          compassPosition={{ top: insets.top + 44 + 10, right: 5 }}
-          compassFadeWhenNorth
           pitchEnabled={false}
         >
           {location && isWithinCity ? (
@@ -181,7 +182,6 @@ const Map = forwardRef(
               centerCoordinate={flyToCenter ?? undefined}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
-              heading={cameraHeading}
             />
           ) : (
             <Camera
@@ -192,7 +192,6 @@ const Map = forwardRef(
               centerCoordinate={nonFollowingMapCenter}
               maxBounds={CITY_BOUNDS}
               padding={cameraPadding}
-              heading={cameraHeading}
             />
           )}
           <UserLocation
