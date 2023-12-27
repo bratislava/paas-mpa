@@ -1,22 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { SafeAreaView, View } from 'react-native'
+import { SafeAreaView, ScrollView, View } from 'react-native'
 
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
+import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
-import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { shortenPriceOptions } from '@/modules/backend/constants/queryOptions'
 
 const Shorten = () => {
   const t = useTranslation('ShortenTicket')
   const queryClient = useQueryClient()
 
   const { ticketId } = useLocalSearchParams<{ ticketId: string }>()
-  console.log(ticketId)
+
   if (!ticketId) {
     router.replace('/tickets')
   }
@@ -36,28 +35,35 @@ const Shorten = () => {
     },
   })
 
-  const shortenPrice = useQueryWithFocusRefetch(shortenPriceOptions(+ticketId!))
-
   const handleShortenTicket = () => {
     if (ticketId) {
       shortenTicketMutation.mutate(+ticketId)
     }
   }
 
-  console.log(shortenPrice.data, shortenPrice.error)
-
   return (
     <ScreenView title={t('title')} hasBackButton>
-      <SafeAreaView className="grow">
-        {shortenPrice.isFetching || !shortenPrice.data ? null : (
-          <ScreenContent className="grow">
-            <View className="grow g-5">
-              <Typography>{t('infoText')}</Typography>
+      <SafeAreaView>
+        <ScreenContent className="grow">
+          <View className="h-full g-4">
+            <ScrollView className="shrink">
+              <View className="grow">
+                <Markdown>{t('infoText')}</Markdown>
 
-              <View className="g-2">
-                <Typography variant="default-bold">{t('shortenConditions')}</Typography>
+                <View className="mt-5 g-1">
+                  <Typography variant="default-bold" className="mb-1">
+                    {t('mainConditions')}
+                  </Typography>
+
+                  {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
+                    <View className="max-w-full flex-row g-2">
+                      <Typography>{`\u2022`}</Typography>
+                      <Typography className="min-w-0 shrink">{item}</Typography>
+                    </View>
+                  ))}
+                </View>
               </View>
-            </View>
+            </ScrollView>
 
             <Button
               variant="negative"
@@ -66,8 +72,8 @@ const Shorten = () => {
             >
               {t('actionConfirm')}
             </Button>
-          </ScreenContent>
-        )}
+          </View>
+        </ScreenContent>
       </SafeAreaView>
     </ScreenView>
   )

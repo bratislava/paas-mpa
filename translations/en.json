@@ -90,10 +90,27 @@
     "validUntil": "Valid to"
   },
   "ShortenTicket": {
+    "result": "Shortening result",
     "title": "Terminate ticket",
-    "infoText": "Cancel your parking ticket hassle-free. Are you sure you want to terminate your parking ticket?",
+    "infoText": "The shortening of a parking ticket is possible under certain conditions regulated by the [Operating Order for Temporary Parking of Motor Vehicles in the capital city of the Slovak Republic, Bratislava](https://paas.sk/wp-content/uploads/2023/12/Operating-Order-PP_v2.15.pdf).",
     "actionConfirm": "Continue",
-    "shortenConditions": "Termination conditions"
+    "mainConditions": "Main conditions",
+    "conditions": [
+      "Shortening the ticket is possible after 15 minutes have elapsed from the start of the ticket's validity. If you shorten the ticket earlier, the ticket will only be terminated after the expiration of the 15-minute period. (This does not apply if the ticket was purchased exclusively through the Bonus or Visitor Parking Card.)",
+      "The ticket can be shortened for a cancellation fee of €0.05 (This does not apply if the ticket was purchased exclusively through the Visitor or Bonus Card.)",
+      "In the case of immediate shortening of a ticket purchased exclusively through the Bonus Parking Card, a full minute will be deducted from the parking card.",
+      "In the case of extending a parking ticket, it will be possible to shorten the last extension."
+    ],
+    "successful": "Shortening successful",
+    "successfulText": "Your ticket has been shortened.",
+    "failed": "Shortening failed",
+    "failedText": "Your ticket has not been shortened. Please try again.",
+    "success": {
+      "actionButtonLabel": "Back to map"
+    },
+    "fail": {
+      "actionButtonLabel": "Back"
+    }
   },
   "PurchaseBottomSheet": {
     "parkingTime": "Parking {{time}}",

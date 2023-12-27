@@ -91,10 +91,27 @@
     "validUntil": "Platnosť do"
   },
   "ShortenTicket": {
+    "result": "Výsledok skrátenia",
     "title": "Predčasne ukončiť",
-    "infoText": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
+    "infoText": "Skrátenie parkovacieho lístka je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf)",
     "actionConfirm": "Pokračovať",
-    "shortenConditions": "Podmienky ukončenia"
+    "mainConditions": "Základné podmienky",
+    "conditions": [
+      "skrátenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade že lístok skrátite skôr, bude lístok ukončený až po uplynutí doby 15 minút (neplatí ak bol lístok zakúpený výhradne cez Bonusovú alebo Návštevnícku parkovaciu kartu).",
+      "lístok je možné skrátit´ za storno poplatok vo výške 0,05€ (neplatí ak bol lístok zakúpený výhradne cez Návštevnícku alebo Bonusovú kartu).",
+      "V prípade okamžitého skrátenia lístka zakúpeného výhradne cez Bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
+      "V prípade predĺženia parkovacieho lístka, bude umožnené skrátiť posledné predĺženie lístka."
+    ],
+    "successful": "Lístok ukončený",
+    "successfulText": "Váš parkovací lístok bol predčasne ukončený ",
+    "failed": "Ukončenie zlyhalo",
+    "failedText": "Ukončenie zlyhalo. Tento lístok nie je možné ukončiť. Skúste to znova.",
+    "success": {
+      "actionButtonLabel": "Späť na mapu"
+    },
+    "fail": {
+      "actionButtonLabel": "Späť"
+    }
   },
   "PurchaseBottomSheet": {
     "parkingTime": "Parkovanie {{time}}",

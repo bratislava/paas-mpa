@@ -1,4 +1,4 @@
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -23,7 +23,7 @@ const ShortenResultPage = () => {
 
   return (
     <ScreenViewCentered
-      title={t('verificationResult')}
+      title={t('result')}
       hasBackButton
       actionButton={
         status === 'error' ? (
@@ -31,9 +31,7 @@ const ShortenResultPage = () => {
             <ContinueButton>{t(`${status}.actionButtonLabel`)}</ContinueButton>
           </Link>
         ) : (
-          <Link asChild replace href={{ pathname: '/tickets' }}>
-            <ContinueButton>{t(`${status}.actionButtonLabel`)}</ContinueButton>
-          </Link>
+          <ContinueButton onPress={router.back}>{t(`${status}.actionButtonLabel`)}</ContinueButton>
         )
       }
     >
