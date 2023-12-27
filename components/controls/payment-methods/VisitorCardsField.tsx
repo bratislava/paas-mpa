@@ -1,6 +1,8 @@
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
+import { View } from 'react-native'
 
 import VisitorCardRow from '@/components/controls/payment-methods/rows/VisitorCardRow'
+import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
@@ -49,21 +51,31 @@ const VisitorCardsField = () => {
 
   return (
     <Field label={t('fieldVisitorCards')}>
-      {visitorCards.map((card) => {
-        return (
-          <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
-            <VisitorCardRow
-              email={card.name ?? ''}
-              balance={
-                card.balanceSeconds
-                  ? formatBalance(card.balanceSeconds, card.originalBalanceSeconds)
-                  : ''
-              }
-              selected={card.identificator === npk?.identificator}
-            />
-          </PressableStyled>
-        )
-      })}
+      {visitorCards.length > 0 ? (
+        visitorCards.map((card) => {
+          return (
+            <PressableStyled key={card.identificator} onPress={() => handleCardPress(card)}>
+              <VisitorCardRow
+                email={card.name ?? ''}
+                balance={
+                  card.balanceSeconds
+                    ? formatBalance(card.balanceSeconds, card.originalBalanceSeconds)
+                    : ''
+                }
+                selected={card.identificator === npk?.identificator}
+              />
+            </PressableStyled>
+          )
+        })
+      ) : (
+        <View className="flex items-start">
+          <Link asChild href="/parking-cards/verification">
+            <Button variant="plain-dark" startIcon="add-circle-outline" onPress={router.back}>
+              {t('addVisitorCard')}
+            </Button>
+          </Link>
+        </View>
+      )}
     </Field>
   )
 }

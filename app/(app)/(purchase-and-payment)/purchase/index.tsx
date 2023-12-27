@@ -1,19 +1,23 @@
 import { useMutation } from '@tanstack/react-query'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
+import { ParkingCardAvatar } from '@/assets/avatars'
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
 import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
+import { useFirstPurchaseStorage } from '@/hooks/useFirstPurchaseStorage'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -37,6 +41,8 @@ const PurchaseScreen = () => {
 
   const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
   const [defaultPaymentOption] = useDefaultPaymentOption()
+  const [firstPurchaseOpened, setFirstPurchaseOpened] = useFirstPurchaseStorage()
+  const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false)
 
   const licencePlate = vehicle?.vehiclePlateNumber ?? ''
 
@@ -53,6 +59,22 @@ const PurchaseScreen = () => {
       parkingEnd,
     },
   }
+
+  const handleModalClose = () => setIsAddCardModalOpen(false)
+
+  const handleParkingCardRedirect = () => {
+    handleModalClose()
+    router.push('/parking-cards/verification')
+  }
+
+  useEffect(() => {
+    if (firstPurchaseOpened) return
+
+    setIsAddCardModalOpen(true)
+    setFirstPurchaseOpened(true)
+    // needs to run only at first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
@@ -134,6 +156,18 @@ const PurchaseScreen = () => {
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
         isLoading={initPaymentMutation.isPending}
       />
+
+      <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
+        <ModalContentWithActions
+          customAvatarComponent={<ParkingCardAvatar />}
+          title={t('parkingCardModal.title')}
+          text={t('parkingCardModal.message')}
+          primaryActionLabel={t('parkingCardModal.actionConfirm')}
+          primaryActionOnPress={handleParkingCardRedirect}
+          secondaryActionLabel={t('parkingCardModal.actionCancel')}
+          secondaryActionOnPress={handleModalClose}
+        />
+      </Modal>
     </>
   )
 }
