@@ -203,7 +203,8 @@
     "buyTicket": "Buy ticket",
     "filters": "Filters",
     "noHistoryTickets": "No tickets found",
-    "noHistoryTicketsText": "No past tickets matching the selected filters found."
+    "noHistoryTicketsText": "No past tickets matching the selected filters found.",
+    "downloadReceipt": "Download receipt"
   },
   "TicketCard": {
     "prolong": "Prolong",
