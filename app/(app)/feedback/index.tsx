@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
 import {
   Keyboard,
   NativeSyntheticEvent,
@@ -13,7 +13,6 @@ import {
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
 import Chip from '@/components/shared/Chip'
 import Field from '@/components/shared/Field'
@@ -25,7 +24,6 @@ import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
 
 const FeedbackScreen = () => {
   const t = useTranslation('FeedbackScreen')
-  const snackbar = useSnackbar()
 
   const emailRef = useRef<NativeTextInput>(null)
   const messageRef = useRef<NativeTextInput>(null)
@@ -39,6 +37,13 @@ const FeedbackScreen = () => {
   const mutation = useMutation({
     mutationFn: (feedbackDto: FeedbackDto) => {
       return clientApi.systemControllerSendFeedback(feedbackDto)
+    },
+    onSuccess: () => {
+      router.replace('/feedback/success')
+      mutation.reset()
+    },
+    onError: () => {
+      mutation.reset()
     },
   })
 
@@ -82,15 +87,6 @@ const FeedbackScreen = () => {
     mutation.mutate({ email, message, type: type as unknown as FeedbackType })
   }, [email, feedbackType, message, mutation])
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      router.replace('/feedback/success')
-      mutation.reset()
-    } else if (mutation.isError) {
-      mutation.reset()
-    }
-  }, [mutation, t, snackbar])
-
   const isValidEmail = !shouldVerifyEmail || (!!email && email.includes('@'))
   const isValidMessage = !shouldVerifyMessage || message.length > 0
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
@@ -111,6 +107,7 @@ const FeedbackScreen = () => {
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
                 onSubmitEditing={handleEmailSubmit}
+                hasError={!isValidEmail}
               />
             </Field>
             <Field label={t('type')}>
@@ -142,6 +139,7 @@ const FeedbackScreen = () => {
                 onChange={handleInputChange(setMessage)}
                 onFocus={handleMessageFocus}
                 onBlur={handleMessageBlur}
+                hasError={!isValidMessage}
               />
             </Field>
             <Button
