@@ -34,7 +34,12 @@
     "emailField": "E-mail address",
     "instructions": "If you are registered in PAAS, enter the e-mail address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards.",
     "verifyYourEmail": "Verify e-mail",
-    "verifyYourEmailInfo": "We’ve sent verification e-mail to \n{{email}} \n\nClick on Verify button in the e-mail to approve verification and we will then add parking card directly to the app."
+    "verifyYourEmailInfo": "We’ve sent verification e-mail to \n{{email}} \n\nClick on Verify button in the e-mail to approve verification and we will then add parking card directly to the app.",
+    "Errors": {
+      "EmailAlreadyVerified": "Email has been added already",
+      "InvalidEmail": "Email address has wrong format",
+      "GeneralError": "An error occurred."
+    }
   },
   "PurchaseScreen": {
     "prolongate": "Prolongate ticket",
@@ -468,5 +473,8 @@
       "title": "Message sent",
       "text": "Thanks to your feedback and suggestions, we can improve the PAAS application."
     }
+  },
+  "MapScreen": {
+    "compass": "Compass"
   }
 }

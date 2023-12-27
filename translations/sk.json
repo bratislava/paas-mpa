@@ -34,7 +34,12 @@
     "emailField": "E-mailová adresa",
     "instructions": "Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
     "verifyYourEmail": "Overte e-mail",
-    "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
+    "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie.",
+    "Errors": {
+      "EmailAlreadyVerified": "E-mail už bol pridaný",
+      "InvalidEmail": "E-mailová adresa má zlý formát",
+      "GeneralError": "Vyskytla sa chyba."
+    }
   },
   "PurchaseScreen": {
     "prolongate": "Predĺžiť lístok",
@@ -467,5 +472,8 @@
       "title": "Správa odoslaná",
       "text": "Ďakujeme. Aj vďaka vašim podnetom a návrhom môžeme aplikáciu PAAS zlepšovať."
     }
+  },
+  "MapScreen": {
+    "compass": "Kompas"
   }
 }
