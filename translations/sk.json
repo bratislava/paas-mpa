@@ -34,7 +34,12 @@
     "emailField": "E-mailová adresa",
     "instructions": "Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
     "verifyYourEmail": "Overte e-mail",
-    "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie."
+    "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n{{email}} \n\nKliknite na overovacie tlačidlo v e-maily a potvrďte overenie. Po potvrdení nahráme všetky vaše parkovacie karty a zľavy do aplikácie.",
+    "Errors": {
+      "EmailAlreadyVerified": "E-mail už bol pridaný",
+      "InvalidEmail": "E-mailová adresa má zlý formát",
+      "GeneralError": "Vyskytla sa chyba."
+    }
   },
   "PurchaseScreen": {
     "prolongate": "Predĺžiť lístok",
@@ -313,7 +318,14 @@
       "parkingSpotCount": "Počet parkovacích miest",
       "publicTransportLines": "Linky MHD",
       "distanceToCenter": "Vzdialenosť do centra",
-      "distanceToPublicTransport": "Vzdialenosť k zastávke MHD"
+      "distanceToPublicTransport": "Vzdialenosť k zastávke MHD",
+      "name": "Názov",
+      "parkomatId": "ID parkovacieho automatu",
+      "location": "Lokalita",
+      "udrId": "Rezidentská zóna",
+      "publicTransportTravelTime": "Dojazdová doba do centra",
+      "place": "Miesto",
+      "addressDetail": "Spresňujúce informácie"
     },
     "kinds": {
       "assistants": "Asistent",

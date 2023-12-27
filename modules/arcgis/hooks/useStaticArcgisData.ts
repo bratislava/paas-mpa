@@ -8,7 +8,7 @@ import {
   AssistantPoint,
   BranchPoint,
   MapUdrZone,
-  ParkingLotPoint,
+  ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
 } from '@/modules/map/types'
@@ -45,9 +45,7 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawParkingLotsData } = useQuery({
     queryKey: ['RawParkingLotsData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, ParkingLotPoint>>(
-        `${STATIC_ARCGIS_URL}/parkoviska.geojson`,
-      ),
+      axios.get<FeatureCollection<Point, ParkingPoint>>(`${STATIC_ARCGIS_URL}/parkoviska.geojson`),
     select: (data) => data.data,
   })
 

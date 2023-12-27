@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { router } from 'expo-router'
 import { useState } from 'react'
 
@@ -12,30 +13,25 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
-
-/*
- * TODO
- * - [ ] add email validation
- * - [ ] handle error on mutation (email not sent)
- */
+import { SERVICEERROR, VerifyEmailsDto } from '@/modules/backend/openapi-generated'
+import { isServiceError } from '@/utils/errorService'
+import { isValidEmail } from '@/utils/isValidEmail'
 
 const Page = () => {
   const t = useTranslation('AddParkingCards')
 
   const [email, setEmail] = useState('')
 
-  // TODO add email validation
-  const isValid = email.includes('@')
+  const [expectedError, setExpectedError] = useState<string | null>(null)
 
-  // TODO deduplicate this mutation (it's also used in link-expired.tsx)
+  // TODO deduplicate this mutation (it's also used in verification-result.tsx)
   const mutation = useMutation({
     mutationFn: (bodyInner: VerifyEmailsDto) =>
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
     onSuccess: (res) => {
       const tmpVerificationToken = res.data[0].token
 
-      router.replace({
+      router.push({
         pathname: '/parking-cards/verification/verification-sent',
         params: {
           email,
@@ -43,26 +39,51 @@ const Page = () => {
         },
       })
     },
+    onError: (error) => {
+      if (
+        isAxiosError(error) &&
+        isServiceError(error.response?.data) &&
+        error.response?.data.errorName === SERVICEERROR.EmailAlreadyVerified
+      )
+        setExpectedError('EmailAlreadyVerified')
+      else setExpectedError('GeneralError')
+    },
   })
 
-  const handleSendVerificationEmail = () => {
-    const body: VerifyEmailsDto = {
-      emails: [email],
+  const handleChangeText = (val: string) => {
+    if (expectedError) {
+      setExpectedError(null)
     }
 
-    mutation.mutate(body)
+    setEmail(val)
+  }
+
+  const handleSendVerificationEmail = () => {
+    if (isValidEmail(email)) {
+      const body: VerifyEmailsDto = {
+        emails: [email],
+      }
+
+      mutation.mutate(body)
+    } else {
+      setExpectedError('InvalidEmail')
+    }
   }
 
   return (
     <DismissKeyboard>
       <ScreenView title={t('addCardsTitle')} hasBackButton>
         <ScreenContent>
-          <Field label={t('emailField')}>
+          <Field
+            label={t('emailField')}
+            errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
+          >
             <TextInput
               value={email}
-              onChangeText={setEmail}
+              onChangeText={handleChangeText}
               keyboardType="email-address"
               autoCapitalize="none"
+              hasError={!!expectedError}
               autoComplete="email"
               autoCorrect={false}
               onSubmitEditing={handleSendVerificationEmail}
@@ -73,11 +94,7 @@ const Page = () => {
             <Typography>{t('instructions')}</Typography>
           </Panel>
 
-          <ContinueButton
-            onPress={handleSendVerificationEmail}
-            disabled={!isValid}
-            loading={mutation.isPending}
-          />
+          <ContinueButton onPress={handleSendVerificationEmail} loading={mutation.isPending} />
         </ScreenContent>
       </ScreenView>
     </DismissKeyboard>

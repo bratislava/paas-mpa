@@ -84,7 +84,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 <Icon name="location-pin" />
                 <View className="flex-1">
                   <Typography numberOfLines={1}>{item.text}</Typography>
-                  <Typography numberOfLines={1}>{item.place_name}</Typography>
+                  <Typography numberOfLines={1}>
+                    {/* item.address, item.properties.address is not set for all entries */}
+                    {item.place_name?.replace(`${item.text}, `, '')}
+                  </Typography>
                 </View>
                 <Icon name="chevron-right" />
               </FlexRow>

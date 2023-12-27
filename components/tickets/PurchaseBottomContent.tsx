@@ -39,7 +39,7 @@ const PurchaseBottomContent = ({
       />
 
       <View
-        style={{ paddingBottom: insets.bottom }}
+        style={{ paddingBottom: insets.bottom + 20 }} // 20 is same as pb-5
         className="bg-white px-5 g-3"
         onLayout={(event) => {
           setPurchaseButtonContainerHeight(event.nativeEvent.layout.height)
