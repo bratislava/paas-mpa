@@ -50,7 +50,7 @@ const Page = () => {
     },
   })
 
-  const onChangeText = (val: string) => {
+  const handleChangeText = (val: string) => {
     if (expectedError) {
       setExpectedError(null)
     }
@@ -80,7 +80,7 @@ const Page = () => {
           >
             <TextInput
               value={email}
-              onChangeText={onChangeText}
+              onChangeText={handleChangeText}
               keyboardType="email-address"
               autoCapitalize="none"
               hasError={!!expectedError}
