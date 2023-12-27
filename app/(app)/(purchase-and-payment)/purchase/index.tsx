@@ -7,7 +7,7 @@ import { ParkingCardAvatar } from '@/assets/avatars'
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
-import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
+import UsedBonusCard from '@/components/controls/payment-methods/UsedBonusCard'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
@@ -131,10 +131,10 @@ const PurchaseScreen = () => {
             </Field>
 
             <Field label={t('paymentMethodsFieldLabel')}>
-              {priceQuery.data?.creditBpkUsedSeconds ? (
-                // TODO props
-                <BonusCardRow balance="balance" validUntil="validUntil" />
-              ) : null}
+              <UsedBonusCard
+                id={priceQuery.data?.bpkId}
+                creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
+              />
 
               <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                 <PressableStyled>
