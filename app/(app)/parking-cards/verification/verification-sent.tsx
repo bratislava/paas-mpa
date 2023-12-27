@@ -56,9 +56,10 @@ const Page = () => {
             text={t('verifyYourEmailInfo', { email })}
             customAvatarComponent={<EmailAvatar />}
           >
-            {environment.deployment === 'production' ? null : (
-              <Typography>{tmpVerificationToken}</Typography>
-            )}
+            {/* eslint-disable-next-line unicorn/no-negated-condition */}
+            {environment.deployment !== 'production' ? (
+              <Typography>DEV {tmpVerificationToken}</Typography>
+            ) : null}
             <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
           </ContentWithAvatar>
         </ScreenViewCentered>

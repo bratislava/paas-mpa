@@ -7,7 +7,7 @@ import intersect from '@turf/intersect'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
 import {
   BranchPoint,
-  ParkingLotPoint,
+  ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
   MapInterestPoint,
@@ -71,7 +71,7 @@ export interface ProcessDataOptions {
   rawAssistantsData: FeatureCollection<Point, MapInterestPoint>
   rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
   rawPartnersData: FeatureCollection<Point, PartnerPoint>
-  rawParkingLotsData: FeatureCollection<Point, ParkingLotPoint>
+  rawParkingLotsData: FeatureCollection<Point, ParkingPoint>
   rawBranchesData: FeatureCollection<Point, BranchPoint>
   rawUdrData: FeatureCollection<Polygon, MapUdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
@@ -222,7 +222,7 @@ export const processData = ({
                 kind,
                 icon,
               },
-            } as Feature<Point, ParkingLotPoint>
+            } as Feature<Point, ParkingPoint>
           })
           .filter((f) => f.properties?.web === 'ano'),
       ],
