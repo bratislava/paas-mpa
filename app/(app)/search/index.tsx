@@ -12,10 +12,10 @@ import FlexRow from '@/components/shared/FlexRow'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature, isGeocodingFeature, UdrZoneFeature } from '@/modules/map/types'
 import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
-import { useMapSearchContext } from '@/state/MapSearchProvider/useMapSearchContext'
+import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
 
 const SearchScreen = () => {
-  const { setFlyToCenter } = useMapSearchContext()
+  const { setFlyToCenter } = useMapStoreContext()
 
   const t = useTranslation()
   const insets = useSafeAreaInsets()
