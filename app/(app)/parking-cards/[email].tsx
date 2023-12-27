@@ -1,11 +1,9 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import { useRef, useState } from 'react'
-import { FlatList, useWindowDimensions } from 'react-native'
-import { SceneMap, TabView } from 'react-native-tab-view'
+import { useRef } from 'react'
+import { FlatList } from 'react-native'
 
-import TabBar from '@/components/navigation/TabBar'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
@@ -77,24 +75,11 @@ const ActiveCards = () => {
 //   )
 // }
 
-const renderScene = SceneMap({
-  active: ActiveCards,
-  // expired: ExpiredCards,
-})
-
 const Page = () => {
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
-
-  const layout = useWindowDimensions()
-
-  const [index, setIndex] = useState(0)
-  const [routes] = useState([
-    { key: 'active', title: t('activeCards') },
-    // { key: 'expired', title: t('expiredCards') },
-  ])
 
   return (
     <>
@@ -111,13 +96,7 @@ const Page = () => {
           }}
         />
 
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={(props) => <TabBar {...props} />}
-        />
+        <ActiveCards />
       </ScreenView>
 
       <EmailsBottomSheet ref={bottomSheetRef} />
