@@ -194,14 +194,6 @@ const Map = forwardRef(
               padding={cameraPadding}
             />
           )}
-          <UserLocation
-            androidRenderMode="gps"
-            renderMode={UserLocationRenderMode.Normal}
-            showsUserHeadingIndicator
-            visible
-            minDisplacement={3}
-            animated
-          />
           {udrData && <MapZones udrData={udrData} />}
           <ShapeSource
             id="highlight"
@@ -219,6 +211,15 @@ const Map = forwardRef(
           </ShapeSource>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
+
+          <UserLocation
+            androidRenderMode="gps"
+            renderMode={UserLocationRenderMode.Normal}
+            showsUserHeadingIndicator
+            visible
+            minDisplacement={3}
+            animated
+          />
         </MapView>
         {isMapPinShown && <MapPin price={selectedZone?.Zakladna_cena} />}
       </View>
