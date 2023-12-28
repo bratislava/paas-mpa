@@ -53,10 +53,9 @@ const ChooseVehicleScreen = () => {
   }
 
   return (
-    <ScreenView>
+    <ScreenView title={t('title')}>
       <Stack.Screen
         options={{
-          title: t('title'),
           headerRight: () => (
             <Button
               variant="plain"
