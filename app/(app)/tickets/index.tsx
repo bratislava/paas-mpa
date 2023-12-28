@@ -1,22 +1,27 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
-import { useCallback, useMemo, useState } from 'react'
-import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import { useCallback, useMemo, useRef, useState } from 'react'
+import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
+import ActionRow from '@/components/list-rows/ActionRow'
 import TabBar from '@/components/navigation/TabBar'
+import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import FloatingButton from '@/components/shared/FloatingButton'
+import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
@@ -35,9 +40,40 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const filters = useTicketsFiltersStoreContext()
 
+  const [activeId, setActiveId] = useState<number | null>(null)
+
+  const bottomSheetRef = useRef<BottomSheet>(null)
+
   const now = useMemo(() => new Date(), [])
 
   const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
+
+  const downloadReceiptMutation = useMutation({
+    mutationFn: (id: number) => clientApi.ticketsControllerGetReceipt(id),
+    onSuccess: async (res) => {
+      await Linking.openURL(res.data)
+
+      bottomSheetRef.current?.close()
+    },
+  })
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
+    ),
+    [],
+  )
+
+  const handleMorePress = useCallback((id: number) => {
+    bottomSheetRef.current?.expand()
+    setActiveId(id)
+  }, [])
+
+  const handleDownloadReceipt = () => {
+    if (activeId) {
+      downloadReceiptMutation.mutate(activeId)
+    }
+  }
 
   const ticketsQueryOptions = ticketsInfiniteQuery({
     parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
@@ -70,8 +106,15 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => <TicketCard ticket={item} isActive={active} refetch={refetch} />,
-    [active, refetch],
+    ({ item }) => (
+      <TicketCard
+        ticket={item}
+        isActive={active}
+        handleMorePress={handleMorePress}
+        refetch={refetch}
+      />
+    ),
+    [active, refetch, handleMorePress],
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -119,34 +162,49 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   return (
-    <ScreenContent variant="center" className="flex-1">
-      <View className="w-full">
-        <FlatList
-          contentContainerStyle={{ gap: 12 }}
-          data={tickets}
-          renderItem={renderItem}
-          ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
-          onEndReachedThreshold={0.2}
-          onEndReached={loadMore}
-          onRefresh={refetch}
-          refreshing={isRefetching}
-        />
-      </View>
+    <>
+      <ScreenContent variant="center" className="flex-1">
+        <View className="w-full">
+          <FlatList
+            contentContainerStyle={{ gap: 12 }}
+            data={tickets}
+            renderItem={renderItem}
+            ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
+            onEndReachedThreshold={0.2}
+            onEndReached={loadMore}
+            onRefresh={refetch}
+            refreshing={isRefetching}
+          />
+        </View>
 
-      {!active && (
-        <LinearGradient
-          // TODO: Padding and insets
-          className="absolute w-full items-center pb-6"
-          pointerEvents="box-none"
-          style={{ bottom: insets.bottom }}
-          colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-        >
-          <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
-            {t('filters')}
-          </FloatingButton>
-        </LinearGradient>
-      )}
-    </ScreenContent>
+        {!active && (
+          <LinearGradient
+            // TODO: Padding and insets
+            className="absolute w-full items-center pb-6"
+            pointerEvents="box-none"
+            style={{ bottom: insets.bottom }}
+            colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+          >
+            <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
+              {t('filters')}
+            </FloatingButton>
+          </LinearGradient>
+        )}
+      </ScreenContent>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        enableDynamicSizing
+        enablePanDownToClose
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetContent>
+          <PressableStyled onPress={handleDownloadReceipt}>
+            <ActionRow startIcon="file-download" label={t('downloadReceipt')} />
+          </PressableStyled>
+        </BottomSheetContent>
+      </BottomSheet>
+    </>
   )
 }
 

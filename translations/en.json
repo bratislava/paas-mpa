@@ -72,6 +72,12 @@
       "failedText": "Your prolongation has failed. \nPlease try again.",
       "successfulText": "Your ticket has been prolongated."
     },
+    "parkingCardModal": {
+      "title": "Do you have any\n parking cards?",
+      "message": "If you have any parking cards, you can add it to the app and use it later while buying a ticket.",
+      "actionConfirm": "Add parking cards",
+      "actionCancel": "Later"
+    },
     "Errors": {
       "TooLongParkingTime": "The parking time has exceeded the maximum possible duration. The maximum length of a parking ticket is 48 hours.",
       "FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",
@@ -190,6 +196,7 @@
     "defaultPaymentOption": "Default",
     "otherPaymentOptions": "Other",
     "openContextMenu": "Edit payment option",
+    "addVisitorCard": "Add visitor card",
     "actions": {
       "saveAsDefault": "Save as default"
     }
@@ -203,7 +210,8 @@
     "buyTicket": "Buy ticket",
     "filters": "Filters",
     "noHistoryTickets": "No tickets found",
-    "noHistoryTicketsText": "No past tickets matching the selected filters found."
+    "noHistoryTicketsText": "No past tickets matching the selected filters found.",
+    "downloadReceipt": "Download receipt"
   },
   "TicketCard": {
     "prolong": "Prolong",

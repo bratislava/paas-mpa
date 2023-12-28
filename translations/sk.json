@@ -72,6 +72,12 @@
       "failedText": "Mrzí nás to, vaše predĺženie zlyhalo. \nProsím, skúste to znova.",
       "successfulText": "Váš parkovacií lístok bol predĺžený"
     },
+    "parkingCardModal": {
+      "title": "Máte parkovacie karty?",
+      "message": "Ak máte akúkoľvek parkovaciu kartu, môžete si ju pomocou overenia e-mailovej adresy pridať a využívať jej zľavy.",
+      "actionConfirm": "Pridať parkovacie karty",
+      "actionCancel": "Neskôr"
+    },
     "Errors": {
       "TooLongParkingTime": "Doba parkovania prekročila maximálny možný čas. Maximálna dĺžka parkovacieho lístka je 48 hodín.",
       "TooShortParkingTime": "Minimálna doba parkovania je 15 minút.",
@@ -191,6 +197,7 @@
     "defaultPaymentOption": "Predvolené",
     "otherPaymentOptions": "Ostatné",
     "openContextMenu": "Upraviť spôsob platby",
+    "addVisitorCard": "Pridať návštevnícku kartu",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené"
     }
@@ -203,7 +210,8 @@
     "noActiveTicketsText": "Po zakúpení parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
     "buyTicket": "Kúpiť lístok",
     "noHistoryTickets": "Žiadne lístky",
-    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom."
+    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom.",
+    "downloadReceipt": "Stiahnuť doklad"
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
