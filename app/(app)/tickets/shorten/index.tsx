@@ -56,7 +56,7 @@ const Shorten = () => {
                   </Typography>
 
                   {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
-                    <View className="max-w-full flex-row g-2">
+                    <View key={item} className="max-w-full flex-row g-2">
                       <Typography>{`\u2022`}</Typography>
                       <Typography className="min-w-0 shrink">{item}</Typography>
                     </View>
