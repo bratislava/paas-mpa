@@ -47,7 +47,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
                 marginRight: headerSideWidth - headerRightWidth,
               }}
             >
-              <Typography variant="h1" className="bottom-[3px] max-w-full text-ellipsis">
+              <Typography variant="h2" className="max-w-full text-ellipsis">
                 {headerOptions?.title}
               </Typography>
             </View>

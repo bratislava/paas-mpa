@@ -31,7 +31,7 @@ const Page = () => {
     onSuccess: (res) => {
       const tmpVerificationToken = res.data[0].token
 
-      router.replace({
+      router.push({
         pathname: '/parking-cards/verification/verification-sent',
         params: {
           email,
