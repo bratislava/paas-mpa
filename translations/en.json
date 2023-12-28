@@ -311,7 +311,6 @@
       "addressDetail": "Address detail"
     },
     "kinds": {
-      "assistants": "Assistant",
       "branches": "Branch",
       "parkomats": "Parkomat",
       "partners": "Partner",
@@ -334,7 +333,6 @@
     "title": "Filters",
     "showResults": "Show results",
     "filteringOptions": {
-      "assistant": "Assistant",
       "parkomat": "Parkomat",
       "partner": "Selling point",
       "p-plus-r": "Park & Ride",

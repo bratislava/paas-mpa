@@ -5,7 +5,6 @@ import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 import { STATIC_ARCGIS_URL } from '@/modules/arcgis/constants'
 import { ArcgisData } from '@/modules/arcgis/types'
 import {
-  AssistantPoint,
   BranchPoint,
   MapUdrZone,
   ParkingPoint,
@@ -18,13 +17,6 @@ export const useStaticArcgisData = (): ArcgisData => {
     queryKey: ['RawZonesData'],
     queryFn: () =>
       axios.get<FeatureCollection<Polygon, GeoJsonProperties>>(`${STATIC_ARCGIS_URL}/okp.geojson`),
-    select: (data) => data.data,
-  })
-
-  const { data: rawAssistantsData } = useQuery({
-    queryKey: ['RawAssistantsData'],
-    queryFn: () =>
-      axios.get<FeatureCollection<Point, AssistantPoint>>(`${STATIC_ARCGIS_URL}/asistenti.geojson`),
     select: (data) => data.data,
   })
 
@@ -71,7 +63,6 @@ export const useStaticArcgisData = (): ArcgisData => {
   })
 
   return {
-    rawAssistantsData,
     rawParkomatsData,
     rawPartnersData,
     rawParkingLotsData,

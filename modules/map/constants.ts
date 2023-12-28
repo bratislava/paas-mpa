@@ -13,7 +13,6 @@ export enum MapLayerEnum {
 }
 
 export enum MapPointIconEnum {
-  assistant = 'assistant',
   branch = 'branch',
   parkomat = 'parkomat',
   partner = 'partner',
@@ -23,7 +22,6 @@ export enum MapPointIconEnum {
 }
 
 export enum MapPointKindEnum {
-  assistant = 'assistants',
   branch = 'branches',
   parkomat = 'parkomats',
   partner = 'partners',
@@ -33,7 +31,6 @@ export enum MapPointKindEnum {
 }
 
 export enum MapPointFilterKindEnum {
-  assistant = 'assistant',
   parkomat = 'parkomat',
   sellingPoint = 'sellingPoint',
   pPlusR = 'p-plus-r',
@@ -63,7 +60,6 @@ export type MapFilters = {
 export const DEFAULT_FILTERS: MapFilters = {
   'p-plus-r': 'false',
   'parking-lot': 'false',
-  assistant: 'false',
   branch: 'false',
   garage: 'false',
   parkomat: 'false',

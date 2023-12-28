@@ -311,7 +311,6 @@
       "addressDetail": "Spresňujúce informácie"
     },
     "kinds": {
-      "assistants": "Asistent",
       "branches": "Prevádzka",
       "parkomats": "Parkomat",
       "partners": "Partnerská prevádzka",
@@ -333,7 +332,6 @@
   "FiltersScreen": {
     "title": "Filtre",
     "filteringOptions": {
-      "assistant": "Asistenti",
       "parkomat": "Parkomaty",
       "partner": "Partnerské prevádzky",
       "p-plus-r": "P+R Záchytné parkoviská",

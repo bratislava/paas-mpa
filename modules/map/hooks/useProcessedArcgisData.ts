@@ -22,7 +22,6 @@ export const useProcessedArcgisData = () => {
 
   const {
     rawZonesData,
-    rawAssistantsData,
     rawParkomatsData,
     rawPartnersData,
     rawParkingLotsData,
@@ -33,7 +32,6 @@ export const useProcessedArcgisData = () => {
 
   useEffect(() => {
     if (
-      rawAssistantsData &&
       rawParkomatsData &&
       rawPartnersData &&
       rawParkingLotsData &&
@@ -46,7 +44,6 @@ export const useProcessedArcgisData = () => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const { markersData, udrData, odpData, zonesData } = processData({
         rawZonesData,
-        rawAssistantsData,
         rawParkomatsData,
         rawPartnersData,
         rawParkingLotsData,
@@ -70,7 +67,6 @@ export const useProcessedArcgisData = () => {
       setIsProcessingFinished(true)
     }
   }, [
-    rawAssistantsData,
     rawParkomatsData,
     rawPartnersData,
     rawParkingLotsData,
