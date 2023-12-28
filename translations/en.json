@@ -484,6 +484,21 @@
     "confirmError": "Confirm Error: {{message}}",
     "unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow."
   },
+  "FeedbackScreen": {
+    "title": "Feedback",
+    "emailAddress": "E-mail address",
+    "emailAddressInvalid": "Please enter a valid e-mail address",
+    "type": "Type",
+    "bug": "Bug",
+    "proposal": "Proposal",
+    "yourMessage": "Your message",
+    "yourMessageInvalid": "Please enter a message",
+    "send": "Send",
+    "success": {
+      "title": "Message sent",
+      "text": "Thanks to your feedback and suggestions, we can improve the PAAS application."
+    }
+  },
   "MapScreen": {
     "compass": "Compass"
   }

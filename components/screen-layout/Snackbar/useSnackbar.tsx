@@ -40,5 +40,5 @@ export const useSnackbar = () => {
     [toast],
   )
 
-  return { show }
+  return useMemo(() => ({ show }), [show])
 }

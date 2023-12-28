@@ -483,6 +483,21 @@
     "confirmError": "Chyba pri potvrdení: {{message}}",
     "unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia."
   },
+  "FeedbackScreen": {
+    "title": "Spätná väzba",
+    "emailAddress": "E-mailová adresa",
+    "emailAddressInvalid": "Prosím, zadajte platnú e-mailovú adresu",
+    "type": "Typ",
+    "bug": "Chyba",
+    "proposal": "Návrh",
+    "yourMessage": "Vaša správa",
+    "yourMessageInvalid": "Prosím, zadajte vašu správu",
+    "send": "Poslať",
+    "success": {
+      "title": "Správa odoslaná",
+      "text": "Ďakujeme. Aj vďaka vašim podnetom a návrhom môžeme aplikáciu PAAS zlepšovať."
+    }
+  },
   "MapScreen": {
     "compass": "Kompas"
   }

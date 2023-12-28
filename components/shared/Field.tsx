@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { View } from 'react-native'
+import { StyleProp, View, ViewStyle } from 'react-native'
 
 import Typography, { TypographyProps } from '@/components/shared/Typography'
 
@@ -9,6 +9,7 @@ type Props = {
   children: ReactNode
   errorMessage?: string
   variant?: TypographyProps['variant']
+  style?: StyleProp<ViewStyle>
 }
 // TODO associate control with label
 
@@ -18,9 +19,11 @@ const Field = ({
   labelInsertArea,
   errorMessage,
   variant = 'default-bold',
+  style,
 }: Props) => {
   return (
-    <View className="g-1">
+    // A passed className magically does not work!
+    <View className="g-1" style={style}>
       <View className="flex-row g-6">
         <Typography variant={variant} className="grow">
           {label}
