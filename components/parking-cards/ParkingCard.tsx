@@ -36,6 +36,8 @@ const ParkingCard = ({ card }: Props) => {
         <BonusCard
           zoneName={card.name}
           licencePlate={card.vehiclePlateNumber}
+          balanceSeconds={card.balanceSeconds}
+          originalBalanceSeconds={card.originalBalanceSeconds}
           validUntil={card.validTo}
         />
       )

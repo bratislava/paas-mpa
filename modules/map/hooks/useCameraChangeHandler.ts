@@ -21,6 +21,7 @@ type Dependencies = {
   setIsMapPinShown: Dispatch<SetStateAction<boolean>>
   onStateChange?: (state: MapState) => void
   setFlyToCenter: Dispatch<SetStateAction<Position | null>>
+  onCenterChange?: (center: Position) => void
 }
 
 export const useCameraChangeHandler = ({
@@ -31,6 +32,7 @@ export const useCameraChangeHandler = ({
   setIsMapPinShown,
   onStateChange,
   setFlyToCenter,
+  onCenterChange,
 }: Dependencies) => {
   const { scale } = useWindowDimensions()
   const screenCenter = useMapCenter({ scale: Platform.OS === 'android' })
@@ -72,13 +74,14 @@ export const useCameraChangeHandler = ({
 
   return useCallback(
     (state: MapState) => {
+      onStateChange?.(state)
       if (
         lastCenter[0] === state.properties.center[0] &&
         lastCenter[1] === state.properties.center[1]
       ) {
         return
       }
-      onStateChange?.(state)
+      onCenterChange?.(state.properties.center)
       setLastCenter(state.properties.center)
       resetFlyToCenterHandler()
       if (!Keyboard.isVisible()) {
@@ -96,6 +99,7 @@ export const useCameraChangeHandler = ({
       lastCenter,
       onStateChange,
       resetFlyToCenterHandler,
+      onCenterChange,
     ],
   )
 }

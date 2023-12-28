@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
-import MapSearchProvider from '@/state/MapSearchProvider/MapSearchProvider'
+import MapStoreProvider from '@/state/MapStoreProvider/MapStoreProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
@@ -48,7 +48,7 @@ const RootLayout = () => {
   // Render the children routes now that all the assets are loaded.
   return (
     <MapZonesProvider>
-      <MapSearchProvider>
+      <MapStoreProvider>
         <VehiclesStoreProvider>
           <PurchaseStoreProvider>
             <TicketsFiltersStoreProvider>
@@ -103,7 +103,7 @@ const RootLayout = () => {
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>
         </VehiclesStoreProvider>
-      </MapSearchProvider>
+      </MapStoreProvider>
     </MapZonesProvider>
   )
 }

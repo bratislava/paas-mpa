@@ -19,9 +19,10 @@ import { formatDateTime } from '@/utils/formatDateTime'
 type Props = {
   ticket: TicketDto
   isActive?: boolean
+  handleMorePress: (id: number) => void
 }
 
-const TicketCard = ({ ticket, isActive }: Props) => {
+const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
   const parkingStartDate = new Date(ticket.parkingStart)
   const parkingEndDate = new Date(ticket.parkingEnd)
   const zone = useMapZone(ticket.udr, true)
@@ -40,7 +41,13 @@ const TicketCard = ({ ticket, isActive }: Props) => {
           <Typography variant="default-bold" className="flex-1">
             {formatDateTime(parkingStartDate, locale)} – {formatDateTime(parkingEndDate, locale)}
           </Typography>
-          <IconButton name="more-vert" accessibilityLabel={t('more')} />
+          <IconButton
+            name="more-vert"
+            // hidden until API is ready
+            className="hidden"
+            accessibilityLabel={t('more')}
+            onPress={() => handleMorePress(ticket.id)}
+          />
         </FlexRow>
 
         <View className="items-start g-1">

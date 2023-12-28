@@ -2,6 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { MapState } from '@rnmapbox/maps'
 import { Link, useLocalSearchParams } from 'expo-router'
+import { Position } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -22,8 +23,11 @@ import { reverseGeocode } from '@/modules/map/utils/reverseGeocode'
 const MAP_STATE_DEBOUNCE_TIME = 500
 
 type MapScreenParams = MapFilters
+type Props = {
+  onMapStateChange?: (mapState: MapState) => void
+}
 
-const MapScreen = () => {
+const MapScreen = ({ onMapStateChange }: Props) => {
   const params = useLocalSearchParams<MapScreenParams>()
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
@@ -56,15 +60,14 @@ const MapScreen = () => {
     [setMapInterestPoint],
   )
 
-  const handleMapStateChange = useCallback(async (mapState: MapState) => {
-    const geocodingResult = await reverseGeocode(mapState.properties.center)
+  const handleCenterChange = useCallback(async (center: Position) => {
+    const geocodingResult = await reverseGeocode(center)
     if (geocodingResult.length > 0) {
       setCurrentAddress(geocodingResult[0].place_name)
     }
   }, [])
-
-  const debouncedHandleStateChange = useDebouncedCallback(
-    handleMapStateChange,
+  const debouncedHandleCenterChange = useDebouncedCallback(
+    handleCenterChange,
     MAP_STATE_DEBOUNCE_TIME,
   )
 
@@ -93,7 +96,8 @@ const MapScreen = () => {
         filters={filters}
         processedData={processedData}
         onMapPinVisibilityChange={handleMapPinVisibilityChange}
-        onStateChange={debouncedHandleStateChange}
+        onStateChange={onMapStateChange}
+        onCenterChange={debouncedHandleCenterChange}
       />
       <Portal hostName="index">
         <MapZoneBottomSheet
