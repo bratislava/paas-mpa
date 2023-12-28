@@ -52,12 +52,19 @@ const VerificationResultPage = () => {
     if (status === 'link-expired') return
 
     const state = navigation.getState()
-    const index = state.routes.findIndex((route) => (route.name as string).includes('purchase'))
+    // Checks if user came from purchase page
+    let index = state.routes.findIndex((route) => (route.name as string).includes('purchase'))
 
     if (index === -1) {
-      return
+      // Checks if user came from parking cards page
+      index = state.routes.findIndex((route) => route.name === 'parking-cards/index')
+
+      if (index === -1) {
+        return
+      }
     }
 
+    // changes navigation state to remove validation pages from stack and enables to go back to correct page
     navigation.reset({
       ...state,
       index: index + 1,
