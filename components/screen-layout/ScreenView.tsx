@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import { Stack, useNavigation } from 'expo-router'
+import { useNavigation } from 'expo-router'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -43,15 +43,12 @@ const ScreenView = ({
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
       {title?.length ? (
-        hasBackButton ? (
-          <StackScreenWithHeader
-            options={{
-              title,
-            }}
-          />
-        ) : (
-          <Stack.Screen options={{ title }} />
-        )
+        <StackScreenWithHeader
+          options={{
+            title,
+            headerBackVisible: hasBackButton,
+          }}
+        />
       ) : null}
 
       {backgroundVariant === 'dots' && (
