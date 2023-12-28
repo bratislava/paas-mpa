@@ -106,15 +106,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
   }
 
   const renderItem: ListRenderItem<TicketDto> = useCallback(
-    ({ item }) => (
-      <TicketCard
-        ticket={item}
-        isActive={active}
-        handleMorePress={handleMorePress}
-        refetch={refetch}
-      />
-    ),
-    [active, refetch, handleMorePress],
+    ({ item }) => <TicketCard ticket={item} isActive={active} handleMorePress={handleMorePress} />,
+    [active, handleMorePress],
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -191,6 +184,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
           </LinearGradient>
         )}
       </ScreenContent>
+
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}

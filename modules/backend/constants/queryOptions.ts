@@ -177,3 +177,10 @@ export const vehiclesOptions = () =>
     queryKey: ['Vehicles'],
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
   })
+export const shortenPriceOptions = (id?: number) =>
+  queryOptions({
+    queryKey: ['ShortenPrice'],
+    queryFn: () => clientApi.ticketsControllerGetShortenTicketPrice(id!),
+    select: (res) => res.data,
+    enabled: !!id,
+  })
