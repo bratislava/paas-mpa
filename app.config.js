@@ -16,6 +16,7 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.bratislava.paas',
+      googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
       adaptiveIcon: {
@@ -25,6 +26,7 @@ module.exports = {
         monochromeImage: './assets/app/adaptive-icon.png',
       },
       package: 'com.bratislava.paas',
+      googleServicesFile: './google-services.json',
     },
     experiments: {
       tsconfigPaths: true,
@@ -35,6 +37,7 @@ module.exports = {
       },
     },
     plugins: [
+      '@react-native-firebase/app',
       [
         '@rnmapbox/maps',
         {
@@ -48,6 +51,7 @@ module.exports = {
           locationWhenInUsePermission: 'Show current location on map.',
         },
       ],
+      ['./plugins/firebase.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
     ],
