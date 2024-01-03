@@ -3,6 +3,7 @@ import { useNavigation } from 'expo-router'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ScreenProps } from 'react-native-screens'
 
 import StackScreenWithHeader from './StackScreenWithHeader'
 
@@ -16,6 +17,7 @@ export type ScreenViewProps = {
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
   hasBackButton?: boolean
+  presentation?: Exclude<ScreenProps['stackPresentation'], 'push'> | 'card'
 } & ViewProps
 
 const ScreenView = ({
@@ -26,6 +28,7 @@ const ScreenView = ({
   backgroundVariant = 'white',
   actionButton,
   hasBackButton,
+  presentation,
   ...rest
 }: ScreenViewProps) => {
   const navigation = useNavigation()
@@ -47,6 +50,7 @@ const ScreenView = ({
           options={{
             title,
             headerBackVisible: hasBackButton,
+            presentation,
           }}
         />
       ) : null}

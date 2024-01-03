@@ -1,4 +1,3 @@
-import { Stack } from 'expo-router'
 import { ScrollView } from 'react-native'
 
 import PaymentOptionsField from '@/components/controls/payment-methods/PaymentOptionsField'
@@ -12,8 +11,7 @@ const ChoosePaymentMethodContent = () => {
   const t = useTranslation('PaymentMethods')
 
   return (
-    <ScreenView title={t('title')}>
-      <Stack.Screen options={{ presentation: 'modal' }} />
+    <ScreenView title={t('title')} presentation="modal">
       <ScrollView>
         <ScreenContent>
           <PaymentOptionsField />
