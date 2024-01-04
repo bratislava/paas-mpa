@@ -32,6 +32,7 @@ const SelectRow = ({
   return (
     <Pressable
       onPress={() => onValueChange(!value)}
+      disabled={disabled}
       className="flex-row items-center gap-3 py-3"
       {...restPressableProps}
     >
@@ -41,8 +42,7 @@ const SelectRow = ({
         {label}
       </Typography>
 
-      {/* TODO CheckBox size */}
-      <CheckBox value={value} disabled={disabled} />
+      <CheckBox value={value} onChange={onValueChange} disabled={disabled} />
     </Pressable>
   )
 }

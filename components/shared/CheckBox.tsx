@@ -1,33 +1,33 @@
-import RNCheckBox, { CheckBoxProps as RNCheckBoxProps } from '@react-native-community/checkbox'
+import clsx from 'clsx'
 import React from 'react'
+import { Pressable } from 'react-native'
 
-import colors from '@/tailwind.config.colors'
+import Icon from './Icon'
 
-// Docs: https://github.com/react-native-checkbox/react-native-checkbox#props
-export type CheckBoxProps = Pick<RNCheckBoxProps, 'value' | 'onValueChange' | 'disabled'>
+type Props = {
+  value: boolean
+  disabled?: boolean
+  onChange: (newValue: boolean) => void
+}
 
-const CheckBox = ({ ...rest }: CheckBoxProps) => {
-  // eslint-disable-next-line const-case/uppercase
-  const GREEN = colors.green.DEFAULT
+const Checkbox = ({ onChange, disabled, value }: Props) => {
+  const handleToggle = () => {
+    onChange?.(!value)
+  }
 
   return (
-    <RNCheckBox
-      // android props
-      tintColors={{ true: GREEN, false: GREEN }}
-      // ios props
-      boxType="square"
-      lineWidth={2.5} // it is scaled to 2
-      style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
-      tintColor={GREEN}
-      onCheckColor="white"
-      onFillColor={GREEN}
-      onTintColor={GREEN}
-      onAnimationType="bounce"
-      offAnimationType="bounce"
-      animationDuration={0.2}
-      {...rest}
-    />
+    <Pressable
+      className={clsx('h-8 w-8 items-center justify-center rounded-[4px] border-2 border-green', {
+        'bg-green': value,
+        'opacity-50': disabled,
+      })}
+      onPress={handleToggle}
+      role="checkbox"
+      disabled={disabled}
+    >
+      {value ? <Icon name="check" className="text-xl text-white" /> : null}
+    </Pressable>
   )
 }
 
-export default CheckBox
+export default Checkbox
