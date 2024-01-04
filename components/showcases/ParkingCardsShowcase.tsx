@@ -18,7 +18,13 @@ const ParkingCardsShowcase = () => {
       />
       <ResidentCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />
       <SubscriberCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />
-      <BonusCard licencePlate="AA111AA" validUntil="date" zoneName="zoneName" />
+      <BonusCard
+        licencePlate="AA111AA"
+        validUntil="date"
+        zoneName="zoneName"
+        balanceSeconds={60 * 60 * 24}
+        originalBalanceSeconds={60 * 60 * 24 * 2}
+      />
       <OtherCard licencePlate="AA111AA" validUntil="date" zoneName="fallback style card" />
     </View>
   )

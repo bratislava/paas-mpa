@@ -72,6 +72,12 @@
       "failedText": "Mrzí nás to, vaše predĺženie zlyhalo. \nProsím, skúste to znova.",
       "successfulText": "Váš parkovacií lístok bol predĺžený"
     },
+    "parkingCardModal": {
+      "title": "Máte parkovacie karty?",
+      "message": "Ak máte akúkoľvek parkovaciu kartu, môžete si ju pomocou overenia e-mailovej adresy pridať a využívať jej zľavy.",
+      "actionConfirm": "Pridať parkovacie karty",
+      "actionCancel": "Neskôr"
+    },
     "Errors": {
       "TooLongParkingTime": "Doba parkovania prekročila maximálny možný čas. Maximálna dĺžka parkovacieho lístka je 48 hodín.",
       "TooShortParkingTime": "Minimálna doba parkovania je 15 minút.",
@@ -94,6 +100,29 @@
     "yourTicket": "Parkovací lístok",
     "licencePlate": "Evidenčné číslo",
     "validUntil": "Platnosť do"
+  },
+  "ShortenTicket": {
+    "result": "Výsledok skrátenia",
+    "title": "Predčasne ukončiť",
+    "infoText": "Skrátenie parkovacieho lístka je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf)",
+    "actionConfirm": "Pokračovať",
+    "mainConditions": "Základné podmienky",
+    "conditions": [
+      "skrátenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade že lístok skrátite skôr, bude lístok ukončený až po uplynutí doby 15 minút (neplatí ak bol lístok zakúpený výhradne cez Bonusovú alebo Návštevnícku parkovaciu kartu).",
+      "lístok je možné skrátit´ za storno poplatok vo výške 0,05€ (neplatí ak bol lístok zakúpený výhradne cez Návštevnícku alebo Bonusovú kartu).",
+      "V prípade okamžitého skrátenia lístka zakúpeného výhradne cez Bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
+      "V prípade predĺženia parkovacieho lístka, bude umožnené skrátiť posledné predĺženie lístka."
+    ],
+    "successful": "Lístok ukončený",
+    "successfulText": "Váš parkovací lístok bol predčasne ukončený ",
+    "failed": "Ukončenie zlyhalo",
+    "failedText": "Ukončenie zlyhalo. Tento lístok nie je možné ukončiť. Skúste to znova.",
+    "success": {
+      "actionButtonLabel": "Späť na mapu"
+    },
+    "fail": {
+      "actionButtonLabel": "Späť"
+    }
   },
   "PurchaseBottomSheet": {
     "parkingTime": "Parkovanie {{time}}",
@@ -191,6 +220,7 @@
     "defaultPaymentOption": "Predvolené",
     "otherPaymentOptions": "Ostatné",
     "openContextMenu": "Upraviť spôsob platby",
+    "addVisitorCard": "Pridať návštevnícku kartu",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené"
     }
@@ -203,18 +233,13 @@
     "noActiveTicketsText": "Po zakúpení parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
     "buyTicket": "Kúpiť lístok",
     "noHistoryTickets": "Žiadne lístky",
-    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom."
+    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom.",
+    "downloadReceipt": "Stiahnuť doklad"
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
     "shorten": "Predčasne ukončiť",
-    "more": "Viac",
-    "terminationModal": {
-      "title": "Predčasne ukončiť",
-      "message": "Po ukončení parkovacieho lístka vám bude vrátená alikvótna čiastka. Táto akcia sa nedá vrátiť späť.",
-      "actionConfirm": "Ukončiť",
-      "actionCancel": "Zrušiť"
-    }
+    "more": "Viac"
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
@@ -455,6 +480,21 @@
     "unexpectedErrorObjectInSignIn": "Neočakávaná chyba. Neznámy error object počas prihlásenia.",
     "confirmError": "Chyba pri potvrdení: {{message}}",
     "unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia."
+  },
+  "FeedbackScreen": {
+    "title": "Spätná väzba",
+    "emailAddress": "E-mailová adresa",
+    "emailAddressInvalid": "Prosím, zadajte platnú e-mailovú adresu",
+    "type": "Typ",
+    "bug": "Chyba",
+    "proposal": "Návrh",
+    "yourMessage": "Vaša správa",
+    "yourMessageInvalid": "Prosím, zadajte vašu správu",
+    "send": "Poslať",
+    "success": {
+      "title": "Správa odoslaná",
+      "text": "Ďakujeme. Aj vďaka vašim podnetom a návrhom môžeme aplikáciu PAAS zlepšovať."
+    }
   },
   "MapScreen": {
     "compass": "Kompas"

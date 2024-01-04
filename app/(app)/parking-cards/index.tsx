@@ -31,9 +31,11 @@ const Page = () => {
 
   if (isPending) {
     return (
-      <ScreenContent>
-        <SkeletonParkingCard />
-      </ScreenContent>
+      <ScreenView title={t('paasEmailsTitle')}>
+        <ScreenContent>
+          <SkeletonParkingCard />
+        </ScreenContent>
+      </ScreenView>
     )
   }
 

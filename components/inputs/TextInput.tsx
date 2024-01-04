@@ -20,7 +20,7 @@ export type TextInputProps = Omit<TextInputNativeProps, 'editable'> & {
 // TODO multiline height on ios, inspiration?: https://stackoverflow.com/questions/35936908/numberoflines-textinput-property-not-working
 
 const TextInput = forwardRef<TextInputNative, TextInputProps>(
-  ({ hasError, isDisabled, leftIcon, ...rest }, ref) => {
+  ({ hasError, isDisabled, leftIcon, multiline, className, ...rest }, ref) => {
     const localRef = useRef<TextInputNative>(null)
     const refSetter = useMultipleRefsSetter(localRef, ref)
 
@@ -29,12 +29,13 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
     }, [])
 
     return (
-      <Pressable onPress={handlePress}>
+      <Pressable onPress={handlePress} className={clsx(multiline && 'flex-1')}>
         <View
           className={clsx('flex-row items-center rounded border bg-white px-4 py-3 g-3', {
             'border-divider focus:border-dark': !isDisabled && !hasError,
             'border-negative': hasError && !isDisabled,
             'border-divider bg-[#D6D6D6]': isDisabled,
+            'flex-1': multiline,
           })}
         >
           {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
@@ -44,7 +45,12 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
           <TextInputNative
             ref={refSetter}
             editable={!isDisabled}
-            className="h-[24px] flex-1 font-inter-400regular text-[16px]"
+            className={clsx(
+              'flex-1 font-inter-400regular text-[16px]',
+              !multiline && 'h-[24px]',
+              className,
+            )}
+            multiline={multiline}
             {...rest}
           />
         </View>

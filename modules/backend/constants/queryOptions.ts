@@ -22,7 +22,6 @@ export const notificationSettingsOptions = () =>
   queryOptions({
     queryKey: ['NotificationSetting'],
     queryFn: () => clientApi.usersControllerGetUserSettings(),
-    select: (data) => data.data,
   })
 
 export const activeTicketsOptions = () =>
@@ -176,4 +175,11 @@ export const vehiclesOptions = () =>
   queryOptions({
     queryKey: ['Vehicles'],
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
+  })
+export const shortenPriceOptions = (id?: number) =>
+  queryOptions({
+    queryKey: ['ShortenPrice'],
+    queryFn: () => clientApi.ticketsControllerGetShortenTicketPrice(id!),
+    select: (res) => res.data,
+    enabled: !!id,
   })

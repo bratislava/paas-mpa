@@ -72,6 +72,12 @@
       "failedText": "Your prolongation has failed. \nPlease try again.",
       "successfulText": "Your ticket has been prolongated."
     },
+    "parkingCardModal": {
+      "title": "Do you have any\n parking cards?",
+      "message": "If you have any parking cards, you can add it to the app and use it later while buying a ticket.",
+      "actionConfirm": "Add parking cards",
+      "actionCancel": "Later"
+    },
     "Errors": {
       "TooLongParkingTime": "The parking time has exceeded the maximum possible duration. The maximum length of a parking ticket is 48 hours.",
       "FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",
@@ -93,6 +99,29 @@
     "yourTicket": "Your ticket",
     "licencePlate": "Car plate number",
     "validUntil": "Valid to"
+  },
+  "ShortenTicket": {
+    "result": "Shortening result",
+    "title": "Terminate ticket",
+    "infoText": "The shortening of a parking ticket is possible under certain conditions regulated by the [Operating Order for Temporary Parking of Motor Vehicles in the capital city of the Slovak Republic, Bratislava](https://paas.sk/wp-content/uploads/2023/12/Operating-Order-PP_v2.15.pdf).",
+    "actionConfirm": "Continue",
+    "mainConditions": "Main conditions",
+    "conditions": [
+      "Shortening the ticket is possible after 15 minutes have elapsed from the start of the ticket's validity. If you shorten the ticket earlier, the ticket will only be terminated after the expiration of the 15-minute period. (This does not apply if the ticket was purchased exclusively through the Bonus or Visitor Parking Card.)",
+      "The ticket can be shortened for a cancellation fee of €0.05 (This does not apply if the ticket was purchased exclusively through the Visitor or Bonus Card.)",
+      "In the case of immediate shortening of a ticket purchased exclusively through the Bonus Parking Card, a full minute will be deducted from the parking card.",
+      "In the case of extending a parking ticket, it will be possible to shorten the last extension."
+    ],
+    "successful": "Shortening successful",
+    "successfulText": "Your ticket has been shortened.",
+    "failed": "Shortening failed",
+    "failedText": "Your ticket has not been shortened. Please try again.",
+    "success": {
+      "actionButtonLabel": "Back to map"
+    },
+    "fail": {
+      "actionButtonLabel": "Back"
+    }
   },
   "PurchaseBottomSheet": {
     "parkingTime": "Parking {{time}}",
@@ -190,6 +219,7 @@
     "defaultPaymentOption": "Default",
     "otherPaymentOptions": "Other",
     "openContextMenu": "Edit payment option",
+    "addVisitorCard": "Add visitor card",
     "actions": {
       "saveAsDefault": "Save as default"
     }
@@ -203,18 +233,13 @@
     "buyTicket": "Buy ticket",
     "filters": "Filters",
     "noHistoryTickets": "No tickets found",
-    "noHistoryTicketsText": "No past tickets matching the selected filters found."
+    "noHistoryTicketsText": "No past tickets matching the selected filters found.",
+    "downloadReceipt": "Download receipt"
   },
   "TicketCard": {
     "prolong": "Prolong",
     "shorten": "Terminate",
-    "more": "More",
-    "terminationModal": {
-      "title": "Terminate parking ticket",
-      "message": "Are you sure you want to terminate your parking ticket?",
-      "actionConfirm": "Terminate ticket",
-      "actionCancel": "Keep ticket"
-    }
+    "more": "More"
   },
   "ParkingCards": {
     "title": "Parking cards",
@@ -456,6 +481,21 @@
     "unexpectedErrorObjectInSignIn": "Unexpected error. Unknown error object during sign in.",
     "confirmError": "Confirm Error: {{message}}",
     "unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow."
+  },
+  "FeedbackScreen": {
+    "title": "Feedback",
+    "emailAddress": "E-mail address",
+    "emailAddressInvalid": "Please enter a valid e-mail address",
+    "type": "Type",
+    "bug": "Bug",
+    "proposal": "Proposal",
+    "yourMessage": "Your message",
+    "yourMessageInvalid": "Please enter a message",
+    "send": "Send",
+    "success": {
+      "title": "Message sent",
+      "text": "Thanks to your feedback and suggestions, we can improve the PAAS application."
+    }
   },
   "MapScreen": {
     "compass": "Compass"
