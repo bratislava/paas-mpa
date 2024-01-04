@@ -1,3 +1,7 @@
+/*
+ * Plugin that fixes building with expo and firebase messaging
+ * https://stackoverflow.com/questions/72289521/swift-pods-cannot-yet-be-integrated-as-static-libraries-firebasecoreinternal-lib
+ */
 const fs = require('fs')
 const path = require('path')
 const generateCode = require('@expo/config-plugins/build/utils/generateCode')
