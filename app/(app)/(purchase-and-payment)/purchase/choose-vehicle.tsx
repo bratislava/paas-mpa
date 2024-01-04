@@ -1,4 +1,4 @@
-import { Link, router, Stack } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
 
@@ -53,23 +53,24 @@ const ChooseVehicleScreen = () => {
   }
 
   return (
-    <ScreenView title={t('title')}>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <Button
-              variant="plain"
-              disabled={
-                !!oneTimeLicencePlateError ||
-                !((vehicle && !vehicle?.isOneTimeUse) || oneTimeLicencePlate)
-              }
-              onPress={() => handleChoseVehicle()}
-            >
-              {t('oneTimeAction')}
-            </Button>
-          ),
-        }}
-      />
+    <ScreenView
+      title={t('title')}
+      options={{
+        presentation: 'modal',
+        headerRight: () => (
+          <Button
+            variant="plain"
+            disabled={
+              !!oneTimeLicencePlateError ||
+              !((vehicle && !vehicle?.isOneTimeUse) || oneTimeLicencePlate)
+            }
+            onPress={() => handleChoseVehicle()}
+          >
+            {t('oneTimeAction')}
+          </Button>
+        ),
+      }}
+    >
       <ScreenContent>
         <Field label={t('oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
           <TextInput

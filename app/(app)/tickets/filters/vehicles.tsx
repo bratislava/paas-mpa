@@ -5,7 +5,6 @@ import { FlatList, ListRenderItem, View } from 'react-native'
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
@@ -73,16 +72,18 @@ const TicketsFiltersVehiclesScreen = () => {
   )
 
   return (
-    <ScreenView title={t('vehicles')} actionButton={actionButton}>
-      <StackScreenWithHeader
-        options={{
-          headerRight: () => (
-            <PressableStyled onPress={handleSelectAll}>
-              <Typography variant="default-bold">{t('selectAll')}</Typography>
-            </PressableStyled>
-          ),
-        }}
-      />
+    <ScreenView
+      title={t('vehicles')}
+      options={{
+        headerRight: () => (
+          <PressableStyled onPress={handleSelectAll}>
+            <Typography variant="default-bold">{t('selectAll')}</Typography>
+          </PressableStyled>
+        ),
+        presentation: 'modal',
+      }}
+      actionButton={actionButton}
+    >
       <View className="py-5 pl-6 pr-4">
         <FlatList
           data={vehicles}

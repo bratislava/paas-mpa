@@ -11,7 +11,7 @@ const ChoosePaymentMethodContent = () => {
   const t = useTranslation('PaymentMethods')
 
   return (
-    <ScreenView title={t('title')} presentation="modal">
+    <ScreenView title={t('title')} options={{ presentation: 'modal' }}>
       <ScrollView>
         <ScreenContent>
           <PaymentOptionsField />

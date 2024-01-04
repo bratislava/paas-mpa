@@ -1,9 +1,8 @@
 import { clsx } from 'clsx'
-import { useNavigation } from 'expo-router'
+import { Stack, useNavigation } from 'expo-router'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { ScreenProps } from 'react-native-screens'
 
 import StackScreenWithHeader from './StackScreenWithHeader'
 
@@ -17,7 +16,8 @@ export type ScreenViewProps = {
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
   hasBackButton?: boolean
-  presentation?: Exclude<ScreenProps['stackPresentation'], 'push'> | 'card'
+  // there is no exportable type for options prop in Stack.Screen
+  options?: (typeof Stack.Screen)['prototype']['props']['options']
 } & ViewProps
 
 const ScreenView = ({
@@ -28,7 +28,7 @@ const ScreenView = ({
   backgroundVariant = 'white',
   actionButton,
   hasBackButton,
-  presentation,
+  options,
   ...rest
 }: ScreenViewProps) => {
   const navigation = useNavigation()
@@ -50,7 +50,7 @@ const ScreenView = ({
           options={{
             title,
             headerBackVisible: hasBackButton,
-            presentation,
+            ...options,
           }}
         />
       ) : null}
