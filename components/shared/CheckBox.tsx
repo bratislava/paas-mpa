@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Pressable } from 'react-native'
 
 import Icon from './Icon'
+import PressableStyled from './PressableStyled'
 
 type Props = {
   value: boolean
@@ -12,11 +12,11 @@ type Props = {
 
 const Checkbox = ({ onChange, disabled, value }: Props) => {
   const handleToggle = () => {
-    onChange?.(!value)
+    onChange(!value)
   }
 
   return (
-    <Pressable
+    <PressableStyled
       className={clsx('h-8 w-8 items-center justify-center rounded-[4px] border-2 border-green', {
         'bg-green': value,
         'opacity-50': disabled,
@@ -26,7 +26,7 @@ const Checkbox = ({ onChange, disabled, value }: Props) => {
       disabled={disabled}
     >
       {value ? <Icon name="check" className="text-xl text-white" /> : null}
-    </Pressable>
+    </PressableStyled>
   )
 }
 
