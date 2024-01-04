@@ -34,9 +34,11 @@ export const useNotificationPermission = ({ autoAsk }: Options = {}) => {
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL
+
       if (enabled) {
         setPermissionStatus(PermissionStatus.GRANTED)
         const token = await messaging().getToken()
+
         if (token) {
           console.log('token', token)
           registerDeviceMutation.mutate(token)
@@ -51,9 +53,11 @@ export const useNotificationPermission = ({ autoAsk }: Options = {}) => {
 
   useEffect(() => {
     if (autoAsk) {
-      getPermission().catch((error) => {
+      try {
+        getPermission()
+      } catch (error) {
         console.warn(error)
-      })
+      }
     }
   }, [getPermission, autoAsk])
 
