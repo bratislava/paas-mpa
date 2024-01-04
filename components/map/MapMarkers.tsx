@@ -4,7 +4,6 @@ import { Feature, FeatureCollection, GeoJsonProperties, Point } from 'geojson'
 import { useCallback, useMemo } from 'react'
 
 import {
-  AssistantImage,
   ClusterCircleImage,
   GarageImage,
   ParkingImage,
@@ -53,7 +52,6 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           [MapPointIconEnum.partner]: SellingPointImage,
           [MapPointIconEnum.pPlusR]: PPLusRImage,
           [MapPointIconEnum.parkingLot]: ParkingImage,
-          [MapPointIconEnum.assistant]: AssistantImage,
           clusterCircle: ClusterCircleImage,
         }}
       />

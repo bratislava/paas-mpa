@@ -20,7 +20,6 @@ type Props = {
 
 const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
   [MapPointKindEnum.parkomat]: ['location', 'parkomatId'],
-  [MapPointKindEnum.assistant]: ['udrId'],
   [MapPointKindEnum.partner]: ['name', 'address', 'openingHours'],
   [MapPointKindEnum.garage]: ['name', 'address', 'openingHours'],
   [MapPointKindEnum.pPlusR]: [

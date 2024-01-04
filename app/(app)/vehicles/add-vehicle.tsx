@@ -58,7 +58,7 @@ const AddVehicleScreen = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('addVehicleTitle')}>
+      <ScreenView title={t('addVehicleTitle')} options={{ presentation: 'modal' }}>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         {/* eslint-disable-next-line react/style-prop-object */}
         <StatusBar style="light" />

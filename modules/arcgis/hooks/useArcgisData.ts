@@ -4,7 +4,6 @@ import { ARCGIS_URL } from '@/modules/arcgis/constants'
 import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
 import { ArcgisData } from '@/modules/arcgis/types'
 import {
-  AssistantPoint,
   BranchPoint,
   MapUdrZone,
   ParkingPoint,
@@ -16,11 +15,6 @@ export const useArcgisData = (): ArcgisData => {
   const { data: rawZonesData } = useArcgis(`${ARCGIS_URL}/parkovanie/Hranica_RZ/MapServer/1`, {
     format: 'geojson',
   })
-
-  const { data: rawAssistantsData } = useArcgis(
-    `${ARCGIS_URL}/doprava/Asistenti_PAAS/MapServer/51`,
-    { format: 'geojson' },
-  )
 
   const { data: rawParkomatsData } = useArcgis(`${ARCGIS_URL}/doprava/Parkomaty/MapServer/17`, {
     format: 'geojson',
@@ -50,7 +44,6 @@ export const useArcgisData = (): ArcgisData => {
   })
 
   return {
-    rawAssistantsData: rawAssistantsData as FeatureCollection<Point, AssistantPoint> | undefined,
     rawParkomatsData: rawParkomatsData as FeatureCollection<Point, ParkomatPoint> | undefined,
     rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint> | undefined,
     rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingPoint> | undefined,
