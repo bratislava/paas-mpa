@@ -156,8 +156,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   return (
     <>
-      <ScreenContent variant="center" className="flex-1">
-        <View className="w-full">
+      <ScreenContent variant="center">
+        <View className="w-full flex-1">
           <FlatList
             contentContainerStyle={{ gap: 12 }}
             data={tickets}
