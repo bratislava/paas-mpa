@@ -22,7 +22,8 @@ const Shorten = () => {
 
   const shortenTicketMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
       queryClient.removeQueries({ queryKey: ['Tickets'] })
 
       router.replace({ pathname: '/tickets/shorten/shorten-result', params: { status: 'success' } })

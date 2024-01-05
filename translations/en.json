@@ -117,7 +117,7 @@
     "failed": "Shortening failed",
     "failedText": "Your ticket has not been shortened. Please try again.",
     "success": {
-      "actionButtonLabel": "Back to map"
+      "actionButtonLabel": "Back"
     },
     "fail": {
       "actionButtonLabel": "Back"

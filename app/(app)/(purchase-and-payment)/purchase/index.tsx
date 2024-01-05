@@ -138,7 +138,7 @@ const PurchaseScreen = () => {
                 validUntil={priceQuery.data?.bpkValidTo}
               />
 
-              {priceQuery.data?.priceTotal === 0 && !priceQuery.data?.creditNpkUsed ? null : (
+              {priceQuery.data?.priceTotal !== 0 || priceQuery.data?.creditNpkUsedSeconds ? (
                 <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                   <PressableStyled>
                     <PaymentMethodsFieldControl
@@ -147,7 +147,7 @@ const PurchaseScreen = () => {
                     />
                   </PressableStyled>
                 </Link>
-              )}
+              ) : null}
             </Field>
           </ScreenContent>
         </ScrollView>
