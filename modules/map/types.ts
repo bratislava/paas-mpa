@@ -81,13 +81,6 @@ export type BranchPoint = MapInterestPoint & {
   Spresnujuce_informacie_sk: string
 }
 
-export type AssistantPoint = MapInterestPoint & {
-  Rezidenstka_zona: string
-  Interny_nazov: string
-  Rezidentska_zona: string
-  web: string
-}
-
 export type PartnerPoint = MapInterestPoint & {
   adresa: string // "Jesenského 4"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
@@ -156,7 +149,6 @@ export type NormalizedPoint = {
 }
 
 type PointTypes = {
-  [MapPointKindEnum.assistant]: AssistantPoint
   [MapPointKindEnum.branch]: BranchPoint
   [MapPointKindEnum.parkomat]: ParkomatPoint
   [MapPointKindEnum.partner]: PartnerPoint

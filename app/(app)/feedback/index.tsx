@@ -92,10 +92,10 @@ const FeedbackScreen = () => {
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('title')} hasBackButton>
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <ScrollView>
-          <ScreenContent className="flex-1">
+          <ScreenContent>
             <Field
               label={t('emailAddress')}
               errorMessage={isValidEmail ? undefined : t('emailAddressInvalid')}

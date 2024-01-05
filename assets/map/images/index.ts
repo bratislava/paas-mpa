@@ -1,4 +1,3 @@
-export { default as AssistantImage } from './assistant.png'
 export { default as ClusterCircleImage } from './cluster-circle.png'
 export { default as GarageImage } from './garage.png'
 export { default as PPLusRImage } from './p-plus-r.png'

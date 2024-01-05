@@ -22,7 +22,6 @@ export const notificationSettingsOptions = () =>
   queryOptions({
     queryKey: ['NotificationSetting'],
     queryFn: () => clientApi.usersControllerGetUserSettings(),
-    select: (data) => data.data,
   })
 
 export const activeTicketsOptions = () =>

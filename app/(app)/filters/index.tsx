@@ -5,7 +5,6 @@ import { SvgProps } from 'react-native-svg'
 
 import {
   ActiveZonesIcon,
-  AssistantIcon,
   GarageIcon,
   ParkingIcon,
   ParkomatIcon,
@@ -31,7 +30,6 @@ const filteringOptions: {
     data: [
       { icon: ParkomatIcon, optionKey: MapPointIconEnum.parkomat },
       { icon: SellingPointIcon, optionKey: MapPointIconEnum.partner },
-      { icon: AssistantIcon, optionKey: MapPointIconEnum.assistant },
     ],
   },
   {

@@ -16,6 +16,8 @@ export type ScreenViewProps = {
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
   hasBackButton?: boolean
+  // there is no exportable type for options prop in Stack.Screen
+  options?: (typeof Stack.Screen)['prototype']['props']['options']
 } & ViewProps
 
 const ScreenView = ({
@@ -26,6 +28,7 @@ const ScreenView = ({
   backgroundVariant = 'white',
   actionButton,
   hasBackButton,
+  options,
   ...rest
 }: ScreenViewProps) => {
   const navigation = useNavigation()
@@ -43,15 +46,13 @@ const ScreenView = ({
   return (
     <View className={clsx('flex-1 bg-white', className)} {...rest}>
       {title?.length ? (
-        hasBackButton ? (
-          <StackScreenWithHeader
-            options={{
-              title,
-            }}
-          />
-        ) : (
-          <Stack.Screen options={{ title }} />
-        )
+        <StackScreenWithHeader
+          options={{
+            title,
+            headerBackVisible: hasBackButton,
+            ...options,
+          }}
+        />
       ) : null}
 
       {backgroundVariant === 'dots' && (

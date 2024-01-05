@@ -1,4 +1,4 @@
-import { Link, router, Stack } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useCallback, useMemo } from 'react'
 import { View } from 'react-native'
 
@@ -43,16 +43,18 @@ const TicketsFiltersScreen = () => {
   )
 
   return (
-    <ScreenView title={t('title')} actionButton={actionButton}>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <PressableStyled onPress={handleReset}>
-              <Typography variant="default-bold">{t('reset')}</Typography>
-            </PressableStyled>
-          ),
-        }}
-      />
+    <ScreenView
+      title={t('title')}
+      options={{
+        headerRight: () => (
+          <PressableStyled onPress={handleReset}>
+            <Typography variant="default-bold">{t('reset')}</Typography>
+          </PressableStyled>
+        ),
+        presentation: 'modal',
+      }}
+      actionButton={actionButton}
+    >
       <View className="py-5 pl-6 pr-4 g-5">
         {fields.map(({ key, path, value }) => (
           <Field key={key} label={t(key)}>

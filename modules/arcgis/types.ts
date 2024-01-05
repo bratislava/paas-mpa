@@ -1,7 +1,6 @@
 import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
 import {
-  AssistantPoint,
   BranchPoint,
   MapUdrZone,
   ParkingPoint,
@@ -10,7 +9,6 @@ import {
 } from '@/modules/map/types'
 
 export interface ArcgisData {
-  rawAssistantsData?: FeatureCollection<Point, AssistantPoint>
   rawParkomatsData?: FeatureCollection<Point, ParkomatPoint>
   rawPartnersData?: FeatureCollection<Point, PartnerPoint>
   rawParkingLotsData?: FeatureCollection<Point, ParkingPoint>

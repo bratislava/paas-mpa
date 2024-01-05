@@ -146,6 +146,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                     className="flex-1"
                     sections={sections}
                     keyboardShouldPersistTaps="always"
+                    stickySectionHeadersEnabled={false}
                     renderItem={optionsListProps.renderItem!}
                     renderSectionHeader={({ section: { title } }) => (
                       <Typography
