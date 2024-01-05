@@ -12,7 +12,6 @@ import {
   PartnerPoint,
   MapInterestPoint,
   MapUdrZone,
-  AssistantPoint,
   UdrZoneFeature,
 } from '@/modules/map/types'
 
@@ -68,7 +67,6 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
 })
 
 export interface ProcessDataOptions {
-  rawAssistantsData: FeatureCollection<Point, MapInterestPoint>
   rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
   rawPartnersData: FeatureCollection<Point, PartnerPoint>
   rawParkingLotsData: FeatureCollection<Point, ParkingPoint>
@@ -80,7 +78,6 @@ export interface ProcessDataOptions {
 
 export const processData = ({
   rawZonesData,
-  rawAssistantsData,
   rawParkomatsData,
   rawPartnersData,
   rawParkingLotsData,
@@ -115,27 +112,6 @@ export const processData = ({
     {
       type: 'FeatureCollection',
       features: [
-        /*
-        ASSISTNANTS
-      */
-        ...rawAssistantsData.features
-          .map((feature) => {
-            GLOBAL_ID++
-            const kind = 'assistants'
-            const icon = 'assistant'
-
-            return {
-              ...feature,
-              id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, AssistantPoint>
-          })
-          .filter((f) => f.properties?.web === 'ano'),
-
         /*
         BRANCHES
       */

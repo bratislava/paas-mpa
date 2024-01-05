@@ -32,34 +32,31 @@ const NotificationSettings = () => {
   const t = useTranslation('Settings')
   const queryClient = useQueryClient()
 
-  const {
-    data: settings,
-    isPending,
-    isError,
-    error,
-  } = useQueryWithFocusRefetch(notificationSettingsOptions())
+  const { data, isPending, isError, error } = useQueryWithFocusRefetch(
+    notificationSettingsOptions(),
+  )
+
+  // cannot use `select: (res) => res.data` because of type error inside optimistic update
+  const settings = data?.data
 
   const mutation = useMutation({
     mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
 
     // When mutate is called:
     onMutate: async (changedSettings) => {
-      console.log('onMutate', changedSettings)
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: notificationSettingsOptions().queryKey })
 
       // Snapshot the previous value
       const previousSettings = queryClient.getQueryData(notificationSettingsOptions().queryKey)
 
-      // Optimistically update to the new value
-      queryClient.setQueryData(notificationSettingsOptions().queryKey, (oldSettings) =>
-        oldSettings
-          ? {
-              ...oldSettings,
-              ...changedSettings,
-            }
-          : undefined,
-      )
+      if (previousSettings) {
+        // Optimistically update to the new value
+        queryClient.setQueryData(notificationSettingsOptions().queryKey, {
+          ...previousSettings,
+          data: { ...previousSettings.data, ...changedSettings },
+        })
+      }
 
       // Return a context object with the snapshot value
       return { previousSettings }
@@ -93,11 +90,11 @@ const NotificationSettings = () => {
   const pushNotifications = [
     {
       name: 'pushNotificationsAboutToEnd',
-      value: settings.pushNotificationsAboutToEnd,
+      value: settings?.pushNotificationsAboutToEnd,
     },
     {
       name: 'pushNotificationsToEnd',
-      value: settings.pushNotificationsToEnd,
+      value: settings?.pushNotificationsToEnd,
     },
   ] as const
 
@@ -120,7 +117,7 @@ const NotificationSettings = () => {
           <NotificationControl
             key={setting.name}
             notificationName={setting.name}
-            value={setting.value}
+            value={!!setting.value}
             onValueChange={() => saveNotifications({ [setting.name]: !setting.value })}
           />
         ))}

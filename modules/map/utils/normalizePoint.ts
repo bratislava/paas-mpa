@@ -64,13 +64,6 @@ export const normalizePoint = (point: MapInterestPoint, language: string): Norma
         navigation: point.Navigacia,
         openingHours: resolveOpeningHours(point),
       }
-    case isPointOfKind(point, MapPointKindEnum.assistant):
-      return {
-        id: point.OBJECTID,
-        name: point.Interny_nazov,
-        udrId: point.Rezidenstka_zona,
-        kind: MapPointKindEnum.assistant,
-      }
     default:
       return {
         id: 0,
