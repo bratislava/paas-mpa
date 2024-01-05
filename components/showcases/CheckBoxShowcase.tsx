@@ -18,11 +18,7 @@ const CheckBoxShowcase = () => {
   return (
     <View className="p-4 g-4">
       <View className="flex-row g-3">
-        <CheckBox />
-        <Typography>Uncontrolled</Typography>
-      </View>
-      <View className="flex-row g-3">
-        <CheckBox value={checked} onValueChange={setChecked} />
+        <CheckBox value={checked} onChange={setChecked} />
         <Typography>Controlled {checked ? 'checked' : 'unchecked'}</Typography>
       </View>
       <SelectRow

@@ -49,7 +49,7 @@ const SearchScreen = () => {
 
   return (
     <ScreenView>
-      <ScreenContent className="flex-1" style={{ paddingTop: insets.top + 20 }}>
+      <ScreenContent style={{ paddingTop: insets.top + 20 }}>
         <View className="flex-1">
           <View>
             <FlexRow>

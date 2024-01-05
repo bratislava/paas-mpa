@@ -44,7 +44,7 @@ const Shorten = () => {
   return (
     <ScreenView title={t('title')} hasBackButton>
       <SafeAreaView>
-        <ScreenContent className="grow">
+        <ScreenContent>
           <View className="h-full g-4">
             <ScrollView className="shrink">
               <View className="grow">

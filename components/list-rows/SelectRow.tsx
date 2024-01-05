@@ -1,11 +1,13 @@
 import clsx from 'clsx'
 import { FC } from 'react'
-import { Pressable, PressableProps } from 'react-native'
+import { PressableProps } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
 import CheckBox from '@/components/shared/CheckBox'
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+
+import PressableStyled from '../shared/PressableStyled'
 
 // TODO onPress toggle checkbox may need better implementation
 
@@ -30,8 +32,9 @@ const SelectRow = ({
   ...restPressableProps
 }: SelectRowProps) => {
   return (
-    <Pressable
+    <PressableStyled
       onPress={() => onValueChange(!value)}
+      disabled={disabled}
       className="flex-row items-center gap-3 py-3"
       {...restPressableProps}
     >
@@ -41,9 +44,8 @@ const SelectRow = ({
         {label}
       </Typography>
 
-      {/* TODO CheckBox size */}
-      <CheckBox value={value} disabled={disabled} />
-    </Pressable>
+      <CheckBox value={value} onChange={onValueChange} disabled={disabled} />
+    </PressableStyled>
   )
 }
 

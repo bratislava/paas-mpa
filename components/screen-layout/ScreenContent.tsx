@@ -11,7 +11,7 @@ const ScreenContent = ({ children, variant, className, ...rest }: Props) => {
   return (
     <View
       className={clsx(
-        'bg-white p-5 g-5',
+        'flex-1 bg-white p-5 g-5',
         {
           // TODO long Text is not centered horizontally
           'items-center text-center': variant === 'center',
