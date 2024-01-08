@@ -134,16 +134,20 @@ const PurchaseScreen = () => {
               <UsedBonusCard
                 id={priceQuery.data?.bpkId}
                 creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
+                creditBpkRemaining={priceQuery.data?.creditBpkRemaining}
+                validUntil={priceQuery.data?.bpkValidTo}
               />
 
-              <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
-                <PressableStyled>
-                  <PaymentMethodsFieldControl
-                    visitorCard={npk}
-                    paymentOption={paymentOption ?? defaultPaymentOption}
-                  />
-                </PressableStyled>
-              </Link>
+              {priceQuery.data?.priceTotal !== 0 || priceQuery.data?.creditNpkUsedSeconds ? (
+                <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
+                  <PressableStyled>
+                    <PaymentMethodsFieldControl
+                      visitorCard={npk}
+                      paymentOption={paymentOption ?? defaultPaymentOption}
+                    />
+                  </PressableStyled>
+                </Link>
+              ) : null}
             </Field>
           </ScreenContent>
         </ScrollView>

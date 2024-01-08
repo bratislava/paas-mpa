@@ -7,7 +7,8 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { formatDate } from '@/utils/formatDate'
 
 /*
  *  Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3708%3A25139&mode=dev
@@ -27,11 +28,12 @@ type AdditionalProps =
 // TODO this component probably does not need selected/showControlChevron props
 type Props = AdditionalProps & {
   balance: string
-  validUntil: string
+  validUntil?: string
 }
 
 const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Props) => {
   const t = useTranslation('PaymentMethods')
+  const locale = useLocale()
 
   return (
     <Panel className={clsx(selected && 'border border-dark')}>
@@ -49,10 +51,13 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
           <Typography variant="small">{t('todayRemaining')}</Typography>
           <Typography variant="small-bold">{balance}</Typography>
         </FlexRow>
-        <FlexRow>
-          <Typography variant="small">{t('validUntil')}</Typography>
-          <Typography variant="small-bold">{validUntil}</Typography>
-        </FlexRow>
+
+        {validUntil ? (
+          <FlexRow>
+            <Typography variant="small">{t('validUntil')}</Typography>
+            <Typography variant="small-bold">{formatDate(new Date(validUntil), locale)}</Typography>
+          </FlexRow>
+        ) : null}
       </View>
     </Panel>
   )

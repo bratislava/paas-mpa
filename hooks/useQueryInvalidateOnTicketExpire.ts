@@ -18,7 +18,8 @@ export const useQueryInvalidateOnTicketExpire = (
   const sortedTickets = useMemo(
     () =>
       tickets?.sort((a, b) => new Date(a.parkingEnd).getTime() - new Date(b.parkingEnd).getTime()),
-    [tickets],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tickets?.length],
   )
 
   const queryClient = useQueryClient()

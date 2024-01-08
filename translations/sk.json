@@ -118,7 +118,7 @@
     "failed": "Ukončenie zlyhalo",
     "failedText": "Ukončenie zlyhalo. Tento lístok nie je možné ukončiť. Skúste to znova.",
     "success": {
-      "actionButtonLabel": "Späť na mapu"
+      "actionButtonLabel": "Späť"
     },
     "fail": {
       "actionButtonLabel": "Späť"

@@ -29,6 +29,8 @@ const Page = () => {
     mutationFn: (bodyInner: VerifyEmailsDto) =>
       clientApi.verifiedEmailsControllerSendEmailVerificationEmails(bodyInner),
     onSuccess: (res) => {
+      // purposefully removed from DTO, just for development purposes
+      // @ts-ignore
       const tmpVerificationToken = res.data[0].token
 
       router.push({

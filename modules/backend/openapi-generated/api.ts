@@ -178,13 +178,6 @@ export interface EmailVerificationResult {
    * @memberof EmailVerificationResult
    */
   sent: boolean
-  /**
-   * Token which is sent to the email - only avaialble for test purposes
-   * @type {string}
-   * @memberof EmailVerificationResult
-   * @deprecated
-   */
-  token: string
 }
 /**
  *
@@ -281,11 +274,17 @@ export interface GetTicketPriceResponseDto {
    */
   creditBpkUsed: string
   /**
-   * Credits used in case of bonnus parking in seconds
+   * Credits used in case of bonus parking in seconds
    * @type {number}
    * @memberof GetTicketPriceResponseDto
    */
   creditBpkUsedSeconds: number
+  /**
+   * Credits remaining in case of bonus parking in seconds
+   * @type {number}
+   * @memberof GetTicketPriceResponseDto
+   */
+  creditBpkRemaining: number
   /**
    * NPK - Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
    * @type {string}
@@ -293,11 +292,17 @@ export interface GetTicketPriceResponseDto {
    */
   creditNpkUsed: string
   /**
-   * Credits used in case of bonnus parking in seconds
+   * Credits used in case of bonus parking in seconds
    * @type {number}
    * @memberof GetTicketPriceResponseDto
    */
   creditNpkUsedSeconds: number
+  /**
+   * Credits remaining in case of bonus parking in seconds
+   * @type {number}
+   * @memberof GetTicketPriceResponseDto
+   */
+  creditNpkRemaining: number
   /**
    * The date and time when parking starts (UTC time in ISO8601 format)
    * @type {string}
@@ -316,6 +321,18 @@ export interface GetTicketPriceResponseDto {
    * @memberof GetTicketPriceResponseDto
    */
   bpkId?: string
+  /**
+   * End of card validity. ISO8601 formatted UTC timestamp.
+   * @type {string}
+   * @memberof GetTicketPriceResponseDto
+   */
+  bpkValidTo?: string
+  /**
+   * Original balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof GetTicketPriceResponseDto
+   */
+  bpkOriginalBalanceSeconds?: number
 }
 /**
  *
@@ -963,7 +980,7 @@ export interface TicketDto {
    */
   price?: number
   /**
-   * Credits used in case of bonnus parking in seconds
+   * Credits used in case of bonus parking in seconds
    * @type {number}
    * @memberof TicketDto
    */
@@ -1073,7 +1090,7 @@ export interface TicketInitDto {
    */
   price?: number
   /**
-   * Credits used in case of bonnus parking in seconds
+   * Credits used in case of bonus parking in seconds
    * @type {number}
    * @memberof TicketInitDto
    */
@@ -1144,6 +1161,24 @@ export interface TicketInitDto {
    * @memberof TicketInitDto
    */
   paymentUrls?: PaymentUrls
+  /**
+   * End of card validity. ISO8601 formatted UTC timestamp.
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  validTo?: string
+  /**
+   * Balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  balanceSeconds?: number
+  /**
+   * Original balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof TicketInitDto
+   */
+  originalBalanceSeconds?: number
 }
 
 /**
