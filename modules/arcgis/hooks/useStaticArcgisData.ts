@@ -30,7 +30,9 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawPartnersData } = useQuery({
     queryKey: ['RawPartnersData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, PartnerPoint>>(`${STATIC_ARCGIS_URL}/partneri.geojson`),
+      axios.get<FeatureCollection<Point, PartnerPoint>>(
+        `${STATIC_ARCGIS_URL}/partnerske_prevadzky.geojson`,
+      ),
     select: (data) => data.data,
   })
 
