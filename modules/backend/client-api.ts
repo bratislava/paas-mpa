@@ -5,6 +5,7 @@ import {
   AnnouncementsApiFactory,
   Configuration,
   DefaultApiFactory,
+  MobileDevicesApiFactory,
   ParkingCardsApiFactory,
   SystemApiFactory,
   TicketsApiFactory,
@@ -24,4 +25,5 @@ export const clientApi = {
   ...ParkingCardsApiFactory(...args),
   ...VerifiedEmailsApiFactory(...args),
   ...AnnouncementsApiFactory(...args),
+  ...MobileDevicesApiFactory(...args),
 }

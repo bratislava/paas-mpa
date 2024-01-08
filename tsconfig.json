@@ -18,6 +18,7 @@
     "**/*.jsx",
     "./types",
     ".eslintrc.js",
-    ".prettierrc.js"
+    ".prettierrc.js",
+    "plugins/firebase.plugin.cjs"
   ]
 }
