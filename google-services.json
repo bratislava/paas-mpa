@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "155228890328",
+    "project_id": "paas-app-cf285",
+    "storage_bucket": "paas-app-cf285.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155228890328:android:92c3c45f3ba3cdf85863ad",
+        "android_client_info": {
+          "package_name": "com.bratislava.paas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0nWf8alZlqKlmxX2Wh2bpqGP6HrJQ4BI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
