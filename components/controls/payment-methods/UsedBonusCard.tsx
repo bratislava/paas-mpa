@@ -14,7 +14,7 @@ const BPK_ORIGINAL_SECONDS = 7200
 const UsedBonusCard = ({ id, creditUsedSeconds, validUntil, creditBpkRemaining }: Props) => {
   return id && creditUsedSeconds ? (
     <BonusCardRow
-      balance={formatBalance((creditBpkRemaining || 0) + creditUsedSeconds, BPK_ORIGINAL_SECONDS)}
+      balance={formatBalance((creditBpkRemaining ?? 0) + creditUsedSeconds, BPK_ORIGINAL_SECONDS)}
       validUntil={validUntil}
     />
   ) : null
