@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { deleteUser } from 'aws-amplify/auth'
-import { Link, Stack } from 'expo-router'
+import { Link } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
 
@@ -59,19 +59,19 @@ const SettingsPage = () => {
   }
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <IconButton
-              name="more-horiz"
-              accessibilityLabel={t('openVehicleContextMenu')}
-              onPress={handleContextMenuPress}
-            />
-          ),
-        }}
-      />
-
+    <ScreenView
+      title={t('title')}
+      hasBackButton
+      options={{
+        headerRight: () => (
+          <IconButton
+            name="more-horiz"
+            accessibilityLabel={t('openVehicleContextMenu')}
+            onPress={handleContextMenuPress}
+          />
+        ),
+      }}
+    >
       <ScreenContent className="flex-1">
         <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
           <Field label={t('language')}>
