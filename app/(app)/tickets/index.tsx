@@ -193,8 +193,14 @@ const TicketsRoute = ({ active }: RouteProps) => {
         backdropComponent={renderBackdrop}
       >
         <BottomSheetContent>
-          <PressableStyled onPress={handleDownloadReceipt}>
-            <ActionRow startIcon="file-download" label={t('downloadReceipt')} />
+          <PressableStyled
+            disabled={downloadReceiptMutation.isPending}
+            onPress={handleDownloadReceipt}
+          >
+            <ActionRow
+              startIcon={downloadReceiptMutation.isPending ? 'hourglass-top' : 'file-download'}
+              label={t('downloadReceipt')}
+            />
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheet>
