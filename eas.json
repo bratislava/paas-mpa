@@ -16,6 +16,7 @@
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
+        "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
       }
     },
@@ -28,6 +29,7 @@
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
+        "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
       }
     },
@@ -42,6 +44,7 @@
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
+        "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
       }
     },
@@ -53,6 +56,7 @@
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2qo6rak1bff2hk45gogpe1phh8",
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.bratislava.sk",
+        "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
         "EXPO_PUBLIC_DEPLOYMENT": "production"
       }
     }
