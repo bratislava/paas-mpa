@@ -43,8 +43,6 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
           </Typography>
           <IconButton
             name="more-vert"
-            // hidden until API is ready
-            className="hidden"
             accessibilityLabel={t('more')}
             onPress={() => handleMorePress(ticket.id)}
           />

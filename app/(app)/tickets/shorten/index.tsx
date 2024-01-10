@@ -22,7 +22,8 @@ const Shorten = () => {
 
   const shortenTicketMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerShortenTicket(id),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
       queryClient.removeQueries({ queryKey: ['Tickets'] })
 
       router.replace({ pathname: '/tickets/shorten/shorten-result', params: { status: 'success' } })
@@ -43,8 +44,8 @@ const Shorten = () => {
 
   return (
     <ScreenView title={t('title')} hasBackButton>
-      <SafeAreaView>
-        <ScreenContent>
+      <ScreenContent>
+        <SafeAreaView>
           <View className="h-full g-4">
             <ScrollView className="shrink">
               <View className="grow">
@@ -73,8 +74,8 @@ const Shorten = () => {
               {t('actionConfirm')}
             </Button>
           </View>
-        </ScreenContent>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScreenContent>
     </ScreenView>
   )
 }

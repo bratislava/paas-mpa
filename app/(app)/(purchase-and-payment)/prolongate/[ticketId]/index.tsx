@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
-import BonusCardRow from '@/components/controls/payment-methods/rows/BonusCardRow'
+import UsedBonusCard from '@/components/controls/payment-methods/UsedBonusCard'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import SkeletonPurchaseFields from '@/components/purchase/SkeletonPurchaseFields'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -94,10 +94,12 @@ const ProlongTicketScreen = () => {
 
             {priceQuery.data ? (
               <Field label={t('paymentMethodsFieldLabel')}>
-                {priceQuery.data?.creditBpkUsedSeconds ? (
-                  // TODO props
-                  <BonusCardRow balance="balance" validUntil="validUntil" />
-                ) : null}
+                <UsedBonusCard
+                  id={priceQuery.data?.bpkId}
+                  creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
+                  creditBpkRemaining={priceQuery.data?.creditBpkRemaining}
+                  validUntil={priceQuery.data?.bpkValidTo}
+                />
 
                 {/* Allow to open select only if npk is not used (price is not free) */}
                 {priceQuery.data?.priceTotal === 0 ? (

@@ -27,7 +27,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
     queryKey: ['RawPartnersData'],
     queryFn: () =>
       axios.get<FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>>(
-        `${STATIC_ARCGIS_URL}/partneri.geojson`,
+        `${STATIC_ARCGIS_URL}/partnerske_prevadzky.geojson`,
       ),
     select: (data) => data.data,
   })
