@@ -6,11 +6,6 @@ import { Point, Polygon } from '@turf/helpers'
 import intersect from '@turf/intersect'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
 import {
-  BranchPoint,
-  ParkingPoint,
-  ParkomatPoint,
-  PartnerPoint,
-  UnparsedUdrZone,
   UdrZoneFeature,
   MapPointWithTranslationProps,
   MapUdrZoneWithTranslationProps,
@@ -18,6 +13,7 @@ import {
 import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { Arcgis } from '@/modules/arcgis/types'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -71,11 +67,11 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
 })
 
 export interface ProcessDataOptions {
-  rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
-  rawPartnersData: FeatureCollection<Point, PartnerPoint>
-  rawParkingLotsData: FeatureCollection<Point, ParkingPoint>
-  rawBranchesData: FeatureCollection<Point, BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, UnparsedUdrZone>
+  rawParkomatsData: FeatureCollection<Point, Arcgis.ParkomatPoint>
+  rawPartnersData: FeatureCollection<Point, Arcgis.PartnerPoint>
+  rawParkingLotsData: FeatureCollection<Point, Arcgis.ParkingPoint>
+  rawBranchesData: FeatureCollection<Point, Arcgis.BranchPoint>
+  rawUdrData: FeatureCollection<Polygon, Arcgis.UdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
   rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }

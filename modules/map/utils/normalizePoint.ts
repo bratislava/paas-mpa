@@ -1,10 +1,11 @@
+import { Arcgis } from '@/modules/arcgis/types'
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { isPointOfKind, MapPointWithTranslationProps, UnparsedMapPoint } from '@/modules/map/types'
+import { MapPointWithTranslationProps } from '@/modules/map/types'
 
-export const normalizePoint = (point: UnparsedMapPoint): MapPointWithTranslationProps => {
+export const normalizePoint = (point: Arcgis.MapPoint): MapPointWithTranslationProps => {
   let normalizedPoint: MapPointWithTranslationProps
   switch (true) {
-    case isPointOfKind(point, MapPointKindEnum.branch):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.branch):
       normalizedPoint = {
         id: point.OBJECTID,
         address: point.Adresa,
@@ -17,9 +18,9 @@ export const normalizePoint = (point: UnparsedMapPoint): MapPointWithTranslation
         openingHours: { sk: point.Otvaracie_hodiny_sk, en: point.Otvaracie_hodiny_en },
       }
       break
-    case isPointOfKind(point, MapPointKindEnum.garage):
-    case isPointOfKind(point, MapPointKindEnum.pPlusR):
-    case isPointOfKind(point, MapPointKindEnum.parkingLot):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.garage):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.pPlusR):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.parkingLot):
       normalizedPoint = {
         id: point.OBJECTID,
         kind: point.kind,
@@ -41,7 +42,7 @@ export const normalizePoint = (point: UnparsedMapPoint): MapPointWithTranslation
         surface: { sk: point.Povrch_sk, en: point.Povrch_en },
       }
       break
-    case isPointOfKind(point, MapPointKindEnum.parkomat):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.parkomat):
       normalizedPoint = {
         id: point.OBJECTID,
         parkomatId: point.Parkomat_ID,
@@ -51,7 +52,7 @@ export const normalizePoint = (point: UnparsedMapPoint): MapPointWithTranslation
         name: point.Lokalita,
       }
       break
-    case isPointOfKind(point, MapPointKindEnum.partner):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.partner):
       normalizedPoint = {
         id: point.OBJECTID,
         address: point.adresa,

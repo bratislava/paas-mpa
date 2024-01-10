@@ -1,7 +1,8 @@
+import { Arcgis } from '@/modules/arcgis/types'
 import { MapLayerEnum } from '@/modules/map/constants'
-import { MapUdrZoneWithTranslationProps, UnparsedUdrZone } from '@/modules/map/types'
+import { MapUdrZoneWithTranslationProps } from '@/modules/map/types'
 
-export const normalizeZone = (zone: UnparsedUdrZone): MapUdrZoneWithTranslationProps => {
+export const normalizeZone = (zone: Arcgis.UdrZone): MapUdrZoneWithTranslationProps => {
   const normalizedZone: MapUdrZoneWithTranslationProps = {
     id: zone.OBJECTID,
     name: zone.Nazov,
