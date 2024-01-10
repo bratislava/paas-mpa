@@ -1,13 +1,8 @@
 import { MapPointKindEnum } from '@/modules/map/constants'
-import {
-  isPointOfKind,
-  MapPoint,
-  UnparsedMapPoint,
-  WithTranslationProperties,
-} from '@/modules/map/types'
+import { isPointOfKind, MapPointWithTranslationProps, UnparsedMapPoint } from '@/modules/map/types'
 
-export const normalizePoint = (point: UnparsedMapPoint): WithTranslationProperties<MapPoint> => {
-  let normalizedPoint: WithTranslationProperties<MapPoint>
+export const normalizePoint = (point: UnparsedMapPoint): MapPointWithTranslationProps => {
+  let normalizedPoint: MapPointWithTranslationProps
   switch (true) {
     case isPointOfKind(point, MapPointKindEnum.branch):
       normalizedPoint = {
@@ -43,6 +38,7 @@ export const normalizePoint = (point: UnparsedMapPoint): WithTranslationProperti
         publicTransportTravelTime: point.Dojazdova_doba,
         rpkInformation: { sk: point.Informacia_RPK_sk, en: point.Informacia_RPK_en },
         npkInformation: { sk: point.Informacia_NPK_sk, en: point.Informacia_NPK_en },
+        surface: { sk: point.Povrch_sk, en: point.Povrch_en },
       }
       break
     case isPointOfKind(point, MapPointKindEnum.parkomat):

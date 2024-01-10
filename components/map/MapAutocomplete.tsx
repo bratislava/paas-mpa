@@ -1,5 +1,4 @@
 import { Portal } from '@gorhom/portal'
-import { Feature, MultiPolygon, Polygon } from 'geojson'
 import { forwardRef, useCallback, useEffect, useState } from 'react'
 import {
   FlatList,
@@ -19,12 +18,7 @@ import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useMapAutocompleteGetOptions } from '@/modules/map/hooks/useMapAutocompleteGetOptions'
-import {
-  GeocodingFeature,
-  isGeocodingFeature,
-  MapUdrZone,
-  UdrZoneFeature,
-} from '@/modules/map/types'
+import { GeocodingFeature, isGeocodingFeature, UdrZoneFeature } from '@/modules/map/types'
 import { findShapesInRadius } from '@/modules/map/utils/findShapesInRadius'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
 import { translateMapObject } from '@/modules/map/utils/translateMapObject'
@@ -36,8 +30,8 @@ const NEARBY_ZONE_RADIUS = 0.2 // km
 
 type Props = Partial<
   AutocompleteProps<
-    [Feature<Polygon | MultiPolygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
-    GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>
+    [UdrZoneFeature[], Unpromise<ReturnType<typeof forwardGeocode>>],
+    GeocodingFeature | UdrZoneFeature
   >
 >
 
@@ -69,7 +63,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     }, [mapZones, location])
 
     const handleValueChange = useCallback(
-      (value: GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>) => {
+      (value: GeocodingFeature | UdrZoneFeature) => {
         onValueChange?.(value)
       },
       [onValueChange],

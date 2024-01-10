@@ -113,6 +113,7 @@ export type ParkingPoint = UnparsedMapPoint & {
   ORIG_FID: number // 0
   web?: string // 'ano'
   Povrch_sk: string // 'parkovisko'
+  Povrch_en: string // 'parking lot'
   Spadova_oblast: string | null // null
   Prevadzkova_doba: string // 'Parkovanie povolené v pracovné dni od 05:00 do 24:00, cez víkendy a sviatky v čase 00:00-24:00. Parkovanie je bezplatné.'
   Informacia_RPK_sk: string | null // null
@@ -122,7 +123,6 @@ export type ParkingPoint = UnparsedMapPoint & {
   Typ_en: string // 'P+R'
   Nazov_en: string // 'P+R Komisárky'
   Stav_en: string // 'new'
-  Povrch_en: string // 'parking lot'
   Informacia_RPK_en: string | null // null
   Informacia_NPK_en: string | null // null
   Partneri: string | null // null
@@ -148,6 +148,7 @@ export type MapPoint = {
   distanceToPublicTransport?: string | null
   npkInformation?: string | null
   rpkInformation?: string | null
+  surface?: string | null
 }
 
 type PointTypes = {
@@ -210,7 +211,7 @@ export const isGeocodingFeature = (
   return (value as any)?.place_name !== undefined
 }
 
-export type UdrZoneFeature = Feature<Polygon | MultiPolygon, MapUdrZone>
+export type UdrZoneFeature = Feature<Polygon | MultiPolygon, MapUdrZoneWithTranslationProps>
 
 export type ApplicationLocale = 'sk' | 'en'
 
@@ -232,7 +233,7 @@ export type WithTranslationProperties<P, K extends keyof P> =
 
 export type MapPointWithTranslationProps = WithTranslationProperties<
   MapPoint,
-  'addressDetail' | 'openingHours' | 'name' | 'rpkInformation' | 'npkInformation'
+  'addressDetail' | 'openingHours' | 'name' | 'rpkInformation' | 'npkInformation' | 'surface'
 >
 
 export type MapUdrZoneWithTranslationProps = WithTranslationProperties<
