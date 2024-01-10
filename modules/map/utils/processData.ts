@@ -10,10 +10,14 @@ import {
   ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
-  MapInterestPoint,
   MapUdrZone,
   UdrZoneFeature,
+  NormalizedPoint,
+  NormalizedUdrZone,
 } from '@/modules/map/types'
+import { normalizePoint } from '@/modules/map/utils/normalizePoint'
+import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
+import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -117,92 +121,103 @@ export const processData = ({
       */
         ...rawBranchesData.features.map((feature) => {
           GLOBAL_ID++
-          const kind = 'branches'
-          const icon = 'branch'
+          const kind = MapPointKindEnum.branch
+          const icon = MapPointIconEnum.branch
+          const properties = {
+            ...feature.properties,
+            kind,
+            icon,
+          }
+          const normalizedProperties = normalizePoint(properties)
 
           return {
             ...feature,
             id: GLOBAL_ID,
-            properties: {
-              ...feature.properties,
-              kind,
-              icon,
-            },
-          } as Feature<Point, BranchPoint>
+            properties: normalizedProperties,
+          } as Feature<Point, NormalizedPoint>
         }),
 
         /*
         PARKOMATS
       */
         ...rawParkomatsData.features
+          .filter((f) => f.properties?.Web === 'ano')
           .map((feature) => {
             GLOBAL_ID++
-            const kind = 'parkomats'
-            const icon = 'parkomat'
+            const kind = MapPointKindEnum.parkomat
+            const icon = MapPointIconEnum.parkomat
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = normalizePoint(properties)
 
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, ParkomatPoint>
-          })
-          .filter((f) => f.properties?.Web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, NormalizedPoint>
+          }),
 
         /*
         PARTNERS
       */
         ...rawPartnersData.features
+          .filter((f) => f.properties?.web === 'ano')
           .map((feature) => {
             GLOBAL_ID++
-            const kind = 'partners'
-            const icon = 'partner'
-
+            const kind = MapPointKindEnum.partner
+            const icon = MapPointIconEnum.partner
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = normalizePoint(properties)
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, PartnerPoint>
-          })
-          .filter((f) => f.properties?.web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, NormalizedPoint>
+          }),
 
         /*
         PARKING LOTS
       */
         ...rawParkingLotsData.features
+          .filter((f) => f.properties?.web === 'ano')
           .map((feature) => {
             GLOBAL_ID++
             const type =
               feature.properties?.Typ_en == 'P+R'
-                ? 'p-plus-r'
+                ? MapPointIconEnum.pPlusR
                 : feature.properties?.Typ_en == 'garage'
-                ? 'garage'
-                : 'parking-lot'
+                ? MapPointIconEnum.garage
+                : MapPointIconEnum.parkingLot
 
             const kind =
-              type == 'p-plus-r' ? 'p-plus-r' : type == 'garage' ? 'garages' : 'parking-lots'
+              type == MapPointIconEnum.pPlusR
+                ? MapPointKindEnum.pPlusR
+                : type == MapPointIconEnum.garage
+                ? MapPointKindEnum.garage
+                : MapPointKindEnum.parkingLot
             const icon = type
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = normalizePoint(properties)
 
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, ParkingPoint>
-          })
-          .filter((f) => f.properties?.web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, NormalizedPoint>
+          }),
       ],
-    } as FeatureCollection<Point, MapInterestPoint>,
+    } as FeatureCollection<Point, NormalizedPoint>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 
@@ -211,26 +226,28 @@ export const processData = ({
     {
       type: 'FeatureCollection',
       features: rawUdrData.features
-        .map((feature) => {
-          GLOBAL_ID++
-          const layer = 'visitors'
-
-          return {
-            ...feature,
-            id: GLOBAL_ID,
-            properties: {
-              ...feature.properties,
-              layer,
-            },
-          } as UdrZoneFeature
-        })
         .filter(
           (f) =>
             (f.properties?.web === 'ano' || f.properties?.web === 'ano - planned') &&
             (f.properties?.Status === 'active' || f.properties?.Status === 'planned'),
-        ),
-    } as FeatureCollection<Polygon, MapUdrZone>,
-    zonesData as FeatureCollection<Polygon, MapUdrZone>,
+        )
+        .map((feature) => {
+          GLOBAL_ID++
+          const layer = MapLayerEnum.visitors
+          const properties = {
+            ...feature.properties,
+            layer,
+          }
+          const normalizedProperties = normalizeZone(properties)
+
+          return {
+            ...feature,
+            id: GLOBAL_ID,
+            properties: normalizedProperties,
+          } as UdrZoneFeature
+        }),
+    } as FeatureCollection<Polygon, NormalizedUdrZone>,
+    zonesData as FeatureCollection<Polygon, NormalizedUdrZone>,
   )
 
   const odpData = {
@@ -238,7 +255,7 @@ export const processData = ({
     features: rawOdpData.features
       .map((feature) => {
         GLOBAL_ID++
-        const layer = 'residents'
+        const layer = MapLayerEnum.residents
 
         return {
           ...feature,

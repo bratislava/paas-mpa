@@ -60,7 +60,7 @@ export const useProcessedArcgisData = () => {
       const featuresHashMap: MapFeatureHashMap = new Map()
       udrData.features.forEach((feature) => {
         if (feature.properties) {
-          featuresHashMap.set(feature.properties.UDR_ID.toString(), feature)
+          featuresHashMap.set(feature.properties.udrId.toString(), feature)
         }
       })
       setMapZones(featuresHashMap)

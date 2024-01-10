@@ -51,7 +51,7 @@ export type NormalizedUdrZone = {
   rpkInformation: string
   npkInformation: string
   code: string
-  status: string
+  status: MapZoneStatusEnum
   udrId: string
   udrUuid: string
   odpRpk: string
@@ -131,6 +131,7 @@ export type NormalizedPoint = {
   id: number
   name: string
   kind: MapPointKindEnum
+  icon: MapPointIconEnum
   udrId?: string | null
   parkomatId?: string | null
   location?: string
@@ -208,4 +209,4 @@ export const isGeocodingFeature = (
   return (value as any)?.place_name !== undefined
 }
 
-export type UdrZoneFeature = Feature<Polygon | MultiPolygon, MapUdrZone>
+export type UdrZoneFeature = Feature<Polygon | MultiPolygon, NormalizedUdrZone>
