@@ -9,7 +9,7 @@ import {
   MapZoneStatusEnum,
 } from '@/modules/map/constants'
 
-export type MapUdrZone = {
+export type UnparsedUdrZone = {
   OBJECTID: number
   Nazov: string
   Zakladna_cena: number // 2
@@ -40,7 +40,7 @@ export type MapUdrZone = {
   web: string // "ano"
 }
 
-export type NormalizedUdrZone = {
+export type MapUdrZone = {
   /** OBJECTID */
   id: number
   name: string
@@ -127,7 +127,7 @@ export type ParkingPoint = MapInterestPoint & {
   Partneri: string | null // null
 }
 
-export type NormalizedPoint = {
+export type MapPoint = {
   id: number
   name: string
   kind: MapPointKindEnum
@@ -209,4 +209,32 @@ export const isGeocodingFeature = (
   return (value as any)?.place_name !== undefined
 }
 
-export type UdrZoneFeature = Feature<Polygon | MultiPolygon, NormalizedUdrZone>
+export type UdrZoneFeature = Feature<Polygon | MultiPolygon, MapUdrZone>
+
+export type ApplicationLocale = 'sk' | 'en'
+
+export type TranslationProperty<T> = {
+  [key in ApplicationLocale]: T
+}
+
+/**
+ * @param K Keys of properties that have a translation translated
+ */
+export type WithTranslationProperties<P, K extends keyof P> =
+  | {
+      [Property in keyof P as Property extends K ? Property : never]:
+        | P[Property]
+        | TranslationProperty<P[Property]>
+    } & {
+      [Property in keyof P as Property extends K ? never : Property]: P[Property]
+    }
+
+export type MapPointWithTranslationProps = WithTranslationProperties<
+  MapPoint,
+  'addressDetail' | 'openingHours' | 'name' | 'rpkInformation' | 'npkInformation'
+>
+
+export type MapUdrZoneWithTranslationProps = WithTranslationProperties<
+  MapUdrZone,
+  'paidHours' | 'additionalInformation' | 'rpkInformation' | 'npkInformation' | 'reservedParking'
+>

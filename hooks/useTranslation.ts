@@ -1,5 +1,7 @@
 import { useTranslation as useTranslationI18n } from 'react-i18next'
 
+import { ApplicationLocale } from '@/modules/map/types'
+
 /**
  * Simplified version of react-i18next useTranslation hook that helps to use it with keyPrefix.
  * Support for multiple namespaces has to be implemented if needed.
@@ -14,5 +16,5 @@ export const useTranslation = (keyPrefix?: string) => {
 export const useLocale = () => {
   const { i18n } = useTranslationI18n()
 
-  return i18n.resolvedLanguage ?? i18n.language
+  return (i18n.resolvedLanguage ?? i18n.language) as ApplicationLocale
 }

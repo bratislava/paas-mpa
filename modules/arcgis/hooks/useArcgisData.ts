@@ -5,10 +5,10 @@ import { useArcgis } from '@/modules/arcgis/hooks/useArcgis'
 import { ArcgisData } from '@/modules/arcgis/types'
 import {
   BranchPoint,
-  MapUdrZone,
   ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
+  UnparsedUdrZone,
 } from '@/modules/map/types'
 
 export const useArcgisData = (): ArcgisData => {
@@ -48,7 +48,7 @@ export const useArcgisData = (): ArcgisData => {
     rawPartnersData: rawPartnersData as FeatureCollection<Point, PartnerPoint> | undefined,
     rawParkingLotsData: rawParkingLotsData as FeatureCollection<Point, ParkingPoint> | undefined,
     rawBranchesData: rawBranchesData as FeatureCollection<Point, BranchPoint> | undefined,
-    rawUdrData: rawUdrData as FeatureCollection<Polygon, MapUdrZone> | undefined,
+    rawUdrData: rawUdrData as FeatureCollection<Polygon, UnparsedUdrZone> | undefined,
     rawOdpData: rawOdpData as FeatureCollection<Polygon, GeoJsonProperties> | undefined,
     rawZonesData: rawZonesData as FeatureCollection<Polygon, GeoJsonProperties> | undefined,
   }

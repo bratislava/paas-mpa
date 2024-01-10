@@ -7,7 +7,7 @@ import {
   ParkingCardDto,
 } from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
-import { NormalizedUdrZone } from '@/modules/map/types'
+import { MapUdrZone } from '@/modules/map/types'
 
 type PaginationOptions = {
   page?: number
@@ -120,7 +120,7 @@ export const ticketPriceOptions = (
     duration,
     npk,
   }: {
-    udr: NormalizedUdrZone | null
+    udr: MapUdrZone | null
     licencePlate: string
     duration: number
     npk: ParkingCardDto | null

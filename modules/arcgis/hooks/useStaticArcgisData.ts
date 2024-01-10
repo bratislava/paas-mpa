@@ -6,10 +6,10 @@ import { STATIC_ARCGIS_URL } from '@/modules/arcgis/constants'
 import { ArcgisData } from '@/modules/arcgis/types'
 import {
   BranchPoint,
-  MapUdrZone,
   ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
+  UnparsedUdrZone,
 } from '@/modules/map/types'
 
 export const useStaticArcgisData = (): ArcgisData => {
@@ -51,7 +51,7 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawUdrData } = useQuery({
     queryKey: ['RawUdrData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Polygon, MapUdrZone>>(`${STATIC_ARCGIS_URL}/udr_p.geojson`),
+      axios.get<FeatureCollection<Polygon, UnparsedUdrZone>>(`${STATIC_ARCGIS_URL}/udr_p.geojson`),
     select: (data) => data.data,
   })
 

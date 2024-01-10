@@ -1,14 +1,13 @@
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { isPointOfKind, MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
 import {
-  mapObjectPropertiesProxyHandler,
-  PreProxy,
-} from '@/modules/map/utils/mapObjectPropertiesProxyHandler'
+  isPointOfKind,
+  MapInterestPoint,
+  MapPoint,
+  WithTranslationProperties,
+} from '@/modules/map/types'
 
-type PreProxyPoint = PreProxy<NormalizedPoint>
-
-export const normalizePoint = (point: MapInterestPoint): NormalizedPoint => {
-  let normalizedPoint: PreProxyPoint
+export const normalizePoint = (point: MapInterestPoint): WithTranslationProperties<MapPoint> => {
+  let normalizedPoint: WithTranslationProperties<MapPoint>
   switch (true) {
     case isPointOfKind(point, MapPointKindEnum.branch):
       normalizedPoint = {
@@ -77,5 +76,5 @@ export const normalizePoint = (point: MapInterestPoint): NormalizedPoint => {
       break
   }
 
-  return new Proxy(normalizedPoint, mapObjectPropertiesProxyHandler) as NormalizedPoint
+  return normalizedPoint
 }

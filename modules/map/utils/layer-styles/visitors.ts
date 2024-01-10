@@ -6,7 +6,7 @@ const styles = [
     id: 'udr-line-active',
     type: 'line',
     paint: {
-      lineColor: ['case', ['>=', ['get', 'Zakladna_cena'], 2], colors.green2, colors.lawnGreen],
+      lineColor: ['case', ['>=', ['get', 'price'], 2], colors.green2, colors.lawnGreen],
       lineDasharray: [1, 0],
       lineWidth: ['interpolate', ['linear'], ['zoom'], 11, 1, 20, 3],
       lineOpacity: 0.4,
@@ -16,7 +16,7 @@ const styles = [
     id: 'udr-line-planned',
     type: 'line',
     paint: {
-      lineColor: ['case', ['>=', ['get', 'Zakladna_cena'], 2], colors.green2, colors.lawnGreen],
+      lineColor: ['case', ['>=', ['get', 'price'], 2], colors.green2, colors.lawnGreen],
       lineDasharray: [2, 2],
       lineWidth: ['interpolate', ['linear'], ['zoom'], 11, 1, 20, 3],
       lineOpacity: 0.4,
@@ -36,7 +36,7 @@ const styles = [
     id: 'udr-fill',
     type: 'fill',
     paint: {
-      fillColor: ['case', ['>=', ['get', 'Zakladna_cena'], 2], colors.green2, colors.lawnGreen],
+      fillColor: ['case', ['>=', ['get', 'price'], 2], colors.green2, colors.lawnGreen],
       fillOpacity: ['case', ['boolean', ['feature-state', 'hover'], false], 0.4, 0.2],
     },
   },

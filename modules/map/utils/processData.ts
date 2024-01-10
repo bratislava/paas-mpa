@@ -10,10 +10,10 @@ import {
   ParkingPoint,
   ParkomatPoint,
   PartnerPoint,
-  MapUdrZone,
+  UnparsedUdrZone,
   UdrZoneFeature,
-  NormalizedPoint,
-  NormalizedUdrZone,
+  MapPointWithTranslationProps,
+  MapUdrZoneWithTranslationProps,
 } from '@/modules/map/types'
 import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
@@ -75,7 +75,7 @@ export interface ProcessDataOptions {
   rawPartnersData: FeatureCollection<Point, PartnerPoint>
   rawParkingLotsData: FeatureCollection<Point, ParkingPoint>
   rawBranchesData: FeatureCollection<Point, BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, MapUdrZone>
+  rawUdrData: FeatureCollection<Polygon, UnparsedUdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
   rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }
@@ -134,7 +134,7 @@ export const processData = ({
             ...feature,
             id: GLOBAL_ID,
             properties: normalizedProperties,
-          } as Feature<Point, NormalizedPoint>
+          } as Feature<Point, MapPointWithTranslationProps>
         }),
 
         /*
@@ -157,7 +157,7 @@ export const processData = ({
               ...feature,
               id: GLOBAL_ID,
               properties: normalizedProperties,
-            } as Feature<Point, NormalizedPoint>
+            } as Feature<Point, MapPointWithTranslationProps>
           }),
 
         /*
@@ -179,7 +179,7 @@ export const processData = ({
               ...feature,
               id: GLOBAL_ID,
               properties: normalizedProperties,
-            } as Feature<Point, NormalizedPoint>
+            } as Feature<Point, MapPointWithTranslationProps>
           }),
 
         /*
@@ -214,10 +214,10 @@ export const processData = ({
               ...feature,
               id: GLOBAL_ID,
               properties: normalizedProperties,
-            } as Feature<Point, NormalizedPoint>
+            } as Feature<Point, MapPointWithTranslationProps>
           }),
       ],
-    } as FeatureCollection<Point, NormalizedPoint>,
+    } as FeatureCollection<Point, MapPointWithTranslationProps>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 
@@ -246,8 +246,8 @@ export const processData = ({
             properties: normalizedProperties,
           } as UdrZoneFeature
         }),
-    } as FeatureCollection<Polygon, NormalizedUdrZone>,
-    zonesData as FeatureCollection<Polygon, NormalizedUdrZone>,
+    } as FeatureCollection<Polygon, MapUdrZoneWithTranslationProps>,
+    zonesData as FeatureCollection<Polygon, MapUdrZoneWithTranslationProps>,
   )
 
   const odpData = {

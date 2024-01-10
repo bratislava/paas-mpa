@@ -1,14 +1,14 @@
 /* eslint-disable unicorn/no-array-reduce */
 import { FillLayer, LineLayer, ShapeSource } from '@rnmapbox/maps'
-import { FeatureCollection, Polygon } from 'geojson'
+import { FeatureCollection, MultiPolygon, Polygon } from 'geojson'
 import { useMemo } from 'react'
 
 import { MapZoneStatusEnum } from '@/modules/map/constants'
-import { MapUdrZone } from '@/modules/map/types'
+import { MapUdrZoneWithTranslationProps } from '@/modules/map/types'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
-  udrData: FeatureCollection<Polygon, MapUdrZone>
+  udrData: FeatureCollection<Polygon | MultiPolygon, MapUdrZoneWithTranslationProps>
 }
 
 const MapZones = ({ udrData }: Props) => {
@@ -17,13 +17,13 @@ const MapZones = ({ udrData }: Props) => {
       active: {
         ...udrData,
         features: udrData?.features.filter(
-          (udr) => udr.properties?.Status === MapZoneStatusEnum.active,
+          (udr) => udr.properties?.status === MapZoneStatusEnum.active,
         ),
       },
       planned: {
         ...udrData,
         features: udrData?.features.filter(
-          (udr) => udr.properties?.Status === MapZoneStatusEnum.planned,
+          (udr) => udr.properties?.status === MapZoneStatusEnum.planned,
         ),
       },
     }),

@@ -27,7 +27,7 @@ import {
 } from '@/modules/map/types'
 import { findShapesInRadius } from '@/modules/map/utils/findShapesInRadius'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
-import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
@@ -95,7 +95,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           )
         }
 
-        const zone = normalizeZone(item.properties, locale)
+        const zone = translateMapObject(item.properties, locale)
 
         return (
           <View className="border-b border-divider py-4">
@@ -172,7 +172,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           ref={ref}
           getOptions={getOptions}
           getOptionLabel={(option) =>
-            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.Nazov
+            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.name
           }
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}

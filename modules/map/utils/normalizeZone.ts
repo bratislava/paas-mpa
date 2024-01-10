@@ -1,12 +1,8 @@
 import { MapLayerEnum } from '@/modules/map/constants'
-import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
-import {
-  mapObjectPropertiesProxyHandler,
-  PreProxy,
-} from '@/modules/map/utils/mapObjectPropertiesProxyHandler'
+import { MapUdrZoneWithTranslationProps, UnparsedUdrZone } from '@/modules/map/types'
 
-export const normalizeZone = (zone: MapUdrZone): NormalizedUdrZone => {
-  const normalizedZone: PreProxy<NormalizedUdrZone> = {
+export const normalizeZone = (zone: UnparsedUdrZone): MapUdrZoneWithTranslationProps => {
+  const normalizedZone: MapUdrZoneWithTranslationProps = {
     id: zone.OBJECTID,
     name: zone.Nazov,
     price: zone.Zakladna_cena,
@@ -29,5 +25,5 @@ export const normalizeZone = (zone: MapUdrZone): NormalizedUdrZone => {
     layer: zone.layer as MapLayerEnum,
   }
 
-  return new Proxy(normalizedZone, mapObjectPropertiesProxyHandler) as NormalizedUdrZone
+  return normalizedZone
 }
