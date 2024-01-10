@@ -13,7 +13,7 @@ import {
 import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
-import { Arcgis } from '@/modules/arcgis/types'
+import { Arcgis, ArcgisData } from '@/modules/arcgis/types'
 import { ArcgisAliased } from '@/modules/arcgis/aliasedTypes'
 import { normalizeAliasedPoint } from '@/modules/map/utils/normalizeAliasedPoint'
 import { normalizeAliasedZone } from '@/modules/map/utils/normalizeAliasedZone'
@@ -69,16 +69,6 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
   }),
 })
 
-export interface ProcessDataOptions {
-  rawParkomatsData: FeatureCollection<Point, Arcgis.ParkomatPoint | ArcgisAliased.ParkomatPoint>
-  rawPartnersData: FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>
-  rawParkingLotsData: FeatureCollection<Point, Arcgis.ParkingPoint | ArcgisAliased.ParkingPoint>
-  rawBranchesData: FeatureCollection<Point, Arcgis.BranchPoint | ArcgisAliased.BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, Arcgis.UdrZone | ArcgisAliased.UdrZone>
-  rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
-  rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
-}
-
 export const processData = ({
   rawZonesData,
   rawParkomatsData,
@@ -87,7 +77,7 @@ export const processData = ({
   rawBranchesData,
   rawUdrData,
   rawOdpData,
-}: ProcessDataOptions) => {
+}: ArcgisData) => {
   let GLOBAL_ID = 0
   const isUsingAliasedData = rawUdrData.features.find((udr) =>
     Object.hasOwn(udr.properties, 'UDR ID'),

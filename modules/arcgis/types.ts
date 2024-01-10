@@ -9,6 +9,7 @@ import {
   Polygon,
 } from 'geojson'
 
+import { ArcgisAliased } from '@/modules/arcgis/aliasedTypes'
 import { MapPointIconEnum, MapPointKindEnum, MapZoneStatusEnum } from '@/modules/map/constants'
 
 export type GeocodingFeature = {
@@ -169,4 +170,14 @@ export namespace Arcgis {
     rawOdpData?: FeatureCollection<Polygon, GeoJsonProperties>
     rawZonesData?: FeatureCollection<Polygon, GeoJsonProperties>
   }
+}
+
+export interface ArcgisData {
+  rawParkomatsData: FeatureCollection<Point, Arcgis.ParkomatPoint | ArcgisAliased.ParkomatPoint>
+  rawPartnersData: FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>
+  rawParkingLotsData: FeatureCollection<Point, Arcgis.ParkingPoint | ArcgisAliased.ParkingPoint>
+  rawBranchesData: FeatureCollection<Point, Arcgis.BranchPoint | ArcgisAliased.BranchPoint>
+  rawUdrData: FeatureCollection<Polygon, Arcgis.UdrZone | ArcgisAliased.UdrZone>
+  rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
+  rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 import { environment } from '@/environment'
+import { GeocodingFeature } from '@/modules/arcgis/types'
 import { CITY_BOUNDS } from '@/modules/map/constants'
-import { GeocodingFeature } from '@/modules/map/types'
 
 export const forwardGeocode = async (text: string) => {
   const accessToken = environment.mapboxPublicKey
