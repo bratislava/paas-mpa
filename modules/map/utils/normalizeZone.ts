@@ -6,6 +6,7 @@ export const normalizeZone = (zone: UnparsedUdrZone): MapUdrZoneWithTranslationP
     id: zone.OBJECTID,
     name: zone.Nazov,
     price: zone.Zakladna_cena,
+    weekendsAndHolidaysPrice: zone.vikendy_a_sviatky,
     paidHours: { en: zone.Cas_spoplatnenia_en, sk: zone.Cas_spoplatnenia_sk },
     parkingDurationLimit: zone.Casove_obmedzenie_dlzky_park,
     additionalInformation: { en: zone.Doplnkova_informacia_en, sk: zone.Doplnkova_informacia_sk },

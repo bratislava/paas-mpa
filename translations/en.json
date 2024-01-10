@@ -352,7 +352,9 @@
     "addresses": "Addresses",
     "noResults": "No results",
     "startTyping": "Start typing",
-    "typeSomething": "Type something to begin searching"
+    "typeSomething": "Type something to begin searching",
+    "paidHours": "Paid hours",
+    "weekendsAndHolidaysPrice": "Weekends and holidays price"
   },
   "FiltersScreen": {
     "title": "Filters",

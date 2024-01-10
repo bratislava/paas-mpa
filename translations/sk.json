@@ -352,7 +352,9 @@
     "addresses": "Adresy",
     "noResults": "Žiadne výsledky",
     "startTyping": "Začnite písať",
-    "typeSomething": "Napíšte niečo a začnite vyhľadávať"
+    "typeSomething": "Napíšte niečo a začnite vyhľadávať",
+    "paidHours": "Čas spoplatnenia",
+    "weekendsAndHolidaysPrice": "Cena cez víkendy a sviatky"
   },
   "FiltersScreen": {
     "title": "Filtre",

@@ -45,6 +45,7 @@ export type MapUdrZone = {
   id: number
   name: string
   price: number
+  weekendsAndHolidaysPrice: number
   paidHours: string
   parkingDurationLimit: number
   additionalInformation: string
@@ -64,14 +65,14 @@ export type MapUdrZone = {
   layer: MapLayerEnum
 }
 
-export type MapInterestPoint = {
+export type UnparsedMapPoint = {
   Navigacia: string // "https://www.google.com/maps/place/Magistr%C3%A1t+hlavn%C3%A9ho+mesta+SR+Bratislavy/@48.1439423,17.1091824,234m/data=!3m3!1e3!4b1!5s0x476c89431d7c7795:0x4caf7acfb0ed99d7!4m5!3m4!1s0x476c89433d1bc761:0x6ad8016ef317f8f0!8m2!3d48.1439414!4d17.1097296"
   icon: MapPointIconEnum
   kind: MapPointKindEnum
   OBJECTID: number // 4
 }
 
-export type BranchPoint = MapInterestPoint & {
+export type BranchPoint = UnparsedMapPoint & {
   Adresa: string // "Primaciálne nám. 1, 811 01 Bratislava"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "PAAS Centrum"
@@ -81,7 +82,7 @@ export type BranchPoint = MapInterestPoint & {
   Spresnujuce_informacie_sk: string
 }
 
-export type PartnerPoint = MapInterestPoint & {
+export type PartnerPoint = UnparsedMapPoint & {
   adresa: string // "Jesenského 4"
   Miesto: string // "Magistrát hl. mesta SR Bratislavy"
   Nazov: string // "Talks kaviareň "
@@ -91,7 +92,7 @@ export type PartnerPoint = MapInterestPoint & {
   web?: string // "ano"
 }
 
-export type ParkomatPoint = MapInterestPoint & {
+export type ParkomatPoint = UnparsedMapPoint & {
   Datum_osadenia_en: string // '31.07.2023'
   Datum_osadenia_sk: string // '31.07.2023'
   Lokalita: string // 'Rigeleho x Paulínyho'
@@ -102,7 +103,7 @@ export type ParkomatPoint = MapInterestPoint & {
   Navigacia: never
 }
 
-export type ParkingPoint = MapInterestPoint & {
+export type ParkingPoint = UnparsedMapPoint & {
   Nazov_sk: string // 'P+R Komisárky'
   Pocet_parkovacich_miest: string // '163'
   Verejna_doprava: string // '3'
@@ -160,7 +161,7 @@ type PointTypes = {
 
 // Type guard function using conditional types
 export function isPointOfKind<T extends MapPointKindEnum>(
-  point: MapInterestPoint,
+  point: UnparsedMapPoint,
   kind: T,
 ): point is PointTypes[T] {
   return point?.kind === kind

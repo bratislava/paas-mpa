@@ -1,12 +1,12 @@
 import { MapPointKindEnum } from '@/modules/map/constants'
 import {
   isPointOfKind,
-  MapInterestPoint,
   MapPoint,
+  UnparsedMapPoint,
   WithTranslationProperties,
 } from '@/modules/map/types'
 
-export const normalizePoint = (point: MapInterestPoint): WithTranslationProperties<MapPoint> => {
+export const normalizePoint = (point: UnparsedMapPoint): WithTranslationProperties<MapPoint> => {
   let normalizedPoint: WithTranslationProperties<MapPoint>
   switch (true) {
     case isPointOfKind(point, MapPointKindEnum.branch):
