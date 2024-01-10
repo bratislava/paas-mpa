@@ -14,6 +14,9 @@ import { normalizePoint } from '@/modules/map/utils/normalizePoint'
 import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
 import { normalizeZone } from '@/modules/map/utils/normalizeZone'
 import { Arcgis } from '@/modules/arcgis/types'
+import { ArcgisAliased } from '@/modules/arcgis/aliasedTypes'
+import { normalizeAliasedPoint } from '@/modules/map/utils/normalizeAliasedPoint'
+import { normalizeAliasedZone } from '@/modules/map/utils/normalizeAliasedZone'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -67,11 +70,11 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
 })
 
 export interface ProcessDataOptions {
-  rawParkomatsData: FeatureCollection<Point, Arcgis.ParkomatPoint>
-  rawPartnersData: FeatureCollection<Point, Arcgis.PartnerPoint>
-  rawParkingLotsData: FeatureCollection<Point, Arcgis.ParkingPoint>
-  rawBranchesData: FeatureCollection<Point, Arcgis.BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, Arcgis.UdrZone>
+  rawParkomatsData: FeatureCollection<Point, Arcgis.ParkomatPoint | ArcgisAliased.ParkomatPoint>
+  rawPartnersData: FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>
+  rawParkingLotsData: FeatureCollection<Point, Arcgis.ParkingPoint | ArcgisAliased.ParkingPoint>
+  rawBranchesData: FeatureCollection<Point, Arcgis.BranchPoint | ArcgisAliased.BranchPoint>
+  rawUdrData: FeatureCollection<Polygon, Arcgis.UdrZone | ArcgisAliased.UdrZone>
   rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
   rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
 }
@@ -86,6 +89,20 @@ export const processData = ({
   rawOdpData,
 }: ProcessDataOptions) => {
   let GLOBAL_ID = 0
+  const isUsingAliasedData = rawUdrData.features.find((udr) =>
+    Object.hasOwn(udr.properties, 'UDR ID'),
+  )
+  const localNormalizePoint:
+    | ((point: Arcgis.MapPoint) => MapPointWithTranslationProps)
+    | ((point: ArcgisAliased.MapPoint) => MapPointWithTranslationProps) = isUsingAliasedData
+    ? normalizeAliasedPoint
+    : normalizePoint
+
+  const localNormalizeZone:
+    | ((zone: Arcgis.UdrZone) => MapUdrZoneWithTranslationProps)
+    | ((zone: ArcgisAliased.UdrZone) => MapUdrZoneWithTranslationProps) = isUsingAliasedData
+    ? normalizeAliasedZone
+    : normalizeZone
 
   const zonesData = {
     type: 'FeatureCollection',
@@ -124,7 +141,7 @@ export const processData = ({
             kind,
             icon,
           }
-          const normalizedProperties = normalizePoint(properties)
+          const normalizedProperties = localNormalizePoint(properties as any)
 
           return {
             ...feature,
@@ -137,7 +154,11 @@ export const processData = ({
         PARKOMATS
       */
         ...rawParkomatsData.features
-          .filter((f) => f.properties?.Web === 'ano')
+          .filter(
+            (f) =>
+              (f.properties as Arcgis.ParkomatPoint)?.Web === 'ano' ||
+              (f.properties as ArcgisAliased.ParkomatPoint)?.web === 'ano',
+          )
           .map((feature) => {
             GLOBAL_ID++
             const kind = MapPointKindEnum.parkomat
@@ -147,7 +168,7 @@ export const processData = ({
               kind,
               icon,
             }
-            const normalizedProperties = normalizePoint(properties)
+            const normalizedProperties = localNormalizePoint(properties as any)
 
             return {
               ...feature,
@@ -170,7 +191,7 @@ export const processData = ({
               kind,
               icon,
             }
-            const normalizedProperties = normalizePoint(properties)
+            const normalizedProperties = localNormalizePoint(properties as any)
             return {
               ...feature,
               id: GLOBAL_ID,
@@ -186,9 +207,11 @@ export const processData = ({
           .map((feature) => {
             GLOBAL_ID++
             const type =
-              feature.properties?.Typ_en == 'P+R'
+              (feature.properties as Arcgis.ParkingPoint)?.Typ_en == 'P+R' ||
+              (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'P+R'
                 ? MapPointIconEnum.pPlusR
-                : feature.properties?.Typ_en == 'garage'
+                : (feature.properties as Arcgis.ParkingPoint)?.Typ_en == 'garage' ||
+                  (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'garage'
                 ? MapPointIconEnum.garage
                 : MapPointIconEnum.parkingLot
 
@@ -204,7 +227,7 @@ export const processData = ({
               kind,
               icon,
             }
-            const normalizedProperties = normalizePoint(properties)
+            const normalizedProperties = localNormalizePoint(properties as any)
 
             return {
               ...feature,
@@ -234,7 +257,7 @@ export const processData = ({
             ...feature.properties,
             layer,
           }
-          const normalizedProperties = normalizeZone(properties)
+          const normalizedProperties = localNormalizeZone(properties as any)
 
           return {
             ...feature,

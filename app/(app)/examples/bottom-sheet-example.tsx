@@ -31,7 +31,6 @@ const PARKING_LOT_EXAMPLE = {
   openingHours:
     'V pracovné dni: Od 05:00-24:00 pre návštevníkov zadarmo. Od 00:00-05:00 len pre držiteľov rezidentskej karty.\nVíkendy: zadarmo.',
   publicTransportLines: '3, 84, 95, 99',
-  distanceToCenter: '>500 m',
   icon: MapPointIconEnum.parkingLot,
   kind: MapPointKindEnum.parkingLot,
 } satisfies MapPointWithTranslationProps

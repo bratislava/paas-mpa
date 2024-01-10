@@ -51,7 +51,6 @@ export type MapPoint = {
   parkingSpotCount?: number
   publicTransportLines?: string | null
   publicTransportTravelTime?: string | null
-  distanceToCenter?: string | null
   distanceToPublicTransport?: string | null
   npkInformation?: string | null
   rpkInformation?: string | null

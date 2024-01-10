@@ -2,7 +2,7 @@
 
 import { FeatureCollection, GeoJsonProperties, MultiPolygon, Point, Polygon } from 'geojson'
 
-import { MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
+import { MapPointIconEnum, MapPointKindEnum, MapZoneStatusEnum } from '@/modules/map/constants'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace ArcgisAliased {
@@ -24,7 +24,7 @@ export namespace ArcgisAliased {
     'Výnimka z obmedzenia dĺžky parkovania (RPK, APK)': string
     GlobalID: string
     GlobalID_A: string
-    Status: string
+    Status: MapZoneStatusEnum
     Obvod: number
     Plocha: number
     web: string
@@ -38,6 +38,7 @@ export namespace ArcgisAliased {
     'Doplnková informácia (sk)': string
     'Doplnková informácia (en)': string
     'Víkendy a sviatky': number
+    layer: string // "visitors"
   }
 
   export type MapPoint = {

@@ -29,7 +29,6 @@ export const normalizePoint = (point: Arcgis.MapPoint): MapPointWithTranslationP
         name: { sk: point.Nazov_sk, en: point.Nazov_en },
         navigation: point.Navigacia,
         openingHours: point.Prevadzkova_doba,
-        distanceToCenter: point.Dojazdova_doba,
         distanceToPublicTransport: point.Vzdialenost,
         parkingSpotCount: point.Pocet_parkovacich_miest
           ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
