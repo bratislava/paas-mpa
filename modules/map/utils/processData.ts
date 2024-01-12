@@ -197,10 +197,10 @@ export const processData = ({
           .map((feature) => {
             GLOBAL_ID++
             const type =
-              (feature.properties as Arcgis.ParkingPoint)?.Typ_en == 'P+R' ||
+              (feature.properties as Arcgis.ParkingPoint)?.Typ_en === 'P+R' ||
               (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'P+R'
                 ? MapPointIconEnum.pPlusR
-                : (feature.properties as Arcgis.ParkingPoint)?.Typ_en == 'garage' ||
+                : (feature.properties as Arcgis.ParkingPoint)?.Typ_en === 'garage' ||
                   (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'garage'
                 ? MapPointIconEnum.garage
                 : MapPointIconEnum.parkingLot

@@ -57,7 +57,7 @@ const ZoneDetailsScreen = () => {
           </FlexRow>
         ) : null}
         {/* eslint-disable-next-line eqeqeq */}
-        {zone.weekendsAndHolidaysPrice == undefined ? null : (
+        {zone.weekendsAndHolidaysPrice === undefined ? null : (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
