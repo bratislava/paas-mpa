@@ -52,7 +52,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   }, [onPermissionFinished, permissionStatus])
 
   return (
-    <View className="flex-1 flex-col justify-start">
+    <View className="flex-1 justify-start">
       <InfoSlide
         title={t(`${route.key}.title`)}
         text={t(`${route.key}.text`)}

@@ -18,9 +18,9 @@ type PageSize = {
   pageSize?: number
 }
 
-export const notificationSettingsOptions = () =>
+export const settingsOptions = () =>
   queryOptions({
-    queryKey: ['NotificationSetting'],
+    queryKey: ['Settings'],
     queryFn: () => clientApi.usersControllerGetUserSettings(),
   })
 
