@@ -31,8 +31,10 @@ const Page = () => {
   const language = data?.data?.language
 
   const handleLanguageChange = async (newLanguage: 'sk' | 'en') => {
-    await i18n.changeLanguage(newLanguage)
-    await mutation.mutateAsync({ language: newLanguage })
+    if (newLanguage !== language) {
+      await i18n.changeLanguage(newLanguage)
+      await mutation.mutateAsync({ language: newLanguage })
+    }
 
     if (router.canGoBack()) {
       router.back()
