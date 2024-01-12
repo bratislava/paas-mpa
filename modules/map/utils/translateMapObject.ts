@@ -26,7 +26,7 @@ export function translateMapObject<
   const translatedObject: P = {} as P
   Object.entries(obj).forEach(([key, value]) => {
     translatedObject[key as keyof P] =
-      typeof value === 'object' && value !== null
+      !!value && typeof value === 'object'
         ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (value as TranslationProperty<any>)[locale]
         : value
