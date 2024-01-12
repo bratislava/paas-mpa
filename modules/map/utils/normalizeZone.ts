@@ -1,18 +1,18 @@
+import { Arcgis } from '@/modules/arcgis/types'
 import { MapLayerEnum } from '@/modules/map/constants'
-import { MapUdrZone, NormalizedUdrZone } from '@/modules/map/types'
+import { MapUdrZoneWithTranslationProps } from '@/modules/map/types'
 
-export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdrZone => {
-  const isEnglish = language === 'en'
-
-  return {
+export const normalizeZone = (zone: Arcgis.UdrZone): MapUdrZoneWithTranslationProps => {
+  const normalizedZone: MapUdrZoneWithTranslationProps = {
     id: zone.OBJECTID,
     name: zone.Nazov,
     price: zone.Zakladna_cena,
-    paidHours: isEnglish ? zone.Cas_spoplatnenia_en : zone.Cas_spoplatnenia_sk,
+    weekendsAndHolidaysPrice: zone.vikendy_a_sviatky,
+    paidHours: { en: zone.Cas_spoplatnenia_en, sk: zone.Cas_spoplatnenia_sk },
     parkingDurationLimit: zone.Casove_obmedzenie_dlzky_park,
-    additionalInformation: isEnglish ? zone.Doplnkova_informacia_en : zone.Doplnkova_informacia_sk,
-    rpkInformation: isEnglish ? zone.Informacia_RPK_en : zone.Informacia_RPK_sk,
-    npkInformation: isEnglish ? zone.Informacia_NPK_en : zone.Informacia_NPK_sk,
+    additionalInformation: { en: zone.Doplnkova_informacia_en, sk: zone.Doplnkova_informacia_sk },
+    rpkInformation: { en: zone.Informacia_RPK_en, sk: zone.Informacia_RPK_sk },
+    npkInformation: { en: zone.Informacia_NPK_en, sk: zone.Informacia_NPK_sk },
     code: zone.Kod_rezidentskej_zony,
     status: zone.Status,
     udrId: zone.UDR_ID.toString(),
@@ -20,10 +20,12 @@ export const normalizeZone = (zone: MapUdrZone, language: string): NormalizedUdr
     odpRpk: zone.ODP_RPKAPK,
     restrictionOnlyRpk: zone.Obmedzene_len_pre_RPK_APK,
     cityDistrict: zone.UTJ,
-    reservedParking: isEnglish ? zone.Vyhradene_park_statie_en : zone.Vyhradene_park_statie_sk,
+    reservedParking: { en: zone.Vyhradene_park_statie_en, sk: zone.Vyhradene_park_statie_sk },
     initialFreeParkingDuration: zone.Uvodny_bezplatny_cas_parkovan,
     parkingDurationRestrictionException: zone.Vynimka_z_obmedzenia_dlzky_pa,
     parkingFeeException: zone.Vynimka_zo_spoplatnenia,
     layer: zone.layer as MapLayerEnum,
   }
+
+  return normalizedZone
 }

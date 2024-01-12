@@ -32,14 +32,18 @@ import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
-import { MapInterestPoint, MapUdrZone, UdrZoneFeature } from '@/modules/map/types'
+import {
+  MapPointWithTranslationProps,
+  MapUdrZoneWithTranslationProps,
+  UdrZoneFeature,
+} from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 import { useMapStoreUpdateContext } from '@/state/MapStoreProvider/useMapStoreUpdateContext'
 
 type Props = {
-  onZoneChange?: (feature: MapUdrZone | null) => void
-  onPointPress?: (point: MapInterestPoint) => void
+  onZoneChange?: (feature: MapUdrZoneWithTranslationProps | null) => void
+  onPointPress?: (point: MapPointWithTranslationProps) => void
   filters: MapFilters
   processedData: ProcessedMapData
   onMapPinVisibilityChange?: (isShown: boolean) => void
@@ -141,7 +145,7 @@ const Map = forwardRef(
 
           return
         }
-        onPointPress?.(point.properties as MapInterestPoint)
+        onPointPress?.(point.properties as MapPointWithTranslationProps)
       },
       [onPointPress],
     )
@@ -221,7 +225,7 @@ const Map = forwardRef(
             animated
           />
         </MapView>
-        {isMapPinShown && <MapPin price={selectedZone?.Zakladna_cena} />}
+        {isMapPinShown && <MapPin price={selectedZone?.price} />}
       </View>
     )
   },

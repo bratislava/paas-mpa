@@ -1,6 +1,6 @@
-import { Feature, MultiPolygon, Polygon, Position } from 'geojson'
+import { Position } from 'geojson'
 
-import { MapUdrZone } from '@/modules/map/types'
+import { UdrZoneFeature } from '@/modules/map/types'
 
 const calculateHaversineDistance = (point1: Position, point2: Position) => {
   const [lon1, lat1] = point1
@@ -24,11 +24,7 @@ const calculateHaversineDistance = (point1: Position, point2: Position) => {
 }
 
 /** @param radius Radius around the center in km */
-export const findShapesInRadius = (
-  shapes: Feature<Polygon | MultiPolygon, MapUdrZone>[],
-  center: Position,
-  radius: number,
-) => {
+export const findShapesInRadius = (shapes: UdrZoneFeature[], center: Position, radius: number) => {
   const startTime = performance.now()
 
   const result = shapes

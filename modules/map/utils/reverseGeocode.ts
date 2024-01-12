@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Position } from 'geojson'
 
 import { environment } from '@/environment'
-import { GeocodingFeature } from '@/modules/map/types'
+import { GeocodingFeature } from '@/modules/arcgis/types'
 
 export const reverseGeocode = async (position: Position) => {
   const [lon, lat] = position

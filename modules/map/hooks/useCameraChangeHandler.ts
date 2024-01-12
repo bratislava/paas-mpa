@@ -56,7 +56,7 @@ export const useCameraChangeHandler = ({
         setSelectedPolygon(null)
       } else if (isMapPinShown) {
         const feature = featuresAtCenter.features[0] as UdrZoneFeature
-        if (feature.properties.OBJECTID !== selectedPolygon?.properties.OBJECTID) {
+        if (feature.properties.id !== selectedPolygon?.properties.id) {
           setSelectedPolygon(feature)
         }
       }

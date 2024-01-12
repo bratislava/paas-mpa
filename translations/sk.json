@@ -327,7 +327,6 @@
       "openingHours": "Otváracie hodiny",
       "parkingSpotCount": "Počet parkovacích miest",
       "publicTransportLines": "Linky MHD",
-      "distanceToCenter": "Vzdialenosť do centra",
       "distanceToPublicTransport": "Vzdialenosť k zastávke MHD",
       "name": "Názov",
       "parkomatId": "ID parkovacieho automatu",
@@ -354,7 +353,9 @@
     "addresses": "Adresy",
     "noResults": "Žiadne výsledky",
     "startTyping": "Začnite písať",
-    "typeSomething": "Napíšte niečo a začnite vyhľadávať"
+    "typeSomething": "Napíšte niečo a začnite vyhľadávať",
+    "paidHours": "Čas spoplatnenia",
+    "weekendsAndHolidaysPrice": "Cena cez víkendy a sviatky"
   },
   "FiltersScreen": {
     "title": "Filtre",

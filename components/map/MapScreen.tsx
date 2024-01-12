@@ -16,9 +16,9 @@ import IconButton from '@/components/shared/IconButton'
 import { useLocale } from '@/hooks/useTranslation'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
-import { MapInterestPoint, MapUdrZone } from '@/modules/map/types'
-import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { MapPointWithTranslationProps, MapUdrZoneWithTranslationProps } from '@/modules/map/types'
 import { reverseGeocode } from '@/modules/map/utils/reverseGeocode'
+import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 
 const MAP_STATE_DEBOUNCE_TIME = 500
 
@@ -36,8 +36,10 @@ const MapScreen = ({ onMapStateChange }: Props) => {
   const locale = useLocale()
 
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
-  const [selectedZone, setSelectedZone] = useState<MapUdrZone | null>(null)
-  const [selectedPoint, setMapInterestPoint] = useState<MapInterestPoint | null>(null)
+  const [selectedZone, setSelectedZone] = useState<MapUdrZoneWithTranslationProps | null>(null)
+  const [selectedMapPoint, setSelectedMapPoint] = useState<MapPointWithTranslationProps | null>(
+    null,
+  )
   const [isMapPinShown, setIsMapPinShown] = useState(false)
   const [currentAddress, setCurrentAddress] = useState<string>()
 
@@ -46,18 +48,18 @@ const MapScreen = ({ onMapStateChange }: Props) => {
   }, [])
 
   const handleZoneChange = useCallback(
-    (zone: MapUdrZone | null) => {
+    (zone: MapUdrZoneWithTranslationProps | null) => {
       setSelectedZone(zone)
     },
     [setSelectedZone],
   )
 
   const handlePointPress = useCallback(
-    (zone: MapInterestPoint) => {
-      setMapInterestPoint(zone)
+    (point: MapPointWithTranslationProps) => {
+      setSelectedMapPoint(point)
       zoneBottomSheetRef.current?.snapToIndex(0)
     },
-    [setMapInterestPoint],
+    [setSelectedMapPoint],
   )
 
   const handleCenterChange = useCallback(async (center: Position) => {
@@ -81,7 +83,7 @@ const MapScreen = ({ onMapStateChange }: Props) => {
   }, [stringifiedParams])
 
   const normalizedZone = useMemo(
-    () => (selectedZone ? normalizeZone(selectedZone, locale) : null),
+    () => (selectedZone ? translateMapObject(selectedZone, locale) : null),
     [selectedZone, locale],
   )
 
@@ -108,9 +110,9 @@ const MapScreen = ({ onMapStateChange }: Props) => {
           address={currentAddress}
         />
       </Portal>
-      {selectedPoint && (
+      {selectedMapPoint && (
         <Portal hostName="index">
-          <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedPoint} />
+          <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedMapPoint} />
         </Portal>
       )}
       <Portal hostName="index">

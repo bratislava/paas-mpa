@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useCallback, useEffect, useState } fr
 import { PaymentOption } from '@/components/controls/payment-methods/types'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
-import { NormalizedUdrZone } from '@/modules/map/types'
+import { MapUdrZone } from '@/modules/map/types'
 
 export type PurchaseContextVehicle = {
   id?: number
@@ -13,7 +13,7 @@ export type PurchaseContextVehicle = {
 }
 
 type PurchaseStoreContextProps = {
-  udr: NormalizedUdrZone | null
+  udr: MapUdrZone | null
   npk: ParkingCardDto | null
   vehicle: PurchaseContextVehicle | null
   duration: number

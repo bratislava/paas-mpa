@@ -1,42 +1,34 @@
-/* eslint-disable babel/camelcase */
-
+import { Arcgis } from '@/modules/arcgis/types'
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { isPointOfKind, MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
+import { MapPointWithTranslationProps } from '@/modules/map/types'
 
-export const normalizePoint = (point: MapInterestPoint, language: string): NormalizedPoint => {
-  const resolveOpeningHours = (resolvingPoint: {
-    Otvaracie_hodiny_en: string
-    Otvaracie_hodiny_sk: string
-  }) =>
-    language === 'sk' ? resolvingPoint.Otvaracie_hodiny_sk : resolvingPoint.Otvaracie_hodiny_en
-
-  const resolveName = (resolvingPoint: { Nazov_en: string; Nazov_sk: string }) =>
-    language === 'sk' ? resolvingPoint.Nazov_sk : resolvingPoint.Nazov_en
-
+export const normalizePoint = (point: Arcgis.MapPoint): MapPointWithTranslationProps => {
+  let normalizedPoint: MapPointWithTranslationProps
   switch (true) {
-    case isPointOfKind(point, MapPointKindEnum.branch):
-      return {
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.branch):
+      normalizedPoint = {
         id: point.OBJECTID,
         address: point.Adresa,
         kind: point.kind,
+        icon: point.icon,
         name: point.Nazov,
         place: point.Miesto,
         navigation: point.Navigacia,
-        addressDetail:
-          language === 'sk' ? point.Spresnujuce_informacie_sk : point.Spresnujuce_informacie_en,
-        openingHours: resolveOpeningHours(point),
+        addressDetail: { sk: point.Spresnujuce_informacie_sk, en: point.Spresnujuce_informacie_en },
+        openingHours: { sk: point.Otvaracie_hodiny_sk, en: point.Otvaracie_hodiny_en },
       }
-    case isPointOfKind(point, MapPointKindEnum.garage):
-    case isPointOfKind(point, MapPointKindEnum.pPlusR):
-    case isPointOfKind(point, MapPointKindEnum.parkingLot):
-      return {
+      break
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.garage):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.pPlusR):
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.parkingLot):
+      normalizedPoint = {
         id: point.OBJECTID,
         kind: point.kind,
+        icon: point.icon,
         address: point.Adresa,
-        name: resolveName(point),
+        name: { sk: point.Nazov_sk, en: point.Nazov_en },
         navigation: point.Navigacia,
         openingHours: point.Prevadzkova_doba,
-        distanceToCenter: point.Dojazdova_doba,
         distanceToPublicTransport: point.Vzdialenost,
         parkingSpotCount: point.Pocet_parkovacich_miest
           ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -44,31 +36,41 @@ export const normalizePoint = (point: MapInterestPoint, language: string): Norma
           : undefined,
         publicTransportLines: point.Verejna_doprava,
         publicTransportTravelTime: point.Dojazdova_doba,
-        rpkInformation: language === 'sk' ? point.Informacia_RPK_sk : point.Informacia_RPK_en,
-        npkInformation: language === 'sk' ? point.Informacia_NPK_sk : point.Informacia_NPK_en,
+        rpkInformation: { sk: point.Informacia_RPK_sk, en: point.Informacia_RPK_en },
+        npkInformation: { sk: point.Informacia_NPK_sk, en: point.Informacia_NPK_en },
+        surface: { sk: point.Povrch_sk, en: point.Povrch_en },
       }
-    case isPointOfKind(point, MapPointKindEnum.parkomat):
-      return {
+      break
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.parkomat):
+      normalizedPoint = {
         id: point.OBJECTID,
         parkomatId: point.Parkomat_ID,
         kind: point.kind,
+        icon: point.icon,
         location: point.Lokalita,
         name: point.Lokalita,
       }
-    case isPointOfKind(point, MapPointKindEnum.partner):
-      return {
+      break
+    case Arcgis.isPointOfKind(point, MapPointKindEnum.partner):
+      normalizedPoint = {
         id: point.OBJECTID,
         address: point.adresa,
         kind: point.kind,
+        icon: point.icon,
         name: point.Nazov,
         navigation: point.Navigacia,
-        openingHours: resolveOpeningHours(point),
+        openingHours: { sk: point.Otvaracie_hodiny_sk, en: point.Otvaracie_hodiny_en },
       }
+      break
     default:
-      return {
+      normalizedPoint = {
         id: 0,
         name: 'N/A',
         kind: point.kind,
+        icon: point.icon,
       }
+      break
   }
+
+  return normalizedPoint
 }

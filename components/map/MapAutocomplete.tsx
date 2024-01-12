@@ -1,5 +1,4 @@
 import { Portal } from '@gorhom/portal'
-import { Feature, MultiPolygon, Polygon } from 'geojson'
 import { forwardRef, useCallback, useEffect, useState } from 'react'
 import {
   FlatList,
@@ -17,17 +16,13 @@ import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { GeocodingFeature } from '@/modules/arcgis/types'
 import { useLocation } from '@/modules/map/hooks/useLocation'
 import { useMapAutocompleteGetOptions } from '@/modules/map/hooks/useMapAutocompleteGetOptions'
-import {
-  GeocodingFeature,
-  isGeocodingFeature,
-  MapUdrZone,
-  UdrZoneFeature,
-} from '@/modules/map/types'
+import { isGeocodingFeature, UdrZoneFeature } from '@/modules/map/types'
 import { findShapesInRadius } from '@/modules/map/utils/findShapesInRadius'
 import { forwardGeocode } from '@/modules/map/utils/forwardGeocode'
-import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 import { Unpromise } from '@/utils/types'
 
@@ -36,8 +31,8 @@ const NEARBY_ZONE_RADIUS = 0.2 // km
 
 type Props = Partial<
   AutocompleteProps<
-    [Feature<Polygon | MultiPolygon, MapUdrZone>[], Unpromise<ReturnType<typeof forwardGeocode>>],
-    GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>
+    [UdrZoneFeature[], Unpromise<ReturnType<typeof forwardGeocode>>],
+    GeocodingFeature | UdrZoneFeature
   >
 >
 
@@ -69,7 +64,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     }, [mapZones, location])
 
     const handleValueChange = useCallback(
-      (value: GeocodingFeature | Feature<Polygon | MultiPolygon, MapUdrZone>) => {
+      (value: GeocodingFeature | UdrZoneFeature) => {
         onValueChange?.(value)
       },
       [onValueChange],
@@ -95,7 +90,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           )
         }
 
-        const zone = normalizeZone(item.properties, locale)
+        const zone = translateMapObject(item.properties, locale)
 
         return (
           <View className="border-b border-divider py-4">
@@ -172,7 +167,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           ref={ref}
           getOptions={getOptions}
           getOptionLabel={(option) =>
-            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.Nazov
+            isGeocodingFeature(option) ? option.place_name || option.text : option.properties.name
           }
           onValueChange={handleValueChange}
           leftIcon={<Icon name="search" />}

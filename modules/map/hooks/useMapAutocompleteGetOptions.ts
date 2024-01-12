@@ -26,8 +26,8 @@ export const useMapAutocompleteGetOptions = () => {
         const normalizedInput = normalizeString(input)
         mapZones.forEach((zone) => {
           if (
-            normalizeString(zone.properties.Nazov).includes(normalizedInput) ||
-            normalizeString(zone.properties.UDR_ID.toString()).includes(normalizedInput)
+            normalizeString(zone.properties.name).includes(normalizedInput) ||
+            normalizeString(zone.properties.udrId.toString()).includes(normalizedInput)
           ) {
             filteredMapZones.push(zone)
           }
@@ -35,7 +35,10 @@ export const useMapAutocompleteGetOptions = () => {
       }
 
       return [
-        filteredMapZones.sort((a, b) => a.properties.UDR_ID - b.properties.UDR_ID),
+        filteredMapZones.sort(
+          (a, b) =>
+            Number.parseInt(a.properties.udrId, 10) - Number.parseInt(b.properties.udrId, 10),
+        ),
         await forwardGeocode(input),
       ]
     },

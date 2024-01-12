@@ -1,18 +1,18 @@
 import { useMemo } from 'react'
 
 import { useLocale } from '@/hooks/useTranslation'
-import { NormalizedUdrZone, UdrZoneFeature } from '@/modules/map/types'
-import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { MapUdrZone, UdrZoneFeature } from '@/modules/map/types'
+import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
 
-export function useMapZone<NormalizePropertiesOnly extends boolean>(
+export function useMapZone<PropertiesOnly extends boolean>(
   udrId: string | null,
-  normalizedPropertiesOnly: NormalizePropertiesOnly,
-): (NormalizePropertiesOnly extends true ? NormalizedUdrZone : UdrZoneFeature) | null
+  propertiesOnly: PropertiesOnly,
+): (PropertiesOnly extends true ? MapUdrZone : UdrZoneFeature) | null
 export function useMapZone(
   udrId: string | null,
-  normalizedPropertiesOnly: boolean = false,
-): NormalizedUdrZone | UdrZoneFeature | null {
+  propertiesOnly: boolean = false,
+): MapUdrZone | UdrZoneFeature | null {
   const mapZones = useMapZonesContext()
   const locale = useLocale()
 
@@ -23,14 +23,14 @@ export function useMapZone(
 
     const mapZone = mapZones.get(udrId) ?? null
 
-    if (normalizedPropertiesOnly) {
+    if (propertiesOnly) {
       if (mapZone?.properties) {
-        return normalizeZone(mapZone.properties, locale)
+        return translateMapObject(mapZone.properties, locale)
       }
 
       return null
     }
 
     return mapZone
-  }, [udrId, mapZones, normalizedPropertiesOnly, locale])
+  }, [udrId, mapZones, propertiesOnly, locale])
 }
