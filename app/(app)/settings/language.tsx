@@ -3,12 +3,11 @@ import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, View } from 'react-native'
 
+import ActionRow from '@/components/list-rows/ActionRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
-import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -55,16 +54,17 @@ const Page = () => {
                 key={value}
                 disabled={isPending || mutation.isPending}
                 onPress={() => handleLanguageChange(value)}
-                className="py-4"
               >
-                <FlexRow>
-                  <Typography>{label}</Typography>
-                  {language === value ? (
-                    <Icon name="check-circle" />
-                  ) : mutation.isPending ? (
-                    <ActivityIndicator size="small" />
-                  ) : null}
-                </FlexRow>
+                <ActionRow
+                  endSlot={
+                    language === value ? (
+                      <Icon name="check-circle" />
+                    ) : mutation.isPending ? (
+                      <ActivityIndicator size="small" />
+                    ) : null
+                  }
+                  label={label}
+                />
               </PressableStyled>
             )
           })}
