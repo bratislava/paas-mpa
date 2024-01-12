@@ -1,11 +1,10 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { deleteUser } from 'aws-amplify/auth'
-import { Link } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
 
-import LanguageSelect from '@/components/controls/LanguageSelect'
+import LangugageSelectField from '@/components/controls/LangugageSelectField'
 import NotificationSettings from '@/components/controls/notifications/NotificationSettings'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -14,7 +13,6 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Field from '@/components/shared/Field'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
@@ -66,7 +64,7 @@ const SettingsPage = () => {
         headerRight: () => (
           <IconButton
             name="more-horiz"
-            accessibilityLabel={t('openVehicleContextMenu')}
+            accessibilityLabel={t('openContextMenu')}
             onPress={handleContextMenuPress}
           />
         ),
@@ -74,13 +72,7 @@ const SettingsPage = () => {
     >
       <ScreenContent className="flex-1">
         <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
-          <Field label={t('language')}>
-            <Link asChild href="/settings/language">
-              <PressableStyled>
-                <LanguageSelect />
-              </PressableStyled>
-            </Link>
-          </Field>
+          <LangugageSelectField />
 
           <NotificationSettings />
         </ScrollView>

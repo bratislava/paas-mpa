@@ -1,6 +1,7 @@
 import { PortalHost } from '@gorhom/portal'
 import { MapState } from '@rnmapbox/maps'
-import { router } from 'expo-router'
+import { useQueryClient } from '@tanstack/react-query'
+import { router, useFocusEffect } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -10,7 +11,10 @@ import MapScreen from '@/components/map/MapScreen'
 import IconButton from '@/components/shared/IconButton'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { announcementsOptions } from '@/modules/backend/constants/queryOptions'
+import {
+  activeTicketsOptions,
+  announcementsOptions,
+} from '@/modules/backend/constants/queryOptions'
 import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
 
 const IndexScreen = () => {
@@ -37,6 +41,14 @@ const IndexScreen = () => {
   const handlePressOpen = () => {
     router.push('/menu')
   }
+
+  // Invalidate active tickets query on map focus to have fresh data when returning to the map
+  const queryClient = useQueryClient()
+  useFocusEffect(() => {
+    if (queryClient.getQueryState(activeTicketsOptions().queryKey)?.status === 'success') {
+      queryClient.invalidateQueries({ queryKey: activeTicketsOptions().queryKey })
+    }
+  })
 
   return (
     <View className="flex-1">
