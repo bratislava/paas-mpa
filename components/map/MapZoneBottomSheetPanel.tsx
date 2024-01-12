@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
+import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
 type Props = {
   selectedZone: MapUdrZone | null
@@ -23,6 +24,8 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
   const t = useTranslation('ZoneBottomSheet')
   if (selectedZone) {
+    const price = getPriceFromZone(selectedZone)
+
     return (
       <>
         <Panel className="g-4">
@@ -36,7 +39,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
           </FlexRow>
           <Divider />
           <FlexRow>
-            <Typography variant="default-bold">{formatPricePerHour(selectedZone.price)}</Typography>
+            <Typography variant="default-bold">{formatPricePerHour(price)}</Typography>
             <Link
               asChild
               href={{
