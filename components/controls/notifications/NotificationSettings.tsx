@@ -7,14 +7,12 @@ import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { notificationSettingsOptions } from '@/modules/backend/constants/queryOptions'
+import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 
 /*
  * TODO
- *  - handle loading state
  *  - handle error with snackbar
- *  - refetch on focus - otherwise previousData are undefined
  *  - add email notifications
  *
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?type=design&node-id=486-2961&mode=design&t=z0hMnU6kV59bjya1-0
@@ -32,9 +30,7 @@ const NotificationSettings = () => {
   const t = useTranslation('Settings')
   const queryClient = useQueryClient()
 
-  const { data, isPending, isError, error } = useQueryWithFocusRefetch(
-    notificationSettingsOptions(),
-  )
+  const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 
   // cannot use `select: (res) => res.data` because of type error inside optimistic update
   const settings = data?.data
@@ -45,14 +41,14 @@ const NotificationSettings = () => {
     // When mutate is called:
     onMutate: async (changedSettings) => {
       // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: notificationSettingsOptions().queryKey })
+      await queryClient.cancelQueries({ queryKey: settingsOptions().queryKey })
 
       // Snapshot the previous value
-      const previousSettings = queryClient.getQueryData(notificationSettingsOptions().queryKey)
+      const previousSettings = queryClient.getQueryData(settingsOptions().queryKey)
 
       if (previousSettings) {
         // Optimistically update to the new value
-        queryClient.setQueryData(notificationSettingsOptions().queryKey, {
+        queryClient.setQueryData(settingsOptions().queryKey, {
           ...previousSettings,
           data: { ...previousSettings.data, ...changedSettings },
         })
@@ -65,13 +61,13 @@ const NotificationSettings = () => {
     // TODO handle error - show snackbar?
     // If the mutation fails, use the context returned from onMutate to roll back
     onError: (error, changedSettings, context) => {
-      queryClient.setQueryData(notificationSettingsOptions().queryKey, context?.previousSettings)
+      queryClient.setQueryData(settingsOptions().queryKey, context?.previousSettings)
       console.log(error)
     },
 
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: notificationSettingsOptions().queryKey })
+      queryClient.invalidateQueries({ queryKey: settingsOptions().queryKey })
     },
   })
 
