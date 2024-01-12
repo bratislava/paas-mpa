@@ -83,7 +83,7 @@ const RootLayout = () => {
                   }}
                 />
                 <Stack.Screen
-                  name="search/index"
+                  name="search"
                   options={{
                     animation: 'slide_from_bottom',
                     headerShown: false,

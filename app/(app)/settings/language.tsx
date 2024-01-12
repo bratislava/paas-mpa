@@ -1,36 +1,41 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React, { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
-import { useMMKVString } from 'react-native-mmkv'
+import { ActivityIndicator, View } from 'react-native'
 
+import ActionRow from '@/components/list-rows/ActionRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Divider from '@/components/shared/Divider'
-import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
-import Typography from '@/components/shared/Typography'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
-import { storage, STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
+import { clientApi } from '@/modules/backend/client-api'
+import { settingsOptions } from '@/modules/backend/constants/queryOptions'
+import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 
-// TODO
 const Page = () => {
   const t = useTranslationLocal('Settings')
   const { i18n } = useTranslation()
-  const [mmkvLocale, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
+  const queryClient = useQueryClient()
 
-  const setLanguage = async (language: 'sk' | 'en') => {
-    await i18n.changeLanguage(language)
-    setMmkvLocale(language)
+  const mutation = useMutation({
+    mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: settingsOptions().queryKey })
+    },
+  })
 
-    if (router.canGoBack()) {
-      router.back()
+  const { data, isPending } = useQueryWithFocusRefetch(settingsOptions())
+
+  const language = data?.data?.language
+
+  const handleLanguageChange = async (newLanguage: 'sk' | 'en') => {
+    if (newLanguage !== language) {
+      await i18n.changeLanguage(newLanguage)
+      await mutation.mutateAsync({ language: newLanguage })
     }
-  }
 
-  const setSystemLanguage = () => {
-    storage.delete(STORAGE_LANGUAGE_KEY)
     if (router.canGoBack()) {
       router.back()
     }
@@ -44,26 +49,25 @@ const Page = () => {
   return (
     <ScreenView title={t('title')} hasBackButton>
       <ScreenContent>
-        <View>
-          <PressableStyled onPress={setSystemLanguage} className="py-4">
-            <FlexRow>
-              <Typography>{t('system')}</Typography>
-              {/* TODO fix check icon */}
-              {mmkvLocale === undefined && <Icon name="check-circle" />}
-            </FlexRow>
-          </PressableStyled>
+        <View className="divide-y divide-divider">
           {languages.map(({ label, value }) => {
             return (
-              <Fragment key={value}>
-                <Divider />
-                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-                <PressableStyled onPress={() => setLanguage(value)} className="py-4">
-                  <FlexRow>
-                    <Typography>{label}</Typography>
-                    {mmkvLocale === value && <Icon name="check-circle" />}
-                  </FlexRow>
-                </PressableStyled>
-              </Fragment>
+              <PressableStyled
+                key={value}
+                disabled={isPending || mutation.isPending}
+                onPress={() => handleLanguageChange(value)}
+              >
+                <ActionRow
+                  endSlot={
+                    language === value ? (
+                      <Icon name="check-circle" />
+                    ) : mutation.isPending ? (
+                      <ActivityIndicator size="small" />
+                    ) : null
+                  }
+                  label={label}
+                />
+              </PressableStyled>
             )
           })}
         </View>
