@@ -9,8 +9,7 @@ export const getPriceFromZone = (
   date?: Date,
 ) => {
   const localDate = date ?? new Date()
-  // eslint-disable-next-line eqeqeq
-  if (zone.weekendsAndHolidaysPrice == undefined) {
+  if (zone.weekendsAndHolidaysPrice == null) {
     return zone.price
   }
   if (localDate.getDay() === 6 || localDate.getDay() === 0) {

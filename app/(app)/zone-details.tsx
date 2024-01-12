@@ -31,8 +31,7 @@ const ZoneDetailsScreen = () => {
 
   const price = getPriceFromZone(zone)
 
-  // eslint-disable-next-line eqeqeq
-  const isAllWeekPrice = zone.weekendsAndHolidaysPrice == undefined
+  const isAllWeekPrice = zone.weekendsAndHolidaysPrice == null
 
   return (
     <ScreenView title={t('title')}>
@@ -62,8 +61,7 @@ const ZoneDetailsScreen = () => {
             </Typography>
           </FlexRow>
         ) : null}
-        {/* eslint-disable-next-line eqeqeq */}
-        {isAllWeekPrice || zone.price == undefined ? null : (
+        {isAllWeekPrice || zone.price == null ? null : (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
@@ -71,8 +69,7 @@ const ZoneDetailsScreen = () => {
             </Typography>
           </FlexRow>
         )}
-        {/* eslint-disable-next-line eqeqeq */}
-        {zone.weekendsAndHolidaysPrice == undefined ? null : (
+        {zone.weekendsAndHolidaysPrice == null ? null : (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
