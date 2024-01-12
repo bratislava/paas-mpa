@@ -171,6 +171,7 @@
   "Settings": {
     "title": "Nastavenia",
     "language": "Jazyk",
+    "loading": "Načítavam",
     "system": "Systém",
     "pushNotifications": "Push notifikácie",
     "emailNotifications": "E-mailové notifikácie",
@@ -200,7 +201,8 @@
       "message": "Ste si istý, že chcete vymazať svoje osobné údaje? Všetky údaje budú vymazané. Táto akcia sa nedá vrátiť späť. Ak chcete aplikáciu znova používať, budete si musieť vytvoriť nový účet.",
       "actionConfirm": "Vymazať účet",
       "actionReject": "Ponechať účet"
-    }
+    },
+    "openContextMenu": "Otvoriť menu"
   },
   "PaymentMethods": {
     "title": "Platobné metódy",
@@ -325,7 +327,6 @@
       "openingHours": "Otváracie hodiny",
       "parkingSpotCount": "Počet parkovacích miest",
       "publicTransportLines": "Linky MHD",
-      "distanceToCenter": "Vzdialenosť do centra",
       "distanceToPublicTransport": "Vzdialenosť k zastávke MHD",
       "name": "Názov",
       "parkomatId": "ID parkovacieho automatu",
@@ -352,7 +353,9 @@
     "addresses": "Adresy",
     "noResults": "Žiadne výsledky",
     "startTyping": "Začnite písať",
-    "typeSomething": "Napíšte niečo a začnite vyhľadávať"
+    "typeSomething": "Napíšte niečo a začnite vyhľadávať",
+    "paidHours": "Čas spoplatnenia",
+    "weekendsAndHolidaysPrice": "Cena cez víkendy a sviatky"
   },
   "FiltersScreen": {
     "title": "Filtre",

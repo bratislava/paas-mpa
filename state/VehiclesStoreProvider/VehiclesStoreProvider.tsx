@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { clientApi } from '@/modules/backend/client-api'
 import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
 import { CreateVehicleDto, UpdateVehicleDto, VehicleDto } from '@/modules/backend/openapi-generated'
@@ -27,7 +28,7 @@ export const VehiclesStoreContext = createContext<VehiclesStoreContextProps | nu
 VehiclesStoreContext.displayName = 'VehiclesStoreContext'
 
 const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
-  const { data, isPending, refetch } = useQuery(vehiclesOptions())
+  const { data, isPending, refetch } = useQueryWithFocusRefetch(vehiclesOptions())
 
   const vehicles = useMemo(() => data?.data.vehicles ?? [], [data?.data.vehicles])
 

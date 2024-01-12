@@ -9,16 +9,16 @@ import Field from '@/components/shared/Field'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { MapPointKindEnum } from '@/modules/map/constants'
-import { useNormalizedPoint } from '@/modules/map/hooks/useNormalizedPoint'
-import { MapInterestPoint, NormalizedPoint } from '@/modules/map/types'
+import { MapPoint, MapPointWithTranslationProps } from '@/modules/map/types'
+import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 
 type Props = {
-  point: MapInterestPoint
+  point: MapPointWithTranslationProps
 }
 
-const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
+const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof MapPoint)[]> = {
   [MapPointKindEnum.parkomat]: ['location', 'parkomatId'],
   [MapPointKindEnum.partner]: ['name', 'address', 'openingHours'],
   [MapPointKindEnum.garage]: ['name', 'address', 'openingHours'],
@@ -41,11 +41,11 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof NormalizedPoint)[]> = {
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const t = useTranslation('PointBottomSheet')
+  const locale = useLocale()
   const [footerHeight, setFooterHeight] = useState(0)
 
-  const formattedMapPoint = useNormalizedPoint(point)
-
   const snapPoints = useMemo(() => [375, '80%'], [])
+  const translatedPoint = useMemo(() => translateMapObject(point, locale), [point, locale])
 
   const localRef = useRef<BottomSheet>()
 
@@ -68,17 +68,17 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
 
   const renderFooter = useCallback(
     (props: BottomSheetFooterProps) => {
-      if (!formattedMapPoint.navigation) return null
+      if (!point.navigation) return null
 
       return (
         <NavigateBottomSheetFooter
           onLayout={(event) => setFooterHeight(event.nativeEvent.layout.height)}
-          navigationUrl={formattedMapPoint.navigation}
+          navigationUrl={point.navigation}
           {...props}
         />
       )
     },
-    [formattedMapPoint.navigation],
+    [point.navigation],
   )
 
   const handleClose = useCallback(() => {
@@ -87,9 +87,9 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
 
   useEffect(() => {
     localRef.current?.collapse()
-  }, [point])
+  }, [translatedPoint])
 
-  const attributes = ATTRIBUTES_MAP[formattedMapPoint.kind]
+  const attributes = ATTRIBUTES_MAP[translatedPoint.kind]
 
   return (
     <BottomSheet
@@ -107,7 +107,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
               <Icon name="close" />
             </PressableStyled>
           </View>
-          <Typography variant="h1">{t(`kinds.${formattedMapPoint.kind}`)}</Typography>
+          <Typography variant="h1">{t(`kinds.${translatedPoint.kind}`)}</Typography>
         </View>
         <BottomSheetScrollView
           className="bg-white"
@@ -116,17 +116,17 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
           <View>
             <View className="px-5 pb-4 pt-5 g-4">
               <View>
-                {attributes.includes('name') && formattedMapPoint.name ? (
-                  <Typography variant="h2">{formattedMapPoint.name}</Typography>
+                {attributes.includes('name') && translatedPoint.name ? (
+                  <Typography variant="h2">{translatedPoint.name}</Typography>
                 ) : null}
               </View>
               {attributes
-                .filter((att) => att !== 'name' && formattedMapPoint[att])
+                .filter((att) => att !== 'name' && translatedPoint[att])
                 .map((att, ix) => (
                   <View key={att} className="g-4">
                     {!!ix && <Divider />}
                     <Field label={t(`fields.${att}`)}>
-                      <Typography>{formattedMapPoint[att]}</Typography>
+                      <Typography>{translatedPoint[att]}</Typography>
                     </Field>
                   </View>
                 ))}

@@ -6,14 +6,17 @@ import { Point, Polygon } from '@turf/helpers'
 import intersect from '@turf/intersect'
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
 import {
-  BranchPoint,
-  ParkingPoint,
-  ParkomatPoint,
-  PartnerPoint,
-  MapInterestPoint,
-  MapUdrZone,
   UdrZoneFeature,
+  MapPointWithTranslationProps,
+  MapUdrZoneWithTranslationProps,
 } from '@/modules/map/types'
+import { normalizePoint } from '@/modules/map/utils/normalizePoint'
+import { MapLayerEnum, MapPointIconEnum, MapPointKindEnum } from '@/modules/map/constants'
+import { normalizeZone } from '@/modules/map/utils/normalizeZone'
+import { Arcgis, ArcgisData } from '@/modules/arcgis/types'
+import { ArcgisAliased } from '@/modules/arcgis/aliasedTypes'
+import { normalizeAliasedPoint } from '@/modules/map/utils/normalizeAliasedPoint'
+import { normalizeAliasedZone } from '@/modules/map/utils/normalizeAliasedZone'
 
 const zoneMapping = {
   SM1: 'SM1',
@@ -66,16 +69,6 @@ export const addZonePropertyToLayer = <G extends Geometry, GJP extends GeoJsonPr
   }),
 })
 
-export interface ProcessDataOptions {
-  rawParkomatsData: FeatureCollection<Point, ParkomatPoint>
-  rawPartnersData: FeatureCollection<Point, PartnerPoint>
-  rawParkingLotsData: FeatureCollection<Point, ParkingPoint>
-  rawBranchesData: FeatureCollection<Point, BranchPoint>
-  rawUdrData: FeatureCollection<Polygon, MapUdrZone>
-  rawOdpData: FeatureCollection<Polygon, GeoJsonProperties>
-  rawZonesData: FeatureCollection<Polygon, GeoJsonProperties>
-}
-
 export const processData = ({
   rawZonesData,
   rawParkomatsData,
@@ -84,8 +77,22 @@ export const processData = ({
   rawBranchesData,
   rawUdrData,
   rawOdpData,
-}: ProcessDataOptions) => {
+}: ArcgisData) => {
   let GLOBAL_ID = 0
+  const isUsingAliasedData = rawUdrData.features.find((udr) =>
+    Object.hasOwn(udr.properties, 'UDR ID'),
+  )
+  const localNormalizePoint:
+    | ((point: Arcgis.MapPoint) => MapPointWithTranslationProps)
+    | ((point: ArcgisAliased.MapPoint) => MapPointWithTranslationProps) = isUsingAliasedData
+    ? normalizeAliasedPoint
+    : normalizePoint
+
+  const localNormalizeZone:
+    | ((zone: Arcgis.UdrZone) => MapUdrZoneWithTranslationProps)
+    | ((zone: ArcgisAliased.UdrZone) => MapUdrZoneWithTranslationProps) = isUsingAliasedData
+    ? normalizeAliasedZone
+    : normalizeZone
 
   const zonesData = {
     type: 'FeatureCollection',
@@ -117,92 +124,109 @@ export const processData = ({
       */
         ...rawBranchesData.features.map((feature) => {
           GLOBAL_ID++
-          const kind = 'branches'
-          const icon = 'branch'
+          const kind = MapPointKindEnum.branch
+          const icon = MapPointIconEnum.branch
+          const properties = {
+            ...feature.properties,
+            kind,
+            icon,
+          }
+          const normalizedProperties = localNormalizePoint(properties as any)
 
           return {
             ...feature,
             id: GLOBAL_ID,
-            properties: {
-              ...feature.properties,
-              kind,
-              icon,
-            },
-          } as Feature<Point, BranchPoint>
+            properties: normalizedProperties,
+          } as Feature<Point, MapPointWithTranslationProps>
         }),
 
         /*
         PARKOMATS
       */
         ...rawParkomatsData.features
+          .filter(
+            (f) =>
+              (f.properties as Arcgis.ParkomatPoint)?.Web === 'ano' ||
+              (f.properties as ArcgisAliased.ParkomatPoint)?.web === 'ano',
+          )
           .map((feature) => {
             GLOBAL_ID++
-            const kind = 'parkomats'
-            const icon = 'parkomat'
+            const kind = MapPointKindEnum.parkomat
+            const icon = MapPointIconEnum.parkomat
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = localNormalizePoint(properties as any)
 
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, ParkomatPoint>
-          })
-          .filter((f) => f.properties?.Web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, MapPointWithTranslationProps>
+          }),
 
         /*
         PARTNERS
       */
         ...rawPartnersData.features
+          .filter((f) => f.properties?.web === 'ano')
           .map((feature) => {
             GLOBAL_ID++
-            const kind = 'partners'
-            const icon = 'partner'
-
+            const kind = MapPointKindEnum.partner
+            const icon = MapPointIconEnum.partner
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = localNormalizePoint(properties as any)
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, PartnerPoint>
-          })
-          .filter((f) => f.properties?.web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, MapPointWithTranslationProps>
+          }),
 
         /*
         PARKING LOTS
       */
         ...rawParkingLotsData.features
+          .filter((f) => f.properties?.web === 'ano')
           .map((feature) => {
             GLOBAL_ID++
             const type =
-              feature.properties?.Typ_en == 'P+R'
-                ? 'p-plus-r'
-                : feature.properties?.Typ_en == 'garage'
-                ? 'garage'
-                : 'parking-lot'
+              (feature.properties as Arcgis.ParkingPoint)?.Typ_en === 'P+R' ||
+              (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'P+R'
+                ? MapPointIconEnum.pPlusR
+                : (feature.properties as Arcgis.ParkingPoint)?.Typ_en === 'garage' ||
+                  (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'garage'
+                ? MapPointIconEnum.garage
+                : MapPointIconEnum.parkingLot
 
             const kind =
-              type == 'p-plus-r' ? 'p-plus-r' : type == 'garage' ? 'garages' : 'parking-lots'
+              type == MapPointIconEnum.pPlusR
+                ? MapPointKindEnum.pPlusR
+                : type == MapPointIconEnum.garage
+                ? MapPointKindEnum.garage
+                : MapPointKindEnum.parkingLot
             const icon = type
+            const properties = {
+              ...feature.properties,
+              kind,
+              icon,
+            }
+            const normalizedProperties = localNormalizePoint(properties as any)
 
             return {
               ...feature,
               id: GLOBAL_ID,
-              properties: {
-                ...feature.properties,
-                kind,
-                icon,
-              },
-            } as Feature<Point, ParkingPoint>
-          })
-          .filter((f) => f.properties?.web === 'ano'),
+              properties: normalizedProperties,
+            } as Feature<Point, MapPointWithTranslationProps>
+          }),
       ],
-    } as FeatureCollection<Point, MapInterestPoint>,
+    } as FeatureCollection<Point, MapPointWithTranslationProps>,
     zonesData as FeatureCollection<Polygon, GeoJsonProperties>,
   )
 
@@ -211,26 +235,28 @@ export const processData = ({
     {
       type: 'FeatureCollection',
       features: rawUdrData.features
-        .map((feature) => {
-          GLOBAL_ID++
-          const layer = 'visitors'
-
-          return {
-            ...feature,
-            id: GLOBAL_ID,
-            properties: {
-              ...feature.properties,
-              layer,
-            },
-          } as UdrZoneFeature
-        })
         .filter(
           (f) =>
             (f.properties?.web === 'ano' || f.properties?.web === 'ano - planned') &&
             (f.properties?.Status === 'active' || f.properties?.Status === 'planned'),
-        ),
-    } as FeatureCollection<Polygon, MapUdrZone>,
-    zonesData as FeatureCollection<Polygon, MapUdrZone>,
+        )
+        .map((feature) => {
+          GLOBAL_ID++
+          const layer = MapLayerEnum.visitors
+          const properties = {
+            ...feature.properties,
+            layer,
+          }
+          const normalizedProperties = localNormalizeZone(properties as any)
+
+          return {
+            ...feature,
+            id: GLOBAL_ID,
+            properties: normalizedProperties,
+          } as UdrZoneFeature
+        }),
+    } as FeatureCollection<Polygon, MapUdrZoneWithTranslationProps>,
+    zonesData as FeatureCollection<Polygon, MapUdrZoneWithTranslationProps>,
   )
 
   const odpData = {
@@ -238,7 +264,7 @@ export const processData = ({
     features: rawOdpData.features
       .map((feature) => {
         GLOBAL_ID++
-        const layer = 'residents'
+        const layer = MapLayerEnum.residents
 
         return {
           ...feature,

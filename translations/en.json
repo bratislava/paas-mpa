@@ -173,6 +173,7 @@
     "system": "System",
     "pushNotifications": "Push notifications",
     "emailNotifications": "E-mail notifications",
+    "loading": "Loading",
     "type": {
       "pushNotificationsAboutToEnd": {
         "title": "Parking about to end",
@@ -199,7 +200,8 @@
       "message": "Are you sure that you want to delete your personal data? All data will be deleted. This action cannot be reversed. To use the app again, you’ll need to create new account.",
       "actionConfirm": "Delete account",
       "actionReject": "Keep account"
-    }
+    },
+    "openContextMenu": "Open context menu"
   },
   "PaymentMethods": {
     "title": "Payment methods",
@@ -325,7 +327,6 @@
       "openingHours": "Opening hours",
       "parkingSpotCount": "Parking spot count",
       "publicTransportLines": "Public transport lines",
-      "distanceToCenter": "Distance to the city center",
       "distanceToPublicTransport": "Distance to public transport",
       "name": "Name",
       "parkomatId": "Parkomat ID",
@@ -352,7 +353,9 @@
     "addresses": "Addresses",
     "noResults": "No results",
     "startTyping": "Start typing",
-    "typeSomething": "Type something to begin searching"
+    "typeSomething": "Type something to begin searching",
+    "paidHours": "Paid hours",
+    "weekendsAndHolidaysPrice": "Weekends and holidays price"
   },
   "FiltersScreen": {
     "title": "Filters",

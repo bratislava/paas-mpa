@@ -15,10 +15,10 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
-import { NormalizedUdrZone } from '@/modules/map/types'
+import { MapUdrZone } from '@/modules/map/types'
 
 type Props = {
-  zone: NormalizedUdrZone | null
+  zone: MapUdrZone | null
   setFlyToCenter?: MapRef['setFlyToCenter']
   isZoomedOut?: boolean
   address?: string

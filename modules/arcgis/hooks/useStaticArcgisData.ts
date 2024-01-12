@@ -2,17 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { FeatureCollection, GeoJsonProperties, Point, Polygon } from 'geojson'
 
+import { ArcgisAliased } from '@/modules/arcgis/aliasedTypes'
 import { STATIC_ARCGIS_URL } from '@/modules/arcgis/constants'
-import { ArcgisData } from '@/modules/arcgis/types'
-import {
-  BranchPoint,
-  MapUdrZone,
-  ParkingPoint,
-  ParkomatPoint,
-  PartnerPoint,
-} from '@/modules/map/types'
+import { Arcgis, ArcgisData } from '@/modules/arcgis/types'
 
-export const useStaticArcgisData = (): ArcgisData => {
+export const useStaticArcgisData = (): Partial<ArcgisData> => {
   const { data: rawZonesData } = useQuery({
     queryKey: ['RawZonesData'],
     queryFn: () =>
@@ -23,14 +17,16 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawParkomatsData } = useQuery({
     queryKey: ['RawParkomatsData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, ParkomatPoint>>(`${STATIC_ARCGIS_URL}/parkomaty.geojson`),
+      axios.get<FeatureCollection<Point, Arcgis.ParkomatPoint | ArcgisAliased.ParkomatPoint>>(
+        `${STATIC_ARCGIS_URL}/parkomaty.geojson`,
+      ),
     select: (data) => data.data,
   })
 
   const { data: rawPartnersData } = useQuery({
     queryKey: ['RawPartnersData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, PartnerPoint>>(
+      axios.get<FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>>(
         `${STATIC_ARCGIS_URL}/partnerske_prevadzky.geojson`,
       ),
     select: (data) => data.data,
@@ -39,21 +35,27 @@ export const useStaticArcgisData = (): ArcgisData => {
   const { data: rawParkingLotsData } = useQuery({
     queryKey: ['RawParkingLotsData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, ParkingPoint>>(`${STATIC_ARCGIS_URL}/parkoviska.geojson`),
+      axios.get<FeatureCollection<Point, Arcgis.ParkingPoint | ArcgisAliased.ParkingPoint>>(
+        `${STATIC_ARCGIS_URL}/parkoviska.geojson`,
+      ),
     select: (data) => data.data,
   })
 
   const { data: rawBranchesData } = useQuery({
     queryKey: ['RawBranchesData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Point, BranchPoint>>(`${STATIC_ARCGIS_URL}/pobocky.geojson`),
+      axios.get<FeatureCollection<Point, Arcgis.BranchPoint | ArcgisAliased.BranchPoint>>(
+        `${STATIC_ARCGIS_URL}/pobocky.geojson`,
+      ),
     select: (data) => data.data,
   })
 
   const { data: rawUdrData } = useQuery({
     queryKey: ['RawUdrData'],
     queryFn: () =>
-      axios.get<FeatureCollection<Polygon, MapUdrZone>>(`${STATIC_ARCGIS_URL}/udr_p.geojson`),
+      axios.get<FeatureCollection<Polygon, Arcgis.UdrZone | ArcgisAliased.UdrZone>>(
+        `${STATIC_ARCGIS_URL}/udr_p.geojson`,
+      ),
     select: (data) => data.data,
   })
 

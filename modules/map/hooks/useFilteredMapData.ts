@@ -18,7 +18,7 @@ export const useFilteredMapData = (data: ProcessedMapData, filters: MapFilters) 
       filteredData.udrData = {
         ...filteredData.udrData,
         features: filteredData.udrData.features.filter(
-          (feature) => filters[feature.properties.Status] === 'true',
+          (feature) => filters[feature.properties.status] === 'true',
         ),
       }
     }

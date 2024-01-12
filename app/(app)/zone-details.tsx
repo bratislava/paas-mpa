@@ -51,9 +51,20 @@ const ZoneDetailsScreen = () => {
         {zone.paidHours ? (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
-            <Typography>{zone.paidHours}</Typography>
+            <Typography>
+              {t('paidHours')}: {zone.paidHours}
+            </Typography>
           </FlexRow>
         ) : null}
+        {/* eslint-disable-next-line eqeqeq */}
+        {zone.weekendsAndHolidaysPrice == undefined ? null : (
+          <FlexRow className="justify-start">
+            <Typography>{'\u2022'}</Typography>
+            <Typography>
+              {t('weekendsAndHolidaysPrice')}: {zone.weekendsAndHolidaysPrice} € / h
+            </Typography>
+          </FlexRow>
+        )}
       </ScreenContent>
     </ScreenView>
   )
