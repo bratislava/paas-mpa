@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, View } from 'react-native'
 
@@ -32,7 +31,7 @@ const Page = () => {
 
   const language = data?.data?.language
 
-  const setLanguage = async (newLanguage: 'sk' | 'en') => {
+  const handleLanguageChange = async (newLanguage: 'sk' | 'en') => {
     await i18n.changeLanguage(newLanguage)
     await mutation.mutateAsync({ language: newLanguage })
 
@@ -55,7 +54,7 @@ const Page = () => {
               <PressableStyled
                 key={value}
                 disabled={isPending || mutation.isPending}
-                onPress={() => setLanguage(value)}
+                onPress={() => handleLanguageChange(value)}
                 className="py-4"
               >
                 <FlexRow>

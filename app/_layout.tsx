@@ -17,11 +17,13 @@ import { PortalProvider } from '@gorhom/portal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
 import { NativeWindStyleSheet } from 'nativewind'
+import { Suspense } from 'react'
 import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ToastProvider } from 'react-native-toast-notifications'
 
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSnackbar'
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
@@ -66,29 +68,31 @@ const RootLayout = () => {
 
   // Render the children routes now that all the assets are loaded.
   return (
-    <ToastProvider {...toastProviderProps}>
-      <QueryClientProvider client={queryClient}>
-        <AuthStoreProvider>
-          <SafeAreaProvider>
-            <GestureHandlerRootView className="flex-1">
-              <PortalProvider>
-                <OmnipresentComponent />
-                <Stack
-                  screenOptions={{
-                    headerBackTitleVisible: false,
-                    headerShown: false,
-                    headerTitleStyle: {
-                      fontFamily: 'BelfastGrotesk_700Bold',
-                    },
-                    headerTintColor: colors.dark.DEFAULT,
-                  }}
-                />
-              </PortalProvider>
-            </GestureHandlerRootView>
-          </SafeAreaProvider>
-        </AuthStoreProvider>
-      </QueryClientProvider>
-    </ToastProvider>
+    <Suspense fallback={<LoadingScreen />}>
+      <ToastProvider {...toastProviderProps}>
+        <QueryClientProvider client={queryClient}>
+          <AuthStoreProvider>
+            <SafeAreaProvider>
+              <GestureHandlerRootView className="flex-1">
+                <PortalProvider>
+                  <OmnipresentComponent />
+                  <Stack
+                    screenOptions={{
+                      headerBackTitleVisible: false,
+                      headerShown: false,
+                      headerTitleStyle: {
+                        fontFamily: 'BelfastGrotesk_700Bold',
+                      },
+                      headerTintColor: colors.dark.DEFAULT,
+                    }}
+                  />
+                </PortalProvider>
+              </GestureHandlerRootView>
+            </SafeAreaProvider>
+          </AuthStoreProvider>
+        </QueryClientProvider>
+      </ToastProvider>
+    </Suspense>
   )
 }
 

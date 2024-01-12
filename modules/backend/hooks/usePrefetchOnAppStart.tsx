@@ -3,10 +3,9 @@ import { useCallback, useEffect } from 'react'
 import { InteractionManager } from 'react-native'
 
 import { useLocale } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { announcementsOptions, visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
-
-import { clientApi } from '../client-api'
 
 export const usePrefetchOnAppStart = () => {
   const queryClient = useQueryClient()

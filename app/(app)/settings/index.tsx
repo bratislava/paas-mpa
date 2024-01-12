@@ -4,7 +4,7 @@ import { deleteUser } from 'aws-amplify/auth'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
 
-import LanguageSelect from '@/components/controls/LanguageSelect'
+import LangugageSelectField from '@/components/controls/LangugageSelectField'
 import NotificationSettings from '@/components/controls/notifications/NotificationSettings'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -72,7 +72,7 @@ const SettingsPage = () => {
     >
       <ScreenContent className="flex-1">
         <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
-          <LanguageSelect />
+          <LangugageSelectField />
 
           <NotificationSettings />
         </ScrollView>

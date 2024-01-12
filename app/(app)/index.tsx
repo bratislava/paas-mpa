@@ -42,8 +42,8 @@ const IndexScreen = () => {
     router.push('/menu')
   }
 
+  // Invalidate active tickets query on map focus to have fresh data when returning to the map
   const queryClient = useQueryClient()
-
   useFocusEffect(() => {
     if (queryClient.getQueryState(activeTicketsOptions().queryKey)?.status === 'success') {
       queryClient.invalidateQueries({ queryKey: activeTicketsOptions().queryKey })

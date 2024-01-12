@@ -22,8 +22,6 @@ export const settingsOptions = () =>
   queryOptions({
     queryKey: ['Settings'],
     queryFn: () => clientApi.usersControllerGetUserSettings(),
-    // not refetching on each settings opening. Data will be considered stale after 1 hour
-    staleTime: 3_600_000,
   })
 
 export const activeTicketsOptions = () =>

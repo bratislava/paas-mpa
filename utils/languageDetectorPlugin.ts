@@ -7,7 +7,7 @@ import { clientApi } from '@/modules/backend/client-api'
 const enabledLocales = new Set(['en', 'sk'])
 
 export const languageDetectorPlugin = {
-  type: '3rdParty',
+  type: 'languageDetector',
   async: true,
   init: () => {},
   detect: async (callback: (lang: string) => void) => {

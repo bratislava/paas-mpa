@@ -1,5 +1,6 @@
 import { Link } from 'expo-router'
-import React from 'react'
+import { useEffect } from 'react'
+import { useTranslation as useLibTranslation } from 'react-i18next'
 
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
@@ -11,10 +12,17 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 
-const LanguageSelect = () => {
+const LangugageSelectField = () => {
   const t = useTranslation('Settings')
+  const { i18n } = useLibTranslation()
 
   const { data, isPending, isRefetching } = useQueryWithFocusRefetch(settingsOptions())
+
+  useEffect(() => {
+    if (data?.data.language && data.data.language !== i18n.language) {
+      i18n.changeLanguage(data?.data.language)
+    }
+  }, [data?.data.language, i18n])
 
   const languages = { sk: 'Slovenčina', en: 'English' }
 
@@ -34,4 +42,4 @@ const LanguageSelect = () => {
   )
 }
 
-export default LanguageSelect
+export default LangugageSelectField
