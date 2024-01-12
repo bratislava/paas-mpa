@@ -840,6 +840,12 @@ export interface SaveUserSettingsDto {
    * @memberof SaveUserSettingsDto
    */
   emailNotificationsToEnd?: boolean
+  /**
+   * Set language from front-end to match notifications
+   * @type {string}
+   * @memberof SaveUserSettingsDto
+   */
+  language?: string
 }
 /**
  *
@@ -1318,6 +1324,12 @@ export interface UserSettingsDto {
    * @memberof UserSettingsDto
    */
   emailNotificationsToEnd: boolean
+  /**
+   * Language of the application
+   * @type {string}
+   * @memberof UserSettingsDto
+   */
+  language?: string
   /**
    * Date of the first creation
    * @type {string}

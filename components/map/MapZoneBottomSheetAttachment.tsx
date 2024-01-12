@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import * as Location from 'expo-location'
-import { Link, useFocusEffect } from 'expo-router'
+import { Link } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
@@ -69,10 +69,6 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     refetch,
     activeTicketsOptions().queryKey,
   )
-
-  useFocusEffect(() => {
-    refetch()
-  })
 
   useAppFocusEffect(getPermissionStatus)
 

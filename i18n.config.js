@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next'
 
 import { en, sk } from './translations'
 import { languageDetectorPlugin } from '@/utils/languageDetectorPlugin'
+import { environment } from './environment'
 
 const resources = {
   en: {
@@ -28,7 +29,7 @@ i18n
     resources,
     compatibilityJSON: 'v3',
     fallbackLng: 'en',
-    debug: true,
+    debug: environment.deployment === 'development',
   })
 
 export default i18n
