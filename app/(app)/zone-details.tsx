@@ -11,6 +11,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
+import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
 export type ZoneDetailsParamas = {
   udrId: string
@@ -28,13 +29,17 @@ const ZoneDetailsScreen = () => {
     return null
   }
 
+  const price = getPriceFromZone(zone)
+
+  const isAllWeekPrice = zone.weekendsAndHolidaysPrice == null
+
   return (
     <ScreenView title={t('title')}>
       <ScreenContent>
         <FlexRow>
           <ZoneBadge label={zone.udrId} />
           <Typography className="flex-1">{zone.name}</Typography>
-          <Typography variant="default-bold">{formatPricePerHour(zone.price)}</Typography>
+          <Typography variant="default-bold">{formatPricePerHour(price)}</Typography>
         </FlexRow>
 
         <Divider />
@@ -56,12 +61,19 @@ const ZoneDetailsScreen = () => {
             </Typography>
           </FlexRow>
         ) : null}
-        {/* eslint-disable-next-line eqeqeq */}
-        {zone.weekendsAndHolidaysPrice == undefined ? null : (
+        {isAllWeekPrice || zone.price == null ? null : (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
-              {t('weekendsAndHolidaysPrice')}: {zone.weekendsAndHolidaysPrice} € / h
+              {t('weekdaysPrice')}: {formatPricePerHour(zone.price)}
+            </Typography>
+          </FlexRow>
+        )}
+        {zone.weekendsAndHolidaysPrice == null ? null : (
+          <FlexRow className="justify-start">
+            <Typography>{'\u2022'}</Typography>
+            <Typography>
+              {t('weekendsAndHolidaysPrice')}: {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
             </Typography>
           </FlexRow>
         )}

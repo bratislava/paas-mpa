@@ -355,7 +355,8 @@
     "startTyping": "Začnite písať",
     "typeSomething": "Napíšte niečo a začnite vyhľadávať",
     "paidHours": "Čas spoplatnenia",
-    "weekendsAndHolidaysPrice": "Cena cez víkendy a sviatky"
+    "weekendsAndHolidaysPrice": "Cena cez víkendy a sviatky",
+    "weekdaysPrice": "Cena cez pracovné dni"
   },
   "FiltersScreen": {
     "title": "Filtre",

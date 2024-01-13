@@ -10,6 +10,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
+import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
 type Props = {
   zone: MapUdrZone | null
@@ -17,6 +18,7 @@ type Props = {
 
 const ParkingZoneField = ({ zone }: Props) => {
   const t = useTranslation('PurchaseScreen')
+  const price = zone ? formatPricePerHour(getPriceFromZone(zone)) : ''
 
   return (
     <Field
@@ -37,7 +39,7 @@ const ParkingZoneField = ({ zone }: Props) => {
             {zone ? (
               <FlexRow>
                 <Typography>{zone.name}</Typography>
-                <Typography variant="default-semibold">{formatPricePerHour(zone.price)}</Typography>
+                <Typography variant="default-semibold">{price}</Typography>
               </FlexRow>
             ) : (
               // This should not happen, but this is a fallback if no zone is provided on this screen.

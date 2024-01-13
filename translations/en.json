@@ -355,7 +355,8 @@
     "startTyping": "Start typing",
     "typeSomething": "Type something to begin searching",
     "paidHours": "Paid hours",
-    "weekendsAndHolidaysPrice": "Weekends and holidays price"
+    "weekendsAndHolidaysPrice": "Weekends and holidays price",
+    "weekdaysPrice": "Weekdays price"
   },
   "FiltersScreen": {
     "title": "Filters",

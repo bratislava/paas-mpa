@@ -40,6 +40,7 @@ import {
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import udrStyle from '@/modules/map/utils/layer-styles/visitors'
 import { useMapStoreUpdateContext } from '@/state/MapStoreProvider/useMapStoreUpdateContext'
+import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
 type Props = {
   onZoneChange?: (feature: MapUdrZoneWithTranslationProps | null) => void
@@ -225,7 +226,9 @@ const Map = forwardRef(
             animated
           />
         </MapView>
-        {isMapPinShown && <MapPin price={selectedZone?.price} />}
+        {isMapPinShown && (
+          <MapPin price={selectedZone ? getPriceFromZone(selectedZone) : undefined} />
+        )}
       </View>
     )
   },
