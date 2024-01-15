@@ -17,7 +17,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://paas.sk/wp-content/uploads/2023/09/VZN_parkovanie_2023_08.pdf) a [Prevádzkového poriadku](https://paas.sk/wp-content/uploads/2024/01/Prevadzkovy-poriadok-PP_v2.20.pdf).",
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
@@ -162,7 +162,7 @@
       "actionConfirm": "Pridať vozidlo",
       "actionReject": "Zrušiť"
     },
-    "openVehicleContextMenu": "Uprať vozidlo",
+    "openVehicleContextMenu": "Upraviť vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
       "deleteVehicle": "Odstrániť"
