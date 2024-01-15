@@ -57,7 +57,9 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return <EmptyStateScreen title=" " hasBackButton contentTitle={t('noAnnouncementsTitle')} />
+    return (
+      <EmptyStateScreen title={t('title')} hasBackButton contentTitle={t('noAnnouncementsTitle')} />
+    )
   }
 
   return (

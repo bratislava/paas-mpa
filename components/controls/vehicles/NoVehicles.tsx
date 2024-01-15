@@ -9,6 +9,9 @@ const NoVehicles = () => {
 
   return (
     <EmptyStateScreen
+      title={t('title')}
+      backgroundVariant="dots"
+      hasBackButton
       contentTitle={t('noVehicles')}
       text={t('noVehiclesText')}
       actionButton={

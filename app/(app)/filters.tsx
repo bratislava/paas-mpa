@@ -74,7 +74,7 @@ const FiltersScreen = () => {
         </Link>
       }
     >
-      <View>
+      <View className="flex-1">
         <SectionList
           sections={filteringOptions}
           renderSectionHeader={({ section: { title } }) => (

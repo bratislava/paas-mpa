@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -22,6 +22,7 @@ const EmptyStateScreen = ({
 }: Props) => {
   return (
     <ScreenViewCentered
+      hasInsets={false}
       actionButton={actionButtonPosition === 'bottom' && actionButton ? actionButton : undefined}
       {...passingProps}
     >

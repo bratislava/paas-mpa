@@ -16,6 +16,7 @@ export type ScreenViewProps = {
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
   hasBackButton?: boolean
+  hasInsets?: boolean
   // there is no exportable type for options prop in Stack.Screen
   options?: (typeof Stack.Screen)['prototype']['props']['options']
 } & ViewProps
@@ -28,6 +29,7 @@ const ScreenView = ({
   backgroundVariant = 'white',
   actionButton,
   hasBackButton,
+  hasInsets = true,
   options,
   ...rest
 }: ScreenViewProps) => {
@@ -44,7 +46,15 @@ const ScreenView = ({
   const insets = useSafeAreaInsets()
 
   return (
-    <View className={clsx('flex-1 bg-white', className)} {...rest}>
+    <View
+      className={clsx('flex-1 bg-white', className)}
+      style={
+        hasInsets
+          ? { paddingTop: title?.length ? undefined : insets.top, paddingBottom: insets.bottom }
+          : undefined
+      }
+      {...rest}
+    >
       {title?.length ? (
         <StackScreenWithHeader
           options={{
@@ -67,7 +77,7 @@ const ScreenView = ({
       </View>
 
       {actionButton ? (
-        <View className="p-5" style={{ paddingBottom: insets.bottom + 12 }}>
+        <View className="p-5" style={{ paddingBottom: (hasInsets ? 0 : insets.bottom) + 12 }}>
           {actionButton}
         </View>
       ) : null}

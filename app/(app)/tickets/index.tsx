@@ -4,13 +4,13 @@ import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
+import { EmptyStateAvatar } from '@/assets/avatars'
 import ActionRow from '@/components/list-rows/ActionRow'
 import TabBar from '@/components/navigation/TabBar'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
-import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
@@ -37,7 +37,6 @@ type RouteProps =
 
 const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
-  const insets = useSafeAreaInsets()
   const filters = useTicketsFiltersStoreContext()
 
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -129,28 +128,34 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   if (active && !tickets?.length) {
     return (
-      <EmptyStateScreen
-        contentTitle={t('noActiveTickets')}
-        text={t('noActiveTicketsText')}
-        actionButton={
-          <Link href="/purchase" asChild>
-            <Button variant="primary">{t('buyTicket')}</Button>
-          </Link>
-        }
-      />
+      <View className="flex-1 justify-center">
+        <ContentWithAvatar
+          title={t('noActiveTickets')}
+          text={t('noActiveTicketsText')}
+          customAvatarComponent={<EmptyStateAvatar />}
+          actionButton={
+            <Link href="/purchase" asChild>
+              <Button variant="primary">{t('buyTicket')}</Button>
+            </Link>
+          }
+        />
+      </View>
     )
   }
   if (!active && !tickets?.length) {
     return (
-      <EmptyStateScreen
-        contentTitle={t('noHistoryTickets')}
-        text={t('noHistoryTicketsText')}
-        actionButton={
-          <Button variant="primary" onPress={handleFiltersPress}>
-            {t('filters')}
-          </Button>
-        }
-      />
+      <View className="flex-1 justify-center">
+        <ContentWithAvatar
+          title={t('noHistoryTickets')}
+          text={t('noHistoryTicketsText')}
+          customAvatarComponent={<EmptyStateAvatar />}
+          actionButton={
+            <Button variant="primary" onPress={handleFiltersPress}>
+              {t('filters')}
+            </Button>
+          }
+        />
+      </View>
     )
   }
 
@@ -159,7 +164,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
       <ScreenContent variant="center">
         <View className="w-full flex-1">
           <FlatList
-            contentContainerStyle={{ gap: 12 }}
+            contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
             data={tickets}
             renderItem={renderItem}
             ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
@@ -172,10 +177,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
         {!active && (
           <LinearGradient
-            // TODO: Padding and insets
-            className="absolute w-full items-center pb-6"
+            className="absolute bottom-0 w-full items-center pb-2"
             pointerEvents="box-none"
-            style={{ bottom: insets.bottom }}
             colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
           >
             <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
