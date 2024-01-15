@@ -17,7 +17,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Enter phone number",
-    "consent": "I confirm my understanding of [the personal data processing terms](https://paas.sk/ochrana-osobnych-udajov/) and [terms and conditions](https://paas.sk/vseobecne-obchodne-podmienky/) in Bratislava. I'm aware that the parking policy conditions may change under [Regulation No. 6/2023](https://bratislava.sk/) and the [Operating Regulations](https://bratislava.sk/).",
+    "consent": "I confirm my understanding of [the personal data processing terms](https://paas.sk/ochrana-osobnych-udajov/) and [terms and conditions](https://paas.sk/vseobecne-obchodne-podmienky/) in Bratislava. I'm aware that the parking policy conditions may change under [Regulation No. 6/2023](https://paas.sk/wp-content/uploads/2023/09/VZN_parkovanie_2023_08.pdf) and the [Operating Regulations](https://paas.sk/wp-content/uploads/2024/01/Prevadzkovy-poriadok-PP_v2.20.pdf).",
     "enterVerificationCode": "Enter 6-digit code",
     "verificationText": "Continue by entering 6-digit code from message we’ve sent.",
     "signIn": "Log in",
