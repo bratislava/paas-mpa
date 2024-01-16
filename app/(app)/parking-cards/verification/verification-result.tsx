@@ -86,8 +86,6 @@ const VerificationResultPage = () => {
         )
       }
     >
-      {/* <Stack.Screen options={{ headerShown: false }} /> */}
-
       {email && status ? (
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}

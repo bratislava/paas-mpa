@@ -120,7 +120,7 @@
     "success": {
       "actionButtonLabel": "Späť"
     },
-    "fail": {
+    "error": {
       "actionButtonLabel": "Späť"
     }
   },

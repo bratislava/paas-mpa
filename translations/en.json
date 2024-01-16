@@ -119,7 +119,7 @@
     "success": {
       "actionButtonLabel": "Back"
     },
-    "fail": {
+    "error": {
       "actionButtonLabel": "Back"
     }
   },
