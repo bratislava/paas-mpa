@@ -49,7 +49,7 @@ const SearchScreen = () => {
   )
 
   return (
-    <ScreenView>
+    <ScreenView title=" " options={{ headerShown: false }}>
       <ScreenContent style={{ paddingTop: insets.top + 20 }}>
         <View className="flex-1">
           <View>
