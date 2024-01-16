@@ -41,13 +41,13 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
               />
             ) : null}
             <View
-              className="min-w-0 flex-1 flex-row items-center justify-center"
+              className="min-w-0 flex-1 flex-row items-center justify-center px-2"
               style={{
                 marginLeft: headerSideWidth - headerLeftWidth,
                 marginRight: headerSideWidth - headerRightWidth,
               }}
             >
-              <Typography variant="h2" className="max-w-full text-ellipsis">
+              <Typography variant="h2" numberOfLines={1} className="max-w-full">
                 {headerOptions?.title}
               </Typography>
             </View>
