@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -43,38 +43,36 @@ const Shorten = () => {
   }
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
+    <ScreenView title={t('title')}>
       <ScreenContent>
-        <SafeAreaView>
-          <View className="h-full g-4">
-            <ScrollView className="shrink">
-              <View className="grow">
-                <Markdown>{t('infoText')}</Markdown>
+        <View className="h-full g-4">
+          <ScrollView className="shrink">
+            <View className="grow">
+              <Markdown>{t('infoText')}</Markdown>
 
-                <View className="mt-5 g-1">
-                  <Typography variant="default-bold" className="mb-1">
-                    {t('mainConditions')}
-                  </Typography>
+              <View className="mt-5 g-1">
+                <Typography variant="default-bold" className="mb-1">
+                  {t('mainConditions')}
+                </Typography>
 
-                  {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
-                    <View key={item} className="max-w-full flex-row g-2">
-                      <Typography>{`\u2022`}</Typography>
-                      <Typography className="min-w-0 shrink">{item}</Typography>
-                    </View>
-                  ))}
-                </View>
+                {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
+                  <View key={item} className="max-w-full flex-row g-2">
+                    <Typography>{`\u2022`}</Typography>
+                    <Typography className="min-w-0 shrink">{item}</Typography>
+                  </View>
+                ))}
               </View>
-            </ScrollView>
+            </View>
+          </ScrollView>
 
-            <Button
-              variant="negative"
-              loading={shortenTicketMutation.isPending}
-              onPress={handleShortenTicket}
-            >
-              {t('actionConfirm')}
-            </Button>
-          </View>
-        </SafeAreaView>
+          <Button
+            variant="negative"
+            loading={shortenTicketMutation.isPending}
+            onPress={handleShortenTicket}
+          >
+            {t('actionConfirm')}
+          </Button>
+        </View>
       </ScreenContent>
     </ScreenView>
   )

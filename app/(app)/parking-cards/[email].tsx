@@ -51,8 +51,6 @@ const Page = () => {
             />
           ),
         }}
-        hasInsets={!!(!parkingCards || parkingCards?.length)}
-        hasBackButton
       >
         {isPending ? (
           <LoadingScreen />
@@ -73,7 +71,11 @@ const Page = () => {
             />
           </ScreenContent>
         ) : (
-          <EmptyStateScreen contentTitle={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
+          <EmptyStateScreen
+            title={email}
+            contentTitle={t('noActiveCardsTitle')}
+            text={t('noActiveCardsText')}
+          />
         )}
       </ScreenView>
 

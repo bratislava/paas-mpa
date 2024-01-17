@@ -92,7 +92,7 @@ const FeedbackScreen = () => {
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
+    <ScreenView title={t('title')}>
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <ScrollView>
           <ScreenContent>

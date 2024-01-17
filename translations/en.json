@@ -4,7 +4,8 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "apply": "Apply",
-    "showResults": "Show results"
+    "showResults": "Show results",
+    "menu": "Menu"
   },
   "Common": {
     "loading": "Loading",
@@ -26,7 +27,8 @@
     "errors": {
       "NotAuthorizedException": "Code expired",
       "CodeMismatchException": "Invalid code",
-      "InvalidParameterException": "Phone number is invalid. Make sure you entered correct format."
+      "InvalidParameterException": "Phone number is invalid. Make sure you entered correct format.",
+      "Error": "An error occurred."
     }
   },
   "AddParkingCards": {

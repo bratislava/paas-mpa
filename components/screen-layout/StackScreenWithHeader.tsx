@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { LayoutChangeEvent, Platform, View } from 'react-native'
@@ -30,7 +31,10 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
   const renderHeader: NonNullable<NonNullable<Props['options']>['header']> = useCallback(
     ({ options: headerOptions, back }) => {
       return (
-        <View className="w-full flex-row bg-white" style={{ paddingTop: insets.top + 4 }}>
+        <View
+          className={clsx('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
+          style={{ paddingTop: insets.top + 4 }}
+        >
           <View className="w-full flex-row items-center px-5 py-3">
             {!!back && headerOptions?.headerBackVisible !== false ? (
               <IconButton

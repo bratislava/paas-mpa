@@ -22,7 +22,6 @@ const EmptyStateScreen = ({
 }: Props) => {
   return (
     <ScreenViewCentered
-      hasInsets={false}
       actionButton={actionButtonPosition === 'bottom' && actionButton ? actionButton : undefined}
       {...passingProps}
     >

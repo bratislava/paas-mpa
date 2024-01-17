@@ -61,7 +61,7 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title=" " hasBackButton>
+      <ScreenView>
         <ScreenContent>
           <View className="g-2">
             <Typography variant="h1">{t('enterVerificationCode')}</Typography>

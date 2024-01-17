@@ -164,6 +164,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
       <ScreenContent variant="center">
         <View className="w-full flex-1">
           <FlatList
+            // padding bottom is there for the last card to be able to go above the floating button when finishing scroll movement
             contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
             data={tickets}
             renderItem={renderItem}
@@ -231,7 +232,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')} backgroundVariant="dots" hasBackButton>
+    <ScreenView title={t('title')} backgroundVariant="dots">
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

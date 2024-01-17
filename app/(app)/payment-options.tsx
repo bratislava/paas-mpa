@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Platform, ScrollView } from 'react-native'
 
 import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
@@ -48,7 +48,7 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
+    <ScreenView title={t('title')}>
       <ScrollView>
         <ScreenContent>
           {defaultPaymentOption ? (

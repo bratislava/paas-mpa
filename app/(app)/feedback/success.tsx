@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router'
+import { router } from 'expo-router'
 import { useCallback } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -19,10 +19,10 @@ const FeedbackSuccessScreen = () => {
 
   return (
     <ScreenViewCentered
+      options={{ headerShown: false }}
       backgroundVariant="dots"
       actionButton={<ContinueButton onPress={handleContinue} />}
     >
-      <Stack.Screen options={{ headerShown: false }} />
       <ContentWithAvatar title={t('title')} text={t('text')} variant="success" />
     </ScreenViewCentered>
   )

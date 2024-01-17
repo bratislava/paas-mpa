@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import TextInput from '@/components/inputs/TextInput'
 import Modal from '@/components/screen-layout/Modal/Modal'

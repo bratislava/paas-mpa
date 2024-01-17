@@ -4,7 +4,8 @@
     "openMenu": "Otvoriť menu",
     "closeMenu": "Zatvoriť menu",
     "apply": "Vybrať",
-    "showResults": "Zobraziť"
+    "showResults": "Zobraziť",
+    "menu": "Menu"
   },
   "Common": {
     "loading": "Načítavam",
@@ -26,7 +27,8 @@
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
       "CodeMismatchException": "Neplatný kód",
-      "InvalidParameterException": "Telefónne číslo je neplatné. Uistite sa prosím, že ste zadali správny formát."
+      "InvalidParameterException": "Telefónne číslo je neplatné. Uistite sa prosím, že ste zadali správny formát.",
+      "Error": "Vyskytla sa chyba."
     }
   },
   "AddParkingCards": {

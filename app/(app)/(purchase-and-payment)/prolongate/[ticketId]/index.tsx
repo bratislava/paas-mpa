@@ -60,7 +60,7 @@ const ProlongTicketScreen = () => {
 
   if (!ticket) {
     return (
-      <ScreenView title={t('prolongate')} hasBackButton>
+      <ScreenView title={t('prolongate')}>
         <ScrollView>
           <SkeletonPurchaseFields />
         </ScrollView>
@@ -74,7 +74,7 @@ const ProlongTicketScreen = () => {
 
   return (
     <>
-      <ScreenView title={t('prolongate')} hasBackButton>
+      <ScreenView title={t('prolongate')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>

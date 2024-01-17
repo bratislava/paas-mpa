@@ -1,7 +1,9 @@
+import clsx from 'clsx'
 import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
+import { useState } from 'react'
 import { WebView } from 'react-native-webview'
 
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 
@@ -11,6 +13,7 @@ export type WebviewSearchParams = {
 
 // TODO handle errors
 const Page = () => {
+  const [isLoaded, setIsLoaded] = useState(false)
   const { webviewUri } = useLocalSearchParams<WebviewSearchParams>()
 
   if (!webviewUri) {
@@ -24,8 +27,14 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title=" " hasBackButton>
-      <WebView source={{ uri: uriDecoded }} className="flex-1" />
+    <ScreenView>
+      {isLoaded ? null : <LoadingScreen />}
+
+      <WebView
+        source={{ uri: uriDecoded }}
+        onLoad={() => setIsLoaded(true)}
+        className={clsx('flex-1', { hidden: !isLoaded })}
+      />
     </ScreenView>
   )
 }

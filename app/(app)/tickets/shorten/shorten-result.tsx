@@ -21,8 +21,6 @@ const ShortenResultPage = () => {
 
   return (
     <ScreenViewCentered
-      title=" "
-      hasInsets={false}
       options={{ headerShown: false }}
       backgroundVariant={status === 'error' ? 'dots' : undefined}
       actionButton={

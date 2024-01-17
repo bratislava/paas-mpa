@@ -56,10 +56,7 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView
-        title={isOnboardingFinished ? undefined : ' '}
-        hasBackButton={!isOnboardingFinished}
-      >
+      <ScreenView hasBackButton={!isOnboardingFinished}>
         <ScreenContent>
           <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 

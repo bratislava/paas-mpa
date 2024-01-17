@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
 import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
@@ -97,7 +97,6 @@ const VehiclesScreen = () => {
           </Link>
         ),
       }}
-      hasBackButton
     >
       <ScreenContent>
         {defaultVehicle ? (
@@ -110,21 +109,19 @@ const VehiclesScreen = () => {
         ) : null}
 
         {vehicles.length > (defaultVehicle ? 1 : 0) ? (
-          <View className="w-full flex-1">
-            <Field className="flex-1" label={t('myOtherVehicles')}>
-              <FlatList
-                data={vehicles.filter(({ isDefault }) => !isDefault)}
-                keyExtractor={({ id }) => id.toString()}
-                ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
-                renderItem={({ item }) => (
-                  <VehicleRow
-                    vehicle={item}
-                    onContextMenuPress={() => handleContextMenuPress(item.id)}
-                  />
-                )}
-              />
-            </Field>
-          </View>
+          <Field className="flex-1" label={t('myOtherVehicles')}>
+            <FlatList
+              data={vehicles.filter(({ isDefault }) => !isDefault)}
+              keyExtractor={({ id }) => id.toString()}
+              ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+              renderItem={({ item }) => (
+                <VehicleRow
+                  vehicle={item}
+                  onContextMenuPress={() => handleContextMenuPress(item.id)}
+                />
+              )}
+            />
+          </Field>
         ) : null}
       </ScreenContent>
 
