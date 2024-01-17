@@ -2,12 +2,13 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useRef } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 
+import { EmptyStateAvatar } from '@/assets/avatars'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
-import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -42,6 +43,7 @@ const Page = () => {
     <>
       <ScreenView
         title={email}
+        backgroundVariant={parkingCards?.length ? undefined : 'dots'}
         options={{
           headerRight: () => (
             <IconButton
@@ -71,11 +73,13 @@ const Page = () => {
             />
           </ScreenContent>
         ) : (
-          <EmptyStateScreen
-            title={email}
-            contentTitle={t('noActiveCardsTitle')}
-            text={t('noActiveCardsText')}
-          />
+          <View className="flex-1 justify-center">
+            <ContentWithAvatar
+              title={t('noActiveCardsTitle')}
+              text={t('noActiveCardsText')}
+              customAvatarComponent={<EmptyStateAvatar />}
+            />
+          </View>
         )}
       </ScreenView>
 
