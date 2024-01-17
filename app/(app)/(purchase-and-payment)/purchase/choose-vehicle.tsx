@@ -89,9 +89,7 @@ const ChooseVehicleScreen = () => {
         </View>
 
         <View className="flex-1 g-2">
-          <Typography variant="default-bold" className="grow">
-            {t('savedVehicles')}
-          </Typography>
+          <Typography variant="default-bold">{t('savedVehicles')}</Typography>
 
           <FlatList
             data={vehicles}

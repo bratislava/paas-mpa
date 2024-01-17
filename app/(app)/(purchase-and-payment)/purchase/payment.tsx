@@ -1,7 +1,9 @@
+import clsx from 'clsx'
 import { useLocalSearchParams } from 'expo-router'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -16,6 +18,7 @@ const invalidPaymentGatewayLinks = ['globalpaymentsinc.com']
 const PaymentScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const webviewRef = useRef<WebView>(null)
 
@@ -39,10 +42,13 @@ const PaymentScreen = () => {
 
   return (
     <ScreenView title={t('titlePayment')}>
+      {isLoaded ? null : <LoadingScreen />}
+
       <WebView
         ref={webviewRef}
         source={{ uri: paymentUrlDecoded }}
-        className="flex-1"
+        onLoad={() => setIsLoaded(true)}
+        className={clsx('flex-1', { hidden: !isLoaded })}
         onNavigationStateChange={(e) => {
           // if user navigates by clicking link to invalid link, stop loading and go back to previous page (gateway)
           if (invalidPaymentGatewayLinks.some((url) => e.url.includes(url))) {
