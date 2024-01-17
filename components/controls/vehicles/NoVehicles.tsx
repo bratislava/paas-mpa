@@ -9,7 +9,7 @@ const NoVehicles = () => {
 
   return (
     <EmptyStateScreen
-      options={{ headerTransparent: true }}
+      options={{ headerTransparent: true, headerRight: undefined }}
       title={t('title')}
       backgroundVariant="dots"
       hasBackButton

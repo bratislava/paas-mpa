@@ -91,6 +91,7 @@ const VehiclesScreen = () => {
     <ScreenView
       title={t('title')}
       options={{
+        headerTransparent: false,
         headerRight: () => (
           <Link asChild href="/vehicles/add-vehicle">
             <IconButton name="add" accessibilityLabel={t('addVehicle')} />

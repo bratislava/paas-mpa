@@ -6,11 +6,10 @@ import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 're
 import LinearGradient from 'react-native-linear-gradient'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
-import { EmptyStateAvatar } from '@/assets/avatars'
 import ActionRow from '@/components/list-rows/ActionRow'
 import TabBar from '@/components/navigation/TabBar'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
-import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
+import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
@@ -128,34 +127,32 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   if (active && !tickets?.length) {
     return (
-      <View className="flex-1 justify-center">
-        <ContentWithAvatar
-          title={t('noActiveTickets')}
-          text={t('noActiveTicketsText')}
-          customAvatarComponent={<EmptyStateAvatar />}
-          actionButton={
-            <Link href="/purchase" asChild>
-              <Button variant="primary">{t('buyTicket')}</Button>
-            </Link>
-          }
-        />
-      </View>
+      <EmptyStateScreen
+        hasBackButton={false}
+        contentTitle={t('noActiveTickets')}
+        text={t('noActiveTicketsText')}
+        actionButtonPosition="insideContent"
+        actionButton={
+          <Link href="/purchase" asChild>
+            <Button variant="primary">{t('buyTicket')}</Button>
+          </Link>
+        }
+      />
     )
   }
   if (!active && !tickets?.length) {
     return (
-      <View className="flex-1 justify-center">
-        <ContentWithAvatar
-          title={t('noHistoryTickets')}
-          text={t('noHistoryTicketsText')}
-          customAvatarComponent={<EmptyStateAvatar />}
-          actionButton={
-            <Button variant="primary" onPress={handleFiltersPress}>
-              {t('filters')}
-            </Button>
-          }
-        />
-      </View>
+      <EmptyStateScreen
+        hasBackButton={false}
+        contentTitle={t('noHistoryTickets')}
+        text={t('noHistoryTicketsText')}
+        actionButtonPosition="insideContent"
+        actionButton={
+          <Button variant="primary" onPress={handleFiltersPress}>
+            {t('filters')}
+          </Button>
+        }
+      />
     )
   }
 
@@ -232,7 +229,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')} backgroundVariant="dots">
+    <ScreenView title={t('title')}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
