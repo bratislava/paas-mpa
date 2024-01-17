@@ -9,6 +9,10 @@ const NoVehicles = () => {
 
   return (
     <EmptyStateScreen
+      options={{ headerTransparent: true, headerRight: undefined }}
+      title={t('title')}
+      backgroundVariant="dots"
+      hasBackButton
       contentTitle={t('noVehicles')}
       text={t('noVehiclesText')}
       actionButton={

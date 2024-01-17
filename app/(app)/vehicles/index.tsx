@@ -13,9 +13,9 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
+import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
@@ -84,15 +84,21 @@ const VehiclesScreen = () => {
   }
 
   if (vehicles.length === 0) {
-    return (
-      <ScreenView title={t('title')} backgroundVariant="dots">
-        <NoVehicles />
-      </ScreenView>
-    )
+    return <NoVehicles />
   }
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
+    <ScreenView
+      title={t('title')}
+      options={{
+        headerTransparent: false,
+        headerRight: () => (
+          <Link asChild href="/vehicles/add-vehicle">
+            <IconButton name="add" accessibilityLabel={t('addVehicle')} />
+          </Link>
+        ),
+      }}
+    >
       <ScreenContent>
         {defaultVehicle ? (
           <Field label={t('myDefaultVehicle')}>
@@ -104,7 +110,7 @@ const VehiclesScreen = () => {
         ) : null}
 
         {vehicles.length > (defaultVehicle ? 1 : 0) ? (
-          <Field label={t('myOtherVehicles')}>
+          <Field className="flex-1" label={t('myOtherVehicles')}>
             <FlatList
               data={vehicles.filter(({ isDefault }) => !isDefault)}
               keyExtractor={({ id }) => id.toString()}
@@ -118,10 +124,6 @@ const VehiclesScreen = () => {
             />
           </Field>
         ) : null}
-
-        <Link href="/vehicles/add-vehicle" asChild>
-          <Button>{t('addVehicle')}</Button>
-        </Link>
       </ScreenContent>
 
       <BottomSheet

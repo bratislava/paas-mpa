@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
-import { Link, Stack, useLocalSearchParams, useNavigation } from 'expo-router'
-import React, { useEffect } from 'react'
+import { Link, useLocalSearchParams, useNavigation } from 'expo-router'
+import { useEffect } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -80,8 +80,8 @@ const TicketPurchasePage = () => {
           <ContinueButton>{t('backToMap')}</ContinueButton>
         </Link>
       }
+      options={{ headerShown: false }}
     >
-      <Stack.Screen options={{ headerShown: false }} />
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
       ) : isError || data.paymentStatus === 'FAIL' ? (

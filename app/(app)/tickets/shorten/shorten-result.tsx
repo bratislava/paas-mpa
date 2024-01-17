@@ -3,8 +3,6 @@ import { Link, router, useLocalSearchParams } from 'expo-router'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
-import Panel from '@/components/shared/Panel'
-import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 /*
@@ -23,8 +21,8 @@ const ShortenResultPage = () => {
 
   return (
     <ScreenViewCentered
-      title={t('result')}
-      hasBackButton
+      options={{ headerShown: false }}
+      backgroundVariant={status === 'error' ? 'dots' : undefined}
       actionButton={
         status === 'error' ? (
           <Link asChild replace href={{ pathname: '/tickets/shorten/', params: { ticketId } }}>
@@ -35,14 +33,8 @@ const ShortenResultPage = () => {
         )
       }
     >
-      {/* <Stack.Screen options={{ headerShown: false }} /> */}
-
       {status === 'error' ? (
-        <ContentWithAvatar variant="error" title={t('failed')} text={t('failedText')}>
-          <Panel className="bg-negative-light">
-            <Typography>{t('failedMessage')}</Typography>
-          </Panel>
-        </ContentWithAvatar>
+        <ContentWithAvatar variant="error" title={t('failed')} text={t('failedText')} />
       ) : (
         // TODO
         <ContentWithAvatar variant="success" title={t('successful')} text={t('successfulText')}>

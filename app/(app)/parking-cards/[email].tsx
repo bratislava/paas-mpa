@@ -1,13 +1,15 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { useRef } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 
+import { EmptyStateAvatar } from '@/assets/avatars'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
-import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
+import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
@@ -20,9 +22,11 @@ export type ParkingCardsLocalSearchParams = {
   emailId: string
 }
 
-const ActiveCards = () => {
+const Page = () => {
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
+
+  const bottomSheetRef = useRef<BottomSheet>(null)
 
   const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery(parkingCardsInfiniteOptions({ email }))
@@ -33,70 +37,50 @@ const ActiveCards = () => {
     }
   }
 
-  if (isPending) {
-    return <Typography>Loading...</Typography>
-  }
-
-  if (isError) {
-    return <Typography>Error: {error.message}</Typography>
-  }
-
-  const parkingCards = data.pages.flatMap((page) => page.data.parkingCards)
-
-  if (parkingCards.length === 0) {
-    return <EmptyStateScreen contentTitle={t('noActiveCardsTitle')} text={t('noActiveCardsText')} />
-  }
-
-  return (
-    <ScreenContent>
-      <FlatList
-        data={parkingCards}
-        keyExtractor={(parkingCard) => parkingCard.identificator}
-        onEndReachedThreshold={0.2}
-        onEndReached={loadMore}
-        contentContainerStyle={{ gap: 12 }}
-        ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
-        renderItem={({ item: parkingCardItem }) => (
-          <ParkingCard key={parkingCardItem.identificator} card={parkingCardItem} />
-        )}
-      />
-    </ScreenContent>
-  )
-}
-
-// TODO Expired Cards - this have to be defined by Product manager
-// const ExpiredCards = () => {
-//   return (
-//     <ScrollView>
-//       <ScreenContent>
-//         <Typography>Expired cards</Typography>
-//       </ScreenContent>
-//     </ScrollView>
-//   )
-// }
-
-const Page = () => {
-  const t = useTranslation('ParkingCards')
-  const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
-
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const parkingCards = data?.pages.flatMap((page) => page.data.parkingCards)
 
   return (
     <>
-      <ScreenView title={email} hasBackButton>
-        <Stack.Screen
-          options={{
-            headerRight: () => (
-              <IconButton
-                name="more-horiz"
-                accessibilityLabel={t('openEmailActions')}
-                onPress={() => bottomSheetRef.current?.expand()}
-              />
-            ),
-          }}
-        />
-
-        <ActiveCards />
+      <ScreenView
+        title={email}
+        backgroundVariant={parkingCards?.length ? undefined : 'dots'}
+        options={{
+          headerRight: () => (
+            <IconButton
+              name="more-horiz"
+              accessibilityLabel={t('openEmailActions')}
+              onPress={() => bottomSheetRef.current?.expand()}
+            />
+          ),
+        }}
+      >
+        {isPending ? (
+          <LoadingScreen />
+        ) : isError ? (
+          <Typography>Error: {error?.message}</Typography>
+        ) : parkingCards?.length ? (
+          <ScreenContent>
+            <FlatList
+              data={parkingCards}
+              keyExtractor={(parkingCard) => parkingCard.identificator}
+              onEndReachedThreshold={0.2}
+              onEndReached={loadMore}
+              contentContainerStyle={{ gap: 12 }}
+              ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
+              renderItem={({ item: parkingCardItem }) => (
+                <ParkingCard key={parkingCardItem.identificator} card={parkingCardItem} />
+              )}
+            />
+          </ScreenContent>
+        ) : (
+          <View className="flex-1 justify-center">
+            <ContentWithAvatar
+              title={t('noActiveCardsTitle')}
+              text={t('noActiveCardsText')}
+              customAvatarComponent={<EmptyStateAvatar />}
+            />
+          </View>
+        )}
       </ScreenView>
 
       <EmailsBottomSheet ref={bottomSheetRef} />

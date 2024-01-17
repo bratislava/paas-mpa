@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
 
 import { EmailAvatar } from '@/assets/avatars'
@@ -47,8 +47,7 @@ const Page = () => {
     >
       <DismissKeyboard>
         <ScreenViewCentered
-          hasBackButton
-          title={t('verifyYourEmail')}
+          options={{ headerTransparent: true }}
           actionButton={<Button onPress={handleVerify}>Verify</Button>}
         >
           <ContentWithAvatar

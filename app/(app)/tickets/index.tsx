@@ -4,7 +4,6 @@ import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -37,7 +36,6 @@ type RouteProps =
 
 const TicketsRoute = ({ active }: RouteProps) => {
   const t = useTranslation('Tickets')
-  const insets = useSafeAreaInsets()
   const filters = useTicketsFiltersStoreContext()
 
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -130,8 +128,10 @@ const TicketsRoute = ({ active }: RouteProps) => {
   if (active && !tickets?.length) {
     return (
       <EmptyStateScreen
+        hasBackButton={false}
         contentTitle={t('noActiveTickets')}
         text={t('noActiveTicketsText')}
+        actionButtonPosition="insideContent"
         actionButton={
           <Link href="/purchase" asChild>
             <Button variant="primary">{t('buyTicket')}</Button>
@@ -143,8 +143,10 @@ const TicketsRoute = ({ active }: RouteProps) => {
   if (!active && !tickets?.length) {
     return (
       <EmptyStateScreen
+        hasBackButton={false}
         contentTitle={t('noHistoryTickets')}
         text={t('noHistoryTicketsText')}
+        actionButtonPosition="insideContent"
         actionButton={
           <Button variant="primary" onPress={handleFiltersPress}>
             {t('filters')}
@@ -159,7 +161,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
       <ScreenContent variant="center">
         <View className="w-full flex-1">
           <FlatList
-            contentContainerStyle={{ gap: 12 }}
+            // padding bottom is there for the last card to be able to go above the floating button when finishing scroll movement
+            contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
             data={tickets}
             renderItem={renderItem}
             ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
@@ -172,10 +175,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
         {!active && (
           <LinearGradient
-            // TODO: Padding and insets
-            className="absolute w-full items-center pb-6"
+            className="absolute bottom-0 w-full items-center pb-2"
             pointerEvents="box-none"
-            style={{ bottom: insets.bottom }}
             colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
           >
             <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
@@ -228,7 +229,7 @@ const Page = () => {
   ])
 
   return (
-    <ScreenView title={t('title')} backgroundVariant="dots" hasBackButton>
+    <ScreenView title={t('title')}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

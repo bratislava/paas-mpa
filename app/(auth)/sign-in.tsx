@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { View } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -56,14 +56,9 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView
-        title={isOnboardingFinished ? undefined : ' '}
-        hasBackButton={!isOnboardingFinished}
-      >
+      <ScreenView hasBackButton={!isOnboardingFinished}>
         <ScreenContent>
-          <SafeAreaView>
-            <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
-          </SafeAreaView>
+          <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
 
           <View className="g-1">
             {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}

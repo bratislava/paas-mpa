@@ -8,7 +8,6 @@ import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import StackScreenWithHeader from '@/components/screen-layout/StackScreenWithHeader'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
@@ -63,18 +62,17 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('paasEmailsTitle')}>
-      <StackScreenWithHeader
-        options={{
-          headerRight: () =>
-            verifiedEmails.length > 0 ? (
-              <Link asChild href="/parking-cards/verification">
-                <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
-              </Link>
-            ) : null,
-        }}
-      />
-
+    <ScreenView
+      title={t('paasEmailsTitle')}
+      options={{
+        headerRight: () =>
+          verifiedEmails.length > 0 ? (
+            <Link asChild href="/parking-cards/verification">
+              <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
+            </Link>
+          ) : null,
+      }}
+    >
       <ScreenContent>
         <Typography variant="default-bold">{t('paasEmailsList')}</Typography>
 

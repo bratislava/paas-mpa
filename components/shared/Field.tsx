@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 
@@ -9,6 +10,7 @@ type Props = {
   children: ReactNode
   errorMessage?: string
   variant?: TypographyProps['variant']
+  className?: string
   style?: StyleProp<ViewStyle>
 }
 // TODO associate control with label
@@ -20,10 +22,10 @@ const Field = ({
   errorMessage,
   variant = 'default-bold',
   style,
+  className,
 }: Props) => {
   return (
-    // A passed className magically does not work!
-    <View className="g-1" style={style}>
+    <View className={clsx('g-1', className)} style={style}>
       <View className="flex-row g-6">
         <Typography variant={variant} className="grow">
           {label}

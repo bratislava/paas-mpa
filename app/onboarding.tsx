@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
@@ -112,15 +111,12 @@ const OnboardingScreen = () => {
         style={{ paddingTop: insets.top }}
       />
 
-      <ContinueButton
-        className={clsx('mx-5', { 'mb-5': !insets.bottom })}
-        onPress={handlePressNext}
-      >
+      <ContinueButton className="mx-5 mb-2" onPress={handlePressNext}>
         {buttonLabel}
       </ContinueButton>
 
       {index === routes.length - 1 ? null : (
-        <Button className="mt-2" variant="plain" onPress={() => router.push('/sign-in')}>
+        <Button className="mb-4" variant="plain" onPress={() => router.push('/sign-in')}>
           {t('skip')}
         </Button>
       )}

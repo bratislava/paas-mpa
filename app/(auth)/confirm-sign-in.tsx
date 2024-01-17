@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation as useLibTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import CodeInput from '@/components/inputs/CodeInput'
@@ -11,6 +12,7 @@ import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
+import { changeUserLanguageToDevice } from '@/utils/changeUserLanguageToDevice'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 type ConfirmAuthSearchParams = {
@@ -19,6 +21,7 @@ type ConfirmAuthSearchParams = {
 
 const Page = () => {
   const t = useTranslation('Auth')
+  const { i18n } = useLibTranslation()
 
   const { attemptConfirmSignIn, resendConfirmationCode } = useSignInOrSignUp()
   const { phone } = useLocalSearchParams<ConfirmAuthSearchParams>()
@@ -41,6 +44,12 @@ const Page = () => {
           throw new Error('Phone was not found in URL params')
         }
         await attemptConfirmSignIn(code, phone)
+
+        const newLanguage = await changeUserLanguageToDevice()
+
+        if (newLanguage) {
+          await i18n.changeLanguage(newLanguage)
+        }
       } catch (error) {
         if (isErrorWithName(error)) {
           setErrorCode(error.name)
@@ -52,7 +61,7 @@ const Page = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title=" " hasBackButton>
+      <ScreenView>
         <ScreenContent>
           <View className="g-2">
             <Typography variant="h1">{t('enterVerificationCode')}</Typography>

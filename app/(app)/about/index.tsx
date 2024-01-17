@@ -1,5 +1,5 @@
 import { Link } from 'expo-router'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import { View } from 'react-native'
 
 import { WebviewSearchParams } from '@/app/(app)/about/webview'
@@ -44,7 +44,7 @@ const Page = () => {
 
   return (
     // TODO maybe rename actionButton to something like footer
-    <ScreenView title={t('title')} hasBackButton actionButton={<AppVersion />}>
+    <ScreenView title={t('title')} actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
           {links.map((link) => (

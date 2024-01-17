@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { LayoutChangeEvent, Platform, View } from 'react-native'
@@ -30,7 +31,11 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
   const renderHeader: NonNullable<NonNullable<Props['options']>['header']> = useCallback(
     ({ options: headerOptions, back }) => {
       return (
-        <View className="w-full flex-row bg-white" style={{ paddingTop: insets.top + 4 }}>
+        <View
+          className={clsx('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
+          // TODO: paddings should be tested on android
+          style={{ paddingTop: insets.top }}
+        >
           <View className="w-full flex-row items-center px-5 py-3">
             {!!back && headerOptions?.headerBackVisible !== false ? (
               <IconButton
@@ -41,13 +46,13 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
               />
             ) : null}
             <View
-              className="min-w-0 flex-1 flex-row items-center justify-center"
+              className="min-w-0 flex-1 flex-row items-center justify-center px-2"
               style={{
                 marginLeft: headerSideWidth - headerLeftWidth,
                 marginRight: headerSideWidth - headerRightWidth,
               }}
             >
-              <Typography variant="h2" className="max-w-full text-ellipsis">
+              <Typography variant="h2" numberOfLines={1} className="max-w-full">
                 {headerOptions?.title}
               </Typography>
             </View>

@@ -1,5 +1,6 @@
 import { clsx } from 'clsx'
-import { Stack, useNavigation } from 'expo-router'
+import { useNavigation } from 'expo-router'
+import { ScreenProps } from 'expo-router/build/useScreens'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,9 +16,12 @@ export type ScreenViewProps = {
   contentPosition?: 'default' | 'center'
   backgroundVariant?: 'white' | 'dots'
   actionButton?: ReactNode
+  /**
+   * Whether to show the back button in the header
+   * @default true
+   */
   hasBackButton?: boolean
-  // there is no exportable type for options prop in Stack.Screen
-  options?: (typeof Stack.Screen)['prototype']['props']['options']
+  options?: ScreenProps['options']
 } & ViewProps
 
 const ScreenView = ({
@@ -27,7 +31,7 @@ const ScreenView = ({
   contentPosition = 'default',
   backgroundVariant = 'white',
   actionButton,
-  hasBackButton,
+  hasBackButton = true,
   options,
   ...rest
 }: ScreenViewProps) => {
@@ -43,34 +47,49 @@ const ScreenView = ({
 
   const insets = useSafeAreaInsets()
 
-  return (
-    <View className={clsx('flex-1 bg-white', className)} {...rest}>
-      {title?.length ? (
-        <StackScreenWithHeader
-          options={{
-            title,
-            headerBackVisible: hasBackButton,
-            ...options,
-          }}
-        />
-      ) : null}
+  const hasHeader = title || options || hasBackButton
 
+  return (
+    <View className="flex-1 bg-white">
       {backgroundVariant === 'dots' && (
         <Image source={dottedBackground} className="absolute h-full w-full" />
       )}
-      <View
-        className={clsx('flex-1', {
-          'justify-center': contentPosition === 'center',
-        })}
-      >
-        {children}
-      </View>
 
-      {actionButton ? (
-        <View className="p-5" style={{ paddingBottom: insets.bottom + 12 }}>
-          {actionButton}
+      <View
+        className={clsx('flex-1', className)}
+        style={{
+          paddingTop:
+            !options?.headerTransparent && options?.headerShown !== false && hasHeader
+              ? undefined
+              : insets.top,
+          paddingBottom: insets.bottom,
+        }}
+        {...rest}
+      >
+        {hasHeader ? (
+          <StackScreenWithHeader
+            options={{
+              title,
+              headerBackVisible: hasBackButton,
+              ...options,
+            }}
+          />
+        ) : null}
+
+        <View
+          className={clsx('flex-1', {
+            'justify-center': contentPosition === 'center',
+          })}
+        >
+          {children}
         </View>
-      ) : null}
+
+        {actionButton ? (
+          <View className="p-5" style={{ paddingBottom: 12 }}>
+            {actionButton}
+          </View>
+        ) : null}
+      </View>
     </View>
   )
 }

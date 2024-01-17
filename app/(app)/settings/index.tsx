@@ -59,7 +59,6 @@ const SettingsPage = () => {
   return (
     <ScreenView
       title={t('title')}
-      hasBackButton
       options={{
         headerRight: () => (
           <IconButton

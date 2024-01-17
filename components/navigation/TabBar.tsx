@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
   labelStyle: { color: colors.green.DEFAULT },
   tabBar: {
     backgroundColor: colors.white,
-    // shadowOpacity: 0, // TODO shadow
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 12,
   },
 })
 

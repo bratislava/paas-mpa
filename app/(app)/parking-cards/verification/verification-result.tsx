@@ -74,8 +74,7 @@ const VerificationResultPage = () => {
 
   return (
     <ScreenViewCentered
-      title={t('verificationResult')}
-      hasBackButton
+      options={{ headerTransparent: true }}
       actionButton={
         status === 'link-expired' ? (
           <ContinueButton onPress={handleResendVerification}>
@@ -86,8 +85,6 @@ const VerificationResultPage = () => {
         )
       }
     >
-      {/* <Stack.Screen options={{ headerShown: false }} /> */}
-
       {email && status ? (
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}

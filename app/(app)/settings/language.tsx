@@ -47,7 +47,7 @@ const Page = () => {
   ] as const
 
   return (
-    <ScreenView title={t('title')} hasBackButton>
+    <ScreenView title={t('title')}>
       <ScreenContent>
         <View className="divide-y divide-divider">
           {languages.map(({ label, value }) => {

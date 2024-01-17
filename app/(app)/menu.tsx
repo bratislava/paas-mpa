@@ -1,4 +1,4 @@
-import { Link, router, Stack } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -119,18 +119,17 @@ const MainMenuScreen = () => {
       <ScreenView
         className="grow p-5"
         style={{ paddingBottom: bottom + 20 }} // 20 is same as pb-5
-        hasBackButton
-        title="Menu"
+        title={t('Navigation.menu')}
+        options={{
+          headerRight: () => (
+            <IconButton
+              name="close"
+              accessibilityLabel={t('Navigation.closeMenu')}
+              onPress={handlePressClose}
+            />
+          ),
+        }}
       >
-        <Stack.Screen
-          options={{
-            headerRight: () => (
-              <IconButton name="close" accessibilityLabel="Close menu" onPress={handlePressClose} />
-            ),
-            headerBackVisible: false,
-          }}
-        />
-
         <View className="flex-1 justify-between">
           <View>
             {menuItems.map((item, index) =>
