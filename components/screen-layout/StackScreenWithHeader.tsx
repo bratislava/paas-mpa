@@ -33,6 +33,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
       return (
         <View
           className={clsx('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
+          // TODO: paddings should be tested on android
           style={{ paddingTop: insets.top }}
         >
           <View className="w-full flex-row items-center px-5 py-3">
