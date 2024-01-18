@@ -18,7 +18,7 @@
   },
   "Auth": {
     "enterPhoneNumber": "Zadajte telefónne číslo",
-    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023](https://bratislava.sk/) a [Prevádzkového poriadku](https://bratislava.sk/).",
+    "consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 6/2023 a Prevádzkového poriadku](https://paas.sk/dokumenty/).",
     "enterVerificationCode": "Zadajte 6-miestny kód",
     "verificationText": "Pokračujte zadaním 6-miestneho kódu, ktorý sme vám zaslali SMS správou.",
     "signIn": "Prihlásiť sa",
@@ -111,7 +111,7 @@
     "mainConditions": "Základné podmienky",
     "conditions": [
       "skrátenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade že lístok skrátite skôr, bude lístok ukončený až po uplynutí doby 15 minút (neplatí ak bol lístok zakúpený výhradne cez Bonusovú alebo Návštevnícku parkovaciu kartu).",
-      "lístok je možné skrátit´ za storno poplatok vo výške 0,05€ (neplatí ak bol lístok zakúpený výhradne cez Návštevnícku alebo Bonusovú kartu).",
+      "lístok je možné skrátiť za storno poplatok vo výške 0,05€ (neplatí ak bol lístok zakúpený výhradne cez Návštevnícku alebo Bonusovú kartu).",
       "V prípade okamžitého skrátenia lístka zakúpeného výhradne cez Bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
       "V prípade predĺženia parkovacieho lístka, bude umožnené skrátiť posledné predĺženie lístka."
     ],
