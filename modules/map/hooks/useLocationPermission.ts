@@ -13,15 +13,22 @@ export const useLocationPermission = ({ autoAsk }: Options = {}) => {
   )
   const [doNotAskAgain, setDoNotAskAgain] = useState(false)
 
+  const checkPermission = useCallback(async () => {
+    const { status } = await Location.getForegroundPermissionsAsync()
+    setPermissionStatus(status)
+  }, [])
+
+  useEffect(() => {
+    checkPermission()
+  }, [checkPermission])
+
   const getPermission = useCallback(async () => {
-    const { status: existingStatus } = await Location.getForegroundPermissionsAsync()
-    let finalStatus = existingStatus
-    if (existingStatus !== Location.PermissionStatus.GRANTED && !doNotAskAgain) {
+    if (!doNotAskAgain) {
       const { status } = await Location.requestForegroundPermissionsAsync()
-      finalStatus = status
+
       setDoNotAskAgain(true)
+      setPermissionStatus(status)
     }
-    setPermissionStatus(finalStatus)
   }, [doNotAskAgain])
 
   useEffect(() => {
