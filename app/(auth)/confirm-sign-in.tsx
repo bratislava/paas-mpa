@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation as useLibTranslation } from 'react-i18next'
 import { View } from 'react-native'
+import { useMMKVString } from 'react-native-mmkv'
 
 import CodeInput from '@/components/inputs/CodeInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -14,6 +15,7 @@ import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
 import { changeUserLanguageToDevice } from '@/utils/changeUserLanguageToDevice'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
+import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 type ConfirmAuthSearchParams = {
   phone: string
@@ -22,6 +24,7 @@ type ConfirmAuthSearchParams = {
 const Page = () => {
   const t = useTranslation('Auth')
   const { i18n } = useLibTranslation()
+  const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
   const { attemptConfirmSignIn, resendConfirmationCode } = useSignInOrSignUp()
   const { phone } = useLocalSearchParams<ConfirmAuthSearchParams>()
@@ -49,6 +52,7 @@ const Page = () => {
 
         if (newLanguage) {
           await i18n.changeLanguage(newLanguage)
+          setMmkvLocale(newLanguage)
         }
       } catch (error) {
         if (isErrorWithName(error)) {

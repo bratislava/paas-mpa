@@ -1,6 +1,7 @@
 import * as Localization from 'expo-localization'
 
 import { clientApi } from '@/modules/backend/client-api'
+import { storage, STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 export const enabledLocales = new Set(['en', 'sk'])
 
@@ -16,16 +17,18 @@ type Options = {
 export const changeUserLanguageToDevice = async (options?: Options) => {
   const deviceLocale = Localization.locale.split('-')[0]
 
-  let appLocale = enabledLocales.has(deviceLocale) ? deviceLocale : 'en'
+  const mmkvLocale = storage.getString(STORAGE_LANGUAGE_KEY)
+
+  let appLocale = mmkvLocale ?? (enabledLocales.has(deviceLocale) ? deviceLocale : 'en')
 
   if (!options?.skipCheck) {
     const response = await clientApi.usersControllerGetUserSettings()
-    const storedLocale = response?.data?.language
+    const apiLocale = response?.data?.language
 
-    if (storedLocale === appLocale) {
+    if (apiLocale === appLocale) {
       return null
     }
-    if (storedLocale) appLocale = storedLocale
+    if (apiLocale) appLocale = apiLocale
   }
 
   try {
