@@ -66,8 +66,8 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   )
 }
 
-const renderScene = (routeProps: RouteProps) => {
-  return <PermissionsRoute {...routeProps} />
+const renderScene = (routeProps: RouteProps, activeKey: RouteKeys) => {
+  return activeKey === routeProps.route.key ? <PermissionsRoute {...routeProps} /> : null
 }
 
 const PermissionsScreen = () => {
@@ -83,7 +83,7 @@ const PermissionsScreen = () => {
 
       <TabView
         navigationState={{ index, routes }}
-        renderScene={renderScene}
+        renderScene={(props) => renderScene(props, routes[index].key)}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
         renderTabBar={() => null}
