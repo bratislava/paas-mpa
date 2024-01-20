@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, View } from 'react-native'
+import { useMMKVString } from 'react-native-mmkv'
 
 import ActionRow from '@/components/list-rows/ActionRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -13,11 +14,13 @@ import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
+import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 const Page = () => {
   const t = useTranslationLocal('Settings')
   const { i18n } = useTranslation()
   const queryClient = useQueryClient()
+  const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
   const mutation = useMutation({
     mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
@@ -32,8 +35,9 @@ const Page = () => {
 
   const handleLanguageChange = async (newLanguage: 'sk' | 'en') => {
     if (newLanguage !== language) {
-      await i18n.changeLanguage(newLanguage)
       await mutation.mutateAsync({ language: newLanguage })
+      await i18n.changeLanguage(newLanguage)
+      setMmkvLocale(newLanguage)
     }
 
     if (router.canGoBack()) {

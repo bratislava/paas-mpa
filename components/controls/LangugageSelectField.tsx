@@ -1,6 +1,7 @@
 import { Link } from 'expo-router'
 import { useEffect } from 'react'
 import { useTranslation as useLibTranslation } from 'react-i18next'
+import { useMMKVString } from 'react-native-mmkv'
 
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
@@ -11,18 +12,23 @@ import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
+import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 const LangugageSelectField = () => {
   const t = useTranslation('Settings')
   const { i18n } = useLibTranslation()
+  const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
   const { data, isPending, isRefetching } = useQueryWithFocusRefetch(settingsOptions())
 
   useEffect(() => {
-    if (data?.data.language && data.data.language !== i18n.language) {
-      i18n.changeLanguage(data?.data.language)
+    const apiLanguage = data?.data.language
+
+    if (apiLanguage && apiLanguage !== i18n.language) {
+      i18n.changeLanguage(apiLanguage)
+      setMmkvLocale(apiLanguage)
     }
-  }, [data?.data.language, i18n])
+  }, [data?.data.language, i18n, setMmkvLocale])
 
   const languages = { sk: 'Slovenčina', en: 'English' }
 
