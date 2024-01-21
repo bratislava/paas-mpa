@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
+import { Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
@@ -27,7 +28,10 @@ const Page = () => {
   }
 
   return (
-    <ScreenView>
+    // TODO investigate more (same issue is in purchase/payment.tsx)
+    // WebView crashes on Android in some cases, disabling animation helps
+    // https://github.com/react-native-webview/react-native-webview/issues/3052#issuecomment-1635698194
+    <ScreenView options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}>
       {isLoaded ? null : <LoadingScreen />}
 
       <WebView
