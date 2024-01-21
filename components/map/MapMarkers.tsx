@@ -12,7 +12,7 @@ import {
   SellingPointImage,
 } from '@/assets/map/images'
 import { MapPointIconEnum } from '@/modules/map/constants'
-import markersStyles from '@/modules/map/utils/layer-styles/markers'
+import { markersStyles } from '@/modules/map/utils/layer-styles/markers'
 
 type Props = {
   markersData: FeatureCollection<Point, GeoJsonProperties | { icon: string }>
@@ -65,7 +65,11 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           onPress={handlePointPress}
           key={icon}
         >
-          <SymbolLayer id={`${icon}MarkersSymbol`} style={markersStyles.pin} />
+          <SymbolLayer
+            id={`${icon}MarkersSymbol`}
+            style={markersStyles.pin}
+            filter={['!has', 'point_count']}
+          />
           <SymbolLayer
             id={`${icon}MarkersCluster`}
             style={{ ...markersStyles.sellingPointCluster, iconImage: icon }}
