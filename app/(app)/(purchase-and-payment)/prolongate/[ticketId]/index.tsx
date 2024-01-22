@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
+import { useDebounce } from 'use-debounce'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
@@ -35,8 +36,11 @@ const ProlongTicketScreen = () => {
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
+  const [debouncedDuration] = useDebounce(duration, 500)
+  const isDebouncingDuration = duration !== debouncedDuration
+
   const activeTicketEnd = new Date(ticket?.parkingEnd ?? Date.now()).getTime()
-  const parkingEnd = new Date(activeTicketEnd + duration * 1000).toISOString()
+  const parkingEnd = new Date(activeTicketEnd + debouncedDuration * 1000).toISOString()
 
   const initPaymentMutation = useMutation({
     mutationFn: (bodyInner: InitiateProlongationRequestDto) =>
@@ -132,7 +136,7 @@ const ProlongTicketScreen = () => {
         handlePressPay={handlePressPay}
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
-        isLoading={initPaymentMutation.isPending}
+        isLoading={initPaymentMutation.isPending || isDebouncingDuration}
       />
     </>
   )

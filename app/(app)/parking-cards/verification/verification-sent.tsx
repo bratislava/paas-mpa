@@ -48,11 +48,12 @@ const Page = () => {
       <DismissKeyboard>
         <ScreenViewCentered
           options={{ headerTransparent: true }}
-          actionButton={<Button onPress={handleVerify}>Verify</Button>}
+          actionButton={<Button onPress={handleVerify}>{t('verifyButton')}</Button>}
         >
           <ContentWithAvatar
             title={t('verifyYourEmail')}
             text={t('verifyYourEmailInfo', { email })}
+            asMarkdown
             customAvatarComponent={<EmailAvatar />}
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}

@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
+import { useDebounce } from 'use-debounce'
 
 import { ParkingCardAvatar } from '@/assets/avatars'
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
@@ -29,6 +30,7 @@ import {
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
+import { createPriceRequestBody } from '@/utils/createPriceRequestBody'
 import { paymentRedirect } from '@/utils/paymentRedirect'
 
 const PurchaseScreen = () => {
@@ -46,19 +48,13 @@ const PurchaseScreen = () => {
 
   const licencePlate = vehicle?.vehiclePlateNumber ?? ''
 
-  const dateNow = Date.now()
-  const parkingStart = new Date(dateNow).toISOString()
-  const parkingEnd = new Date(dateNow + duration * 1000).toISOString()
-  const priceRequestBody: GetTicketPriceRequestDto = {
-    npkId: npk?.identificator || undefined,
-    ticket: {
-      udr: String(udr?.udrId) ?? '',
-      udrUuid: udr?.udrUuid ?? '',
-      ecv: licencePlate ?? '',
-      parkingStart,
-      parkingEnd,
-    },
-  }
+  const [debouncedDuration] = useDebounce(duration, 500)
+  const isDebouncingDuration = duration !== debouncedDuration
+
+  const priceRequestBody: GetTicketPriceRequestDto = useMemo(
+    () => createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk }),
+    [udr, licencePlate, debouncedDuration, npk],
+  )
 
   const handleModalClose = () => setIsAddCardModalOpen(false)
 
@@ -88,7 +84,12 @@ const PurchaseScreen = () => {
   }, [defaultVehicle])
 
   const priceQuery = useQueryWithFocusRefetch(
-    ticketPriceOptions(priceRequestBody, { udr, npk, licencePlate, duration }),
+    ticketPriceOptions(priceRequestBody, {
+      udr,
+      licencePlate,
+      duration: debouncedDuration,
+      npk,
+    }),
   )
 
   const handleSelectTime = (value: number) => {
@@ -101,11 +102,19 @@ const PurchaseScreen = () => {
   })
 
   const handlePressPay = () => {
-    initPaymentMutation.mutate(priceRequestBody, {
-      onSuccess: ({ data: ticketInit }) => {
-        paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+    initPaymentMutation.mutate(
+      createPriceRequestBody({
+        udr,
+        licencePlate,
+        duration: debouncedDuration,
+        npk,
+      }),
+      {
+        onSuccess: ({ data: ticketInit }) => {
+          paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+        },
       },
-    })
+    )
   }
 
   return (
@@ -158,7 +167,7 @@ const PurchaseScreen = () => {
         handlePressPay={handlePressPay}
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
-        isLoading={initPaymentMutation.isPending}
+        isLoading={initPaymentMutation.isPending || isDebouncingDuration}
       />
 
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
