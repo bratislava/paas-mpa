@@ -3,6 +3,7 @@ import { PermissionStatus } from 'expo-modules-core'
 import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
+import { useClearHistory } from '@/hooks/useClearHistory'
 import { useTranslation } from '@/hooks/useTranslation'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import {
@@ -55,6 +56,7 @@ export const useSignInOrSignUp = () => {
   const [notificationsPermissionStatus] = useNotificationPermission({ skipTokenQuery: true })
 
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
+  const clearHistory = useClearHistory()
 
   const attemptSignInOrSignUp = async (phone: string) => {
     try {
@@ -140,6 +142,7 @@ export const useSignInOrSignUp = () => {
       } else {
         router.replace('/')
       }
+      clearHistory()
     } catch (error) {
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]

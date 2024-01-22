@@ -76,6 +76,8 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       if (enabled) {
         setPermissionStatus(PermissionStatus.GRANTED)
         await checkAndRegisterToken()
+      } else {
+        setPermissionStatus(PermissionStatus.DENIED)
       }
     } else {
       console.warn('Must use physical device for Push Notifications, skipping.')
