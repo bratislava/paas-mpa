@@ -149,7 +149,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
         actionButtonPosition="insideContent"
         actionButton={
           <Button variant="primary" onPress={handleFiltersPress}>
-            {t('filters')}
+            {t('filtersButton')}
           </Button>
         }
       />
