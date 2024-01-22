@@ -54,7 +54,7 @@ const ParkingCard = ({ card }: Props) => {
         <VisitorCard
           cardNumber={card.identificator}
           balanceSeconds={card.balanceSeconds}
-          originalBalanceSeconds={card.originalBalanceSeconds}
+          originalBalanceSeconds={undefined} // TODO check with parkdots if original balance is safe to use {card.originalBalanceSeconds}
           validUntil={card.validTo}
         />
       )
