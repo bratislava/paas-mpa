@@ -27,7 +27,7 @@ const PaymentOptionsField = () => {
   const panels: PaymentOption[] = [
     'payment-card',
     ...(Platform.OS === 'ios' ? (['apple-pay'] as const) : []),
-    'google-pay',
+    ...(Platform.OS === 'android' ? (['google-pay'] as const) : []),
     // 'e-wallet'
   ]
 
