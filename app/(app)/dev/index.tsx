@@ -13,7 +13,7 @@ const menuItems: MenuItem[] = [
   {
     title: 'Styleguide',
     subtitle: 'Typography & UI components sandbox',
-    route: '/examples/styleguide',
+    route: '/dev/examples/styleguide',
   },
   {
     title: 'Phone number login/register',
@@ -48,22 +48,22 @@ const menuItems: MenuItem[] = [
   {
     title: 'Bottom sheet',
     subtitle: 'Bottom sheet examples',
-    route: '/examples/bottom-sheet-example',
+    route: '/dev/examples/bottom-sheet-example',
   },
   {
     title: 'Modal',
     subtitle: 'Modal examples',
-    route: '/examples/modal-example',
+    route: '/dev/examples/modal-example',
   },
   {
     title: 'Snackbar',
     subtitle: 'Snackbar examples',
-    route: '/examples/snackbar-example',
+    route: '/dev/examples/snackbar-example',
   },
   {
     title: 'Code input',
     subtitle: 'Code input examples',
-    route: '/examples/codeinput-example',
+    route: '/dev/examples/codeinput-example',
   },
   {
     title: 'Purchase',
@@ -73,21 +73,26 @@ const menuItems: MenuItem[] = [
   {
     title: 'Healthcheck BE',
     subtitle: 'Check if BE is running',
-    route: '/examples/healthcheck',
+    route: '/dev/examples/healthcheck',
+  },
+  {
+    title: 'Envs',
+    subtitle: 'Env values',
+    route: '/dev/examples/loaded-envs',
   },
   {
     title: 'Empty state screen',
     subtitle: 'Centered screen with sad smiley',
-    route: '/examples/empty-state-example',
+    route: '/dev/examples/empty-state-example',
   },
   {
     title: 'Markdown',
     subtitle: 'Markdown examples',
-    route: '/examples/markdown-example',
+    route: '/dev/examples/markdown-example',
   },
 ]
 
-const DeveloperMenu = () => {
+const DevScreen = () => {
   const renderRow = ({ item }: { item: MenuItem }) => (
     <Link key={item.title} href={item.route} asChild>
       <TouchableOpacity>
@@ -100,8 +105,10 @@ const DeveloperMenu = () => {
   )
 
   return (
-    <FlatList data={menuItems} keyExtractor={(a: MenuItem) => a.title} renderItem={renderRow} />
+    <View className="flex-1 items-stretch">
+      <FlatList data={menuItems} keyExtractor={(a: MenuItem) => a.title} renderItem={renderRow} />
+    </View>
   )
 }
 
-export default DeveloperMenu
+export default DevScreen

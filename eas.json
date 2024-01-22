@@ -71,7 +71,7 @@
     "production": {
       "android": {
         "releaseStatus": "draft",
-        "track": "beta"
+        "track": "internal"
       }
     }
   }
