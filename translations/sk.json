@@ -51,7 +51,7 @@
     "titleInvalidPaymentLink": "Neplatný link",
     "segmentFieldLabel": "Úsek",
     "parkingTimeFieldLabel": "Doba parkovania",
-    "paymentMethodsFieldLabel": "Platobné metódy & Návštevnícke karty",
+    "paymentMethodsFieldLabel": "Platobné metódy a návštevnícke karty",
     "addVehicle": "Pridať vozidlo",
     "vehicle": "Vozidlo",
     "customParkingTimeTitle": "Vlastný čas",
@@ -64,10 +64,10 @@
     "noPaymentInitiated": "Platba nebola vytvorená. Vyskúšajte to prosím znova.",
     "invalidPaymentLink": "Neplatný odkaz na platobnú bránu. Vyskúšajte to prosím znova",
     "payment": {
-      "failed": "Platba zlyhala",
       "successful": "Úspešná platba",
-      "failedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova.",
-      "successfulText": "Ďakujeme, váš parkovací lístok bol uhradený."
+      "successfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
+      "failed": "Platba zlyhala",
+      "failedText": "Mrzí nás to, vaša platba zlyhala.\nProsím, skúste to znova."
     },
     "prolongation": {
       "failed": "Predĺženie zlýhalo",
@@ -85,17 +85,17 @@
       "TooLongParkingTime": "Doba parkovania prekročila maximálny možný čas. Maximálna dĺžka parkovacieho lístka je 48 hodín.",
       "TooShortParkingTime": "Minimálna doba parkovania je 15 minút.",
       "FreeTicket": "Úsek parkovania je v tomto čase nespoplatnený. Parkovací lístok nie je možné zakúpiť.",
-      "InsufficientCredit": "Na Návštevníckej parkovacej karte nie je dostatok kreditu.",
+      "InsufficientCredit": "Na návštevníckej parkovacej karte nie je dostatok kreditu.",
       "CardNotValid": "Návštevnícka parkovacia karta nie je platná.",
       "NoUsableParkingCardFound": "Parkovacia karta sa nenašla alebo nie je platná.",
-      "PermitCardActive": "Lístok vo vlastnej zóne nie je možné zakúpiť. Pre toto evidenčné číslo vozidla {{ecv}} a túto zónu už existuje Rezidentská alebo Abonentská parkovacia karta.",
+      "PermitCardActive": "Lístok vo vlastnej zóne nie je možné zakúpiť. Pre evidenčné číslo vozidla {{ecv}} a túto zónu už existuje Rezidentská alebo Abonentská parkovacia karta.",
       "InvalidParkingTime": "Neplatná doba parkovania, parkovanie musí skončiť v budúcnosti.",
       "InvalidParkingStart": "Neplatná doba parkovania, začiatok nového lístka môže nastať až po ukončení pôvodného lístka.",
       "InvalidParkingEnd": "Parkovacii lístok nie je možné v tomto čase predčasne ukončiť.",
-      "parkingSpaceNotFound": "Úsek parkovania neexistuje. Skúste iný parkovacii úsek.",
-      "TicketAlreadyExists": "Parkovacii lístok pre úsek {{udr}} a evidenčné číslo vozidla {{ecv}} už existuje.",
+      "parkingSpaceNotFound": "Úsek parkovania neexistuje. Skúste iný parkovací úsek.",
+      "TicketAlreadyExists": "Parkovací lístok pre úsek {{udr}} a evidenčné číslo vozidla {{ecv}} už existuje.",
       "BadDateFormat": "Formát dátumu je nesprávny.",
-      "TicketAlreadyShortened": "Parkovacii lístok bol už raz predčasne ukončený",
+      "TicketAlreadyShortened": "Parkovací lístok bol už raz predčasne ukončený.",
       "BadRequest": "Nesprávna požiadavka."
     }
   },
@@ -317,14 +317,14 @@
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",
     "zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
-    "noZoneSelected": "Nenašli sa žiadne parkovacie zóny. Použite vyhľadávanie alebo umiestnite pin na parkovaciu zónu v blízkosti.",
+    "noZoneSelected": "Nenašiel sa úsek parkovania. Použite vyhľadávanie alebo umiestnite pin na úsek parkovania v blízkosti.",
     "TopAttachment": {
       "tickets": "Lístky ({{count}})"
     }
   },
   "PointBottomSheet": {
     "title": "Detail bodu",
-    "getDirections": "Navigácia",
+    "getDirections": "Navigovať",
     "fields": {
       "address": "Adresa",
       "id": "ID",
@@ -352,8 +352,8 @@
   "ZoneDetailsScreen": {
     "title": "Detail úseku",
     "searchResults": "Výsledky vyhľadávania",
-    "zones": "Parkovacie zóny",
-    "nearByZones": "Parkovacie zóny v okolí",
+    "zones": "Parkovacie úseky",
+    "nearByZones": "Parkovacie úseky v okolí",
     "addresses": "Adresy",
     "noResults": "Žiadne výsledky",
     "startTyping": "Začnite písať",
@@ -408,7 +408,7 @@
         "url": "https://paas.sk/kontakt/"
       },
       "rateTheApp": {
-        "label": "Ohodnoďte nás",
+        "label": "Ohodnoťte nás",
         "url": "https://paas.sk/ochrana-osobnych-udajov/"
       }
     }
@@ -422,25 +422,25 @@
         "title": "Vitajte v mestskej aplikácii PAAS",
         "text": "Prostredníctvom aplikácie spravovanej mestom Bratislava môžete uhradiť hodinové parkovné, či využiť bonusovú alebo návštevnícku parkovaciu kartu."
       },
-      "dataSecurity": {
-        "title": "Dátová bezpečnosť a jednoduché používanie",
-        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania."
+      "visitorsFree": {
+        "title": "Vaše návštevy môžu parkovať zdarma",
+        "text": "Vašim blízkym a návštevám môžete darovať bezplatné hodiny na parkovanie z vašej návštevníckej karty."
+      },
+      "bonusCard": {
+        "title": "Každý deň 2 hodiny so 100% zľavou",
+        "text": "S bonusovou kartou parkujete vo vybraných úsekoch 2 hodiny zadarmo."
       },
       "parkingCards": {
         "title": "Jednoduché použitie parkovacích kariet",
         "text": "Po overení e-mailovej adresy, ktorú používate pre PAAS, vieme jednoducho nahrať vaše parkovacie karty a vy môžete parkovať so zľavou."
       },
+      "dataSecurity": {
+        "title": "Dátová bezpečnosť a jednoduché používanie",
+        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania."
+      },
       "helpUsPlan": {
         "title": "Pomôžte nám lepšie plánovať Bratislavu",
         "text": "Vďaka využívaniu tejto aplikácie podporujete tvorbu lepšej dopravy a jej plánovanie v Bratislave."
-      },
-      "visitorsFree": {
-        "title": "Vaše návštevy môžu parkovať zdarma",
-        "text": "Využitím návštevníckej parkovacej karty môžu vaši blízki a rodina parkovať zadarmo."
-      },
-      "bonusCard": {
-        "title": "Parkujte každý deň 2 hodiny so 100% zľavou",
-        "text": "Využitím bonusovej karty viete parkovať vo vybraných úsekoch 2 hodiny zadarmo. Pre využitie zľavy je potrebné overiť e-mailovú adresu, na ktorú bola karta vydaná."
       }
     }
   },
@@ -464,16 +464,16 @@
   "PermissionsScreen": {
     "location": {
       "title": "Lokalizačné služby",
-      "text": "Povoľťe lokalizačné služby, aby sme vám mohli nájsť najbližšie parkovisko."
+      "text": "Povoľte lokalizačné služby, aby sme vám pomohli nájsť najbližšie parkovacie miesto."
     },
     "notifications": {
       "title": "Upozornenia",
-      "text": "Budeme vás informovať o blížiacom sa ukončení parkovného či novinkách PAAS."
+      "text": "Budeme vás informovať o blížiacom sa ukončení parkovného."
     }
   },
   "LocationBottomSheet": {
     "openSettings": "Nastavenia",
-    "dismiss": "Odmietnuť",
+    "dismiss": "Skryť",
     "locationDenied": {
       "title": "Prístup k polohe odmietnutý",
       "text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte prístup k polohe."
