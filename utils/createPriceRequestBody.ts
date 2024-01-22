@@ -2,8 +2,8 @@ import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { MapUdrZone } from '@/modules/map/types'
 
 /**
- * Function to create price request body needed for having fresh parkingStart and parkingEnd
- * otherwise useMemo would store old time values and it cannot be changed to new ones without having infinite loop
+ * Function to create price request body needed for having fresh parkingStart
+ * otherwise useMemo would store old time value and it cannot be changed to new one without having infinite loop
  * @param param0 object with udr, licencePlate, duration, npk
  * @returns price request body
  */
