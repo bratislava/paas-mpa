@@ -36,7 +36,8 @@
     "emailField": "E-mail address",
     "instructions": "If you are registered in PAAS, enter the e-mail address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards.",
     "verifyYourEmail": "Verify e-mail",
-    "verifyYourEmailInfo": "We’ve sent verification e-mail to \n{{email}} \n\nClick on Verify button in the e-mail to approve verification and we will then add parking card directly to the app.",
+    "verifyYourEmailInfo": "We’ve sent verification e-mail to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
+    "verifyButton": "Verify",
     "Errors": {
       "EmailAlreadyVerified": "Email has been added already",
       "InvalidEmail": "Email address has wrong format",
