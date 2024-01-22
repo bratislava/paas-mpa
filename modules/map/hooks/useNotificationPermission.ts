@@ -62,7 +62,6 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       (data || skipTokenQuery) &&
       permissionStatus === PermissionStatus.UNDETERMINED
     ) {
-      console.log('useNotificationPermission')
       checkPermission()
     }
   }, [checkPermission, data, permissionStatus, skipTokenQuery])
