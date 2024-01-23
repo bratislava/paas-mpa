@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 import { MapZoneStatusEnum } from '@/modules/map/constants'
 import { MapUdrZoneWithTranslationProps } from '@/modules/map/types'
-import udrStyle from '@/modules/map/utils/layer-styles/visitors'
+import { udrStyles } from '@/modules/map/utils/layer-styles/visitors'
 
 type Props = {
   udrData: FeatureCollection<Polygon | MultiPolygon, MapUdrZoneWithTranslationProps>
@@ -34,26 +34,17 @@ const MapZones = ({ udrData }: Props) => {
     <>
       {udrData.features?.length > 0 && (
         <ShapeSource id="udrSource" shape={udrData}>
-          <FillLayer
-            id="udrFill"
-            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-fill')?.paint}
-          />
+          <FillLayer id="udrFill" style={udrStyles.zoneFill} />
         </ShapeSource>
       )}
       {udrDataByStatus.active.features?.length > 0 && (
         <ShapeSource id="udrSourceActive" shape={udrDataByStatus.active}>
-          <LineLayer
-            id="udrLineActive"
-            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-active')?.paint}
-          />
+          <LineLayer id="udrLineActive" style={udrStyles.lineActive} />
         </ShapeSource>
       )}
       {udrDataByStatus.planned.features?.length > 0 && (
         <ShapeSource id="udrSourcePlanned" shape={udrDataByStatus.planned}>
-          <LineLayer
-            id="udrLinePlanned"
-            style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-planned')?.paint}
-          />
+          <LineLayer id="udrLinePlanned" style={udrStyles.linePlanned} />
         </ShapeSource>
       )}
     </>
