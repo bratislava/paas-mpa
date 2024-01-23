@@ -38,7 +38,7 @@ import {
   UdrZoneFeature,
 } from '@/modules/map/types'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
-import udrStyle from '@/modules/map/utils/layer-styles/visitors'
+import { udrStyles } from '@/modules/map/utils/layer-styles/visitors'
 import { useMapStoreUpdateContext } from '@/state/MapStoreProvider/useMapStoreUpdateContext'
 import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
@@ -205,14 +205,8 @@ const Map = forwardRef(
             // the shape cannot be null or undefined, but we must render the ShapeSource, because if it is rendered later the z-index breaks
             shape={selectedPolygon ?? { coordinates: [], type: 'Polygon' }}
           >
-            <FillLayer
-              id="highlight"
-              style={udrStyle.find((layerStyle) => layerStyle.id === 'udr-fill-selected')?.paint}
-            />
-            <LineLayer
-              id="higlight-lines"
-              style={udrStyle.find((styleLayer) => styleLayer.id === 'udr-line-selected')?.paint}
-            />
+            <FillLayer id="highlight" style={udrStyles.zoneFillSelected} />
+            <LineLayer id="higlight-lines" style={udrStyles.lineSelected} />
           </ShapeSource>
           {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}

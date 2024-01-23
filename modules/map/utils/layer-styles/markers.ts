@@ -15,7 +15,7 @@ const iconSize = [
 const clusterTextOffset = ['interpolate', ['linear'], ['zoom'], 10, [0.6, -0.6], 14, [0.85, -0.85]]
 const clusterIconOffset = ['interpolate', ['linear'], ['zoom'], 10, [40, -40], 14, [50, -50]]
 
-const markersStyles = {
+export const markersStyles = {
   pin: {
     iconImage: ['get', 'icon'],
     iconSize,
@@ -49,5 +49,3 @@ const markersStyles = {
     iconOpacity: 1,
   },
 }
-
-export default markersStyles

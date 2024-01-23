@@ -13,19 +13,19 @@ export const useLocation = () => {
   }, [])
 
   const getLocation = useCallback(async () => {
-    if (permissionStatus === Location.PermissionStatus.DENIED) return
+    if (permissionStatus !== Location.PermissionStatus.GRANTED) return
+
     const lastKnownPosition = await Location.getLastKnownPositionAsync()
     setLocation(lastKnownPosition)
     getCurrentPosition()
   }, [permissionStatus, getCurrentPosition])
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getLocation().catch((error) => {
       console.warn(error)
       setLocation(null)
     })
-  }, [permissionStatus, getLocation])
+  }, [getLocation])
 
   return [location, getLocation] as const
 }

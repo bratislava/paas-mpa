@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router'
+import { router, Stack, useFocusEffect } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -69,11 +69,12 @@ const OnboardingScreen = () => {
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
     { key: 'welcome' },
-    { key: 'dataSecurity' },
-    { key: 'parkingCards' },
-    { key: 'helpUsPlan' },
     { key: 'visitorsFree' },
     { key: 'bonusCard' },
+    { key: 'parkingCards' },
+    { key: 'dataSecurity' },
+    // TODO uncomment when we have final wording
+    // { key: 'helpUsPlan' },
   ])
 
   const handlePressNext = useCallback(() => {
@@ -84,9 +85,11 @@ const OnboardingScreen = () => {
     }
   }, [routes, index])
 
-  if (isOnboardingFinished && environment.deployment !== 'development') {
-    router.replace('/sign-in')
-  }
+  useFocusEffect(() => {
+    if (isOnboardingFinished && environment.deployment !== 'development') {
+      router.replace('/sign-in')
+    }
+  })
 
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
 

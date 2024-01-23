@@ -20,11 +20,8 @@ const PaymentMethodsFieldControl = ({
   return visitorCard ? (
     <VisitorCardRow
       email={visitorCard.name ?? ''}
-      balance={
-        visitorCard.balanceSeconds
-          ? formatBalance(visitorCard.balanceSeconds, visitorCard.originalBalanceSeconds)
-          : ''
-      }
+      // TODO originalBalanceSeconds temporarily removed to be confirmed
+      balance={visitorCard.balanceSeconds ? formatBalance(visitorCard.balanceSeconds) : ''}
       showControlChevron={showControlChevron}
     />
   ) : (

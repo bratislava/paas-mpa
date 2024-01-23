@@ -62,7 +62,6 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       (data || skipTokenQuery) &&
       permissionStatus === PermissionStatus.UNDETERMINED
     ) {
-      console.log('useNotificationPermission')
       checkPermission()
     }
   }, [checkPermission, data, permissionStatus, skipTokenQuery])
@@ -77,6 +76,8 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       if (enabled) {
         setPermissionStatus(PermissionStatus.GRANTED)
         await checkAndRegisterToken()
+      } else {
+        setPermissionStatus(PermissionStatus.DENIED)
       }
     } else {
       console.warn('Must use physical device for Push Notifications, skipping.')

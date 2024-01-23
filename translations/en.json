@@ -33,10 +33,10 @@
   },
   "AddParkingCards": {
     "addCardsTitle": "Add parking cards",
-    "emailField": "E-mail address",
-    "instructions": "If you are registered in PAAS, enter the e-mail address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards.",
-    "verifyYourEmail": "Verify e-mail",
-    "verifyYourEmailInfo": "We’ve sent verification e-mail to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
+    "emailField": "Email address",
+    "instructions": "If you are registered in PAAS, enter the email address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards.",
+    "verifyYourEmail": "Verify email",
+    "verifyYourEmailInfo": "We’ve sent verification email to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
     "verifyButton": "Verify",
     "Errors": {
       "EmailAlreadyVerified": "Email has been added already",
@@ -51,7 +51,7 @@
     "titleInvalidPaymentLink": "Invalid link",
     "segmentFieldLabel": "Segment",
     "parkingTimeFieldLabel": "Parking duration",
-    "paymentMethodsFieldLabel": "Payment methods & Visitor cards",
+    "paymentMethodsFieldLabel": "Payment methods & visitor cards",
     "addVehicle": "Add vehicle",
     "vehicle": "Vehicle",
     "customParkingTimeTitle": "Custom time",
@@ -64,10 +64,10 @@
     "noPaymentInitiated": "No payment initiated. Please try again",
     "invalidPaymentLink": "Invalid payment url. Please try again",
     "payment": {
-      "failed": "Payment failed",
       "successful": "Payment successful",
-      "failedText": "Your payment has failed. \nPlease try again.",
-      "successfulText": "Your payment ticket has been paid."
+      "successfulText": "Your parking ticket has been paid.",
+      "failed": "Payment failed",
+      "failedText": "Your payment has failed. \nPlease try again."
     },
     "prolongation": {
       "failed": "Prolongation failed",
@@ -77,25 +77,25 @@
     },
     "parkingCardModal": {
       "title": "Do you have any\n parking cards?",
-      "message": "If you have any parking cards, you can add it to the app and use it later while buying a ticket.",
+      "message": "Great! Add them by verifying your email address and enjoy the discounts.",
       "actionConfirm": "Add parking cards",
       "actionCancel": "Later"
     },
     "Errors": {
       "TooLongParkingTime": "The parking time has exceeded the maximum possible duration. The maximum length of a parking ticket is 48 hours.",
+      "TooShortParkingTime": "The minimum parking duration is 15 minutes.",
       "FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",
-      "InsufficientCredit": "There is insufficient credit on the Visitor Parking Card.",
-      "CardNotValid": "The Visitor Parking Card is not valid.",
+      "InsufficientCredit": "There is insufficient credit on the visitor parking card.",
+      "CardNotValid": "The visitor parking card is not valid.",
       "NoUsableParkingCardFound": "The specified type of parking card is not in use or the parking card was not found.",
-      "PermitCardActive": "It is not possible to purchase a ticket for this parking segment. For this {{ecv}} and segment a Residential or Subscriber parking card already exists.",
+      "PermitCardActive": "It is not possible to purchase a ticket for this parking segment. For plate number {{ecv}} and this segment a residential or subscriber parking card already exists.",
       "InvalidParkingTime": "Invalid parking duration, parking must end in the future.",
       "InvalidParkingStart": "Invalid parking duration. The start of a new ticket can only occur after the original ticket has expired.",
+      "InvalidParkingEnd": "It is not possible to terminate the parking ticket prematurely at this time.",
       "TicketAlreadyExists": "A parking ticket for the section {{udr}} and the vehicle registration number {{ecv}} already exists.",
       "BadDateFormat": "The date format is incorrect.",
-      "TooShortParkingTime": "The minimum parking duration is 15 minutes.",
-      "InvalidParkingEnd": "It is not possible to terminate the parking ticket prematurely at this time.",
       "TicketAlreadyShortened": "The parking ticket has already been terminated prematurely once.",
-      "BadRequest": "Bad request"
+      "BadRequest": "Bad request."
     }
   },
   "BoughtTicket": {
@@ -175,7 +175,7 @@
     "language": "Language",
     "system": "System",
     "pushNotifications": "Push notifications",
-    "emailNotifications": "E-mail notifications",
+    "emailNotifications": "Email notifications",
     "loading": "Loading",
     "type": {
       "pushNotificationsAboutToEnd": {
@@ -188,11 +188,11 @@
       },
       "emailNotificationsAboutToEnd": {
         "title": "Parking about to end",
-        "description": "We will send you e-mail 15 minutes before your parking ends"
+        "description": "We will send you email 15 minutes before your parking ends"
       },
       "emailNotificationsToEnd": {
         "title": "Parking ended",
-        "description": "We will send you e-mail when your parking ends"
+        "description": "We will send you email when your parking ends"
       }
     },
     "actions": {
@@ -248,8 +248,8 @@
   },
   "ParkingCards": {
     "title": "Parking cards",
-    "paasEmailsTitle": "Your e-mails",
-    "paasEmailsList": "Choose an e-mail to continue and show cards that are attached",
+    "paasEmailsTitle": "Your emails",
+    "paasEmailsList": "Choose an email to continue and show cards that are attached",
     "addParkingCards": "Add parking cards",
     "type": {
       "visitor": "Visitor card",
@@ -264,34 +264,34 @@
     "remainingCredit": "Remaining credit",
     "activeCards": "Active cards",
     "expiredCards": "Expired cards",
-    "openEmailActions": "Manage e-mail address",
+    "openEmailActions": "Manage email address",
     "emailActions": {
-      "removeEmail": "Remove e-mail address"
+      "removeEmail": "Remove email address"
     },
     "noEmailsTitle": "No parking cards",
     "noEmailsText": "To add your cards to the app, please connect with your PAAS account.",
     "noActiveCardsTitle": "No active parking cards",
     "noActiveCardsText": "All parking cards expired. Once you’ll buy new parking card, it will show here.",
-    "removeEmailTitle": "Remove e-mail address",
-    "removeEmailText": "Are you sure you want to remove this e-mail address? Without an e-mail address, it will not be possible to view or use your parking cards.",
-    "removeEmailConfirm": "Yes, remove e-mail",
-    "removeEmailCancel": "No, keep e-mail"
+    "removeEmailTitle": "Remove email address",
+    "removeEmailText": "Are you sure you want to remove this email address? Without an email address, it will not be possible to view or use your parking cards.",
+    "removeEmailConfirm": "Yes, remove email",
+    "removeEmailCancel": "No, keep email"
   },
   "VerificationResult": {
     "verificationResult": "Verification result",
     "verified": {
       "title": "Parking cards added",
-      "text": "Your parking cards e-mail **{{email}}** has been added. You can see your cards in the Parking cards section.",
+      "text": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.",
       "actionButtonLabel": "Continue"
     },
     "verified-no-cards": {
       "title": "No parking cards",
-      "text": "We apologize, but no parking cards were found for the e-mail address {{email}}.\n\nPlease contact [paas.sk](https://paas.sk/casto-kladene-otazky/) support.",
+      "text": "We apologize, but no parking cards were found for the email address {{email}}.\n\nPlease contact [paas.sk](https://paas.sk/casto-kladene-otazky/) support.",
       "actionButtonLabel": "Continue"
     },
     "link-expired": {
       "title": "Link expired",
-      "text": "We are sorry, but link to verify your e-mail has expired. Resend e-mail to {{email}} and verify it again.\n\nClick on Verify button in the e-mail to approve verification and we will then add parking cards directly to the app.",
+      "text": "We are sorry, but link to verify your email has expired. Resend email to {{email}} and verify it again.\n\nClick on Verify button in the email to approve verification and we will then add parking cards directly to the app.",
       "actionButtonLabel": "Resend & continue"
     }
   },
@@ -419,28 +419,28 @@
     "getStarted": "Get started",
     "slides": {
       "welcome": {
-        "title": "Welcome to the city PAAS application",
-        "text": "Through the application managed by the city of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card."
+        "title": "Welcome to PAAS City Parking App",
+        "text": "Through the application operated by the City of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card."
+      },
+      "visitorsFree": {
+        "title": "Your visitors can park for free",
+        "text": "With the visitor parking card you invite your friends and family to park for free."
+      },
+      "bonusCard": {
+        "title": "Park 2 hours with a 100% discount every day",
+        "text": "Enjoy two hours of free parking in specific zones with the bonus card."
+      },
+      "parkingCards": {
+        "title": "Parking cards are easy to use",
+        "text": "Verify your email associated with PAAS to easily upload your parking cards and enjoy discounted parking."
       },
       "dataSecurity": {
         "title": "Data security and simplicity",
-        "text": "The application was created by the capital Bratislava with an emphasis on simplicity and intuitiveness."
-      },
-      "parkingCards": {
-        "title": "Using parking cards is easy",
-        "text": "By verifying your e-mail, which you used for PAAS, we can easily upload your parking cards and you can park with a discount."
+        "text": "The City of Bratislava made the app to be simple and easy to use."
       },
       "helpUsPlan": {
         "title": "Help us plan Bratislava better",
         "text": "Thanks to the use of this application, you support the creation of better transport and its planning in Bratislava."
-      },
-      "visitorsFree": {
-        "title": "Your visitors can park for free",
-        "text": "By applying for a visitor parking card, your loved ones and family can park for free."
-      },
-      "bonusCard": {
-        "title": "Park every day for 2 hours with a 100% discount",
-        "text": "By using the Bonus card, you can park in selected sections for 2 hours for free. In order to use the discount, it is necessary to verify the e-mail address to which the card was issued."
       }
     }
   },
@@ -491,8 +491,8 @@
   },
   "FeedbackScreen": {
     "title": "Feedback",
-    "emailAddress": "E-mail address",
-    "emailAddressInvalid": "Please enter a valid e-mail address",
+    "emailAddress": "Email address",
+    "emailAddressInvalid": "Please enter a valid email address",
     "type": "Type",
     "bug": "Bug",
     "proposal": "Proposal",
