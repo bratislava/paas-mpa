@@ -69,11 +69,12 @@ const OnboardingScreen = () => {
   const [index, setIndex] = useState(0)
   const [routes] = useState<{ key: RouteKeys }[]>([
     { key: 'welcome' },
-    { key: 'dataSecurity' },
-    { key: 'parkingCards' },
-    { key: 'helpUsPlan' },
     { key: 'visitorsFree' },
     { key: 'bonusCard' },
+    { key: 'parkingCards' },
+    { key: 'dataSecurity' },
+    // TODO uncomment when we have final wording
+    // { key: 'helpUsPlan' },
   ])
 
   const handlePressNext = useCallback(() => {
