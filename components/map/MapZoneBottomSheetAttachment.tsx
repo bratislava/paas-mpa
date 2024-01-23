@@ -21,8 +21,8 @@ import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 /** Time after pressing the button when it cannot be pressed again */
-const LOCATION_REQUEST_THROTTLE = 5000 // ms
-const LOCATION_REQUEST_TIMEOUT = 5000 // ms
+const LOCATION_REQUEST_THROTTLE = 500 // ms
+const LOCATION_REQUEST_TIMEOUT = 500 // ms
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
@@ -42,7 +42,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
       setIsButtonDisabled(true)
       try {
         const location = await Promise.race<Location.LocationObject | null>([
-          Location.getCurrentPositionAsync(),
+          Location.getLastKnownPositionAsync(),
           new Promise((resolve) => {
             setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
           }),
