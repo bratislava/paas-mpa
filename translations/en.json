@@ -179,18 +179,22 @@
     "loading": "Loading",
     "type": {
       "pushNotificationsAboutToEnd": {
+        "accessibilityLabel": "Parking about to end switch",
         "title": "Parking about to end",
         "description": "We will send you push notification 15 minutes before your parking ends"
       },
       "pushNotificationsToEnd": {
+        "accessibilityLabel": "Parking ended switch",
         "title": "Parking ended",
         "description": "We will send you push notification when your parking ends"
       },
       "emailNotificationsAboutToEnd": {
+        "accessibilityLabel": "Parking about to end email switch",
         "title": "Parking about to end",
         "description": "We will send you email 15 minutes before your parking ends"
       },
       "emailNotificationsToEnd": {
+        "accessibilityLabel": "Parking ended email switch",
         "title": "Parking ended",
         "description": "We will send you email when your parking ends"
       }
