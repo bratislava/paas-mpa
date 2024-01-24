@@ -90,10 +90,6 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
-  if (permissionStatus === Location.PermissionStatus.DENIED) {
-    return null
-  }
-
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow
@@ -119,12 +115,10 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
         <View>
           <IconButton
             name="gps-fixed"
-            // TODO translation
-            accessibilityLabel="Go to user location"
+            accessibilityLabel={t('goToUserLocation')}
             variant="white-raised"
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onPress={onLocationPress}
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || permissionStatus === Location.PermissionStatus.DENIED}
           />
         </View>
       </FlexRow>

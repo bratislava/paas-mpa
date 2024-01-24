@@ -36,7 +36,7 @@ const ProlongTicketScreen = () => {
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
 
-  const [debouncedDuration] = useDebounce(duration, 500)
+  const [debouncedDuration] = useDebounce(duration, 400)
   const isDebouncingDuration = duration !== debouncedDuration
 
   const activeTicketEnd = new Date(ticket?.parkingEnd ?? Date.now()).getTime()

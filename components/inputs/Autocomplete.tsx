@@ -96,6 +96,7 @@ const AutocompleteInner = <L extends any[], O>(
     () => (multiSourceMode ? ([[], []] as L) : ([] as unknown as L)),
     [multiSourceMode],
   )
+  const [isDebouncing, setIsDebouncing] = useState(false)
   const [input, setInput] = useState(defaultValue)
   const [options, setOptions] = useState<L>(emptyOptions)
   const [lastSearchText, setLastSearchText] = useState<string | null>(null)
@@ -108,6 +109,7 @@ const AutocompleteInner = <L extends any[], O>(
   })
 
   const debouncedHandleChange = useDebouncedCallback(async (newInput: string) => {
+    setIsDebouncing(false)
     const newOptions = await refetch()
     setOptions(newOptions.data ?? emptyOptions)
   }, debounce)
@@ -116,6 +118,7 @@ const AutocompleteInner = <L extends any[], O>(
     async (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
       const newInput = event.nativeEvent.text
       setInput(newInput)
+      setIsDebouncing(true)
       debouncedHandleChange(newInput)?.catch((error) => false)
     },
     [debouncedHandleChange],
@@ -198,7 +201,13 @@ const AutocompleteInner = <L extends any[], O>(
       />
       <View>
         {multiSourceMode ? (
-          renderResults?.({ options, optionsListProps, isFetching, isFetched, input })
+          renderResults?.({
+            options,
+            optionsListProps,
+            isFetching: isFetching || isDebouncing,
+            isFetched,
+            input,
+          })
         ) : optionsPortalName ? (
           <Portal hostName={optionsPortalName}>
             {options.length > 0 && (resultsHeader ?? null)}

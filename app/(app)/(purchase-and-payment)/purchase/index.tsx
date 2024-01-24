@@ -48,7 +48,7 @@ const PurchaseScreen = () => {
 
   const licencePlate = vehicle?.vehiclePlateNumber ?? ''
 
-  const [debouncedDuration] = useDebounce(duration, 500)
+  const [debouncedDuration] = useDebounce(duration, 400)
   const isDebouncingDuration = duration !== debouncedDuration
 
   const priceRequestBody: GetTicketPriceRequestDto = useMemo(
