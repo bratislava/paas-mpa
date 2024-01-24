@@ -1,11 +1,13 @@
 import clsx from 'clsx'
-import { useLocalSearchParams } from 'expo-router'
+import * as Linking from 'expo-linking'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -18,6 +20,8 @@ const invalidPaymentGatewayLinks = ['globalpaymentsinc.com']
 
 const PaymentScreen = () => {
   const t = useTranslation('PurchaseScreen')
+  const { show } = useSnackbar()
+
   const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -41,13 +45,26 @@ const PaymentScreen = () => {
     )
   }
 
+  if (Platform.OS === 'android') {
+    try {
+      Linking.openURL(paymentUrlDecoded)
+    } catch (error) {
+      console.log(error)
+      show('Unable to open payment URL.', { variant: 'danger' })
+    }
+
+    router.replace('/ticket-purchase')
+
+    return null
+  }
+
   return (
     // TODO investigate more (same issue is in about/webview.tsx)
     // WebView crashes on Android in some cases, disabling animation helps
     // https://github.com/react-native-webview/react-native-webview/issues/3052#issuecomment-1635698194
     <ScreenView
       title={t('titlePayment')}
-      options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}
+      // options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}
     >
       {isLoaded ? null : <LoadingScreen />}
 
