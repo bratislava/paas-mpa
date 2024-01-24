@@ -61,14 +61,13 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   {t('title')}
                 </Typography>
                 <PressableStyled onPress={handleInputFocus}>
-                  <View pointerEvents="none">
-                    <TextInput
-                      ref={inputRef}
-                      returnKeyType="search"
-                      value={address}
-                      selection={{ start: 0 }}
-                    />
-                  </View>
+                  <TextInput
+                    pointerEvents="none"
+                    ref={inputRef}
+                    returnKeyType="search"
+                    value={address}
+                    selection={{ start: 0 }}
+                  />
                 </PressableStyled>
               </View>
               <MapZoneBottomSheetPanel selectedZone={selectedZone} />
