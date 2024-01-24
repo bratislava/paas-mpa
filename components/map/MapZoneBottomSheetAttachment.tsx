@@ -21,8 +21,8 @@ import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 /** Time after pressing the button when it cannot be pressed again */
-const LOCATION_REQUEST_THROTTLE = 5000 // ms
-const LOCATION_REQUEST_TIMEOUT = 5000 // ms
+const LOCATION_REQUEST_THROTTLE = 500 // ms
+const LOCATION_REQUEST_TIMEOUT = 500 // ms
 
 type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
   setFlyToCenter?: MapRef['setFlyToCenter']
@@ -42,7 +42,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
       setIsButtonDisabled(true)
       try {
         const location = await Promise.race<Location.LocationObject | null>([
-          Location.getCurrentPositionAsync(),
+          Location.getLastKnownPositionAsync(),
           new Promise((resolve) => {
             setRequestTimeout(setTimeout(() => resolve(null), LOCATION_REQUEST_TIMEOUT))
           }),
@@ -90,10 +90,6 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
 
   const activeTicketsCount = ticketsData?.tickets.length ?? 0
 
-  if (permissionStatus === Location.PermissionStatus.DENIED) {
-    return null
-  }
-
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow
@@ -119,12 +115,10 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
         <View>
           <IconButton
             name="gps-fixed"
-            // TODO translation
-            accessibilityLabel="Go to user location"
+            accessibilityLabel={t('goToUserLocation')}
             variant="white-raised"
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onPress={onLocationPress}
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || permissionStatus === Location.PermissionStatus.DENIED}
           />
         </View>
       </FlexRow>

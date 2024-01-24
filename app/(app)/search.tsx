@@ -2,7 +2,6 @@ import { PortalHost } from '@gorhom/portal'
 import { router } from 'expo-router'
 import { useCallback, useRef } from 'react'
 import { Pressable, TextInput, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MapAutocomplete from '@/components/map/MapAutocomplete'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -19,7 +18,6 @@ const SearchScreen = () => {
   const { setFlyToCenter } = useMapStoreContext()
 
   const t = useTranslation()
-  const insets = useSafeAreaInsets()
 
   const ref = useRef<TextInput>(null)
 
@@ -38,11 +36,16 @@ const SearchScreen = () => {
   const handleChoice = useCallback(
     (newValue: GeocodingFeature | UdrZoneFeature) => {
       handleInputBlur()
-      if (isGeocodingFeature(newValue)) {
-        setFlyToCenter?.(newValue.center)
-      } else {
-        setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
-      }
+
+      // needs to be in timeout because going to map (handleCancel) rerenders the map which cancels the flyToCenter
+      setTimeout(() => {
+        if (isGeocodingFeature(newValue)) {
+          setFlyToCenter?.(newValue.center)
+        } else {
+          setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+        }
+      }, 100)
+
       handleCancel()
     },
     [handleInputBlur, setFlyToCenter, handleCancel],
@@ -50,7 +53,7 @@ const SearchScreen = () => {
 
   return (
     <ScreenView options={{ headerShown: false }}>
-      <ScreenContent style={{ paddingTop: insets.top + 20 }}>
+      <ScreenContent>
         <View className="flex-1">
           <View>
             <FlexRow>

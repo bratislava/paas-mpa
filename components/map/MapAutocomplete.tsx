@@ -132,7 +132,10 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 isFetching || loadingNearyByZones ? (
                   <LoadingScreen />
                 ) : input ? (
-                  <EmptyStateScreen contentTitle={t('noResults')} />
+                  <EmptyStateScreen
+                    options={{ headerShown: false }}
+                    contentTitle={t('noResults')}
+                  />
                 ) : null
               ) : (
                 <>

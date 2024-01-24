@@ -319,7 +319,8 @@
     "zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
     "noZoneSelected": "Nenašiel sa úsek parkovania. Použite vyhľadávanie alebo umiestnite pin na úsek parkovania v blízkosti.",
     "TopAttachment": {
-      "tickets": "Lístky ({{count}})"
+      "tickets": "Lístky ({{count}})",
+      "goToUserLocation": "Presunúť na moju polohu"
     }
   },
   "PointBottomSheet": {

@@ -180,7 +180,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
             colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
           >
             <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
-              {t('filters')}
+              {t('filtersButton')}
             </FloatingButton>
           </LinearGradient>
         )}
