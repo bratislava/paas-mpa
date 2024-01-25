@@ -22,7 +22,7 @@ const MarketingTabBar = (
         const isFocused = navigationState.index === navigationState.routes.indexOf(route)
 
         return (
-          <PressableStyled onPress={onPress}>
+          <PressableStyled accessibilityLabel={route.accessibilityLabel} onPress={onPress}>
             <View
               className={clsx(
                 'items-center justify-center rounded-full border-2 border-transparent p-0.5',

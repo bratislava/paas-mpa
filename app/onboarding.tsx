@@ -30,6 +30,10 @@ type RouteKeys =
 type MarketingSliderRouteProps = {
   slide: RouteKeys
 }
+type OnboardingRoute = {
+  key: RouteKeys
+  accessibilityLabel: string
+}
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   const t = useTranslation('OnboardingScreen')
   const SvgImage = {
@@ -54,9 +58,7 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
 const renderScene = ({
   route,
 }: SceneRendererProps & {
-  route: {
-    key: RouteKeys
-  }
+  route: OnboardingRoute
 }) => <MarketingSliderRoute slide={route.key} />
 
 const OnboardingScreen = () => {
@@ -67,14 +69,14 @@ const OnboardingScreen = () => {
 
   const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
   const [index, setIndex] = useState(0)
-  const [routes] = useState<{ key: RouteKeys }[]>([
-    { key: 'welcome' },
-    { key: 'visitorsFree' },
-    { key: 'bonusCard' },
-    { key: 'parkingCards' },
-    { key: 'dataSecurity' },
+  const [routes] = useState<OnboardingRoute[]>([
+    { key: 'welcome', accessibilityLabel: t('slides.welcome.accessibilityLabel') },
+    { key: 'visitorsFree', accessibilityLabel: t('slides.visitorsFree.accessibilityLabel') },
+    { key: 'bonusCard', accessibilityLabel: t('slides.bonusCard.accessibilityLabel') },
+    { key: 'parkingCards', accessibilityLabel: t('slides.parkingCards.accessibilityLabel') },
+    { key: 'dataSecurity', accessibilityLabel: t('slides.dataSecurity.accessibilityLabel') },
     // TODO uncomment when we have final wording
-    // { key: 'helpUsPlan' },
+    // { key: 'helpUsPlan', accessibilityLabel: t('slides.helpUsPlan.accessibilityLabel')},
   ])
 
   const handlePressNext = useCallback(() => {
