@@ -44,7 +44,7 @@ const SelectRow = ({
         {label}
       </Typography>
 
-      <CheckBox value={value} onChange={onValueChange} disabled={disabled} />
+      <CheckBox pointerEvents="none" value={value} onChange={onValueChange} disabled={disabled} />
     </PressableStyled>
   )
 }
