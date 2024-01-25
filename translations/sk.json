@@ -24,6 +24,7 @@
     "signIn": "Prihlásiť sa",
     "signOut": "Odhlásiť sa",
     "resendCode": "Odoslať kód znova",
+    "codeInputLabel": "Overovací kód",
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
       "CodeMismatchException": "Neplatný kód",

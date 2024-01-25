@@ -13,6 +13,7 @@ import {
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import Chip from '@/components/shared/Chip'
 import Field from '@/components/shared/Field'
@@ -96,7 +97,7 @@ const FeedbackScreen = () => {
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <ScrollView>
           <ScreenContent>
-            <Field
+            <AccessibilityField
               label={t('emailAddress')}
               errorMessage={isValidEmail ? undefined : t('emailAddressInvalid')}
             >
@@ -109,7 +110,7 @@ const FeedbackScreen = () => {
                 onSubmitEditing={handleEmailSubmit}
                 hasError={!isValidEmail}
               />
-            </Field>
+            </AccessibilityField>
             <Field label={t('type')}>
               <FlexRow>
                 {(['bug', 'proposal'] as const).map((label) => (
@@ -123,7 +124,7 @@ const FeedbackScreen = () => {
                 ))}
               </FlexRow>
             </Field>
-            <Field
+            <AccessibilityField
               style={{ flex: 1 }}
               label={t('yourMessage')}
               errorMessage={isValidMessage ? undefined : t('yourMessageInvalid')}
@@ -141,7 +142,7 @@ const FeedbackScreen = () => {
                 onBlur={handleMessageBlur}
                 hasError={!isValidMessage}
               />
-            </Field>
+            </AccessibilityField>
             <Button
               variant="primary"
               onPress={handleSubmit}

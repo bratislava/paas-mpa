@@ -36,6 +36,7 @@ const SelectRow = ({
       onPress={() => onValueChange(!value)}
       disabled={disabled}
       className="flex-row items-center gap-3 py-3"
+      accessibilityLabel={label}
       {...restPressableProps}
     >
       {icon ? <Icon name={icon} /> : IconComponent ? <IconComponent /> : null}

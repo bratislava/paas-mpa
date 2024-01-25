@@ -76,6 +76,7 @@ const Page = () => {
           <View className="g-4">
             <CodeInput
               autoFocus
+              accessibilityLabel={t('codeInputLabel')}
               error={errorCode ? t(`errors.${errorCode}`) : undefined}
               value={code}
               setValue={setCode}
