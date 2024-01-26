@@ -6,9 +6,9 @@ import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
-import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -72,7 +72,7 @@ const ChooseVehicleScreen = () => {
       }}
     >
       <ScreenContent>
-        <Field label={t('oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
+        <AccessibilityField label={t('oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
           <TextInput
             autoCapitalize="characters"
             autoCorrect={false}
@@ -80,7 +80,7 @@ const ChooseVehicleScreen = () => {
             onChangeText={handleLicencePlateChange}
             hasError={!!oneTimeLicencePlateError}
           />
-        </Field>
+        </AccessibilityField>
 
         <View className="flex flex-row items-center">
           <Divider dividerClassname="grow" />
@@ -102,7 +102,7 @@ const ChooseVehicleScreen = () => {
             )}
           />
 
-          <View className="flex items-start">
+          <View className="items-start">
             <Link asChild href="/vehicles/add-vehicle">
               <Button variant="plain-dark" startIcon="add-circle-outline">
                 {t('addNewVehicle')}

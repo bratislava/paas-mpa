@@ -1,4 +1,3 @@
-import React from 'react'
 import { SwitchProps, View } from 'react-native'
 
 import FlexRow from '@/components/shared/FlexRow'
@@ -10,10 +9,17 @@ export type SwitchControlProps = {
   title: string
   description?: string
   value: boolean
+  accessibilityLabel: string
   onValueChange: SwitchProps['onValueChange']
 }
 
-const SwitchControl = ({ title, description, value, onValueChange }: SwitchControlProps) => {
+const SwitchControl = ({
+  title,
+  description,
+  value,
+  accessibilityLabel,
+  onValueChange,
+}: SwitchControlProps) => {
   return (
     <Panel>
       <FlexRow>
@@ -23,7 +29,11 @@ const SwitchControl = ({ title, description, value, onValueChange }: SwitchContr
         </View>
 
         <View>
-          <Switch value={value} onValueChange={onValueChange} />
+          <Switch
+            accessibilityLabel={accessibilityLabel}
+            value={value}
+            onValueChange={onValueChange}
+          />
         </View>
       </FlexRow>
     </Panel>
