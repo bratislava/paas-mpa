@@ -55,6 +55,16 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   )
 }
 
+const routeKeys: RouteKeys[] = [
+  'welcome',
+  'visitorsFree',
+  'bonusCard',
+  'parkingCards',
+  'dataSecurity',
+  // TODO uncomment when we have final wording
+  // 'helpUsPlan',
+]
+
 const renderScene = ({
   route,
 }: SceneRendererProps & {
@@ -69,15 +79,14 @@ const OnboardingScreen = () => {
 
   const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
   const [index, setIndex] = useState(0)
-  const [routes] = useState<OnboardingRoute[]>([
-    { key: 'welcome', accessibilityLabel: t('slides.welcome.accessibilityLabel') },
-    { key: 'visitorsFree', accessibilityLabel: t('slides.visitorsFree.accessibilityLabel') },
-    { key: 'bonusCard', accessibilityLabel: t('slides.bonusCard.accessibilityLabel') },
-    { key: 'parkingCards', accessibilityLabel: t('slides.parkingCards.accessibilityLabel') },
-    { key: 'dataSecurity', accessibilityLabel: t('slides.dataSecurity.accessibilityLabel') },
-    // TODO uncomment when we have final wording
-    // { key: 'helpUsPlan', accessibilityLabel: t('slides.helpUsPlan.accessibilityLabel')},
-  ])
+  const [routes] = useState<OnboardingRoute[]>(
+    routeKeys.map((key) => ({
+      key,
+      accessibilityLabel: t(`slideAccessibilityLabel`, {
+        title: t(`slides.${key}.title`),
+      }),
+    })),
+  )
 
   const handlePressNext = useCallback(() => {
     if (index === routes.length - 1) {

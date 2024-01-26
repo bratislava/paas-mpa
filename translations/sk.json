@@ -419,36 +419,31 @@
     "next": "Ďalej",
     "skip": "Preskočiť",
     "getStarted": "Začať",
+    "slideAccessibilityLabel": "Ísť na {{title}}",
     "slides": {
       "welcome": {
         "title": "Vitajte v mestskej aplikácii PAAS",
-        "text": "Prostredníctvom aplikácie spravovanej mestom Bratislava môžete uhradiť hodinové parkovné, či využiť bonusovú alebo návštevnícku parkovaciu kartu.",
-        "accessibilityLabel": "Ísť na Vitajte v mestskej aplikácii PAAS"
+        "text": "Prostredníctvom aplikácie spravovanej mestom Bratislava môžete uhradiť hodinové parkovné, či využiť bonusovú alebo návštevnícku parkovaciu kartu."
       },
       "visitorsFree": {
         "title": "Vaše návštevy môžu parkovať zdarma",
-        "text": "Vašim blízkym a návštevám môžete darovať bezplatné hodiny na parkovanie z vašej návštevníckej karty.",
-        "accessibilityLabel": "Ísť na Vaše návštevy môžu parkovať zdarma"
+        "text": "Vašim blízkym a návštevám môžete darovať bezplatné hodiny na parkovanie z vašej návštevníckej karty."
       },
       "bonusCard": {
         "title": "Každý deň 2 hodiny so 100% zľavou",
-        "text": "S bonusovou kartou parkujete vo vybraných úsekoch 2 hodiny zadarmo.",
-        "accessibilityLabel": "Ísť na Každý deň 2 hodiny so 100% zľavou"
+        "text": "S bonusovou kartou parkujete vo vybraných úsekoch 2 hodiny zadarmo."
       },
       "parkingCards": {
         "title": "Jednoduché použitie parkovacích kariet",
-        "text": "Po overení e-mailovej adresy, ktorú používate pre PAAS, vieme jednoducho nahrať vaše parkovacie karty a vy môžete parkovať so zľavou.",
-        "accessibilityLabel": "Ísť na Jednoduché použitie parkovacích kariet"
+        "text": "Po overení e-mailovej adresy, ktorú používate pre PAAS, vieme jednoducho nahrať vaše parkovacie karty a vy môžete parkovať so zľavou."
       },
       "dataSecurity": {
         "title": "Dátová bezpečnosť a jednoduché používanie",
-        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania.",
-        "accessibilityLabel": "Ísť na Dátová bezpečnosť a jednoduché používanie"
+        "text": "Aplikácia bola vytvorená mestom Bratislava s dôrazom na bezpečnosť dát a jednoduchosť používania."
       },
       "helpUsPlan": {
         "title": "Pomôžte nám lepšie plánovať Bratislavu",
-        "text": "Vďaka využívaniu tejto aplikácie podporujete tvorbu lepšej dopravy a jej plánovanie v Bratislave.",
-        "accessibilityLabel": "Ísť na Pomôžte nám lepšie plánovať Bratislavu"
+        "text": "Vďaka využívaniu tejto aplikácie podporujete tvorbu lepšej dopravy a jej plánovanie v Bratislave."
       }
     }
   },

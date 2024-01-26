@@ -24,7 +24,7 @@
     "signIn": "Log in",
     "signOut": "Log out",
     "resendCode": "Resend code",
-    "codeInputLabel": "Code input",
+    "codeInputLabel": "Verification code",
     "errors": {
       "NotAuthorizedException": "Code expired",
       "CodeMismatchException": "Invalid code",
@@ -423,36 +423,31 @@
     "next": "Next",
     "skip": "Skip",
     "getStarted": "Get started",
+    "slideAccessibilityLabel": "Go to {{title}}",
     "slides": {
       "welcome": {
         "title": "Welcome to PAAS City Parking App",
-        "text": "Through the application operated by the City of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card.",
-        "accessibilityLabel": "Go to Welcome to PAAS City Parking App"
+        "text": "Through the application operated by the City of Bratislava, you can pay the hourly parking fee or use a bonus or visitor parking card."
       },
       "visitorsFree": {
         "title": "Your visitors can park for free",
-        "text": "With the visitor parking card you invite your friends and family to park for free.",
-        "accessibilityLabel": "Go to Your visitors can park for free"
+        "text": "With the visitor parking card you invite your friends and family to park for free."
       },
       "bonusCard": {
         "title": "Park 2 hours with a 100% discount every day",
-        "text": "Enjoy two hours of free parking in specific zones with the bonus card.",
-        "accessibilityLabel": "Go to Park 2 hours with a 100% discount every day"
+        "text": "Enjoy two hours of free parking in specific zones with the bonus card."
       },
       "parkingCards": {
         "title": "Parking cards are easy to use",
-        "text": "Verify your email associated with PAAS to easily upload your parking cards and enjoy discounted parking.",
-        "accessibilityLabel": "Go to Parking cards are easy to use"
+        "text": "Verify your email associated with PAAS to easily upload your parking cards and enjoy discounted parking."
       },
       "dataSecurity": {
         "title": "Data security and simplicity",
-        "text": "The City of Bratislava made the app to be simple and easy to use.",
-        "accessibilityLabel": "Go to Data security and simplicity"
+        "text": "The City of Bratislava made the app to be simple and easy to use."
       },
       "helpUsPlan": {
         "title": "Help us plan Bratislava better",
-        "text": "Thanks to the use of this application, you support the creation of better transport and its planning in Bratislava.",
-        "accessibilityLabel": "Go to Help us plan Bratislava better"
+        "text": "Thanks to the use of this application, you support the creation of better transport and its planning in Bratislava."
       }
     }
   },
