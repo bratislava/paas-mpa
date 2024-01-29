@@ -28,7 +28,7 @@
     "errors": {
       "NotAuthorizedException": "Code expired",
       "CodeMismatchException": "Invalid code",
-      "InvalidParameterException": "Phone number is invalid. Make sure you entered correct format.",
+      "InvalidParameterException": "Enter the phone number in international format (+421…)",
       "Error": "An error occurred."
     }
   },
