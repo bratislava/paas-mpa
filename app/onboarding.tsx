@@ -6,9 +6,11 @@ import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
 import {
   SlideBonusCard,
+  SlideBonusCardEN,
   SlideDataSecurity,
   SlideHelpUsPlan,
   SlideParkingCards,
+  SlideParkingCardsEN,
   SlideVisitorsFree,
   SlideWelcome,
 } from '@/assets/onboarding-slides'
@@ -16,9 +18,11 @@ import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
 import Button from '@/components/shared/Button'
+import FlexRow from '@/components/shared/FlexRow'
+import IconButton from '@/components/shared/IconButton'
 import { environment } from '@/environment'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 
 type RouteKeys =
   | 'welcome'
@@ -32,13 +36,15 @@ type MarketingSliderRouteProps = {
 }
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   const t = useTranslation('OnboardingScreen')
+  const locale = useLocale()
+
   const SvgImage = {
     welcome: SlideWelcome,
     dataSecurity: SlideDataSecurity,
-    parkingCards: SlideParkingCards,
+    parkingCards: locale === 'en' ? SlideParkingCardsEN : SlideParkingCards,
     helpUsPlan: SlideHelpUsPlan,
     visitorsFree: SlideVisitorsFree,
-    bonusCard: SlideBonusCard,
+    bonusCard: locale === 'en' ? SlideBonusCardEN : SlideBonusCard,
   }[slide]
 
   return (
@@ -94,8 +100,21 @@ const OnboardingScreen = () => {
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
 
   return (
-    <View className="flex-1" style={{ paddingBottom: insets.bottom }}>
+    <View className="flex-1" style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}>
       <Stack.Screen options={{ headerShown: false }} />
+      <FlexRow className="h-[50px] px-5 py-3">
+        {index > 0 ? (
+          <IconButton
+            onPress={() => {
+              if (jumpToRef?.current) {
+                jumpToRef.current(routes[index - 1].key)
+              }
+            }}
+            accessibilityLabel={t('goBack')}
+            name="arrow-back"
+          />
+        ) : null}
+      </FlexRow>
 
       <TabView
         navigationState={{ index, routes }}
@@ -111,7 +130,6 @@ const OnboardingScreen = () => {
         renderTabBar={(props) => <MarketingTabBar {...props} />}
         tabBarPosition="bottom"
         className="pb-5"
-        style={{ paddingTop: insets.top }}
       />
 
       <ContinueButton className="mx-5 mb-2" onPress={handlePressNext}>
@@ -119,7 +137,7 @@ const OnboardingScreen = () => {
       </ContinueButton>
 
       {index === routes.length - 1 ? null : (
-        <Button className="mb-4" variant="plain" onPress={() => router.push('/sign-in')}>
+        <Button className="mb-4 mt-2" variant="plain" onPress={() => router.push('/sign-in')}>
           {t('skip')}
         </Button>
       )}
