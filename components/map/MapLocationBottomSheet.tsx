@@ -18,12 +18,10 @@ const MapLocationBottomSheet = () => {
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
 
-  const reloadLocationStatus = useCallback(() => {
-    ;(async () => {
-      getLocationPermission()
-      const isEnabled = await Location.hasServicesEnabledAsync()
-      setIsLocationOn(isEnabled)
-    })()
+  const reloadLocationStatus = useCallback(async () => {
+    getLocationPermission()
+    const isEnabled = await Location.hasServicesEnabledAsync()
+    setIsLocationOn(isEnabled)
   }, [getLocationPermission])
 
   const handleOpenSettingsPress = useCallback(async () => {

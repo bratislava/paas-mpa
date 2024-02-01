@@ -4,7 +4,7 @@ import { StyleProp, View, ViewStyle } from 'react-native'
 
 import Typography, { TypographyProps } from '@/components/shared/Typography'
 
-type Props = {
+export type FieldProps = {
   label: string
   labelInsertArea?: ReactNode
   children: ReactNode
@@ -12,22 +12,23 @@ type Props = {
   variant?: TypographyProps['variant']
   className?: string
   style?: StyleProp<ViewStyle>
+  nativeID?: string
 }
-// TODO associate control with label
 
 const Field = ({
   label,
   children,
   labelInsertArea,
+  nativeID,
   errorMessage,
   variant = 'default-bold',
   style,
   className,
-}: Props) => {
+}: FieldProps) => {
   return (
     <View className={clsx('g-1', className)} style={style}>
       <View className="flex-row g-6">
-        <Typography variant={variant} className="grow">
+        <Typography variant={variant} className="grow" nativeID={nativeID}>
           {label}
         </Typography>
         {labelInsertArea || null}

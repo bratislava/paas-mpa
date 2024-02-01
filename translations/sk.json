@@ -24,6 +24,7 @@
     "signIn": "Prihlásiť sa",
     "signOut": "Odhlásiť sa",
     "resendCode": "Odoslať kód znova",
+    "codeInputLabel": "Overovací kód",
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
       "CodeMismatchException": "Neplatný kód",
@@ -418,6 +419,7 @@
     "next": "Ďalej",
     "skip": "Preskočiť",
     "getStarted": "Začať",
+    "slideAccessibilityLabel": "Ísť na {{title}}",
     "slides": {
       "welcome": {
         "title": "Vitajte v mestskej aplikácii PAAS",

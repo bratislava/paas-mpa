@@ -8,9 +8,9 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
-import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -64,7 +64,7 @@ const AddVehicleScreen = () => {
         <StatusBar style="light" />
 
         <ScreenContent>
-          <Field label={t('licencePlateFieldLabel')} errorMessage={error}>
+          <AccessibilityField label={t('licencePlateFieldLabel')} errorMessage={error}>
             <TextInput
               autoCapitalize="characters"
               autoCorrect={false}
@@ -72,14 +72,14 @@ const AddVehicleScreen = () => {
               onChangeText={handleLicencePlateChange}
               hasError={error.length > 0}
             />
-          </Field>
+          </AccessibilityField>
 
-          <Field
+          <AccessibilityField
             label={t('vehicleNameFieldLabel')}
             labelInsertArea={<Typography>{t('optional')}</Typography>}
           >
             <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
-          </Field>
+          </AccessibilityField>
 
           <Button disabled={!isValid} onPress={openModal}>
             {t('addVehicle')}

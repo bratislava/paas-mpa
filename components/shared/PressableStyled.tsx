@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { Pressable, PressableProps, View } from 'react-native'
 
 // TODO styling, maybe some animation/transition, android ripple effect?

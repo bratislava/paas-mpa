@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { View } from 'react-native'
 
 import SwitchControl from '@/components/controls/notifications/SwitchControl'
@@ -19,6 +19,7 @@ const SwitchShowcase = () => {
         <Typography>Controlled {checked ? 'checked' : 'unchecked'}</Typography>
       </View>
       <SwitchControl
+        accessibilityLabel="Switch control"
         title="Switch control"
         description="Optional description"
         value={checked}

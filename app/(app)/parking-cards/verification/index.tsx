@@ -7,8 +7,8 @@ import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import AccessibilityField from '@/components/shared/AccessibilityField'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
-import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -76,7 +76,7 @@ const Page = () => {
     <DismissKeyboard>
       <ScreenView title={t('addCardsTitle')}>
         <ScreenContent>
-          <Field
+          <AccessibilityField
             label={t('emailField')}
             errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
           >
@@ -90,7 +90,7 @@ const Page = () => {
               autoCorrect={false}
               onSubmitEditing={handleSendVerificationEmail}
             />
-          </Field>
+          </AccessibilityField>
 
           <Panel>
             <Typography>{t('instructions')}</Typography>
