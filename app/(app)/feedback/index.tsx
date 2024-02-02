@@ -2,9 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
 import {
-  Keyboard,
   NativeSyntheticEvent,
-  Pressable,
   ScrollView,
   TextInput as NativeTextInput,
   TextInputChangeEventData,
@@ -16,6 +14,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import Chip from '@/components/shared/Chip'
+import DismissKeyboard from '@/components/shared/DissmissKeyboard'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
 import PressableStyled from '@/components/shared/PressableStyled'
@@ -93,8 +92,8 @@ const FeedbackScreen = () => {
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 
   return (
-    <ScreenView title={t('title')}>
-      <Pressable onPress={Keyboard.dismiss} className="flex-1">
+    <DismissKeyboard>
+      <ScreenView title={t('title')}>
         <ScrollView>
           <ScreenContent>
             <AccessibilityField
@@ -153,8 +152,8 @@ const FeedbackScreen = () => {
             </Button>
           </ScreenContent>
         </ScrollView>
-      </Pressable>
-    </ScreenView>
+      </ScreenView>
+    </DismissKeyboard>
   )
 }
 

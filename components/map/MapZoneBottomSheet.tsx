@@ -64,6 +64,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                   <TextInput
                     pointerEvents="none"
                     ref={inputRef}
+                    accessibilityLabel={t('searchAccessibilityInput')}
                     returnKeyType="search"
                     value={address}
                     selection={{ start: 0 }}

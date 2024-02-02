@@ -21,7 +21,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Keyboard, View } from 'react-native'
+import { View } from 'react-native'
 
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
@@ -172,7 +172,6 @@ const Map = forwardRef(
           // eslint-disable-next-line no-secrets/no-secrets
           styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
           onCameraChanged={handleCameraChange}
-          onPress={Keyboard.dismiss}
           scaleBarEnabled={false}
           pitchEnabled={false}
         >
