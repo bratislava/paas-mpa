@@ -28,7 +28,7 @@
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
       "CodeMismatchException": "Neplatný kód",
-      "InvalidParameterException": "Telefónne číslo je neplatné. Uistite sa prosím, že ste zadali správny formát.",
+      "InvalidParameterException": "Zadajte číslo v medzinárodnom formáte (+421…).",
       "Error": "Vyskytla sa chyba."
     }
   },
