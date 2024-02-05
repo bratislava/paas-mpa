@@ -41,7 +41,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
               <IconButton
                 onPress={router.back}
                 accessibilityLabel={t('goBack')}
-                name="arrow-back"
+                name={headerOptions.presentation === 'modal' ? 'close' : 'arrow-back'}
                 onLayout={handleHeaderLeftLayout}
               />
             ) : null}
@@ -77,13 +77,23 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
     ],
   )
 
+  const renderHeaderLeft = () => {
+    return (
+      <View className="h-[22px] justify-end">
+        <IconButton onPress={router.back} accessibilityLabel={t('goBack')} name="close" />
+      </View>
+    )
+  }
+
+  const isModalOnIOS = options?.presentation === 'modal' && Platform.OS === 'ios'
+
   return (
     <Stack.Screen
       options={{
         headerShown: true,
         ...options,
-        header:
-          options?.presentation === 'modal' && Platform.OS === 'ios' ? undefined : renderHeader,
+        header: isModalOnIOS ? undefined : renderHeader,
+        headerLeft: isModalOnIOS ? renderHeaderLeft : undefined,
       }}
       {...passingProps}
     />
