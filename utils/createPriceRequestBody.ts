@@ -26,7 +26,6 @@ export const createPriceRequestBody = ({
     npkId: npk?.identificator || undefined,
     ticket: {
       udr: String(udr?.udrId) ?? '',
-      udrUuid: udr?.udrUuid ?? '',
       ecv: licencePlate ?? '',
       parkingStart,
       parkingEnd,
