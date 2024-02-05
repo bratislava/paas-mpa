@@ -11,6 +11,7 @@ import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAtt
 import MapZoneBottomSheetPanel from '@/components/map/MapZoneBottomSheetPanel'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
+import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
@@ -56,10 +57,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
             </View>
           ) : (
             <>
-              <View>
-                <Typography variant="default-bold" className="pb-1">
-                  {t('title')}
-                </Typography>
+              <Field label={t('title')}>
                 <PressableStyled onPress={handleInputFocus}>
                   <TextInput
                     pointerEvents="none"
@@ -70,7 +68,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     selection={{ start: 0 }}
                   />
                 </PressableStyled>
-              </View>
+              </Field>
               <MapZoneBottomSheetPanel selectedZone={selectedZone} />
             </>
           )}
