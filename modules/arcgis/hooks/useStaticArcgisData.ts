@@ -22,6 +22,8 @@ async function fetchFileOrGetFromCache<T>(fileName: string): Promise<AxiosRespon
 
     const responseHeaders = await axios.head<T>(url)
 
+    // Etag is an identifier for a specific version of a resource.
+    // If the etag is the same, we can use the cached response
     if (responseHeaders.headers.etag === cachedParsedResponse?.headers?.etag) {
       return cachedParsedResponse
     }
