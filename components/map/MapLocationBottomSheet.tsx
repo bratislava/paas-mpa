@@ -19,10 +19,13 @@ const MapLocationBottomSheet = () => {
   const [isLocationOn, setIsLocationOn] = useState(true)
 
   const reloadLocationStatus = useCallback(async () => {
-    getLocationPermission()
+    if (locationPermissionStatus === Location.PermissionStatus.UNDETERMINED) {
+      await getLocationPermission()
+    }
+
     const isEnabled = await Location.hasServicesEnabledAsync()
     setIsLocationOn(isEnabled)
-  }, [getLocationPermission])
+  }, [getLocationPermission, locationPermissionStatus])
 
   const handleOpenSettingsPress = useCallback(async () => {
     if (locationPermissionStatus !== Location.PermissionStatus.GRANTED) {
@@ -64,6 +67,7 @@ const MapLocationBottomSheet = () => {
   return (
     <BottomSheet
       ref={ref}
+      key="mapLocationBottomSheet"
       handleComponent={BottomSheetHandleWithShadow}
       enablePanDownToClose
       enableDynamicSizing

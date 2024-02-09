@@ -13,7 +13,6 @@ import Icon from '@/components/shared/Icon'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useAppFocusEffect } from '@/hooks/useAppFocusEffect'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -30,7 +29,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
   const t = useTranslation('ZoneBottomSheet.TopAttachment')
-  const [permissionStatus, getPermissionStatus] = useLocationPermission()
+  const [permissionStatus] = useLocationPermission()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
     null,
@@ -69,8 +68,6 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
     refetch,
     activeTicketsOptions().queryKey,
   )
-
-  useAppFocusEffect(getPermissionStatus)
 
   useEffect(() => {
     return () => {

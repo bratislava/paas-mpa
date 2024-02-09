@@ -2,7 +2,6 @@ import messaging from '@react-native-firebase/messaging'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import * as Device from 'expo-device'
 import { PermissionStatus } from 'expo-modules-core'
-import { router } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
@@ -81,8 +80,7 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       }
     } else {
       console.warn('Must use physical device for Push Notifications, skipping.')
-      // If on simulator, continue to homepage
-      router.push('/')
+      setPermissionStatus(PermissionStatus.DENIED)
     }
   }, [checkAndRegisterToken])
 

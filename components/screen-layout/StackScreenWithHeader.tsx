@@ -91,6 +91,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
     <Stack.Screen
       options={{
         headerShown: true,
+        animation: options?.presentation === 'modal' ? 'slide_from_bottom' : undefined,
         ...options,
         header: isModalOnIOS ? undefined : renderHeader,
         headerLeft: isModalOnIOS ? renderHeaderLeft : undefined,
