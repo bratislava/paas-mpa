@@ -23,6 +23,7 @@ export const paymentRedirect = (ticketInit: TicketInitDto, paymentOption: Paymen
       pathname: '/purchase/payment',
       params: {
         paymentUrl,
+        ticketId: ticketInit.id.toString(),
       } satisfies PaymentSearchParams,
     })
     /** Handle payment without payment gate (NPK, BPK with 0€ ticket) */

@@ -11,7 +11,10 @@ const AccessibilityField = ({ children, ...passingProps }: Omit<FieldProps, 'nat
 
   return (
     <Field nativeID={generatedId} {...passingProps}>
-      {cloneElement(children as ReactElement, { accessibilityLabelledBy: generatedId })}
+      {cloneElement(children as ReactElement, {
+        accessibilityLabelledBy: generatedId,
+        accessibilityLabel: passingProps.label,
+      })}
     </Field>
   )
 }

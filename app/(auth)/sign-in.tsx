@@ -72,7 +72,7 @@ const Page = () => {
               onFocus={handleInputFocus}
               autoFocus
               returnKeyType="done"
-              placeholder="+421"
+              placeholder="+421…"
               onSubmitEditing={handleSignIn}
             />
 

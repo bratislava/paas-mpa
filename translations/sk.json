@@ -28,7 +28,7 @@
     "errors": {
       "NotAuthorizedException": "Platnosť kódu vypršala",
       "CodeMismatchException": "Neplatný kód",
-      "InvalidParameterException": "Telefónne číslo je neplatné. Uistite sa prosím, že ste zadali správny formát.",
+      "InvalidParameterException": "Zadajte číslo v medzinárodnom formáte (+421…).",
       "Error": "Vyskytla sa chyba."
     }
   },
@@ -318,6 +318,7 @@
     "title": "Kde parkujete?",
     "showDetails": "Detail úseku",
     "zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
+    "searchAccessibilityInput": "Vyhľadať zónu alebo adresu",
     "noZoneSelected": "Nenašiel sa úsek parkovania. Použite vyhľadávanie alebo umiestnite pin na úsek parkovania v blízkosti.",
     "TopAttachment": {
       "tickets": "Lístky ({{count}})",

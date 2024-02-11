@@ -10,7 +10,9 @@ type Props = {
  * https://webcache.googleusercontent.com/search?q=cache:https://akshay-s-somkuwar.medium.com/dismiss-hide-keyboard-on-tap-outside-of-textinput-react-native-b94016f35ff0
  */
 const DismissKeyboard = ({ children }: Props) => (
-  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>{children}</TouchableWithoutFeedback>
+  <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
+    {children}
+  </TouchableWithoutFeedback>
 )
 
 export default DismissKeyboard

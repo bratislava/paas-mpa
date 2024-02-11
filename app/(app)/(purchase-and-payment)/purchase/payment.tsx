@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 
+import { TicketPurchaseSearchParams } from '@/app/(app)/(purchase-and-payment)/ticket-purchase'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
@@ -13,6 +14,10 @@ import { useTranslation } from '@/hooks/useTranslation'
 
 export type PaymentSearchParams = {
   paymentUrl: string
+  /**
+   * `ticketId` is used to redirect to /ticket-purchase while the payment gateway is opened in browser on android
+   */
+  ticketId: string
 }
 
 // disabled links to prevent user from navigating away from payment gateway
@@ -22,7 +27,7 @@ const PaymentScreen = () => {
   const t = useTranslation('PurchaseScreen')
   const { show } = useSnackbar()
 
-  const { paymentUrl } = useLocalSearchParams<PaymentSearchParams>()
+  const { paymentUrl, ticketId } = useLocalSearchParams<PaymentSearchParams>()
   const [isLoaded, setIsLoaded] = useState(false)
 
   const webviewRef = useRef<WebView>(null)
@@ -53,7 +58,10 @@ const PaymentScreen = () => {
       show('Unable to open payment URL.', { variant: 'danger' })
     }
 
-    router.replace('/ticket-purchase')
+    router.push({
+      pathname: '/ticket-purchase',
+      params: { ticketId: ticketId ?? '' } satisfies TicketPurchaseSearchParams,
+    })
 
     return null
   }

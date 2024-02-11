@@ -357,7 +357,7 @@ export interface GetTicketPriceTicketInfoRequestDto {
    * @type {string}
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
-  udrUuid: string
+  udrUuid?: string
   /**
    * The date and time when parking ends (UTC time in ISO8601 format)
    * @type {string}
