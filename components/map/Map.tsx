@@ -153,8 +153,15 @@ const Map = forwardRef(
           scaleBarEnabled={false}
           pitchEnabled={false}
         >
-          <MapCamera {...{ flyToCenter, cameraZoom, cameraRef: camera, setFlyToCenter }} />
+          <MapCamera
+            ref={camera}
+            flyToCenter={flyToCenter}
+            cameraZoom={cameraZoom}
+            setFlyToCenter={setFlyToCenter}
+          />
+
           {udrData && <MapZones udrData={udrData} />}
+
           <ShapeSource
             id="highlight"
             // the shape cannot be null or undefined, but we must render the ShapeSource, because if it is rendered later the z-index breaks
@@ -163,7 +170,7 @@ const Map = forwardRef(
             <FillLayer id="highlight" style={udrStyles.zoneFillSelected} />
             <LineLayer id="higlight-lines" style={udrStyles.lineSelected} />
           </ShapeSource>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+
           {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
 
           <UserLocation
