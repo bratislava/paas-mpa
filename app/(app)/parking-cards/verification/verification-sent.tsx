@@ -46,15 +46,13 @@ const Page = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <DismissKeyboard>
-        <ScreenViewCentered
-          options={{ headerTransparent: true }}
-          actionButton={<Button onPress={handleVerify}>{t('verifyButton')}</Button>}
-        >
+        <ScreenViewCentered options={{ headerTransparent: true }}>
           <ContentWithAvatar
             title={t('verifyYourEmail')}
             text={t('verifyYourEmailInfo', { email })}
             asMarkdown
             customAvatarComponent={<EmailAvatar />}
+            actionButton={<Button onPress={handleVerify}>{t('verifyButton')}</Button>}
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (
