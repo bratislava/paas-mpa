@@ -109,13 +109,11 @@ const MapScreen = ({ onMapStateChange }: Props) => {
           isZoomedOut={!isMapPinShown}
           address={currentAddress}
         />
-      </Portal>
-      {selectedMapPoint && (
-        <Portal hostName="index">
+
+        {selectedMapPoint && (
           <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedMapPoint} />
-        </Portal>
-      )}
-      <Portal hostName="index">
+        )}
+
         <MapLocationBottomSheet />
       </Portal>
       <View className="absolute left-0 px-2.5" style={{ top }}>
