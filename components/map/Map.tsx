@@ -1,6 +1,5 @@
 import {
   Camera,
-  CameraPadding,
   FillLayer,
   LineLayer,
   MapState,
@@ -8,7 +7,6 @@ import {
   ShapeSource,
   UserLocation,
   UserLocationRenderMode,
-  UserTrackingMode,
 } from '@rnmapbox/maps'
 import { Feature, GeoJsonProperties, Point, Position } from 'geojson'
 import {
@@ -23,21 +21,19 @@ import {
 } from 'react'
 import { View } from 'react-native'
 
+import MapCamera from '@/components/map/MapCamera'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
-import { CITY_BOUNDS, MAP_CENTER, MapFilters } from '@/modules/map/constants'
+import { MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
-import { useLocation } from '@/modules/map/hooks/useLocation'
-import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import {
   MapPointWithTranslationProps,
   MapUdrZoneWithTranslationProps,
   UdrZoneFeature,
 } from '@/modules/map/types'
-import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 import { udrStyles } from '@/modules/map/utils/layer-styles/visitors'
 import { useMapStoreUpdateContext } from '@/state/MapStoreProvider/useMapStoreUpdateContext'
 import { getPriceFromZone } from '@/utils/getPriceFromZone'
@@ -74,8 +70,6 @@ const Map = forwardRef(
   ) => {
     const camera = useRef<Camera>(null)
     const map = useRef<MapView>(null)
-    const [followingUser, setFollowingUser] = useState(true)
-    const [location] = useLocation()
     const updateMapStoreContext = useMapStoreUpdateContext()
     const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
@@ -97,12 +91,10 @@ const Map = forwardRef(
     }, [onMapPinVisibilityChange, isMapPinShown])
 
     const handleSetFlyToCenter = useCallback((center: Position) => {
-      setFollowingUser(false)
       setFlyToCenter(center)
       setCameraZoom(ZOOM_ON_PLACE_SELECT)
     }, [])
     const handleRotateToNorth = useCallback(() => {
-      setFollowingUser(false)
       setNewCameraHeading(0)
     }, [])
     useEffect(() => {
@@ -139,7 +131,6 @@ const Map = forwardRef(
     const handlePointPress = useCallback(
       async (point: Feature<Point, GeoJsonProperties>) => {
         if (point.properties?.point_count) {
-          setFollowingUser(false)
           setFlyToCenter(point.geometry.coordinates)
           const zoom = await map.current?.getZoom()
           setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
@@ -150,19 +141,6 @@ const Map = forwardRef(
       },
       [onPointPress],
     )
-
-    const isWithinCity = useMemo(() => isWithinCityBounds(location), [location])
-
-    const nonFollowingMapCenter = useMemo(() => flyToCenter ?? MAP_CENTER, [flyToCenter])
-
-    const cameraPadding: CameraPadding = useMemo(() => {
-      return {
-        paddingBottom: getBottomMapPadding(),
-        paddingLeft: 0,
-        paddingRight: 0,
-        paddingTop: 0,
-      }
-    }, [])
 
     return (
       <View className="flex-1">
@@ -175,30 +153,15 @@ const Map = forwardRef(
           scaleBarEnabled={false}
           pitchEnabled={false}
         >
-          {location && isWithinCity ? (
-            <Camera
-              ref={camera}
-              followUserLocation={followingUser}
-              followUserMode={UserTrackingMode.Follow}
-              animationMode="flyTo"
-              followZoomLevel={14}
-              zoomLevel={cameraZoom}
-              centerCoordinate={flyToCenter ?? undefined}
-              maxBounds={CITY_BOUNDS}
-              padding={cameraPadding}
-            />
-          ) : (
-            <Camera
-              ref={camera}
-              followUserLocation={false}
-              animationMode="flyTo"
-              zoomLevel={cameraZoom ?? 11.5}
-              centerCoordinate={nonFollowingMapCenter}
-              maxBounds={CITY_BOUNDS}
-              padding={cameraPadding}
-            />
-          )}
+          <MapCamera
+            ref={camera}
+            flyToCenter={flyToCenter}
+            cameraZoom={cameraZoom}
+            setFlyToCenter={setFlyToCenter}
+          />
+
           {udrData && <MapZones udrData={udrData} />}
+
           <ShapeSource
             id="highlight"
             // the shape cannot be null or undefined, but we must render the ShapeSource, because if it is rendered later the z-index breaks
@@ -207,7 +170,7 @@ const Map = forwardRef(
             <FillLayer id="highlight" style={udrStyles.zoneFillSelected} />
             <LineLayer id="higlight-lines" style={udrStyles.lineSelected} />
           </ShapeSource>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+
           {markersData && <MapMarkers markersData={markersData} onPointPress={handlePointPress} />}
 
           <UserLocation
