@@ -124,7 +124,15 @@ const OnboardingScreen = () => {
             accessibilityLabel={t('goBack')}
             name="arrow-back"
           />
-        ) : null}
+        ) : (
+          <View />
+        )}
+
+        {index === routes.length - 1 ? null : (
+          <Button variant="plain-dark" onPress={() => router.push('/sign-in')}>
+            {t('skip')}
+          </Button>
+        )}
       </FlexRow>
 
       <TabView
@@ -143,15 +151,9 @@ const OnboardingScreen = () => {
         className="pb-5"
       />
 
-      <ContinueButton className="mx-5 mb-2" onPress={handlePressNext}>
+      <ContinueButton className="mx-5 mb-4" onPress={handlePressNext}>
         {buttonLabel}
       </ContinueButton>
-
-      {index === routes.length - 1 ? null : (
-        <Button className="mb-4 mt-2" variant="plain" onPress={() => router.push('/sign-in')}>
-          {t('skip')}
-        </Button>
-      )}
     </View>
   )
 }
