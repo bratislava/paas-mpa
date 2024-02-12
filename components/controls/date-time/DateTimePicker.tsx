@@ -43,7 +43,7 @@ const DateTimePicker = ({ onConfirm, onClose, open }: Props) => {
         // maximumDate={} // TODO set maximum time
         date={date}
         onDateChange={handleDateChanged}
-        androidVariant="iosClone"
+        androidVariant="nativeAndroid"
         locale={locale}
         is24hourSource="locale"
         modal

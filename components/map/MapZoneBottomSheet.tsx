@@ -14,7 +14,6 @@ import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 
@@ -28,9 +27,7 @@ type Props = {
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter, isZoomedOut, address } = props
 
-  const localRef = useRef<BottomSheet>(null)
   const inputRef = useRef<RNTextInput>(null)
-  const refSetter = useMultipleRefsSetter(ref, localRef)
 
   const t = useTranslation('ZoneBottomSheet')
 
@@ -44,7 +41,8 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     <>
       <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
       <BottomSheet
-        ref={refSetter}
+        key="mapZoneBottomSheet"
+        ref={ref}
         keyboardBehavior="interactive"
         handleComponent={BottomSheetHandleWithShadow}
         animatedPosition={animatedPosition}

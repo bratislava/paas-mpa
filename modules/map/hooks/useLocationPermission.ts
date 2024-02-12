@@ -1,6 +1,8 @@
 import * as Location from 'expo-location'
 import { useCallback, useEffect, useState } from 'react'
 
+import { useAppFocusEffect } from '@/hooks/useAppFocusEffect'
+
 type Options =
   | {
       autoAsk?: boolean
@@ -22,12 +24,25 @@ export const useLocationPermission = ({ autoAsk }: Options = {}) => {
     checkPermission()
   }, [checkPermission])
 
+  useAppFocusEffect(checkPermission)
+
   const getPermission = useCallback(async () => {
     if (!doNotAskAgain) {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-
       setDoNotAskAgain(true)
-      setPermissionStatus(status)
+
+      const { status: currentStatus, canAskAgain } = await Location.getForegroundPermissionsAsync()
+
+      if (
+        currentStatus === Location.PermissionStatus.UNDETERMINED ||
+        (currentStatus === Location.PermissionStatus.DENIED && canAskAgain)
+      ) {
+        const { status } = await Location.requestForegroundPermissionsAsync()
+        setPermissionStatus(status)
+
+        return
+      }
+
+      setPermissionStatus(currentStatus)
     }
   }, [doNotAskAgain])
 
