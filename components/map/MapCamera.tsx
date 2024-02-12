@@ -30,7 +30,7 @@ const MapCamera = forwardRef<Camera, Props>(({ cameraZoom, flyToCenter, setFlyTo
   useEffect(() => {
     const isWithinCity = isWithinCityBounds(location)
     if (isWithinCity && location) {
-      setFlyToCenter([location.coords.longitude, location.coords.latitude])
+      setLocalFlyToCenter([location.coords.longitude, location.coords.latitude])
     }
   }, [setFlyToCenter, location])
 
