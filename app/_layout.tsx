@@ -16,8 +16,9 @@ import { PortalProvider } from '@gorhom/portal'
 /* eslint-enable babel/camelcase */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
+import * as Updates from 'expo-updates'
 import { NativeWindStyleSheet } from 'nativewind'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -42,6 +43,20 @@ if (UIManager.setLayoutAnimationEnabledExperimental)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
+const onFetchUpdateAsync = async () => {
+  try {
+    const update = await Updates.checkForUpdateAsync()
+
+    if (update.isAvailable) {
+      await Updates.fetchUpdateAsync()
+      await Updates.reloadAsync()
+    }
+  } catch (error) {
+    // You can also add an alert() to see the error message in case of an error when fetching updates.
+    alert(`Error fetching latest Expo update: ${error}`)
+  }
+}
+
 const RootLayout = () => {
   // temp - replace with font we actually want to use
   const [fontsLoaded] = useFonts({
@@ -52,6 +67,10 @@ const RootLayout = () => {
     Inter_700Bold,
     /* eslint-enable unicorn/prefer-module,global-require */
   })
+
+  useEffect(() => {
+    onFetchUpdateAsync()
+  }, [])
 
   const queryClient = new QueryClient({
     // TODO, set to 1 to prevent confusion during development, may be set to default for production
