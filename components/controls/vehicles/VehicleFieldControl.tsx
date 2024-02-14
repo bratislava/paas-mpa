@@ -1,5 +1,3 @@
-import React from 'react'
-
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
@@ -11,15 +9,16 @@ import { PurchaseContextVehicle } from '@/state/PurchaseStoreProvider/PurchaseSt
 
 type Props = {
   vehicle: VehicleDto | PurchaseContextVehicle | null | undefined
+  hasError?: boolean
 }
 
-const VehicleFieldControl = ({ vehicle }: Props) => {
+const VehicleFieldControl = ({ vehicle, hasError }: Props) => {
   const t = useTranslation('VehiclesScreen')
 
   return vehicle ? (
     <VehicleRow vehicle={vehicle} showControlChevron />
   ) : (
-    <Panel>
+    <Panel className={hasError ? 'border border-negative bg-negative-light' : undefined}>
       <FlexRow>
         <Typography variant="default-bold">{t('addVehicle')}</Typography>
         <Icon name="add" />
