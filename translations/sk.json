@@ -97,7 +97,8 @@
       "TicketAlreadyExists": "Parkovací lístok pre úsek {{udr}} a evidenčné číslo vozidla {{ecv}} už existuje.",
       "BadDateFormat": "Formát dátumu je nesprávny.",
       "TicketAlreadyShortened": "Parkovací lístok bol už raz predčasne ukončený.",
-      "BadRequest": "Nesprávna požiadavka."
+      "BadRequest": "Nesprávna požiadavka.",
+      "LicencePlate": "Prosím vložte alebo vyberte vozidlo"
     }
   },
   "BoughtTicket": {

@@ -96,7 +96,8 @@
       "TicketAlreadyExists": "A parking ticket for the section {{udr}} and the vehicle registration number {{ecv}} already exists.",
       "BadDateFormat": "The date format is incorrect.",
       "TicketAlreadyShortened": "The parking ticket has already been terminated prematurely once.",
-      "BadRequest": "Bad request."
+      "BadRequest": "Bad request.",
+      "LicencePlate": "Please insert or choose your vehicle"
     }
   },
   "BoughtTicket": {
