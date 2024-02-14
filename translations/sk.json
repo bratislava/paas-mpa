@@ -98,7 +98,7 @@
       "BadDateFormat": "Formát dátumu je nesprávny.",
       "TicketAlreadyShortened": "Parkovací lístok bol už raz predčasne ukončený.",
       "BadRequest": "Nesprávna požiadavka.",
-      "LicencePlate": "Prosím vložte alebo vyberte vozidlo"
+      "LicencePlate": "Prosím vložte alebo vyberte vozidlo."
     }
   },
   "BoughtTicket": {

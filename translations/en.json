@@ -97,7 +97,7 @@
       "BadDateFormat": "The date format is incorrect.",
       "TicketAlreadyShortened": "The parking ticket has already been terminated prematurely once.",
       "BadRequest": "Bad request.",
-      "LicencePlate": "Please insert or choose your vehicle"
+      "LicencePlate": "Please insert or choose your vehicle."
     }
   },
   "BoughtTicket": {
