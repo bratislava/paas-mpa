@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { Link, useLocalSearchParams, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
+import { ActivityIndicator } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -39,6 +40,8 @@ const TicketPurchasePage = () => {
   const isProlongation = !!data?.lastProlongationTicketId
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout | undefined
+
     if (data?.paymentStatus === 'SUCCESS') {
       if (data.lastProlongationTicketId) {
         queryClient.invalidateQueries({ queryKey: ['Tickets'] })
@@ -57,7 +60,13 @@ const TicketPurchasePage = () => {
         queryClient.removeQueries({ queryKey: ['TicketPrice'] })
       }
     } else if (data?.paymentStatus === 'PENDING') {
-      refetch()
+      timeout = setTimeout(() => {
+        refetch()
+      }, 2000)
+    }
+
+    return () => {
+      if (timeout) clearTimeout(timeout)
     }
   }, [data, onPurchaseStoreUpdate, queryClient, refetch])
 
@@ -76,14 +85,18 @@ const TicketPurchasePage = () => {
   return (
     <ScreenViewCentered
       actionButton={
-        <Link asChild href="/">
-          <ContinueButton>{t('backToMap')}</ContinueButton>
-        </Link>
+        data?.paymentStatus === 'PENDING' ? undefined : (
+          <Link asChild href="/">
+            <ContinueButton>{t('backToMap')}</ContinueButton>
+          </Link>
+        )
       }
       options={{ headerShown: false }}
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
-        <ContentWithAvatar title="Ticket is being processed" text={ticketId} />
+        <ContentWithAvatar title={t('pendingTitle')} text={t('pendingText')}>
+          <ActivityIndicator size="large" />
+        </ContentWithAvatar>
       ) : isError || data.paymentStatus === 'FAIL' ? (
         <ContentWithAvatar
           variant="error"

@@ -64,6 +64,8 @@
     "backToMap": "Back to map",
     "noPaymentInitiated": "No payment initiated. Please try again",
     "invalidPaymentLink": "Invalid payment url. Please try again",
+    "pendingTitle": "Payment is being processed",
+    "pendingText": "Please wait a moment. We are processing your payment.",
     "payment": {
       "successful": "Payment successful",
       "successfulText": "Your parking ticket has been paid.",

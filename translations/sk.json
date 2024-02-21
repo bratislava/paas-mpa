@@ -64,6 +64,8 @@
     "backToMap": "Späť na mapu",
     "noPaymentInitiated": "Platba nebola vytvorená. Vyskúšajte to prosím znova.",
     "invalidPaymentLink": "Neplatný odkaz na platobnú bránu. Vyskúšajte to prosím znova",
+    "pendingTitle": "Platba sa spracováva",
+    "pendingText": "Počkajte prosím, kým sa platba spracuje.",
     "payment": {
       "successful": "Úspešná platba",
       "successfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",
