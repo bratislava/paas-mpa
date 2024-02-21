@@ -75,7 +75,6 @@ const RootLayout = () => {
             <SafeAreaProvider>
               <GestureHandlerRootView className="flex-1">
                 <PortalProvider>
-                  <OmnipresentComponent />
                   <Stack
                     screenOptions={{
                       headerBackTitleVisible: false,
@@ -86,6 +85,8 @@ const RootLayout = () => {
                       headerTintColor: colors.dark.DEFAULT,
                     }}
                   />
+
+                  <OmnipresentComponent />
                 </PortalProvider>
               </GestureHandlerRootView>
             </SafeAreaProvider>
