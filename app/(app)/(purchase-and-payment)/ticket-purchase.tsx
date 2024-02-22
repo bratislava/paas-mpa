@@ -60,6 +60,7 @@ const TicketPurchasePage = () => {
         queryClient.removeQueries({ queryKey: ['TicketPrice'] })
       }
     } else if (data?.paymentStatus === 'PENDING') {
+      // Without this timeout, the refetch would occur too often
       timeout = setTimeout(() => {
         refetch()
       }, 2000)
