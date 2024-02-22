@@ -38,6 +38,8 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
+  const [hasLicencePlateError, setHasLicencePlateError] = useState(false)
+
   const { udr, vehicle, duration, npk, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
@@ -83,6 +85,12 @@ const PurchaseScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
 
+  useEffect(() => {
+    if (licencePlate && hasLicencePlateError) {
+      setHasLicencePlateError(false)
+    }
+  }, [licencePlate, hasLicencePlateError])
+
   const priceQuery = useQueryWithFocusRefetch(
     ticketPriceOptions(priceRequestBody, {
       udr,
@@ -102,6 +110,12 @@ const PurchaseScreen = () => {
   })
 
   const handlePressPay = () => {
+    if (!licencePlate) {
+      setHasLicencePlateError(true)
+
+      return
+    }
+
     initPaymentMutation.mutate(
       createPriceRequestBody({
         udr,
@@ -129,6 +143,7 @@ const PurchaseScreen = () => {
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
+                    hasError={hasLicencePlateError}
                     vehicle={vehicle?.isOneTimeUse ? vehicle : getVehicle(vehicle?.id)}
                   />
                 </PressableStyled>
@@ -168,6 +183,7 @@ const PurchaseScreen = () => {
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
         isLoading={initPaymentMutation.isPending || isDebouncingDuration}
+        hasLicencePlateError={hasLicencePlateError}
       />
 
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
