@@ -521,5 +521,10 @@
     "title": "Server is not available",
     "text": "Please try again later.",
     "primaryActionLabel": "Try again"
+  },
+  "StoreVersionControl": {
+    "title": "Nová verzia aplikácie",
+    "text": "Aktualizujte aplikáciu na najnovšiu verziu.",
+    "primaryActionLabel": "Aktualizovať"
   }
 }

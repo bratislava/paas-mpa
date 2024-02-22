@@ -525,5 +525,10 @@
     "title": "Server is not available",
     "text": "Please try again later.",
     "primaryActionLabel": "Try again"
+  },
+  "StoreVersionControl": {
+    "title": "New version available",
+    "text": "Please update the app to the latest version.",
+    "primaryActionLabel": "Update"
   }
 }
