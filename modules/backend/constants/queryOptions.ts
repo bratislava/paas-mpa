@@ -192,3 +192,10 @@ export const devicesOptions = (skip?: boolean) =>
     select: (res) => res.data,
     enabled: !skip,
   })
+
+export const mobileAppVersionOptions = () =>
+  queryOptions({
+    queryKey: ['MobileVersion'],
+    queryFn: () => clientApi.systemControllerGetMobileAppVersion(),
+    select: (res) => res.data,
+  })

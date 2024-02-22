@@ -18,7 +18,8 @@
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
-      }
+      },
+      "channel": "development-simulator"
     },
     "development": {
       "developmentClient": true,
@@ -31,10 +32,12 @@
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
-      }
+      },
+      "channel": "development"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "preview"
     },
     "staging": {
       "autoIncrement": true,
@@ -46,7 +49,8 @@
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
-      }
+      },
+      "channel": "staging"
     },
     "production": {
       "autoIncrement": true,
@@ -58,7 +62,8 @@
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
         "EXPO_PUBLIC_DEPLOYMENT": "production"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {
