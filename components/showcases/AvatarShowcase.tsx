@@ -1,4 +1,3 @@
-import React from 'react'
 import { View } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'

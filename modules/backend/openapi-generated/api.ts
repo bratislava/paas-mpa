@@ -268,12 +268,6 @@ export interface GetTicketPriceResponseDto {
    */
   priceWithoutDiscount: number
   /**
-   * Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof GetTicketPriceResponseDto
-   */
-  creditBpkUsed: string
-  /**
    * Credits used in case of bonus parking in seconds
    * @type {number}
    * @memberof GetTicketPriceResponseDto
@@ -285,12 +279,6 @@ export interface GetTicketPriceResponseDto {
    * @memberof GetTicketPriceResponseDto
    */
   creditBpkRemaining: number
-  /**
-   * NPK - Bonus minutes used (PT means \'Period of Time\'. The time format is standardized according to ISO 8601. For example PT1H30M15S - 1 hour 30 minutes 15 seconds.)
-   * @type {string}
-   * @memberof GetTicketPriceResponseDto
-   */
-  creditNpkUsed: string
   /**
    * Credits used in case of bonus parking in seconds
    * @type {number}
@@ -408,6 +396,18 @@ export interface InitiatePaymentRequestDto {
    * @memberof InitiatePaymentRequestDto
    */
   ticket: GetTicketPriceTicketInfoRequestDto
+  /**
+   * Latitude of the parking pin from the application
+   * @type {number}
+   * @memberof InitiatePaymentRequestDto
+   */
+  latitude?: number
+  /**
+   * Longitude of the parking pin from the application
+   * @type {number}
+   * @memberof InitiatePaymentRequestDto
+   */
+  longitude?: number
 }
 /**
  *
@@ -427,6 +427,19 @@ export interface InitiateProlongationRequestDto {
    * @memberof InitiateProlongationRequestDto
    */
   ticketId: number
+}
+/**
+ *
+ * @export
+ * @interface MobileAppVersionUpdateDto
+ */
+export interface MobileAppVersionUpdateDto {
+  /**
+   * Really short description of the update
+   * @type {string}
+   * @memberof MobileAppVersionUpdateDto
+   */
+  description?: string
 }
 /**
  *
@@ -687,6 +700,7 @@ export const PaymentStatus = {
   Success: 'SUCCESS',
   Pending: 'PENDING',
   Fail: 'FAIL',
+  Error: 'ERROR',
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
@@ -2597,6 +2611,40 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
   return {
     /**
      *
+     * @summary Get mobile app version
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    systemControllerGetMobileAppVersion: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/system/version`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Send feedback
      * @param {FeedbackDto} feedbackDto
      * @param {*} [options] Override http request option.
@@ -2608,7 +2656,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
     ): Promise<RequestArgs> => {
       // verify required parameter 'feedbackDto' is not null or undefined
       assertParamExists('systemControllerSendFeedback', 'feedbackDto', feedbackDto)
-      const localVarPath = `/system`
+      const localVarPath = `/system/feedback`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
       let baseOptions
@@ -2644,6 +2692,59 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
         options: localVarRequestOptions,
       }
     },
+    /**
+     *
+     * @summary Update mobile app version
+     * @param {MobileAppVersionUpdateDto} mobileAppVersionUpdateDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    systemControllerUpdateMobileAppVersion: async (
+      mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'mobileAppVersionUpdateDto' is not null or undefined
+      assertParamExists(
+        'systemControllerUpdateMobileAppVersion',
+        'mobileAppVersionUpdateDto',
+        mobileAppVersionUpdateDto,
+      )
+      const localVarPath = `/system/version`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        mobileAppVersionUpdateDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
   }
 }
 
@@ -2654,6 +2755,20 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
 export const SystemApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = SystemApiAxiosParamCreator(configuration)
   return {
+    /**
+     *
+     * @summary Get mobile app version
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async systemControllerGetMobileAppVersion(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerGetMobileAppVersion(
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
     /**
      *
      * @summary Send feedback
@@ -2669,6 +2784,24 @@ export const SystemApiFp = function (configuration?: Configuration) {
         feedbackDto,
         options,
       )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Update mobile app version
+     * @param {MobileAppVersionUpdateDto} mobileAppVersionUpdateDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async systemControllerUpdateMobileAppVersion(
+      mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.systemControllerUpdateMobileAppVersion(
+          mobileAppVersionUpdateDto,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
   }
@@ -2687,6 +2820,17 @@ export const SystemApiFactory = function (
   return {
     /**
      *
+     * @summary Get mobile app version
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    systemControllerGetMobileAppVersion(options?: AxiosRequestConfig): AxiosPromise<number> {
+      return localVarFp
+        .systemControllerGetMobileAppVersion(options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Send feedback
      * @param {FeedbackDto} feedbackDto
      * @param {*} [options] Override http request option.
@@ -2698,6 +2842,21 @@ export const SystemApiFactory = function (
     ): AxiosPromise<boolean> {
       return localVarFp
         .systemControllerSendFeedback(feedbackDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Update mobile app version
+     * @param {MobileAppVersionUpdateDto} mobileAppVersionUpdateDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    systemControllerUpdateMobileAppVersion(
+      mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<number> {
+      return localVarFp
+        .systemControllerUpdateMobileAppVersion(mobileAppVersionUpdateDto, options)
         .then((request) => request(axios, basePath))
     },
   }
@@ -2712,6 +2871,19 @@ export const SystemApiFactory = function (
 export class SystemApi extends BaseAPI {
   /**
    *
+   * @summary Get mobile app version
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SystemApi
+   */
+  public systemControllerGetMobileAppVersion(options?: AxiosRequestConfig) {
+    return SystemApiFp(this.configuration)
+      .systemControllerGetMobileAppVersion(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Send feedback
    * @param {FeedbackDto} feedbackDto
    * @param {*} [options] Override http request option.
@@ -2723,6 +2895,23 @@ export class SystemApi extends BaseAPI {
       .systemControllerSendFeedback(feedbackDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
+
+  /**
+   *
+   * @summary Update mobile app version
+   * @param {MobileAppVersionUpdateDto} mobileAppVersionUpdateDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SystemApi
+   */
+  public systemControllerUpdateMobileAppVersion(
+    mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return SystemApiFp(this.configuration)
+      .systemControllerUpdateMobileAppVersion(mobileAppVersionUpdateDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
 }
 
 /**
@@ -2731,6 +2920,51 @@ export class SystemApi extends BaseAPI {
  */
 export const TicketsApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
+    /**
+     *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerCapturePayment: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerCapturePayment', 'id', id)
+      const localVarPath = `/tickets/capture-payment/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
     /**
      *
      * @summary Get URL to ticket receipt
@@ -3416,6 +3650,23 @@ export const TicketsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerCapturePayment(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerCapturePayment(
+        id,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -3686,6 +3937,18 @@ export const TicketsApiFactory = function (
   return {
     /**
      *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerCapturePayment(id: number, options?: AxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .ticketsControllerCapturePayment(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -3925,6 +4188,20 @@ export const TicketsApiFactory = function (
  * @extends {BaseAPI}
  */
 export class TicketsApi extends BaseAPI {
+  /**
+   *
+   * @summary Admin endpoint: Capture payment
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerCapturePayment(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerCapturePayment(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
   /**
    *
    * @summary Get URL to ticket receipt

@@ -1,5 +1,5 @@
 import { AxiosResponse, isAxiosError } from 'axios'
-import { useEffect } from 'react'
+import { Dispatch, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
@@ -8,7 +8,7 @@ import { axiosInstance } from '@/modules/backend/axios-instance'
 
 // https://dev.to/arianhamdi/react-hooks-in-axios-interceptors-3e1h
 
-export const useAxiosResponseInterceptors = () => {
+export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<boolean>) => {
   const snackbar = useSnackbar()
   const t = useLocalTranslation('Errors')
   const { i18n } = useTranslation()
@@ -16,7 +16,10 @@ export const useAxiosResponseInterceptors = () => {
   useEffect(() => {
     const errorInterceptor = (error: unknown) => {
       let snackbarMessage = null
-      if (isAxiosError(error)) {
+
+      if (isAxiosError(error) && error.code === 'ERR_NETWORK') {
+        setServerConnectionError(true)
+      } else if (isAxiosError(error)) {
         const { status, data } = error.response ?? {}
         const { errorName, message }: { errorName?: string; message?: string } = data
 
@@ -59,5 +62,5 @@ export const useAxiosResponseInterceptors = () => {
     )
 
     return () => axiosInstance.interceptors.response.eject(interceptor)
-  }, [i18n, snackbar, t])
+  }, [i18n, snackbar, t, setServerConnectionError])
 }
