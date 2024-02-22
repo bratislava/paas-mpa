@@ -51,10 +51,22 @@ module.exports = {
           locationWhenInUsePermission: 'Show current location on map.',
         },
       ],
+      [
+        'expo-updates',
+        {
+          username: 'bratislava',
+        },
+      ],
       ['./plugins/firebase.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
     ],
     owner: 'bratislava',
+    updates: {
+      url: 'https://u.expo.dev/304d6880-d62e-46fb-b420-f95a623c571e',
+    },
+    runtimeVersion: {
+      policy: 'appVersion',
+    },
   },
 }
