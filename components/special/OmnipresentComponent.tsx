@@ -1,5 +1,4 @@
-import AxiosConnection from '@/components/special/AxiosConnection'
-import NetworkConnection from '@/components/special/NetworkConnection'
+import NoConnectionModal from '@/components/special/NoConnectionModal'
 import StoreVersionControl from '@/components/special/StoreVersionControl'
 import { usePrefetchOnAppStart } from '@/modules/backend/hooks/usePrefetchOnAppStart'
 
@@ -9,8 +8,7 @@ const OmnipresentComponent = () => {
 
   return (
     <>
-      <AxiosConnection />
-      <NetworkConnection />
+      <NoConnectionModal />
       <StoreVersionControl />
     </>
   )

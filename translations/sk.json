@@ -514,15 +514,16 @@
   "MapScreen": {
     "compass": "Kompas"
   },
-  "NoNetworkConnection": {
-    "title": "Žiadne pripojenie k internetu",
-    "text": "Skontrolujte pripojenie k internetu a skúste to znova.",
-    "primaryActionLabel": "Skúsiť znova"
-  },
-  "AxiosConnection": {
-    "title": "Server is not available",
-    "text": "Please try again later.",
-    "primaryActionLabel": "Try again"
+  "NoConnection": {
+    "primaryActionLabel": "Skúsiť znova",
+    "server": {
+      "title": "Server nie je dostupný",
+      "text": "Prosím skúste neskôr."
+    },
+    "network": {
+      "title": "Žiadne pripojenie k internetu",
+      "text": "Skontrolujte pripojenie k internetu a skúste to znova."
+    }
   },
   "StoreVersionControl": {
     "title": "Nová verzia aplikácie",
