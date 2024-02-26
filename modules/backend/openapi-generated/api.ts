@@ -435,11 +435,11 @@ export interface InitiateProlongationRequestDto {
  */
 export interface MobileAppVersionUpdateDto {
   /**
-   * Really short description of the update
+   * Version required from the user
    * @type {string}
    * @memberof MobileAppVersionUpdateDto
    */
-  description?: string
+  version: string
 }
 /**
  *
@@ -2763,7 +2763,7 @@ export const SystemApiFp = function (configuration?: Configuration) {
      */
     async systemControllerGetMobileAppVersion(
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerGetMobileAppVersion(
         options,
       )
@@ -2796,7 +2796,7 @@ export const SystemApiFp = function (configuration?: Configuration) {
     async systemControllerUpdateMobileAppVersion(
       mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<number>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.systemControllerUpdateMobileAppVersion(
           mobileAppVersionUpdateDto,
@@ -2824,7 +2824,7 @@ export const SystemApiFactory = function (
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    systemControllerGetMobileAppVersion(options?: AxiosRequestConfig): AxiosPromise<number> {
+    systemControllerGetMobileAppVersion(options?: AxiosRequestConfig): AxiosPromise<string> {
       return localVarFp
         .systemControllerGetMobileAppVersion(options)
         .then((request) => request(axios, basePath))
@@ -2854,7 +2854,7 @@ export const SystemApiFactory = function (
     systemControllerUpdateMobileAppVersion(
       mobileAppVersionUpdateDto: MobileAppVersionUpdateDto,
       options?: AxiosRequestConfig,
-    ): AxiosPromise<number> {
+    ): AxiosPromise<string> {
       return localVarFp
         .systemControllerUpdateMobileAppVersion(mobileAppVersionUpdateDto, options)
         .then((request) => request(axios, basePath))

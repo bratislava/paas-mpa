@@ -199,3 +199,12 @@ export const mobileAppVersionOptions = () =>
     queryFn: () => clientApi.systemControllerGetMobileAppVersion(),
     select: (res) => res.data,
   })
+
+export const verifiedEmailsLengthOptions = ({ enabled }: { enabled?: boolean }) => {
+  return queryOptions({
+    queryKey: ['VerifiedEmailsLength'],
+    enabled,
+    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1),
+    select: (res) => res.data,
+  })
+}
