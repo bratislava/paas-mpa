@@ -28,6 +28,8 @@ const NoConnectionModal = () => {
   })
 
   useEffect(() => {
+    healthCheck.mutate()
+
     const unsubscribe = NetInfo.addEventListener((networkState) => {
       if (!networkState.isConnected) {
         setIsConnected(false)
@@ -37,10 +39,6 @@ const NoConnectionModal = () => {
     return () => {
       unsubscribe()
     }
-  }, [])
-
-  useEffect(() => {
-    healthCheck.mutate()
     // needs to be done only once (the first time the component is mounted)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
