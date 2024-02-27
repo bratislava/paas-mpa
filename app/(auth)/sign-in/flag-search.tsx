@@ -90,7 +90,7 @@ const CountrySearchScreen = () => {
                     returnKeyType="done"
                   />
                 </View>
-                <Button variant="plain-dark" onPress={handleCancel} onPressIn={handleInputBlur}>
+                <Button variant="plain-dark" onPress={handleCancel}>
                   {t('cancel')}
                 </Button>
               </FlexRow>
