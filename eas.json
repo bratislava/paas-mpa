@@ -25,6 +25,8 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
+        "ANDROID_SDK_ROOT": "/Users/pavelfilo/Library/Android/sdk",
+        "ANDROID_HOME": "/Users/pavelfilo/Library/Android/sdk",
         "EXPO_PUBLIC_MAPBOX_KEY": "pk.eyJ1IjoiaW5vdmFjaWVicmF0aXNsYXZhIiwiYSI6ImNrd25icnBvZTJpZDAyb252N2NlcjZvYTEifQ.RYAkWitxV2HyomaXVe4VnA",
         "EXPO_PUBLIC_COGNITO_USER_POOL_ID": "eu-central-1_pXpE6zBM0",
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",
@@ -42,6 +44,8 @@
     "staging": {
       "autoIncrement": true,
       "env": {
+        // "ANDROID_SDK_ROOT": "/Users/pavelfilo/Library/Android/sdk",
+        // "ANDROID_HOME": "/Users/pavelfilo/Library/Android/sdk",
         "EXPO_PUBLIC_MAPBOX_KEY": "pk.eyJ1IjoiaW5vdmFjaWVicmF0aXNsYXZhIiwiYSI6ImNrd25icnBvZTJpZDAyb252N2NlcjZvYTEifQ.RYAkWitxV2HyomaXVe4VnA",
         "EXPO_PUBLIC_COGNITO_USER_POOL_ID": "eu-central-1_pXpE6zBM0",
         "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",

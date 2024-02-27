@@ -41,7 +41,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
     if (route.key === 'notifications') {
       jumpTo('location')
     } else {
-      router.replace('/')
+      router.navigate('/')
     }
   }, [route.key, jumpTo])
 

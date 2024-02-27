@@ -37,11 +37,18 @@ module.exports = {
       },
     },
     plugins: [
-      '@react-native-firebase/app',
+      [
+        'expo-build-properties',
+        {
+          ios: {
+            useFrameworks: 'static',
+          },
+        },
+      ],
       [
         '@rnmapbox/maps',
         {
-          RNMapboxMapsImpl: 'mapbox',
+          RNMapboxMapsVersion: '11.0.0',
           RNMapboxMapsDownloadToken: process.env.MAPBOX_SECRET_TOKEN,
         },
       ],
@@ -51,13 +58,15 @@ module.exports = {
           locationWhenInUsePermission: 'Show current location on map.',
         },
       ],
-      [
-        'expo-updates',
-        {
-          username: 'bratislava',
-        },
-      ],
-      ['./plugins/firebase.plugin.cjs', 'custom'],
+      // [
+      //   'expo-updates',
+      //   {
+      //     username: 'bratislava',
+      //   },
+      // ],
+      '@react-native-firebase/app',
+      '@react-native-firebase/messaging',
+      // ['./plugins/firebase.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
     ],

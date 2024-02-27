@@ -16,7 +16,7 @@ import { PortalProvider } from '@gorhom/portal'
 /* eslint-enable babel/camelcase */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
-import * as Updates from 'expo-updates'
+// import * as Updates from 'expo-updates'
 import { NativeWindStyleSheet } from 'nativewind'
 import { Suspense, useEffect } from 'react'
 import { NativeModules } from 'react-native'
@@ -43,18 +43,18 @@ if (UIManager.setLayoutAnimationEnabledExperimental)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const onFetchUpdateAsync = async () => {
-  try {
-    const update = await Updates.checkForUpdateAsync()
+// const onFetchUpdateAsync = async () => {
+//   try {
+//     const update = await Updates.checkForUpdateAsync()
 
-    if (update.isAvailable) {
-      await Updates.fetchUpdateAsync()
-      await Updates.reloadAsync()
-    }
-  } catch (error) {
-    console.log('Error fetching update', error)
-  }
-}
+//     if (update.isAvailable) {
+//       await Updates.fetchUpdateAsync()
+//       await Updates.reloadAsync()
+//     }
+//   } catch (error) {
+//     console.log('Error fetching update', error)
+//   }
+// }
 
 const RootLayout = () => {
   // temp - replace with font we actually want to use
@@ -68,7 +68,7 @@ const RootLayout = () => {
   })
 
   useEffect(() => {
-    onFetchUpdateAsync()
+    // onFetchUpdateAsync()
   }, [])
 
   const queryClient = new QueryClient({
