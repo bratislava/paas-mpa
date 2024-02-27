@@ -6,6 +6,8 @@ import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { useTranslation as useLocalTranslation } from '@/hooks/useTranslation'
 import { axiosInstance } from '@/modules/backend/axios-instance'
 
+const NETWORK_ERROR_CODES = new Set(['ERR_BAD_RESPONSE', 'ERR_NETWORK'])
+
 // https://dev.to/arianhamdi/react-hooks-in-axios-interceptors-3e1h
 
 export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<boolean>) => {
@@ -17,7 +19,7 @@ export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<
     const errorInterceptor = (error: unknown) => {
       let snackbarMessage = null
 
-      if (isAxiosError(error) && error.code === 'ERR_NETWORK') {
+      if (isAxiosError(error) && NETWORK_ERROR_CODES.has(error.code || '')) {
         setServerConnectionError(true)
       } else if (isAxiosError(error)) {
         const { status, data } = error.response ?? {}
