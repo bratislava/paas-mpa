@@ -204,7 +204,7 @@ export const verifiedEmailsLengthOptions = ({ enabled }: { enabled?: boolean }) 
   return queryOptions({
     queryKey: ['VerifiedEmailsLength'],
     enabled,
-    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(1),
+    queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(),
     select: (res) => res.data,
   })
 }
