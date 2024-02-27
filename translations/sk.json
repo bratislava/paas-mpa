@@ -11,7 +11,8 @@
     "loading": "Načítavam",
     "cancel": "Zrušiť",
     "hide": "Skryť",
-    "goBack": "Späť"
+    "goBack": "Späť",
+    "search": "Hľadať"
   },
   "Typography": {
     "test": "SK preklad"

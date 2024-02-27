@@ -13,6 +13,7 @@ export type TextInputProps = Omit<TextInputNativeProps, 'editable'> & {
   hasError?: boolean
   isDisabled?: boolean
   leftIcon?: ReactNode
+  viewClassName?: string
 }
 
 // TODO associate control with label
@@ -20,7 +21,10 @@ export type TextInputProps = Omit<TextInputNativeProps, 'editable'> & {
 // TODO multiline height on ios, inspiration?: https://stackoverflow.com/questions/35936908/numberoflines-textinput-property-not-working
 
 const TextInput = forwardRef<TextInputNative, TextInputProps>(
-  ({ hasError, isDisabled, leftIcon, multiline, className, pointerEvents, ...rest }, ref) => {
+  (
+    { hasError, isDisabled, leftIcon, multiline, className, viewClassName, pointerEvents, ...rest },
+    ref,
+  ) => {
     const localRef = useRef<TextInputNative>(null)
     const refSetter = useMultipleRefsSetter(localRef, ref)
 
@@ -35,12 +39,16 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
         pointerEvents={pointerEvents}
       >
         <View
-          className={clsx('flex-row items-center rounded border bg-white px-4 py-3 g-3', {
-            'border-divider focus:border-dark': !isDisabled && !hasError,
-            'border-negative': hasError && !isDisabled,
-            'border-divider bg-[#D6D6D6]': isDisabled,
-            'flex-1': multiline,
-          })}
+          className={clsx(
+            'flex-row items-center rounded border bg-white px-4 py-3 g-3',
+            {
+              'border-divider focus:border-dark': !isDisabled && !hasError,
+              'border-negative': hasError && !isDisabled,
+              'border-divider bg-[#D6D6D6]': isDisabled,
+              'flex-1': multiline,
+            },
+            viewClassName,
+          )}
         >
           {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
           {/* TODO lineHeight does not work properly on ios, see issue: https://github.com/facebook/react-native/issues/39145 */}

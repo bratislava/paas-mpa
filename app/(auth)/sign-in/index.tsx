@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { getLocales } from 'expo-localization'
+import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 
+import countries from '@/components/controls/country-select/countries.json'
+import CountryeSelectField from '@/components/controls/country-select/CountrySelectField'
+import { useUsedCountryStorage } from '@/components/controls/country-select/useUsedCountryStorage'
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
+import FlexRow from '@/components/shared/FlexRow'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
@@ -18,6 +23,20 @@ const Page = () => {
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
+  const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
+
+  useEffect(() => {
+    if (selectedCountry) return
+    const locale = getLocales()[0].regionCode
+
+    if (locale) {
+      setSelectedCountry(locale)
+    }
+  }, [selectedCountry, setSelectedCountry])
+
+  const prefixCode =
+    countries.find((country) => country.iso === selectedCountry?.toUpperCase())?.code || '421'
+
   const [loading, setLoading] = useState(false)
   const [errorCode, setErrorCode] = useState('')
   const [phone, setPhone] = useState('')
@@ -28,7 +47,7 @@ const Page = () => {
     }
   }
 
-  const phoneWithoutSpaces = phone.replaceAll(/\s/g, '')
+  const phoneWithoutSpaces = `+${prefixCode}${phone}`.replaceAll(/\s/g, '')
 
   const handleSignIn = async () => {
     try {
@@ -63,18 +82,26 @@ const Page = () => {
           <View className="g-1">
             {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
             {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-            <TextInput
-              value={phone}
-              onChangeText={handleChangeText}
-              keyboardType="phone-pad"
-              autoComplete="tel"
-              hasError={!!errorCode}
-              onFocus={handleInputFocus}
-              autoFocus
-              returnKeyType="done"
-              placeholder="+421…"
-              onSubmitEditing={handleSignIn}
-            />
+            <FlexRow className="g-2.5">
+              <CountryeSelectField selectedCountry={selectedCountry} />
+
+              <View className="flex-1">
+                <TextInput
+                  leftIcon={<Typography>+{prefixCode}</Typography>}
+                  className="w-full"
+                  viewClassName="g-2.5"
+                  value={phone}
+                  onChangeText={handleChangeText}
+                  keyboardType="phone-pad"
+                  autoComplete="tel"
+                  hasError={!!errorCode}
+                  onFocus={handleInputFocus}
+                  autoFocus
+                  returnKeyType="done"
+                  onSubmitEditing={handleSignIn}
+                />
+              </View>
+            </FlexRow>
 
             {errorCode ? (
               <Typography className="text-negative">{t(`errors.${errorCode}`)}</Typography>
