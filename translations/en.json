@@ -518,15 +518,16 @@
   "MapScreen": {
     "compass": "Compass"
   },
-  "NoNetworkConnection": {
-    "title": "No network connection",
-    "text": "Please check your internet connection and try again.",
-    "primaryActionLabel": "Try again"
-  },
-  "AxiosConnection": {
-    "title": "Server is not available",
-    "text": "Please try again later.",
-    "primaryActionLabel": "Try again"
+  "NoConnection": {
+    "primaryActionLabel": "Try again",
+    "server": {
+      "title": "Server is not available",
+      "text": "Please try again later."
+    },
+    "network": {
+      "title": "No network connection",
+      "text": "Please check your internet connection and try again."
+    }
   },
   "StoreVersionControl": {
     "title": "New version available",
