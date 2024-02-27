@@ -21,12 +21,10 @@ const StoreVersionControl = () => {
       environment.deployment === 'production' &&
       appVersionQuery.data &&
       Application.nativeApplicationVersion &&
-      appVersionQuery.data
-        .toString()
-        .localeCompare(Application.nativeApplicationVersion, undefined, {
-          numeric: true,
-          sensitivity: 'base',
-        }) === 1
+      appVersionQuery.data.localeCompare(Application.nativeApplicationVersion, undefined, {
+        numeric: true,
+        sensitivity: 'base',
+      }) === 1
     ) {
       setShowModal(true)
     }
