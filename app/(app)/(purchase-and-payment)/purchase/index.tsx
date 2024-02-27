@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import { useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -22,7 +22,10 @@ import { useFirstPurchaseStorage } from '@/hooks/useFirstPurchaseStorage'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { ticketPriceOptions } from '@/modules/backend/constants/queryOptions'
+import {
+  ticketPriceOptions,
+  verifiedEmailsLengthOptions,
+} from '@/modules/backend/constants/queryOptions'
 import {
   GetTicketPriceRequestDto,
   InitiatePaymentRequestDto,
@@ -53,6 +56,8 @@ const PurchaseScreen = () => {
   const [debouncedDuration] = useDebounce(duration, 400)
   const isDebouncingDuration = duration !== debouncedDuration
 
+  const parkingCardsQuery = useQuery(verifiedEmailsLengthOptions({ enabled: !firstPurchaseOpened }))
+
   const priceRequestBody: GetTicketPriceRequestDto = useMemo(
     () => createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk }),
     [udr, licencePlate, debouncedDuration, npk],
@@ -66,13 +71,15 @@ const PurchaseScreen = () => {
   }
 
   useEffect(() => {
-    if (firstPurchaseOpened) return
+    if (firstPurchaseOpened || !parkingCardsQuery.data) return
 
-    setIsAddCardModalOpen(true)
+    if (parkingCardsQuery.data.verifiedEmails.length === 0) {
+      setIsAddCardModalOpen(true)
+    }
     setFirstPurchaseOpened(true)
     // needs to run only at first render
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [parkingCardsQuery.data])
 
   /** Set licencePlate to defaultVehicle if empty */
   useEffect(() => {
