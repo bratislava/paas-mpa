@@ -1,4 +1,3 @@
-import { getLocales } from 'expo-localization'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 
@@ -27,11 +26,8 @@ const Page = () => {
 
   useEffect(() => {
     if (selectedCountry) return
-    const locale = getLocales()[0].regionCode
 
-    if (locale) {
-      setSelectedCountry(locale)
-    }
+    setSelectedCountry('SK')
   }, [selectedCountry, setSelectedCountry])
 
   const prefixCode =

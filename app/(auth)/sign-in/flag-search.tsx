@@ -58,8 +58,10 @@ const CountrySearchScreen = () => {
           className="border-b border-divider py-4"
         >
           <FlexRow className="items-center g-3">
-            <View className="ml-1 h-6 w-6 items-center justify-center overflow-hidden rounded-full">
-              <CountryFlag isoCode={item.iso} size={24} />
+            <View className="p-1">
+              <View className="h-4 w-4 items-center justify-center overflow-hidden rounded-full">
+                <CountryFlag isoCode={item.iso} size={16} />
+              </View>
             </View>
 
             <FlexRow className="flex-1 justify-start g-3">
