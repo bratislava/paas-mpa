@@ -16,7 +16,8 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Country = {
-  country: string
+  name: string
+  nativeName: string
   iso: string
   code: string
 }
@@ -38,7 +39,8 @@ const CountrySearchScreen = () => {
   const filteredCountries = countries.filter((country) => {
     return (
       country.iso.toLowerCase().includes(searchedCountry.toLowerCase()) ||
-      country.country.toLowerCase().includes(searchedCountry.toLowerCase()) ||
+      country.nativeName.toLowerCase().includes(searchedCountry.toLowerCase()) ||
+      country.name.toLowerCase().includes(searchedCountry.toLowerCase()) ||
       country.code.toLowerCase().includes(searchedCountry.toLowerCase())
     )
   })
@@ -65,7 +67,7 @@ const CountrySearchScreen = () => {
             </View>
 
             <FlexRow className="flex-1 justify-start g-3">
-              <Typography variant="default-bold">{item.country}</Typography>
+              <Typography variant="default-bold">{item.nativeName}</Typography>
               <Typography>+{item.code}</Typography>
             </FlexRow>
           </FlexRow>
