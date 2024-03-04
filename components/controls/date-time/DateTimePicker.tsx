@@ -1,17 +1,18 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { View } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 
-import { useLocale } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
   onConfirm: (date: Date) => void
   onClose: () => void
-  open: boolean
+  initialValue?: Date
 }
 
-const DateTimePicker = ({ onConfirm, onClose, open }: Props) => {
-  const [date, setDate] = useState(new Date())
+const DateTimePicker = ({ onConfirm, onClose, initialValue }: Props) => {
+  const t = useTranslation('DateTimePicker')
+  const [date, setDate] = useState(initialValue || new Date())
   const locale = useLocale()
 
   const handleDateChanged = useCallback((newDate: Date) => {
@@ -30,12 +31,6 @@ const DateTimePicker = ({ onConfirm, onClose, open }: Props) => {
     onClose()
   }, [onClose])
 
-  useEffect(() => {
-    if (open) {
-      setDate(new Date())
-    }
-  }, [open])
-
   return (
     <View>
       <DatePicker
@@ -47,7 +42,10 @@ const DateTimePicker = ({ onConfirm, onClose, open }: Props) => {
         locale={locale}
         is24hourSource="locale"
         modal
-        open={open}
+        open
+        title={t('selectDate')}
+        cancelText={t('cancel')}
+        confirmText={t('confirm')}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />

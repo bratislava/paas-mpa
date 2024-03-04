@@ -185,6 +185,7 @@ const PurchaseScreen = () => {
       </ScreenView>
 
       <PurchaseBottomContent
+        duration={debouncedDuration}
         priceQuery={priceQuery}
         handlePressPay={handlePressPay}
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}

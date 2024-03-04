@@ -101,6 +101,9 @@
       "TicketAlreadyShortened": "The parking ticket has already been terminated prematurely once.",
       "BadRequest": "Bad request.",
       "LicencePlate": "Please insert or choose your vehicle."
+    },
+    "warnings": {
+      "differentEnd": "The parking end differs because minimum parking time of paid ticket is 15 minutes. The new ticket will be valid till {{time}}."
     }
   },
   "BoughtTicket": {
@@ -311,6 +314,9 @@
     "validUntil": "Valid until"
   },
   "DateTimePicker": {
+    "selectDate": "Select date",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
     "today": "Today",
     "tomorrow": "Tomorrow",
     "now": "Now",
