@@ -260,7 +260,6 @@
   },
   "ParkingCards": {
     "title": "Parking cards",
-    "paasEmailsTitle": "Your emails",
     "paasEmailsList": "Choose an email to continue and show cards that are attached",
     "addParkingCards": "Add parking cards",
     "type": {

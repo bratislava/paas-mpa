@@ -257,7 +257,6 @@
   },
   "ParkingCards": {
     "title": "Parkovacie karty",
-    "paasEmailsTitle": "Vaše e-mailové adresy",
     "paasEmailsList": "Vyberte e-mailovú adresu, pre ktorú chcete zobraziť parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
     "type": {
