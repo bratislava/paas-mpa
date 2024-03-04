@@ -103,7 +103,7 @@
       "LicencePlate": "Please insert or choose your vehicle."
     },
     "warnings": {
-      "differentEnd": "The parking end differ because minimum parking time of paid ticket is 15 minutes. The new ticket will be valid till {{time}}."
+      "differentEnd": "The parking end differs because minimum parking time of paid ticket is 15 minutes. The new ticket will be valid till {{time}}."
     }
   },
   "BoughtTicket": {

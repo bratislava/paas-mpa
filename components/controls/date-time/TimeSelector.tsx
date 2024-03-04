@@ -31,8 +31,11 @@ type Props = {
   onValueChange: (value: number) => void
 }
 
-const calculateEndTime = (value: number, timeCalculationBase?: number) => {
-  return new Date((timeCalculationBase || Date.now()) + value * 1000)
+/**
+ * Function to calculate end time from calculation base (or current time if base is not provided) and duration
+ */
+const calculateEndTime = (duration: number, timeCalculationBase?: number) => {
+  return new Date((timeCalculationBase || Date.now()) + duration * 1000)
 }
 
 const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {

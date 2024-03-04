@@ -12,6 +12,7 @@ import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
+import { formatTime } from '@/utils/formatTime'
 
 type Props = {
   priceQuery: UseQueryResult<GetTicketPriceResponseDto, Error>
@@ -75,10 +76,7 @@ const PurchaseBottomContent = ({
           <Panel className="mt-3 bg-warning-light px-5">
             <Typography>
               {t(`warnings.differentEnd`, {
-                time: new Date(priceQuery.data.ticketEnd).toLocaleDateString(locale, {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                }),
+                time: formatTime(new Date(priceQuery.data.ticketEnd), locale),
               })}
             </Typography>
           </Panel>
