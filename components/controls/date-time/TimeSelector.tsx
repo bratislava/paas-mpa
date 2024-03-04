@@ -31,13 +31,17 @@ type Props = {
   onValueChange: (value: number) => void
 }
 
+const calculateEndTime = (value: number, timeCalculationBase?: number) => {
+  return new Date((timeCalculationBase || Date.now()) + value * 1000)
+}
+
 const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   const t = useTranslation('TimeSelector')
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
   const validUntil = useMemo(
-    () => formatDateTime(new Date((timeCalculationBase || Date.now()) + value * 1000), locale),
+    () => formatDateTime(calculateEndTime(value, timeCalculationBase), locale),
     [locale, value, timeCalculationBase],
   )
 
@@ -151,11 +155,13 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
         </PressableStyled>
       </FlexRow>
 
-      <DateTimePicker
-        open={datePickerOpen}
-        onClose={handleDatePickerClose}
-        onConfirm={handleDatePickerConfirm}
-      />
+      {datePickerOpen ? (
+        <DateTimePicker
+          initialValue={calculateEndTime(value, timeCalculationBase)}
+          onClose={handleDatePickerClose}
+          onConfirm={handleDatePickerConfirm}
+        />
+      ) : null}
     </Panel>
   )
 }

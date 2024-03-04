@@ -102,6 +102,9 @@
       "TicketAlreadyShortened": "Parkovací lístok bol už raz predčasne ukončený.",
       "BadRequest": "Nesprávna požiadavka.",
       "LicencePlate": "Prosím vložte alebo vyberte vozidlo."
+    },
+    "warnings": {
+      "differentEnd": "Koniec parkovania sa líši, pretože minimálna doba parkovania plateného lístka je 15 minút. Nový lístok bude platný do {{time}}."
     }
   },
   "BoughtTicket": {
@@ -308,6 +311,9 @@
     "validUntil": "Platnosť do"
   },
   "DateTimePicker": {
+    "selectDate": "Vyberte dátum",
+    "cancel": "Zrušiť",
+    "confirm": "Potvrdiť",
     "today": "Dnes",
     "tomorrow": "Zajtra",
     "now": "Teraz",

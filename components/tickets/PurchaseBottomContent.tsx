@@ -9,7 +9,7 @@ import Button from '@/components/shared/Button'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import PurchaseBottomSheet from '@/components/tickets/PurchaseBottomSheet'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 
@@ -18,6 +18,7 @@ type Props = {
   handlePressPay: () => void
   purchaseButtonContainerHeight: number
   isLoading?: boolean
+  duration?: number
   hasLicencePlateError?: boolean
   setPurchaseButtonContainerHeight: Dispatch<SetStateAction<number>>
 }
@@ -28,6 +29,7 @@ type Props = {
 const PurchaseBottomContent = ({
   handlePressPay,
   isLoading,
+  duration,
   priceQuery,
   setPurchaseButtonContainerHeight,
   purchaseButtonContainerHeight,
@@ -35,8 +37,15 @@ const PurchaseBottomContent = ({
 }: Props) => {
   const insets = useSafeAreaInsets()
   const t = useTranslation('PurchaseScreen')
+  const locale = useLocale()
 
   const { vehicle } = usePurchaseStoreContext()
+
+  const isDifferentEnd =
+    duration &&
+    !priceQuery.isFetching &&
+    priceQuery.data &&
+    new Date(priceQuery.data.ticketEnd) > new Date(Date.now() + duration * 1000)
 
   return (
     <>
@@ -59,6 +68,19 @@ const PurchaseBottomContent = ({
         {hasLicencePlateError ? (
           <Panel className="mt-3 bg-negative-light px-5">
             <Typography>{t(`Errors.LicencePlate`)}</Typography>
+          </Panel>
+        ) : null}
+
+        {isDifferentEnd ? (
+          <Panel className="mt-3 bg-warning-light px-5">
+            <Typography>
+              {t(`warnings.differentEnd`, {
+                time: new Date(priceQuery.data.ticketEnd).toLocaleDateString(locale, {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }),
+              })}
+            </Typography>
           </Panel>
         ) : null}
 
