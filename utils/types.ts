@@ -14,3 +14,21 @@ export type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U :
  *          // Bar is { a: string; b?: string }
  */
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+
+/**
+ * Permission status used with notifications
+ */
+export enum PermissionStatus {
+  /**
+   * User has granted the permission.
+   */
+  GRANTED = 'granted',
+  /**
+   * User hasn't granted or denied the permission yet.
+   */
+  UNDETERMINED = 'undetermined',
+  /**
+   * User has denied the permission.
+   */
+  DENIED = 'denied',
+}
