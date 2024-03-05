@@ -30,7 +30,7 @@ const Page = () => {
 
   if (isPending) {
     return (
-      <ScreenView title={t('paasEmailsTitle')}>
+      <ScreenView title={t('title')}>
         <ScreenContent>
           <SkeletonParkingCard />
         </ScreenContent>
@@ -47,7 +47,7 @@ const Page = () => {
   if (verifiedEmails.length === 0) {
     return (
       <EmptyStateScreen
-        title={t('paasEmailsTitle')}
+        title={t('title')}
         contentTitle={t('noEmailsTitle')}
         text={t('noEmailsText')}
         actionButton={
@@ -63,7 +63,7 @@ const Page = () => {
 
   return (
     <ScreenView
-      title={t('paasEmailsTitle')}
+      title={t('title')}
       options={{
         headerRight: () =>
           verifiedEmails.length > 0 ? (
