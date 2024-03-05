@@ -66,7 +66,25 @@ const Page = () => {
     if (errorCode) {
       setErrorCode('')
     }
-    setPhone(value)
+
+    // Check if user pasted a phone number with country code and replace country code if it differs from the selected one
+    if (value.length - phone.length > 1 && value.startsWith('+')) {
+      let countryCode = prefixCode
+
+      const valuePrefix = value.split(' ')[0]
+      const valuePrefixCode = valuePrefix.replace('+', '')
+
+      if (valuePrefix.startsWith('+') && valuePrefixCode && valuePrefixCode !== prefixCode) {
+        const newCountry = countries.find((country) => country.code === valuePrefixCode)
+
+        if (newCountry) {
+          setSelectedCountry(newCountry.iso)
+          countryCode = newCountry.code
+        }
+      }
+
+      setPhone(value.replace(`+${countryCode}`, ''))
+    } else setPhone(value)
   }
 
   return (
@@ -85,7 +103,7 @@ const Page = () => {
                 <TextInput
                   leftIcon={<Typography>+{prefixCode}</Typography>}
                   className="w-full"
-                  viewClassName="g-2.5"
+                  viewClassName="g-2"
                   value={phone}
                   onChangeText={handleChangeText}
                   keyboardType="phone-pad"
