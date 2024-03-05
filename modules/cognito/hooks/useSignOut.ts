@@ -40,7 +40,7 @@ export const useSignOut = () => {
       await signOut()
       // cleanup the store and redirect to sign in
       onAuthStoreUpdate({ user: null })
-      router.push('/sign-in')
+      router.replace('/sign-in')
     } catch (error) {
       console.log('error signing out', error)
     }
