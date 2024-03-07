@@ -1,8 +1,8 @@
 import { ApplePayIcon, GooglePayIcon } from 'assets/payment-options-icons'
-import { clsx } from 'clsx'
 import { View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   variant: 'visitor-card' | 'payment-card' | 'apple-pay' | 'google-pay'

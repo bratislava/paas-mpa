@@ -1,5 +1,6 @@
-import clsx from 'clsx'
 import { View, ViewProps } from 'react-native'
+
+import { clsx } from '@/utils/clsx'
 
 const ModalBackdrop = ({ className, ...rest }: ViewProps) => {
   return (

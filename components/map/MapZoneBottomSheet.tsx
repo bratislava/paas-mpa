@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import clsx from 'clsx'
 import { router } from 'expo-router'
 import { forwardRef, useCallback, useRef } from 'react'
 import { TextInput as RNTextInput, View } from 'react-native'
@@ -16,6 +15,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   zone: MapUdrZone | null
@@ -26,6 +26,7 @@ type Props = {
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter, isZoomedOut, address } = props
+  console.log('MapZoneBottomSheet')
 
   const inputRef = useRef<RNTextInput>(null)
 

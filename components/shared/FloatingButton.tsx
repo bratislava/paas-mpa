@@ -1,9 +1,9 @@
-import clsx from 'clsx'
 import { forwardRef } from 'react'
 import { Pressable, PressableProps, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 type PressablePropsOmitted = Omit<PressableProps, 'children'>
 

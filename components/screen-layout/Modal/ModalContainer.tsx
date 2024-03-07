@@ -1,7 +1,7 @@
-import clsx from 'clsx'
 import { ModalProps, View, ViewProps } from 'react-native'
 
 import IconButton from '@/components/shared/IconButton'
+import { clsx } from '@/utils/clsx'
 
 type ModalContainerProps = {
   onRequestClose: ModalProps['onRequestClose']

@@ -1,10 +1,10 @@
-import clsx from 'clsx'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { Pressable, PressableProps, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clsx } from '@/utils/clsx'
 
 type PressablePropsOmitted = Omit<PressableProps, 'children'>
 
@@ -22,12 +22,13 @@ export const buttonClassNames = (
   variant: ButtonProps['variant'],
   pressableProps: PressablePropsOmitted,
 ) => {
-  const { disabled } = pressableProps
+  const { disabled, className } = pressableProps
 
   const isPlainStyle = variant === 'plain' || variant === 'plain-dark'
 
   const buttonContainerClassNames = clsx(
     'flex flex-row items-center justify-center g-3 active:opacity-70',
+    className,
     {
       'rounded border p-2.5': !isPlainStyle,
       'border-green bg-green': variant === 'primary',

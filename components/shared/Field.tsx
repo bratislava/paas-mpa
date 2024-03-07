@@ -1,8 +1,8 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 
 import Typography, { TypographyProps } from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 export type FieldProps = {
   label: string

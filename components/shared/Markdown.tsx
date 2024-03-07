@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import { Link } from 'expo-router'
 import { useMemo } from 'react'
 import { Text, View } from 'react-native'
 import MarkdownNative, { hasParents, MarkdownIt, RenderRules } from 'react-native-markdown-display'
 
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 type FontSize = 'default' | 'small'
 

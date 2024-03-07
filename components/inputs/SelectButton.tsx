@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import { forwardRef } from 'react'
 import { PressableProps, View } from 'react-native'
 
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   hasError?: boolean
@@ -25,9 +25,9 @@ const SelectButton = forwardRef<View, Props>(
           })}
         >
           {value ? (
-            <Typography className="flex-1 font-inter-400regular text-16">{value}</Typography>
+            <Typography className="flex-1 font-inter-400regular text-base">{value}</Typography>
           ) : placeholder ? (
-            <Typography className="flex-1 font-inter-400regular text-16 text-placeholder">
+            <Typography className="flex-1 font-inter-400regular text-base text-placeholder">
               {placeholder}
             </Typography>
           ) : null}

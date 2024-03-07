@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
 
@@ -9,6 +8,7 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clsx } from '@/utils/clsx'
 
 /*
  *  Figma:

@@ -1,7 +1,7 @@
-import { clsx } from 'clsx'
 import { View } from 'react-native'
 
 import Icon from '@/components/shared/Icon'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   variant?: 'info' | 'success' | 'warning' | 'error'

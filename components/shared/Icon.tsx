@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons'
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 export type IconName = ComponentProps<typeof MaterialIcons>['name']
 

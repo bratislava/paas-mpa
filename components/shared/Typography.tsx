@@ -1,5 +1,6 @@
-import { clsx } from 'clsx'
 import { Text as TextNative, TextProps } from 'react-native'
+
+import { clsx } from '@/utils/clsx'
 
 export type TypographyProps = TextProps & {
   variant?:
@@ -21,12 +22,12 @@ const Typography = ({ variant = 'default', children, className, ...rest }: Typog
       className={clsx(
         'font-inter-400regular text-dark',
         {
-          'font-inter-700bold text-16': variant === 'button',
+          'font-inter-700bold text-base': variant === 'button',
           'font-belfast-700bold text-h1': variant === 'h1',
           'font-belfast-700bold text-h2': variant === 'h2',
           'font-belfast-700bold text-h3': variant === 'h3',
-          'text-16': variant.startsWith('default'),
-          'text-14': variant.startsWith('small'),
+          'text-base': variant.startsWith('default'),
+          'text-sm': variant.startsWith('small'),
           'font-inter-600semibold': variant.includes('-semibold'),
           'font-inter-700bold': variant.includes('-bold'),
         },

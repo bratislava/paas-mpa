@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { FC } from 'react'
 import { PressableProps } from 'react-native'
 import { SvgProps } from 'react-native-svg'
@@ -6,6 +5,7 @@ import { SvgProps } from 'react-native-svg'
 import CheckBox from '@/components/shared/CheckBox'
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 import PressableStyled from '../shared/PressableStyled'
 

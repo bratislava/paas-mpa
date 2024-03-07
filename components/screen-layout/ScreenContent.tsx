@@ -1,6 +1,7 @@
-import { clsx } from 'clsx'
 import React, { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
+
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   children: ReactNode

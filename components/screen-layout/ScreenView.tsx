@@ -1,9 +1,10 @@
-import { clsx } from 'clsx'
 import { useNavigation } from 'expo-router'
 import { ScreenProps } from 'expo-router/build/useScreens'
 import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { clsx } from '@/utils/clsx'
 
 import StackScreenWithHeader from './StackScreenWithHeader'
 

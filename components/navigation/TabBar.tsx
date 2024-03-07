@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { StyleSheet, View } from 'react-native'
 import {
   NavigationState,
@@ -9,6 +8,7 @@ import {
 
 import Typography from '@/components/shared/Typography'
 import colors from '@/tailwind.config.colors'
+import { clsx } from '@/utils/clsx'
 
 const TabBar = (props: SceneRendererProps & { navigationState: NavigationState<Route> }) => {
   return (

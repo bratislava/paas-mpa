@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 type ContentWithAvatarProps = {
   title: string

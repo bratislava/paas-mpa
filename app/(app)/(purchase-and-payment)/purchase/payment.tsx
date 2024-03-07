@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import * as Linking from 'expo-linking'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
@@ -11,6 +10,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clsx } from '@/utils/clsx'
 
 export type PaymentSearchParams = {
   paymentUrl: string

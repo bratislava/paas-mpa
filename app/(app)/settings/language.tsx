@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, FlatList } from 'react-native'
 import { useMMKVString } from 'react-native-mmkv'
 
 import ActionRow from '@/components/list-rows/ActionRow'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Divider from '@/components/shared/Divider'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
@@ -53,28 +54,28 @@ const Page = () => {
   return (
     <ScreenView title={t('title')}>
       <ScreenContent>
-        <View className="divide-y divide-divider">
-          {languages.map(({ label, value }) => {
-            return (
-              <PressableStyled
-                key={value}
-                disabled={isPending || mutation.isPending}
-                onPress={() => handleLanguageChange(value)}
-              >
-                <ActionRow
-                  endSlot={
-                    language === value ? (
-                      <Icon name="check-circle" />
-                    ) : mutation.isPending ? (
-                      <ActivityIndicator size="small" />
-                    ) : null
-                  }
-                  label={label}
-                />
-              </PressableStyled>
-            )
-          })}
-        </View>
+        <FlatList
+          ItemSeparatorComponent={() => <Divider />}
+          data={languages}
+          renderItem={({ item }) => (
+            <PressableStyled
+              key={item.value}
+              disabled={isPending || mutation.isPending}
+              onPress={() => handleLanguageChange(item.value)}
+            >
+              <ActionRow
+                endSlot={
+                  language === item.value ? (
+                    <Icon name="check-circle" />
+                  ) : mutation.isPending ? (
+                    <ActivityIndicator size="small" />
+                  ) : null
+                }
+                label={item.label}
+              />
+            </PressableStyled>
+          )}
+        />
       </ScreenContent>
     </ScreenView>
   )

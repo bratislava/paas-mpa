@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { PermissionStatus } from 'expo-modules-core'
 import { router, Stack } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -12,6 +11,7 @@ import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
+import { clsx } from '@/utils/clsx'
 
 type RouteKeys = 'notifications' | 'location'
 // key is nested inside router, because this is how `renderScene` provides it

@@ -1,3 +1,4 @@
+import { Portal } from '@gorhom/portal'
 import {
   Camera,
   FillLayer,
@@ -21,6 +22,7 @@ import {
 } from 'react'
 import { View } from 'react-native'
 
+import CompassButton from '@/components/map/CompassButton'
 import MapCamera from '@/components/map/MapCamera'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
@@ -44,7 +46,6 @@ type Props = {
   filters: MapFilters
   processedData: ProcessedMapData
   onMapPinVisibilityChange?: (isShown: boolean) => void
-  onStateChange?: (mapState: MapState) => void
   onCenterChange?: (center: Position) => void
 }
 
@@ -63,7 +64,7 @@ const Map = forwardRef(
       filters,
       processedData,
       onMapPinVisibilityChange,
-      onStateChange,
+
       onCenterChange,
     }: Props,
     ref: ForwardedRef<MapRef>,
@@ -73,6 +74,11 @@ const Map = forwardRef(
     const updateMapStoreContext = useMapStoreUpdateContext()
     const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
+    const [mapHeading, setMapHeading] = useState<number>(0)
+
+    const onStateChange = async (mapState: MapState) => {
+      setMapHeading(mapState.properties.heading)
+    }
 
     const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
     const [cameraZoom, setCameraZoom] = useState<number | undefined>()
@@ -146,7 +152,7 @@ const Map = forwardRef(
       <View className="flex-1">
         <MapView
           ref={map}
-          className="grow"
+          style={{ flex: 1 }}
           // eslint-disable-next-line no-secrets/no-secrets
           styleURL="mapbox://styles/inovaciebratislava/cl5teyncz000614o4le1p295o"
           onCameraChanged={handleCameraChange}
@@ -185,6 +191,10 @@ const Map = forwardRef(
         {isMapPinShown && (
           <MapPin price={selectedZone ? getPriceFromZone(selectedZone) : undefined} />
         )}
+
+        <Portal hostName="mapRightBox">
+          <CompassButton heading={mapHeading} />
+        </Portal>
       </View>
     )
   },

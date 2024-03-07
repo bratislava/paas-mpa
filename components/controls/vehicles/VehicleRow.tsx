@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
 
@@ -9,6 +8,7 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { VehicleDto } from '@/modules/backend/openapi-generated'
+import { clsx } from '@/utils/clsx'
 import { WithRequired } from '@/utils/types'
 
 // Ensure that only one of these props is set at a time

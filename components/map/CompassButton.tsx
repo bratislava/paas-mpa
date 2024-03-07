@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import { forwardRef, useCallback } from 'react'
 import { Pressable, View } from 'react-native'
 
 import { CompassIcon } from '@/assets/map'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   heading: number

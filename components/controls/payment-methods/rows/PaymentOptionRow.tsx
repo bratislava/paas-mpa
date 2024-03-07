@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
 
@@ -9,6 +8,7 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clsx } from '@/utils/clsx'
 
 // Ensure that only one of these props is set at a time
 type AdditionalProps =

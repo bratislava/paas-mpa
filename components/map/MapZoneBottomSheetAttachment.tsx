@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import * as Location from 'expo-location'
 import { Link } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -18,6 +17,7 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
+import { clsx } from '@/utils/clsx'
 
 /** Time after pressing the button when it cannot be pressed again */
 const LOCATION_REQUEST_THROTTLE = 500 // ms
@@ -62,6 +62,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   }, [setFlyToCenter, permissionStatus])
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
+  console.log('ticketsData')
 
   useQueryInvalidateOnTicketExpire(
     ticketsData?.tickets ?? null,

@@ -1,7 +1,7 @@
-import clsx from 'clsx'
 import { ActivityIndicator, View, ViewProps } from 'react-native'
 
 import ScreenView from '@/components/screen-layout/ScreenView'
+import { clsx } from '@/utils/clsx'
 
 type LoadingScreenProps = {
   asScreenView?: boolean

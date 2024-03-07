@@ -1,8 +1,8 @@
-import clsx from 'clsx'
 import { View, ViewProps } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 export type ListRowProps = {
   icon?: IconName

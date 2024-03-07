@@ -1,8 +1,8 @@
-import { clsx } from 'clsx'
 import React from 'react'
 import { View } from 'react-native'
 
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   label: string

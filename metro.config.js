@@ -1,9 +1,9 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config')
-const withNativewind = require('nativewind/metro')
+const { withNativeWind } = require('nativewind/metro')
 
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname)
+const config = getDefaultConfig(__dirname, { isCSSEnabled: true })
 
 /* Setup for react-native-svg-transformer https://github.com/kristerkari/react-native-svg-transformer#step-3-configure-the-react-native-packager */
 const { transformer, resolver } = config
@@ -19,4 +19,4 @@ config.resolver = {
 }
 /* end of setup react-native-svg-transformer */
 
-module.exports = withNativewind(config)
+module.exports = withNativeWind(config, { input: './global.css', inlineRem: 16 })

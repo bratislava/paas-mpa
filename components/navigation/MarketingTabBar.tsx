@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { StyleSheet, View } from 'react-native'
 import {
   NavigationState,
@@ -8,6 +7,7 @@ import {
 } from 'react-native-tab-view'
 
 import PressableStyled from '@/components/shared/PressableStyled'
+import { clsx } from '@/utils/clsx'
 
 const MarketingTabBar = (
   props: SceneRendererProps & { navigationState: NavigationState<Route> },

@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { StyleSheet, View } from 'react-native'
 import {
   CodeField,
@@ -9,6 +8,7 @@ import {
 } from 'react-native-confirmation-code-field'
 
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 const styles = StyleSheet.create({
   rootStyle: {

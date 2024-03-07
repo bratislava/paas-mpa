@@ -1,8 +1,9 @@
 import { BottomSheetView } from '@gorhom/bottom-sheet'
-import clsx from 'clsx'
 import React, { ComponentProps } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { clsx } from '@/utils/clsx'
 
 type Props = Omit<ComponentProps<typeof BottomSheetView>, 'className'> & {
   cn?: string

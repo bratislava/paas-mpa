@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { Platform } from 'react-native'
@@ -7,6 +6,7 @@ import { WebView } from 'react-native-webview'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
+import { clsx } from '@/utils/clsx'
 
 export type WebviewSearchParams = {
   webviewUri: string

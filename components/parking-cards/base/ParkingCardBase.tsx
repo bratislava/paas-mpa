@@ -1,9 +1,9 @@
-import { clsx } from 'clsx'
 import React, { ReactNode } from 'react'
 
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   variant: 'visitor' | 'resident' | 'bonus' | 'subscriber' | 'electric-car' | 'tzp' | 'other'

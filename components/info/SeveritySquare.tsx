@@ -1,8 +1,8 @@
-import { clsx } from 'clsx'
 import { View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import { AnnouncementType } from '@/modules/backend/openapi-generated'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   variant: AnnouncementType

@@ -1,8 +1,8 @@
-import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import { Pressable, PressableProps, View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
+import { clsx } from '@/utils/clsx'
 
 type Props = {
   name: IconName
