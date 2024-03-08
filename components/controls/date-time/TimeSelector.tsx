@@ -45,7 +45,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   const calculationBaseDate = new Date(timeCalculationBase || Date.now())
 
   const validUntil = useMemo(
-    () => formatDateTime(calculateEndTime(value, calculationBaseDate.getTime()), locale),
+    () => formatDateTime(calculateEndTime(value, timeCalculationBase || Date.now()), locale),
     [locale, value, timeCalculationBase],
   )
 
