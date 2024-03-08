@@ -184,6 +184,8 @@
     "system": "System",
     "pushNotifications": "Push notifications",
     "emailNotifications": "Email notifications",
+    "notificationsDisabled": "Notifications are not enabled on your device.",
+    "notificationButtonText": "Enable notifications",
     "loading": "Loading",
     "type": {
       "pushNotificationsAboutToEnd": {

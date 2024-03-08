@@ -1,14 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Linking } from 'react-native'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
+import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
+import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
+import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
+import { PermissionStatus } from '@/utils/types'
 
 /*
  * TODO
@@ -29,6 +34,7 @@ import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 const NotificationSettings = () => {
   const t = useTranslation('Settings')
   const queryClient = useQueryClient()
+  const [notificationsPermissionStatus] = useNotificationPermission({ autoAsk: true })
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 
@@ -106,14 +112,32 @@ const NotificationSettings = () => {
   //   },
   // ] as const
 
+  const arePermissionsDisabled = notificationsPermissionStatus !== PermissionStatus.GRANTED
+
   return (
     <>
       <Field label={t('pushNotifications')}>
+        {arePermissionsDisabled ? (
+          <Panel className="my-2 bg-warning-light px-5">
+            <Typography>
+              {t(`notificationsDisabled`)}
+              <Button
+                className="-mt-1 px-2"
+                variant="plain-dark"
+                onPress={() => Linking.openSettings()}
+              >
+                {t(`notificationButtonText`)}
+              </Button>
+            </Typography>
+          </Panel>
+        ) : null}
+
         {pushNotifications.map((setting) => (
           <NotificationControl
             key={setting.name}
             notificationName={setting.name}
-            value={!!setting.value}
+            disabled={arePermissionsDisabled}
+            value={arePermissionsDisabled ? false : !!setting.value}
             onValueChange={() => saveNotifications({ [setting.name]: !setting.value })}
           />
         ))}

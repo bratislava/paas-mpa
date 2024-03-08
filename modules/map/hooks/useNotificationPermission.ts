@@ -1,13 +1,13 @@
 import messaging from '@react-native-firebase/messaging'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import * as Device from 'expo-device'
-import { PermissionStatus } from 'expo-modules-core'
 import { useCallback, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
 import { clientApi } from '@/modules/backend/client-api'
 import { devicesOptions } from '@/modules/backend/constants/queryOptions'
 import { MobileDevicePlatform } from '@/modules/backend/openapi-generated'
+import { PermissionStatus } from '@/utils/types'
 
 type Options =
   | {
