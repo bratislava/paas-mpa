@@ -8,9 +8,10 @@ type Props = {
   onConfirm: (date: Date) => void
   onClose: () => void
   initialValue?: Date
+  minimumDate?: Date
 }
 
-const DateTimePicker = ({ onConfirm, onClose, initialValue }: Props) => {
+const DateTimePicker = ({ onConfirm, onClose, initialValue, minimumDate }: Props) => {
   const t = useTranslation('DateTimePicker')
   const [date, setDate] = useState(initialValue || new Date())
   const locale = useLocale()
@@ -34,7 +35,7 @@ const DateTimePicker = ({ onConfirm, onClose, initialValue }: Props) => {
   return (
     <View>
       <DatePicker
-        minimumDate={new Date()}
+        minimumDate={minimumDate || new Date()}
         // maximumDate={} // TODO set maximum time
         date={date}
         onDateChange={handleDateChanged}
