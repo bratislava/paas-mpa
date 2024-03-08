@@ -18,9 +18,8 @@ import { formatDuration } from '@/utils/formatDuration'
  *
  * @param date
  */
-const getDuration = (date: Date) => {
-  const now = new Date()
-  const diff = date.getTime() - now.getTime()
+const getDuration = (date: Date, base: Date) => {
+  const diff = date.getTime() - base.getTime()
 
   return Math.ceil(diff / 1000)
 }
@@ -34,8 +33,8 @@ type Props = {
 /**
  * Function to calculate end time from calculation base (or current time if base is not provided) and duration
  */
-const calculateEndTime = (duration: number, timeCalculationBase?: number) => {
-  return new Date((timeCalculationBase || Date.now()) + duration * 1000)
+const calculateEndTime = (duration: number, timeCalculationBase: number) => {
+  return new Date(timeCalculationBase + duration * 1000)
 }
 
 const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
@@ -43,8 +42,10 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
+  const calculationBaseDate = new Date(timeCalculationBase || Date.now())
+
   const validUntil = useMemo(
-    () => formatDateTime(calculateEndTime(value, timeCalculationBase), locale),
+    () => formatDateTime(calculateEndTime(value, calculationBaseDate.getTime()), locale),
     [locale, value, timeCalculationBase],
   )
 
@@ -90,8 +91,8 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   }
 
   const handleDatePickerConfirm = (date: Date) => {
-    const duration = getDuration(date)
-    console.log('confirm', date, duration)
+    const duration = getDuration(date, calculationBaseDate)
+
     onValueChange(duration)
   }
 
@@ -160,7 +161,8 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
 
       {datePickerOpen ? (
         <DateTimePicker
-          initialValue={calculateEndTime(value, timeCalculationBase)}
+          minimumDate={calculationBaseDate}
+          initialValue={calculateEndTime(value, calculationBaseDate.getTime())}
           onClose={handleDatePickerClose}
           onConfirm={handleDatePickerConfirm}
         />
