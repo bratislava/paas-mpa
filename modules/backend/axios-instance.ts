@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
+import { getAccessToken } from '@/modules/cognito/utils'
 
 export const axiosInstance = axios.create()
 
@@ -13,7 +13,7 @@ declare module 'axios' {
 }
 
 axiosInstance.interceptors.request.use(async (request) => {
-  const accessToken = await getAccessTokenOrLogout()
+  const accessToken = await getAccessToken()
 
   if (accessToken) {
     request.headers.Authorization = `Bearer ${accessToken.toString()}`
