@@ -186,6 +186,9 @@
     "system": "Systém",
     "pushNotifications": "Push notifikácie",
     "emailNotifications": "E-mailové notifikácie",
+    "notificationsDisabled": "Notifikácie nie sú povolené na tomto zariadení.",
+    "notificationButtonText": "Povoliť notifikácie",
+
     "type": {
       "pushNotificationsAboutToEnd": {
         "title": "Parkovanie sa blíži ku koncu",

@@ -1,5 +1,5 @@
 import { confirmSignIn, signIn, signOut, signUp } from 'aws-amplify/auth'
-import { PermissionStatus } from 'expo-modules-core'
+import * as Location from 'expo-location'
 import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
@@ -16,6 +16,7 @@ import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPe
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 import { isError } from '@/utils/errors'
+import { PermissionStatus } from '@/utils/types'
 
 import { useIsOnboardingFinished } from './useIsOnboardingFinished'
 
@@ -135,7 +136,7 @@ export const useSignInOrSignUp = () => {
       }
 
       if (
-        locationPermissionStatus === PermissionStatus.UNDETERMINED ||
+        locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
         notificationsPermissionStatus === PermissionStatus.UNDETERMINED
       ) {
         router.replace('/permissions')

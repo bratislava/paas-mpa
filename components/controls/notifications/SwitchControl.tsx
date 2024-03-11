@@ -9,6 +9,7 @@ export type SwitchControlProps = {
   title: string
   description?: string
   value: boolean
+  disabled?: boolean
   accessibilityLabel: string
   onValueChange: SwitchProps['onValueChange']
 }
@@ -16,6 +17,7 @@ export type SwitchControlProps = {
 const SwitchControl = ({
   title,
   description,
+  disabled,
   value,
   accessibilityLabel,
   onValueChange,
@@ -30,6 +32,7 @@ const SwitchControl = ({
 
         <View>
           <Switch
+            disabled={disabled}
             accessibilityLabel={accessibilityLabel}
             value={value}
             onValueChange={onValueChange}
