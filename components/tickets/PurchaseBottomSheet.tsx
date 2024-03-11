@@ -1,7 +1,7 @@
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import { forwardRef, useMemo } from 'react'
+import { View } from 'react-native'
 
-import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import BottomSheetHandleWithShadow, {
   HANDLE_HEIGHT,
 } from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
@@ -39,9 +39,13 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         snapPoints={snapPoints}
         handleComponent={BottomSheetHandleWithShadow}
       >
-        <BottomSheetContent cn="g-3" hideSpacer>
+        {/**
+         * Better approach for zero height bottom sheet: https://github.com/gorhom/react-native-bottom-sheet/issues/1573
+         * fixes dynamic height of bottom sheet
+         */}
+        <BottomSheetScrollView scrollEnabled={false}>
           {priceData ? (
-            <>
+            <View className="gap-3 px-5 py-3">
               <FlexRow>
                 <Typography variant="default">
                   {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
@@ -97,9 +101,9 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
               ) : null}
 
               <Divider />
-            </>
+            </View>
           ) : null}
-        </BottomSheetContent>
+        </BottomSheetScrollView>
       </BottomSheet>
     )
   },
