@@ -26,7 +26,6 @@ type Props = {
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter, isZoomedOut, address } = props
-  console.log('MapZoneBottomSheet')
 
   const inputRef = useRef<RNTextInput>(null)
 
