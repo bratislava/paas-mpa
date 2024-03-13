@@ -60,7 +60,7 @@
     "nativewind": "^4.0.36",
     "react": "18.2.0",
     "react-i18next": "~13.2.2",
-    "react-native": "0.72.6",
+    "react-native": "0.72.10",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-country-flag": "~2.0.2",
     "react-native-date-picker": "~4.3.3",
