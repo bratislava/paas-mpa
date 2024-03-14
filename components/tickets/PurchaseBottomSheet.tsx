@@ -45,7 +45,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
          */}
         <BottomSheetScrollView scrollEnabled={false}>
           {priceData ? (
-            <View className="gap-3 px-5 py-3">
+            <View className="px-5 py-3 g-3">
               <FlexRow>
                 <Typography variant="default">
                   {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
