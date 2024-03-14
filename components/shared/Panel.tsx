@@ -1,5 +1,5 @@
-import React from 'react'
 import { View, ViewProps } from 'react-native'
+
 import { cn } from '@/utils/cn'
 
 type Props = ViewProps

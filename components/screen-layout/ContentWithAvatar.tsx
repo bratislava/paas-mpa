@@ -5,6 +5,7 @@ import AvatarCircle from '@/components/info/AvatarCircle'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { cn } from '@/utils/cn'
+
 type ContentWithAvatarProps = {
   title: string
   text?: string

@@ -4,6 +4,7 @@ import { Pressable, PressableProps, View } from 'react-native'
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
 import { cn } from '@/utils/cn'
+
 type PressablePropsOmitted = Omit<PressableProps, 'children'>
 
 type Props = {
