@@ -5,14 +5,14 @@ import { InteractionManager } from 'react-native'
 import { useLocale } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { announcementsOptions, visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
-import { getAccessTokenOrLogout } from '@/modules/cognito/utils'
+import { getAccessToken } from '@/modules/cognito/utils'
 
 export const usePrefetchOnAppStart = () => {
   const queryClient = useQueryClient()
   const locale = useLocale()
 
   const prefetch = useCallback(async () => {
-    const token = await getAccessTokenOrLogout()
+    const token = await getAccessToken()
 
     /* Do not prefetch if user is not logged in */
     if (!token) {

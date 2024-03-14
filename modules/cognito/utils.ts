@@ -8,7 +8,7 @@ export const STATIC_PHONE = '+42100000000'
 /**
  * Docs: https://docs.amplify.aws/react-native/build-a-backend/auth/manage-user-session/#retrieve-a-user-session
  */
-export const getAccessTokenOrLogout = async () => {
+export const getAccessToken = async () => {
   try {
     const session = await fetchAuthSession()
     const { accessToken } = session.tokens ?? {}
@@ -19,8 +19,7 @@ export const getAccessTokenOrLogout = async () => {
 
     return accessToken
   } catch (error) {
-    console.log('error getting access token - redirect to login', error)
-    router.replace('/onboarding')
+    console.log('error getting access token', error)
 
     return null
   }
