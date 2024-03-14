@@ -182,7 +182,8 @@ const Map = forwardRef(
           <UserLocation
             androidRenderMode="gps"
             renderMode={UserLocationRenderMode.Normal}
-            showsUserHeadingIndicator
+            // TODO: fix indicator size bug
+            // showsUserHeadingIndicator
             visible
             minDisplacement={3}
             animated
