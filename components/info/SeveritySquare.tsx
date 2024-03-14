@@ -1,8 +1,8 @@
-import { clsx } from 'clsx'
 import { View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import { AnnouncementType } from '@/modules/backend/openapi-generated'
+import { cn } from '@/utils/cn'
 
 type Props = {
   variant: AnnouncementType
@@ -20,7 +20,7 @@ const SeveritySquare = ({ variant }: Props) => {
 
   return (
     <View
-      className={clsx('flex items-center justify-center rounded-lg p-3.5', {
+      className={cn('flex items-center justify-center rounded-lg p-3.5', {
         'bg-green-light': variant === AnnouncementType.Info,
         'bg-warning-light': variant === AnnouncementType.Warn,
         'bg-negative-light': variant === AnnouncementType.Error,
@@ -28,7 +28,7 @@ const SeveritySquare = ({ variant }: Props) => {
     >
       <Icon
         name={iconName}
-        className={clsx({
+        className={cn({
           'text-green': variant === AnnouncementType.Info,
           'text-warning': variant === AnnouncementType.Warn,
           'text-negative': variant === AnnouncementType.Error,

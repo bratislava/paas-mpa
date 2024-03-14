@@ -4,6 +4,7 @@
 import 'intl-pluralrules'
 import '@/modules/cognito/amplify'
 import '../i18n.config.js'
+import '../global.css'
 
 /* eslint-disable babel/camelcase */
 import {
@@ -17,7 +18,6 @@ import { PortalProvider } from '@gorhom/portal'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SplashScreen, Stack } from 'expo-router'
 import * as Updates from 'expo-updates'
-import { NativeWindStyleSheet } from 'nativewind'
 import { Suspense, useEffect } from 'react'
 import { NativeModules } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -27,14 +27,11 @@ import { ToastProvider } from 'react-native-toast-notifications'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSnackbar'
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
+import { environment } from '@/environment'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
 
 SplashScreen.preventAutoHideAsync()
-
-/* Quickfix - https://github.com/marklawlor/nativewind/issues/308
-   see "Base scaling has changed" and "rem Units" sections */
-NativeWindStyleSheet.setVariables({ '--rem': 16 })
 
 const { UIManager } = NativeModules
 
@@ -68,7 +65,9 @@ const RootLayout = () => {
   })
 
   useEffect(() => {
-    onFetchUpdateAsync()
+    if (environment.deployment === 'production') {
+      onFetchUpdateAsync()
+    }
   }, [])
 
   const queryClient = new QueryClient({
@@ -91,7 +90,7 @@ const RootLayout = () => {
         <QueryClientProvider client={queryClient}>
           <AuthStoreProvider>
             <SafeAreaProvider>
-              <GestureHandlerRootView className="flex-1">
+              <GestureHandlerRootView style={{ flex: 1 }}>
                 <PortalProvider>
                   <Stack
                     screenOptions={{

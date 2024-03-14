@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/utils/cn'
 
 import Icon from './Icon'
 import PressableStyled from './PressableStyled'
@@ -16,7 +16,7 @@ const Checkbox = ({ onChange, disabled, value, className, ...passingProps }: Pro
 
   return (
     <PressableStyled
-      className={clsx(
+      className={cn(
         'h-8 w-8 items-center justify-center rounded-[4px] border-2 border-green',
         className,
         {

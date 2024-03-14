@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useState } from 'react'
 import { LayoutChangeEvent, Platform, View } from 'react-native'
@@ -6,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/utils/cn'
 
 import IconButton from '../shared/IconButton'
 
@@ -32,7 +32,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
     ({ options: headerOptions, back }) => {
       return (
         <View
-          className={clsx('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
+          className={cn('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
           // TODO: paddings should be tested on android
           style={{ paddingTop: insets.top }}
         >

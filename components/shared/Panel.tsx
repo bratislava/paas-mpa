@@ -1,12 +1,12 @@
-import { clsx } from 'clsx'
-import React from 'react'
 import { View, ViewProps } from 'react-native'
+
+import { cn } from '@/utils/cn'
 
 type Props = ViewProps
 
 const Panel = ({ className, children, ...rest }: Props) => {
   return (
-    <View className={clsx('rounded bg-soft p-4', className)} {...rest}>
+    <View className={cn('rounded bg-soft p-4', className)} {...rest}>
       {children}
     </View>
   )

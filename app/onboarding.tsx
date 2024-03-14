@@ -151,7 +151,7 @@ const OnboardingScreen = () => {
         className="pb-5"
       />
 
-      <ContinueButton className="mx-5 mb-4" onPress={handlePressNext}>
+      <ContinueButton className="mx-5 my-4" onPress={handlePressNext}>
         {buttonLabel}
       </ContinueButton>
     </View>

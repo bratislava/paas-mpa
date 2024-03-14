@@ -1,10 +1,10 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
+import { cn } from '@/utils/cn'
 
 type ContentWithAvatarProps = {
   title: string
@@ -27,7 +27,7 @@ const ContentWithAvatar = ({
   ...rest
 }: ContentWithAvatarProps) => {
   return (
-    <View {...rest} className={clsx('w-full bg-white px-5 py-8 g-6', className)}>
+    <View {...rest} className={cn('w-full bg-white px-5 py-8 g-6', className)}>
       <View className="items-center">
         {customAvatarComponent ?? <AvatarCircle variant={variant} />}
       </View>

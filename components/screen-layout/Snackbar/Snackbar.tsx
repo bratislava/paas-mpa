@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { useCallback } from 'react'
 import { View } from 'react-native'
 import { Shadow } from 'react-native-shadow-2'
@@ -9,6 +8,7 @@ import Icon, { IconName } from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/utils/cn'
 
 export type SnackbarTypes = 'danger' | 'warning' | 'success' | 'info'
 
@@ -45,7 +45,7 @@ const Snackbar = ({
         <FlexRow className="w-full items-center rounded bg-white px-4">
           <Icon
             {...iconProps[variant]}
-            className={clsx({
+            className={cn({
               'text-negative': variant === 'danger',
               'text-warning': variant === 'warning',
               'text-green': variant === 'success' || variant === 'info',

@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { router, Stack } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
@@ -11,6 +10,7 @@ import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
+import { cn } from '@/utils/cn'
 import { PermissionStatus } from '@/utils/types'
 
 type RouteKeys = 'notifications' | 'location'
@@ -58,10 +58,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
         text={t(`${route.key}.text`)}
         SvgImage={SvgImage}
       />
-      <ContinueButton
-        className={clsx('mx-5', { 'mb-5': !insets.bottom })}
-        onPress={getPermission}
-      />
+      <ContinueButton className={cn('mx-5', { 'mb-5': !insets.bottom })} onPress={getPermission} />
     </View>
   )
 }

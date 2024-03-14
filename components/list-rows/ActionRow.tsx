@@ -1,9 +1,9 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { cn } from '@/utils/cn'
 
 export type ActionRowProps = {
   label: string
@@ -20,7 +20,7 @@ const ActionRow = ({ label, variant = 'default', startIcon, endIcon, endSlot }: 
     <View className="flex-row items-center gap-3 py-4">
       {startIcon && <Icon name={startIcon} className={textColor} />}
 
-      <Typography variant="default-semibold" className={clsx('flex-1', textColor)}>
+      <Typography variant="default-semibold" className={cn('flex-1', textColor)}>
         {label}
       </Typography>
 

@@ -1,5 +1,3 @@
-import clsx from 'clsx'
-import React from 'react'
 import { View } from 'react-native'
 
 import AvatarSquare from '@/components/info/AvatarSquare'
@@ -9,7 +7,7 @@ import IconButton from '@/components/shared/IconButton'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-
+import { cn } from '@/utils/cn'
 // Ensure that only one of these props is set at a time
 type AdditionalProps =
   | {
@@ -36,7 +34,7 @@ const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlCh
   const t = useTranslation('PaymentMethods')
 
   return (
-    <Panel className={clsx(selected && 'border border-dark')}>
+    <Panel className={cn(selected && 'border border-dark')}>
       <FlexRow className="items-center">
         <View className="flex-1 flex-row items-center g-3">
           <AvatarSquare variant={variant} />

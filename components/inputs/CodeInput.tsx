@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { StyleSheet, View } from 'react-native'
 import {
   CodeField,
@@ -9,6 +8,7 @@ import {
 } from 'react-native-confirmation-code-field'
 
 import Typography from '@/components/shared/Typography'
+import { cn } from '@/utils/cn'
 
 const styles = StyleSheet.create({
   rootStyle: {
@@ -69,7 +69,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
             key={index}
             onLayout={getCellOnLayoutHandler(index)}
             // TODO - sizes are little bit guessed, needs to be tested on multiple devices
-            className={clsx(
+            className={cn(
               'h-[48px] w-[48px] items-center justify-center rounded border border-divider bg-white text-center text-[20px] leading-[44px]',
               {
                 'border-dark': isFocused,

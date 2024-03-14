@@ -1,8 +1,8 @@
-import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 
 import Typography, { TypographyProps } from '@/components/shared/Typography'
+import { cn } from '@/utils/cn'
 
 export type FieldProps = {
   label: string
@@ -26,7 +26,7 @@ const Field = ({
   className,
 }: FieldProps) => {
   return (
-    <View className={clsx('g-1', className)} style={style}>
+    <View className={cn('g-1', className)} style={style}>
       <View className="flex-row g-6">
         <Typography variant={variant} className="grow" nativeID={nativeID}>
           {label}

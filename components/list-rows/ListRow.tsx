@@ -1,8 +1,8 @@
-import clsx from 'clsx'
 import { View, ViewProps } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
+import { cn } from '@/utils/cn'
 
 export type ListRowProps = {
   icon?: IconName
@@ -24,7 +24,7 @@ const ListRow = ({ icon, label, labelClassName, ...rest }: ListRowProps) => {
     <View className="flex-row gap-4 py-4" {...rest}>
       {icon ? <Icon name={icon} /> : null}
 
-      <Typography className={clsx('flex-1', labelClassName)}>{label}</Typography>
+      <Typography className={cn('flex-1', labelClassName)}>{label}</Typography>
 
       <Icon name="chevron-right" />
     </View>

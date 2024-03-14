@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import clsx from 'clsx'
 import { router } from 'expo-router'
 import { forwardRef, useCallback, useRef } from 'react'
 import { TextInput as RNTextInput, View } from 'react-native'
@@ -16,6 +15,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
+import { cn } from '@/utils/cn'
 
 type Props = {
   zone: MapUdrZone | null
@@ -48,7 +48,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         animatedPosition={animatedPosition}
         enableDynamicSizing
       >
-        <BottomSheetContent cn={clsx('bg-white', selectedZone ? 'g-2' : 'g-3')}>
+        <BottomSheetContent className={cn('bg-white', selectedZone ? 'g-2' : 'g-3')}>
           {isZoomedOut ? (
             <View className="flex-col items-center">
               <Typography className="text-center">{t('zoomIn')}</Typography>

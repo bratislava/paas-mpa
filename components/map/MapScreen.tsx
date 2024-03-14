@@ -1,6 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
-import { MapState } from '@rnmapbox/maps'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { Position } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -23,11 +22,8 @@ import { translateMapObject } from '@/modules/map/utils/translateMapObject'
 const MAP_STATE_DEBOUNCE_TIME = 500
 
 type MapScreenParams = MapFilters
-type Props = {
-  onMapStateChange?: (mapState: MapState) => void
-}
 
-const MapScreen = ({ onMapStateChange }: Props) => {
+const MapScreen = () => {
   const params = useLocalSearchParams<MapScreenParams>()
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
@@ -98,9 +94,9 @@ const MapScreen = ({ onMapStateChange }: Props) => {
         filters={filters}
         processedData={processedData}
         onMapPinVisibilityChange={handleMapPinVisibilityChange}
-        onStateChange={onMapStateChange}
         onCenterChange={debouncedHandleCenterChange}
       />
+
       <Portal hostName="index">
         <MapZoneBottomSheet
           ref={zoneBottomSheetRef}
@@ -116,6 +112,7 @@ const MapScreen = ({ onMapStateChange }: Props) => {
 
         <MapLocationBottomSheet />
       </Portal>
+
       <View className="absolute left-0 px-2.5" style={{ top }}>
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton

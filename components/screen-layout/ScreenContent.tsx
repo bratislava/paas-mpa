@@ -1,6 +1,7 @@
-import { clsx } from 'clsx'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { View, ViewProps } from 'react-native'
+
+import { cn } from '@/utils/cn'
 
 type Props = {
   children: ReactNode
@@ -10,7 +11,7 @@ type Props = {
 const ScreenContent = ({ children, variant, className, ...rest }: Props) => {
   return (
     <View
-      className={clsx(
+      className={cn(
         'flex-1 bg-white p-5 g-5',
         {
           // TODO long Text is not centered horizontally
