@@ -3,9 +3,9 @@ import { Linking } from 'react-native'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
-import Button from '@/components/shared/Button'
 import Field from '@/components/shared/Field'
 import Panel from '@/components/shared/Panel'
+import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -119,16 +119,10 @@ const NotificationSettings = () => {
       <Field label={t('pushNotifications')}>
         {arePermissionsDisabled ? (
           <Panel className="my-2 bg-warning-light px-5">
-            <Typography>
-              {t(`notificationsDisabled`)}
-              <Button
-                className="-mt-1 px-2"
-                variant="plain-dark"
-                onPress={() => Linking.openSettings()}
-              >
-                {t(`notificationButtonText`)}
-              </Button>
-            </Typography>
+            <Typography>{t(`notificationsDisabled`)}</Typography>
+            <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
+              <Typography variant="default-bold">{t(`notificationButtonText`)}</Typography>
+            </PressableStyled>
           </Panel>
         ) : null}
 

@@ -7,7 +7,7 @@ import {
 } from 'react-native-tab-view'
 
 import PressableStyled from '@/components/shared/PressableStyled'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 const MarketingTabBar = (
   props: SceneRendererProps & { navigationState: NavigationState<Route> },
@@ -24,7 +24,7 @@ const MarketingTabBar = (
         return (
           <PressableStyled accessibilityLabel={route.accessibilityLabel} onPress={onPress}>
             <View
-              className={clsx(
+              className={cn(
                 'items-center justify-center rounded-full border-2 border-transparent p-0.5',
                 isFocused && 'border-green',
               )}

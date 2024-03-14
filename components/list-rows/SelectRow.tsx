@@ -5,7 +5,7 @@ import { SvgProps } from 'react-native-svg'
 import CheckBox from '@/components/shared/CheckBox'
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 import PressableStyled from '../shared/PressableStyled'
 
@@ -41,7 +41,7 @@ const SelectRow = ({
     >
       {icon ? <Icon name={icon} /> : IconComponent ? <IconComponent /> : null}
 
-      <Typography variant="default-semibold" className={clsx('flex-1', labelClassName)}>
+      <Typography variant="default-semibold" className={cn('flex-1', labelClassName)}>
         {label}
       </Typography>
 

@@ -1,7 +1,6 @@
-import React from 'react'
 import { Switch as RNSwitch, SwitchProps as RNSwitchProps } from 'react-native'
 
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type Props = RNSwitchProps
 
@@ -15,7 +14,7 @@ type Props = RNSwitchProps
 
 // TODO styling, omit props, potentially replace by https://www.npmjs.com/package/react-native-switch
 const Switch = ({ ...props }: Props) => {
-  return <RNSwitch className={clsx(props.disabled && 'opacity-50')} {...props} />
+  return <RNSwitch className={cn(props.disabled && 'opacity-50')} {...props} />
 }
 
 export default Switch

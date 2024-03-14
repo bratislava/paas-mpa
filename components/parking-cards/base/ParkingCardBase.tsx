@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type Props = {
   variant: 'visitor' | 'resident' | 'bonus' | 'subscriber' | 'electric-car' | 'tzp' | 'other'
@@ -15,7 +15,7 @@ const ParkingCardBase = ({ variant, children }: Props) => {
 
   return (
     <Panel
-      className={clsx('border', {
+      className={cn('border', {
         'border-visitorCard bg-visitorCard-light': variant === 'visitor',
         'border-dark bg-dark-light': variant === 'resident',
         'border-divider bg-white': variant === 'bonus',

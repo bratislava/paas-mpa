@@ -8,7 +8,7 @@ import {
 
 import Typography from '@/components/shared/Typography'
 import colors from '@/tailwind.config.colors'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 const TabBar = ({
   navigationState,
@@ -27,7 +27,7 @@ const TabBar = ({
           <View className="items-center justify-center">
             <Typography
               variant="default-bold"
-              className={clsx('text-dark', { 'text-green': focused })}
+              className={cn('text-dark', { 'text-green': focused })}
             >
               {route.title}
             </Typography>

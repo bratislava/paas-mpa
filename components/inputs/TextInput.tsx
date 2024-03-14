@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 export type TextInputProps = Omit<TextInputNativeProps, 'editable'> & {
   hasError?: boolean
@@ -48,7 +48,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
       <Pressable
         onPress={handlePress}
         pointerEvents={pointerEvents}
-        className={clsx(
+        className={cn(
           'flex-row items-center rounded border bg-white px-4 py-3 g-3',
           {
             'border-divider': !isDisabled && !hasError,
@@ -67,7 +67,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
         <TextInputNative
           ref={refSetter}
           editable={!isDisabled}
-          className={clsx(
+          className={cn(
             'flex-1 font-inter-400regular text-[16px]',
             !multiline && 'h-[24px]',
             className,

@@ -1,6 +1,6 @@
 import { Text as TextNative, TextProps } from 'react-native'
 
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 export type TypographyProps = TextProps & {
   variant?:
@@ -19,7 +19,7 @@ export type TypographyProps = TextProps & {
 const Typography = ({ variant = 'default', children, className, ...rest }: TypographyProps) => {
   return (
     <TextNative
-      className={clsx(
+      className={cn(
         'font-inter-400regular text-dark',
         {
           'font-inter-700bold text-base': variant === 'button',

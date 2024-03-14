@@ -4,7 +4,7 @@ import { PressableProps, View } from 'react-native'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type Props = {
   hasError?: boolean
@@ -18,7 +18,7 @@ const SelectButton = forwardRef<View, Props>(
     return (
       <PressableStyled ref={ref} disabled={isDisabled} {...rest}>
         <View
-          className={clsx('flex-row rounded border bg-white px-4 py-3 g-3', {
+          className={cn('flex-row rounded border bg-white px-4 py-3 g-3', {
             'border-divider focus:border-dark': !isDisabled && !hasError,
             'border-negative': hasError && !isDisabled,
             'border-divider bg-[#D6D6D6]': isDisabled,

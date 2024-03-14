@@ -84,7 +84,7 @@ const SettingsPage = () => {
         enablePanDownToClose
         backdropComponent={renderBackdrop}
       >
-        <BottomSheetContent>
+        <BottomSheetContent className="min-h-[80px]">
           <PressableStyled onPress={handleActionDelete}>
             <ActionRow startIcon="delete" label={t('actions.deleteAccount')} variant="negative" />
           </PressableStyled>

@@ -8,7 +8,7 @@ import Icon, { IconName } from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 export type SnackbarTypes = 'danger' | 'warning' | 'success' | 'info'
 
@@ -45,7 +45,7 @@ const Snackbar = ({
         <FlexRow className="w-full items-center rounded bg-white px-4">
           <Icon
             {...iconProps[variant]}
-            className={clsx({
+            className={cn({
               'text-negative': variant === 'danger',
               'text-warning': variant === 'warning',
               'text-green': variant === 'success' || variant === 'info',

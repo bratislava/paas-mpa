@@ -2,7 +2,7 @@ import { ApplePayIcon, GooglePayIcon } from 'assets/payment-options-icons'
 import { View } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type Props = {
   variant: 'visitor-card' | 'payment-card' | 'apple-pay' | 'google-pay'
@@ -22,7 +22,7 @@ const AvatarSquare = ({ variant }: Props) => {
 
   return (
     <View
-      className={clsx('flex h-10 w-10 items-center justify-center rounded p-2.5', {
+      className={cn('flex h-10 w-10 items-center justify-center rounded p-2.5', {
         'bg-dark': variant === 'payment-card',
         'bg-visitorCard': variant === 'visitor-card',
         'bg-black': variant === 'apple-pay',

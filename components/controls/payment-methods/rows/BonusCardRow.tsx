@@ -1,4 +1,3 @@
-import React from 'react'
 import { View } from 'react-native'
 
 import Divider from '@/components/shared/Divider'
@@ -7,9 +6,8 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 import { formatDate } from '@/utils/formatDate'
-
 /*
  *  Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3708%3A25139&mode=dev
  */
@@ -36,7 +34,7 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
   const locale = useLocale()
 
   return (
-    <Panel className={clsx(selected && 'border border-dark')}>
+    <Panel className={cn(selected && 'border border-dark')}>
       <View className="g-3">
         <FlexRow>
           <View className="flex-1">

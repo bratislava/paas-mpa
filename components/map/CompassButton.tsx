@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native'
 import { CompassIcon } from '@/assets/map'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type Props = {
   heading: number
@@ -27,7 +27,7 @@ const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
       ref={ref}
       hitSlop={12}
       accessibilityLabel={t('compass')}
-      className={clsx('self-start rounded-full bg-white shadow')}
+      className={cn('self-start rounded-full bg-white shadow')}
       onPress={handlePress}
     >
       {({ pressed }) => (
@@ -35,7 +35,7 @@ const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
           width={44}
           height={44}
           style={{ transform: [{ rotate: `-${heading}deg` }] }}
-          className={clsx('text-dark', pressed && 'text-dark/50')}
+          className={cn('text-dark', pressed && 'text-dark/50')}
         />
       )}
     </Pressable>

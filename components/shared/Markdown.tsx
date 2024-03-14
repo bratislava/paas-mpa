@@ -4,14 +4,14 @@ import { Text, View } from 'react-native'
 import MarkdownNative, { hasParents, MarkdownIt, RenderRules } from 'react-native-markdown-display'
 
 import Typography from '@/components/shared/Typography'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type FontSize = 'default' | 'small'
 
 const getRules = (fontSize: FontSize, textCenter?: boolean): RenderRules => ({
   body: (node, children) => <View key={node.key}>{children}</View>,
   paragraph: (node, children) => (
-    <Typography key={node.key} variant={fontSize} className={clsx(textCenter && 'text-center')}>
+    <Typography key={node.key} variant={fontSize} className={cn(textCenter && 'text-center')}>
       {children}
     </Typography>
   ),

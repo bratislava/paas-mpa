@@ -1,7 +1,7 @@
 import { ModalProps, View, ViewProps } from 'react-native'
 
 import IconButton from '@/components/shared/IconButton'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 type ModalContainerProps = {
   onRequestClose: ModalProps['onRequestClose']
@@ -9,7 +9,7 @@ type ModalContainerProps = {
 
 const ModalContainer = ({ className, onRequestClose, children, ...rest }: ModalContainerProps) => {
   return (
-    <View {...rest} className={clsx('w-full overflow-hidden rounded bg-white', className)}>
+    <View {...rest} className={cn('w-full overflow-hidden rounded bg-white', className)}>
       {children}
 
       {onRequestClose ? (

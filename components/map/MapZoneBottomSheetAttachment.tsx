@@ -17,8 +17,7 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
-import { clsx } from '@/utils/clsx'
-
+import { cn } from '@/utils/cn'
 /** Time after pressing the button when it cannot be pressed again */
 const LOCATION_REQUEST_THROTTLE = 500 // ms
 const LOCATION_REQUEST_TIMEOUT = 500 // ms
@@ -62,7 +61,6 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   }, [setFlyToCenter, permissionStatus])
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
-  console.log('ticketsData')
 
   useQueryInvalidateOnTicketExpire(
     ticketsData?.tickets ?? null,
@@ -91,7 +89,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow
-        className={clsx('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
+        className={cn('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
       >
         {activeTicketsCount > 0 ? (
           <View className="rounded-full bg-white shadow ">

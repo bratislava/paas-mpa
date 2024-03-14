@@ -6,7 +6,7 @@ import { WebView } from 'react-native-webview'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Typography from '@/components/shared/Typography'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 export type WebviewSearchParams = {
   webviewUri: string
@@ -37,7 +37,7 @@ const Page = () => {
       <WebView
         source={{ uri: uriDecoded }}
         onLoad={() => setIsLoaded(true)}
-        className={clsx('flex-1', { hidden: !isLoaded })}
+        className={cn('flex-1', { hidden: !isLoaded })}
       />
     </ScreenView>
   )

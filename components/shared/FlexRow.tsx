@@ -1,10 +1,9 @@
-import React from 'react'
 import { View, ViewProps } from 'react-native'
 
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 const FlexRow = ({ className, ...rest }: ViewProps) => {
-  return <View className={clsx('flex-row justify-between g-4', className)} {...rest} />
+  return <View className={cn('flex-row justify-between g-4', className)} {...rest} />
 }
 
 export default FlexRow

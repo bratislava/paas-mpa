@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 import StackScreenWithHeader from './StackScreenWithHeader'
 
@@ -57,7 +57,7 @@ const ScreenView = ({
       )}
 
       <View
-        className={clsx('flex-1', className)}
+        className={cn('flex-1', className)}
         style={{
           paddingTop:
             !options?.headerTransparent && options?.headerShown !== false && hasHeader
@@ -78,7 +78,7 @@ const ScreenView = ({
         ) : null}
 
         <View
-          className={clsx('flex-1', {
+          className={cn('flex-1', {
             'justify-center': contentPosition === 'center',
           })}
         >

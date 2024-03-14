@@ -3,7 +3,7 @@ import { View, ViewProps } from 'react-native'
 
 import Icon, { IconName } from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
-import { clsx } from '@/utils/clsx'
+import { cn } from '@/utils/cn'
 
 export type MenuRowProps = {
   label: string
@@ -27,10 +27,10 @@ const MenuRow = ({
   const textColor = variant === 'negative' ? 'text-negative' : ''
 
   return (
-    <View className={clsx('flex-row items-center gap-3 py-2', className)} {...rest}>
+    <View className={cn('flex-row items-center gap-3 py-2', className)} {...rest}>
       {startIcon && <Icon name={startIcon} className={textColor} size={20} />}
 
-      <Typography variant="default-semibold" className={clsx('flex-1', textColor)}>
+      <Typography variant="default-semibold" className={cn('flex-1', textColor)}>
         {label}
       </Typography>
 
