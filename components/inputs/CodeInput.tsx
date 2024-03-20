@@ -54,6 +54,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
   return (
     <View className="g-1">
       <CodeField
+        maxFontSizeMultiplier={1}
         ref={ref}
         {...props}
         {...focusCellProps}
@@ -66,6 +67,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
         rootStyle={styles.rootStyle}
         renderCell={({ index, symbol, isFocused }) => (
           <Typography
+            maxFontSizeMultiplier={1}
             key={index}
             onLayout={getCellOnLayoutHandler(index)}
             // TODO - sizes are little bit guessed, needs to be tested on multiple devices

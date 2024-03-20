@@ -57,7 +57,7 @@ const Page = () => {
       setExpectedError(null)
     }
 
-    setEmail(val)
+    setEmail(val?.toLowerCase())
   }
 
   const handleSendVerificationEmail = () => {

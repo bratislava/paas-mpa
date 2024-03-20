@@ -48,7 +48,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         animatedPosition={animatedPosition}
         enableDynamicSizing
       >
-        <BottomSheetContent className={cn('bg-white', selectedZone ? 'g-2' : 'g-3')}>
+        <BottomSheetContent isDynamic className={cn('bg-white', selectedZone ? 'g-2' : 'g-3')}>
           {isZoomedOut ? (
             <View className="flex-col items-center">
               <Typography className="text-center">{t('zoomIn')}</Typography>

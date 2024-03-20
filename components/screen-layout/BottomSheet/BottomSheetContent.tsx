@@ -7,13 +7,14 @@ import { cn } from '@/utils/cn'
 
 type Props = ComponentProps<typeof BottomSheetView> & {
   hideSpacer?: boolean
+  isDynamic?: boolean
 }
 
-const BottomSheetContent = ({ children, className, hideSpacer }: Props) => {
+const BottomSheetContent = ({ children, className, hideSpacer, isDynamic }: Props) => {
   const insets = useSafeAreaInsets()
 
   return (
-    <BottomSheetView className={cn('px-5 py-3', className)}>
+    <BottomSheetView className={cn('px-5 py-3', { 'min-h-[80px]': !isDynamic }, className)}>
       {children}
       {/* TODO this should be handled by SafeAreaProvider */}
       {/* spacer */}
