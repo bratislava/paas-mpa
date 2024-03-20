@@ -112,15 +112,15 @@ const MainMenuScreen = () => {
     signOut()
   }
 
-  // TODO see comments in _layout about animation and transparentModal on ios
   return (
     <View className="flex-1">
-      {/* <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} /> */}
       <ScreenView
         className="grow p-5"
+        hasBackButton={false}
         style={{ paddingBottom: bottom + 20 }} // 20 is same as pb-5
         title={t('Navigation.menu')}
         options={{
+          animation: 'fade_from_bottom',
           headerRight: () => (
             <IconButton
               name="close"
