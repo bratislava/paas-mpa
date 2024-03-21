@@ -12,11 +12,11 @@ import { formatDate } from '@/utils/formatDate'
 
 type VisitorCardProps = Pick<
   CommonParkingCardProps,
-  'cardNumber' | 'balanceSeconds' | 'originalBalanceSeconds' | 'validUntil'
+  'zoneName' | 'balanceSeconds' | 'originalBalanceSeconds' | 'validUntil'
 >
 
 const VisitorCard = ({
-  cardNumber,
+  zoneName,
   balanceSeconds,
   originalBalanceSeconds,
   validUntil,
@@ -27,7 +27,7 @@ const VisitorCard = ({
   return (
     <ParkingCardBase variant="visitor">
       <ParkingCardContent>
-        <Typography variant="small">{cardNumber}</Typography>
+        <Typography variant="small">{zoneName}</Typography>
         <Divider dividerClassname="bg-visitorCard" />
         <CardContentItem
           description={t('remainingCredit')}

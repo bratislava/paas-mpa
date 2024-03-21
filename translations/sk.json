@@ -250,7 +250,8 @@
     "buyTicket": "Kúpiť lístok",
     "filtersButton": "Filtre",
     "noHistoryTickets": "Žiadne lístky",
-    "noHistoryTicketsText": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom.",
+    "noHistoryTicketsText": "Po vypršaní parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
+    "noHistoryTicketsTextFiltered": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom.",
     "downloadReceipt": "Stiahnuť doklad"
   },
   "TicketCard": {

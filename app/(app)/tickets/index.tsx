@@ -27,6 +27,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
+import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
@@ -117,6 +118,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
     router.push('/tickets/filters')
   }
 
+  const hasDefaultFilters = defaultTicketsFiltersStoreContextValues === filters
+
   if (isPending) {
     return (
       <ScreenContent className="bg-transparent">
@@ -144,17 +147,24 @@ const TicketsRoute = ({ active }: RouteProps) => {
       />
     )
   }
+
   if (!active && !tickets?.length) {
     return (
       <EmptyStateScreen
         hasBackButton={false}
         contentTitle={t('noHistoryTickets')}
-        text={t('noHistoryTicketsText')}
+        text={t(hasDefaultFilters ? 'noHistoryTicketsText' : 'noHistoryTicketsTextFiltered')}
         actionButtonPosition="insideContent"
         actionButton={
-          <Button variant="primary" onPress={handleFiltersPress}>
-            {t('filtersButton')}
-          </Button>
+          hasDefaultFilters ? (
+            <Link href="/purchase" asChild>
+              <Button variant="primary">{t('buyTicket')}</Button>
+            </Link>
+          ) : (
+            <Button variant="primary" onPress={handleFiltersPress}>
+              {t('filtersButton')}
+            </Button>
+          )
         }
       />
     )

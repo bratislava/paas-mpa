@@ -252,7 +252,8 @@
     "buyTicket": "Buy ticket",
     "filtersButton": "Filters",
     "noHistoryTickets": "No tickets found",
-    "noHistoryTicketsText": "No past tickets matching the selected filters found.",
+    "noHistoryTicketsText": "After bought ticket expires, it's shown here.",
+    "noHistoryTicketsTextFiltered": "No past tickets matching the selected filters found.",
     "downloadReceipt": "Download receipt"
   },
   "TicketCard": {
