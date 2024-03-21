@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useRef } from 'react'
@@ -26,7 +26,7 @@ const Page = () => {
   const t = useTranslation('ParkingCards')
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery(parkingCardsInfiniteOptions({ email }))
@@ -49,7 +49,7 @@ const Page = () => {
             <IconButton
               name="more-horiz"
               accessibilityLabel={t('openEmailActions')}
-              onPress={() => bottomSheetRef.current?.expand()}
+              onPress={() => bottomSheetRef.current?.present()}
             />
           ),
         }}

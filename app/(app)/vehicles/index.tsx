@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { Link } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { FlatList } from 'react-native'
@@ -37,7 +41,7 @@ const VehiclesScreen = () => {
     ({ id }) => id === activeVehicleId,
   )?.vehiclePlateNumber
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -48,7 +52,7 @@ const VehiclesScreen = () => {
 
   const handleContextMenuPress = (id: number) => {
     setActiveVehicleId(id)
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.present()
   }
 
   const handleActionDelete = () => {
@@ -126,9 +130,8 @@ const VehiclesScreen = () => {
         ) : null}
       </ScreenContent>
 
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -148,7 +151,7 @@ const VehiclesScreen = () => {
             <ActionRow startIcon="delete" label={t('actions.deleteVehicle')} variant="negative" />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
 
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions

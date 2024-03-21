@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { useCallback, useRef, useState } from 'react'
 import { Platform, ScrollView } from 'react-native'
 
@@ -26,7 +30,7 @@ const Page = () => {
   const [defaultPaymentOption, setDefaultPaymentOption] = useDefaultPaymentOption()
   const [activeOption, setActiveOption] = useState<PaymentOption | null>(null)
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -36,7 +40,7 @@ const Page = () => {
   )
 
   const handleContextMenuPress = (option: PaymentOption) => {
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.present()
     setActiveOption(option)
   }
 
@@ -73,9 +77,8 @@ const Page = () => {
         </ScreenContent>
       </ScrollView>
 
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -85,7 +88,7 @@ const Page = () => {
             <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
     </ScreenView>
   )
 }

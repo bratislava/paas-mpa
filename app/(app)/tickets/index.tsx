@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
@@ -40,7 +44,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const [activeId, setActiveId] = useState<number | null>(null)
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const now = useMemo(() => new Date(), [])
 
@@ -63,7 +67,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
   )
 
   const handleMorePress = useCallback((id: number) => {
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.present()
     setActiveId(id)
   }, [])
 
@@ -186,9 +190,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
         )}
       </ScreenContent>
 
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -204,7 +207,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
             />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
     </>
   )
 }
