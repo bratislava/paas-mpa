@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { deleteUser } from 'aws-amplify/auth'
 import { useCallback, useRef } from 'react'
@@ -24,7 +28,7 @@ const SettingsPage = () => {
   const signOut = useSignOut()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -48,7 +52,7 @@ const SettingsPage = () => {
   })
 
   const handleContextMenuPress = () => {
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.present()
   }
 
   const handleActionDelete = () => {
@@ -77,9 +81,8 @@ const SettingsPage = () => {
         </ScrollView>
       </ScreenContent>
 
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -89,7 +92,7 @@ const SettingsPage = () => {
             <ActionRow startIcon="delete" label={t('actions.deleteAccount')} variant="negative" />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
 
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions

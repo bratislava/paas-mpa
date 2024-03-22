@@ -44,7 +44,7 @@ const ZoneDetailsScreen = () => {
 
         <Divider />
 
-        <FlexRow className="justify-start">
+        <FlexRow className="items-center justify-start">
           <View className="h-6 w-6 items-center justify-center rounded-full bg-dark">
             <Icon name="local-parking" size={12} className="text-white" />
           </View>
@@ -56,7 +56,7 @@ const ZoneDetailsScreen = () => {
         {zone.paidHours ? (
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
-            <Typography>
+            <Typography className="flex-1">
               {t('paidHours')}: {zone.paidHours}
             </Typography>
           </FlexRow>

@@ -52,7 +52,7 @@ const ParkingCard = ({ card }: Props) => {
     case ParkingCardType.Npk:
       return (
         <VisitorCard
-          cardNumber={card.identificator}
+          zoneName={card.name}
           balanceSeconds={card.balanceSeconds}
           originalBalanceSeconds={undefined} // TODO check with parkdots if original balance is safe to use {card.originalBalanceSeconds}
           validUntil={card.validTo}

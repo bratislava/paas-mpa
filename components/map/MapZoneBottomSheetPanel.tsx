@@ -50,7 +50,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
               }}
             >
               <PressableStyled>
-                <View className="flex-row">
+                <View className="flex-row items-center">
                   <Typography variant="default-bold">{t('showDetails')}</Typography>
                   <Icon name="chevron-right" />
                 </View>
