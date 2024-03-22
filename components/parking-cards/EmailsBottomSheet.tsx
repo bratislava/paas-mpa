@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import { forwardRef, useCallback, useState } from 'react'
@@ -14,7 +18,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 // TODO FIXME bottom sheet is empty on Android
-const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
+const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const t = useTranslation('ParkingCards')
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
@@ -64,9 +68,8 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
 
   return (
     <>
-      <BottomSheet
+      <BottomSheetModal
         ref={ref}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -80,7 +83,7 @@ const EmailsBottomSheet = forwardRef<BottomSheet>((props, ref) => {
             />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
 
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
         <ModalContentWithActions

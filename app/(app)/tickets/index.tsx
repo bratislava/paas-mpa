@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import { useCallback, useMemo, useRef, useState } from 'react'
@@ -23,6 +27,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
+import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
 
@@ -40,7 +45,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const [activeId, setActiveId] = useState<number | null>(null)
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const now = useMemo(() => new Date(), [])
 
@@ -63,7 +68,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
   )
 
   const handleMorePress = useCallback((id: number) => {
-    bottomSheetRef.current?.expand()
+    bottomSheetRef.current?.present()
     setActiveId(id)
   }, [])
 
@@ -113,6 +118,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
     router.push('/tickets/filters')
   }
 
+  const hasDefaultFilters = defaultTicketsFiltersStoreContextValues === filters
+
   if (isPending) {
     return (
       <ScreenContent className="bg-transparent">
@@ -140,17 +147,24 @@ const TicketsRoute = ({ active }: RouteProps) => {
       />
     )
   }
+
   if (!active && !tickets?.length) {
     return (
       <EmptyStateScreen
         hasBackButton={false}
         contentTitle={t('noHistoryTickets')}
-        text={t('noHistoryTicketsText')}
+        text={t(hasDefaultFilters ? 'noHistoryTicketsText' : 'noHistoryTicketsTextFiltered')}
         actionButtonPosition="insideContent"
         actionButton={
-          <Button variant="primary" onPress={handleFiltersPress}>
-            {t('filtersButton')}
-          </Button>
+          hasDefaultFilters ? (
+            <Link href="/purchase" asChild>
+              <Button variant="primary">{t('buyTicket')}</Button>
+            </Link>
+          ) : (
+            <Button variant="primary" onPress={handleFiltersPress}>
+              {t('filtersButton')}
+            </Button>
+          )
         }
       />
     )
@@ -186,9 +200,8 @@ const TicketsRoute = ({ active }: RouteProps) => {
         )}
       </ScreenContent>
 
-      <BottomSheet
+      <BottomSheetModal
         ref={bottomSheetRef}
-        index={-1}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
@@ -204,7 +217,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
             />
           </PressableStyled>
         </BottomSheetContent>
-      </BottomSheet>
+      </BottomSheetModal>
     </>
   )
 }

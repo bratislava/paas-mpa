@@ -8,7 +8,6 @@ import NewAnnouncementsBadge from '@/components/navigation/MainMenu/NewAnnouncem
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import { IconName } from '@/components/shared/Icon'
-import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -112,23 +111,12 @@ const MainMenuScreen = () => {
     signOut()
   }
 
-  // TODO see comments in _layout about animation and transparentModal on ios
   return (
     <View className="flex-1">
-      {/* <Pressable className="min-w-0 flex-1" pointerEvents="box-only" onPress={handlePressClose} /> */}
       <ScreenView
         className="grow p-5"
         style={{ paddingBottom: bottom + 20 }} // 20 is same as pb-5
         title={t('Navigation.menu')}
-        options={{
-          headerRight: () => (
-            <IconButton
-              name="close"
-              accessibilityLabel={t('Navigation.closeMenu')}
-              onPress={handlePressClose}
-            />
-          ),
-        }}
       >
         <View className="flex-1 justify-between">
           <View>
@@ -137,7 +125,7 @@ const MainMenuScreen = () => {
                 // eslint-disable-next-line react/no-array-index-key
                 <Divider key={`divider-${index}`} dividerClassname="my-3" />
               ) : (
-                <Link key={item.path} asChild href={item.path} onPress={handlePressClose}>
+                <Link key={item.path} asChild href={item.path}>
                   <PressableStyled>
                     <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
                   </PressableStyled>

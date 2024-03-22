@@ -33,6 +33,7 @@ const Typography = ({ variant = 'default', children, className, ...rest }: Typog
         },
         className,
       )}
+      maxFontSizeMultiplier={1.2}
       {...rest}
     >
       {children}

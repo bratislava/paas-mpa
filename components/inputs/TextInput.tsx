@@ -66,6 +66,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
         {/* Instead of "h-[24px] text-[16px]", it should use only predefined "text-16" */}
         <TextInputNative
           ref={refSetter}
+          maxFontSizeMultiplier={1.2}
           editable={!isDisabled}
           className={cn(
             'flex-1 font-inter-400regular text-[16px]',
