@@ -63,7 +63,7 @@ const Page = () => {
   const handleSendVerificationEmail = () => {
     if (isValidEmail(email)) {
       const body: VerifyEmailsDto = {
-        emails: [email.toLowerCase()],
+        emails: [email.toLowerCase()], // double check before sending to the backend
       }
 
       mutation.mutate(body)
