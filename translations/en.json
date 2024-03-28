@@ -40,6 +40,8 @@
     "verifyYourEmail": "Verify email",
     "verifyYourEmailInfo": "We’ve sent verification email to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
     "verifyButton": "Verify",
+    "noParkingCard": "Don't have parking card?",
+    "noParkingCardDescription": "If you don't have a parking card in PAAS yet, you can easily register on the website \r[www.paas.sk](https://paas.sk/).",
     "Errors": {
       "EmailAlreadyVerified": "Email has been added already",
       "InvalidEmail": "Email address has wrong format",
@@ -265,6 +267,8 @@
     "title": "Parking cards",
     "paasEmailsList": "Choose an email to continue and show cards that are attached",
     "addParkingCards": "Add parking cards",
+    "noParkingCard": "Don't have parking card?",
+    "noParkingCardDescription": "If you don't have a parking card in PAAS yet, you can easily register on the website \r[www.paas.sk](https://paas.sk/).",
     "type": {
       "visitor": "Visitor card",
       "resident": "Resident card",

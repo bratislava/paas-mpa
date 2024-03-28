@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { router } from 'expo-router'
 import { useState } from 'react'
+import { ScrollView, View } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -9,6 +10,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import DismissKeyboard from '@/components/shared/DissmissKeyboard'
+import Markdown from '@/components/shared/Markdown'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -73,33 +75,43 @@ const Page = () => {
   }
 
   return (
-    <DismissKeyboard>
-      <ScreenView title={t('addCardsTitle')}>
-        <ScreenContent>
-          <AccessibilityField
-            label={t('emailField')}
-            errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
-          >
-            <TextInput
-              value={email}
-              onChangeText={handleChangeText}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              hasError={!!expectedError}
-              autoComplete="email"
-              autoCorrect={false}
-              onSubmitEditing={handleSendVerificationEmail}
-            />
-          </AccessibilityField>
+    <ScreenView title={t('addCardsTitle')}>
+      {/* alwaysBounceVertical disables bouncing when view doesn't exceed parents height (when there is not need for scrolling) */}
+      <ScrollView alwaysBounceVertical={false}>
+        <DismissKeyboard>
+          <ScreenContent>
+            <AccessibilityField
+              label={t('emailField')}
+              errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
+            >
+              <TextInput
+                value={email}
+                onChangeText={handleChangeText}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                hasError={!!expectedError}
+                autoComplete="email"
+                autoCorrect={false}
+                onSubmitEditing={handleSendVerificationEmail}
+              />
+            </AccessibilityField>
 
-          <Panel>
-            <Typography>{t('instructions')}</Typography>
-          </Panel>
+            <Panel>
+              <Typography>{t('instructions')}</Typography>
+            </Panel>
 
-          <ContinueButton onPress={handleSendVerificationEmail} loading={mutation.isPending} />
-        </ScreenContent>
-      </ScreenView>
-    </DismissKeyboard>
+            <View className="g-10">
+              <ContinueButton onPress={handleSendVerificationEmail} loading={mutation.isPending} />
+
+              <View className="g-2">
+                <Typography variant="h2">{t('noParkingCard')}</Typography>
+                <Markdown>{t('noParkingCardDescription')}</Markdown>
+              </View>
+            </View>
+          </ScreenContent>
+        </DismissKeyboard>
+      </ScrollView>
+    </ScreenView>
   )
 }
 

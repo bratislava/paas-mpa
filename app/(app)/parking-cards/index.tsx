@@ -11,6 +11,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
+import Markdown from '@/components/shared/Markdown'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -47,13 +48,23 @@ const Page = () => {
   if (verifiedEmails.length === 0) {
     return (
       <EmptyStateScreen
+        options={{ headerTransparent: true }}
         title={t('title')}
         contentTitle={t('noEmailsTitle')}
         text={t('noEmailsText')}
         actionButton={
-          <Link asChild href="/parking-cards/verification">
-            <Button>{t('addParkingCards')}</Button>
-          </Link>
+          <View className="g-10">
+            <Link asChild href="/parking-cards/verification">
+              <Button>{t('addParkingCards')}</Button>
+            </Link>
+
+            <View className="bg-white g-2">
+              <Typography className="text-center" variant="h2">
+                {t('noParkingCard')}
+              </Typography>
+              <Markdown textCenter>{t('noParkingCardDescription')}</Markdown>
+            </View>
+          </View>
         }
         actionButtonPosition="insideContent"
         hasBackButton
