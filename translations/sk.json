@@ -40,6 +40,8 @@
     "verifyYourEmail": "Overte e-mail",
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n**{{email}}** \n\nSkopírujte overovací kód z e-mailu a potvrďte overenie. Po potvrdení nahráme vaše parkovacie karty do aplikácie.",
     "verifyButton": "Overiť",
+    "noParkingCard": "Nemáte parkovaciu kartu?",
+    "noParkingCardDescription": "Ak ešte nemáte v PAAS žiadnu parkovaciu kartu, registráciu vybavíte jednoducho na stránke [www.paas.sk](https://paas.sk/).",
     "Errors": {
       "EmailAlreadyVerified": "E-mail už bol pridaný",
       "InvalidEmail": "E-mailová adresa má zlý formát",
@@ -263,6 +265,8 @@
     "title": "Parkovacie karty",
     "paasEmailsList": "Vyberte e-mailovú adresu, pre ktorú chcete zobraziť parkovacie karty",
     "addParkingCards": "Pridať parkovacie karty",
+    "noParkingCard": "Nemáte parkovaciu kartu?",
+    "noParkingCardDescription": "Ak ešte nemáte v PAAS žiadnu parkovaciu kartu, registráciu vybavíte jednoducho na stránke [www.paas.sk](https://paas.sk/).",
     "type": {
       "visitor": "Návštevnícka karta",
       "resident": "Rezidentská karta",
