@@ -28,9 +28,7 @@ const EditVehicleForm = ({ vehicle }: Props) => {
 
     await editVehicle({
       id: vehicle.id,
-      licencePlate: vehicle.vehiclePlateNumber,
       vehicleName,
-      isDefault: vehicle.isDefault,
     })
     router.back()
   }

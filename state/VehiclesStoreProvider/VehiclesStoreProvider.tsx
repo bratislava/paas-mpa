@@ -12,7 +12,7 @@ export type AddVehicle = {
   isDefault?: boolean
 }
 
-export type EditVehicle = AddVehicle & { id: number }
+export type EditVehicle = { id: number; vehicleName?: string; isDefault?: boolean }
 
 type VehiclesStoreContextProps = {
   vehicles: VehicleDto[]
@@ -82,9 +82,8 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       await updateMutation.mutateAsync({
         id: vehicle.id,
         updateVehicleDto: {
-          vehiclePlateNumber: vehicle.licencePlate,
           name: vehicle.vehicleName,
-          isDefault: !!vehicle.isDefault,
+          isDefault: vehicle.isDefault,
         },
       })
     },
