@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application'
 import { router } from 'expo-router'
 import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
 import {
@@ -84,7 +85,11 @@ const FeedbackScreen = () => {
     const stringType: FeedbackType = feedbackType === 'bug' ? FeedbackType._0 : FeedbackType._1
     // TODO: bug fix, FeedbackType should be a number
     const type = Number.parseInt(stringType, 10)
-    mutation.mutate({ email, message, type: type as unknown as FeedbackType })
+    mutation.mutate({
+      email,
+      message: `${message} (${nativeApplicationVersion} (${nativeBuildVersion}))`,
+      type: type as unknown as FeedbackType,
+    })
   }, [email, feedbackType, message, mutation])
 
   const isValidEmail = !shouldVerifyEmail || (!!email && email.includes('@'))
