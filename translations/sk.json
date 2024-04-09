@@ -179,7 +179,8 @@
     "openVehicleContextMenu": "Uprať vozidlo",
     "actions": {
       "saveAsDefault": "Uložiť ako predvolené",
-      "deleteVehicle": "Odstrániť"
+      "deleteVehicle": "Odstrániť",
+      "back": "Späť"
     }
   },
   "Settings": {
@@ -544,5 +545,9 @@
     "title": "Nová verzia aplikácie",
     "text": "Aktualizujte aplikáciu na najnovšiu verziu.",
     "primaryActionLabel": "Aktualizovať"
+  },
+  "ErrorScreen": {
+    "title": "Vyskytla sa chyba",
+    "text": "Choďte späť alebo skúste znova."
   }
 }

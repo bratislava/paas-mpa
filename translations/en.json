@@ -178,7 +178,8 @@
     "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
-      "deleteVehicle": "Delete"
+      "deleteVehicle": "Delete",
+      "back": "Back"
     }
   },
   "Settings": {
@@ -547,5 +548,9 @@
     "title": "New version available",
     "text": "Please update the app to the latest version.",
     "primaryActionLabel": "Update"
+  },
+  "ErrorScreen": {
+    "title": "An error occurred",
+    "text": "Go back and try again."
   }
 }
