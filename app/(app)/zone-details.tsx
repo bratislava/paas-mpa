@@ -13,7 +13,7 @@ import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 import { getPriceFromZone } from '@/utils/getPriceFromZone'
 
-export type ZoneDetailsParamas = {
+export type ZoneDetailsParams = {
   udrId: string
 }
 
@@ -21,7 +21,7 @@ const ZoneDetailsScreen = () => {
   const t = useTranslation('ZoneDetailsScreen')
 
   // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
-  const { udrId } = useLocalSearchParams<ZoneDetailsParamas>()
+  const { udrId } = useLocalSearchParams<ZoneDetailsParams>()
 
   const zone = useMapZone(udrId ?? null, true)
 

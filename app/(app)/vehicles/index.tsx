@@ -3,7 +3,7 @@ import {
   BottomSheetBackdropProps,
   BottomSheetModal,
 } from '@gorhom/bottom-sheet'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { FlatList } from 'react-native'
 
@@ -58,6 +58,13 @@ const VehiclesScreen = () => {
   const handleActionDelete = () => {
     bottomSheetRef.current?.close()
     openModal()
+  }
+
+  const handleActionEdit = () => {
+    if (activeVehicleId) {
+      router.push({ pathname: `/vehicles/edit-vehicle`, params: { vehicleId: activeVehicleId } })
+    }
+    bottomSheetRef.current?.close()
   }
 
   const handleActionSetDefault = async () => {
@@ -146,6 +153,12 @@ const VehiclesScreen = () => {
               <Divider />
             </>
           )}
+
+          <PressableStyled onPress={handleActionEdit}>
+            <ActionRow startIcon="edit" label={t('editVehicle')} />
+          </PressableStyled>
+
+          <Divider />
 
           <PressableStyled onPress={handleActionDelete}>
             <ActionRow startIcon="delete" label={t('actions.deleteVehicle')} variant="negative" />

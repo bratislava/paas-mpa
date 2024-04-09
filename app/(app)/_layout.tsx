@@ -64,6 +64,7 @@ const RootLayout = () => {
                 <Stack.Screen name="index" options={{ headerShown: false }} />
 
                 <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+                <Stack.Screen name="vehicles/edit-vehicle" options={{ presentation: 'modal' }} />
                 <Stack.Screen
                   name="(purchase-and-payment)/purchase/choose-vehicle"
                   options={{ presentation: 'modal' }}
