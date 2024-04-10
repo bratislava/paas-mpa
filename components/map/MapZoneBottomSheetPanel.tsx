@@ -1,7 +1,7 @@
 import { Link } from 'expo-router'
 import { View } from 'react-native'
 
-import { ZoneDetailsParamas } from '@/app/(app)/zone-details'
+import { ZoneDetailsParams } from '@/app/(app)/zone-details'
 import ZoneBadge from '@/components/info/ZoneBadge'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import Divider from '@/components/shared/Divider'
@@ -46,7 +46,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
                 pathname: '/zone-details',
                 params: {
                   udrId: selectedZone.udrId,
-                } satisfies ZoneDetailsParamas,
+                } satisfies ZoneDetailsParams,
               }}
             >
               <PressableStyled>

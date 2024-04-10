@@ -146,6 +146,7 @@
     "title": "Vehicles",
     "addVehicleTitle": "Add vehicle",
     "addVehicle": "Add new",
+    "editVehicle": "Edit vehicle",
     "addNewVehicle": "Add new vehicle",
     "savedVehicles": "Saved vehicles",
     "licencePlateFieldLabel": "Licence plate",
@@ -177,7 +178,8 @@
     "openVehicleContextMenu": "Edit vehicle",
     "actions": {
       "saveAsDefault": "Set as default",
-      "deleteVehicle": "Delete"
+      "deleteVehicle": "Delete",
+      "back": "Back"
     }
   },
   "Settings": {
@@ -546,5 +548,9 @@
     "title": "New version available",
     "text": "Please update the app to the latest version.",
     "primaryActionLabel": "Update"
+  },
+  "ErrorScreen": {
+    "title": "An error occurred",
+    "text": "Go back and try again."
   }
 }

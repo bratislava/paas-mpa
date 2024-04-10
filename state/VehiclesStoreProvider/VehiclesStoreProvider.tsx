@@ -12,9 +12,15 @@ export type AddVehicle = {
   isDefault?: boolean
 }
 
+export type EditVehicle = {
+  id: number
+  vehicleName?: string
+}
+
 type VehiclesStoreContextProps = {
   vehicles: VehicleDto[]
   addVehicle: (vehicle: AddVehicle) => Promise<void>
+  editVehicle: (vehicle: EditVehicle) => Promise<void>
   deleteVehicle: (id: number) => Promise<void>
   setDefaultVehicle: (id: number) => Promise<void>
   defaultVehicle: VehicleDto | null
@@ -74,6 +80,18 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     [insertMutation, vehicles],
   )
 
+  const editVehicle = useCallback(
+    async (vehicle: EditVehicle) => {
+      await updateMutation.mutateAsync({
+        id: vehicle.id,
+        updateVehicleDto: {
+          name: vehicle.vehicleName,
+        },
+      })
+    },
+    [updateMutation],
+  )
+
   const setDefaultVehicle = useCallback(
     async (vehicleId: number) => {
       const vehicle = vehicles.find(({ id }) => vehicleId === id)
@@ -122,6 +140,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     () => ({
       vehicles,
       addVehicle,
+      editVehicle,
       deleteVehicle,
       setDefaultVehicle,
       defaultVehicle,
@@ -132,6 +151,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     }),
     [
       addVehicle,
+      editVehicle,
       defaultVehicle,
       deleteVehicle,
       getVehicle,
