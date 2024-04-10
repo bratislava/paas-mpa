@@ -12,7 +12,10 @@ export type AddVehicle = {
   isDefault?: boolean
 }
 
-export type EditVehicle = { id: number; vehicleName?: string; isDefault?: boolean }
+export type EditVehicle = {
+  id: number
+  vehicleName?: string
+}
 
 type VehiclesStoreContextProps = {
   vehicles: VehicleDto[]
@@ -83,7 +86,6 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
         id: vehicle.id,
         updateVehicleDto: {
           name: vehicle.vehicleName,
-          isDefault: vehicle.isDefault,
         },
       })
     },

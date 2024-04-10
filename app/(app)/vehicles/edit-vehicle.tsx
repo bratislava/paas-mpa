@@ -26,6 +26,7 @@ const EditVehicleScreen = () => {
             {t('actions.back')}
           </Button>
         }
+        title={t('editVehicle')}
       />
     )
 

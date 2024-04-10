@@ -6,7 +6,7 @@ import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
-  title?: string
+  contentTitle?: string
   text?: string
   actionButton?: ReactNode
 } & Omit<ScreenViewProps, 'children'>
@@ -14,15 +14,15 @@ type Props = {
 /**
  * Error screen with error message and title
  */
-const ErrorScreen = ({ title, text, actionButton, ...rest }: Props) => {
+const ErrorScreen = ({ text, actionButton, contentTitle, ...rest }: Props) => {
   const t = useTranslation('ErrorScreen')
 
   return (
-    <ScreenViewCentered options={{ headerTransparent: true }} title="" {...rest}>
+    <ScreenViewCentered options={{ headerTransparent: true }} {...rest}>
       <ContentWithAvatar
         actionButton={actionButton}
         variant="error"
-        title={title ?? t('title')}
+        title={contentTitle ?? t('title')}
         text={text ?? t('text')}
       />
     </ScreenViewCentered>

@@ -21,11 +21,9 @@ const EditVehicleForm = ({ vehicle }: Props) => {
   const t = useTranslation('VehiclesScreen')
   const { editVehicle, isLoading } = useVehiclesStoreContext()
 
-  const [vehicleName, setVehicleName] = useState(vehicle?.name ?? '')
+  const [vehicleName, setVehicleName] = useState(vehicle.name ?? '')
 
   const handleSaveVehicle = async () => {
-    if (!vehicle) return
-
     await editVehicle({
       id: vehicle.id,
       vehicleName,
@@ -46,7 +44,7 @@ const EditVehicleForm = ({ vehicle }: Props) => {
               autoCapitalize="characters"
               autoCorrect={false}
               isDisabled
-              value={vehicle?.vehiclePlateNumber}
+              value={vehicle.vehiclePlateNumber}
             />
           </AccessibilityField>
 
