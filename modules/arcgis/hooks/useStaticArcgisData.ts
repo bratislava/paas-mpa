@@ -39,12 +39,25 @@ async function fetchFileOrGetFromCache<T>(fileName: string): Promise<AxiosRespon
   return response
 }
 
+/**
+ * Function to calculate the milliseconds till midnight + 5 minutes to refetch data each day in case of not closing app
+ * @returns milliseconds till midnight
+ */
+const calculateMillisecondsTillMidnight = () => {
+  const now = new Date()
+  const midnight = new Date()
+  midnight.setHours(24, 0, 0, 0)
+
+  return midnight.getTime() - now.getTime() + 5 * 60 * 1000
+}
+
 export const useStaticArcgisData = (): Partial<ArcgisData> => {
   const { data: rawZonesData } = useQuery({
     queryKey: ['RawZonesData'],
     queryFn: () =>
       fetchFileOrGetFromCache<FeatureCollection<Polygon, GeoJsonProperties>>('okp.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawParkomatsData } = useQuery({
@@ -54,6 +67,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
         FeatureCollection<Point, Arcgis.ParkomatPoint | ArcgisAliased.ParkomatPoint>
       >('parkomaty.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawPartnersData } = useQuery({
@@ -63,6 +77,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
         FeatureCollection<Point, Arcgis.PartnerPoint | ArcgisAliased.PartnerPoint>
       >('partnerske_prevadzky.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawParkingLotsData } = useQuery({
@@ -72,6 +87,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
         FeatureCollection<Point, Arcgis.ParkingPoint | ArcgisAliased.ParkingPoint>
       >('parkoviska.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawBranchesData } = useQuery({
@@ -81,6 +97,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
         FeatureCollection<Point, Arcgis.BranchPoint | ArcgisAliased.BranchPoint>
       >('pobocky.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawUdrData } = useQuery({
@@ -90,6 +107,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
         'udr_p.geojson',
       ),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   const { data: rawOdpData } = useQuery({
@@ -97,6 +115,7 @@ export const useStaticArcgisData = (): Partial<ArcgisData> => {
     queryFn: () =>
       fetchFileOrGetFromCache<FeatureCollection<Polygon, GeoJsonProperties>>('odp.geojson'),
     select: (data) => data.data,
+    refetchInterval: calculateMillisecondsTillMidnight,
   })
 
   return {
