@@ -41,11 +41,14 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
           <Typography variant="default-bold" className="flex-1">
             {formatDateTime(parkingStartDate, locale)} – {formatDateTime(parkingEndDate, locale)}
           </Typography>
-          <IconButton
-            name="more-vert"
-            accessibilityLabel={t('more')}
-            onPress={() => handleMorePress(ticket.id)}
-          />
+
+          {isActive ? null : (
+            <IconButton
+              name="more-vert"
+              accessibilityLabel={t('more')}
+              onPress={() => handleMorePress(ticket.id)}
+            />
+          )}
         </FlexRow>
 
         <View className="items-start g-1">
