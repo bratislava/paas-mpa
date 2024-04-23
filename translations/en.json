@@ -301,9 +301,9 @@
     "verificationResult": "Verification result",
     "verified": {
       "title": "Parking cards added",
-      "text_empty": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.",
-      "text": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.\n\n Vehicle with license plate **{{licencePlates}}** added as well. You can manage your vehicles in the section Vehicles.",
-      "text_plural": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.\n\n Vehicles with license plates **{{licencePlates}}** added as well. You can manage your vehicles in the section Vehicles.",
+      "text": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.",
+      "vehicleText_one": "\n\nVehicle with license plate **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
+      "vehicleText_other": "\n\nVehicles with license plates **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
       "actionButtonLabel": "Continue"
     },
     "verified-no-cards": {

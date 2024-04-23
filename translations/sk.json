@@ -299,9 +299,10 @@
     "verificationResult": "Výsledok overenia",
     "verified": {
       "title": "Parkovacie karty pridané",
-      "text_empty": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
-      "text_0": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.\n\n Pridané vozidlo s EČV **{{licencePlates}}** nájdete a môžete spravovať v časti Vozidlá.",
-      "text_1": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.\n\n Pridané vozidlá s EČV **{{licencePlates}}** nájdete a môžete spravovať v časti Vozidlá.",
+      "text": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
+      "vehicleText_one": "\n\nPridané vozidlo s EČV **{{licencePlatesString}}** nájdete a môžete spravovať v časti Vozidlá.",
+      "vehicleText_other": "\n\nPridané vozidlá s EČV **{{licencePlatesString}}** nájdete a môžete spravovať v časti Vozidlá.",
+      "vehicleText_few": "$t(VerificationResult.verified.vehicleText_other)",
       "actionButtonLabel": "Pokračovať"
     },
     "verified-no-cards": {
