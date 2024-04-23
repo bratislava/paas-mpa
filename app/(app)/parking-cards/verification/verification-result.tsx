@@ -90,7 +90,7 @@ const VerificationResultPage = () => {
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}
           title={t(`${status}.title`)}
-          text={t(licencePlates?.split(', ').length ? `${status}.text` : `${status}.text_empty`, {
+          text={t(licencePlates ? `${status}.text` : `${status}.text_empty`, {
             email,
             licencePlates,
             count: licencePlates?.split(', ').length,
