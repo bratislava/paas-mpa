@@ -18,13 +18,14 @@ import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
 type VerificationResultSearchParams = {
   email: string
   status: 'verified' | 'verified-no-cards' | 'link-expired'
+  licencePlates?: string
 }
 
 const VerificationResultPage = () => {
   const t = useTranslation('VerificationResult')
   const queryClient = useQueryClient()
   const navigation = useNavigation()
-  const { email, status } = useLocalSearchParams<VerificationResultSearchParams>()
+  const { email, status, licencePlates } = useLocalSearchParams<VerificationResultSearchParams>()
 
   queryClient.refetchQueries({ queryKey: verifiedEmailsInfiniteOptions().queryKey, type: 'active' })
 
@@ -89,7 +90,11 @@ const VerificationResultPage = () => {
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}
           title={t(`${status}.title`)}
-          text={t(`${status}.text`, { email })}
+          text={t(licencePlates?.split(', ').length ? `${status}.text` : `${status}.text_empty`, {
+            email,
+            licencePlates,
+            count: licencePlates?.split(', ').length,
+          })}
           asMarkdown
         />
       ) : (
