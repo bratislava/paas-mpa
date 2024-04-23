@@ -4,7 +4,6 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MenuRow from '@/components/list-rows/MenuRow'
-import NewAnnouncementsBadge from '@/components/navigation/MainMenu/NewAnnouncementsBadge'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import { IconName } from '@/components/shared/Icon'
@@ -59,12 +58,13 @@ const MainMenuScreen = () => {
       path: '/settings',
     },
     DIVIDER,
-    {
-      label: t('Announcements.title'),
-      icon: 'notifications',
-      path: '/announcements',
-      endSlot: <NewAnnouncementsBadge />,
-    },
+    // TODO: Implement announcements in V2... hidden for now
+    // {
+    //   label: t('Announcements.title'),
+    //   icon: 'notifications',
+    //   path: '/announcements',
+    //   endSlot: <NewAnnouncementsBadge />,
+    // },
     {
       label: t('FeedbackScreen.title'),
       icon: 'feedback',
