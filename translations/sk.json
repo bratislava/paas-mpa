@@ -36,7 +36,7 @@
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",
     "emailField": "E-mailová adresa",
-    "instructions": "Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
+    "instructions": "Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty a vozidlá bonusových kariet. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
     "verifyYourEmail": "Overte e-mail",
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n**{{email}}** \n\nSkopírujte overovací kód z e-mailu a potvrďte overenie. Po potvrdení nahráme vaše parkovacie karty do aplikácie.",
     "verifyButton": "Overiť",
@@ -300,6 +300,9 @@
     "verified": {
       "title": "Parkovacie karty pridané",
       "text": "Vaše parkovacie karty pre e-mailovú adresu **{{email}}** boli pridané. Zoznam všetkých kariet nájdete v časti Parkovacie karty.",
+      "vehicleText_one": "\n\nPridané vozidlo s EČV **{{licencePlatesString}}** nájdete a môžete spravovať v časti Vozidlá.",
+      "vehicleText_other": "\n\nPridané vozidlá s EČV **{{licencePlatesString}}** nájdete a môžete spravovať v časti Vozidlá.",
+      "vehicleText_few": "$t(VerificationResult.verified.vehicleText_other)",
       "actionButtonLabel": "Pokračovať"
     },
     "verified-no-cards": {
