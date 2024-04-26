@@ -36,7 +36,7 @@
   "AddParkingCards": {
     "addCardsTitle": "Add parking cards",
     "emailField": "Email address",
-    "instructions": "If you are registered in PAAS, enter the email address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards.",
+    "instructions": "If you are registered in PAAS, enter the email address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards and cars connected to Bonus card.",
     "verifyYourEmail": "Verify email",
     "verifyYourEmailInfo": "We’ve sent verification email to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
     "verifyButton": "Verify",
@@ -302,6 +302,8 @@
     "verified": {
       "title": "Parking cards added",
       "text": "Your parking cards email **{{email}}** has been added. You can see your cards in the Parking cards section.",
+      "vehicleText_one": "\n\nVehicle with license plate **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
+      "vehicleText_other": "\n\nVehicles with license plates **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
       "actionButtonLabel": "Continue"
     },
     "verified-no-cards": {
