@@ -8,6 +8,7 @@ import { ParkingCardAvatar } from '@/assets/avatars'
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
+import { RememberCardField } from '@/components/controls/payment-methods/RememberCardField'
 import UsedBonusCard from '@/components/controls/payment-methods/UsedBonusCard'
 import VehicleFieldControl from '@/components/controls/vehicles/VehicleFieldControl'
 import Modal from '@/components/screen-layout/Modal/Modal'
@@ -43,7 +44,7 @@ const PurchaseScreen = () => {
 
   const [hasLicencePlateError, setHasLicencePlateError] = useState(false)
 
-  const { udr, vehicle, duration, npk, paymentOption } = usePurchaseStoreContext()
+  const { udr, vehicle, duration, npk, paymentOption, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
@@ -129,6 +130,7 @@ const PurchaseScreen = () => {
         licencePlate,
         duration: debouncedDuration,
         npk,
+        rememberCard,
       }),
       {
         onSuccess: ({ data: ticketInit }) => {
@@ -179,6 +181,8 @@ const PurchaseScreen = () => {
                   </PressableStyled>
                 </Link>
               ) : null}
+
+              <RememberCardField />
             </Field>
           </ScreenContent>
         </ScrollView>
