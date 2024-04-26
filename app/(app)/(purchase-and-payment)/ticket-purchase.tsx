@@ -98,7 +98,7 @@ const TicketPurchasePage = () => {
         <ContentWithAvatar title={t('pendingTitle')} text={t('pendingText')}>
           <ActivityIndicator size="large" />
         </ContentWithAvatar>
-      ) : isError || data.paymentStatus === 'FAIL' ? (
+      ) : isError || data.paymentStatus === 'FAIL' || data.paymentStatus === 'ERROR' ? (
         <ContentWithAvatar
           variant="error"
           title={t(`${translationKey}.failed`)}
