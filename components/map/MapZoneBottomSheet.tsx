@@ -13,6 +13,7 @@ import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 import { cn } from '@/utils/cn'
@@ -26,6 +27,9 @@ type Props = {
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
   const { zone: selectedZone, setFlyToCenter, isZoomedOut, address } = props
+
+  const localRef = useRef<BottomSheet>(null)
+  const refSetter = useMultipleRefsSetter(localRef, ref)
 
   const inputRef = useRef<RNTextInput>(null)
 
@@ -42,11 +46,15 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
       <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
       <BottomSheet
         key="mapZoneBottomSheet"
-        ref={ref}
+        ref={refSetter}
         keyboardBehavior="interactive"
         handleComponent={BottomSheetHandleWithShadow}
         animatedPosition={animatedPosition}
         enableDynamicSizing
+        // This is a workaround for the issue with the bottom sheet that closes during height change,
+        // Github Issue: https://github.com/bratislava/paas-mpa/issues/475
+        // we hope that this might be the fix for the issue if not we will need to investigate further
+        onClose={localRef.current?.expand}
       >
         <BottomSheetContent isDynamic className={cn('bg-white', selectedZone ? 'g-2' : 'g-3')}>
           {isZoomedOut ? (

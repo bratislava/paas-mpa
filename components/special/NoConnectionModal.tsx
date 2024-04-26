@@ -31,7 +31,7 @@ const NoConnectionModal = () => {
     healthCheck.mutate()
 
     const unsubscribe = NetInfo.addEventListener((networkState) => {
-      if (!networkState.isConnected) {
+      if (!networkState.isInternetReachable) {
         setIsConnected(false)
       }
     })
