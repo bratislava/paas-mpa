@@ -111,7 +111,10 @@ const OnboardingScreen = () => {
   const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
 
   return (
-    <View className="flex-1" style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}>
+    <View
+      className="flex-1 bg-white"
+      style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}
+    >
       <Stack.Screen options={{ headerShown: false }} />
       <FlexRow className="h-[50px] px-5 py-3">
         {index > 0 ? (

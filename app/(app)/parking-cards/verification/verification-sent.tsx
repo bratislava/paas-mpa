@@ -31,10 +31,15 @@ const Page = () => {
   const handleVerify = () => {
     mutation.mutate(undefined, {
       onSuccess: (res) => {
-        console.log('success', res.status)
+        const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
+
         router.replace({
           pathname: '/parking-cards/verification/verification-result',
-          params: { email, status: 'verified' },
+          params: {
+            email,
+            status: 'verified',
+            licencePlates: licencePlates.join(', '),
+          },
         })
       },
     })

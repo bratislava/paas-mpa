@@ -14,17 +14,21 @@ import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=1300%3A11943&mode=dev
  */
 
+type StatusType = 'verified' | 'verified-no-cards' | 'link-expired'
+
 // TODO may need update depending on changes in figma
 type VerificationResultSearchParams = {
   email: string
-  status: 'verified' | 'verified-no-cards' | 'link-expired'
+  status: StatusType
+  licencePlatesString?: string
 }
 
 const VerificationResultPage = () => {
   const t = useTranslation('VerificationResult')
   const queryClient = useQueryClient()
   const navigation = useNavigation()
-  const { email, status } = useLocalSearchParams<VerificationResultSearchParams>()
+  const { email, status, licencePlatesString } =
+    useLocalSearchParams<VerificationResultSearchParams>()
 
   queryClient.refetchQueries({ queryKey: verifiedEmailsInfiniteOptions().queryKey, type: 'active' })
 
@@ -72,6 +76,19 @@ const VerificationResultPage = () => {
     })
   }, [navigation, status])
 
+  const getContentText = () => {
+    let text = t(`${status}.text`, { email })
+
+    if (status === 'verified' && licencePlatesString) {
+      text += t(`${status}.vehicleText`, {
+        licencePlatesString,
+        count: licencePlatesString.split(', ').length,
+      })
+    }
+
+    return text
+  }
+
   return (
     <ScreenViewCentered
       options={{ headerTransparent: true }}
@@ -89,7 +106,7 @@ const VerificationResultPage = () => {
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}
           title={t(`${status}.title`)}
-          text={t(`${status}.text`, { email })}
+          text={getContentText()}
           asMarkdown
         />
       ) : (
