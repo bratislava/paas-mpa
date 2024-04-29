@@ -31,6 +31,7 @@ const ProlongateLayout = () => {
       npk: visitorCards?.find(({ identificator }) => ticket?.npkId === identificator) ?? null,
       paymentOption: defaultPaymentOption,
       udr: null,
+      rememberCard: false,
     }),
     [defaultPaymentOption, ticket?.ecv, ticket?.npkId, visitorCards],
   )
