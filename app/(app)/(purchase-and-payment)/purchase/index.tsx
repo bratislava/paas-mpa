@@ -124,13 +124,15 @@ const PurchaseScreen = () => {
       return
     }
 
+    const actualPaymentOption = paymentOption ?? defaultPaymentOption
+
     initPaymentMutation.mutate(
       createPriceRequestBody({
         udr,
         licencePlate,
         duration: debouncedDuration,
         npk,
-        rememberCard,
+        rememberCard: actualPaymentOption === 'payment-card' ? rememberCard : false,
       }),
       {
         onSuccess: ({ data: ticketInit }) => {

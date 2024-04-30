@@ -38,7 +38,7 @@ const ChooseVehicleScreen = () => {
         vehicle: { isOneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
       })
     }
-    router.push('/purchase')
+    router.navigate('/purchase')
   }
 
   const handleLicencePlateChange = (newLicencePlate: string) => {
