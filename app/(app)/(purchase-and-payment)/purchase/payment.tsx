@@ -50,6 +50,13 @@ const PaymentScreen = () => {
     )
   }
 
+  const redirectToPurchaseResult = () => {
+    router.push({
+      pathname: '/ticket-purchase',
+      params: { ticketId: ticketId ?? '' } satisfies TicketPurchaseSearchParams,
+    })
+  }
+
   if (Platform.OS === 'android') {
     try {
       Linking.openURL(paymentUrlDecoded)
@@ -58,10 +65,7 @@ const PaymentScreen = () => {
       show('Unable to open payment URL.', { variant: 'danger' })
     }
 
-    router.push({
-      pathname: '/ticket-purchase',
-      params: { ticketId: ticketId ?? '' } satisfies TicketPurchaseSearchParams,
-    })
+    redirectToPurchaseResult()
 
     return null
   }
@@ -78,6 +82,7 @@ const PaymentScreen = () => {
 
       <WebView
         ref={webviewRef}
+        onError={redirectToPurchaseResult}
         source={{ uri: paymentUrlDecoded }}
         onLoad={() => setIsLoaded(true)}
         className={cn('flex-1', { hidden: !isLoaded })}

@@ -1955,9 +1955,8 @@ export const DefaultApiFp = function (configuration?: Configuration) {
     async appControllerHealthParkingSystem(
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerHealthParkingSystem(
-        options,
-      )
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.appControllerHealthParkingSystem(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
   }
@@ -2776,9 +2775,8 @@ export const SystemApiFp = function (configuration?: Configuration) {
     async systemControllerGetMobileAppVersion(
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerGetMobileAppVersion(
-        options,
-      )
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.systemControllerGetMobileAppVersion(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -4718,9 +4716,8 @@ export const UserApiFp = function (configuration?: Configuration) {
     async usersControllerGetUserSettings(
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSettingsDto>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerGetUserSettings(
-        options,
-      )
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.usersControllerGetUserSettings(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**

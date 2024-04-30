@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import SelectRow from '@/components/list-rows/SelectRow'
+import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { storedPaymentMethod } from '@/modules/backend/constants/queryOptions'
@@ -12,6 +13,7 @@ export const RememberCardField = () => {
 
   const paymentMethod = useQueryWithFocusRefetch(storedPaymentMethod())
 
+  const [defaultPaymentOption] = useDefaultPaymentOption()
   const { rememberCard, paymentOption } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
@@ -25,9 +27,11 @@ export const RememberCardField = () => {
     }
   }, [onPurchaseStoreUpdate, paymentMethod.data])
 
-  return paymentOption === 'payment-card' ? (
+  const usedPaymentOption = paymentOption || defaultPaymentOption
+
+  return usedPaymentOption === 'payment-card' ? (
     <SelectRow
-      label={paymentMethod.data ? t('useRememberedCard') : t('saveCard')}
+      label={paymentMethod.data ? t('useRememberedCard') : t('rememberCard')}
       onValueChange={handleToggleSaveCard}
       value={rememberCard}
     />
