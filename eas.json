@@ -50,7 +50,8 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
         "EXPO_PUBLIC_DEPLOYMENT": "staging"
       },
-      "channel": "staging"
+      "channel": "staging",
+      "resourceClass": "large"
     },
     "production": {
       "autoIncrement": true,
@@ -63,7 +64,8 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
         "EXPO_PUBLIC_DEPLOYMENT": "production"
       },
-      "channel": "production"
+      "channel": "production",
+      "resourceClass": "large"
     }
   },
   "submit": {

@@ -75,14 +75,13 @@ export type TranslationProperty<T> = {
 /**
  * @param K Keys of properties that have a translation translated
  */
-export type WithTranslationProperties<P, K extends keyof P> =
-  | {
-      [Property in keyof P as Property extends K ? Property : never]:
-        | P[Property]
-        | TranslationProperty<P[Property]>
-    } & {
-      [Property in keyof P as Property extends K ? never : Property]: P[Property]
-    }
+export type WithTranslationProperties<P, K extends keyof P> = {
+  [Property in keyof P as Property extends K ? Property : never]:
+    | P[Property]
+    | TranslationProperty<P[Property]>
+} & {
+  [Property in keyof P as Property extends K ? never : Property]: P[Property]
+}
 
 export type MapPointWithTranslationProps = WithTranslationProperties<
   MapPoint,
