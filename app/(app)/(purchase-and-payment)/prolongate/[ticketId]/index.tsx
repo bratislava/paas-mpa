@@ -6,6 +6,7 @@ import { useDebounce } from 'use-debounce'
 
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import PaymentMethodsFieldControl from '@/components/controls/payment-methods/PaymentMethodsFieldControl'
+import { RememberCardField } from '@/components/controls/payment-methods/RememberCardField'
 import UsedBonusCard from '@/components/controls/payment-methods/UsedBonusCard'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import SkeletonPurchaseFields from '@/components/purchase/SkeletonPurchaseFields'
@@ -31,7 +32,7 @@ const ProlongTicketScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { vehicle, npk, paymentOption, duration } = usePurchaseStoreContext()
+  const { vehicle, npk, paymentOption, duration, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
@@ -53,11 +54,14 @@ const ProlongTicketScreen = () => {
   }
 
   const handlePressPay = () => {
-    initPaymentMutation.mutate(priceRequestBody, {
-      onSuccess: ({ data: ticketInit }) => {
-        paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+    initPaymentMutation.mutate(
+      { ...priceRequestBody, rememberCard },
+      {
+        onSuccess: ({ data: ticketInit }) => {
+          paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+        },
       },
-    })
+    )
   }
 
   const priceQuery = useQueryWithFocusRefetch(ticketProlongationPriceOptions(priceRequestBody))
@@ -125,6 +129,8 @@ const ProlongTicketScreen = () => {
                     </PressableStyled>
                   </Link>
                 )}
+
+                <RememberCardField />
               </Field>
             ) : null}
           </ScreenContent>

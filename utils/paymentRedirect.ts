@@ -22,7 +22,7 @@ export const paymentRedirect = (ticketInit: TicketInitDto, paymentOption: Paymen
     router.push({
       pathname: '/purchase/payment',
       params: {
-        paymentUrl,
+        paymentUrl: encodeURI(paymentUrl),
         ticketId: ticketInit.id.toString(),
       } satisfies PaymentSearchParams,
     })
