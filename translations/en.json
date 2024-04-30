@@ -69,8 +69,8 @@
     "invalidPaymentLink": "Invalid payment url. Please try again",
     "pendingTitle": "Payment is being processed",
     "pendingText": "Please wait a moment. We are processing your payment.",
-    "rememberCard": "Zapamätať kartu",
-    "useRememberedCard": "Použiť zapamätanú kartu",
+    "rememberCard": "Remember card",
+    "useRememberedCard": "Use remembered card",
     "payment": {
       "successful": "Payment successful",
       "successfulText": "Your parking ticket has been paid.",
