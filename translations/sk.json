@@ -69,6 +69,8 @@
     "invalidPaymentLink": "Neplatný odkaz na platobnú bránu. Vyskúšajte to prosím znova",
     "pendingTitle": "Platba sa spracováva",
     "pendingText": "Počkajte prosím, kým sa platba spracuje.",
+    "rememberCard": "Zapamätať kartu",
+    "useRememberedCard": "Použiť zapamätanú kartu",
     "payment": {
       "successful": "Úspešná platba",
       "successfulText": "Ďakujeme, váš parkovací lístok bol uhradený.",

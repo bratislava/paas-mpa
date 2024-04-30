@@ -4,7 +4,7 @@ import { MapUdrZone } from '@/modules/map/types'
 /**
  * Function to create price request body needed for having fresh parkingStart
  * otherwise useMemo would store old time value and it cannot be changed to new one without having infinite loop
- * @param param0 object with udr, licencePlate, duration, npk
+ * @param param0 object with udr, licencePlate, duration, npk and rememberCard
  * @returns price request body
  */
 export const createPriceRequestBody = ({
@@ -12,11 +12,13 @@ export const createPriceRequestBody = ({
   licencePlate,
   duration,
   npk,
+  rememberCard,
 }: {
   udr: MapUdrZone | null
   licencePlate: string
   duration: number
   npk: ParkingCardDto | null
+  rememberCard?: boolean
 }) => {
   const dateNow = Date.now()
   const parkingStart = new Date(dateNow).toISOString()
@@ -30,5 +32,6 @@ export const createPriceRequestBody = ({
       parkingStart,
       parkingEnd,
     },
+    rememberCard,
   }
 }

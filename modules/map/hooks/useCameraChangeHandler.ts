@@ -1,4 +1,4 @@
-import MapView, { MapState } from '@rnmapbox/maps/lib/typescript/components/MapView'
+import { MapState, MapView } from '@rnmapbox/maps'
 import { Position } from 'geojson'
 import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import { Keyboard, Platform, useWindowDimensions } from 'react-native'

@@ -24,7 +24,7 @@ export const usePrefetchOnAppStart = () => {
       const queries = [visitorCardsOptions(), announcementsOptions(locale)]
 
       // refresh verified emails before prefetching visitor cards
-      await clientApi.verifiedEmailsControllerRefreshVerifiedEmail()
+      await clientApi.verifiedEmailsControllerRefreshVerifiedEmail(true)
 
       await Promise.all(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -16,6 +16,7 @@ type PurchaseStoreContextProps = {
   udr: MapUdrZone | null
   npk: ParkingCardDto | null
   vehicle: PurchaseContextVehicle | null
+  rememberCard: boolean
   duration: number
   paymentOption: PaymentOption | null
 }
@@ -35,6 +36,7 @@ export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
   udr: null,
   npk: null,
   vehicle: null,
+  rememberCard: false,
   duration: 60 * 60, // 1 hour
   paymentOption: null,
 }

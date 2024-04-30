@@ -16,13 +16,13 @@ export const paymentRedirect = (ticketInit: TicketInitDto, paymentOption: Paymen
       paymentOption === 'apple-pay'
         ? ticketInit.paymentUrls.paymentUrlAPAY
         : paymentOption === 'google-pay'
-        ? ticketInit.paymentUrls.paymentUrlGPAY
-        : ticketInit.paymentUrls.paymentUrlCard
+          ? ticketInit.paymentUrls.paymentUrlGPAY
+          : ticketInit.paymentUrls.paymentUrlCard
 
     router.push({
       pathname: '/purchase/payment',
       params: {
-        paymentUrl,
+        paymentUrl: encodeURI(paymentUrl),
         ticketId: ticketInit.id.toString(),
       } satisfies PaymentSearchParams,
     })

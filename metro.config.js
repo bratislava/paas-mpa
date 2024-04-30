@@ -3,7 +3,7 @@ const { getDefaultConfig } = require('expo/metro-config')
 const { withNativeWind } = require('nativewind/metro')
 
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, { isCSSEnabled: true })
+const config = getDefaultConfig(__dirname)
 
 /* Setup for react-native-svg-transformer https://github.com/kristerkari/react-native-svg-transformer#step-3-configure-the-react-native-packager */
 const { transformer, resolver } = config

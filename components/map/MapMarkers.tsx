@@ -1,5 +1,5 @@
 import { Images, ShapeSource, SymbolLayer } from '@rnmapbox/maps'
-import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/types/OnPressEvent'
+import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent'
 import { Feature, FeatureCollection, GeoJsonProperties, Point } from 'geojson'
 import { useCallback, useMemo } from 'react'
 

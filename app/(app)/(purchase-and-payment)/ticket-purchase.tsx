@@ -92,7 +92,7 @@ const TicketPurchasePage = () => {
           </Link>
         )
       }
-      options={{ headerShown: false }}
+      hasBackButton={data?.paymentStatus === 'PENDING'}
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title={t('pendingTitle')} text={t('pendingText')}>
