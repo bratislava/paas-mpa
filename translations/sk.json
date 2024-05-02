@@ -36,7 +36,7 @@
   "AddParkingCards": {
     "addCardsTitle": "Pridať parkovacie karty",
     "emailField": "E-mailová adresa",
-    "instructions": "Ak ste zaregistrovaný/á v PAAS, vložte e-mailovú adresu, ktorú ste zadali pri tvorbe účtu. Vďaka nej budeme môcť nahrať všetky vaše parkovacie karty a vozidlá bonusových kariet. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
+    "instructions": "Ak chcete používať bonusovú či návštevnícku kartu, zadajte emailovú adresu, na ktorú Vám prišlo potvrdenie o vydaní kariet vo Vašom PAAS účte. Po potvrdení emailu môžete karty v aplikácii jednoducho používať. \n\nParkovacie karty môžete pridať aj neskôr, v sekcii Parkovacie karty.",
     "verifyYourEmail": "Overte e-mail",
     "verifyYourEmailInfo": "Poslali sme vám overovací e-mail na adresu: \n**{{email}}** \n\nSkopírujte overovací kód z e-mailu a potvrďte overenie. Po potvrdení nahráme vaše parkovacie karty do aplikácie.",
     "verifyButton": "Overiť",
@@ -85,7 +85,7 @@
     },
     "parkingCardModal": {
       "title": "Máte parkovacie karty?",
-      "message": "Ak máte akúkoľvek parkovaciu kartu, môžete si ju pomocou overenia e-mailovej adresy pridať a využívať jej zľavy.",
+      "message": "Ak chcete používať parkovacie karty (napríklad návštevnícku či bonusovú), zadajte emailovú adresu, na ktorú Vám prišlo potvrdenie o vydaní kariet vo Vašom PAAS účte. Po potvrdení emailu môžete karty v aplikácii jednoducho používať.",
       "actionConfirm": "Pridať parkovacie karty",
       "actionCancel": "Neskôr"
     },
@@ -119,14 +119,14 @@
   "ShortenTicket": {
     "result": "Výsledok skrátenia",
     "title": "Predčasne ukončiť",
-    "infoText": "Skrátenie parkovacieho lístka je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf)",
+    "infoText": "Skrátenie parkovacieho lístka je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf).",
     "actionConfirm": "Pokračovať",
     "mainConditions": "Základné podmienky",
     "conditions": [
-      "skrátenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade že lístok skrátite skôr, bude lístok ukončený až po uplynutí doby 15 minút (neplatí ak bol lístok zakúpený výhradne cez Bonusovú alebo Návštevnícku parkovaciu kartu).",
-      "lístok je možné skrátiť za storno poplatok vo výške 0,05€ (neplatí ak bol lístok zakúpený výhradne cez Návštevnícku alebo Bonusovú kartu).",
-      "V prípade okamžitého skrátenia lístka zakúpeného výhradne cez Bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
-      "V prípade predĺženia parkovacieho lístka, bude umožnené skrátiť posledné predĺženie lístka."
+      "Predčasné ukončenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade, že lístok ukončíte skôr, bude ukončený až po uplynutí 15 minút.",
+      "Parkovací lístok je možné predčasne ukončiť, minimálna suma na úhradu je 0.05€ (neplatí, ak bol lístok zakúpený výhradne cez návštevnícku alebo bonusovú kartu).",
+      "V prípade okamžitého ukončenia parkovacieho lístka zakúpeného výhradne cez bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
+      "V prípade predĺženia parkovacieho lístka bude umožnené predčasne ukončiť všetky predĺženia lístkov."
     ],
     "successful": "Lístok ukončený",
     "successfulText": "Váš parkovací lístok bol predčasne ukončený ",
@@ -519,7 +519,7 @@
   },
   "FeedbackScreen": {
     "title": "Spätná väzba",
-    "emailAddress": "E-mailová adresa",
+    "emailAddress": "Vaša e-mailová adresa",
     "emailAddressInvalid": "Prosím, zadajte platnú e-mailovú adresu",
     "type": "Typ",
     "bug": "Chyba",
