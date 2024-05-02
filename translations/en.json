@@ -36,7 +36,7 @@
   "AddParkingCards": {
     "addCardsTitle": "Add parking cards",
     "emailField": "Email address",
-    "instructions": "If you are registered in PAAS, enter the email address you entered when creating your account. Thanks to it, we will be able to upload all your parking cards and cars connected to Bonus card.",
+    "instructions": " If you want to use a bonus or visitor card, enter the email address to which you received confirmation of the issuance of the cards in your PAAS account. After confirming the email, you can easily use the cards in the application.",
     "verifyYourEmail": "Verify email",
     "verifyYourEmailInfo": "We’ve sent verification email to \n**{{email}}** \n\nCopy the verification code from the email and confirm the verification. Once confirmed, we will upload your parking cards to the application.",
     "verifyButton": "Verify",
@@ -85,7 +85,7 @@
     },
     "parkingCardModal": {
       "title": "Do you have any\n parking cards?",
-      "message": "Great! Add them by verifying your email address and enjoy the discounts.",
+      "message": "If you want to use parking cards (for example visitor or bonus), enter the email address to which you received the confirmation of the issuance of the cards in your PAAS account. After confirming the email, you can easily use the cards in the application.",
       "actionConfirm": "Add parking cards",
       "actionCancel": "Later"
     },
@@ -117,15 +117,15 @@
   },
   "ShortenTicket": {
     "result": "Shortening result",
-    "title": "Terminate ticket",
-    "infoText": "The shortening of a parking ticket is possible under certain conditions regulated by the [Operating Order for Temporary Parking of Motor Vehicles in the capital city of the Slovak Republic, Bratislava](https://paas.sk/wp-content/uploads/2023/12/Operating-Order-PP_v2.15.pdf).",
+    "title": "Terminate",
+    "infoText": "The termination of a parking ticket is possible under certain conditions regulated by the [Operating Order for Temporary Parking of Motor Vehicles in the capital city of the Slovak Republic, Bratislava](https://paas.sk/wp-content/uploads/2023/12/Operating-Order-PP_v2.15.pdf).",
     "actionConfirm": "Continue",
     "mainConditions": "Main conditions",
     "conditions": [
-      "Shortening the ticket is possible after 15 minutes have elapsed from the start of the ticket's validity. If you shorten the ticket earlier, the ticket will only be terminated after the expiration of the 15-minute period. (This does not apply if the ticket was purchased exclusively through the Bonus or Visitor Parking Card.)",
-      "The ticket can be shortened for a cancellation fee of €0.05 (This does not apply if the ticket was purchased exclusively through the Visitor or Bonus Card.)",
-      "In the case of immediate shortening of a ticket purchased exclusively through the Bonus Parking Card, a full minute will be deducted from the parking card.",
-      "In the case of extending a parking ticket, it will be possible to shorten the last extension."
+      "Early termination of the ticket can be done after 15 minutes from the start of the ticket's validity. If you cancel the ticket earlier, it will be canceled only after 15 minutes.",
+      "The parking ticket can be terminated early, the minimum payment amount is €0.05 (not valid if the ticket was purchased exclusively via a visitor or bonus card).",
+      "In case of immediate termination of a parking ticket purchased exclusively through a bonus parking card, a full minute will be deducted from the parking card.",
+      "In the event of a parking ticket extension, it will be possible to terminate all ticket extensions."
     ],
     "successful": "Shortening successful",
     "successfulText": "Your ticket has been shortened.",
@@ -521,7 +521,7 @@
   },
   "FeedbackScreen": {
     "title": "Feedback",
-    "emailAddress": "Email address",
+    "emailAddress": "Your email address",
     "emailAddressInvalid": "Please enter a valid email address",
     "type": "Type",
     "bug": "Bug",
