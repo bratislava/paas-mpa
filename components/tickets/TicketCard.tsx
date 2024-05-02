@@ -29,7 +29,7 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
   const t = useTranslation('TicketCard')
   const locale = useLocale()
 
-  // ticket can be shortened if duration is at least 15 minutes (parkingEnd - parkingStart) or cards were used
+  // ticket can be shortened if duration is at least 15 minutes (parkingEnd - parkingStart) or parking cards were used
   const canShorten =
     ticket.bpkCreditUsedSeconds ||
     ticket.npkCreditUsedSeconds ||
