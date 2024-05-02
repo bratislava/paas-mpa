@@ -29,9 +29,11 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
   const t = useTranslation('TicketCard')
   const locale = useLocale()
 
-  // ticket can be shortened if there is no cancelledAt or duration is at least 15 minutes (parkingEnd - parkingStart)
+  // ticket can be shortened if duration is at least 15 minutes (parkingEnd - parkingStart) or cards were used
   const canShorten =
-    !ticket.canceledAt || parkingEndDate.getTime() - parkingStartDate.getTime() > 15 * 60 * 1000
+    ticket.bpkCreditUsedSeconds ||
+    ticket.npkCreditUsedSeconds ||
+    parkingEndDate.getTime() - parkingStartDate.getTime() > 15 * 60 * 1000
 
   return (
     <Panel className="border border-divider bg-white">
@@ -61,22 +63,25 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
           <Typography variant="small">{ticket.ecv}</Typography>
         </View>
 
-        {isActive && canShorten ? (
+        {isActive && !ticket.canceledAt ? (
           <View className="g-2">
             <Link asChild href={`/prolongate/${ticket.id}`}>
               <Button>{t('prolong')}</Button>
             </Link>
-            <Link
-              asChild
-              href={{
-                pathname: '/tickets/shorten',
-                params: {
-                  ticketId: ticket.id,
-                },
-              }}
-            >
-              <Button variant="secondary">{t('shorten')}</Button>
-            </Link>
+
+            {canShorten ? (
+              <Link
+                asChild
+                href={{
+                  pathname: '/tickets/shorten',
+                  params: {
+                    ticketId: ticket.id,
+                  },
+                }}
+              >
+                <Button variant="secondary">{t('shorten')}</Button>
+              </Link>
+            ) : null}
           </View>
         ) : null}
       </View>
