@@ -184,7 +184,7 @@ const PurchaseScreen = () => {
                 </Link>
               ) : null}
 
-              <RememberCardField />
+              {priceQuery.data?.priceTotal === 0 ? null : <RememberCardField />}
             </Field>
           </ScreenContent>
         </ScrollView>

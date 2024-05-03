@@ -130,7 +130,7 @@ const ProlongTicketScreen = () => {
                   </Link>
                 )}
 
-                <RememberCardField />
+                {priceQuery.data?.priceTotal === 0 ? null : <RememberCardField />}
               </Field>
             ) : null}
           </ScreenContent>
