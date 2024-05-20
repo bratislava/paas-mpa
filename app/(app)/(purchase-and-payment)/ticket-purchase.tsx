@@ -16,6 +16,7 @@ import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
 import { TicketsResponseDto } from '@/modules/backend/openapi-generated'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
+import { isDefined } from '@/utils/isDefined'
 
 export type TicketPurchaseSearchParams = {
   ticketId: string
@@ -67,7 +68,9 @@ const TicketPurchasePage = () => {
     }
 
     return () => {
-      if (timeout) clearTimeout(timeout)
+      if (timeout) {
+        clearTimeout(timeout)
+      }
     }
   }, [data, onPurchaseStoreUpdate, queryClient, refetch])
 
@@ -77,7 +80,7 @@ const TicketPurchasePage = () => {
     navigation.reset({
       ...state,
       index: 1,
-      routes: [state.routes[0], state.routes.at(-1)!],
+      routes: [state.routes[0], state.routes.at(-1)].filter(isDefined),
     })
   }, [navigation])
 
@@ -86,15 +89,11 @@ const TicketPurchasePage = () => {
   return (
     <ScreenViewCentered
       actionButton={
-        data?.paymentStatus === 'PENDING' ? undefined : (
-          <Link asChild href="/">
-            <ContinueButton>{t('backToMap')}</ContinueButton>
-          </Link>
-        )
+        <Link asChild href="/">
+          <ContinueButton>{t('backToMap')}</ContinueButton>
+        </Link>
       }
-      options={
-        data?.paymentStatus === 'PENDING' ? { headerTransparent: true } : { headerShown: false }
-      }
+      options={{ headerShown: false }}
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
         <ContentWithAvatar title={t('pendingTitle')} text={t('pendingText')}>
