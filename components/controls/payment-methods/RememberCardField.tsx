@@ -4,14 +4,14 @@ import SelectRow from '@/components/list-rows/SelectRow'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
-import { storedPaymentMethod } from '@/modules/backend/constants/queryOptions'
+import { storedPaymentMethodOptions } from '@/modules/backend/constants/queryOptions'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 export const RememberCardField = () => {
   const t = useTranslation('PurchaseScreen')
 
-  const paymentMethod = useQueryWithFocusRefetch(storedPaymentMethod())
+  const paymentMethod = useQueryWithFocusRefetch(storedPaymentMethodOptions())
 
   const [defaultPaymentOption] = useDefaultPaymentOption()
   const { rememberCard, paymentOption } = usePurchaseStoreContext()
