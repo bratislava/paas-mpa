@@ -426,15 +426,15 @@
     "links": {
       "termsAndConditions": {
         "label": "Terms & conditions",
-        "url": "https://paas.sk/vseobecne-obchodne-podmienky/"
+        "url": "https://paas.sk/en/terms-of-use/"
       },
       "privacyPolicy": {
         "label": "Privacy policy",
-        "url": "https://paas.sk/ochrana-osobnych-udajov/"
+        "url": "https://paas.sk/en/privacy-policy/"
       },
       "contactUs": {
         "label": "Contact us",
-        "url": "https://paas.sk/kontakt/"
+        "url": "https://paas.sk/en/contact/"
       },
       "rateTheApp": {
         "label": "Rate the app",

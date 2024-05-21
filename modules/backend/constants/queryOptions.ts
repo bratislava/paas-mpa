@@ -208,7 +208,7 @@ export const verifiedEmailsLengthOptions = ({ enabled }: { enabled?: boolean }) 
     select: (res) => res.data,
   })
 }
-export const storedPaymentMethod = () => {
+export const storedPaymentMethodOptions = () => {
   return queryOptions({
     queryKey: ['StoredPaymentMethod'],
     queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethodAvailability(),
