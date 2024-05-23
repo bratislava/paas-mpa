@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
-export enum FilteringTimeframesEnum {
+export enum FilterTimeframesEnum {
   thisMonth = 'thisMonth',
   lastMonth = 'lastMonth',
   thisYear = 'thisYear',
@@ -9,7 +9,7 @@ export enum FilteringTimeframesEnum {
 }
 
 interface TicketsFiltersStoreContextProps {
-  timeframe: FilteringTimeframesEnum | null
+  timeframe: FilterTimeframesEnum | null
   ecvs: string[] | 'all'
 }
 
@@ -23,7 +23,7 @@ export const TicketsFiltersStoreUpdateContext = createContext<
 >(null)
 
 export const defaultTicketsFiltersStoreContextValues: TicketsFiltersStoreContextProps = {
-  timeframe: FilteringTimeframesEnum.thisYear,
+  timeframe: FilterTimeframesEnum.thisYear,
   ecvs: 'all',
 }
 

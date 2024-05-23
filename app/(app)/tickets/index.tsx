@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { SceneMap, TabView } from 'react-native-tab-view'
@@ -29,7 +29,7 @@ import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
-import { transformTimeframeToFromTo } from '@/utils/transformTimeframeToFromTo'
+import { getParkingEndRange } from '@/utils/getParkingEndRange'
 
 type RouteProps =
   | {
@@ -46,10 +46,6 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const [activeId, setActiveId] = useState<number | null>(null)
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
-
-  const now = useMemo(() => new Date(), [])
-
-  const fromTo = transformTimeframeToFromTo(filters.timeframe, now)
 
   const downloadReceiptMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerGetReceipt(id),
@@ -78,9 +74,12 @@ const TicketsRoute = ({ active }: RouteProps) => {
     }
   }
 
+  const now = new Date()
+  const { parkingEndFrom, parkingEndTo } = getParkingEndRange(filters.timeframe, now)
+
   const ticketsQueryOptions = ticketsInfiniteQuery({
-    parkingEndFrom: active ? new Date() : fromTo.parkingEndFrom,
-    parkingEndTo: active ? undefined : fromTo.parkingEndTo,
+    parkingEndFrom: active ? now : parkingEndFrom,
+    parkingEndTo: active ? undefined : parkingEndTo,
     pageSize: 20,
     ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
     isActive: active,

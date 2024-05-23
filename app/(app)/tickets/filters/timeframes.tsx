@@ -7,7 +7,7 @@ import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
-import { FilteringTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
+import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
@@ -26,7 +26,7 @@ const TicketsFiltersTimeframesScreen = () => {
   )
 
   const handleOptionPress = useCallback(
-    (timeframe: FilteringTimeframesEnum) => () => {
+    (timeframe: FilterTimeframesEnum) => () => {
       onPurchaseStoreUpdate({ timeframe })
       ref.current?.close()
     },
@@ -50,7 +50,7 @@ const TicketsFiltersTimeframesScreen = () => {
     >
       <BottomSheetContent>
         <View>
-          {Object.values(FilteringTimeframesEnum).map((timeframe) => (
+          {Object.values(FilterTimeframesEnum).map((timeframe) => (
             <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
               <ActionRow
                 label={t(`timeframes.${timeframe}`)}
