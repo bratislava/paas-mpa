@@ -74,11 +74,12 @@ const TicketsRoute = ({ active }: RouteProps) => {
     }
   }
 
+  // const now = useMemo(() => new Date(), [])
   const now = new Date()
   const { parkingEndFrom, parkingEndTo } = getParkingEndRange(filters.timeframe, now)
 
   const ticketsQueryOptions = ticketsInfiniteQuery({
-    parkingEndFrom: active ? now : parkingEndFrom,
+    parkingEndFrom: active ? new Date() : parkingEndFrom,
     parkingEndTo: active ? undefined : parkingEndTo,
     pageSize: 20,
     ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
