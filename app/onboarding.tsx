@@ -5,14 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
 import {
-  SlideBonusCard,
-  SlideBonusCardEN,
-  SlideDataSecurity,
-  SlideHelpUsPlan,
-  SlideParkingCards,
-  SlideParkingCardsEN,
-  SlideVisitorsFree,
-  SlideWelcome,
+  ImageBonusCard,
+  ImageBonusCardEN,
+  ImageDataSecurity,
+  ImageParkingCards,
+  ImageParkingCardsEN,
+  ImageVisitorsFree,
+  ImageWelcome,
 } from '@/assets/onboarding-slides'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import MarketingTabBar from '@/components/navigation/MarketingTabBar'
@@ -24,13 +23,7 @@ import { environment } from '@/environment'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 
-type RouteKeys =
-  | 'welcome'
-  | 'dataSecurity'
-  | 'parkingCards'
-  | 'helpUsPlan'
-  | 'visitorsFree'
-  | 'bonusCard'
+type RouteKeys = 'welcome' | 'dataSecurity' | 'parkingCards' | 'visitorsFree' | 'bonusCard'
 type MarketingSliderRouteProps = {
   slide: RouteKeys
 }
@@ -43,12 +36,11 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   const locale = useLocale()
 
   const SvgImage = {
-    welcome: SlideWelcome,
-    dataSecurity: SlideDataSecurity,
-    parkingCards: locale === 'en' ? SlideParkingCardsEN : SlideParkingCards,
-    helpUsPlan: SlideHelpUsPlan,
-    visitorsFree: SlideVisitorsFree,
-    bonusCard: locale === 'en' ? SlideBonusCardEN : SlideBonusCard,
+    welcome: ImageWelcome,
+    dataSecurity: ImageDataSecurity,
+    parkingCards: locale === 'en' ? ImageParkingCardsEN : ImageParkingCards,
+    visitorsFree: ImageVisitorsFree,
+    bonusCard: locale === 'en' ? ImageBonusCardEN : ImageBonusCard,
   }[slide]
 
   return (
@@ -67,8 +59,6 @@ const routeKeys: RouteKeys[] = [
   'bonusCard',
   'parkingCards',
   'dataSecurity',
-  // TODO uncomment when we have final wording
-  // 'helpUsPlan',
 ]
 
 const renderScene = ({

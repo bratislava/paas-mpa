@@ -4,7 +4,7 @@ import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
-import { SlideLocationPermissions, SlideNotificationPermission } from '@/assets/onboarding-slides'
+import { ImageLocationPermissions, ImageNotificationPermission } from '@/assets/onboarding-slides'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -30,8 +30,8 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
 
   const SvgImage = {
-    notifications: SlideNotificationPermission,
-    location: SlideLocationPermissions,
+    notifications: ImageNotificationPermission,
+    location: ImageLocationPermissions,
   }[route.key]
   const permissionStatus =
     route.key === 'notifications' ? notificationsPermissionStatus : locationPermissionStatus
@@ -75,7 +75,7 @@ const PermissionsScreen = () => {
   const [routes] = useState<{ key: RouteKeys }[]>([{ key: 'notifications' }, { key: 'location' }])
 
   return (
-    <View className="flex-1" style={{ paddingBottom: insets.bottom }}>
+    <View className="flex-1 bg-white" style={{ paddingBottom: insets.bottom }}>
       <Stack.Screen options={{ headerShown: false }} />
 
       <TabView
