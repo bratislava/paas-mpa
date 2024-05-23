@@ -212,8 +212,8 @@ export interface FeedbackDto {
  */
 
 export const FeedbackType = {
-  _0: '0',
-  _1: '1',
+  NUMBER_0: 0,
+  NUMBER_1: 1,
 } as const
 
 export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
@@ -774,6 +774,8 @@ export const SYSTEMERROR = {
   DatabaseError: 'DATABASE_ERROR',
   MailgunError: 'MAILGUN_ERROR',
   RabbitMqError: 'RABBIT_MQ_ERROR',
+  PdfGenerator: 'PDF_GENERATOR',
+  Paygate: 'PAYGATE',
 } as const
 
 export type SYSTEMERROR = (typeof SYSTEMERROR)[keyof typeof SYSTEMERROR]
@@ -940,6 +942,31 @@ export interface ServicePricingErrorDto {
 /**
  *
  * @export
+ * @interface StoredPaymentMethodDto
+ */
+export interface StoredPaymentMethodDto {
+  /**
+   * Status of the card
+   * @type {string}
+   * @memberof StoredPaymentMethodDto
+   */
+  status: string
+  /**
+   * Card brand name
+   * @type {string}
+   * @memberof StoredPaymentMethodDto
+   */
+  brandName?: string
+  /**
+   * Masked card number where the first 6 and last 4 digits are visible
+   * @type {string}
+   * @memberof StoredPaymentMethodDto
+   */
+  mask?: string
+}
+/**
+ *
+ * @export
  * @interface SystemErrorDto
  */
 export interface SystemErrorDto {
@@ -1066,6 +1093,12 @@ export interface TicketDto {
    */
   lastProlongationTicketId?: number
   /**
+   * Status of the token registration
+   * @type {string}
+   * @memberof TicketDto
+   */
+  tokenRegistrationStatus?: string
+  /**
    * Date of the last change
    * @type {string}
    * @memberof TicketDto
@@ -1175,6 +1208,12 @@ export interface TicketInitDto {
    * @memberof TicketInitDto
    */
   lastProlongationTicketId?: number
+  /**
+   * Status of the token registration
+   * @type {string}
+   * @memberof TicketInitDto
+   */
+  tokenRegistrationStatus?: string
   /**
    * Date of the last change
    * @type {string}
@@ -1493,6 +1532,139 @@ export interface VerifyEmailsDto {
    * @memberof VerifyEmailsDto
    */
   emails: Array<string>
+}
+
+/**
+ * AdminApi - axios parameter creator
+ * @export
+ */
+export const AdminApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Method to get payment status and token status for a specific payment method
+     * @param {string} paymentid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerGetPaymentDetails: async (
+      paymentid: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'paymentid' is not null or undefined
+      assertParamExists('adminControllerGetPaymentDetails', 'paymentid', paymentid)
+      const localVarPath = `/admin/payment-detail`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      if (paymentid !== undefined) {
+        localVarQueryParameter['paymentid'] = paymentid
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * AdminApi - functional programming interface
+ * @export
+ */
+export const AdminApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = AdminApiAxiosParamCreator(configuration)
+  return {
+    /**
+     *
+     * @summary Method to get payment status and token status for a specific payment method
+     * @param {string} paymentid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async adminControllerGetPaymentDetails(
+      paymentid: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.adminControllerGetPaymentDetails(
+        paymentid,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * AdminApi - factory interface
+ * @export
+ */
+export const AdminApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = AdminApiFp(configuration)
+  return {
+    /**
+     *
+     * @summary Method to get payment status and token status for a specific payment method
+     * @param {string} paymentid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerGetPaymentDetails(
+      paymentid: string,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .adminControllerGetPaymentDetails(paymentid, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * AdminApi - object-oriented interface
+ * @export
+ * @class AdminApi
+ * @extends {BaseAPI}
+ */
+export class AdminApi extends BaseAPI {
+  /**
+   *
+   * @summary Method to get payment status and token status for a specific payment method
+   * @param {string} paymentid
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AdminApi
+   */
+  public adminControllerGetPaymentDetails(paymentid: string, options?: AxiosRequestConfig) {
+    return AdminApiFp(this.configuration)
+      .adminControllerGetPaymentDetails(paymentid, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
 }
 
 /**
@@ -3327,6 +3499,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3340,6 +3513,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'oPERATION' is not null or undefined
@@ -3402,6 +3576,10 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         localVarQueryParameter['TOKENREGSTATUS'] = tOKENREGSTATUS
       }
 
+      if (tOKEN !== undefined) {
+        localVarQueryParameter['TOKEN'] = tOKEN
+      }
+
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
       localVarRequestOptions.headers = {
@@ -3427,6 +3605,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3440,6 +3619,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'oPERATION' is not null or undefined
@@ -3505,6 +3685,48 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       if (tOKENREGSTATUS !== undefined) {
         localVarQueryParameter['TOKENREGSTATUS'] = tOKENREGSTATUS
       }
+
+      if (tOKEN !== undefined) {
+        localVarQueryParameter['TOKEN'] = tOKEN
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Revoke the stored payment method
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRevokePaymentMethod: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/tickets/payment/revoke-payment-method`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -3755,7 +3977,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      */
     async ticketsControllerGetStoredPaymentMethodAvailability(
       options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoredPaymentMethodDto>> {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.ticketsControllerGetStoredPaymentMethodAvailability(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3847,6 +4069,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3860,6 +4083,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
@@ -3873,6 +4097,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
           rESULTTEXT,
           mD,
           tOKENREGSTATUS,
+          tOKEN,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3889,6 +4114,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3902,6 +4128,7 @@ export const TicketsApiFp = function (configuration?: Configuration) {
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
@@ -3915,8 +4142,22 @@ export const TicketsApiFp = function (configuration?: Configuration) {
           rESULTTEXT,
           mD,
           tOKENREGSTATUS,
+          tOKEN,
           options,
         )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Revoke the stored payment method
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerRevokePaymentMethod(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerRevokePaymentMethod(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -4049,7 +4290,7 @@ export const TicketsApiFactory = function (
      */
     ticketsControllerGetStoredPaymentMethodAvailability(
       options?: AxiosRequestConfig,
-    ): AxiosPromise<boolean> {
+    ): AxiosPromise<StoredPaymentMethodDto> {
       return localVarFp
         .ticketsControllerGetStoredPaymentMethodAvailability(options)
         .then((request) => request(axios, basePath))
@@ -4126,6 +4367,7 @@ export const TicketsApiFactory = function (
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -4139,6 +4381,7 @@ export const TicketsApiFactory = function (
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<void> {
       return localVarFp
@@ -4152,6 +4395,7 @@ export const TicketsApiFactory = function (
           rESULTTEXT,
           mD,
           tOKENREGSTATUS,
+          tOKEN,
           options,
         )
         .then((request) => request(axios, basePath))
@@ -4168,6 +4412,7 @@ export const TicketsApiFactory = function (
      * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
      * @param {string} [mD] Custom data
      * @param {string} [tOKENREGSTATUS] State of token registration
+     * @param {string} [tOKEN] Unique identifier of the card
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -4181,6 +4426,7 @@ export const TicketsApiFactory = function (
       rESULTTEXT?: string,
       mD?: string,
       tOKENREGSTATUS?: string,
+      tOKEN?: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<void> {
       return localVarFp
@@ -4194,8 +4440,20 @@ export const TicketsApiFactory = function (
           rESULTTEXT,
           mD,
           tOKENREGSTATUS,
+          tOKEN,
           options,
         )
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Revoke the stored payment method
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRevokePaymentMethod(options?: AxiosRequestConfig): AxiosPromise<string> {
+      return localVarFp
+        .ticketsControllerRevokePaymentMethod(options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -4409,6 +4667,7 @@ export class TicketsApi extends BaseAPI {
    * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
    * @param {string} [mD] Custom data
    * @param {string} [tOKENREGSTATUS] State of token registration
+   * @param {string} [tOKEN] Unique identifier of the card
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
@@ -4423,6 +4682,7 @@ export class TicketsApi extends BaseAPI {
     rESULTTEXT?: string,
     mD?: string,
     tOKENREGSTATUS?: string,
+    tOKEN?: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -4436,6 +4696,7 @@ export class TicketsApi extends BaseAPI {
         rESULTTEXT,
         mD,
         tOKENREGSTATUS,
+        tOKEN,
         options,
       )
       .then((request) => request(this.axios, this.basePath))
@@ -4453,6 +4714,7 @@ export class TicketsApi extends BaseAPI {
    * @param {string} [rESULTTEXT] Result text coming from the paygate return url query param
    * @param {string} [mD] Custom data
    * @param {string} [tOKENREGSTATUS] State of token registration
+   * @param {string} [tOKEN] Unique identifier of the card
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
@@ -4467,6 +4729,7 @@ export class TicketsApi extends BaseAPI {
     rESULTTEXT?: string,
     mD?: string,
     tOKENREGSTATUS?: string,
+    tOKEN?: string,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
@@ -4480,8 +4743,22 @@ export class TicketsApi extends BaseAPI {
         rESULTTEXT,
         mD,
         tOKENREGSTATUS,
+        tOKEN,
         options,
       )
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Revoke the stored payment method
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerRevokePaymentMethod(options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerRevokePaymentMethod(options)
       .then((request) => request(this.axios, this.basePath))
   }
 
