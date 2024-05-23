@@ -81,14 +81,12 @@ const FeedbackScreen = () => {
   }, [])
 
   const handleSubmit = useCallback(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    const stringType: FeedbackType = feedbackType === 'bug' ? FeedbackType._0 : FeedbackType._1
-    // TODO: bug fix, FeedbackType should be a number
-    const type = Number.parseInt(stringType, 10)
+    const feedbackTypeValue: FeedbackType =
+      feedbackType === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1
     mutation.mutate({
       email,
       message: `${message} (${nativeApplicationVersion} (${nativeBuildVersion}))`,
-      type: type as unknown as FeedbackType,
+      type: feedbackTypeValue,
     })
   }, [email, feedbackType, message, mutation])
 
