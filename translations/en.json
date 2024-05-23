@@ -116,21 +116,20 @@
     "validUntil": "Valid to"
   },
   "ShortenTicket": {
-    "result": "Shortening result",
-    "title": "Terminate",
+    "title": "Ticket termination",
     "infoText": "The termination of a parking ticket is possible under certain conditions regulated by the [Operating Order for Temporary Parking of Motor Vehicles in the capital city of the Slovak Republic, Bratislava](https://paas.sk/wp-content/uploads/2023/12/Operating-Order-PP_v2.15.pdf).",
-    "actionConfirm": "Continue",
+    "actionConfirm": "Terminate",
     "mainConditions": "Main conditions",
     "conditions": [
       "Early termination of the ticket can be done after 15 minutes from the start of the ticket's validity. If you cancel the ticket earlier, it will be canceled only after 15 minutes.",
-      "The parking ticket can be terminated early, the minimum payment amount is €0.05 (not valid if the ticket was purchased exclusively via a visitor or bonus card).",
+      "The parking ticket can be terminated early, the minimum payment amount is 0.05€ (not valid if the ticket was purchased exclusively via a visitor or bonus card).",
       "In case of immediate termination of a parking ticket purchased exclusively through a bonus parking card, a full minute will be deducted from the parking card.",
       "In the event of a parking ticket extension, it will be possible to terminate all ticket extensions."
     ],
-    "successful": "Shortening successful",
-    "successfulText": "Your ticket has been shortened.",
-    "failed": "Shortening failed",
-    "failedText": "Your ticket has not been shortened. Please try again.",
+    "successful": "Termination successful",
+    "successfulText": "Your ticket has been terminated.",
+    "failed": "Termination failed",
+    "failedText": "Your ticket has not been terminated. Please try again.",
     "success": {
       "actionButtonLabel": "Back"
     },

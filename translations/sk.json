@@ -117,21 +117,20 @@
     "validUntil": "Platnosť do"
   },
   "ShortenTicket": {
-    "result": "Výsledok skrátenia",
-    "title": "Predčasne ukončiť",
-    "infoText": "Skrátenie parkovacieho lístka je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf).",
-    "actionConfirm": "Pokračovať",
+    "title": "Predčasné ukončenie",
+    "infoText": "Predčasne ukončiť parkovací lístok je možné za splnenia určitých podmienok, ktoré upravuje [Prevádzkový poriadok dočasného parkovania motorových vozidiel v hlavnom meste SR Bratislave](https://paas.sk/wp-content/uploads/2023/12/Prevadzkovy-poriadok-PP_v2.15.pdf).",
+    "actionConfirm": "Predčasne ukončiť",
     "mainConditions": "Základné podmienky",
     "conditions": [
       "Predčasné ukončenie lístka je možné vykonať po uplynutí 15 minút od začiatku platnosti lístka. V prípade, že lístok ukončíte skôr, bude ukončený až po uplynutí 15 minút.",
-      "Parkovací lístok je možné predčasne ukončiť, minimálna suma na úhradu je 0.05€ (neplatí, ak bol lístok zakúpený výhradne cez návštevnícku alebo bonusovú kartu).",
+      "Parkovací lístok je možné predčasne ukončiť, minimálna suma na úhradu je 0,05€ (neplatí, ak bol lístok zakúpený výhradne cez návštevnícku alebo bonusovú kartu).",
       "V prípade okamžitého ukončenia parkovacieho lístka zakúpeného výhradne cez bonusovú parkovaciu kartu bude z parkovacej karty odčítaná celá minúta.",
       "V prípade predĺženia parkovacieho lístka bude umožnené predčasne ukončiť všetky predĺženia lístkov."
     ],
     "successful": "Lístok ukončený",
-    "successfulText": "Váš parkovací lístok bol predčasne ukončený ",
+    "successfulText": "Váš parkovací lístok bol predčasne ukončený.",
     "failed": "Ukončenie zlyhalo",
-    "failedText": "Ukončenie zlyhalo. Tento lístok nie je možné ukončiť. Skúste to znova.",
+    "failedText": "Ukončenie zlyhalo. Tento lístok nebolo možné ukončiť. Skúste to znova.",
     "success": {
       "actionButtonLabel": "Späť"
     },
