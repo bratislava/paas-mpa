@@ -59,16 +59,24 @@ export const ticketsInfiniteQuery = (
     isActive,
   } = options ?? {}
 
+  /*
+    FIXME all datetimes should be included in the queryKey, otherwise, data will be cached and add will show old data
+    For now, we use refetchOnMount: 'always' as a workaround - this should refetch the data as needed
+
+    The datetimes are not included now, because it causes infinite refresh loop - TODO investigate why
+   */
   return infiniteQueryOptions({
     queryKey: [
       'Tickets',
       ecvs?.join(','),
-      parkingStartFrom?.toISOString(),
-      parkingStartTo?.toISOString(),
-      // if isActive is true, parkingEndShould be the current datetime and it changes with every second, so the query keeps refetching
-      isActive ? null : parkingEndFrom?.toISOString(),
-      parkingEndTo?.toISOString(),
+      // { parkingEndFrom: parkingEndFrom?.toISOString(), parkingEndTo: parkingEndTo?.toISOString() },
+      // parkingStartFrom?.toISOString(), // TODO this is never used
+      // parkingStartTo?.toISOString(), // TODO this is never used
+      // // if isActive is true, parkingEndShould be the current datetime and it changes with every second, so the query keeps refetching
+      // isActive ? null : parkingEndFrom?.toISOString(), // TODO  This is true also for isActive=false
+      // parkingEndTo?.toISOString(), // TODO
       pageSize,
+      isActive,
     ],
     queryFn: ({ pageParam }) =>
       clientApi.ticketsControllerTicketsGetMany(
@@ -80,6 +88,7 @@ export const ticketsInfiniteQuery = (
         parkingEndFrom?.toISOString(),
         parkingEndTo?.toISOString(),
       ),
+    refetchOnMount: 'always', // TODO - used as a workaround until all datetimes are part of the queryKey
     initialPageParam: 1,
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
