@@ -259,7 +259,8 @@
     "noHistoryTickets": "No tickets found",
     "noHistoryTicketsText": "After bought ticket expires, it's shown here.",
     "noHistoryTicketsTextFiltered": "No past tickets matching the selected filters found.",
-    "downloadReceipt": "Download receipt"
+    "downloadReceipt": "Download receipt",
+    "downloading": "Downloading"
   },
   "TicketCard": {
     "prolong": "Prolong",
@@ -442,6 +443,7 @@
     }
   },
   "OnboardingScreen": {
+    "goBack": "Go back",
     "next": "Next",
     "skip": "Skip",
     "getStarted": "Get started",
@@ -485,7 +487,8 @@
       "lastYear": "Last year"
     },
     "selectAll": "Select all",
-    "all": "All"
+    "all": "All",
+    "showResults": "Show results"
   },
   "AppVersion": {
     "appVersion": "App version {{version}}"

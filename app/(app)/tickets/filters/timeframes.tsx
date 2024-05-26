@@ -5,6 +5,7 @@ import { View } from 'react-native'
 
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
@@ -50,13 +51,17 @@ const TicketsFiltersTimeframesScreen = () => {
     >
       <BottomSheetContent>
         <View>
-          {Object.values(FilterTimeframesEnum).map((timeframe) => (
-            <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
-              <ActionRow
-                label={t(`timeframes.${timeframe}`)}
-                endIcon={timeframe === selectedTimeframe ? 'check-circle' : undefined}
-              />
-            </PressableStyled>
+          {Object.values(FilterTimeframesEnum).map((timeframe, index) => (
+            <>
+              {index > 0 && <Divider key={`divider-${index}`} />}
+
+              <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
+                <ActionRow
+                  label={t(`timeframes.${timeframe}`)}
+                  endIcon={timeframe === selectedTimeframe ? 'check-circle' : undefined}
+                />
+              </PressableStyled>
+            </>
           ))}
         </View>
       </BottomSheetContent>

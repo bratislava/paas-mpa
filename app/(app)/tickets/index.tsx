@@ -230,7 +230,6 @@ const renderScene = SceneMap({
   history: HistoryTicketsRoute,
 })
 
-// TODO
 const Page = () => {
   const t = useTranslation('Tickets')
   const layout = useWindowDimensions()

@@ -1,5 +1,5 @@
 import { Link, router } from 'expo-router'
-import { useCallback, useMemo } from 'react'
+import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -18,44 +18,48 @@ import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStore
 const TicketsFiltersScreen = () => {
   const t = useTranslation('TicketsFilters')
 
-  const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
-  const { ecvs, timeframe } = useTicketsFiltersStoreContext()
+  const onTicketsFiltersStoreUpdate = useTicketsFiltersStoreUpdateContext()
+  const filters = useTicketsFiltersStoreContext()
 
-  const handleReset = useCallback(() => {
-    onPurchaseStoreUpdate(defaultTicketsFiltersStoreContextValues)
-  }, [onPurchaseStoreUpdate])
+  const { ecvs, timeframe } = filters
 
-  const fields = useMemo(
-    () => [
-      {
-        key: 'vehicles',
-        path: '/tickets/filters/vehicles',
-        value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
-      },
-      { key: 'fromTo', path: '/tickets/filters/timeframes', value: t(`timeframes.${timeframe}`) },
-    ],
-    [t, ecvs, timeframe],
-  )
+  const handleResetFilters = () => {
+    onTicketsFiltersStoreUpdate(defaultTicketsFiltersStoreContextValues)
+  }
 
-  const actionButton = useMemo(
-    () => <ContinueButton onPress={router.back} translationKey="showResults" />,
-    [],
-  )
+  const fields = [
+    {
+      key: 'vehicles',
+      path: '/tickets/filters/vehicles',
+      value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
+    },
+    {
+      key: 'fromTo',
+      path: '/tickets/filters/timeframes',
+      value: t(`timeframes.${timeframe}`),
+    },
+  ]
 
   return (
     <ScreenView
       title={t('title')}
       options={{
         headerRight: () => (
-          <PressableStyled onPress={handleReset}>
+          <PressableStyled onPress={handleResetFilters}>
             <Typography variant="default-bold">{t('reset')}</Typography>
           </PressableStyled>
         ),
         presentation: 'modal',
       }}
-      actionButton={actionButton}
+      actionButton={
+        <ContinueButton onPress={() => router.back()}>{t('showResults')}</ContinueButton>
+      }
     >
-      <View className="py-5 pl-6 pr-4 g-5">
+      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
+      {/* eslint-disable-next-line react/style-prop-object */}
+      <StatusBar style="light" />
+
+      <View className="p-5 g-5">
         {fields.map(({ key, path, value }) => (
           <Field key={key} label={t(key)}>
             <Link asChild href={{ pathname: path }}>

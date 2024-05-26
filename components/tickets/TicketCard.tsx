@@ -23,13 +23,14 @@ type Props = {
 }
 
 const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
-  const parkingStartDate = new Date(ticket.parkingStart)
-  const parkingEndDate = new Date(ticket.parkingEnd)
-  const zone = useMapZone(ticket.udr, true)
   const t = useTranslation('TicketCard')
   const locale = useLocale()
 
-  // ticket can be shortened if duration is at least 15 minutes (parkingEnd - parkingStart) or parking cards were used
+  const parkingStartDate = new Date(ticket.parkingStart)
+  const parkingEndDate = new Date(ticket.parkingEnd)
+  const zone = useMapZone(ticket.udr, true)
+
+  // Ticket can be shortened if duration is at least 15 minutes (parkingEnd - parkingStart) or parking cards were used.
   const canShorten =
     ticket.bpkCreditUsedSeconds ||
     ticket.npkCreditUsedSeconds ||

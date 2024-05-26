@@ -1,4 +1,5 @@
 import { Link, router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
 
@@ -71,6 +72,10 @@ const ChooseVehicleScreen = () => {
         ),
       }}
     >
+      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
+      {/* eslint-disable-next-line react/style-prop-object */}
+      <StatusBar style="light" />
+
       <ScreenContent>
         <AccessibilityField label={t('oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
           <TextInput
