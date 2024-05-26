@@ -8,6 +8,7 @@ import {
 } from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { MapUdrZone } from '@/modules/map/types'
+import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 
 type PaginationOptions = {
   page?: number
@@ -26,7 +27,8 @@ export const settingsOptions = () =>
 
 export const activeTicketsOptions = () =>
   queryOptions({
-    queryKey: ['Tickets'],
+    // Using the same queryKey shape as in ticketsInfiniteQuery
+    queryKey: ['Tickets', { isActive: true }],
     queryFn: () =>
       clientApi.ticketsControllerTicketsGetMany(
         undefined,
@@ -39,47 +41,41 @@ export const activeTicketsOptions = () =>
     select: (data) => data.data,
   })
 
+/*
+ * The parameters parkingStartFrom, parkingStartTo, parkingEndFrom, parkingEndTo are not included in the queryKey, because it causes infinite refresh loop
+ *   - TODO investigate why
+ *
+ * IMPORTANT - query should therefore invalidated manually whenever needed
+ */
 export const ticketsInfiniteQuery = (
   options?: {
+    isActive?: boolean
+    timeframe?: FilterTimeframesEnum
     ecvs?: string[]
     parkingStartFrom?: Date
     parkingStartTo?: Date
     parkingEndFrom?: Date
     parkingEndTo?: Date
-    isActive?: boolean
   } & PageSize,
 ) => {
   const {
+    isActive,
+    timeframe,
     ecvs,
     parkingStartFrom,
     parkingStartTo,
     parkingEndFrom,
     parkingEndTo,
     pageSize,
-    isActive,
   } = options ?? {}
 
-  /*
-    FIXME all datetimes should be included in the queryKey, otherwise, data will be cached and add will show old data
-    For now, we use refetchOnMount: 'always' as a workaround - this should refetch the data as needed
-
-    The datetimes are not included now, because it causes infinite refresh loop - TODO investigate why
-   */
   return infiniteQueryOptions({
-    queryKey: [
-      'Tickets',
-      ecvs?.join(','),
-      // { parkingEndFrom: parkingEndFrom?.toISOString(), parkingEndTo: parkingEndTo?.toISOString() },
-      // parkingStartFrom?.toISOString(), // TODO this is never used
-      // parkingStartTo?.toISOString(), // TODO this is never used
-      // // if isActive is true, parkingEndShould be the current datetime and it changes with every second, so the query keeps refetching
-      // isActive ? null : parkingEndFrom?.toISOString(), // TODO  This is true also for isActive=false
-      // parkingEndTo?.toISOString(), // TODO
-      pageSize,
-      isActive,
-    ],
-    queryFn: ({ pageParam }) =>
-      clientApi.ticketsControllerTicketsGetMany(
+    // Using the same queryKey shape as in activeTicketsOptions
+    queryKey: ['Tickets', { isActive, timeframe, ecvs: ecvs?.join(','), pageSize }],
+    queryFn: ({ pageParam }) => {
+      console.log(parkingEndFrom, parkingEndTo, ecvs?.join(','))
+
+      return clientApi.ticketsControllerTicketsGetMany(
         pageParam,
         pageSize,
         ecvs?.join(','),
@@ -87,8 +83,8 @@ export const ticketsInfiniteQuery = (
         parkingStartTo?.toISOString(),
         parkingEndFrom?.toISOString(),
         parkingEndTo?.toISOString(),
-      ),
-    refetchOnMount: 'always', // TODO - used as a workaround until all datetimes are part of the queryKey
+      )
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })

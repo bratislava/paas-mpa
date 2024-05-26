@@ -53,7 +53,7 @@ const TicketsFiltersTimeframesScreen = () => {
         <View>
           {Object.values(FilterTimeframesEnum).map((timeframe, index) => (
             <>
-              {index > 0 && <Divider key={`divider-${index}`} />}
+              {index > 0 && <Divider key={`divider-${timeframe}`} />}
 
               <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
                 <ActionRow
