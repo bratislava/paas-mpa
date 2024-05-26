@@ -6,7 +6,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const AppVersion = () => {
-  const t = useTranslation('AppVersion')
+  const { t } = useTranslation()
 
   return (
     <View>

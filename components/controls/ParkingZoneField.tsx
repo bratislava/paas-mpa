@@ -17,12 +17,12 @@ type Props = {
 }
 
 const ParkingZoneField = ({ zone }: Props) => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const price = zone ? formatPricePerHour(getPriceFromZone(zone)) : ''
 
   return (
     <Field
-      label={t('segmentFieldLabel')}
+      label={t('PurchaseScreen.segmentFieldLabel')}
       labelInsertArea={
         zone ? (
           <Link asChild href="/">
@@ -45,7 +45,7 @@ const ParkingZoneField = ({ zone }: Props) => {
               // This should not happen, but this is a fallback if no zone is provided on this screen.
               <FlexRow>
                 <Typography className="flex-1" variant="default-bold">
-                  {t('chooseParkingZoneEmptyControlLabel')}
+                  {t('PurchaseScreen.chooseParkingZoneEmptyControlLabel')}
                 </Typography>
                 <Icon name="add" />
               </FlexRow>

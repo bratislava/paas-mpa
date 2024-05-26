@@ -26,11 +26,11 @@ type ContinueButtonProps = Omit<ButtonProps, 'children'> &
  */
 const ContinueButton = forwardRef<View, ContinueButtonProps>(
   ({ children, variant, translationKey, ...rest }, ref) => {
-    const t = useTranslation('Navigation')
+    const { t } = useTranslation()
 
     return (
       <Button ref={ref} variant={variant ?? 'primary'} {...rest}>
-        {children ?? (translationKey ? t(translationKey) : null) ?? t('continue')}
+        {children ?? (translationKey ? t(translationKey) : null) ?? t('Navigation.continue')}
       </Button>
     )
   },

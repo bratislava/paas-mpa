@@ -11,12 +11,12 @@ type Props = {
 }
 
 const PurchaseSummaryRow = ({ priceData }: Props) => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
 
   /* Toggling visibility instead hiding by "display: none" prevents layout shifts */
   return (
     <FlexRow className={priceData ? 'visible' : 'hidden'}>
-      <Typography variant="default-bold">{t('summary')}</Typography>
+      <Typography variant="default-bold">{t('PurchaseScreen.summary')}</Typography>
       {priceData ? (
         <Typography variant="default-bold">{formatPrice(priceData.priceTotal)}</Typography>
       ) : null}

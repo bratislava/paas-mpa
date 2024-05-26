@@ -20,7 +20,7 @@ import { isServiceError } from '@/utils/errorService'
 import { isValidEmail } from '@/utils/isValidEmail'
 
 const Page = () => {
-  const t = useTranslation('AddParkingCards')
+  const { t } = useTranslation()
 
   const [email, setEmail] = useState('')
 
@@ -75,13 +75,13 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('addCardsTitle')}>
+    <ScreenView title={t('AddParkingCards.addCardsTitle')}>
       {/* alwaysBounceVertical disables bouncing when view doesn't exceed parents height (when there is not need for scrolling) */}
       <ScrollView alwaysBounceVertical={false}>
         <DismissKeyboard>
           <ScreenContent>
             <AccessibilityField
-              label={t('emailField')}
+              label={t('AddParkingCards.emailField')}
               errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
             >
               <TextInput
@@ -97,15 +97,15 @@ const Page = () => {
             </AccessibilityField>
 
             <Panel>
-              <Typography>{t('instructions')}</Typography>
+              <Typography>{t('AddParkingCards.instructions')}</Typography>
             </Panel>
 
             <View className="g-10">
               <ContinueButton onPress={handleSendVerificationEmail} loading={mutation.isPending} />
 
               <View className="g-2">
-                <Typography variant="h2">{t('noParkingCard')}</Typography>
-                <Markdown>{t('noParkingCardDescription')}</Markdown>
+                <Typography variant="h2">{t('AddParkingCards.noParkingCard')}</Typography>
+                <Markdown>{t('AddParkingCards.noParkingCardDescription')}</Markdown>
               </View>
             </View>
           </ScreenContent>

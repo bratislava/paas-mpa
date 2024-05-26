@@ -26,7 +26,7 @@ type RouteProps = SceneRendererProps & {
 
 const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const insets = useSafeAreaInsets()
-  const t = useTranslation('PermissionsScreen')
+  const { t } = useTranslation()
 
   const [notificationsPermissionStatus, getNotificationsPermission] = useNotificationPermission()
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()

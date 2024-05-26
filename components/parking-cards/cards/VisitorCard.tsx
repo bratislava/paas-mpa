@@ -21,7 +21,7 @@ const VisitorCard = ({
   originalBalanceSeconds,
   validUntil,
 }: VisitorCardProps) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   return (
@@ -30,14 +30,14 @@ const VisitorCard = ({
         <Typography variant="small">{zoneName}</Typography>
         <Divider dividerClassname="bg-visitorCard" />
         <CardContentItem
-          description={t('remainingCredit')}
+          description={t('ParkingCards.remainingCredit')}
           value={
             balanceSeconds ? formatBalance(balanceSeconds, originalBalanceSeconds ?? undefined) : ''
           }
         />
         {validUntil ? (
           <CardContentItem
-            description={t('validUntil')}
+            description={t('ParkingCards.validUntil')}
             value={formatDate(new Date(validUntil), locale)}
           />
         ) : null}

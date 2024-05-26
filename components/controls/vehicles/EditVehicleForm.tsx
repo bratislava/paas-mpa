@@ -18,7 +18,7 @@ type Props = {
 }
 
 const EditVehicleForm = ({ vehicle }: Props) => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { editVehicle, isLoading } = useVehiclesStoreContext()
 
   const [vehicleName, setVehicleName] = useState(vehicle.name ?? '')
@@ -33,13 +33,13 @@ const EditVehicleForm = ({ vehicle }: Props) => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('editVehicle')} options={{ presentation: 'modal' }}>
+      <ScreenView title={t('VehiclesScreen.editVehicle')} options={{ presentation: 'modal' }}>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         {/* eslint-disable-next-line react/style-prop-object */}
         <StatusBar style="light" />
 
         <ScreenContent>
-          <AccessibilityField label={t('licencePlateFieldLabel')}>
+          <AccessibilityField label={t('VehiclesScreen.licencePlateFieldLabel')}>
             <TextInput
               autoCapitalize="characters"
               autoCorrect={false}
@@ -49,14 +49,14 @@ const EditVehicleForm = ({ vehicle }: Props) => {
           </AccessibilityField>
 
           <AccessibilityField
-            label={t('vehicleNameFieldLabel')}
-            labelInsertArea={<Typography>{t('optional')}</Typography>}
+            label={t('VehiclesScreen.vehicleNameFieldLabel')}
+            labelInsertArea={<Typography>{t('VehiclesScreen.optional')}</Typography>}
           >
             <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
           </AccessibilityField>
 
           <Button loading={isLoading} onPress={handleSaveVehicle}>
-            {t('editVehicle')}
+            {t('VehiclesScreen.editVehicle')}
           </Button>
         </ScreenContent>
       </ScreenView>

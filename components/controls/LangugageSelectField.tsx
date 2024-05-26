@@ -15,7 +15,7 @@ import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 const LangugageSelectField = () => {
-  const t = useTranslation('Settings')
+  const { t } = useTranslation()
   const { i18n } = useLibTranslation()
   const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
@@ -33,7 +33,7 @@ const LangugageSelectField = () => {
   const languages = { sk: 'Slovenčina', en: 'English' }
 
   return (
-    <Field label={t('language')}>
+    <Field label={t('Settings.language')}>
       <Link asChild href="/settings/language">
         <PressableStyled disabled={isPending || isRefetching}>
           <Panel className="border border-divider bg-white py-3">

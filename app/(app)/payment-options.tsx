@@ -18,7 +18,7 @@ import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   const paymentOptions: PaymentOption[] = [
     'payment-card',
@@ -52,16 +52,16 @@ const Page = () => {
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('PaymentMethods.title')}>
       <ScrollView>
         <ScreenContent>
           {defaultPaymentOption ? (
-            <Field label={t('defaultPaymentOption')}>
+            <Field label={t('PaymentMethods.defaultPaymentOption')}>
               <PaymentOptionRow variant={defaultPaymentOption} />
             </Field>
           ) : null}
 
-          <Field label={t('otherPaymentOptions')}>
+          <Field label={t('PaymentMethods.otherPaymentOptions')}>
             {paymentOptions
               .filter((option) => option !== defaultPaymentOption)
               .map((option) => {

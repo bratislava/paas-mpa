@@ -28,7 +28,7 @@ import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehicl
 
 // TODO consider moving whole Delete modal with actions to separate component
 const VehiclesScreen = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, isInitialLoading } =
@@ -86,7 +86,7 @@ const VehiclesScreen = () => {
 
   if (isInitialLoading) {
     return (
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('VehiclesScreen.title')}>
         <ScreenContent>
           <SkeletonVehicleRow />
         </ScreenContent>
@@ -100,19 +100,19 @@ const VehiclesScreen = () => {
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('VehiclesScreen.title')}
       options={{
         headerTransparent: false,
         headerRight: () => (
           <Link asChild href="/vehicles/add-vehicle">
-            <IconButton name="add" accessibilityLabel={t('addVehicle')} />
+            <IconButton name="add" accessibilityLabel={t('VehiclesScreen.addVehicle')} />
           </Link>
         ),
       }}
     >
       <ScreenContent>
         {defaultVehicle ? (
-          <Field label={t('myDefaultVehicle')}>
+          <Field label={t('VehiclesScreen.myDefaultVehicle')}>
             <VehicleRow
               vehicle={defaultVehicle}
               onContextMenuPress={() => handleContextMenuPress(defaultVehicle.id)}
@@ -121,7 +121,7 @@ const VehiclesScreen = () => {
         ) : null}
 
         {vehicles.length > (defaultVehicle ? 1 : 0) ? (
-          <Field className="flex-1" label={t('myOtherVehicles')}>
+          <Field className="flex-1" label={t('VehiclesScreen.myOtherVehicles')}>
             <FlatList
               data={vehicles.filter(({ isDefault }) => !isDefault)}
               keyExtractor={({ id }) => id.toString()}
@@ -155,7 +155,7 @@ const VehiclesScreen = () => {
           )}
 
           <PressableStyled onPress={handleActionEdit}>
-            <ActionRow startIcon="edit" label={t('editVehicle')} />
+            <ActionRow startIcon="edit" label={t('VehiclesScreen.editVehicle')} />
           </PressableStyled>
 
           <Divider />

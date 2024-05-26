@@ -8,7 +8,7 @@ type Props = {
 } & Omit<SwitchControlProps, 'title' | 'description' | 'accessibilityLabel'>
 
 const NotificationControl = ({ notificationName, ...rest }: Props) => {
-  const t = useTranslation('Settings')
+  const { t } = useTranslation()
 
   return (
     <SwitchControl

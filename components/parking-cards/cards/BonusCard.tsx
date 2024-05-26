@@ -22,7 +22,7 @@ const BonusCard = ({
   licencePlate,
   validUntil,
 }: BonusCardProps) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   return (
@@ -32,7 +32,7 @@ const BonusCard = ({
         <Typography variant="small">{licencePlate}</Typography>
         <Divider dividerClassname="bg-divider" />
         <CardContentItem
-          description={t('remainingCredit')}
+          description={t('ParkingCards.remainingCredit')}
           value={
             typeof balanceSeconds === 'number'
               ? formatBalance(balanceSeconds, originalBalanceSeconds ?? undefined)
@@ -41,7 +41,7 @@ const BonusCard = ({
         />
         {validUntil ? (
           <CardContentItem
-            description={t('validUntil')}
+            description={t('ParkingCards.validUntil')}
             value={formatDate(new Date(validUntil), locale)}
           />
         ) : null}

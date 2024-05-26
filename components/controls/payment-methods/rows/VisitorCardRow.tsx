@@ -31,7 +31,7 @@ type Props = AdditionalProps & {
 }
 
 const VisitorCardRow = ({ email, balance, selected, showControlChevron }: Props) => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   return (
     <Panel className={cn(selected && 'border border-visitorCard')}>
@@ -42,7 +42,7 @@ const VisitorCardRow = ({ email, balance, selected, showControlChevron }: Props)
         <View className="flex-1 g-3">
           <FlexRow>
             <View className="flex-1">
-              <Typography variant="default-bold">{t('visitorCard')}</Typography>
+              <Typography variant="default-bold">{t('PaymentMethods.visitorCard')}</Typography>
               <Typography variant="small">{email}</Typography>
             </View>
             {selected && <Icon name="check-circle" />}
@@ -50,7 +50,7 @@ const VisitorCardRow = ({ email, balance, selected, showControlChevron }: Props)
           </FlexRow>
           <Divider />
           <FlexRow>
-            <Typography variant="small">{t('remaining')}</Typography>
+            <Typography variant="small">{t('PaymentMethods.remaining')}</Typography>
             <Typography variant="small-bold">{balance}</Typography>
             {/* <Typography variant="small-bold">48h 30 min / 140h</Typography> */}
           </FlexRow>

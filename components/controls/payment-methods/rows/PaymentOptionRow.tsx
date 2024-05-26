@@ -31,7 +31,7 @@ type Props = {
 } & AdditionalProps
 
 const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlChevron }: Props) => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   return (
     <Panel className={cn(selected && 'border border-dark')}>
@@ -46,7 +46,7 @@ const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlCh
           <View>
             <IconButton
               name="more-vert"
-              accessibilityLabel={t('openContextMenu')}
+              accessibilityLabel={t('PaymentMethods.openContextMenu')}
               onPress={() => onContextMenuPress()}
             />
           </View>

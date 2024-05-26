@@ -38,7 +38,7 @@ type Props = Partial<
 
 const MapAutocomplete = forwardRef<RNTextInput, Props>(
   ({ onValueChange, optionsPortalName, ...restProps }: Props, ref) => {
-    const t = useTranslation('ZoneDetailsScreen')
+    const { t } = useTranslation()
     const mapZones = useMapZonesContext()
     const [nearByZones, setNearbyZones] = useState<UdrZoneFeature[]>([])
     const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
@@ -116,13 +116,13 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         }[] = []
 
         if (zones.length > 0) {
-          sections.push({ title: t('zones'), data: zones.slice(0, ZONES_LIMIT) })
+          sections.push({ title: t('ZoneDetailsScreen.zones'), data: zones.slice(0, ZONES_LIMIT) })
         }
         if (geocodingFeatures.length > 0) {
-          sections.push({ title: t('addresses'), data: geocodingFeatures })
+          sections.push({ title: t('ZoneDetailsScreen.addresses'), data: geocodingFeatures })
         }
         if (sections.length === 0 && nearByZones.length > 0) {
-          sections.push({ title: t('nearByZones'), data: nearByZones })
+          sections.push({ title: t('ZoneDetailsScreen.nearByZones'), data: nearByZones })
         }
 
         return (
@@ -134,12 +134,12 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 ) : input ? (
                   <EmptyStateScreen
                     options={{ headerShown: false }}
-                    contentTitle={t('noResults')}
+                    contentTitle={t('ZoneDetailsScreen.noResults')}
                   />
                 ) : null
               ) : (
                 <>
-                  <Typography variant="h2">{t('searchResults')}</Typography>
+                  <Typography variant="h2">{t('ZoneDetailsScreen.searchResults')}</Typography>
                   <SectionList
                     className="flex-1"
                     sections={sections}

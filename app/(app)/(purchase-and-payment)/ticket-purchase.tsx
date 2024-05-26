@@ -26,7 +26,7 @@ export type TicketPurchaseSearchParams = {
  * This page takes care of redirect from Payment gate. Do not change its path, unless it's changes on BE too.
  */
 const TicketPurchasePage = () => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
 
@@ -90,13 +90,13 @@ const TicketPurchasePage = () => {
     <ScreenViewCentered
       actionButton={
         <Link asChild href="/">
-          <ContinueButton>{t('backToMap')}</ContinueButton>
+          <ContinueButton>{t('PurchaseScreen.backToMap')}</ContinueButton>
         </Link>
       }
       options={{ headerShown: false }}
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
-        <ContentWithAvatar title={t('pendingTitle')} text={t('pendingText')}>
+        <ContentWithAvatar title={t('PurchaseScreen.pendingTitle')} text={t('PurchaseScreen.pendingText')}>
           <ActivityIndicator size="large" />
         </ContentWithAvatar>
       ) : isError || data.paymentStatus === 'FAIL' || data.paymentStatus === 'ERROR' ? (

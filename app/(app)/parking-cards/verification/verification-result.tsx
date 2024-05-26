@@ -24,7 +24,7 @@ type VerificationResultSearchParams = {
 }
 
 const VerificationResultPage = () => {
-  const t = useTranslation('VerificationResult')
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
   const { email, status, licencePlatesString } =

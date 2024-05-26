@@ -15,15 +15,15 @@ type Props = {
  * Error screen with error message and title
  */
 const ErrorScreen = ({ text, actionButton, contentTitle, ...rest }: Props) => {
-  const t = useTranslation('ErrorScreen')
+  const { t } = useTranslation()
 
   return (
     <ScreenViewCentered options={{ headerTransparent: true }} {...rest}>
       <ContentWithAvatar
         actionButton={actionButton}
         variant="error"
-        title={contentTitle ?? t('title')}
-        text={text ?? t('text')}
+        title={contentTitle ?? t('ErrorScreen.title')}
+        text={text ?? t('ErrorScreen.text')}
       />
     </ScreenViewCentered>
   )

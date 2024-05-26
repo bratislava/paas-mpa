@@ -14,7 +14,7 @@ type Props = {
 }
 
 const PurchaseErrorPanel = ({ priceQuery }: Props) => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const { udr, vehicle } = usePurchaseStoreContext()
 
   return !priceQuery.data &&

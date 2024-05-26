@@ -8,10 +8,10 @@ import Divider from '@/components/shared/Divider'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const ChoosePaymentMethodContent = () => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   return (
-    <ScreenView title={t('title')} options={{ presentation: 'modal' }}>
+    <ScreenView title={t('PaymentMethods.title')} options={{ presentation: 'modal' }}>
       <ScrollView>
         <ScreenContent>
           <PaymentOptionsField />

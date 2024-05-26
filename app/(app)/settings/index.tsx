@@ -19,12 +19,12 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
-import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
+import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 
 const SettingsPage = () => {
-  const t = useTranslationLocal('Settings')
+  const { t } = useTranslation()
   const signOut = useSignOut()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
@@ -62,12 +62,12 @@ const SettingsPage = () => {
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('Settings.title')}
       options={{
         headerRight: () => (
           <IconButton
             name="more-horiz"
-            accessibilityLabel={t('openContextMenu')}
+            accessibilityLabel={t('Settings.openContextMenu')}
             onPress={handleContextMenuPress}
           />
         ),

@@ -10,7 +10,7 @@ import { ApplicationLocale } from '@/modules/map/types'
 export const useTranslation = (keyPrefix?: string) => {
   const { t } = useTranslationI18n('translation', { keyPrefix })
 
-  return t
+  return { t }
 }
 
 export const useLocale = () => {

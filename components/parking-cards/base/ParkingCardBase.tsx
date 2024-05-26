@@ -11,7 +11,7 @@ type Props = {
 }
 
 const ParkingCardBase = ({ variant, children }: Props) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
 
   return (
     <Panel

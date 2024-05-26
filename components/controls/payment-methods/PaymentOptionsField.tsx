@@ -11,7 +11,7 @@ import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurcha
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 const PaymentOptionsField = () => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   // TODO potentially get value and setValue functions by props
   const { paymentOption, npk } = usePurchaseStoreContext()
@@ -32,7 +32,7 @@ const PaymentOptionsField = () => {
   ]
 
   return (
-    <Field label={t('fieldPaymentMethods')}>
+    <Field label={t('PaymentMethods.fieldPaymentMethods')}>
       {panels.map((panel) => {
         return (
           <PressableStyled key={panel} onPress={() => handlePanelPress(panel)}>

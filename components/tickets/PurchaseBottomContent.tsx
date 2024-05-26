@@ -37,7 +37,7 @@ const PurchaseBottomContent = ({
   hasLicencePlateError,
 }: Props) => {
   const insets = useSafeAreaInsets()
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   const { vehicle } = usePurchaseStoreContext()
@@ -87,7 +87,7 @@ const PurchaseBottomContent = ({
           disabled={hasLicencePlateError || !!(!priceQuery.data && vehicle?.vehiclePlateNumber)}
           loading={priceQuery.isFetching || isLoading}
         >
-          {t('pay')}
+          {t('PurchaseScreen.pay')}
         </Button>
       </View>
     </>

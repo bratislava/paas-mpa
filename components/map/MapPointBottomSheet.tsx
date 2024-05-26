@@ -40,7 +40,7 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof MapPoint)[]> = {
 }
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
-  const t = useTranslation('PointBottomSheet')
+  const { t } = useTranslation()
   const locale = useLocale()
   const [footerHeight, setFooterHeight] = useState(0)
 

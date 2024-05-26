@@ -13,7 +13,7 @@ import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLas
 import { AnnouncementDto } from '@/modules/backend/openapi-generated'
 
 const AnnouncementsScreen = () => {
-  const t = useTranslation('Announcements')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(announcementsOptions(locale))
@@ -57,11 +57,11 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return <EmptyStateScreen title={t('title')} contentTitle={t('noAnnouncementsTitle')} />
+    return <EmptyStateScreen title={t('Announcements.title')} contentTitle={t('Announcements.noAnnouncementsTitle')} />
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('Announcements.title')}>
       <FlatList data={data.announcements} renderItem={renderItem} />
     </ScreenView>
   )

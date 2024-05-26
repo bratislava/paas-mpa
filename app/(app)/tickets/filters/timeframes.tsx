@@ -13,7 +13,7 @@ import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvid
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersTimeframesScreen = () => {
-  const t = useTranslation('TicketsFilters')
+  const { t } = useTranslation()
   const snapPoints = [300]
   const ref = useRef<BottomSheet>(null)
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()

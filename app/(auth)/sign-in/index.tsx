@@ -18,7 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 const Page = () => {
-  const t = useTranslation('Auth')
+  const { t } = useTranslation()
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
@@ -91,7 +91,7 @@ const Page = () => {
     <DismissKeyboard>
       <ScreenView hasBackButton={!isOnboardingFinished}>
         <ScreenContent>
-          <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
+          <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
 
           <View className="g-1">
             {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
@@ -122,7 +122,7 @@ const Page = () => {
             ) : null}
           </View>
 
-          <Markdown>{t('consent')}</Markdown>
+          <Markdown>{t('Auth.consent')}</Markdown>
 
           <ContinueButton loading={loading} disabled={!phoneWithoutSpaces} onPress={handleSignIn} />
         </ScreenContent>

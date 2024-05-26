@@ -9,7 +9,7 @@ import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurcha
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
 export const RememberCardField = () => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
 
   const paymentMethod = useQueryWithFocusRefetch(storedPaymentMethodOptions())
 
@@ -31,7 +31,7 @@ export const RememberCardField = () => {
 
   return usedPaymentOption === 'payment-card' ? (
     <SelectRow
-      label={paymentMethod.data ? t('useRememberedCard') : t('rememberCard')}
+      label={paymentMethod.data ? t('PurchaseScreen.useRememberedCard') : t('PurchaseScreen.rememberCard')}
       onValueChange={handleToggleSaveCard}
       value={rememberCard}
     />

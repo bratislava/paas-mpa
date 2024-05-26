@@ -12,7 +12,7 @@ type Props = {
 }
 
 const DateTimePicker = ({ onConfirm, onClose, initialValue, minimumDate }: Props) => {
-  const t = useTranslation('DateTimePicker')
+  const { t } = useTranslation()
   const [date, setDate] = useState(initialValue || new Date())
   const locale = useLocale()
 
@@ -43,9 +43,9 @@ const DateTimePicker = ({ onConfirm, onClose, initialValue, minimumDate }: Props
         is24hourSource="locale"
         modal
         open
-        title={t('selectDate')}
-        cancelText={t('cancel')}
-        confirmText={t('confirm')}
+        title={t('DateTimePicker.selectDate')}
+        cancelText={t('DateTimePicker.cancel')}
+        confirmText={t('DateTimePicker.confirm')}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />

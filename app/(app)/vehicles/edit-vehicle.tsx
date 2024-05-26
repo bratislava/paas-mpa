@@ -11,7 +11,7 @@ export type EditVehicleParams = {
 }
 
 const EditVehicleScreen = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { vehicleId } = useLocalSearchParams<EditVehicleParams>()
   const { getVehicle } = useVehiclesStoreContext()
 
@@ -26,7 +26,7 @@ const EditVehicleScreen = () => {
             {t('actions.back')}
           </Button>
         }
-        title={t('editVehicle')}
+        title={t('VehiclesScreen.editVehicle')}
       />
     )
 

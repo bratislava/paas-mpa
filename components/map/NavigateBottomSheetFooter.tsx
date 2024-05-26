@@ -13,7 +13,7 @@ type Props = BottomSheetFooterProps & {
 }
 
 const NavigateBottomSheetFooter = ({ onLayout, navigationUrl, ...restProps }: Props) => {
-  const t = useTranslation('PointBottomSheet')
+  const { t } = useTranslation()
   const { bottom } = useSafeAreaInsets()
 
   const handlePress = useCallback(() => {
@@ -24,7 +24,7 @@ const NavigateBottomSheetFooter = ({ onLayout, navigationUrl, ...restProps }: Pr
     <BottomSheetFooter {...restProps}>
       <View onLayout={onLayout} className="px-5" style={{ paddingBottom: bottom + 20 }}>
         <Button startIcon="directions" variant="primary" className="" onPress={handlePress}>
-          {t('getDirections')}
+          {t('PointBottomSheet.getDirections')}
         </Button>
       </View>
     </BottomSheetFooter>

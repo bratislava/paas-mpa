@@ -13,7 +13,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 const MapLocationBottomSheet = () => {
-  const t = useTranslation('LocationBottomSheet')
+  const { t } = useTranslation()
   const ref = useRef<BottomSheet>(null)
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
@@ -81,10 +81,10 @@ const MapLocationBottomSheet = () => {
         >
           <View className="flex-row justify-between g-3">
             <Button className="flex-1" variant="primary" onPress={handleOpenSettingsPress}>
-              {t('openSettings')}
+              {t('LocationBottomSheet.openSettings')}
             </Button>
             <Button className="flex-1" variant="tertiary" onPress={handleDismiss}>
-              {t('dismiss')}
+              {t('LocationBottomSheet.dismiss')}
             </Button>
           </View>
         </ContentWithAvatar>

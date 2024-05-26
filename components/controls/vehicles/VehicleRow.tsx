@@ -32,7 +32,7 @@ type Props = {
 } & AdditionalProps
 
 const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron }: Props) => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
 
   return (
     <Panel className={cn(selected && 'border border-dark')}>
@@ -46,7 +46,7 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
         {onContextMenuPress ? (
           <IconButton
             name="more-vert"
-            accessibilityLabel={t('openVehicleContextMenu')}
+            accessibilityLabel={t('VehiclesScreen.openVehicleContextMenu')}
             onPress={() => onContextMenuPress(vehicle.vehiclePlateNumber)}
           />
         ) : null}

@@ -18,7 +18,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -87,10 +87,10 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
       <Modal visible={isModalVisible} onRequestClose={handleModalClose}>
         <ModalContentWithActions
           variant="error"
-          title={t('removeEmailTitle')}
-          text={t('removeEmailText')}
-          primaryActionLabel={t('removeEmailConfirm')}
-          secondaryActionLabel={t('removeEmailCancel')}
+          title={t('ParkingCards.removeEmailTitle')}
+          text={t('ParkingCards.removeEmailText')}
+          primaryActionLabel={t('ParkingCards.removeEmailConfirm')}
+          secondaryActionLabel={t('ParkingCards.removeEmailCancel')}
           primaryActionOnPress={() => handleRemoveEmailAccount(parsedEmailId)}
           secondaryActionOnPress={handleModalClose}
         />

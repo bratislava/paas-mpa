@@ -12,7 +12,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('AboutScreen')
+  const { t } = useTranslation()
 
   /* Specify unique key for each item. Using label (with translation) was not working for React. */
   const links = [
@@ -44,7 +44,7 @@ const Page = () => {
 
   return (
     // TODO maybe rename actionButton to something like footer
-    <ScreenView title={t('title')} actionButton={<AppVersion />}>
+    <ScreenView title={t('AboutScreen.title')} actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
           {links.map((link) => (

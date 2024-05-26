@@ -52,7 +52,7 @@ const filteringOptions: {
 const FiltersScreen = () => {
   const filtersParams = useLocalSearchParams<FiltersParams>()
   const [filters, setFilters] = useState<Partial<MapFilters>>(filtersParams)
-  const t = useTranslation('FiltersScreen')
+  const { t } = useTranslation()
 
   const getValueChangeHandler =
     (filterKey: MapZoneStatusEnum | MapPointIconEnum) => (value: boolean) => {
@@ -66,7 +66,7 @@ const FiltersScreen = () => {
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('FiltersScreen.title')}
       actionButton={
         <Link asChild href={{ pathname: '/', params: filters }}>
           <ContinueButton translationKey="showResults" />

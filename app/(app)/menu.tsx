@@ -25,7 +25,7 @@ type MenuItemsType =
   | typeof DIVIDER
 
 const MainMenuScreen = () => {
-  const t = useTranslation()
+  const { t } = useTranslation()
   const { bottom } = useSafeAreaInsets()
 
   const { user } = useAuthStoreContext()

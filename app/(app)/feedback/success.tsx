@@ -7,7 +7,7 @@ import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const FeedbackSuccessScreen = () => {
-  const t = useTranslation('FeedbackScreen.success')
+  const { t } = useTranslation()
 
   const handleContinue = useCallback(() => {
     if (router.canGoBack()) {
@@ -23,7 +23,7 @@ const FeedbackSuccessScreen = () => {
       backgroundVariant="dots"
       actionButton={<ContinueButton onPress={handleContinue} />}
     >
-      <ContentWithAvatar title={t('title')} text={t('text')} variant="success" />
+      <ContentWithAvatar title={t('FeedbackScreen.success.title')} text={t('FeedbackScreen.success.text')} variant="success" />
     </ScreenViewCentered>
   )
 }

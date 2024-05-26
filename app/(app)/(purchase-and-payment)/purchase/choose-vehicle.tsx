@@ -19,7 +19,7 @@ import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehicl
 import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const ChooseVehicleScreen = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { vehicle } = usePurchaseStoreContext()
   const { vehicles, isVehiclePresent, getVehicle } = useVehiclesStoreContext()
 
@@ -49,13 +49,13 @@ const ChooseVehicleScreen = () => {
 
     setOneTimeLicencePlateError('')
     if (isVehiclePresent(newSanitizedLicencePlate)) {
-      setOneTimeLicencePlateError(t('licencePlateDuplicate'))
+      setOneTimeLicencePlateError(t('VehiclesScreen.licencePlateDuplicate'))
     }
   }
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('VehiclesScreen.title')}
       options={{
         presentation: 'modal',
         headerRight: () => (
@@ -67,7 +67,7 @@ const ChooseVehicleScreen = () => {
             }
             onPress={() => handleChoseVehicle()}
           >
-            {t('oneTimeAction')}
+            {t('VehiclesScreen.oneTimeAction')}
           </Button>
         ),
       }}
@@ -77,7 +77,7 @@ const ChooseVehicleScreen = () => {
       <StatusBar style="light" />
 
       <ScreenContent>
-        <AccessibilityField label={t('oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
+        <AccessibilityField label={t('VehiclesScreen.oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
           <TextInput
             autoCapitalize="characters"
             autoCorrect={false}
@@ -89,12 +89,12 @@ const ChooseVehicleScreen = () => {
 
         <View className="flex flex-row items-center">
           <Divider dividerClassname="grow" />
-          <Typography className="px-4">{t('chooseOtherOption')}</Typography>
+          <Typography className="px-4">{t('VehiclesScreen.chooseOtherOption')}</Typography>
           <Divider dividerClassname="grow" />
         </View>
 
         <View className="flex-1 g-2">
-          <Typography variant="default-bold">{t('savedVehicles')}</Typography>
+          <Typography variant="default-bold">{t('VehiclesScreen.savedVehicles')}</Typography>
 
           <FlatList
             data={vehicles}
@@ -110,7 +110,7 @@ const ChooseVehicleScreen = () => {
           <View className="items-start">
             <Link asChild href="/vehicles/add-vehicle">
               <Button variant="plain-dark" startIcon="add-circle-outline">
-                {t('addNewVehicle')}
+                {t('VehiclesScreen.addNewVehicle')}
               </Button>
             </Link>
           </View>

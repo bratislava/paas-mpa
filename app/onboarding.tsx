@@ -34,7 +34,7 @@ type OnboardingRoute = {
   accessibilityLabel: string
 }
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
-  const t = useTranslation('OnboardingScreen')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   const SvgImage = {
@@ -71,7 +71,7 @@ const renderScene = ({
 
 const OnboardingScreen = () => {
   const layout = useWindowDimensions()
-  const t = useTranslation('OnboardingScreen')
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
@@ -100,7 +100,7 @@ const OnboardingScreen = () => {
     }
   })
 
-  const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
+  const buttonLabel = index === routes.length - 1 ? t('OnboardingScreen.getStarted') : t('OnboardingScreen.next')
 
   return (
     <View
@@ -116,7 +116,7 @@ const OnboardingScreen = () => {
                 jumpToRef.current(routes[index - 1].key)
               }
             }}
-            accessibilityLabel={t('goBack')}
+            accessibilityLabel={t('OnboardingScreen.goBack')}
             name="arrow-back"
           />
         ) : (
@@ -125,7 +125,7 @@ const OnboardingScreen = () => {
 
         {index === routes.length - 1 ? null : (
           <Button variant="plain-dark" onPress={() => router.push('/sign-in')}>
-            {t('skip')}
+            {t('OnboardingScreen.skip')}
           </Button>
         )}
       </FlexRow>

@@ -15,7 +15,7 @@ type Props = React.ComponentProps<typeof Stack.Screen>
  * Component that wraps Stack.Screen and adds some default options
  */
 const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
-  const t = useTranslation('Common')
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const [headerLeftWidth, setHeaderLeftWidth] = useState(0)
   const [headerRightWidth, setHeaderRightWidth] = useState(0)
@@ -40,7 +40,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
             {!!back && headerOptions?.headerBackVisible !== false ? (
               <IconButton
                 onPress={router.back}
-                accessibilityLabel={t('goBack')}
+                accessibilityLabel={t('Common.goBack')}
                 name={headerOptions.presentation === 'modal' ? 'close' : 'arrow-back'}
                 onLayout={handleHeaderLeftLayout}
               />
@@ -80,7 +80,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
   const renderHeaderLeft = () => {
     return (
       <View className="h-[22px] justify-end">
-        <IconButton onPress={router.back} accessibilityLabel={t('goBack')} name="close" />
+        <IconButton onPress={router.back} accessibilityLabel={t('Common.goBack')} name="close" />
       </View>
     )
   }

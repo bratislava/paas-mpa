@@ -11,7 +11,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
 const Shorten = () => {
-  const t = useTranslation('ShortenTicket')
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const { ticketId } = useLocalSearchParams<{ ticketId: string }>()
@@ -43,16 +43,16 @@ const Shorten = () => {
   }
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('ShortenTicket.title')}>
       <ScreenContent>
         <View className="h-full g-4">
           <ScrollView className="shrink">
             <View className="grow">
-              <Markdown>{t('infoText')}</Markdown>
+              <Markdown>{t('ShortenTicket.infoText')}</Markdown>
 
               <View className="mt-5 g-1">
                 <Typography variant="default-bold" className="mb-1">
-                  {t('mainConditions')}
+                  {t('ShortenTicket.mainConditions')}
                 </Typography>
 
                 {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
@@ -70,7 +70,7 @@ const Shorten = () => {
             loading={shortenTicketMutation.isPending}
             onPress={handleShortenTicket}
           >
-            {t('actionConfirm')}
+            {t('ShortenTicket.actionConfirm')}
           </Button>
         </View>
       </ScreenContent>

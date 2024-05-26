@@ -48,7 +48,7 @@ const SIGNIN_ERROR_CODES_TO_SHOW = new Set(['InvalidParameterException'])
  * API: https://aws-amplify.github.io/amplify-js/api/globals.html
  */
 export const useSignInOrSignUp = () => {
-  const t = useTranslation('useSignInOrSignUp')
+  const { t } = useTranslation()
   const snackbar = useSnackbar()
 
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
@@ -114,8 +114,8 @@ export const useSignInOrSignUp = () => {
         console.error(t('signInError', { message: error.message }), error)
         snackbar.show(t('signInError', { message: error.message }), { variant: 'danger' })
       } else {
-        console.error(t('unexpectedErrorObjectInSignIn'), error)
-        snackbar.show(t('unexpectedErrorObjectInSignIn'), { variant: 'danger' })
+        console.error(t('useSignInOrSignUp.unexpectedErrorObjectInSignIn'), error)
+        snackbar.show(t('useSignInOrSignUp.unexpectedErrorObjectInSignIn'), { variant: 'danger' })
       }
     }
   }
@@ -160,8 +160,8 @@ export const useSignInOrSignUp = () => {
         console.log(t('confirmError', { message: error.message }), error, JSON.stringify(error))
         snackbar.show(t('confirmError', { message: error.message }), { variant: 'danger' })
       } else {
-        snackbar.show(t('unexpectedErrorObjectInConfirm'), { variant: 'danger' })
-        console.error(t('unexpectedErrorObjectInConfirm'), error)
+        snackbar.show(t('useSignInOrSignUp.unexpectedErrorObjectInConfirm'), { variant: 'danger' })
+        console.error(t('useSignInOrSignUp.unexpectedErrorObjectInConfirm'), error)
       }
     }
   }

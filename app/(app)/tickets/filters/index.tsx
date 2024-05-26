@@ -16,7 +16,7 @@ import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvid
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersScreen = () => {
-  const t = useTranslation('TicketsFilters')
+  const { t } = useTranslation()
 
   const onTicketsFiltersStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const filters = useTicketsFiltersStoreContext()
@@ -31,7 +31,7 @@ const TicketsFiltersScreen = () => {
     {
       key: 'vehicles',
       path: '/tickets/filters/vehicles',
-      value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
+      value: typeof ecvs === 'string' ? t('TicketsFilters.all') : ecvs.join(', '),
     },
     {
       key: 'fromTo',
@@ -42,17 +42,17 @@ const TicketsFiltersScreen = () => {
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('TicketsFilters.title')}
       options={{
         headerRight: () => (
           <PressableStyled onPress={handleResetFilters}>
-            <Typography variant="default-bold">{t('reset')}</Typography>
+            <Typography variant="default-bold">{t('TicketsFilters.reset')}</Typography>
           </PressableStyled>
         ),
         presentation: 'modal',
       }}
       actionButton={
-        <ContinueButton onPress={() => router.back()}>{t('showResults')}</ContinueButton>
+        <ContinueButton onPress={() => router.back()}>{t('TicketsFilters.showResults')}</ContinueButton>
       }
     >
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}

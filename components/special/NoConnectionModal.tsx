@@ -10,7 +10,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { useAxiosResponseInterceptors } from '@/modules/backend/hooks/useAxiosResponseInterceptors'
 
 const NoConnectionModal = () => {
-  const t = useTranslation('NoConnection')
+  const { t } = useTranslation()
 
   const [isConnected, setIsConnected] = useState(true)
   const [serverConnectionError, setServerConnectionError] = useState(false)
@@ -52,7 +52,7 @@ const NoConnectionModal = () => {
         title={t(`${translationName}.title`)}
         isLoading={healthCheck.isPending}
         text={t(`${translationName}.text`)}
-        primaryActionLabel={t('primaryActionLabel')}
+        primaryActionLabel={t('NoConnection.primaryActionLabel')}
         primaryActionOnPress={healthCheck.mutate}
       />
     </Modal>

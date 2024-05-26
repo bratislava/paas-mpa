@@ -71,7 +71,7 @@ export type DateTimePickerRef = DateTimePickerProps & DateTimePickerHandles
 
 const CustomDateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerProps>(
   ({ onConfirm }, ref) => {
-    const t = useTranslation('DateTimePicker')
+    const { t } = useTranslation()
 
     const [now, setNow] = useState(LocalDateTime.now())
     const [selectedHour, setSelectedHour] = useState<number>(now.hour())
@@ -88,8 +88,8 @@ const CustomDateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerPro
     const days = range(0, 15).map((value) => {
       const date = LocalDateTime.now()
       if (value < 7) return date.minusDays(7 - value).format(formatter)
-      if (value === 7) return t('today')
-      if (value === 8) return t('tomorrow')
+      if (value === 7) return t('DateTimePicker.today')
+      if (value === 8) return t('DateTimePicker.tomorrow')
 
       return date.plusDays(value - 7).format(formatter)
     })
@@ -176,10 +176,10 @@ const CustomDateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerPro
 
         <View className="mt-6 g-4">
           <Button variant="plain-dark" onPress={handleNow}>
-            {t('now')}
+            {t('DateTimePicker.now')}
           </Button>
 
-          <Button onPress={handleConfirm}>{t('set')}</Button>
+          <Button onPress={handleConfirm}>{t('DateTimePicker.set')}</Button>
         </View>
       </View>
     )

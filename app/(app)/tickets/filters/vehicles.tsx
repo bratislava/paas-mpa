@@ -16,7 +16,7 @@ import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStore
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 
 const TicketsFiltersVehiclesScreen = () => {
-  const t = useTranslation('TicketsFilters')
+  const { t } = useTranslation()
 
   const { vehicles } = useVehiclesStoreContext()
 
@@ -74,11 +74,11 @@ const TicketsFiltersVehiclesScreen = () => {
 
   return (
     <ScreenView
-      title={t('vehicles')}
+      title={t('TicketsFilters.vehicles')}
       options={{
         headerRight: () => (
           <PressableStyled onPress={handleSelectAll}>
-            <Typography variant="default-bold">{t('selectAll')}</Typography>
+            <Typography variant="default-bold">{t('TicketsFilters.selectAll')}</Typography>
           </PressableStyled>
         ),
         presentation: 'modal',

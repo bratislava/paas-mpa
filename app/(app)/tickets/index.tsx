@@ -33,7 +33,7 @@ type RouteProps =
     }
 
 const TicketsRoute = ({ active }: RouteProps) => {
-  const t = useTranslation('Tickets')
+  const { t } = useTranslation()
   const filters = useTicketsFiltersStoreContext()
 
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -119,14 +119,14 @@ const TicketsRoute = ({ active }: RouteProps) => {
           ListEmptyComponent={
             active ? (
               <ContentWithAvatar
-                title={t('noActiveTickets')}
-                text={t('noActiveTicketsText')}
+                title={t('Tickets.noActiveTickets')}
+                text={t('Tickets.noActiveTicketsText')}
                 customAvatarComponent={<EmptyStateAvatar />}
               />
             ) : (
               <ContentWithAvatar
-                title={t('noHistoryTickets')}
-                text={t('noHistoryTicketsTextFiltered')}
+                title={t('Tickets.noHistoryTickets')}
+                text={t('Tickets.noHistoryTicketsTextFiltered')}
                 customAvatarComponent={<EmptyStateAvatar />}
               />
             )
@@ -138,7 +138,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
         tickets?.length ? null : (
           <View className="absolute bottom-0 w-full p-5">
             <Link asChild href="/purchase">
-              <Button variant="primary">{t('buyTicket')}</Button>
+              <Button variant="primary">{t('Tickets.buyTicket')}</Button>
             </Link>
           </View>
         )
@@ -151,7 +151,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
           >
             <View className="items-center px-5 py-2">
               <FloatingButton startIcon="filter-list" onPress={handleFiltersButtonPress}>
-                {t('filtersButton')}
+                {t('Tickets.filtersButton')}
               </FloatingButton>
             </View>
           </LinearGradient>
@@ -172,17 +172,17 @@ const renderScene = SceneMap({
 })
 
 const Page = () => {
-  const t = useTranslation('Tickets')
+  const { t } = useTranslation()
   const layout = useWindowDimensions()
 
   const [index, setIndex] = useState(0)
   const [routes] = useState([
-    { key: 'active', title: t('activeTickets') },
-    { key: 'history', title: t('history') },
+    { key: 'active', title: t('Tickets.activeTickets') },
+    { key: 'history', title: t('Tickets.history') },
   ])
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('Tickets.title')}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
