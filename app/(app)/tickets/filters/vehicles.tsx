@@ -70,7 +70,7 @@ const TicketsFiltersVehiclesScreen = () => {
         {t('Navigation.apply')}
       </ContinueButton>
     ),
-    [localEcvs, vehicles.length, onPurchaseStoreUpdate],
+    [localEcvs, t, vehicles.length, onPurchaseStoreUpdate],
   )
 
   return (

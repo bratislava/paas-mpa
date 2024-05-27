@@ -75,6 +75,7 @@ const Page = () => {
   }
 
   // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('AddParkingCards.Errors.EmailAlreadyVerified'),
     t('AddParkingCards.Errors.GeneralError'),

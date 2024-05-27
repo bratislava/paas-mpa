@@ -35,7 +35,9 @@ const PaymentScreen = () => {
   if (!paymentUrl) {
     return (
       <ScreenView title={t('PurchaseScreen.titleInvalidPaymentLink')}>
-        <Typography className="mt-5 text-center">{t('PurchaseScreen.noPaymentInitiated')}</Typography>
+        <Typography className="mt-5 text-center">
+          {t('PurchaseScreen.noPaymentInitiated')}
+        </Typography>
       </ScreenView>
     )
   }
@@ -45,7 +47,9 @@ const PaymentScreen = () => {
   if (!paymentUrlDecoded) {
     return (
       <ScreenView title={t('PurchaseScreen.titleInvalidPaymentLink')}>
-        <Typography className="mt-5 text-center">{t('PurchaseScreen.invalidPaymentLink')}</Typography>
+        <Typography className="mt-5 text-center">
+          {t('PurchaseScreen.invalidPaymentLink')}
+        </Typography>
       </ScreenView>
     )
   }

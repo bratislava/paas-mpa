@@ -104,8 +104,9 @@ const OnboardingScreen = () => {
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({
       key,
-      accessibilityLabel: t(`OnboardingScreen.slideAccessibilityLabel`, {
-        title: t(`slides.${key}.title`),
+      accessibilityLabel: t('OnboardingScreen.accessibilityLabel.goToSlide', {
+        // TODO translations
+        title: t(`OnboardingScreen.slides.${key}.title`),
       }),
     })),
   )

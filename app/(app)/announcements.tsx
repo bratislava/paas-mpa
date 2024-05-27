@@ -57,7 +57,12 @@ const AnnouncementsScreen = () => {
   }
 
   if (data.announcements.length === 0) {
-    return <EmptyStateScreen title={t('Announcements.title')} contentTitle={t('Announcements.noAnnouncementsTitle')} />
+    return (
+      <EmptyStateScreen
+        title={t('Announcements.title')}
+        contentTitle={t('Announcements.noAnnouncementsTitle')}
+      />
+    )
   }
 
   return (

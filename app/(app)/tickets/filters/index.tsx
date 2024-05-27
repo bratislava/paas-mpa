@@ -28,6 +28,7 @@ const TicketsFiltersScreen = () => {
   }
 
   // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('TicketsFilters.timeframes.lastMonth'),
     t('TicketsFilters.timeframes.lastYear'),

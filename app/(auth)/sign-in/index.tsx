@@ -23,6 +23,7 @@ const Page = () => {
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
   // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('Auth.errors.CodeMismatchException'),
     t('Auth.errors.Error'),

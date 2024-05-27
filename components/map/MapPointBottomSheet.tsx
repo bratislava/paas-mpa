@@ -45,6 +45,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const [footerHeight, setFooterHeight] = useState(0)
 
   // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationsMapFields = [
     t('PointBottomSheet.fields.address'),
     t('PointBottomSheet.fields.addressDetail'),
@@ -63,6 +64,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     t('PointBottomSheet.fields.npkInformation'),
   ]
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationsMapKinds = [
     t('PointBottomSheet.kinds.branches'),
     t('PointBottomSheet.kinds.garages'),

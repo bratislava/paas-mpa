@@ -31,7 +31,11 @@ export const RememberCardField = () => {
 
   return usedPaymentOption === 'payment-card' ? (
     <SelectRow
-      label={paymentMethod.data ? t('PurchaseScreen.useRememberedCard') : t('PurchaseScreen.rememberCard')}
+      label={
+        paymentMethod.data
+          ? t('PurchaseScreen.useRememberedCard')
+          : t('PurchaseScreen.rememberCard')
+      }
       onValueChange={handleToggleSaveCard}
       value={rememberCard}
     />

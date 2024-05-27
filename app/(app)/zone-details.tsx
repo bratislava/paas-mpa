@@ -73,7 +73,8 @@ const ZoneDetailsScreen = () => {
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
-              {t('ZoneDetailsScreen.weekendsAndHolidaysPrice')}: {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
+              {t('ZoneDetailsScreen.weekendsAndHolidaysPrice')}:{' '}
+              {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
             </Typography>
           </FlexRow>
         )}

@@ -18,29 +18,28 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
   const { udr, vehicle } = usePurchaseStoreContext()
 
   // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('Errors.422'),
     t('Errors.DATABASE_ERROR'),
     t('Errors.MAILGUN_ERROR'),
     t('Errors.RABBIT_MQ_ERROR'),
-    t('Errors.axiosGeneric'),
-    t('Errors.generic'),
-    t('Errors.BadDateFormat'),
-    t('Errors.BadRequest'),
-    t('Errors.CardNotValid'),
-    t('Errors.FreeTicket'),
-    t('Errors.InsufficientCredit'),
-    t('Errors.InvalidParkingEnd'),
-    t('Errors.InvalidParkingStart'),
-    t('Errors.InvalidParkingTime'),
-    t('Errors.LicencePlate'),
-    t('Errors.NoUsableParkingCardFound'),
-    t('Errors.PermitCardActive'),
-    t('Errors.TicketAlreadyExists'),
-    t('Errors.TicketAlreadyShortened'),
-    t('Errors.TooLongParkingTime'),
-    t('Errors.TooShortParkingTime'),
-    t('Errors.parkingSpaceNotFound'),
+    t('PurchaseScreen.Errors.BadDateFormat'),
+    t('PurchaseScreen.Errors.BadRequest'),
+    t('PurchaseScreen.Errors.CardNotValid'),
+    t('PurchaseScreen.Errors.FreeTicket'),
+    t('PurchaseScreen.Errors.InsufficientCredit'),
+    t('PurchaseScreen.Errors.InvalidParkingEnd'),
+    t('PurchaseScreen.Errors.InvalidParkingStart'),
+    t('PurchaseScreen.Errors.InvalidParkingTime'),
+    t('PurchaseScreen.Errors.LicencePlate'),
+    t('PurchaseScreen.Errors.NoUsableParkingCardFound'),
+    t('PurchaseScreen.Errors.PermitCardActive'),
+    t('PurchaseScreen.Errors.TicketAlreadyExists'),
+    t('PurchaseScreen.Errors.TicketAlreadyShortened'),
+    t('PurchaseScreen.Errors.TooLongParkingTime'),
+    t('PurchaseScreen.Errors.TooShortParkingTime'),
+    t('PurchaseScreen.Errors.parkingSpaceNotFound'),
   ]
 
   return !priceQuery.data &&
@@ -50,7 +49,7 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
     isPricingApiError(priceQuery.error.response.data) ? (
     <Panel className="bg-negative-light px-5 py-4">
       <Typography>
-        {t(`Errors.${priceQuery.error.response.data.status}`, {
+        {t(`PurchaseScreen.Errors.${priceQuery.error.response.data.status}`, {
           ecv: vehicle?.vehiclePlateNumber,
           udr: udr?.name,
         })}

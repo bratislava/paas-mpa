@@ -23,7 +23,11 @@ const FeedbackSuccessScreen = () => {
       backgroundVariant="dots"
       actionButton={<ContinueButton onPress={handleContinue} />}
     >
-      <ContentWithAvatar title={t('FeedbackScreen.success.title')} text={t('FeedbackScreen.success.text')} variant="success" />
+      <ContentWithAvatar
+        title={t('FeedbackScreen.success.title')}
+        text={t('FeedbackScreen.success.text')}
+        variant="success"
+      />
     </ScreenViewCentered>
   )
 }

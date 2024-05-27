@@ -77,7 +77,10 @@ const ChooseVehicleScreen = () => {
       <StatusBar style="light" />
 
       <ScreenContent>
-        <AccessibilityField label={t('VehiclesScreen.oneTimeUse')} errorMessage={oneTimeLicencePlateError}>
+        <AccessibilityField
+          label={t('VehiclesScreen.oneTimeUse')}
+          errorMessage={oneTimeLicencePlateError}
+        >
           <TextInput
             autoCapitalize="characters"
             autoCorrect={false}
