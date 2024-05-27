@@ -7,8 +7,10 @@ const REFETCH_BUFFER_TIME = 10_000
 
 /**
  * Hook to refetch query when first ticket parking ends
+ *
  * @param tickets the tickets array to check earliest expiry time
  * @param refetch function to refetch query from useQuery hook
+ * @param queryKey
  */
 export const useQueryInvalidateOnTicketExpire = (
   tickets: TicketDto[] | null,

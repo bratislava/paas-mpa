@@ -18,6 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { cn } from '@/utils/cn'
+
 /** Time after pressing the button when it cannot be pressed again */
 const LOCATION_REQUEST_THROTTLE = 500 // ms
 const LOCATION_REQUEST_TIMEOUT = 500 // ms
@@ -62,11 +63,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
 
-  useQueryInvalidateOnTicketExpire(
-    ticketsData?.tickets ?? null,
-    refetch,
-    activeTicketsOptions().queryKey,
-  )
+  useQueryInvalidateOnTicketExpire(ticketsData?.tickets ?? null, refetch, ['Tickets'])
 
   useEffect(() => {
     return () => {

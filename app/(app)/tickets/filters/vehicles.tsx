@@ -1,4 +1,5 @@
 import { router } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { useCallback, useMemo, useState } from 'react'
 import { FlatList, ListRenderItem, View } from 'react-native'
 
@@ -84,6 +85,10 @@ const TicketsFiltersVehiclesScreen = () => {
       }}
       actionButton={actionButton}
     >
+      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
+      {/* eslint-disable-next-line react/style-prop-object */}
+      <StatusBar style="light" />
+
       <View className="py-5 pl-6 pr-4">
         <FlatList
           data={vehicles}

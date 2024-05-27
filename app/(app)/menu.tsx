@@ -83,16 +83,6 @@ const MainMenuScreen = () => {
             icon: 'developer-mode',
             path: '/dev',
           },
-          {
-            label: 'DEV Purchase',
-            icon: 'payment',
-            path: '/purchase',
-          },
-          {
-            label: 'DEV User',
-            icon: 'person',
-            path: '/examples/user',
-          },
         ] as MenuItemsType[])
       : []),
   ]

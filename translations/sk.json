@@ -257,7 +257,8 @@
     "noHistoryTickets": "Žiadne lístky",
     "noHistoryTicketsText": "Po vypršaní parkovacieho lístka sa lístok zobrazí v tejto sekcii.",
     "noHistoryTicketsTextFiltered": "Nenašli sa žiadne uplynuté lístky zodpovedajúce zvoleným filtrom.",
-    "downloadReceipt": "Stiahnuť doklad"
+    "downloadReceipt": "Stiahnuť doklad",
+    "downloading": "Sťahujem"
   },
   "TicketCard": {
     "prolong": "Predĺžiť",
@@ -440,6 +441,7 @@
     }
   },
   "OnboardingScreen": {
+    "goBack": "Späť",
     "next": "Ďalej",
     "skip": "Preskočiť",
     "getStarted": "Začať",
@@ -472,7 +474,7 @@
     }
   },
   "TicketsFilters": {
-    "title": "Filter",
+    "title": "Filtre",
     "reset": "Resetovať",
     "vehicles": "Vozidlá",
     "fromTo": "Od - do",
@@ -483,7 +485,8 @@
       "lastYear": "Minulý rok"
     },
     "selectAll": "Všetky",
-    "all": "Všetky"
+    "all": "Všetky",
+    "showResults": "Zobraziť výsledky"
   },
   "AppVersion": {
     "appVersion": "Verzia aplikácie {{version}}"

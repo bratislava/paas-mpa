@@ -23,6 +23,8 @@ import { environment } from '@/environment'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 
+// TODO Use ScreenView
+
 type RouteKeys = 'welcome' | 'dataSecurity' | 'parkingCards' | 'visitorsFree' | 'bonusCard'
 type MarketingSliderRouteProps = {
   slide: RouteKeys

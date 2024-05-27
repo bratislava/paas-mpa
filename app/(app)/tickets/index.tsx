@@ -1,33 +1,26 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-} from '@gorhom/bottom-sheet'
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { FlatList, Linking, ListRenderItem, useWindowDimensions, View } from 'react-native'
+import { FlatList, ListRenderItem, useWindowDimensions, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
-import ActionRow from '@/components/list-rows/ActionRow'
+import { EmptyStateAvatar } from '@/assets/avatars'
 import TabBar from '@/components/navigation/TabBar'
-import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
-import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
+import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import FloatingButton from '@/components/shared/FloatingButton'
-import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
+import TicketsHistoryBottomSheet from '@/components/tickets/TicketsHistoryBottomSheet'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clientApi } from '@/modules/backend/client-api'
 import { ticketsInfiniteQuery } from '@/modules/backend/constants/queryOptions'
 import { TicketDto } from '@/modules/backend/openapi-generated'
-import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { getParkingEndRange } from '@/utils/getParkingEndRange'
 
@@ -47,43 +40,21 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
-  const downloadReceiptMutation = useMutation({
-    mutationFn: (id: number) => clientApi.ticketsControllerGetReceipt(id),
-    onSuccess: async (res) => {
-      await Linking.openURL(res.data)
-
-      bottomSheetRef.current?.close()
-    },
-  })
-
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
-    ),
-    [],
-  )
-
   const handleMorePress = useCallback((id: number) => {
     bottomSheetRef.current?.present()
     setActiveId(id)
   }, [])
 
-  const handleDownloadReceipt = () => {
-    if (activeId) {
-      downloadReceiptMutation.mutate(activeId)
-    }
-  }
-
-  // const now = useMemo(() => new Date(), [])
   const now = new Date()
   const { parkingEndFrom, parkingEndTo } = getParkingEndRange(filters.timeframe, now)
 
   const ticketsQueryOptions = ticketsInfiniteQuery({
-    parkingEndFrom: active ? new Date() : parkingEndFrom,
+    isActive: active || false,
+    timeframe: filters.timeframe ?? undefined,
+    parkingEndFrom: active ? now : parkingEndFrom,
     parkingEndTo: active ? undefined : parkingEndTo,
     pageSize: 20,
     ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
-    isActive: active,
   })
 
   const {
@@ -114,11 +85,9 @@ const TicketsRoute = ({ active }: RouteProps) => {
   )
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
-  const handleFiltersPress = () => {
+  const handleFiltersButtonPress = () => {
     router.push('/tickets/filters')
   }
-
-  const hasDefaultFilters = defaultTicketsFiltersStoreContextValues === filters
 
   if (isPending) {
     return (
@@ -132,92 +101,64 @@ const TicketsRoute = ({ active }: RouteProps) => {
     return <Typography>Error: {error.message}</Typography>
   }
 
-  if (active && !tickets?.length) {
-    return (
-      <EmptyStateScreen
-        hasBackButton={false}
-        contentTitle={t('noActiveTickets')}
-        text={t('noActiveTicketsText')}
-        actionButtonPosition="insideContent"
-        actionButton={
-          <Link href="/purchase" asChild>
-            <Button variant="primary">{t('buyTicket')}</Button>
-          </Link>
-        }
-      />
-    )
-  }
-
-  if (!active && !tickets?.length) {
-    return (
-      <EmptyStateScreen
-        hasBackButton={false}
-        contentTitle={t('noHistoryTickets')}
-        text={t(hasDefaultFilters ? 'noHistoryTicketsText' : 'noHistoryTicketsTextFiltered')}
-        actionButtonPosition="insideContent"
-        actionButton={
-          hasDefaultFilters ? (
-            <Link href="/purchase" asChild>
-              <Button variant="primary">{t('buyTicket')}</Button>
-            </Link>
-          ) : (
-            <Button variant="primary" onPress={handleFiltersPress}>
-              {t('filtersButton')}
-            </Button>
-          )
-        }
-      />
-    )
-  }
-
   return (
     <>
-      <ScreenContent variant="center">
-        <View className="w-full flex-1">
-          <FlatList
-            // padding bottom is there for the last card to be able to go above the floating button when finishing scroll movement
-            contentContainerStyle={{ gap: 12, paddingBottom: 32 }}
-            data={tickets}
-            renderItem={renderItem}
-            ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
-            onEndReachedThreshold={0.2}
-            onEndReached={loadMore}
-            onRefresh={refetch}
-            refreshing={isRefetching}
-          />
-        </View>
+      {/* We aren't using ScreenContent here to use whole width for FlatList, to have scrollbar on the right edge of the screen. */}
+      <View className="flex-1">
+        <FlatList
+          // Padding bottom is there for the last card to be able to go above the floating button when finishing scroll movement.
+          // Padding x and top are the same as in ScreenContent
+          contentContainerStyle={{ gap: 12, paddingBottom: 64, padding: 20 }}
+          data={tickets}
+          renderItem={renderItem}
+          ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
+          onEndReachedThreshold={0.2}
+          onEndReached={loadMore}
+          onRefresh={refetch}
+          refreshing={isRefetching}
+          ListEmptyComponent={
+            active ? (
+              <ContentWithAvatar
+                title={t('noActiveTickets')}
+                text={t('noActiveTicketsText')}
+                customAvatarComponent={<EmptyStateAvatar />}
+              />
+            ) : (
+              <ContentWithAvatar
+                title={t('noHistoryTickets')}
+                text={t('noHistoryTicketsTextFiltered')}
+                customAvatarComponent={<EmptyStateAvatar />}
+              />
+            )
+          }
+        />
+      </View>
 
-        {!active && (
+      {active ? (
+        tickets?.length ? null : (
+          <View className="absolute bottom-0 w-full p-5">
+            <Link asChild href="/purchase">
+              <Button variant="primary">{t('buyTicket')}</Button>
+            </Link>
+          </View>
+        )
+      ) : (
+        <View className="absolute bottom-0 w-full">
           <LinearGradient
-            className="absolute bottom-0 w-full items-center pb-2"
             pointerEvents="box-none"
+            // From transparent to white
             colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
           >
-            <FloatingButton startIcon="filter-list" onPress={handleFiltersPress}>
-              {t('filtersButton')}
-            </FloatingButton>
+            <View className="items-center px-5 py-2">
+              <FloatingButton startIcon="filter-list" onPress={handleFiltersButtonPress}>
+                {t('filtersButton')}
+              </FloatingButton>
+            </View>
           </LinearGradient>
-        )}
-      </ScreenContent>
+        </View>
+      )}
 
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        enableDynamicSizing
-        enablePanDownToClose
-        backdropComponent={renderBackdrop}
-      >
-        <BottomSheetContent>
-          <PressableStyled
-            disabled={downloadReceiptMutation.isPending}
-            onPress={handleDownloadReceipt}
-          >
-            <ActionRow
-              startIcon={downloadReceiptMutation.isPending ? 'hourglass-top' : 'file-download'}
-              label={t('downloadReceipt')}
-            />
-          </PressableStyled>
-        </BottomSheetContent>
-      </BottomSheetModal>
+      <TicketsHistoryBottomSheet ref={bottomSheetRef} activeId={activeId} />
     </>
   )
 }
@@ -230,7 +171,6 @@ const renderScene = SceneMap({
   history: HistoryTicketsRoute,
 })
 
-// TODO
 const Page = () => {
   const t = useTranslation('Tickets')
   const layout = useWindowDimensions()

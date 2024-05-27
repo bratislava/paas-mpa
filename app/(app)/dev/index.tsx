@@ -21,6 +21,11 @@ const menuItems: MenuItem[] = [
     route: '/sign-in',
   },
   {
+    title: 'User',
+    subtitle: 'Cognito user info',
+    route: '/dev/examples/user',
+  },
+  {
     title: 'Onboarding',
     subtitle: 'Onboarding screens with swiper after splash screen',
     route: '/onboarding',

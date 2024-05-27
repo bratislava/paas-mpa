@@ -13,6 +13,8 @@ import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPe
 import { cn } from '@/utils/cn'
 import { PermissionStatus } from '@/utils/types'
 
+// TODO Use ScreenView
+
 type RouteKeys = 'notifications' | 'location'
 // key is nested inside router, because this is how `renderScene` provides it
 // the type is generic and has to be manually set for handlers
