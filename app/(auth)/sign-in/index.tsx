@@ -22,6 +22,14 @@ const Page = () => {
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
+  // TODO translations
+  const translationKeys = [
+    t('Auth.errors.CodeMismatchException'),
+    t('Auth.errors.Error'),
+    t('Auth.errors.InvalidParameterException'),
+    t('Auth.errors.NotAuthorizedException'),
+  ]
+
   const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
 
   useEffect(() => {
@@ -118,7 +126,7 @@ const Page = () => {
             </FlexRow>
 
             {errorCode ? (
-              <Typography className="text-negative">{t(`errors.${errorCode}`)}</Typography>
+              <Typography className="text-negative">{t(`Auth.errors.${errorCode}`)}</Typography>
             ) : null}
           </View>
 

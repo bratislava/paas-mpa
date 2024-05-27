@@ -203,11 +203,11 @@ const PurchaseScreen = () => {
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
         <ModalContentWithActions
           customAvatarComponent={<ParkingCardAvatar />}
-          title={t('parkingCardModal.title')}
-          text={t('parkingCardModal.message')}
-          primaryActionLabel={t('parkingCardModal.actionConfirm')}
+          title={t('PurchaseScreen.parkingCardModal.title')}
+          text={t('PurchaseScreen.parkingCardModal.message')}
+          primaryActionLabel={t('PurchaseScreen.parkingCardModal.actionConfirm')}
           primaryActionOnPress={handleParkingCardRedirect}
-          secondaryActionLabel={t('parkingCardModal.actionCancel')}
+          secondaryActionLabel={t('PurchaseScreen.parkingCardModal.actionCancel')}
           secondaryActionOnPress={handleModalClose}
         />
       </Modal>

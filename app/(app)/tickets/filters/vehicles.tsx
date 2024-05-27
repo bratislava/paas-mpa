@@ -61,13 +61,14 @@ const TicketsFiltersVehiclesScreen = () => {
   const actionButton = useMemo(
     () => (
       <ContinueButton
-        translationKey="apply"
         disabled={localEcvs?.length === 0}
         onPress={() => {
           onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? 'all' : localEcvs })
           router.back()
         }}
-      />
+      >
+        {t('Navigation.apply')}
+      </ContinueButton>
     ),
     [localEcvs, vehicles.length, onPurchaseStoreUpdate],
   )

@@ -85,7 +85,7 @@ const Page = () => {
       >
         <BottomSheetContent>
           <PressableStyled onPress={handleActionSetDefault}>
-            <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
+            <ActionRow startIcon="check-circle" label={t('PaymentMethods.actions.saveAsDefault')} />
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheetModal>

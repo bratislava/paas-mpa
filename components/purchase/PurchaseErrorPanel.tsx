@@ -17,6 +17,32 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
   const { t } = useTranslation()
   const { udr, vehicle } = usePurchaseStoreContext()
 
+  // TODO translations
+  const translationKeys = [
+    t('Errors.422'),
+    t('Errors.DATABASE_ERROR'),
+    t('Errors.MAILGUN_ERROR'),
+    t('Errors.RABBIT_MQ_ERROR'),
+    t('Errors.axiosGeneric'),
+    t('Errors.generic'),
+    t('Errors.BadDateFormat'),
+    t('Errors.BadRequest'),
+    t('Errors.CardNotValid'),
+    t('Errors.FreeTicket'),
+    t('Errors.InsufficientCredit'),
+    t('Errors.InvalidParkingEnd'),
+    t('Errors.InvalidParkingStart'),
+    t('Errors.InvalidParkingTime'),
+    t('Errors.LicencePlate'),
+    t('Errors.NoUsableParkingCardFound'),
+    t('Errors.PermitCardActive'),
+    t('Errors.TicketAlreadyExists'),
+    t('Errors.TicketAlreadyShortened'),
+    t('Errors.TooLongParkingTime'),
+    t('Errors.TooShortParkingTime'),
+    t('Errors.parkingSpaceNotFound'),
+  ]
+
   return !priceQuery.data &&
     priceQuery.isError &&
     isAxiosError(priceQuery.error) &&

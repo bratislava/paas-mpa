@@ -134,17 +134,17 @@ const CustomDateTimePicker = forwardRef<DateTimePickerHandles, DateTimePickerPro
           <View className="flex-row bg-dark px-4 g-2">
             <View className="w-[160px] items-center">
               <Typography variant="small-semibold" className="text-white">
-                {t('abbr.d')}
+                {t('DateTimePicker.abbr.d')}
               </Typography>
             </View>
             <View className="w-[80px] items-center">
               <Typography variant="small-semibold" className="text-white">
-                {t('abbr.h')}
+                {t('DateTimePicker.abbr.h')}
               </Typography>
             </View>
             <View className="w-[80px] items-center">
               <Typography variant="small-semibold" className="text-white">
-                {t('abbr.m')}
+                {t('DateTimePicker.abbr.m')}
               </Typography>
             </View>
           </View>

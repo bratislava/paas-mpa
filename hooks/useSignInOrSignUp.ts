@@ -111,8 +111,10 @@ export const useSignInOrSignUp = () => {
       // TODO Logging
       /** Log unexpected errors and show generic error message to the user */
       if (isError(error)) {
-        console.error(t('signInError', { message: error.message }), error)
-        snackbar.show(t('signInError', { message: error.message }), { variant: 'danger' })
+        console.error(t('useSignInOrSignUp.signInError', { message: error.message }), error)
+        snackbar.show(t('useSignInOrSignUp.signInError', { message: error.message }), {
+          variant: 'danger',
+        })
       } else {
         console.error(t('useSignInOrSignUp.unexpectedErrorObjectInSignIn'), error)
         snackbar.show(t('useSignInOrSignUp.unexpectedErrorObjectInSignIn'), { variant: 'danger' })
@@ -157,8 +159,14 @@ export const useSignInOrSignUp = () => {
       // TODO Logging
       /** Log unexpected errors and show generic error message to the user */
       if (isError(error)) {
-        console.log(t('confirmError', { message: error.message }), error, JSON.stringify(error))
-        snackbar.show(t('confirmError', { message: error.message }), { variant: 'danger' })
+        console.log(
+          t('useSignInOrSignUp.confirmError', { message: error.message }),
+          error,
+          JSON.stringify(error),
+        )
+        snackbar.show(t('useSignInOrSignUp.confirmError', { message: error.message }), {
+          variant: 'danger',
+        })
       } else {
         snackbar.show(t('useSignInOrSignUp.unexpectedErrorObjectInConfirm'), { variant: 'danger' })
         console.error(t('useSignInOrSignUp.unexpectedErrorObjectInConfirm'), error)

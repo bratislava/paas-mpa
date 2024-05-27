@@ -23,7 +23,7 @@ const EditVehicleScreen = () => {
         options={{ presentation: 'modal' }}
         actionButton={
           <Button variant="negative" onPress={() => router.back()}>
-            {t('actions.back')}
+            {t('VehiclesScreen.actions.back')}
           </Button>
         }
         title={t('VehiclesScreen.editVehicle')}

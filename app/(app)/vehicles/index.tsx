@@ -147,7 +147,10 @@ const VehiclesScreen = () => {
           {activeVehicleId === defaultVehicle?.id ? null : (
             <>
               <PressableStyled onPress={handleActionSetDefault}>
-                <ActionRow startIcon="check-circle" label={t('actions.saveAsDefault')} />
+                <ActionRow
+                  startIcon="check-circle"
+                  label={t('VehiclesScreen.actions.saveAsDefault')}
+                />
               </PressableStyled>
 
               <Divider />
@@ -161,7 +164,11 @@ const VehiclesScreen = () => {
           <Divider />
 
           <PressableStyled onPress={handleActionDelete}>
-            <ActionRow startIcon="delete" label={t('actions.deleteVehicle')} variant="negative" />
+            <ActionRow
+              startIcon="delete"
+              label={t('VehiclesScreen.actions.deleteVehicle')}
+              variant="negative"
+            />
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheetModal>
@@ -169,11 +176,13 @@ const VehiclesScreen = () => {
       <Modal visible={isModalVisible} onRequestClose={toggleModal}>
         <ModalContentWithActions
           variant="error"
-          title={t('deleteVehicleConfirmModal.title')}
-          text={t('deleteVehicleConfirmModal.message', { licencePlate: activeVehicleLicencePlate })}
-          primaryActionLabel={t('deleteVehicleConfirmModal.actionConfirm')}
+          title={t('VehiclesScreen.deleteVehicleConfirmModal.title')}
+          text={t('VehiclesScreen.deleteVehicleConfirmModal.message', {
+            licencePlate: activeVehicleLicencePlate,
+          })}
+          primaryActionLabel={t('VehiclesScreen.deleteVehicleConfirmModal.actionConfirm')}
           primaryActionOnPress={handleConfirmDelete}
-          secondaryActionLabel={t('deleteVehicleConfirmModal.actionReject')}
+          secondaryActionLabel={t('VehiclesScreen.deleteVehicleConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         />
       </Modal>

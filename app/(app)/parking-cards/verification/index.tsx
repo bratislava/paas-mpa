@@ -74,6 +74,13 @@ const Page = () => {
     }
   }
 
+  // TODO translations
+  const translationKeys = [
+    t('AddParkingCards.Errors.EmailAlreadyVerified'),
+    t('AddParkingCards.Errors.GeneralError'),
+    t('AddParkingCards.Errors.InvalidEmail'),
+  ]
+
   return (
     <ScreenView title={t('AddParkingCards.addCardsTitle')}>
       {/* alwaysBounceVertical disables bouncing when view doesn't exceed parents height (when there is not need for scrolling) */}
@@ -82,7 +89,9 @@ const Page = () => {
           <ScreenContent>
             <AccessibilityField
               label={t('AddParkingCards.emailField')}
-              errorMessage={expectedError ? t(`Errors.${expectedError}`) : undefined}
+              errorMessage={
+                expectedError ? t(`AddParkingCards.Errors.${expectedError}`) : undefined
+              }
             >
               <TextInput
                 value={email}

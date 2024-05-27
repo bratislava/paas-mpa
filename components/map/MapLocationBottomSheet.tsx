@@ -59,10 +59,13 @@ const MapLocationBottomSheet = () => {
     return null
   }
 
-  const translationKey =
-    locationPermissionStatus === Location.PermissionStatus.GRANTED
-      ? 'locationOff'
-      : 'locationDenied'
+  const isGranted = locationPermissionStatus === Location.PermissionStatus.GRANTED
+  const title = isGranted
+    ? t('LocationBottomSheet.locationOff.title')
+    : t('LocationBottomSheet.locationDenied.title')
+  const text = isGranted
+    ? t('LocationBottomSheet.locationOff.text')
+    : t('LocationBottomSheet.locationDenied.text')
 
   return (
     <BottomSheet
@@ -75,8 +78,8 @@ const MapLocationBottomSheet = () => {
       <BottomSheetContent>
         <ContentWithAvatar
           className="px-0 py-0 pb-3 g-3"
-          title={t(`${translationKey}.title`)}
-          text={t(`${translationKey}.text`)}
+          title={title}
+          text={text}
           customAvatarComponent={<AvatarCircleLocationOff />}
         >
           <View className="flex-row justify-between g-3">

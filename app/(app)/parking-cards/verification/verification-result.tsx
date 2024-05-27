@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
+import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
@@ -23,12 +24,31 @@ type VerificationResultSearchParams = {
   licencePlatesString?: string
 }
 
+// TODO translations
 const VerificationResultPage = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
   const { email, status, licencePlatesString } =
     useLocalSearchParams<VerificationResultSearchParams>()
+
+  const translationsMapStatuses = {
+    verified: {
+      actionButtonLabel: t('VerificationResult.verified.actionButtonLabel'),
+      text: t('VerificationResult.verified.text', { email }),
+      title: t('VerificationResult.verified.title', { email }),
+    },
+    'verified-no-cards': {
+      actionButtonLabel: t('VerificationResult.verified-no-cards.actionButtonLabel'),
+      text: t('VerificationResult.verified-no-cards.text', { email }),
+      title: t('VerificationResult.verified-no-cards.title', { email }),
+    },
+    'link-expired': {
+      actionButtonLabel: t('VerificationResult.link-expired.actionButtonLabel'),
+      text: t('VerificationResult.link-expired.text', { email }),
+      title: t('VerificationResult.link-expired.title', { email }),
+    },
+  } satisfies Record<StatusType, { actionButtonLabel: string; text: string; title: string }>
 
   queryClient.refetchQueries({ queryKey: verifiedEmailsInfiniteOptions().queryKey, type: 'active' })
 
@@ -76,14 +96,18 @@ const VerificationResultPage = () => {
     })
   }, [navigation, status])
 
+  if (!status) {
+    return <Typography>No status provided in url.</Typography>
+  }
+
   const getContentText = () => {
-    let text = t(`${status}.text`, { email })
+    let { text } = translationsMapStatuses[status]
 
     if (status === 'verified' && licencePlatesString) {
-      text += t(`${status}.vehicleText`, {
+      text += `\n\n${t('VerificationResult.verified.vehicleText', {
         licencePlatesString,
         count: licencePlatesString.split(', ').length,
-      })
+      })}`
     }
 
     return text
@@ -95,10 +119,12 @@ const VerificationResultPage = () => {
       actionButton={
         status === 'link-expired' ? (
           <ContinueButton onPress={handleResendVerification}>
-            {t(`${status}.actionButtonLabel`)}
+            {translationsMapStatuses[status].actionButtonLabel}
           </ContinueButton>
         ) : (
-          <ContinueButton onPress={router.back}>{t(`${status}.actionButtonLabel`)}</ContinueButton>
+          <ContinueButton onPress={router.back}>
+            {translationsMapStatuses[status].actionButtonLabel}
+          </ContinueButton>
         )
       }
     >

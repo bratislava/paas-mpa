@@ -84,8 +84,6 @@ const TicketPurchasePage = () => {
     })
   }, [navigation])
 
-  const translationKey = isProlongation ? 'prolongation' : 'payment'
-
   return (
     <ScreenViewCentered
       actionButton={
@@ -96,14 +94,25 @@ const TicketPurchasePage = () => {
       options={{ headerShown: false }}
     >
       {isPending || data?.paymentStatus === 'PENDING' ? (
-        <ContentWithAvatar title={t('PurchaseScreen.pendingTitle')} text={t('PurchaseScreen.pendingText')}>
+        <ContentWithAvatar
+          title={t('PurchaseScreen.pendingTitle')}
+          text={t('PurchaseScreen.pendingText')}
+        >
           <ActivityIndicator size="large" />
         </ContentWithAvatar>
       ) : isError || data.paymentStatus === 'FAIL' || data.paymentStatus === 'ERROR' ? (
         <ContentWithAvatar
           variant="error"
-          title={t(`${translationKey}.failed`)}
-          text={t(`${translationKey}.failedText`)}
+          title={
+            isProlongation
+              ? t('PurchaseScreen.prolongation.failed')
+              : t('PurchaseScreen.payment.failed')
+          }
+          text={
+            isProlongation
+              ? t('PurchaseScreen.prolongation.failedText')
+              : t('PurchaseScreen.payment.failedText')
+          }
         >
           <Panel className="bg-negative-light">
             <Typography>{data?.paymentFailReason ?? error?.message}</Typography>
@@ -112,8 +121,16 @@ const TicketPurchasePage = () => {
       ) : data?.paymentStatus === 'SUCCESS' ? (
         <ContentWithAvatar
           variant="success"
-          title={t(`${translationKey}.successful`)}
-          text={t(`${translationKey}.successfulText`)}
+          title={
+            isProlongation
+              ? t('PurchaseScreen.prolongation.successful')
+              : t('PurchaseScreen.payment.successful')
+          }
+          text={
+            isProlongation
+              ? t('PurchaseScreen.prolongation.successfulText')
+              : t('PurchaseScreen.payment.successfulText')
+          }
         >
           <BoughtTicket ticket={data} />
         </ContentWithAvatar>

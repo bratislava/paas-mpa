@@ -54,8 +54,12 @@ const Shorten = () => {
                 <Typography variant="default-bold" className="mb-1">
                   {t('ShortenTicket.mainConditions')}
                 </Typography>
-
-                {(t('conditions', { returnObjects: true }) as unknown as string[]).map((item) => (
+                {[
+                  t('ShortenTicket.conditions.1'),
+                  t('ShortenTicket.conditions.2'),
+                  t('ShortenTicket.conditions.3'),
+                  t('ShortenTicket.conditions.4'),
+                ].map((item) => (
                   <View key={item} className="max-w-full flex-row g-2">
                     <Typography>{`\u2022`}</Typography>
                     <Typography className="min-w-0 shrink">{item}</Typography>

@@ -37,6 +37,30 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   const { t } = useTranslation()
   const locale = useLocale()
 
+  // TODO test translations
+  const translationsMap = {
+    welcome: {
+      title: t('OnboardingScreen.slides.welcome.title'),
+      text: t('OnboardingScreen.slides.welcome.text'),
+    },
+    dataSecurity: {
+      title: t('OnboardingScreen.slides.dataSecurity.title'),
+      text: t('OnboardingScreen.slides.dataSecurity.text'),
+    },
+    parkingCards: {
+      title: t('OnboardingScreen.slides.parkingCards.title'),
+      text: t('OnboardingScreen.slides.parkingCards.text'),
+    },
+    visitorsFree: {
+      title: t('OnboardingScreen.slides.visitorsFree.title'),
+      text: t('OnboardingScreen.slides.visitorsFree.text'),
+    },
+    bonusCard: {
+      title: t('OnboardingScreen.slides.bonusCard.title'),
+      text: t('OnboardingScreen.slides.bonusCard.text'),
+    },
+  } satisfies Record<RouteKeys, { title: string; text: string }>
+
   const SvgImage = {
     welcome: ImageWelcome,
     dataSecurity: ImageDataSecurity,
@@ -48,8 +72,8 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   return (
     <InfoSlide
       className="flex-1"
-      title={t(`slides.${slide}.title`)}
-      text={t(`slides.${slide}.text`)}
+      title={translationsMap[slide].title}
+      text={translationsMap[slide].text}
       SvgImage={SvgImage}
     />
   )
@@ -80,7 +104,7 @@ const OnboardingScreen = () => {
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({
       key,
-      accessibilityLabel: t(`slideAccessibilityLabel`, {
+      accessibilityLabel: t(`OnboardingScreen.slideAccessibilityLabel`, {
         title: t(`slides.${key}.title`),
       }),
     })),
@@ -100,7 +124,8 @@ const OnboardingScreen = () => {
     }
   })
 
-  const buttonLabel = index === routes.length - 1 ? t('OnboardingScreen.getStarted') : t('OnboardingScreen.next')
+  const buttonLabel =
+    index === routes.length - 1 ? t('OnboardingScreen.getStarted') : t('OnboardingScreen.next')
 
   return (
     <View

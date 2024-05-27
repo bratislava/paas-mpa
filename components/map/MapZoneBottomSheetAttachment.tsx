@@ -97,7 +97,9 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
                     <Icon size={20} name="local-parking" />
                   </View>
                   <Typography variant="default-bold" className="leading-6">
-                    {t('ZoneBottomSheet.TopAttachment.tickets', { count: activeTicketsCount })}
+                    {t('ZoneBottomSheet.TopAttachment.tickets', {
+                      numberOfTickets: activeTicketsCount,
+                    })}
                   </Typography>
                 </FlexRow>
               </PressableStyled>

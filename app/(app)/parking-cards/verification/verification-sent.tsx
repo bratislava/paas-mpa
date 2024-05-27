@@ -54,10 +54,12 @@ const Page = () => {
         <ScreenViewCentered options={{ headerTransparent: true }}>
           <ContentWithAvatar
             title={t('AddParkingCards.verifyYourEmail')}
-            text={t('verifyYourEmailInfo', { email })}
+            text={t('AddParkingCards.verifyYourEmailInfo', { email })}
             asMarkdown
             customAvatarComponent={<EmailAvatar />}
-            actionButton={<Button onPress={handleVerify}>{t('AddParkingCards.verifyButton')}</Button>}
+            actionButton={
+              <Button onPress={handleVerify}>{t('AddParkingCards.verifyButton')}</Button>
+            }
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (

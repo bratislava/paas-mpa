@@ -78,7 +78,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
             <ActionRow
               variant="negative"
               startIcon="delete"
-              label={t('emailActions.removeEmail')}
+              label={t('ParkingCards.emailActions.removeEmail')}
             />
           </PressableStyled>
         </BottomSheetContent>

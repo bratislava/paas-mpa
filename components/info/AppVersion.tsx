@@ -12,7 +12,7 @@ const AppVersion = () => {
     <View>
       {/* TODO displaying also build version for testing */}
       <Typography className="text-center">
-        {t('appVersion', {
+        {t('AppVersion.appVersion', {
           version: `${Application.nativeApplicationVersion} (${Application.nativeBuildVersion})`,
         })}
       </Typography>

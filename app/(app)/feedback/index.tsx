@@ -115,15 +115,15 @@ const FeedbackScreen = () => {
             </AccessibilityField>
             <Field label={t('FeedbackScreen.type')}>
               <FlexRow>
-                {(['bug', 'proposal'] as const).map((label) => (
-                  <PressableStyled
-                    key={label}
-                    onPress={handleTypePress(label)}
-                    className="h-[48px] flex-1"
-                  >
-                    <Chip label={t(label)} key={label} isActive={feedbackType === label} />
-                  </PressableStyled>
-                ))}
+                <PressableStyled onPress={handleTypePress('bug')} className="h-[48px] flex-1">
+                  <Chip label={t('FeedbackScreen.bug')} isActive={feedbackType === 'bug'} />
+                </PressableStyled>
+                <PressableStyled onPress={handleTypePress('proposal')} className="h-[48px] flex-1">
+                  <Chip
+                    label={t('FeedbackScreen.proposal')}
+                    isActive={feedbackType === 'proposal'}
+                  />
+                </PressableStyled>
               </FlexRow>
             </Field>
             <AccessibilityField

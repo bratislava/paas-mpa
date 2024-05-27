@@ -22,7 +22,7 @@ import { MapFilters, MapPointIconEnum, MapZoneStatusEnum } from '@/modules/map/c
 type FiltersParams = MapFilters
 
 const filteringOptions: {
-  title: string
+  title: 'payment' | 'parkingType' | 'zones' // TODO more universal type
   data: { icon: FC<SvgProps>; optionKey: MapPointIconEnum | MapZoneStatusEnum }[]
 }[] = [
   {
@@ -54,6 +54,26 @@ const FiltersScreen = () => {
   const [filters, setFilters] = useState<Partial<MapFilters>>(filtersParams)
   const { t } = useTranslation()
 
+  // TODO test translations
+  const translationsMapSections = {
+    payment: t('FiltersScreen.sectionHeaders.payment'),
+    parkingType: t('FiltersScreen.sectionHeaders.parkingType'),
+    zones: t('FiltersScreen.sectionHeaders.zones'),
+  } satisfies Record<(typeof filteringOptions)[0]['title'], string>
+
+  // TODO test translations
+  const translationsMapItems = {
+    active: t('FiltersScreen.filteringOptions.active'),
+    inactive: t('FiltersScreen.filteringOptions.inactive'),
+    planned: t('FiltersScreen.filteringOptions.planned'),
+    branch: t('FiltersScreen.filteringOptions.branch'),
+    garage: t('FiltersScreen.filteringOptions.garage'),
+    'p-plus-r': t('FiltersScreen.filteringOptions.p-plus-r'),
+    'parking-lot': t('FiltersScreen.filteringOptions.parking-lot'),
+    parkomat: t('FiltersScreen.filteringOptions.parkomat'),
+    partner: t('FiltersScreen.filteringOptions.partner'),
+  } satisfies Record<MapPointIconEnum | MapZoneStatusEnum, string>
+
   const getValueChangeHandler =
     (filterKey: MapZoneStatusEnum | MapPointIconEnum) => (value: boolean) => {
       setFilters((oldFilters) => {
@@ -69,7 +89,7 @@ const FiltersScreen = () => {
       title={t('FiltersScreen.title')}
       actionButton={
         <Link asChild href={{ pathname: '/', params: filters }}>
-          <ContinueButton translationKey="showResults" />
+          <ContinueButton>{t('FiltersScreen.showResults')}</ContinueButton>
         </Link>
       }
     >
@@ -78,7 +98,7 @@ const FiltersScreen = () => {
           sections={filteringOptions}
           renderSectionHeader={({ section: { title } }) => (
             <View>
-              <Typography variant="default-bold">{t(`sectionHeaders.${title}`)}</Typography>
+              <Typography variant="default-bold">{translationsMapSections[title]}</Typography>
             </View>
           )}
           className="p-5"
@@ -86,7 +106,7 @@ const FiltersScreen = () => {
             <SelectRow
               key={optionKey}
               IconComponent={icon}
-              label={t(`filteringOptions.${optionKey}`)}
+              label={translationsMapItems[optionKey]}
               onValueChange={getValueChangeHandler(optionKey)}
               value={filters[optionKey] === 'true'}
             />

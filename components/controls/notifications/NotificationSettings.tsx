@@ -119,9 +119,9 @@ const NotificationSettings = () => {
       <Field label={t('Settings.pushNotifications')}>
         {arePermissionsDisabled ? (
           <Panel className="my-2 bg-warning-light px-5">
-            <Typography>{t(`notificationsDisabled`)}</Typography>
+            <Typography>{t('Settings.notificationsDisabled')}</Typography>
             <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
-              <Typography variant="default-bold">{t(`notificationButtonText`)}</Typography>
+              <Typography variant="default-bold">{t('Settings.notificationButtonText')}</Typography>
             </PressableStyled>
           </Panel>
         ) : null}

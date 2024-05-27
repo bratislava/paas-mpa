@@ -89,7 +89,11 @@ const SettingsPage = () => {
       >
         <BottomSheetContent className="min-h-[80px]">
           <PressableStyled onPress={handleActionDelete}>
-            <ActionRow startIcon="delete" label={t('actions.deleteAccount')} variant="negative" />
+            <ActionRow
+              startIcon="delete"
+              label={t('Settings.actions.deleteAccount')}
+              variant="negative"
+            />
           </PressableStyled>
         </BottomSheetContent>
       </BottomSheetModal>
@@ -98,11 +102,11 @@ const SettingsPage = () => {
         <ModalContentWithActions
           variant="error"
           isLoading={deleteUserMutation.isPending}
-          title={t('deleteAccountConfirmModal.title')}
-          text={t('deleteAccountConfirmModal.message')}
-          primaryActionLabel={t('deleteAccountConfirmModal.actionConfirm')}
+          title={t('Settings.deleteAccountConfirmModal.title')}
+          text={t('Settings.deleteAccountConfirmModal.message')}
+          primaryActionLabel={t('Settings.deleteAccountConfirmModal.actionConfirm')}
           primaryActionOnPress={deleteUserMutation.mutate}
-          secondaryActionLabel={t('deleteAccountConfirmModal.actionReject')}
+          secondaryActionLabel={t('Settings.deleteAccountConfirmModal.actionReject')}
           secondaryActionOnPress={closeModal}
         />
       </Modal>

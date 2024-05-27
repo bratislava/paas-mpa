@@ -64,7 +64,10 @@ const AddVehicleScreen = () => {
         <StatusBar style="light" />
 
         <ScreenContent>
-          <AccessibilityField label={t('VehiclesScreen.licencePlateFieldLabel')} errorMessage={error}>
+          <AccessibilityField
+            label={t('VehiclesScreen.licencePlateFieldLabel')}
+            errorMessage={error}
+          >
             <TextInput
               autoCapitalize="characters"
               autoCorrect={false}
@@ -95,18 +98,22 @@ const AddVehicleScreen = () => {
         <Modal visible={isModalVisible} onRequestClose={toggleModal}>
           <ModalContentWithActions
             variant="success"
-            title={t('addVehicleConfirmModal.title')}
-            text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
+            title={t('VehiclesScreen.addVehicleConfirmModal.title')}
+            text={t('VehiclesScreen.addVehicleConfirmModal.message', {
+              licencePlate: sanitizedLicencePlate,
+            })}
             hideAvatar
             isLoading={isLoading}
-            primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
+            primaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionConfirm')}
             primaryActionOnPress={handleSaveVehicle}
-            secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
+            secondaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionReject')}
             secondaryActionOnPress={closeModal}
           >
             {isStandardFormat(sanitizedLicencePlate) ? null : (
               <Panel className="bg-warning-light">
-                <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
+                <Typography>
+                  {t('VehiclesScreen.addVehicleConfirmModal.licencePlateFormatWarning')}
+                </Typography>
               </Panel>
             )}
           </ModalContentWithActions>
