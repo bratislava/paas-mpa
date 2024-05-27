@@ -73,8 +73,6 @@ export const ticketsInfiniteQuery = (
     // Using the same queryKey shape as in activeTicketsOptions
     queryKey: ['Tickets', { isActive, timeframe, ecvs: ecvs?.join(','), pageSize }],
     queryFn: ({ pageParam }) => {
-      console.log(parkingEndFrom, parkingEndTo, ecvs?.join(','))
-
       return clientApi.ticketsControllerTicketsGetMany(
         pageParam,
         pageSize,
