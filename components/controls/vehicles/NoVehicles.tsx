@@ -5,19 +5,19 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const NoVehicles = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
 
   return (
     <EmptyStateScreen
       options={{ headerTransparent: true, headerRight: undefined }}
-      title={t('title')}
+      title={t('VehiclesScreen.title')}
       backgroundVariant="dots"
       hasBackButton
-      contentTitle={t('noVehicles')}
-      text={t('noVehiclesText')}
+      contentTitle={t('VehiclesScreen.noVehicles')}
+      text={t('VehiclesScreen.noVehiclesText')}
       actionButton={
         <Link asChild href="/vehicles/add-vehicle">
-          <ContinueButton>{t('addVehicle')}</ContinueButton>
+          <ContinueButton>{t('VehiclesScreen.addVehicle')}</ContinueButton>
         </Link>
       }
     />

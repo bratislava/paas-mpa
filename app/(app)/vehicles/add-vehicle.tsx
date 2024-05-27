@@ -19,7 +19,7 @@ import { AddVehicle } from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
 const AddVehicleScreen = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
   const { addVehicle, isVehiclePresent, isLoading } = useVehiclesStoreContext()
@@ -37,7 +37,7 @@ const AddVehicleScreen = () => {
 
     setError('')
     if (isVehiclePresent(newSanitizedLicencePlate)) {
-      setError(t('licencePlateDuplicate'))
+      setError(t('VehiclesScreen.licencePlateDuplicate'))
     }
   }
 
@@ -58,13 +58,16 @@ const AddVehicleScreen = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('addVehicleTitle')} options={{ presentation: 'modal' }}>
+      <ScreenView title={t('VehiclesScreen.addVehicleTitle')} options={{ presentation: 'modal' }}>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         {/* eslint-disable-next-line react/style-prop-object */}
         <StatusBar style="light" />
 
         <ScreenContent>
-          <AccessibilityField label={t('licencePlateFieldLabel')} errorMessage={error}>
+          <AccessibilityField
+            label={t('VehiclesScreen.licencePlateFieldLabel')}
+            errorMessage={error}
+          >
             <TextInput
               autoCapitalize="characters"
               autoCorrect={false}
@@ -75,14 +78,14 @@ const AddVehicleScreen = () => {
           </AccessibilityField>
 
           <AccessibilityField
-            label={t('vehicleNameFieldLabel')}
-            labelInsertArea={<Typography>{t('optional')}</Typography>}
+            label={t('VehiclesScreen.vehicleNameFieldLabel')}
+            labelInsertArea={<Typography>{t('VehiclesScreen.optional')}</Typography>}
           >
             <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
           </AccessibilityField>
 
           <Button disabled={!isValid} onPress={openModal}>
-            {t('addVehicle')}
+            {t('VehiclesScreen.addVehicle')}
           </Button>
 
           {!isPresented && (
@@ -95,18 +98,22 @@ const AddVehicleScreen = () => {
         <Modal visible={isModalVisible} onRequestClose={toggleModal}>
           <ModalContentWithActions
             variant="success"
-            title={t('addVehicleConfirmModal.title')}
-            text={t('addVehicleConfirmModal.message', { licencePlate: sanitizedLicencePlate })}
+            title={t('VehiclesScreen.addVehicleConfirmModal.title')}
+            text={t('VehiclesScreen.addVehicleConfirmModal.message', {
+              licencePlate: sanitizedLicencePlate,
+            })}
             hideAvatar
             isLoading={isLoading}
-            primaryActionLabel={t('addVehicleConfirmModal.actionConfirm')}
+            primaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionConfirm')}
             primaryActionOnPress={handleSaveVehicle}
-            secondaryActionLabel={t('addVehicleConfirmModal.actionReject')}
+            secondaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionReject')}
             secondaryActionOnPress={closeModal}
           >
             {isStandardFormat(sanitizedLicencePlate) ? null : (
               <Panel className="bg-warning-light">
-                <Typography>{t('addVehicleConfirmModal.licencePlateFormatWarning')}</Typography>
+                <Typography>
+                  {t('VehiclesScreen.addVehicleConfirmModal.licencePlateFormatWarning')}
+                </Typography>
               </Panel>
             )}
           </ModalContentWithActions>

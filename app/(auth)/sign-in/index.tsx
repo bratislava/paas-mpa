@@ -18,9 +18,18 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 
 const Page = () => {
-  const t = useTranslation('Auth')
+  const { t } = useTranslation()
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
+
+  // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const translationKeys = [
+    t('Auth.errors.CodeMismatchException'),
+    t('Auth.errors.Error'),
+    t('Auth.errors.InvalidParameterException'),
+    t('Auth.errors.NotAuthorizedException'),
+  ]
 
   const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
 
@@ -91,7 +100,7 @@ const Page = () => {
     <DismissKeyboard>
       <ScreenView hasBackButton={!isOnboardingFinished}>
         <ScreenContent>
-          <Typography variant="h1">{t('enterPhoneNumber')}</Typography>
+          <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
 
           <View className="g-1">
             {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
@@ -118,11 +127,11 @@ const Page = () => {
             </FlexRow>
 
             {errorCode ? (
-              <Typography className="text-negative">{t(`errors.${errorCode}`)}</Typography>
+              <Typography className="text-negative">{t(`Auth.errors.${errorCode}`)}</Typography>
             ) : null}
           </View>
 
-          <Markdown>{t('consent')}</Markdown>
+          <Markdown>{t('Auth.consent')}</Markdown>
 
           <ContinueButton loading={loading} disabled={!phoneWithoutSpaces} onPress={handleSignIn} />
         </ScreenContent>

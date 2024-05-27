@@ -24,7 +24,7 @@ type Props = {
 
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
   ({ priceData, purchaseButtonContainerHeight }, ref) => {
-    const t = useTranslation('PurchaseBottomSheet')
+    const { t } = useTranslation()
     const { udr } = usePurchaseStoreContext()
 
     const snapPoints = useMemo(() => [HANDLE_HEIGHT], [])
@@ -48,7 +48,9 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
             <View className="px-5 py-3 g-3">
               <FlexRow>
                 <Typography variant="default">
-                  {t('parkingTime', { time: formatDuration(durationFromPriceDate ?? 0) })}
+                  {t('PurchaseBottomSheet.parkingTime', {
+                    time: formatDuration(durationFromPriceDate ?? 0),
+                  })}
                 </Typography>
                 <Typography variant="default-bold">
                   {formatPrice(priceData.priceWithoutDiscount)}
@@ -77,7 +79,9 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
               {priceData.creditNpkUsedSeconds ? (
                 <FlexRow>
-                  <Typography variant="default">{t('creditNpkUsed')}</Typography>
+                  <Typography variant="default">
+                    {t('PurchaseBottomSheet.creditNpkUsed')}
+                  </Typography>
                   <Typography variant="default-bold">
                     {formatDuration(priceData.creditNpkUsedSeconds)}
                   </Typography>
@@ -86,7 +90,9 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
               {priceData.creditBpkUsedSeconds ? (
                 <FlexRow>
-                  <Typography variant="default">{t('creditBpkUsed')}</Typography>
+                  <Typography variant="default">
+                    {t('PurchaseBottomSheet.creditBpkUsed')}
+                  </Typography>
                   <Typography variant="default-bold">
                     {formatDuration(priceData.creditBpkUsedSeconds)}
                   </Typography>
@@ -95,7 +101,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
 
               {isDefined(priceData.tax) ? (
                 <FlexRow>
-                  <Typography variant="default">{t('tax')}</Typography>
+                  <Typography variant="default">{t('PurchaseBottomSheet.tax')}</Typography>
                   <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
                 </FlexRow>
               ) : null}

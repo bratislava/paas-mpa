@@ -28,7 +28,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 }
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
-  const t = useTranslation('ZoneBottomSheet.TopAttachment')
+  const { t } = useTranslation()
   const [permissionStatus] = useLocationPermission()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
@@ -97,7 +97,9 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
                     <Icon size={20} name="local-parking" />
                   </View>
                   <Typography variant="default-bold" className="leading-6">
-                    {t('tickets', { count: activeTicketsCount })}
+                    {t('ZoneBottomSheet.TopAttachment.tickets', {
+                      numberOfTickets: activeTicketsCount,
+                    })}
                   </Typography>
                 </FlexRow>
               </PressableStyled>
@@ -108,7 +110,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
         <View>
           <IconButton
             name="gps-fixed"
-            accessibilityLabel={t('goToUserLocation')}
+            accessibilityLabel={t('ZoneBottomSheet.TopAttachment.goToUserLocation')}
             variant="white-raised"
             onPress={onLocationPress}
             disabled={isButtonDisabled || permissionStatus === Location.PermissionStatus.DENIED}

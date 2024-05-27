@@ -10,7 +10,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { useAxiosResponseInterceptors } from '@/modules/backend/hooks/useAxiosResponseInterceptors'
 
 const NoConnectionModal = () => {
-  const t = useTranslation('NoConnection')
+  const { t } = useTranslation()
 
   const [isConnected, setIsConnected] = useState(true)
   const [serverConnectionError, setServerConnectionError] = useState(false)
@@ -43,16 +43,17 @@ const NoConnectionModal = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const translationName = isConnected ? 'server' : 'network'
+  const modalTitle = isConnected ? t('NoConnection.server.title') : t('NoConnection.network.title')
+  const modalText = isConnected ? t('NoConnection.server.text') : t('NoConnection.network.text')
 
   return (
     <Modal visible={serverConnectionError}>
       <ModalContentWithActions
         customAvatarComponent={<AvatarCircleNetworkOff />}
-        title={t(`${translationName}.title`)}
+        title={modalTitle}
         isLoading={healthCheck.isPending}
-        text={t(`${translationName}.text`)}
-        primaryActionLabel={t('primaryActionLabel')}
+        text={modalText}
+        primaryActionLabel={t('NoConnection.primaryActionLabel')}
         primaryActionOnPress={healthCheck.mutate}
       />
     </Modal>

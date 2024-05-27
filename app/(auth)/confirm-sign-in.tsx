@@ -22,7 +22,7 @@ type ConfirmAuthSearchParams = {
 }
 
 const Page = () => {
-  const t = useTranslation('Auth')
+  const { t } = useTranslation()
   const { i18n } = useLibTranslation()
   const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
@@ -68,15 +68,15 @@ const Page = () => {
       <ScreenView>
         <ScreenContent>
           <View className="g-2">
-            <Typography variant="h1">{t('enterVerificationCode')}</Typography>
+            <Typography variant="h1">{t('Auth.enterVerificationCode')}</Typography>
 
-            <Typography>{t('verificationText')}</Typography>
+            <Typography>{t('Auth.verificationText')}</Typography>
           </View>
 
           <View className="g-4">
             <CodeInput
               autoFocus
-              accessibilityLabel={t('codeInputLabel')}
+              accessibilityLabel={t('Auth.codeInputLabel')}
               error={errorCode ? t(`errors.${errorCode}`) : undefined}
               value={code}
               setValue={setCode}
@@ -87,7 +87,7 @@ const Page = () => {
             <View className="g-3">
               {phone && errorCode === 'NotAuthorizedException' ? (
                 <Button variant="secondary" onPress={() => resendConfirmationCode(phone)}>
-                  {t('resendCode')}
+                  {t('Auth.resendCode')}
                 </Button>
               ) : null}
               <ContinueButton loading={loading} onPress={handleConfirmSignIn} />

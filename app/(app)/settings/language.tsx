@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import { useTranslation } from 'react-i18next'
+import { useTranslation as useTranslationI18N } from 'react-i18next'
 import { ActivityIndicator, FlatList } from 'react-native'
 import { useMMKVString } from 'react-native-mmkv'
 
@@ -11,15 +11,15 @@ import Divider from '@/components/shared/Divider'
 import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
-import { useTranslation as useTranslationLocal } from '@/hooks/useTranslation'
+import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 const Page = () => {
-  const t = useTranslationLocal('Settings')
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
+  const { i18n } = useTranslationI18N()
   const queryClient = useQueryClient()
   const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
 
@@ -52,7 +52,7 @@ const Page = () => {
   ] as const
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('Settings.title')}>
       <ScreenContent>
         <FlatList
           ItemSeparatorComponent={() => <Divider />}

@@ -18,7 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 
 const Page = () => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
 
   const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery(verifiedEmailsInfiniteOptions())
@@ -31,7 +31,7 @@ const Page = () => {
 
   if (isPending) {
     return (
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('ParkingCards.title')}>
         <ScreenContent>
           <SkeletonParkingCard />
         </ScreenContent>
@@ -49,20 +49,20 @@ const Page = () => {
     return (
       <EmptyStateScreen
         options={{ headerTransparent: true }}
-        title={t('title')}
-        contentTitle={t('noEmailsTitle')}
-        text={t('noEmailsText')}
+        title={t('ParkingCards.title')}
+        contentTitle={t('ParkingCards.noEmailsTitle')}
+        text={t('ParkingCards.noEmailsText')}
         actionButton={
           <View className="g-10">
             <Link asChild href="/parking-cards/verification">
-              <Button>{t('addParkingCards')}</Button>
+              <Button>{t('ParkingCards.addParkingCards')}</Button>
             </Link>
 
             <View className="bg-white g-2">
               <Typography className="text-center" variant="h2">
-                {t('noParkingCard')}
+                {t('ParkingCards.noParkingCard')}
               </Typography>
-              <Markdown textCenter>{t('noParkingCardDescription')}</Markdown>
+              <Markdown textCenter>{t('ParkingCards.noParkingCardDescription')}</Markdown>
             </View>
           </View>
         }
@@ -74,18 +74,18 @@ const Page = () => {
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('ParkingCards.title')}
       options={{
         headerRight: () =>
           verifiedEmails.length > 0 ? (
             <Link asChild href="/parking-cards/verification">
-              <IconButton name="add" accessibilityLabel={t('addParkingCards')} />
+              <IconButton name="add" accessibilityLabel={t('ParkingCards.addParkingCards')} />
             </Link>
           ) : null,
       }}
     >
       <ScreenContent>
-        <Typography variant="default-bold">{t('paasEmailsList')}</Typography>
+        <Typography variant="default-bold">{t('ParkingCards.paasEmailsList')}</Typography>
 
         <FlatList
           data={verifiedEmails}

@@ -40,9 +40,39 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof MapPoint)[]> = {
 }
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
-  const t = useTranslation('PointBottomSheet')
+  const { t } = useTranslation()
   const locale = useLocale()
   const [footerHeight, setFooterHeight] = useState(0)
+
+  // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const translationsMapFields = [
+    t('PointBottomSheet.fields.address'),
+    t('PointBottomSheet.fields.addressDetail'),
+    t('PointBottomSheet.fields.distanceToPublicTransport'),
+    t('PointBottomSheet.fields.id'),
+    t('PointBottomSheet.fields.location'),
+    t('PointBottomSheet.fields.name'),
+    t('PointBottomSheet.fields.openingHours'),
+    t('PointBottomSheet.fields.parkingSpotCount'),
+    t('PointBottomSheet.fields.parkomatId'),
+    t('PointBottomSheet.fields.place'),
+    t('PointBottomSheet.fields.publicTransportLines'),
+    t('PointBottomSheet.fields.publicTransportTravelTime'),
+    t('PointBottomSheet.fields.udrId'),
+    t('PointBottomSheet.fields.rpkInformation'),
+    t('PointBottomSheet.fields.npkInformation'),
+  ]
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const translationsMapKinds = [
+    t('PointBottomSheet.kinds.branches'),
+    t('PointBottomSheet.kinds.garages'),
+    t('PointBottomSheet.kinds.p-plus-r'),
+    t('PointBottomSheet.kinds.parking-lots'),
+    t('PointBottomSheet.kinds.parkomats'),
+    t('PointBottomSheet.kinds.partners'),
+  ]
 
   const snapPoints = useMemo(() => [375, '80%'], [])
   const translatedPoint = useMemo(() => translateMapObject(point, locale), [point, locale])
@@ -107,7 +137,10 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
               <Icon name="close" />
             </PressableStyled>
           </View>
-          <Typography variant="h1">{t(`kinds.${translatedPoint.kind}`)}</Typography>
+          <Typography variant="h1">
+            {/* TODO translations */}
+            {t(`PointBottomSheet.kinds.${translatedPoint.kind}`)}
+          </Typography>
         </View>
         <BottomSheetScrollView
           className="bg-white"
@@ -125,7 +158,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
                 .map((att, ix) => (
                   <View key={att} className="g-4">
                     {!!ix && <Divider />}
-                    <Field label={t(`fields.${att}`)}>
+                    <Field label={t(`PointBottomSheet.fields.${att}`)}>
                       <Typography>{translatedPoint[att]}</Typography>
                     </Field>
                   </View>

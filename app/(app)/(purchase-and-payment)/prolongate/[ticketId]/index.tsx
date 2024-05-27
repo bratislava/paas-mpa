@@ -28,7 +28,7 @@ import { paymentRedirect } from '@/utils/paymentRedirect'
 
 const ProlongTicketScreen = () => {
   const ticket = useTicketContext()
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -68,7 +68,7 @@ const ProlongTicketScreen = () => {
 
   if (!ticket) {
     return (
-      <ScreenView title={t('prolongate')}>
+      <ScreenView title={t('PurchaseScreen.prolongate')}>
         <ScrollView>
           <SkeletonPurchaseFields />
         </ScrollView>
@@ -82,17 +82,17 @@ const ProlongTicketScreen = () => {
 
   return (
     <>
-      <ScreenView title={t('prolongate')}>
+      <ScreenView title={t('PurchaseScreen.prolongate')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             {vehicle ? (
-              <Field label={t('vehicle')}>
+              <Field label={t('PurchaseScreen.vehicle')}>
                 <VehicleRow vehicle={vehicle} />
               </Field>
             ) : null}
 
-            <Field label={t('parkingTimeFieldLabel')}>
+            <Field label={t('PurchaseScreen.parkingTimeFieldLabel')}>
               <TimeSelector
                 value={duration}
                 onValueChange={handleSelectTime}
@@ -101,7 +101,7 @@ const ProlongTicketScreen = () => {
             </Field>
 
             {priceQuery.data ? (
-              <Field label={t('paymentMethodsFieldLabel')}>
+              <Field label={t('PurchaseScreen.paymentMethodsFieldLabel')}>
                 <UsedBonusCard
                   id={priceQuery.data?.bpkId}
                   creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}

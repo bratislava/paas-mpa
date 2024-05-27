@@ -22,7 +22,7 @@ type Props = {
 
 const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
-  const t = useTranslation('ZoneBottomSheet')
+  const { t } = useTranslation()
   if (selectedZone) {
     const price = getPriceFromZone(selectedZone)
 
@@ -51,7 +51,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
             >
               <PressableStyled>
                 <View className="flex-row items-center">
-                  <Typography variant="default-bold">{t('showDetails')}</Typography>
+                  <Typography variant="default-bold">{t('ZoneBottomSheet.showDetails')}</Typography>
                   <Icon name="chevron-right" />
                 </View>
               </PressableStyled>
@@ -68,7 +68,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
 
   return (
     <Panel className="bg-warning-light g-2">
-      <Typography>{t('noZoneSelected')}</Typography>
+      <Typography>{t('ZoneBottomSheet.noZoneSelected')}</Typography>
     </Panel>
   )
 }

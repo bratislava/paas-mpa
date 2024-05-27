@@ -23,7 +23,7 @@ type Country = {
 }
 
 const CountrySearchScreen = () => {
-  const t = useTranslation('Common')
+  const { t } = useTranslation()
   const [searchedCountry, setSearchedCountry] = useState('')
 
   const [, setSelectedCountry] = useUsedCountryStorage()
@@ -86,7 +86,7 @@ const CountrySearchScreen = () => {
               <FlexRow>
                 <View className="flex-1">
                   <TextInput
-                    placeholder={t('search')}
+                    placeholder={t('Common.search')}
                     className="w-full"
                     value={searchedCountry}
                     onChangeText={handleChangeText}
@@ -95,7 +95,7 @@ const CountrySearchScreen = () => {
                   />
                 </View>
                 <Button variant="plain-dark" onPress={handleCancel}>
-                  {t('cancel')}
+                  {t('Common.cancel')}
                 </Button>
               </FlexRow>
             </View>

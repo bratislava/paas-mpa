@@ -16,7 +16,7 @@ import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStore
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
 
 const TicketsFiltersVehiclesScreen = () => {
-  const t = useTranslation('TicketsFilters')
+  const { t } = useTranslation()
 
   const { vehicles } = useVehiclesStoreContext()
 
@@ -61,24 +61,25 @@ const TicketsFiltersVehiclesScreen = () => {
   const actionButton = useMemo(
     () => (
       <ContinueButton
-        translationKey="apply"
         disabled={localEcvs?.length === 0}
         onPress={() => {
           onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? 'all' : localEcvs })
           router.back()
         }}
-      />
+      >
+        {t('TicketsFilters.apply')}
+      </ContinueButton>
     ),
-    [localEcvs, vehicles.length, onPurchaseStoreUpdate],
+    [localEcvs, t, vehicles.length, onPurchaseStoreUpdate],
   )
 
   return (
     <ScreenView
-      title={t('vehicles')}
+      title={t('TicketsFilters.vehicles')}
       options={{
         headerRight: () => (
           <PressableStyled onPress={handleSelectAll}>
-            <Typography variant="default-bold">{t('selectAll')}</Typography>
+            <Typography variant="default-bold">{t('TicketsFilters.selectAll')}</Typography>
           </PressableStyled>
         ),
         presentation: 'modal',

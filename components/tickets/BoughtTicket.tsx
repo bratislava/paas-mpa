@@ -17,12 +17,12 @@ type Props = {
 
 const BoughtTicket = ({ ticket }: Props) => {
   const locale = useLocale()
-  const t = useTranslation('BoughtTicket')
+  const { t } = useTranslation()
 
   const zone = useMapZone(ticket.udr, true)
 
   return (
-    <Field label={t('yourTicket')} labelInsertArea={<ZoneBadge label={ticket.udr} />}>
+    <Field label={t('BoughtTicket.yourTicket')} labelInsertArea={<ZoneBadge label={ticket.udr} />}>
       <Panel className="g-4">
         <FlexRow>
           <Typography>{zone?.name}</Typography>
@@ -31,14 +31,14 @@ const BoughtTicket = ({ ticket }: Props) => {
         <Divider />
 
         <FlexRow>
-          <Typography>{t('licencePlate')}</Typography>
+          <Typography>{t('BoughtTicket.licencePlate')}</Typography>
           <Typography variant="default-bold">{ticket.ecv}</Typography>
         </FlexRow>
 
         <Divider />
 
         <FlexRow>
-          <Typography>{t('validUntil')}</Typography>
+          <Typography>{t('BoughtTicket.validUntil')}</Typography>
           <Typography variant="default-bold">
             {formatDateTime(new Date(ticket.parkingEnd), locale)}
           </Typography>

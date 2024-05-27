@@ -13,7 +13,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
 const MapLocationBottomSheet = () => {
-  const t = useTranslation('LocationBottomSheet')
+  const { t } = useTranslation()
   const ref = useRef<BottomSheet>(null)
   const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
@@ -59,10 +59,13 @@ const MapLocationBottomSheet = () => {
     return null
   }
 
-  const translationKey =
-    locationPermissionStatus === Location.PermissionStatus.GRANTED
-      ? 'locationOff'
-      : 'locationDenied'
+  const isGranted = locationPermissionStatus === Location.PermissionStatus.GRANTED
+  const title = isGranted
+    ? t('LocationBottomSheet.locationOff.title')
+    : t('LocationBottomSheet.locationDenied.title')
+  const text = isGranted
+    ? t('LocationBottomSheet.locationOff.text')
+    : t('LocationBottomSheet.locationDenied.text')
 
   return (
     <BottomSheet
@@ -75,16 +78,16 @@ const MapLocationBottomSheet = () => {
       <BottomSheetContent>
         <ContentWithAvatar
           className="px-0 py-0 pb-3 g-3"
-          title={t(`${translationKey}.title`)}
-          text={t(`${translationKey}.text`)}
+          title={title}
+          text={text}
           customAvatarComponent={<AvatarCircleLocationOff />}
         >
           <View className="flex-row justify-between g-3">
             <Button className="flex-1" variant="primary" onPress={handleOpenSettingsPress}>
-              {t('openSettings')}
+              {t('LocationBottomSheet.openSettings')}
             </Button>
             <Button className="flex-1" variant="tertiary" onPress={handleDismiss}>
-              {t('dismiss')}
+              {t('LocationBottomSheet.dismiss')}
             </Button>
           </View>
         </ContentWithAvatar>

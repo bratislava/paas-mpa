@@ -13,6 +13,7 @@
     "lint:fix": "yarn eslint --fix",
     "doctor": "expo install --check",
     "doctor:fix": "expo install --fix",
+    "parse-translations": "i18next",
     "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.staging.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
     "generate-clients": "yarn generate-client-paas-mpa"
   },
@@ -56,6 +57,7 @@
     "expo-updates": "~0.24.12",
     "geojson": "~0.5.0",
     "i18next": "~23.5.1",
+    "i18next-parser": "^8.13.0",
     "intl-pluralrules": "~2.0.1",
     "nativewind": "^4.0.36",
     "react": "18.2.0",

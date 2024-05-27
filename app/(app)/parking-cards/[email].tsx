@@ -23,7 +23,7 @@ export type ParkingCardsLocalSearchParams = {
 }
 
 const Page = () => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
@@ -48,7 +48,7 @@ const Page = () => {
           headerRight: () => (
             <IconButton
               name="more-horiz"
-              accessibilityLabel={t('openEmailActions')}
+              accessibilityLabel={t('ParkingCards.openEmailActions')}
               onPress={() => bottomSheetRef.current?.present()}
             />
           ),
@@ -75,8 +75,8 @@ const Page = () => {
         ) : (
           <View className="flex-1 justify-center">
             <ContentWithAvatar
-              title={t('noActiveCardsTitle')}
-              text={t('noActiveCardsText')}
+              title={t('ParkingCards.noActiveCardsTitle')}
+              text={t('ParkingCards.noActiveCardsText')}
               customAvatarComponent={<EmptyStateAvatar />}
             />
           </View>

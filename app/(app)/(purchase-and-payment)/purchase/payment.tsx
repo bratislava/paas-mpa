@@ -24,7 +24,7 @@ export type PaymentSearchParams = {
 const invalidPaymentGatewayLinks = ['globalpaymentsinc.com']
 
 const PaymentScreen = () => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const { show } = useSnackbar()
 
   const { paymentUrl, ticketId } = useLocalSearchParams<PaymentSearchParams>()
@@ -34,8 +34,10 @@ const PaymentScreen = () => {
 
   if (!paymentUrl) {
     return (
-      <ScreenView title={t('titleInvalidPaymentLink')}>
-        <Typography className="mt-5 text-center">{t('noPaymentInitiated')}</Typography>
+      <ScreenView title={t('PurchaseScreen.titleInvalidPaymentLink')}>
+        <Typography className="mt-5 text-center">
+          {t('PurchaseScreen.noPaymentInitiated')}
+        </Typography>
       </ScreenView>
     )
   }
@@ -44,8 +46,10 @@ const PaymentScreen = () => {
 
   if (!paymentUrlDecoded) {
     return (
-      <ScreenView title={t('titleInvalidPaymentLink')}>
-        <Typography className="mt-5 text-center">{t('invalidPaymentLink')}</Typography>
+      <ScreenView title={t('PurchaseScreen.titleInvalidPaymentLink')}>
+        <Typography className="mt-5 text-center">
+          {t('PurchaseScreen.invalidPaymentLink')}
+        </Typography>
       </ScreenView>
     )
   }
@@ -76,7 +80,7 @@ const PaymentScreen = () => {
     // https://github.com/react-native-webview/react-native-webview/issues/3052#issuecomment-1635698194
     <>
       <ScreenView
-        title={t('titlePayment')}
+        title={t('PurchaseScreen.titlePayment')}
         // options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}
       >
         <WebView

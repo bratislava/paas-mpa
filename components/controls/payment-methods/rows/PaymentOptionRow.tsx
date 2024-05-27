@@ -31,14 +31,21 @@ type Props = {
 } & AdditionalProps
 
 const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlChevron }: Props) => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
+
+  // TODO test translations
+  const translationsMap = {
+    'payment-card': t('PaymentMethods.methods.payment-card'),
+    'apple-pay': t('PaymentMethods.methods.apple-pay'),
+    'google-pay': t('PaymentMethods.methods.google-pay'),
+  } satisfies Record<typeof variant, string>
 
   return (
     <Panel className={cn(selected && 'border border-dark')}>
       <FlexRow className="items-center">
         <View className="flex-1 flex-row items-center g-3">
           <AvatarSquare variant={variant} />
-          <Typography variant="default-bold">{t(`methods.${variant}`)}</Typography>
+          <Typography variant="default-bold">{translationsMap[variant]}</Typography>
         </View>
         {selected && <Icon name="check-circle" />}
         {showControlChevron && <Icon name="expand-more" />}
@@ -46,7 +53,7 @@ const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlCh
           <View>
             <IconButton
               name="more-vert"
-              accessibilityLabel={t('openContextMenu')}
+              accessibilityLabel={t('PaymentMethods.openContextMenu')}
               onPress={() => onContextMenuPress()}
             />
           </View>

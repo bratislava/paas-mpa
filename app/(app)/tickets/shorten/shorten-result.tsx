@@ -16,7 +16,7 @@ type VerificationResultSearchParams = {
 }
 
 const ShortenResultPage = () => {
-  const t = useTranslation('ShortenTicket')
+  const { t } = useTranslation()
   const { status, ticketId } = useLocalSearchParams<VerificationResultSearchParams>()
 
   return (
@@ -26,18 +26,28 @@ const ShortenResultPage = () => {
       actionButton={
         status === 'error' ? (
           <Link asChild replace href={{ pathname: '/tickets/shorten/', params: { ticketId } }}>
-            <ContinueButton>{t(`${status}.actionButtonLabel`)}</ContinueButton>
+            <ContinueButton>{t('ShortenTicket.error.actionButtonLabel')}</ContinueButton>
           </Link>
         ) : (
-          <ContinueButton onPress={router.back}>{t(`${status}.actionButtonLabel`)}</ContinueButton>
+          <ContinueButton onPress={router.back}>
+            {t('ShortenTicket.success.actionButtonLabel')}
+          </ContinueButton>
         )
       }
     >
       {status === 'error' ? (
-        <ContentWithAvatar variant="error" title={t('failed')} text={t('failedText')} />
+        <ContentWithAvatar
+          variant="error"
+          title={t('ShortenTicket.failed')}
+          text={t('ShortenTicket.failedText')}
+        />
       ) : (
         // TODO
-        <ContentWithAvatar variant="success" title={t('successful')} text={t('successfulText')}>
+        <ContentWithAvatar
+          variant="success"
+          title={t('ShortenTicket.successful')}
+          text={t('ShortenTicket.successfulText')}
+        >
           {/* <BoughtTicket ticket={data} /> */}
         </ContentWithAvatar>
       )}

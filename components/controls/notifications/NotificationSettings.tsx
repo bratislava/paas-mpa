@@ -32,7 +32,7 @@ import { PermissionStatus } from '@/utils/types'
  */
 
 const NotificationSettings = () => {
-  const t = useTranslation('Settings')
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [notificationsPermissionStatus] = useNotificationPermission({ autoAsk: true })
 
@@ -116,12 +116,12 @@ const NotificationSettings = () => {
 
   return (
     <>
-      <Field label={t('pushNotifications')}>
+      <Field label={t('Settings.pushNotifications')}>
         {arePermissionsDisabled ? (
           <Panel className="my-2 bg-warning-light px-5">
-            <Typography>{t(`notificationsDisabled`)}</Typography>
+            <Typography>{t('Settings.notificationsDisabled')}</Typography>
             <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
-              <Typography variant="default-bold">{t(`notificationButtonText`)}</Typography>
+              <Typography variant="default-bold">{t('Settings.notificationButtonText')}</Typography>
             </PressableStyled>
           </Panel>
         ) : null}
@@ -137,7 +137,7 @@ const NotificationSettings = () => {
         ))}
       </Field>
 
-      {/* <Field label={t('emailNotifications')}> */}
+      {/* <Field label={t('Settings.emailNotifications')}> */}
       {/*   {emailNotifications.map((setting) => ( */}
       {/*     <NotificationControl */}
       {/*       key={setting.name} */}

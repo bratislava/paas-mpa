@@ -11,7 +11,7 @@ type Props = {
 }
 
 const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
-  const t = useTranslation('MapScreen')
+  const { t } = useTranslation()
   const { rotateToNorth } = useMapStoreContext()
 
   const handlePress = useCallback(() => {
@@ -26,7 +26,7 @@ const CompassButton = forwardRef<View, Props>(({ heading }, ref) => {
     <Pressable
       ref={ref}
       hitSlop={12}
-      accessibilityLabel={t('compass')}
+      accessibilityLabel={t('MapScreen.compass')}
       className={cn('self-start rounded-full bg-white shadow')}
       onPress={handlePress}
     >

@@ -19,7 +19,7 @@ type Props = {
 }
 
 const TicketsHistoryBottomSheet = forwardRef<BottomSheetModal, Props>(({ activeId }, ref) => {
-  const t = useTranslation('Tickets')
+  const { t } = useTranslation()
 
   const localRef = useRef<BottomSheetModal>(null)
   const refSetter = useMultipleRefsSetter(localRef, ref)
@@ -56,14 +56,14 @@ const TicketsHistoryBottomSheet = forwardRef<BottomSheetModal, Props>(({ activeI
       <BottomSheetContent>
         {downloadReceiptMutation.isPending ? (
           <View className="opacity-50">
-            <ActionRow startIcon="hourglass-top" label={`${t('downloading')}…`} />
+            <ActionRow startIcon="hourglass-top" label={`${t('Tickets.downloading')}…`} />
           </View>
         ) : (
           <PressableStyled
             disabled={downloadReceiptMutation.isPending}
             onPress={handleDownloadReceipt}
           >
-            <ActionRow startIcon="file-download" label={t('downloadReceipt')} />
+            <ActionRow startIcon="file-download" label={t('Tickets.downloadReceipt')} />
           </PressableStyled>
         )}
       </BottomSheetContent>

@@ -1,9 +1,9 @@
 import { AxiosResponse, isAxiosError } from 'axios'
 import { Dispatch, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation as useTranslationI18n } from 'react-i18next'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
-import { useTranslation as useLocalTranslation } from '@/hooks/useTranslation'
+import { useTranslation } from '@/hooks/useTranslation'
 import { axiosInstance } from '@/modules/backend/axios-instance'
 
 const NETWORK_ERROR_CODES = new Set(['ERR_BAD_RESPONSE', 'ERR_NETWORK'])
@@ -12,8 +12,8 @@ const NETWORK_ERROR_CODES = new Set(['ERR_BAD_RESPONSE', 'ERR_NETWORK'])
 
 export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<boolean>) => {
   const snackbar = useSnackbar()
-  const t = useLocalTranslation('Errors')
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
+  const { i18n } = useTranslationI18n()
 
   useEffect(() => {
     const errorInterceptor = (error: unknown) => {
@@ -42,10 +42,10 @@ export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<
               snackbarMessage ??= t(status.toString())
             }
 
-            snackbarMessage ??= t('axiosGeneric')
+            snackbarMessage ??= t('Errors.axiosGeneric')
             break
         }
-      } else snackbarMessage ??= t('generic')
+      } else snackbarMessage ??= t('Errors.generic')
 
       if (snackbarMessage) {
         snackbar.show(snackbarMessage, { variant: 'danger' })

@@ -11,7 +11,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { mobileAppVersionOptions } from '@/modules/backend/constants/queryOptions'
 
 const StoreVersionControl = () => {
-  const t = useTranslation('StoreVersionControl')
+  const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
 
   const appVersionQuery = useQuery(mobileAppVersionOptions())
@@ -45,9 +45,9 @@ const StoreVersionControl = () => {
     <Modal visible={showModal}>
       <ModalContentWithActions
         customAvatarComponent={<AvatarCircle />}
-        title={t('title')}
-        text={t('text')}
-        primaryActionLabel={t('primaryActionLabel')}
+        title={t('StoreVersionControl.title')}
+        text={t('StoreVersionControl.text')}
+        primaryActionLabel={t('StoreVersionControl.primaryActionLabel')}
         primaryActionOnPress={goToStore}
       />
     </Modal>

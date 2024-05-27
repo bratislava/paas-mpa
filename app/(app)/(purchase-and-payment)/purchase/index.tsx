@@ -38,7 +38,7 @@ import { createPriceRequestBody } from '@/utils/createPriceRequestBody'
 import { paymentRedirect } from '@/utils/paymentRedirect'
 
 const PurchaseScreen = () => {
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -144,13 +144,13 @@ const PurchaseScreen = () => {
 
   return (
     <>
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('PurchaseScreen.title')}>
         <ScrollView>
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
 
-            <Field label={t('chooseVehicleFieldLabel')}>
+            <Field label={t('PurchaseScreen.chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
@@ -161,11 +161,11 @@ const PurchaseScreen = () => {
               </Link>
             </Field>
 
-            <Field label={t('parkingTimeFieldLabel')}>
+            <Field label={t('PurchaseScreen.parkingTimeFieldLabel')}>
               <TimeSelector value={duration} onValueChange={handleSelectTime} />
             </Field>
 
-            <Field label={t('paymentMethodsFieldLabel')}>
+            <Field label={t('PurchaseScreen.paymentMethodsFieldLabel')}>
               <UsedBonusCard
                 id={priceQuery.data?.bpkId}
                 creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
@@ -203,11 +203,11 @@ const PurchaseScreen = () => {
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
         <ModalContentWithActions
           customAvatarComponent={<ParkingCardAvatar />}
-          title={t('parkingCardModal.title')}
-          text={t('parkingCardModal.message')}
-          primaryActionLabel={t('parkingCardModal.actionConfirm')}
+          title={t('PurchaseScreen.parkingCardModal.title')}
+          text={t('PurchaseScreen.parkingCardModal.message')}
+          primaryActionLabel={t('PurchaseScreen.parkingCardModal.actionConfirm')}
           primaryActionOnPress={handleParkingCardRedirect}
-          secondaryActionLabel={t('parkingCardModal.actionCancel')}
+          secondaryActionLabel={t('PurchaseScreen.parkingCardModal.actionCancel')}
           secondaryActionOnPress={handleModalClose}
         />
       </Modal>

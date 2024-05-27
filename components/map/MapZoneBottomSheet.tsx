@@ -33,7 +33,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
 
   const inputRef = useRef<RNTextInput>(null)
 
-  const t = useTranslation('ZoneBottomSheet')
+  const { t } = useTranslation()
 
   const handleInputFocus = useCallback(() => {
     router.push('/search')
@@ -59,16 +59,16 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         <BottomSheetContent isDynamic className={cn('bg-white', selectedZone ? 'g-2' : 'g-3')}>
           {isZoomedOut ? (
             <View className="flex-col items-center">
-              <Typography className="text-center">{t('zoomIn')}</Typography>
+              <Typography className="text-center">{t('ZoneBottomSheet.zoomIn')}</Typography>
             </View>
           ) : (
             <>
-              <Field label={t('title')}>
+              <Field label={t('ZoneBottomSheet.title')}>
                 <PressableStyled onPress={handleInputFocus}>
                   <TextInput
                     pointerEvents="none"
                     ref={inputRef}
-                    accessibilityLabel={t('searchAccessibilityInput')}
+                    accessibilityLabel={t('ZoneBottomSheet.searchAccessibilityInput')}
                     returnKeyType="search"
                     value={address}
                     selection={{ start: 0 }}

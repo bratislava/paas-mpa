@@ -24,7 +24,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
 
 const FeedbackScreen = () => {
-  const t = useTranslation('FeedbackScreen')
+  const { t } = useTranslation()
 
   const emailRef = useRef<NativeTextInput>(null)
   const messageRef = useRef<NativeTextInput>(null)
@@ -96,12 +96,12 @@ const FeedbackScreen = () => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('title')}>
+      <ScreenView title={t('FeedbackScreen.title')}>
         <ScrollView>
           <ScreenContent>
             <AccessibilityField
-              label={t('emailAddress')}
-              errorMessage={isValidEmail ? undefined : t('emailAddressInvalid')}
+              label={t('FeedbackScreen.emailAddress')}
+              errorMessage={isValidEmail ? undefined : t('FeedbackScreen.emailAddressInvalid')}
             >
               <TextInput
                 ref={emailRef}
@@ -113,23 +113,23 @@ const FeedbackScreen = () => {
                 hasError={!isValidEmail}
               />
             </AccessibilityField>
-            <Field label={t('type')}>
+            <Field label={t('FeedbackScreen.type')}>
               <FlexRow>
-                {(['bug', 'proposal'] as const).map((label) => (
-                  <PressableStyled
-                    key={label}
-                    onPress={handleTypePress(label)}
-                    className="h-[48px] flex-1"
-                  >
-                    <Chip label={t(label)} key={label} isActive={feedbackType === label} />
-                  </PressableStyled>
-                ))}
+                <PressableStyled onPress={handleTypePress('bug')} className="h-[48px] flex-1">
+                  <Chip label={t('FeedbackScreen.bug')} isActive={feedbackType === 'bug'} />
+                </PressableStyled>
+                <PressableStyled onPress={handleTypePress('proposal')} className="h-[48px] flex-1">
+                  <Chip
+                    label={t('FeedbackScreen.proposal')}
+                    isActive={feedbackType === 'proposal'}
+                  />
+                </PressableStyled>
               </FlexRow>
             </Field>
             <AccessibilityField
               style={{ flex: 1 }}
-              label={t('yourMessage')}
-              errorMessage={isValidMessage ? undefined : t('yourMessageInvalid')}
+              label={t('FeedbackScreen.yourMessage')}
+              errorMessage={isValidMessage ? undefined : t('FeedbackScreen.yourMessageInvalid')}
             >
               <TextInput
                 ref={messageRef}
@@ -151,7 +151,7 @@ const FeedbackScreen = () => {
               loading={mutation.isPending}
               disabled={isDisabled}
             >
-              {t('send')}
+              {t('FeedbackScreen.send')}
             </Button>
           </ScreenContent>
         </ScrollView>

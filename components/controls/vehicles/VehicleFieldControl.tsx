@@ -13,14 +13,14 @@ type Props = {
 }
 
 const VehicleFieldControl = ({ vehicle, hasError }: Props) => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
 
   return vehicle ? (
     <VehicleRow vehicle={vehicle} showControlChevron />
   ) : (
     <Panel className={hasError ? 'border border-negative bg-negative-light' : undefined}>
       <FlexRow>
-        <Typography variant="default-bold">{t('addVehicle')}</Typography>
+        <Typography variant="default-bold">{t('VehiclesScreen.addVehicle')}</Typography>
         <Icon name="add" />
       </FlexRow>
     </Panel>

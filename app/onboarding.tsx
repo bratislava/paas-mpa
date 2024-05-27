@@ -34,8 +34,32 @@ type OnboardingRoute = {
   accessibilityLabel: string
 }
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
-  const t = useTranslation('OnboardingScreen')
+  const { t } = useTranslation()
   const locale = useLocale()
+
+  // TODO test translations
+  const translationsMap = {
+    welcome: {
+      title: t('OnboardingScreen.slides.welcome.title'),
+      text: t('OnboardingScreen.slides.welcome.text'),
+    },
+    dataSecurity: {
+      title: t('OnboardingScreen.slides.dataSecurity.title'),
+      text: t('OnboardingScreen.slides.dataSecurity.text'),
+    },
+    parkingCards: {
+      title: t('OnboardingScreen.slides.parkingCards.title'),
+      text: t('OnboardingScreen.slides.parkingCards.text'),
+    },
+    visitorsFree: {
+      title: t('OnboardingScreen.slides.visitorsFree.title'),
+      text: t('OnboardingScreen.slides.visitorsFree.text'),
+    },
+    bonusCard: {
+      title: t('OnboardingScreen.slides.bonusCard.title'),
+      text: t('OnboardingScreen.slides.bonusCard.text'),
+    },
+  } satisfies Record<RouteKeys, { title: string; text: string }>
 
   const SvgImage = {
     welcome: ImageWelcome,
@@ -48,8 +72,8 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   return (
     <InfoSlide
       className="flex-1"
-      title={t(`slides.${slide}.title`)}
-      text={t(`slides.${slide}.text`)}
+      title={translationsMap[slide].title}
+      text={translationsMap[slide].text}
       SvgImage={SvgImage}
     />
   )
@@ -71,7 +95,7 @@ const renderScene = ({
 
 const OnboardingScreen = () => {
   const layout = useWindowDimensions()
-  const t = useTranslation('OnboardingScreen')
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
@@ -80,8 +104,9 @@ const OnboardingScreen = () => {
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({
       key,
-      accessibilityLabel: t(`slideAccessibilityLabel`, {
-        title: t(`slides.${key}.title`),
+      accessibilityLabel: t('OnboardingScreen.accessibilityLabel.goToSlide', {
+        // TODO translations
+        title: t(`OnboardingScreen.slides.${key}.title`),
       }),
     })),
   )
@@ -100,7 +125,8 @@ const OnboardingScreen = () => {
     }
   })
 
-  const buttonLabel = index === routes.length - 1 ? t('getStarted') : t('next')
+  const buttonLabel =
+    index === routes.length - 1 ? t('OnboardingScreen.getStarted') : t('OnboardingScreen.next')
 
   return (
     <View
@@ -116,7 +142,7 @@ const OnboardingScreen = () => {
                 jumpToRef.current(routes[index - 1].key)
               }
             }}
-            accessibilityLabel={t('goBack')}
+            accessibilityLabel={t('OnboardingScreen.goBack')}
             name="arrow-back"
           />
         ) : (
@@ -125,7 +151,7 @@ const OnboardingScreen = () => {
 
         {index === routes.length - 1 ? null : (
           <Button variant="plain-dark" onPress={() => router.push('/sign-in')}>
-            {t('skip')}
+            {t('OnboardingScreen.skip')}
           </Button>
         )}
       </FlexRow>

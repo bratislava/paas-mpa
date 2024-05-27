@@ -11,7 +11,18 @@ type Props = {
 }
 
 const ParkingCardBase = ({ variant, children }: Props) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
+
+  // TODO test translations
+  const translationsMap = {
+    visitor: t('ParkingCards.type.visitor'),
+    resident: t('ParkingCards.type.resident'),
+    bonus: t('ParkingCards.type.bonus'),
+    subscriber: t('ParkingCards.type.subscriber'),
+    'electric-car': t('ParkingCards.type.electric-car'),
+    tzp: t('ParkingCards.type.tzp'),
+    other: t('ParkingCards.type.other'),
+  } satisfies Record<typeof variant, string>
 
   return (
     <Panel
@@ -25,7 +36,7 @@ const ParkingCardBase = ({ variant, children }: Props) => {
         'border-divider bg-dark-light': variant === 'other',
       })}
     >
-      <Typography variant="default-semibold">{t(`type.${variant}`)}</Typography>
+      <Typography variant="default-semibold">{translationsMap[variant]}</Typography>
 
       {children}
     </Panel>

@@ -18,7 +18,7 @@ import { clientApi } from '@/modules/backend/client-api'
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-(mobile-app)-%5BWIP%5D?node-id=4232%3A6109&mode=dev
  */
 const Page = () => {
-  const t = useTranslation('AddParkingCards')
+  const { t } = useTranslation()
   const { email, tmpVerificationToken } = useLocalSearchParams()
 
   const [code, setCode] = useState('')
@@ -53,11 +53,13 @@ const Page = () => {
       <DismissKeyboard>
         <ScreenViewCentered options={{ headerTransparent: true }}>
           <ContentWithAvatar
-            title={t('verifyYourEmail')}
-            text={t('verifyYourEmailInfo', { email })}
+            title={t('AddParkingCards.verifyYourEmail')}
+            text={t('AddParkingCards.verifyYourEmailInfo', { email })}
             asMarkdown
             customAvatarComponent={<EmailAvatar />}
-            actionButton={<Button onPress={handleVerify}>{t('verifyButton')}</Button>}
+            actionButton={
+              <Button onPress={handleVerify}>{t('AddParkingCards.verifyButton')}</Button>
+            }
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (

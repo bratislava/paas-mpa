@@ -23,7 +23,7 @@ type Props = {
 }
 
 const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
-  const t = useTranslation('TicketCard')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   const parkingStartDate = new Date(ticket.parkingStart)
@@ -48,7 +48,7 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
           {isActive ? null : (
             <IconButton
               name="more-vert"
-              accessibilityLabel={t('more')}
+              accessibilityLabel={t('TicketCard.more')}
               onPress={() => handleMorePress(ticket.id)}
             />
           )}
@@ -67,7 +67,7 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
         {isActive && !ticket.canceledAt ? (
           <View className="g-2">
             <Link asChild href={`/prolongate/${ticket.id}`}>
-              <Button>{t('prolong')}</Button>
+              <Button>{t('TicketCard.prolong')}</Button>
             </Link>
 
             {canShorten ? (
@@ -80,7 +80,7 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
                   },
                 }}
               >
-                <Button variant="secondary">{t('shorten')}</Button>
+                <Button variant="secondary">{t('TicketCard.shorten')}</Button>
               </Link>
             ) : null}
           </View>

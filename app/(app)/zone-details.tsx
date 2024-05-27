@@ -18,7 +18,7 @@ export type ZoneDetailsParams = {
 }
 
 const ZoneDetailsScreen = () => {
-  const t = useTranslation('ZoneDetailsScreen')
+  const { t } = useTranslation()
 
   // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
   const { udrId } = useLocalSearchParams<ZoneDetailsParams>()
@@ -34,7 +34,7 @@ const ZoneDetailsScreen = () => {
   const isAllWeekPrice = zone.weekendsAndHolidaysPrice == null
 
   return (
-    <ScreenView title={t('title')}>
+    <ScreenView title={t('ZoneDetailsScreen.title')}>
       <ScreenContent>
         <FlexRow>
           <ZoneBadge label={zone.udrId} />
@@ -57,7 +57,7 @@ const ZoneDetailsScreen = () => {
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography className="flex-1">
-              {t('paidHours')}: {zone.paidHours}
+              {t('ZoneDetailsScreen.paidHours')}: {zone.paidHours}
             </Typography>
           </FlexRow>
         ) : null}
@@ -65,7 +65,7 @@ const ZoneDetailsScreen = () => {
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
-              {t('weekdaysPrice')}: {formatPricePerHour(zone.price)}
+              {t('ZoneDetailsScreen.weekdaysPrice')}: {formatPricePerHour(zone.price)}
             </Typography>
           </FlexRow>
         )}
@@ -73,7 +73,8 @@ const ZoneDetailsScreen = () => {
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
-              {t('weekendsAndHolidaysPrice')}: {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
+              {t('ZoneDetailsScreen.weekendsAndHolidaysPrice')}:{' '}
+              {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
             </Typography>
           </FlexRow>
         )}

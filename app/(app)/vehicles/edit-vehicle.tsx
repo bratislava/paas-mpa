@@ -11,7 +11,7 @@ export type EditVehicleParams = {
 }
 
 const EditVehicleScreen = () => {
-  const t = useTranslation('VehiclesScreen')
+  const { t } = useTranslation()
   const { vehicleId } = useLocalSearchParams<EditVehicleParams>()
   const { getVehicle } = useVehiclesStoreContext()
 
@@ -23,10 +23,10 @@ const EditVehicleScreen = () => {
         options={{ presentation: 'modal' }}
         actionButton={
           <Button variant="negative" onPress={() => router.back()}>
-            {t('actions.back')}
+            {t('VehiclesScreen.actions.back')}
           </Button>
         }
-        title={t('editVehicle')}
+        title={t('VehiclesScreen.editVehicle')}
       />
     )
 

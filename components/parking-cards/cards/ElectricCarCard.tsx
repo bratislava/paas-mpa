@@ -12,7 +12,7 @@ import { formatDate } from '@/utils/formatDate'
 type ElectricCarCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
 
 const ElectricCarCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCardProps) => {
-  const t = useTranslation('ParkingCards')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   return (
@@ -23,7 +23,7 @@ const ElectricCarCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCard
         <Divider dividerClassname="bg-electricCarCard" />
         {validUntil ? (
           <CardContentItem
-            description={t('validUntil')}
+            description={t('ParkingCards.validUntil')}
             value={formatDate(new Date(validUntil), locale)}
           />
         ) : null}

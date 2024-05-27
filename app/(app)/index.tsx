@@ -15,7 +15,7 @@ import {
 import { useLastReadAnnouncementIdStorage } from '@/modules/backend/hooks/useLastReadAnnouncementIdStorage'
 
 const IndexScreen = () => {
-  const t = useTranslation()
+  const { t } = useTranslation()
   const locale = useLocale()
   const { top } = useSafeAreaInsets()
 

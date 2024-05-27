@@ -32,7 +32,7 @@ const Snackbar = ({
   actionLabel,
   onActionPress,
 }: SnackbarProps) => {
-  const t = useTranslation('Common')
+  const { t } = useTranslation()
 
   const handlePress = useCallback(() => {
     onActionPress?.()
@@ -56,7 +56,7 @@ const Snackbar = ({
           </Typography>
           <PressableStyled className="px-2 py-4" onPress={handlePress}>
             <Typography className="uppercase" variant="default-bold">
-              {actionLabel ?? t('hide')}
+              {actionLabel ?? t('Common.hide')}
             </Typography>
           </PressableStyled>
         </FlexRow>

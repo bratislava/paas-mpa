@@ -16,7 +16,7 @@ type Props = {
 }
 
 const Announcement = ({ announcement, isNew = true }: Props) => {
-  const t = useTranslation('Announcements')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   return (
@@ -37,7 +37,7 @@ const Announcement = ({ announcement, isNew = true }: Props) => {
               <Link asChild href={announcement.externalUrl}>
                 <PressableStyled>
                   <Typography variant="small-bold" className="text-green">
-                    {t('learnMore')}
+                    {t('Announcements.learnMore')}
                   </Typography>
                 </PressableStyled>
               </Link>

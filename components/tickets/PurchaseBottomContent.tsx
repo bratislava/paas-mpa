@@ -37,7 +37,7 @@ const PurchaseBottomContent = ({
   hasLicencePlateError,
 }: Props) => {
   const insets = useSafeAreaInsets()
-  const t = useTranslation('PurchaseScreen')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   const { vehicle } = usePurchaseStoreContext()
@@ -68,14 +68,14 @@ const PurchaseBottomContent = ({
 
         {hasLicencePlateError ? (
           <Panel className="mt-3 bg-negative-light px-5">
-            <Typography>{t(`Errors.LicencePlate`)}</Typography>
+            <Typography>{t('PurchaseScreen.Errors.LicencePlate')}</Typography>
           </Panel>
         ) : null}
 
         {isDifferentEnd ? (
           <Panel className="mt-3 bg-warning-light px-5">
             <Typography>
-              {t(`warnings.differentEnd`, {
+              {t('PurchaseScreen.warnings.differentEnd', {
                 time: formatTime(new Date(priceQuery.data.ticketEnd), locale),
               })}
             </Typography>
@@ -87,7 +87,7 @@ const PurchaseBottomContent = ({
           disabled={hasLicencePlateError || !!(!priceQuery.data && vehicle?.vehiclePlateNumber)}
           loading={priceQuery.isFetching || isLoading}
         >
-          {t('pay')}
+          {t('PurchaseScreen.pay')}
         </Button>
       </View>
     </>

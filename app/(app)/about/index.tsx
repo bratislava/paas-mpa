@@ -12,39 +12,39 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
-  const t = useTranslation('AboutScreen')
+  const { t } = useTranslation()
 
   /* Specify unique key for each item. Using label (with translation) was not working for React. */
   const links = [
     {
       key: 1,
-      label: t('links.termsAndConditions.label'),
-      url: t('links.termsAndConditions.url'),
+      label: t('AboutScreen.links.termsAndConditions.label'),
+      url: t('AboutScreen.links.termsAndConditions.url'),
       icon: 'language',
     },
     {
       key: 2,
-      label: t('links.privacyPolicy.label'),
-      url: t('links.privacyPolicy.url'),
+      label: t('AboutScreen.links.privacyPolicy.label'),
+      url: t('AboutScreen.links.privacyPolicy.url'),
       icon: 'description',
     },
     {
       key: 3,
-      label: t('links.contactUs.label'),
-      url: t('links.contactUs.url'),
+      label: t('AboutScreen.links.contactUs.label'),
+      url: t('AboutScreen.links.contactUs.url'),
       icon: 'phone',
     },
     // {
     //   key: 4,
-    //   label: t('links.rateTheApp.label'),
-    //   url: t('links.rateTheApp.url'),
+    //   label: t('AboutScreen.links.rateTheApp.label'),
+    //   url: t('AboutScreen.links.rateTheApp.url'),
     //   icon: 'star',
     // },
   ] as const
 
   return (
     // TODO maybe rename actionButton to something like footer
-    <ScreenView title={t('title')} actionButton={<AppVersion />}>
+    <ScreenView title={t('AboutScreen.title')} actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
           {links.map((link) => (

@@ -18,7 +18,7 @@ import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
 const SearchScreen = () => {
   const { setFlyToCenter } = useMapStoreContext()
 
-  const t = useTranslation()
+  const { t } = useTranslation()
 
   const ref = useRef<TextInput>(null)
 

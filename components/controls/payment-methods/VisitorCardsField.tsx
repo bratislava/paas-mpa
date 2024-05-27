@@ -15,7 +15,7 @@ import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/use
 import { formatBalance } from '@/utils/formatBalance'
 
 const VisitorCardsField = () => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
 
   // TODO potentially get value and setValue functions by props
   const { npk } = usePurchaseStoreContext()
@@ -50,7 +50,7 @@ const VisitorCardsField = () => {
   }
 
   return (
-    <Field label={t('fieldVisitorCards')}>
+    <Field label={t('PaymentMethods.fieldVisitorCards')}>
       {visitorCards.length > 0 ? (
         visitorCards.map((card) => {
           return (
@@ -71,7 +71,7 @@ const VisitorCardsField = () => {
         <View className="flex items-start">
           <Link asChild href="/parking-cards/verification">
             <Button variant="plain-dark" startIcon="add-circle-outline" onPress={router.back}>
-              {t('addVisitorCard')}
+              {t('PaymentMethods.addVisitorCard')}
             </Button>
           </Link>
         </View>

@@ -30,7 +30,7 @@ type Props = AdditionalProps & {
 }
 
 const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Props) => {
-  const t = useTranslation('PaymentMethods')
+  const { t } = useTranslation()
   const locale = useLocale()
 
   return (
@@ -38,7 +38,7 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
       <View className="g-3">
         <FlexRow>
           <View className="flex-1">
-            <Typography variant="default-bold">{t('bonusCard')}</Typography>
+            <Typography variant="default-bold">{t('PaymentMethods.bonusCard')}</Typography>
             {/* <Typography variant="small">ECV</Typography> */}
           </View>
           {selected && <Icon name="check-circle" />}
@@ -46,13 +46,13 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
         </FlexRow>
         <Divider />
         <FlexRow>
-          <Typography variant="small">{t('todayRemaining')}</Typography>
+          <Typography variant="small">{t('PaymentMethods.todayRemaining')}</Typography>
           <Typography variant="small-bold">{balance}</Typography>
         </FlexRow>
 
         {validUntil ? (
           <FlexRow>
-            <Typography variant="small">{t('validUntil')}</Typography>
+            <Typography variant="small">{t('PaymentMethods.validUntil')}</Typography>
             <Typography variant="small-bold">{formatDate(new Date(validUntil), locale)}</Typography>
           </FlexRow>
         ) : null}

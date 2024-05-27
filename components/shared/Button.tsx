@@ -66,7 +66,7 @@ const Button = forwardRef<View, ButtonProps>(
     },
     ref,
   ) => {
-    const t = useTranslation('Common')
+    const { t } = useTranslation()
 
     const rest = { ...restProps, disabled: loading || disabled }
     const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
@@ -77,7 +77,7 @@ const Button = forwardRef<View, ButtonProps>(
           <>
             <Icon name="hourglass-top" className={buttonTextClassNames} />
             <Typography variant="button" className={buttonTextClassNames}>
-              {`${loadingText || t('loading')}${loadingTextEllipsis ? '…' : ''}`}
+              {`${loadingText || t('Common.loading')}${loadingTextEllipsis ? '…' : ''}`}
             </Typography>
           </>
         ) : (

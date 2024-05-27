@@ -16,7 +16,7 @@ import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvid
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersScreen = () => {
-  const t = useTranslation('TicketsFilters')
+  const { t } = useTranslation()
 
   const onTicketsFiltersStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const filters = useTicketsFiltersStoreContext()
@@ -27,32 +27,45 @@ const TicketsFiltersScreen = () => {
     onTicketsFiltersStoreUpdate(defaultTicketsFiltersStoreContextValues)
   }
 
+  // TODO translations
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const translationKeys = [
+    t('TicketsFilters.timeframes.lastMonth'),
+    t('TicketsFilters.timeframes.lastYear'),
+    t('TicketsFilters.timeframes.thisMonth'),
+    t('TicketsFilters.timeframes.thisYear'),
+  ]
   const fields = [
     {
       key: 'vehicles',
+      label: t('TicketsFilters.vehicles'),
       path: '/tickets/filters/vehicles',
-      value: typeof ecvs === 'string' ? t('all') : ecvs.join(', '),
+      value: typeof ecvs === 'string' ? t('TicketsFilters.all') : ecvs.join(', '),
     },
     {
       key: 'fromTo',
+      label: t('TicketsFilters.fromTo'),
       path: '/tickets/filters/timeframes',
-      value: t(`timeframes.${timeframe}`),
+      // TODO translations
+      value: t(`TicketsFilters.timeframes.${timeframe}`),
     },
   ]
 
   return (
     <ScreenView
-      title={t('title')}
+      title={t('TicketsFilters.title')}
       options={{
         headerRight: () => (
           <PressableStyled onPress={handleResetFilters}>
-            <Typography variant="default-bold">{t('reset')}</Typography>
+            <Typography variant="default-bold">{t('TicketsFilters.reset')}</Typography>
           </PressableStyled>
         ),
         presentation: 'modal',
       }}
       actionButton={
-        <ContinueButton onPress={() => router.back()}>{t('showResults')}</ContinueButton>
+        <ContinueButton onPress={() => router.back()}>
+          {t('TicketsFilters.showResults')}
+        </ContinueButton>
       }
     >
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
@@ -60,8 +73,8 @@ const TicketsFiltersScreen = () => {
       <StatusBar style="light" />
 
       <View className="p-5 g-5">
-        {fields.map(({ key, path, value }) => (
-          <Field key={key} label={t(key)}>
+        {fields.map(({ key, label, path, value }) => (
+          <Field key={key} label={label}>
             <Link asChild href={{ pathname: path }}>
               <PressableStyled>
                 <Panel>

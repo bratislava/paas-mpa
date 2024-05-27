@@ -3,11 +3,11 @@ import Markdown from '@/components/shared/Markdown'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const MarkdownExample = () => {
-  const t = useTranslation('Auth')
+  const { t } = useTranslation()
 
   return (
     <ScreenView>
-      <Markdown>{t('consent')}</Markdown>
+      <Markdown>{t('Auth.consent')}</Markdown>
     </ScreenView>
   )
 }

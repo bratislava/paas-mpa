@@ -38,7 +38,7 @@ const calculateEndTime = (duration: number, timeCalculationBase: number) => {
 }
 
 const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
-  const t = useTranslation('TimeSelector')
+  const { t } = useTranslation()
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
@@ -102,7 +102,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
         <IconButton
           variant="dark"
           name="remove"
-          accessibilityLabel={t('subtractTimeButton')}
+          accessibilityLabel={t('TimeSelector.subtractTimeButton')}
           onPress={subtractTime}
         />
         <PressableStyled onPress={handleDatePickerOpen}>
@@ -111,7 +111,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
         <IconButton
           variant="dark"
           name="add"
-          accessibilityLabel={t('addTimeButton')}
+          accessibilityLabel={t('TimeSelector.addTimeButton')}
           onPress={addTime}
         />
       </FlexRow>
@@ -145,7 +145,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
           })}
 
           <PressableStyled className="flex-1" onPress={handleDatePickerOpen}>
-            <Chip label={t('custom')} isActive={isCustomTimeActive} />
+            <Chip label={t('TimeSelector.custom')} isActive={isCustomTimeActive} />
           </PressableStyled>
         </View>
       </View>
@@ -153,7 +153,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
       <Divider />
 
       <FlexRow>
-        <Typography variant="small">{t('validUntil')}</Typography>
+        <Typography variant="small">{t('TimeSelector.validUntil')}</Typography>
         <PressableStyled onPress={handleDatePickerOpen}>
           <Typography variant="small-bold">{validUntil}</Typography>
         </PressableStyled>
