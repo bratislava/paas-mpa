@@ -67,7 +67,7 @@ const TicketsFiltersVehiclesScreen = () => {
           router.back()
         }}
       >
-        {t('Navigation.apply')}
+        {t('TicketsFilters.apply')}
       </ContinueButton>
     ),
     [localEcvs, t, vehicles.length, onPurchaseStoreUpdate],
