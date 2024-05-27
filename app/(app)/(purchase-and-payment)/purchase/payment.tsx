@@ -74,27 +74,30 @@ const PaymentScreen = () => {
     // TODO investigate more (same issue is in about/webview.tsx)
     // WebView crashes on Android in some cases, disabling animation helps
     // https://github.com/react-native-webview/react-native-webview/issues/3052#issuecomment-1635698194
-    <ScreenView
-      title={t('titlePayment')}
-      // options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}
-    >
-      {isLoaded ? null : <LoadingScreen />}
+    <>
+      <ScreenView
+        title={t('titlePayment')}
+        // options={{ animation: Platform.OS === 'android' ? 'none' : undefined }}
+      >
+        <WebView
+          ref={webviewRef}
+          onError={redirectToPurchaseResult}
+          source={{ uri: paymentUrlDecoded }}
+          onLoad={() => setIsLoaded(true)}
+          className={cn('flex-1', { hidden: !isLoaded })}
+          onNavigationStateChange={(e) => {
+            // if user navigates by clicking link to invalid link, stop loading and go back to previous page (gateway)
+            if (invalidPaymentGatewayLinks.some((url) => e.url.includes(url))) {
+              webviewRef.current?.stopLoading()
+              webviewRef.current?.goBack()
+            }
+          }}
+        />
+      </ScreenView>
 
-      <WebView
-        ref={webviewRef}
-        onError={redirectToPurchaseResult}
-        source={{ uri: paymentUrlDecoded }}
-        onLoad={() => setIsLoaded(true)}
-        className={cn('flex-1', { hidden: !isLoaded })}
-        onNavigationStateChange={(e) => {
-          // if user navigates by clicking link to invalid link, stop loading and go back to previous page (gateway)
-          if (invalidPaymentGatewayLinks.some((url) => e.url.includes(url))) {
-            webviewRef.current?.stopLoading()
-            webviewRef.current?.goBack()
-          }
-        }}
-      />
-    </ScreenView>
+      {/* Display loading overlay until WebView is fully loaded */}
+      {isLoaded ? null : <LoadingScreen className="absolute h-full w-full bg-white/50" />}
+    </>
   )
 }
 
