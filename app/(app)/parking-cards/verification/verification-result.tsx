@@ -24,7 +24,7 @@ type VerificationResultSearchParams = {
   licencePlatesString?: string
 }
 
-// TODO translations
+// TODO translation
 const VerificationResultPage = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
@@ -131,7 +131,7 @@ const VerificationResultPage = () => {
       {email && status ? (
         <ContentWithAvatar
           variant={status.startsWith('verified') ? 'success' : 'error'}
-          title={t(`${status}.title`)}
+          title={translationsMapStatuses[status].title}
           text={getContentText()}
           asMarkdown
         />

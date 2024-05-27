@@ -9,7 +9,7 @@ export enum FilterTimeframesEnum {
 }
 
 interface TicketsFiltersStoreContextProps {
-  timeframe: FilterTimeframesEnum | null
+  timeframe: FilterTimeframesEnum
   ecvs: string[] | 'all'
 }
 

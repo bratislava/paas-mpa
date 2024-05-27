@@ -6,6 +6,7 @@ import {
   WithTranslationProperties,
 } from '@/modules/map/types'
 
+// TODO translation - this functions should be removed and replaced by standard approach
 export function translateMapObject<
   P extends MapPoint,
   K extends keyof P,

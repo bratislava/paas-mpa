@@ -10,6 +10,7 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
+import { useTimeframesTranslation } from '@/hooks/useTimeframesTranslation'
 import { useTranslation } from '@/hooks/useTranslation'
 import { defaultTicketsFiltersStoreContextValues } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
@@ -20,6 +21,7 @@ const TicketsFiltersScreen = () => {
 
   const onTicketsFiltersStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const filters = useTicketsFiltersStoreContext()
+  const translationMapTimeframes = useTimeframesTranslation()
 
   const { ecvs, timeframe } = filters
 
@@ -27,7 +29,7 @@ const TicketsFiltersScreen = () => {
     onTicketsFiltersStoreUpdate(defaultTicketsFiltersStoreContextValues)
   }
 
-  // TODO translations
+  // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('TicketsFilters.timeframes.lastMonth'),
@@ -46,8 +48,7 @@ const TicketsFiltersScreen = () => {
       key: 'fromTo',
       label: t('TicketsFilters.fromTo'),
       path: '/tickets/filters/timeframes',
-      // TODO translations
-      value: t(`TicketsFilters.timeframes.${timeframe}`),
+      value: translationMapTimeframes[timeframe],
     },
   ]
 

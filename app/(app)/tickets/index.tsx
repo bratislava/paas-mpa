@@ -48,14 +48,22 @@ const TicketsRoute = ({ active }: RouteProps) => {
   const now = new Date()
   const { parkingEndFrom, parkingEndTo } = getParkingEndRange(filters.timeframe, now)
 
-  const ticketsQueryOptions = ticketsInfiniteQuery({
-    isActive: active || false,
-    timeframe: filters.timeframe ?? undefined,
-    parkingEndFrom: active ? now : parkingEndFrom,
-    parkingEndTo: active ? undefined : parkingEndTo,
-    pageSize: 20,
-    ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
-  })
+  const options = active
+    ? {
+        isActive: active,
+        parkingEndFrom: now,
+        pageSize: 20,
+      }
+    : {
+        isActive: false,
+        timeframe: filters.timeframe ?? undefined,
+        parkingEndFrom,
+        parkingEndTo,
+        pageSize: 20,
+        ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
+      }
+
+  const ticketsQueryOptions = ticketsInfiniteQuery(options)
 
   const {
     data: ticketsDataInf,

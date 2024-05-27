@@ -1,6 +1,6 @@
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 
-export const getParkingEndRange = (timeframe: FilterTimeframesEnum | null, now: Date) => {
+export const getParkingEndRange = (timeframe: FilterTimeframesEnum, now: Date) => {
   switch (timeframe) {
     case FilterTimeframesEnum.thisMonth:
       return {

@@ -22,7 +22,7 @@ const Page = () => {
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
 
-  // TODO translations
+  // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('Auth.errors.CodeMismatchException'),
@@ -127,6 +127,7 @@ const Page = () => {
             </FlexRow>
 
             {errorCode ? (
+              // TODO translation
               <Typography className="text-negative">{t(`Auth.errors.${errorCode}`)}</Typography>
             ) : null}
           </View>
