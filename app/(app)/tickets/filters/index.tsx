@@ -29,14 +29,6 @@ const TicketsFiltersScreen = () => {
     onTicketsFiltersStoreUpdate(defaultTicketsFiltersStoreContextValues)
   }
 
-  // TODO translation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const translationKeys = [
-    t('TicketsFilters.timeframes.lastMonth'),
-    t('TicketsFilters.timeframes.lastYear'),
-    t('TicketsFilters.timeframes.thisMonth'),
-    t('TicketsFilters.timeframes.thisYear'),
-  ]
   const fields = [
     {
       key: 'vehicles',

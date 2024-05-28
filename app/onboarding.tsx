@@ -91,8 +91,9 @@ const OnboardingScreen = () => {
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({
       key,
+      // TODO Using translation inside translation can be potentially unsafe - investigate other possible solution
       accessibilityLabel: t('OnboardingScreen.accessibilityLabel.goToSlide', {
-        title: translationsMap[key],
+        title: translationsMap[key].title,
       }),
     })),
   )
