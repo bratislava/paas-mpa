@@ -23,7 +23,7 @@ export type TicketPurchaseSearchParams = {
 }
 
 /**
- * This page takes care of redirect from Payment gate. Do not change its path, unless it's changes on BE too.
+ * This page takes care of redirect from Payment gate. Do not change its path, unless it's changed on BE too.
  */
 const TicketPurchasePage = () => {
   const { t } = useTranslation()

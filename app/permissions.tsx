@@ -53,18 +53,24 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
     }
   }, [onPermissionFinished, permissionStatus])
 
-  const title =
-    route.key === 'notifications'
-      ? t('PermissionsScreen.notifications.title')
-      : t('PermissionsScreen.location.title')
-  const text =
-    route.key === 'notifications'
-      ? t('PermissionsScreen.notifications.text')
-      : t('PermissionsScreen.location.text')
+  const translationMap = {
+    notifications: {
+      title: t('PermissionsScreen.notifications.title'),
+      text: t('PermissionsScreen.notifications.text'),
+    },
+    location: {
+      title: t('PermissionsScreen.location.title'),
+      text: t('PermissionsScreen.location.text'),
+    },
+  } satisfies Record<RouteKeys, any>
 
   return (
     <View className="flex-1 justify-start">
-      <InfoSlide title={title} text={text} SvgImage={SvgImage} />
+      <InfoSlide
+        title={translationMap[route.key].title}
+        text={translationMap[route.key].text}
+        SvgImage={SvgImage}
+      />
       <ContinueButton className={cn('mx-5', { 'mb-5': !insets.bottom })} onPress={getPermission} />
     </View>
   )

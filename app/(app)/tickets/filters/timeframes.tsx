@@ -7,17 +7,17 @@ import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useTimeframesTranslation } from '@/hooks/useTimeframesTranslation'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
 const TicketsFiltersTimeframesScreen = () => {
-  const { t } = useTranslation()
   const snapPoints = [300]
   const ref = useRef<BottomSheet>(null)
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
+  const translationMap = useTimeframesTranslation()
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -57,7 +57,7 @@ const TicketsFiltersTimeframesScreen = () => {
 
               <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
                 <ActionRow
-                  label={t(`timeframes.${timeframe}`)}
+                  label={translationMap[timeframe]}
                   endIcon={timeframe === selectedTimeframe ? 'check-circle' : undefined}
                 />
               </PressableStyled>

@@ -74,7 +74,7 @@ const Page = () => {
     }
   }
 
-  // TODO translations
+  // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('AddParkingCards.Errors.EmailAlreadyVerified'),
@@ -91,6 +91,7 @@ const Page = () => {
             <AccessibilityField
               label={t('AddParkingCards.emailField')}
               errorMessage={
+                // TODO translation
                 expectedError ? t(`AddParkingCards.Errors.${expectedError}`) : undefined
               }
             >

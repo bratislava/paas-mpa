@@ -77,7 +77,8 @@ const Page = () => {
             <CodeInput
               autoFocus
               accessibilityLabel={t('Auth.codeInputLabel')}
-              error={errorCode ? t(`errors.${errorCode}`) : undefined}
+              // TODO translation
+              error={errorCode ? t(`Auth.errors.${errorCode}`) : undefined}
               value={code}
               setValue={setCode}
               onFocus={handleInputFocus}

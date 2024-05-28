@@ -17,7 +17,7 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
   const { t } = useTranslation()
   const { udr, vehicle } = usePurchaseStoreContext()
 
-  // TODO translations
+  // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationKeys = [
     t('Errors.422'),
@@ -49,6 +49,7 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
     isPricingApiError(priceQuery.error.response.data) ? (
     <Panel className="bg-negative-light px-5 py-4">
       <Typography>
+        {/* TODO translation */}
         {t(`PurchaseScreen.Errors.${priceQuery.error.response.data.status}`, {
           ecv: vehicle?.vehiclePlateNumber,
           udr: udr?.name,

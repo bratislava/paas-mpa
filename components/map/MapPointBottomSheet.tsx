@@ -44,7 +44,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const locale = useLocale()
   const [footerHeight, setFooterHeight] = useState(0)
 
-  // TODO translations
+  // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const translationsMapFields = [
     t('PointBottomSheet.fields.address'),
@@ -138,7 +138,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
             </PressableStyled>
           </View>
           <Typography variant="h1">
-            {/* TODO translations */}
+            {/* TODO translation */}
             {t(`PointBottomSheet.kinds.${translatedPoint.kind}`)}
           </Typography>
         </View>
@@ -154,12 +154,14 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
                 ) : null}
               </View>
               {attributes
-                .filter((att) => att !== 'name' && translatedPoint[att])
-                .map((att, ix) => (
-                  <View key={att} className="g-4">
-                    {!!ix && <Divider />}
-                    <Field label={t(`PointBottomSheet.fields.${att}`)}>
-                      <Typography>{translatedPoint[att]}</Typography>
+                .filter((attribute) => attribute !== 'name' && translatedPoint[attribute])
+                .map((attribute, index) => (
+                  <View key={attribute} className="g-4">
+                    {index > 0 && <Divider />}
+
+                    {/* TODO translation */}
+                    <Field label={t(`PointBottomSheet.fields.${attribute}`)}>
+                      <Typography>{translatedPoint[attribute]}</Typography>
                     </Field>
                   </View>
                 ))}

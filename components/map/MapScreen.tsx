@@ -12,7 +12,7 @@ import MapLocationBottomSheet from '@/components/map/MapLocationBottomSheet'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
-import { useLocale } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapPointWithTranslationProps, MapUdrZoneWithTranslationProps } from '@/modules/map/types'
@@ -24,12 +24,14 @@ const MAP_STATE_DEBOUNCE_TIME = 500
 type MapScreenParams = MapFilters
 
 const MapScreen = () => {
+  const { t } = useTranslation()
+  const locale = useLocale()
+
   const params = useLocalSearchParams<MapScreenParams>()
   const zoneBottomSheetRef = useRef<BottomSheet>(null)
   const pointBottomSheetRef = useRef<BottomSheet>(null)
   const mapRef = useRef<MapRef>(null)
   const { top } = useSafeAreaInsets()
-  const locale = useLocale()
 
   const [filters, setFilters] = useState<MapFilters>(DEFAULT_FILTERS)
   const [selectedZone, setSelectedZone] = useState<MapUdrZoneWithTranslationProps | null>(null)
@@ -117,8 +119,7 @@ const MapScreen = () => {
         <Link asChild href={{ pathname: '/filters', params: filters }}>
           <IconButton
             name="filter-list"
-            // TODO translation
-            accessibilityLabel="Open filters"
+            accessibilityLabel={t('MapScreen.openFilters')}
             variant="white-raised-small"
           />
         </Link>

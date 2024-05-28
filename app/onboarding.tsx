@@ -21,45 +21,31 @@ import FlexRow from '@/components/shared/FlexRow'
 import IconButton from '@/components/shared/IconButton'
 import { environment } from '@/environment'
 import { useIsOnboardingFinished } from '@/hooks/useIsOnboardingFinished'
+import { useOnboardingTranslation } from '@/hooks/useOnboardingTranslation'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 
 // TODO Use ScreenView
 
-type RouteKeys = 'welcome' | 'dataSecurity' | 'parkingCards' | 'visitorsFree' | 'bonusCard'
+export type OnboardingRouteKey =
+  | 'welcome'
+  | 'dataSecurity'
+  | 'parkingCards'
+  | 'visitorsFree'
+  | 'bonusCard'
+
 type MarketingSliderRouteProps = {
-  slide: RouteKeys
+  slide: OnboardingRouteKey
 }
+
 type OnboardingRoute = {
-  key: RouteKeys
+  key: OnboardingRouteKey
   accessibilityLabel: string
 }
+
 const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
-  const { t } = useTranslation()
   const locale = useLocale()
 
-  // TODO test translations
-  const translationsMap = {
-    welcome: {
-      title: t('OnboardingScreen.slides.welcome.title'),
-      text: t('OnboardingScreen.slides.welcome.text'),
-    },
-    dataSecurity: {
-      title: t('OnboardingScreen.slides.dataSecurity.title'),
-      text: t('OnboardingScreen.slides.dataSecurity.text'),
-    },
-    parkingCards: {
-      title: t('OnboardingScreen.slides.parkingCards.title'),
-      text: t('OnboardingScreen.slides.parkingCards.text'),
-    },
-    visitorsFree: {
-      title: t('OnboardingScreen.slides.visitorsFree.title'),
-      text: t('OnboardingScreen.slides.visitorsFree.text'),
-    },
-    bonusCard: {
-      title: t('OnboardingScreen.slides.bonusCard.title'),
-      text: t('OnboardingScreen.slides.bonusCard.text'),
-    },
-  } satisfies Record<RouteKeys, { title: string; text: string }>
+  const translationsMap = useOnboardingTranslation()
 
   const SvgImage = {
     welcome: ImageWelcome,
@@ -79,7 +65,7 @@ const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
   )
 }
 
-const routeKeys: RouteKeys[] = [
+const routeKeys: OnboardingRouteKey[] = [
   'welcome',
   'visitorsFree',
   'bonusCard',
@@ -94,19 +80,20 @@ const renderScene = ({
 }) => <MarketingSliderRoute slide={route.key} />
 
 const OnboardingScreen = () => {
-  const layout = useWindowDimensions()
   const { t } = useTranslation()
+  const layout = useWindowDimensions()
   const insets = useSafeAreaInsets()
   const [isOnboardingFinished] = useIsOnboardingFinished()
+  const translationsMap = useOnboardingTranslation()
 
   const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
   const [index, setIndex] = useState(0)
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({
       key,
+      // TODO Using translation inside translation can be potentially unsafe - investigate other possible solution
       accessibilityLabel: t('OnboardingScreen.accessibilityLabel.goToSlide', {
-        // TODO translations
-        title: t(`OnboardingScreen.slides.${key}.title`),
+        title: translationsMap[key].title,
       }),
     })),
   )
