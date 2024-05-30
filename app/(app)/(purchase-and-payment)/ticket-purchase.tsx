@@ -13,7 +13,7 @@ import BoughtTicket from '@/components/tickets/BoughtTicket'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
-import { TicketsResponseDto } from '@/modules/backend/openapi-generated'
+import { PaymentStatus, TicketDto, TicketsResponseDto } from '@/modules/backend/openapi-generated'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { isDefined } from '@/utils/isDefined'
@@ -30,7 +30,7 @@ const TicketPurchasePage = () => {
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
 
-  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+  const updatePurchaseStore = usePurchaseStoreUpdateContext()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
 
@@ -39,32 +39,36 @@ const TicketPurchasePage = () => {
   )
 
   const isProlongation = !!data?.lastProlongationTicketId
+  const purchaseType = isProlongation ? 'prolongation' : 'payment'
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined
 
-    if (data?.paymentStatus === 'SUCCESS') {
+    if (data?.paymentStatus === 'PENDING') {
+      // Without this timeout, the refetch would occur too often
+      timeout = setTimeout(() => {
+        refetch()
+      }, 2000)
+    } else if (data?.paymentStatus === 'SUCCESS') {
+      // TODO add explanation comment
       if (data.lastProlongationTicketId) {
         queryClient.invalidateQueries({ queryKey: ['Tickets'] })
       } else {
-        onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
+        updatePurchaseStore(defaultInitialPurchaseStoreValues)
 
-        const cacheData = queryClient.getQueryData(['Tickets']) as AxiosResponse<TicketsResponseDto>
+        const cacheResponse = queryClient.getQueryData([
+          'Tickets',
+        ]) as AxiosResponse<TicketsResponseDto>
 
-        if (cacheData) {
+        if (cacheResponse) {
           queryClient.setQueryData(['Tickets'], {
-            ...cacheData,
-            data: { ...cacheData.data, tickets: [data, ...cacheData.data.tickets] },
+            ...cacheResponse,
+            data: { ...cacheResponse.data, tickets: [data, ...cacheResponse.data.tickets] },
           })
         }
 
         queryClient.removeQueries({ queryKey: ['TicketPrice'] })
       }
-    } else if (data?.paymentStatus === 'PENDING') {
-      // Without this timeout, the refetch would occur too often
-      timeout = setTimeout(() => {
-        refetch()
-      }, 2000)
     }
 
     return () => {
@@ -72,7 +76,7 @@ const TicketPurchasePage = () => {
         clearTimeout(timeout)
       }
     }
-  }, [data, onPurchaseStoreUpdate, queryClient, refetch])
+  }, [data, updatePurchaseStore, queryClient, refetch])
 
   useEffect(() => {
     const state = navigation.getState()
@@ -84,6 +88,74 @@ const TicketPurchasePage = () => {
     })
   }, [navigation])
 
+  const translationMap = {
+    payment: {
+      successTitle: t('PurchaseScreen.payment.successful'),
+      successText: t('PurchaseScreen.payment.successfulText'),
+      failedTitle: t('PurchaseScreen.payment.failed'),
+      failedText: t('PurchaseScreen.payment.failedText'),
+    },
+    prolongation: {
+      successTitle: t('PurchaseScreen.prolongation.successful'),
+      successText: t('PurchaseScreen.prolongation.successfulText'),
+      failedTitle: t('PurchaseScreen.prolongation.failed'),
+      failedText: t('PurchaseScreen.prolongation.failedText'),
+    },
+  }
+
+  const PendingComponent = () => (
+    <ContentWithAvatar
+      title={t('PurchaseScreen.pendingTitle')}
+      text={t('PurchaseScreen.pendingText')}
+    >
+      <ActivityIndicator size="large" />
+    </ContentWithAvatar>
+  )
+
+  const ErrorComponent = ({ message }: { message: string }) => (
+    <ContentWithAvatar
+      variant="error"
+      title={translationMap[purchaseType].failedTitle}
+      text={translationMap[purchaseType].failedText}
+    >
+      <Panel className="bg-negative-light">
+        <Typography>{message}</Typography>
+      </Panel>
+    </ContentWithAvatar>
+  )
+
+  const SuccessComponent = ({ ticket }: { ticket: TicketDto }) => (
+    <ContentWithAvatar
+      variant="success"
+      title={translationMap[purchaseType].successTitle}
+      text={translationMap[purchaseType].successText}
+    >
+      <BoughtTicket ticket={ticket} />
+    </ContentWithAvatar>
+  )
+
+  const PaymentStatusComponent = ({ ticket }: { ticket: TicketDto }) => {
+    switch (ticket.paymentStatus) {
+      case PaymentStatus.Pending:
+        return <PendingComponent />
+
+      case PaymentStatus.Success:
+        return <SuccessComponent ticket={ticket} />
+
+      // Other statuses (Fail, Error) and unexpected states are handled by ErrorComponent
+      default:
+        return (
+          <ErrorComponent
+            message={
+              // TODO error text
+              // TODO translation
+              ticket.paymentFailReason ?? 'Undefined payment error, please contact administrators.'
+            }
+          />
+        )
+    }
+  }
+
   return (
     <ScreenViewCentered
       actionButton={
@@ -93,48 +165,13 @@ const TicketPurchasePage = () => {
       }
       options={{ headerShown: false }}
     >
-      {isPending || data?.paymentStatus === 'PENDING' ? (
-        <ContentWithAvatar
-          title={t('PurchaseScreen.pendingTitle')}
-          text={t('PurchaseScreen.pendingText')}
-        >
-          <ActivityIndicator size="large" />
-        </ContentWithAvatar>
-      ) : isError || data.paymentStatus === 'FAIL' || data.paymentStatus === 'ERROR' ? (
-        <ContentWithAvatar
-          variant="error"
-          title={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.failed')
-              : t('PurchaseScreen.payment.failed')
-          }
-          text={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.failedText')
-              : t('PurchaseScreen.payment.failedText')
-          }
-        >
-          <Panel className="bg-negative-light">
-            <Typography>{data?.paymentFailReason ?? error?.message}</Typography>
-          </Panel>
-        </ContentWithAvatar>
-      ) : data?.paymentStatus === 'SUCCESS' ? (
-        <ContentWithAvatar
-          variant="success"
-          title={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.successful')
-              : t('PurchaseScreen.payment.successful')
-          }
-          text={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.successfulText')
-              : t('PurchaseScreen.payment.successfulText')
-          }
-        >
-          <BoughtTicket ticket={data} />
-        </ContentWithAvatar>
-      ) : null}
+      {isPending ? (
+        <PendingComponent />
+      ) : isError ? (
+        <ErrorComponent message={error.message} />
+      ) : (
+        <PaymentStatusComponent ticket={data} />
+      )}
     </ScreenViewCentered>
   )
 }
