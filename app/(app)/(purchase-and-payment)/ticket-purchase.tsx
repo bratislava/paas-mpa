@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
 import { Link, useLocalSearchParams, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
 import { ActivityIndicator } from 'react-native'
@@ -13,7 +12,7 @@ import BoughtTicket from '@/components/tickets/BoughtTicket'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
-import { PaymentStatus, TicketDto, TicketsResponseDto } from '@/modules/backend/openapi-generated'
+import { PaymentStatus, TicketDto } from '@/modules/backend/openapi-generated'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { isDefined } from '@/utils/isDefined'
@@ -44,29 +43,19 @@ const TicketPurchasePage = () => {
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined
 
+    // Repeatedly refetch ticket data, until we get SUCCESS or some error
     if (data?.paymentStatus === 'PENDING') {
       // Without this timeout, the refetch would occur too often
       timeout = setTimeout(() => {
         refetch()
       }, 2000)
     } else if (data?.paymentStatus === 'SUCCESS') {
-      // TODO add explanation comment
-      if (data.lastProlongationTicketId) {
-        queryClient.invalidateQueries({ queryKey: ['Tickets'] })
-      } else {
+      // TODO investigate if this invalidation is needed
+      queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+
+      // This reset must happen only for PurchaseScreen, it's not relevant for prolongation, because the whole prolongation context provider gets unmounted completely
+      if (!data.lastProlongationTicketId) {
         updatePurchaseStore(defaultInitialPurchaseStoreValues)
-
-        const cacheResponse = queryClient.getQueryData([
-          'Tickets',
-        ]) as AxiosResponse<TicketsResponseDto>
-
-        if (cacheResponse) {
-          queryClient.setQueryData(['Tickets'], {
-            ...cacheResponse,
-            data: { ...cacheResponse.data, tickets: [data, ...cacheResponse.data.tickets] },
-          })
-        }
-
         queryClient.removeQueries({ queryKey: ['TicketPrice'] })
       }
     }
@@ -78,6 +67,8 @@ const TicketPurchasePage = () => {
     }
   }, [data, updatePurchaseStore, queryClient, refetch])
 
+  // TODO refactor if we find simpler solution
+  // Reset navigation stack to contain only homepage (map) and result page (ticket-purchase) to remove purchase screens
   useEffect(() => {
     const state = navigation.getState()
 
