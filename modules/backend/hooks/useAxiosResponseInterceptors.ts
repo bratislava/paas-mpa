@@ -28,24 +28,28 @@ export const useAxiosResponseInterceptors = (setServerConnectionError: Dispatch<
         // eslint-disable-next-line sonarjs/no-small-switch
         switch (status) {
           case 422:
-            // the 422 errors are handled localy
+            // the 422 errors are handled locally
             break
           case 424:
             if (errorName || message) {
+              // TODO translation
               snackbarMessage =
-                errorName && i18n.exists(`'Errors'.${errorName}`) ? t(errorName) : message
+                errorName && i18n.exists(`Errors.${errorName}`) ? t(errorName) : message
             }
             break
 
           default:
-            if (status && i18n.exists(`'Errors'.${status?.toString()}`)) {
+            // TODO translation
+            if (status && i18n.exists(`Errors.${status?.toString()}`)) {
               snackbarMessage ??= t(status.toString())
             }
 
             snackbarMessage ??= t('Errors.axiosGeneric')
             break
         }
-      } else snackbarMessage ??= t('Errors.generic')
+      } else {
+        snackbarMessage ??= t('Errors.generic')
+      }
 
       if (snackbarMessage) {
         snackbar.show(snackbarMessage, { variant: 'danger' })
