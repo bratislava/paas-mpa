@@ -50,22 +50,24 @@ const Page = () => {
         error.response?.data.errorName === SERVICEERROR.EmailAlreadyVerified
       )
         setExpectedError('EmailAlreadyVerified')
-      else setExpectedError('GeneralError')
+      else {
+        setExpectedError('GeneralError')
+      }
     },
   })
 
-  const handleChangeText = (val: string) => {
+  const handleChangeText = (value: string) => {
     if (expectedError) {
       setExpectedError(null)
     }
 
-    setEmail(val?.toLowerCase())
+    setEmail(value.toLowerCase())
   }
 
   const handleSendVerificationEmail = () => {
     if (isValidEmail(email)) {
       const body: VerifyEmailsDto = {
-        emails: [email.toLowerCase()], // double check before sending to the backend
+        emails: [email.toLowerCase().trim()], // double check before sending to the backend
       }
 
       mutation.mutate(body)
