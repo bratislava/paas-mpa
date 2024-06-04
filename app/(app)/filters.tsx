@@ -64,9 +64,9 @@ const FiltersScreen = () => {
   // TODO test translations
   const translationsMapItems = {
     active: t('FiltersScreen.filteringOptions.active'),
-    inactive: t('FiltersScreen.filteringOptions.inactive'),
+    inactive: t('FiltersScreen.filteringOptions.inactive'), // TODO translation - inactive zones are probably never used and shown, but we keep this translation
     planned: t('FiltersScreen.filteringOptions.planned'),
-    branch: t('FiltersScreen.filteringOptions.branch'),
+    branch: t('FiltersScreen.filteringOptions.branch'), // TODO translation - this type of map points is not shown in MPA, only on web
     garage: t('FiltersScreen.filteringOptions.garage'),
     'p-plus-r': t('FiltersScreen.filteringOptions.p-plus-r'),
     'parking-lot': t('FiltersScreen.filteringOptions.parking-lot'),

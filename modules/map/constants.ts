@@ -30,14 +30,6 @@ export enum MapPointKindEnum {
   parkingLot = 'parking-lots',
 }
 
-export enum MapPointFilterKindEnum {
-  parkomat = 'parkomat',
-  sellingPoint = 'sellingPoint',
-  pPlusR = 'p-plus-r',
-  garage = 'garage',
-  parkingLot = 'parking-lot',
-}
-
 export enum MapZoneStatusEnum {
   active = 'active',
   inactive = 'inactive',
