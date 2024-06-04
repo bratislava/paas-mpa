@@ -1,19 +1,15 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
 import { Link, useLocalSearchParams, useNavigation } from 'expo-router'
 import { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
-import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
+import ErrorContent from '@/components/purchase/PaymentStatus/ErrorContent'
+import PaymentStatusContent from '@/components/purchase/PaymentStatus/PaymentStatusContent'
+import PendingContent from '@/components/purchase/PaymentStatus/PendingContent'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
-import Panel from '@/components/shared/Panel'
-import Typography from '@/components/shared/Typography'
-import BoughtTicket from '@/components/tickets/BoughtTicket'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
-import { TicketsResponseDto } from '@/modules/backend/openapi-generated'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { isDefined } from '@/utils/isDefined'
@@ -30,7 +26,7 @@ const TicketPurchasePage = () => {
   const { ticketId } = useLocalSearchParams<TicketPurchaseSearchParams>()
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
 
-  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+  const updatePurchaseStore = usePurchaseStoreUpdateContext()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
 
@@ -38,33 +34,24 @@ const TicketPurchasePage = () => {
     getTicketOptions(ticketIdParsed),
   )
 
-  const isProlongation = !!data?.lastProlongationTicketId
-
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined
 
-    if (data?.paymentStatus === 'SUCCESS') {
-      if (data.lastProlongationTicketId) {
-        queryClient.invalidateQueries({ queryKey: ['Tickets'] })
-      } else {
-        onPurchaseStoreUpdate(defaultInitialPurchaseStoreValues)
-
-        const cacheData = queryClient.getQueryData(['Tickets']) as AxiosResponse<TicketsResponseDto>
-
-        if (cacheData) {
-          queryClient.setQueryData(['Tickets'], {
-            ...cacheData,
-            data: { ...cacheData.data, tickets: [data, ...cacheData.data.tickets] },
-          })
-        }
-
-        queryClient.removeQueries({ queryKey: ['TicketPrice'] })
-      }
-    } else if (data?.paymentStatus === 'PENDING') {
+    // Repeatedly refetch ticket data, until we get SUCCESS or some error
+    if (data?.paymentStatus === 'PENDING') {
       // Without this timeout, the refetch would occur too often
       timeout = setTimeout(() => {
         refetch()
       }, 2000)
+    } else if (data?.paymentStatus === 'SUCCESS') {
+      // TODO investigate if this invalidation is needed
+      queryClient.invalidateQueries({ queryKey: ['Tickets'] })
+
+      // This reset must happen only for PurchaseScreen, it's not relevant for prolongation, because the whole prolongation context provider gets unmounted completely
+      if (!data.lastProlongationTicketId) {
+        updatePurchaseStore(defaultInitialPurchaseStoreValues)
+        queryClient.removeQueries({ queryKey: ['TicketPrice'] })
+      }
     }
 
     return () => {
@@ -72,8 +59,10 @@ const TicketPurchasePage = () => {
         clearTimeout(timeout)
       }
     }
-  }, [data, onPurchaseStoreUpdate, queryClient, refetch])
+  }, [data, updatePurchaseStore, queryClient, refetch])
 
+  // TODO refactor if we find simpler solution
+  // Reset navigation stack to contain only homepage (map) and result page (ticket-purchase) to remove purchase screens
   useEffect(() => {
     const state = navigation.getState()
 
@@ -93,48 +82,13 @@ const TicketPurchasePage = () => {
       }
       options={{ headerShown: false }}
     >
-      {isPending || data?.paymentStatus === 'PENDING' ? (
-        <ContentWithAvatar
-          title={t('PurchaseScreen.pendingTitle')}
-          text={t('PurchaseScreen.pendingText')}
-        >
-          <ActivityIndicator size="large" />
-        </ContentWithAvatar>
-      ) : isError || data.paymentStatus === 'FAIL' || data.paymentStatus === 'ERROR' ? (
-        <ContentWithAvatar
-          variant="error"
-          title={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.failed')
-              : t('PurchaseScreen.payment.failed')
-          }
-          text={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.failedText')
-              : t('PurchaseScreen.payment.failedText')
-          }
-        >
-          <Panel className="bg-negative-light">
-            <Typography>{data?.paymentFailReason ?? error?.message}</Typography>
-          </Panel>
-        </ContentWithAvatar>
-      ) : data?.paymentStatus === 'SUCCESS' ? (
-        <ContentWithAvatar
-          variant="success"
-          title={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.successful')
-              : t('PurchaseScreen.payment.successful')
-          }
-          text={
-            isProlongation
-              ? t('PurchaseScreen.prolongation.successfulText')
-              : t('PurchaseScreen.payment.successfulText')
-          }
-        >
-          <BoughtTicket ticket={data} />
-        </ContentWithAvatar>
-      ) : null}
+      {isPending ? (
+        <PendingContent />
+      ) : isError ? (
+        <ErrorContent message={error.message} />
+      ) : (
+        <PaymentStatusContent ticket={data} />
+      )}
     </ScreenViewCentered>
   )
 }
