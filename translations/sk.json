@@ -90,7 +90,6 @@
   "LocationBottomSheet.locationOff.text": "Ak chcete zobraziť regulované zóny, prejdite do nastavení a povoľte služby určovania polohy.",
   "LocationBottomSheet.locationOff.title": "Lokalizačné služby vypnuté",
   "LocationBottomSheet.openSettings": "Nastavenia",
-  "MapScreen.compass": "Kompas",
   "MapScreen.openFilters": "Otvoriť filtre",
   "ModalContainer.closeDialog": "Zatvoriť dialógové okno",
   "Navigation.continue": "Pokračovať",

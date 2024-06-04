@@ -90,7 +90,6 @@
   "LocationBottomSheet.locationOff.text": "To see nearby parking areas go to App settings in your phone and enable location services.",
   "LocationBottomSheet.locationOff.title": "Location services is off",
   "LocationBottomSheet.openSettings": "Open settings",
-  "MapScreen.compass": "Compass",
   "MapScreen.openFilters": "Open filter",
   "ModalContainer.closeDialog": "Close modal",
   "Navigation.continue": "Continue",

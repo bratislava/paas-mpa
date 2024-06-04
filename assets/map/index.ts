@@ -1,5 +1,4 @@
 export { default as ActiveZonesIcon } from './active-zones.svg'
-export { default as CompassIcon } from './compass.svg'
 export { default as GarageIcon } from './garage.svg'
 export { default as MapPinIcon } from './map-pin.svg'
 export { default as MapPinNoZoneIcon } from './map-pin-no-zone.svg'

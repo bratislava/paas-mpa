@@ -1,4 +1,3 @@
-import { Portal } from '@gorhom/portal'
 import {
   Camera,
   FillLayer,
@@ -22,7 +21,6 @@ import {
 } from 'react'
 import { View } from 'react-native'
 
-import CompassButton from '@/components/map/CompassButton'
 import MapCamera from '@/components/map/MapCamera'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
@@ -158,6 +156,7 @@ const Map = forwardRef(
           onCameraChanged={handleCameraChange}
           scaleBarEnabled={false}
           pitchEnabled={false}
+          rotateEnabled={false}
         >
           <MapCamera
             ref={camera}
@@ -192,10 +191,6 @@ const Map = forwardRef(
         {isMapPinShown && (
           <MapPin price={selectedZone ? getPriceFromZone(selectedZone) : undefined} />
         )}
-
-        <Portal hostName="mapRightBox">
-          <CompassButton heading={mapHeading} />
-        </Portal>
       </View>
     )
   },

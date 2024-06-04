@@ -61,8 +61,6 @@ const IndexScreen = () => {
             />
           ) : null}
         </View>
-
-        <PortalHost name="mapRightBox" />
       </View>
 
       <PortalHost name="index" />
