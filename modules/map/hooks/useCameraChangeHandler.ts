@@ -19,7 +19,6 @@ type Dependencies = {
   selectedPolygon: UdrZoneFeature | null
   setSelectedPolygon: Dispatch<SetStateAction<UdrZoneFeature | null>>
   setIsMapPinShown: Dispatch<SetStateAction<boolean>>
-  onStateChange?: (state: MapState) => void
   setFlyToCenter: Dispatch<SetStateAction<Position | null>>
   onCenterChange?: (center: Position) => void
 }
@@ -30,15 +29,14 @@ export const useCameraChangeHandler = ({
   selectedPolygon,
   setSelectedPolygon,
   setIsMapPinShown,
-  onStateChange,
   setFlyToCenter,
   onCenterChange,
 }: Dependencies) => {
   const { scale } = useWindowDimensions()
   const screenCenter = useMapCenter({ scale: Platform.OS === 'android' })
   const [lastCenter, setLastCenter] = useState<number[]>([0, 0])
+
   const getCurrentPolygon = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (state: MapState) => {
       const rectSize = (QUERY_RECT_SIZE / 2) * (Platform.OS === 'android' ? scale : 1)
       const rectHalfSize = interpolate(state.properties.zoom, [13.5, 15], [0, rectSize])
@@ -74,7 +72,6 @@ export const useCameraChangeHandler = ({
 
   return useCallback(
     (state: MapState) => {
-      onStateChange?.(state)
       if (
         lastCenter[0] === state.properties.center[0] &&
         lastCenter[1] === state.properties.center[1]
@@ -97,7 +94,6 @@ export const useCameraChangeHandler = ({
       debouncedHandleCameraChange,
       setIsMapPinShown,
       lastCenter,
-      onStateChange,
       resetFlyToCenterHandler,
       onCenterChange,
     ],
