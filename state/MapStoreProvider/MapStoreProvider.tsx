@@ -3,7 +3,6 @@ import { createContext, PropsWithChildren, useCallback, useState } from 'react'
 
 type MapContextProps = {
   setFlyToCenter: ((center: Position) => void) | null
-  rotateToNorth: (() => void) | null
 }
 
 export const MapStoreContext = createContext<MapContextProps | null>(null)
@@ -16,7 +15,6 @@ MapStoreUpdateContext.displayName = 'MapUpdateContext'
 
 const defaultInitialMapValues: MapContextProps = {
   setFlyToCenter: null,
-  rotateToNorth: null,
 }
 
 const MapStoreProvider = ({ children }: PropsWithChildren) => {

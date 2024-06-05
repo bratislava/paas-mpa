@@ -1,13 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application'
 import { router } from 'expo-router'
-import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react'
-import {
-  NativeSyntheticEvent,
-  ScrollView,
-  TextInput as NativeTextInput,
-  TextInputChangeEventData,
-} from 'react-native'
+import { useCallback, useRef, useState } from 'react'
+import { ScrollView, TextInput as NativeTextInput } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -55,14 +50,6 @@ const FeedbackScreen = () => {
     [],
   )
 
-  const handleInputChange = useCallback(
-    (setter: Dispatch<SetStateAction<string>>) =>
-      (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
-        setter(event.nativeEvent.text)
-      },
-    [],
-  )
-
   const handleEmailFocus = useCallback(() => {
     setShouldVerifyEmail(false)
   }, [])
@@ -84,8 +71,8 @@ const FeedbackScreen = () => {
     const feedbackTypeValue: FeedbackType =
       feedbackType === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1
     mutation.mutate({
-      email,
-      message: `${message} (${nativeApplicationVersion} (${nativeBuildVersion}))`,
+      email: email.toLowerCase().trim(), // double check before sending to the backend
+      message: `${message}\n\n(${nativeApplicationVersion} (${nativeBuildVersion}))`,
       type: feedbackTypeValue,
     })
   }, [email, feedbackType, message, mutation])
@@ -106,7 +93,10 @@ const FeedbackScreen = () => {
               <TextInput
                 ref={emailRef}
                 value={email}
-                onChange={handleInputChange(setEmail)}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+                onChangeText={(value) => setEmail(value.toLowerCase())}
                 onFocus={handleEmailFocus}
                 onBlur={handleEmailBlur}
                 onSubmitEditing={handleEmailSubmit}
@@ -139,7 +129,7 @@ const FeedbackScreen = () => {
                 textAlignVertical="top"
                 blurOnSubmit={false}
                 numberOfLines={15}
-                onChange={handleInputChange(setMessage)}
+                onChangeText={setMessage}
                 onFocus={handleMessageFocus}
                 onBlur={handleMessageBlur}
                 hasError={!isValidMessage}

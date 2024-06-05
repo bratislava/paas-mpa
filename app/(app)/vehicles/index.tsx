@@ -158,7 +158,7 @@ const VehiclesScreen = () => {
           )}
 
           <PressableStyled onPress={handleActionEdit}>
-            <ActionRow startIcon="edit" label={t('VehiclesScreen.editVehicle')} />
+            <ActionRow startIcon="edit" label={t('VehiclesScreen.actions.editVehicle')} />
           </PressableStyled>
 
           <Divider />

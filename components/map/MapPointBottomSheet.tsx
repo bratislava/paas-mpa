@@ -60,8 +60,8 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     t('PointBottomSheet.fields.publicTransportLines'),
     t('PointBottomSheet.fields.publicTransportTravelTime'),
     t('PointBottomSheet.fields.udrId'),
-    t('PointBottomSheet.fields.rpkInformation'),
-    t('PointBottomSheet.fields.npkInformation'),
+    t('PointBottomSheet.fields.rpkInformation'), // TODO translation - investigate if this is used and shown somewhere
+    t('PointBottomSheet.fields.npkInformation'), // TODO translation - investigate if this is used and shown somewhere
   ]
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

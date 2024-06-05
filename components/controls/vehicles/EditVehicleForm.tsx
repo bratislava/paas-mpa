@@ -33,7 +33,7 @@ const EditVehicleForm = ({ vehicle }: Props) => {
 
   return (
     <DismissKeyboard>
-      <ScreenView title={t('VehiclesScreen.editVehicle')} options={{ presentation: 'modal' }}>
+      <ScreenView title={t('VehiclesScreen.editVehicle.title')} options={{ presentation: 'modal' }}>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         {/* eslint-disable-next-line react/style-prop-object */}
         <StatusBar style="light" />
@@ -56,7 +56,7 @@ const EditVehicleForm = ({ vehicle }: Props) => {
           </AccessibilityField>
 
           <Button loading={isLoading} onPress={handleSaveVehicle}>
-            {t('VehiclesScreen.editVehicle')}
+            {t('VehiclesScreen.editVehicle.save')}
           </Button>
         </ScreenContent>
       </ScreenView>
