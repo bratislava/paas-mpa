@@ -65,7 +65,7 @@ export const useSignInOrSignUp = () => {
         /** Try to sign in the user. Cognito will throw an error for non-registered user. */
         await signInAndRedirectToConfirm(phone)
       } catch (error) {
-        console.log('signInAndRedirectToConfirm error', error, JSON.stringify(error))
+        // Expected error 'UserNotFoundException' means non-registered user
         if (isErrorWithName(error) && error.name === 'UserNotFoundException') {
           /**
            * If user does not exist (UserNotFoundException is thrown), try to sign up.

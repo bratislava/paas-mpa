@@ -33,6 +33,7 @@ export const useSignOut = () => {
             registerDeviceMutation.mutate(deviceId)
           }
         } catch {
+          // TODO handle error
           console.log('error during unregistering device from notifications')
         }
       }

@@ -14,7 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
-const LangugageSelectField = () => {
+const LanguageSelectField = () => {
   const { t } = useTranslation()
   const { i18n } = useLibTranslation()
   const [, setMmkvLocale] = useMMKVString(STORAGE_LANGUAGE_KEY)
@@ -48,4 +48,4 @@ const LangugageSelectField = () => {
   )
 }
 
-export default LangugageSelectField
+export default LanguageSelectField
