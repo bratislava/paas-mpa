@@ -15,7 +15,7 @@ import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission
 const MapLocationBottomSheet = () => {
   const { t } = useTranslation()
   const ref = useRef<BottomSheet>(null)
-  const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
+  const { locationPermissionStatus, getLocationPermission } = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
 
   const reloadLocationStatus = useCallback(async () => {

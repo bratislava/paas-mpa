@@ -34,7 +34,7 @@ import { PermissionStatus } from '@/utils/types'
 const NotificationSettings = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const [notificationsPermissionStatus] = useNotificationPermission({ autoAsk: true })
+  const { notificationPermissionStatus } = useNotificationPermission({ autoAsk: true })
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 
@@ -112,7 +112,7 @@ const NotificationSettings = () => {
   //   },
   // ] as const
 
-  const arePermissionsDisabled = notificationsPermissionStatus !== PermissionStatus.GRANTED
+  const arePermissionsDisabled = notificationPermissionStatus !== PermissionStatus.GRANTED
 
   return (
     <>

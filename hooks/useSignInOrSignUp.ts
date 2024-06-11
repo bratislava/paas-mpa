@@ -53,8 +53,8 @@ export const useSignInOrSignUp = () => {
 
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
-  const [locationPermissionStatus] = useLocationPermission()
-  const [notificationsPermissionStatus] = useNotificationPermission({ skipTokenQuery: true })
+  const { locationPermissionStatus } = useLocationPermission()
+  const { notificationPermissionStatus } = useNotificationPermission({ skipTokenQuery: true })
 
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
@@ -139,7 +139,7 @@ export const useSignInOrSignUp = () => {
 
       if (
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
-        notificationsPermissionStatus === PermissionStatus.UNDETERMINED
+        notificationPermissionStatus === PermissionStatus.UNDETERMINED
       ) {
         router.replace('/permissions')
       } else {

@@ -95,5 +95,8 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
     }
   }, [getPermission, autoAsk])
 
-  return [permissionStatus, getPermission] as const
+  return {
+    notificationPermissionStatus: permissionStatus,
+    getNotificationPermission: getPermission,
+  }
 }
