@@ -28,17 +28,17 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const { t } = useTranslation()
 
-  const [notificationsPermissionStatus, getNotificationsPermission] = useNotificationPermission()
-  const [locationPermissionStatus, getLocationPermission] = useLocationPermission()
+  const { notificationPermissionStatus, getNotificationPermission } = useNotificationPermission()
+  const { locationPermissionStatus, getLocationPermission } = useLocationPermission()
 
   const SvgImage = {
     notifications: ImageNotificationPermission,
     location: ImageLocationPermissions,
   }[route.key]
   const permissionStatus =
-    route.key === 'notifications' ? notificationsPermissionStatus : locationPermissionStatus
+    route.key === 'notifications' ? notificationPermissionStatus : locationPermissionStatus
   const getPermission =
-    route.key === 'notifications' ? getNotificationsPermission : getLocationPermission
+    route.key === 'notifications' ? getNotificationPermission : getLocationPermission
   const onPermissionFinished = useCallback(() => {
     if (route.key === 'notifications') {
       jumpTo('location')

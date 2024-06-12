@@ -43,6 +43,7 @@ const DateTimePicker = ({ onConfirm, onClose, initialValue, minimumDate }: Props
         is24hourSource="locale"
         modal
         open
+        theme="light"
         title={t('DateTimePicker.selectDate')}
         cancelText={t('DateTimePicker.cancel')}
         confirmText={t('DateTimePicker.confirm')}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import countries from '@/components/controls/country-select/countries.json'
-import CountryeSelectField from '@/components/controls/country-select/CountrySelectField'
+import CountrySelectField from '@/components/controls/country-select/CountrySelectField'
 import { useUsedCountryStorage } from '@/components/controls/country-select/useUsedCountryStorage'
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -34,21 +34,21 @@ const Page = () => {
   const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
 
   useEffect(() => {
-    if (selectedCountry) return
-
-    setSelectedCountry('SK')
+    if (!selectedCountry) {
+      setSelectedCountry('SK')
+    }
   }, [selectedCountry, setSelectedCountry])
 
   const prefixCode =
     countries.find((country) => country.iso === selectedCountry?.toUpperCase())?.code || '421'
 
   const [loading, setLoading] = useState(false)
-  const [errorCode, setErrorCode] = useState('')
+  const [errorName, setErrorName] = useState('')
   const [phone, setPhone] = useState('')
 
   const handleInputFocus = () => {
-    if (errorCode) {
-      setErrorCode('')
+    if (errorName) {
+      setErrorName('')
     }
   }
 
@@ -57,14 +57,17 @@ const Page = () => {
   const handleSignIn = async () => {
     try {
       setLoading(true)
+
+      // TODO This never happens because `phoneWithoutSpaces` always contains at least "+" symbol
       if (!phoneWithoutSpaces) {
         throw new Error('No phone number')
       }
 
       await attemptSignInOrSignUp(phoneWithoutSpaces)
     } catch (error) {
+      // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
-        setErrorCode(error.name)
+        setErrorName(error.name)
       }
     }
 
@@ -72,8 +75,8 @@ const Page = () => {
   }
 
   const handleChangeText = (value: string) => {
-    if (errorCode) {
-      setErrorCode('')
+    if (errorName) {
+      setErrorName('')
     }
 
     // Check if user pasted a phone number with country code and replace country code if it differs from the selected one
@@ -93,7 +96,9 @@ const Page = () => {
       }
 
       setPhone(value.replace(`+${countryCode}`, ''))
-    } else setPhone(value)
+    } else {
+      setPhone(value)
+    }
   }
 
   return (
@@ -106,7 +111,7 @@ const Page = () => {
             {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
             {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
             <FlexRow className="g-2.5">
-              <CountryeSelectField selectedCountry={selectedCountry} />
+              <CountrySelectField selectedCountry={selectedCountry} />
 
               <View className="flex-1">
                 <TextInput
@@ -117,7 +122,7 @@ const Page = () => {
                   onChangeText={handleChangeText}
                   keyboardType="phone-pad"
                   autoComplete="tel"
-                  hasError={!!errorCode}
+                  hasError={!!errorName}
                   onFocus={handleInputFocus}
                   autoFocus
                   returnKeyType="done"
@@ -126,9 +131,9 @@ const Page = () => {
               </View>
             </FlexRow>
 
-            {errorCode ? (
+            {errorName ? (
               // TODO translation
-              <Typography className="text-negative">{t(`Auth.errors.${errorCode}`)}</Typography>
+              <Typography className="text-negative">{t(`Auth.errors.${errorName}`)}</Typography>
             ) : null}
           </View>
 

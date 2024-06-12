@@ -25,6 +25,7 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
 
   const registerDeviceMutation = useMutation({
     mutationFn: async (token: string) =>
+      // TODO investigate if/why this request gets resent in infinite loop sometimes
       clientApi.mobileDevicesControllerInsertMobileDevice({
         token,
         platform: Platform.OS === 'ios' ? MobileDevicePlatform.Apple : MobileDevicePlatform.Android,
@@ -94,5 +95,8 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
     }
   }, [getPermission, autoAsk])
 
-  return [permissionStatus, getPermission] as const
+  return {
+    notificationPermissionStatus: permissionStatus,
+    getNotificationPermission: getPermission,
+  }
 }
