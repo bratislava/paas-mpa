@@ -1,5 +1,5 @@
 import { router, Stack } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
@@ -39,19 +39,16 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
     route.key === 'notifications' ? notificationPermissionStatus : locationPermissionStatus
   const getPermission =
     route.key === 'notifications' ? getNotificationPermission : getLocationPermission
-  const onPermissionFinished = useCallback(() => {
-    if (route.key === 'notifications') {
-      jumpTo('location')
-    } else {
-      router.replace('/')
-    }
-  }, [route.key, jumpTo])
 
   useEffect(() => {
     if (permissionStatus !== PermissionStatus.UNDETERMINED) {
-      onPermissionFinished()
+      if (route.key === 'notifications') {
+        jumpTo('location')
+      } else {
+        router.replace('/')
+      }
     }
-  }, [onPermissionFinished, permissionStatus])
+  }, [route.key, permissionStatus])
 
   const translationMap = {
     notifications: {

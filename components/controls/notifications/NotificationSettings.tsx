@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { Linking } from 'react-native'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
@@ -34,7 +35,11 @@ import { PermissionStatus } from '@/utils/types'
 const NotificationSettings = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { notificationPermissionStatus } = useNotificationPermission({ autoAsk: true })
+  const { notificationPermissionStatus, getNotificationPermission } = useNotificationPermission()
+
+  useEffect(() => {
+    getNotificationPermission()
+  }, [getNotificationPermission])
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 
@@ -100,59 +105,29 @@ const NotificationSettings = () => {
     },
   ] as const
 
-  // TODO add email notifications when they are supported
-  // const emailNotifications = [
-  //   {
-  //     name: 'emailNotificationsAboutToEnd',
-  //     value: settings.emailNotificationsAboutToEnd,
-  //   },
-  //   {
-  //     name: 'emailNotificationsToEnd',
-  //     value: settings.emailNotificationsToEnd,
-  //   },
-  // ] as const
-
-  const arePermissionsDisabled = notificationPermissionStatus !== PermissionStatus.GRANTED
+  const arePermissionsNotGranted = notificationPermissionStatus !== PermissionStatus.GRANTED
 
   return (
-    <>
-      <Field label={t('Settings.pushNotifications')}>
-        {arePermissionsDisabled ? (
-          <Panel className="my-2 bg-warning-light px-5">
-            <Typography>{t('Settings.notificationsDisabled')}</Typography>
-            <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
-              <Typography variant="default-bold">{t('Settings.notificationButtonText')}</Typography>
-            </PressableStyled>
-          </Panel>
-        ) : null}
+    <Field label={t('Settings.pushNotifications')}>
+      {arePermissionsNotGranted ? (
+        <Panel className="my-2 bg-warning-light px-5">
+          <Typography>{t('Settings.notificationsDisabled')}</Typography>
+          <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
+            <Typography variant="default-bold">{t('Settings.notificationButtonText')}</Typography>
+          </PressableStyled>
+        </Panel>
+      ) : null}
 
-        {pushNotifications.map((setting) => (
-          <NotificationControl
-            key={setting.name}
-            notificationName={setting.name}
-            disabled={arePermissionsDisabled}
-            value={arePermissionsDisabled ? false : !!setting.value}
-            onValueChange={() => saveNotifications({ [setting.name]: !setting.value })}
-          />
-        ))}
-      </Field>
-
-      {/* <Field label={t('Settings.emailNotifications')}> */}
-      {/*   {emailNotifications.map((setting) => ( */}
-      {/*     <NotificationControl */}
-      {/*       key={setting.name} */}
-      {/*       notificationName={setting.name} */}
-      {/*       value={setting.value} */}
-      {/*       onValueChange={() => */}
-      {/*         saveNotifications({ */}
-      {/*           ...settings, */}
-      {/*           [setting.name]: !setting.value, */}
-      {/*         }) */}
-      {/*       } */}
-      {/*     /> */}
-      {/*   ))} */}
-      {/* </Field> */}
-    </>
+      {pushNotifications.map((setting) => (
+        <NotificationControl
+          key={setting.name}
+          notificationName={setting.name}
+          disabled={arePermissionsNotGranted}
+          value={arePermissionsNotGranted ? false : !!setting.value}
+          onValueChange={() => saveNotifications({ [setting.name]: !setting.value })}
+        />
+      ))}
+    </Field>
   )
 }
 

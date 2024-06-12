@@ -1,49 +1,21 @@
 import messaging from '@react-native-firebase/messaging'
-import { useMutation, useQuery } from '@tanstack/react-query'
 import * as Device from 'expo-device'
-import { useCallback, useEffect, useState } from 'react'
-import { Platform } from 'react-native'
+import { useEffect, useState } from 'react'
 
-import { clientApi } from '@/modules/backend/client-api'
-import { devicesOptions } from '@/modules/backend/constants/queryOptions'
-import { MobileDevicePlatform } from '@/modules/backend/openapi-generated'
+import { useRegisterDevice } from '@/modules/map/hooks/useRegisterDevice'
 import { PermissionStatus } from '@/utils/types'
 
-type Options =
-  | {
-      autoAsk?: boolean
-      skipTokenQuery?: boolean
-    }
-  | undefined
+export const useNotificationPermission = (options?: { skipTokenRegistration?: boolean }) => {
+  const { skipTokenRegistration = false } = options ?? {}
 
-export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options = {}) => {
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>(
     PermissionStatus.UNDETERMINED,
   )
 
-  const { data, refetch } = useQuery(devicesOptions(skipTokenQuery))
+  const { registerDeviceIfNotExists } = useRegisterDevice()
 
-  const registerDeviceMutation = useMutation({
-    mutationFn: async (token: string) =>
-      // TODO investigate if/why this request gets resent in infinite loop sometimes
-      clientApi.mobileDevicesControllerInsertMobileDevice({
-        token,
-        platform: Platform.OS === 'ios' ? MobileDevicePlatform.Apple : MobileDevicePlatform.Android,
-      }),
-    onSuccess: async () => {
-      await refetch()
-    },
-  })
-
-  const checkAndRegisterToken = useCallback(async () => {
-    const token = await messaging().getToken()
-
-    if (token && data && !data.devices.some((device) => device.token === token)) {
-      registerDeviceMutation.mutate(token)
-    }
-  }, [data, registerDeviceMutation])
-
-  const checkPermission = useCallback(async () => {
+  const checkStatus = async () => {
+    // https://rnfirebase.io/reference/messaging#hasPermission
     const authStatus = await messaging().hasPermission()
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -51,23 +23,22 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
 
     if (enabled) {
       setPermissionStatus(PermissionStatus.GRANTED)
-
-      if (!skipTokenQuery) await checkAndRegisterToken()
     }
-  }, [checkAndRegisterToken, skipTokenQuery])
+  }
 
   useEffect(() => {
-    if (
-      Device.isDevice &&
-      (data || skipTokenQuery) &&
-      permissionStatus === PermissionStatus.UNDETERMINED
-    ) {
-      checkPermission()
-    }
-  }, [checkPermission, data, permissionStatus, skipTokenQuery])
+    if (Device.isDevice && permissionStatus === PermissionStatus.UNDETERMINED) {
+      checkStatus()
 
-  const getPermission = useCallback(async () => {
+      if (PermissionStatus.GRANTED && !skipTokenRegistration) {
+        registerDeviceIfNotExists()
+      }
+    }
+  }, [checkStatus, registerDeviceIfNotExists, permissionStatus])
+
+  const getPermission = async () => {
     if (Device.isDevice) {
+      // https://rnfirebase.io/messaging/usage#ios---requesting-permissions
       const authStatus = await messaging().requestPermission()
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -75,7 +46,7 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
 
       if (enabled) {
         setPermissionStatus(PermissionStatus.GRANTED)
-        await checkAndRegisterToken()
+        await registerDeviceIfNotExists()
       } else {
         setPermissionStatus(PermissionStatus.DENIED)
       }
@@ -83,17 +54,7 @@ export const useNotificationPermission = ({ autoAsk, skipTokenQuery }: Options =
       console.warn('Must use physical device for Push Notifications, skipping.')
       setPermissionStatus(PermissionStatus.DENIED)
     }
-  }, [checkAndRegisterToken])
-
-  useEffect(() => {
-    if (autoAsk) {
-      try {
-        getPermission()
-      } catch (error) {
-        console.warn(error)
-      }
-    }
-  }, [getPermission, autoAsk])
+  }
 
   return {
     notificationPermissionStatus: permissionStatus,
