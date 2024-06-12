@@ -24,7 +24,12 @@ export const useRegisterDevice = (skipTokenRegistration?: boolean) => {
   const registerDeviceIfNotExists = async () => {
     const token = await messaging().getToken()
 
-    if (token && !devicesQuery.data?.devices.some((device) => device.token === token)) {
+    // Register the device only if the device token is not already registered. Without this check, we can run into loop.
+    if (
+      token &&
+      devicesQuery.data &&
+      !devicesQuery.data.devices.some((device) => device.token === token)
+    ) {
       registerDeviceMutation.mutate(token)
     }
   }
