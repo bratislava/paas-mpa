@@ -1,5 +1,6 @@
-import { clientApi } from '@/modules/backend/client-api'
-import { changeUserLanguageToDevice } from '@/utils/changeUserLanguageToDevice'
+import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
+import { getAndChangeUserLanguage } from '@/utils/getAndChangeUserLanguage'
+import { getAppLocale } from '@/utils/getAppLocale'
 
 // Inspiration from here: https://dev.to/ramonak/react-native-internationalization-with-i18next-568n#3-custom-plugin-to-store-chosen-language-in-the-local-storage
 
@@ -8,21 +9,17 @@ export const languageDetectorPlugin = {
   async: true,
   init: () => {},
   detect: async (callback: (lang: string) => void) => {
-    try {
-      // get stored language from api
-      const response = await clientApi.usersControllerGetUserSettings()
-      const storedLocale = response?.data?.language
+    const appLocale = getAppLocale()
 
-      if (storedLocale) {
-        // if language was stored before, use this language in the app
-        return callback(storedLocale)
+    const currentUser = await getCurrentAuthenticatedUser()
+    if (currentUser) {
+      const userLocale = await getAndChangeUserLanguage()
+
+      if (userLocale) {
+        return callback(userLocale)
       }
-    } catch (error) {
-      console.log('Error reading language', error)
     }
 
-    const newLocale = await changeUserLanguageToDevice({ skipCheck: true })
-
-    return callback(newLocale!)
+    return callback(appLocale)
   },
 }
