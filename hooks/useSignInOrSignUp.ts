@@ -53,8 +53,8 @@ export const useSignInOrSignUp = () => {
 
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
-  const [locationPermissionStatus] = useLocationPermission()
-  const [notificationsPermissionStatus] = useNotificationPermission({ skipTokenQuery: true })
+  const { locationPermissionStatus } = useLocationPermission()
+  const { notificationPermissionStatus } = useNotificationPermission({ skipTokenQuery: true })
 
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
@@ -65,7 +65,7 @@ export const useSignInOrSignUp = () => {
         /** Try to sign in the user. Cognito will throw an error for non-registered user. */
         await signInAndRedirectToConfirm(phone)
       } catch (error) {
-        console.log('signInAndRedirectToConfirm error', error, JSON.stringify(error))
+        // Expected error 'UserNotFoundException' means non-registered user
         if (isErrorWithName(error) && error.name === 'UserNotFoundException') {
           /**
            * If user does not exist (UserNotFoundException is thrown), try to sign up.
@@ -139,7 +139,7 @@ export const useSignInOrSignUp = () => {
 
       if (
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
-        notificationsPermissionStatus === PermissionStatus.UNDETERMINED
+        notificationPermissionStatus === PermissionStatus.UNDETERMINED
       ) {
         router.replace('/permissions')
       } else {

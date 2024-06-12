@@ -29,7 +29,7 @@ type Props = Omit<BottomSheetTopAttachmentProps, 'children'> & {
 
 const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) => {
   const { t } = useTranslation()
-  const [permissionStatus] = useLocationPermission()
+  const { locationPermissionStatus } = useLocationPermission()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isButtonDisabledTimeout, setIsButtonDisabledTimeout] = useState<NodeJS.Timeout | null>(
     null,
@@ -37,7 +37,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   const [requestTimeout, setRequestTimeout] = useState<NodeJS.Timeout | null>(null)
 
   const onLocationPress = useCallback(async () => {
-    if (permissionStatus !== Location.PermissionStatus.DENIED) {
+    if (locationPermissionStatus !== Location.PermissionStatus.DENIED) {
       setIsButtonDisabled(true)
       try {
         const location = await Promise.race<Location.LocationObject | null>([
@@ -59,7 +59,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
         setIsButtonDisabled(false)
       }
     }
-  }, [setFlyToCenter, permissionStatus])
+  }, [setFlyToCenter, locationPermissionStatus])
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
 
@@ -113,7 +113,9 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
             accessibilityLabel={t('ZoneBottomSheet.TopAttachment.goToUserLocation')}
             variant="white-raised"
             onPress={onLocationPress}
-            disabled={isButtonDisabled || permissionStatus === Location.PermissionStatus.DENIED}
+            disabled={
+              isButtonDisabled || locationPermissionStatus === Location.PermissionStatus.DENIED
+            }
           />
         </View>
       </FlexRow>

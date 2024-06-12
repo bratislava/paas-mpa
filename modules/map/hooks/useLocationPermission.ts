@@ -54,5 +54,5 @@ export const useLocationPermission = ({ autoAsk }: Options = {}) => {
     }
   }, [getPermission, autoAsk])
 
-  return [permissionStatus, getPermission] as const
+  return { locationPermissionStatus: permissionStatus, getLocationPermission: getPermission }
 }
