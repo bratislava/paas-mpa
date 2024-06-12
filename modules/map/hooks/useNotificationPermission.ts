@@ -12,29 +12,30 @@ export const useNotificationPermission = (options?: { skipTokenRegistration?: bo
     PermissionStatus.UNDETERMINED,
   )
 
-  const { registerDeviceIfNotExists } = useRegisterDevice()
-
-  const checkStatus = async () => {
-    // https://rnfirebase.io/reference/messaging#hasPermission
-    const authStatus = await messaging().hasPermission()
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL
-
-    if (enabled) {
-      setPermissionStatus(PermissionStatus.GRANTED)
-    }
-  }
+  const { registerDeviceIfNotExists } = useRegisterDevice(skipTokenRegistration)
 
   useEffect(() => {
-    if (Device.isDevice && permissionStatus === PermissionStatus.UNDETERMINED) {
-      checkStatus()
+    const checkStatus = async () => {
+      // https://rnfirebase.io/reference/messaging#hasPermission
+      const authStatus = await messaging().hasPermission()
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL
 
-      if (PermissionStatus.GRANTED && !skipTokenRegistration) {
+      if (enabled) {
+        setPermissionStatus(PermissionStatus.GRANTED)
+      }
+    }
+
+    if (Device.isDevice) {
+      if (permissionStatus === PermissionStatus.UNDETERMINED) {
+        checkStatus()
+      }
+      if (permissionStatus === PermissionStatus.GRANTED && !skipTokenRegistration) {
         registerDeviceIfNotExists()
       }
     }
-  }, [checkStatus, registerDeviceIfNotExists, permissionStatus])
+  }, [registerDeviceIfNotExists, permissionStatus, skipTokenRegistration])
 
   const getPermission = async () => {
     if (Device.isDevice) {

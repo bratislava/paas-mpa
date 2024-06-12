@@ -6,8 +6,8 @@ import { clientApi } from '@/modules/backend/client-api'
 import { devicesOptions } from '@/modules/backend/constants/queryOptions'
 import { MobileDevicePlatform } from '@/modules/backend/openapi-generated'
 
-export const useRegisterDevice = () => {
-  const devicesQuery = useQuery(devicesOptions())
+export const useRegisterDevice = (skipTokenRegistration?: boolean) => {
+  const devicesQuery = useQuery(devicesOptions(skipTokenRegistration))
 
   const registerDeviceMutation = useMutation({
     mutationFn: async (tokenInner: string) =>
