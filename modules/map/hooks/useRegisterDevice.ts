@@ -1,15 +1,13 @@
 import messaging from '@react-native-firebase/messaging'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { useCallback } from 'react'
 import { Platform } from 'react-native'
 
 import { clientApi } from '@/modules/backend/client-api'
-import { devicesOptions } from '@/modules/backend/constants/queryOptions'
 import { MobileDevicePlatform } from '@/modules/backend/openapi-generated'
 
-export const useRegisterDevice = (skipTokenRegistration?: boolean) => {
-  const devicesQuery = useQuery(devicesOptions(skipTokenRegistration))
-
-  const registerDeviceMutation = useMutation({
+export const useRegisterDevice = () => {
+  const { mutate: mutateRegisterDevice } = useMutation({
     mutationFn: async (tokenInner: string) =>
       // TODO investigate if/why this request gets resent in infinite loop sometimes
       clientApi.mobileDevicesControllerInsertMobileDevice({
@@ -17,22 +15,23 @@ export const useRegisterDevice = (skipTokenRegistration?: boolean) => {
         platform: Platform.OS === 'ios' ? MobileDevicePlatform.Apple : MobileDevicePlatform.Android,
       }),
     onSuccess: async () => {
-      await devicesQuery.refetch()
+      console.log('Device registered')
     },
   })
 
-  const registerDeviceIfNotExists = async () => {
-    const token = await messaging().getToken()
+  const registerDevice = useCallback(async () => {
+    try {
+      const token = await messaging().getToken()
 
-    // Register the device only if the device token is not already registered. Without this check, we can run into loop.
-    if (
-      token &&
-      devicesQuery.data &&
-      !devicesQuery.data.devices.some((device) => device.token === token)
-    ) {
-      registerDeviceMutation.mutate(token)
+      // TODO investigate if token can be empty
+      if (token) {
+        mutateRegisterDevice(token)
+      }
+    } catch (error) {
+      // TODO handle error
+      console.log('no token', error)
     }
-  }
+  }, [mutateRegisterDevice])
 
-  return { registerDeviceIfNotExists }
+  return { registerDevice }
 }

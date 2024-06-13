@@ -1,18 +1,16 @@
 import messaging from '@react-native-firebase/messaging'
 import * as Device from 'expo-device'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useRegisterDevice } from '@/modules/map/hooks/useRegisterDevice'
 import { PermissionStatus } from '@/utils/types'
 
-export const useNotificationPermission = (options?: { skipTokenRegistration?: boolean }) => {
-  const { skipTokenRegistration = false } = options ?? {}
-
+export const useNotificationPermission = () => {
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>(
     PermissionStatus.UNDETERMINED,
   )
 
-  const { registerDeviceIfNotExists } = useRegisterDevice(skipTokenRegistration)
+  const { registerDevice } = useRegisterDevice()
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -27,17 +25,13 @@ export const useNotificationPermission = (options?: { skipTokenRegistration?: bo
       }
     }
 
-    if (Device.isDevice) {
-      if (permissionStatus === PermissionStatus.UNDETERMINED) {
-        checkStatus()
-      }
-      if (permissionStatus === PermissionStatus.GRANTED && !skipTokenRegistration) {
-        registerDeviceIfNotExists()
-      }
+    if (Device.isDevice && permissionStatus === PermissionStatus.UNDETERMINED) {
+      checkStatus()
     }
-  }, [registerDeviceIfNotExists, permissionStatus, skipTokenRegistration])
+  }, [permissionStatus])
 
-  const getPermission = async () => {
+  // TODO why useCallback
+  const getPermission = useCallback(async () => {
     if (Device.isDevice) {
       // https://rnfirebase.io/messaging/usage#ios---requesting-permissions
       const authStatus = await messaging().requestPermission()
@@ -47,7 +41,7 @@ export const useNotificationPermission = (options?: { skipTokenRegistration?: bo
 
       if (enabled) {
         setPermissionStatus(PermissionStatus.GRANTED)
-        await registerDeviceIfNotExists()
+        await registerDevice()
       } else {
         setPermissionStatus(PermissionStatus.DENIED)
       }
@@ -55,7 +49,7 @@ export const useNotificationPermission = (options?: { skipTokenRegistration?: bo
       console.warn('Must use physical device for Push Notifications, skipping.')
       setPermissionStatus(PermissionStatus.DENIED)
     }
-  }
+  }, [registerDevice])
 
   return {
     notificationPermissionStatus: permissionStatus,
