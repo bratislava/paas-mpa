@@ -54,7 +54,9 @@ export const useSignInOrSignUp = () => {
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const { locationPermissionStatus } = useLocationPermission()
-  const { notificationPermissionStatus } = useNotificationPermission({ skipTokenQuery: true })
+  const { notificationPermissionStatus } = useNotificationPermission({
+    skipTokenRegistration: true,
+  })
 
   const onAuthStoreUpdate = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
