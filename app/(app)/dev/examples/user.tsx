@@ -1,11 +1,16 @@
+import messaging from '@react-native-firebase/messaging'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
+import { clientApi } from '@/modules/backend/client-api'
+import { devicesOptions } from '@/modules/backend/constants/queryOptions'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
@@ -15,6 +20,29 @@ const Page = () => {
   const [user, setUser] = useState<any>(null)
 
   const signOut = useSignOut()
+
+  const { show } = useSnackbar()
+
+  const { data } = useQuery(devicesOptions())
+
+  const deleteDeviceMutation = useMutation({
+    mutationFn: async (id: number) => clientApi.mobileDevicesControllerDeleteMobileDevice(id),
+    onSuccess: () => {
+      show('Device removed', { variant: 'success' })
+    },
+    onError: () => {
+      show('Device not removed', { variant: 'danger' })
+    },
+  })
+
+  const removeDevice = async () => {
+    const token = await messaging().getToken()
+    const deviceId = data?.devices.find((device) => device.token === token)?.id
+
+    if (deviceId) {
+      deleteDeviceMutation.mutate(deviceId)
+    }
+  }
 
   useEffect(() => {
     getCurrentAuthenticatedUser()
@@ -46,6 +74,7 @@ const Page = () => {
           <Link asChild href="/">
             <Button>Home</Button>
           </Link>
+          <Button onPress={removeDevice}>Remove device from notifications</Button>
           <Typography>{JSON.stringify(user, undefined, 2)}</Typography>
         </ScreenContent>
       </ScrollView>
