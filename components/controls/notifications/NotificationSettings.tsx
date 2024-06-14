@@ -35,11 +35,12 @@ import { PermissionStatus } from '@/utils/types'
 const NotificationSettings = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { notificationPermissionStatus, getNotificationPermission } = useNotificationPermission()
+  const { notificationPermissionStatus, getNotificationPermissionAndRegisterDevice } =
+    useNotificationPermission()
 
   useEffect(() => {
-    getNotificationPermission()
-  }, [getNotificationPermission])
+    getNotificationPermissionAndRegisterDevice()
+  }, [getNotificationPermissionAndRegisterDevice])
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 

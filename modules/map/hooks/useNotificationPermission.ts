@@ -57,6 +57,6 @@ export const useNotificationPermission = () => {
 
   return {
     notificationPermissionStatus: permissionStatus,
-    getNotificationPermission: getPermission,
+    getNotificationPermissionAndRegisterDevice: getPermission,
   }
 }

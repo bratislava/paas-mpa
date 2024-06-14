@@ -54,7 +54,8 @@ export const useSignInOrSignUp = () => {
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const { locationPermissionStatus } = useLocationPermission()
-  const { notificationPermissionStatus, getNotificationPermission } = useNotificationPermission()
+  const { notificationPermissionStatus, getNotificationPermissionAndRegisterDevice } =
+    useNotificationPermission()
 
   const updateAuthStore = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
@@ -139,7 +140,7 @@ export const useSignInOrSignUp = () => {
 
       // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
       // TODO this should probably be called on every app focus?
-      await getNotificationPermission()
+      await getNotificationPermissionAndRegisterDevice()
 
       // TODO investigate how is this used
       if (
