@@ -138,17 +138,17 @@ export const useSignInOrSignUp = () => {
         setIsOnboardingFinished(true)
       }
 
-      // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
-      // TODO this should probably be called on every app focus?
-      await getNotificationPermissionAndRegisterDevice()
-
-      // TODO investigate how is this used
       if (
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
         notificationPermissionStatus === PermissionStatus.UNDETERMINED
       ) {
         router.replace('/permissions')
       } else {
+        // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
+        // This happens on /permissions screen too, so we call it only here
+        // TODO this should probably be called on every app focus?
+        await getNotificationPermissionAndRegisterDevice()
+
         router.replace('/')
       }
       clearHistory()
