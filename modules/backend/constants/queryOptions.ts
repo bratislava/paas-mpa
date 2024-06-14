@@ -180,22 +180,6 @@ export const vehiclesOptions = () =>
     queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
   })
 
-export const shortenPriceOptions = (id?: number) =>
-  queryOptions({
-    queryKey: ['ShortenPrice'],
-    queryFn: () => clientApi.ticketsControllerGetShortenTicketPrice(id!),
-    select: (res) => res.data,
-    enabled: !!id,
-  })
-
-export const devicesOptions = (skip?: boolean) =>
-  queryOptions({
-    queryKey: ['Devices'],
-    queryFn: () => clientApi.mobileDevicesControllerDevicesGetMany(),
-    select: (res) => res.data,
-    enabled: !skip,
-  })
-
 export const mobileAppVersionOptions = () =>
   queryOptions({
     queryKey: ['MobileVersion'],

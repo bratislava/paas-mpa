@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * PAAS MPA backend
- * BPA
+ * MPA
  *
  * The version of the OpenAPI document: 1.0
  * Contact: inovacie@bratislava.sk
@@ -414,7 +414,14 @@ export interface InitiatePaymentRequestDto {
    * @memberof InitiatePaymentRequestDto
    */
   rememberCard?: boolean
+  /**
+   *
+   * @type {Language}
+   * @memberof InitiatePaymentRequestDto
+   */
+  paygateLanguage?: Language
 }
+
 /**
  *
  * @export
@@ -439,7 +446,27 @@ export interface InitiateProlongationRequestDto {
    * @memberof InitiateProlongationRequestDto
    */
   rememberCard?: boolean
+  /**
+   *
+   * @type {Language}
+   * @memberof InitiateProlongationRequestDto
+   */
+  paygateLanguage?: Language
 }
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const Language = {
+  Sk: 'SK',
+  En: 'EN',
+} as const
+
+export type Language = (typeof Language)[keyof typeof Language]
+
 /**
  *
  * @export
@@ -1252,6 +1279,31 @@ export interface TicketInitDto {
   originalBalanceSeconds?: number
 }
 
+/**
+ *
+ * @export
+ * @interface TicketPaymentDto
+ */
+export interface TicketPaymentDto {
+  /**
+   * Main status of the payment. References in gpwebpay documentation.
+   * @type {string}
+   * @memberof TicketPaymentDto
+   */
+  status?: string
+  /**
+   * Substatus of the payment. References in gpwebpay documentation.
+   * @type {string}
+   * @memberof TicketPaymentDto
+   */
+  subStatus?: string
+  /**
+   * Payment method of the transaction. References in gpwebpay documentation.
+   * @type {string}
+   * @memberof TicketPaymentDto
+   */
+  paymentMethod?: string
+}
 /**
  *
  * @export
@@ -2255,6 +2307,51 @@ export const MobileDevicesApiAxiosParamCreator = function (configuration?: Confi
     },
     /**
      *
+     * @summary Delete a specific mobile device by token
+     * @param {string} token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDeleteMobileDeviceByToken: async (
+      token: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'token' is not null or undefined
+      assertParamExists('mobileDevicesControllerDeleteMobileDeviceByToken', 'token', token)
+      const localVarPath = `/mobile-devices/token/{token}`.replace(
+        `{${'token'}}`,
+        encodeURIComponent(String(token)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get all mobile devices associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
@@ -2305,7 +2402,7 @@ export const MobileDevicesApiAxiosParamCreator = function (configuration?: Confi
     },
     /**
      *
-     * @summary Inserts new mobile device
+     * @summary Inserts new mobile device if it does not exist. Returns the newly created or the existing one.
      * @param {SaveMobileDeviceDto} saveMobileDeviceDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2383,6 +2480,24 @@ export const MobileDevicesApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Delete a specific mobile device by token
+     * @param {string} token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async mobileDevicesControllerDeleteMobileDeviceByToken(
+      token: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.mobileDevicesControllerDeleteMobileDeviceByToken(
+          token,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get all mobile devices associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
@@ -2406,7 +2521,7 @@ export const MobileDevicesApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary Inserts new mobile device
+     * @summary Inserts new mobile device if it does not exist. Returns the newly created or the existing one.
      * @param {SaveMobileDeviceDto} saveMobileDeviceDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2453,6 +2568,21 @@ export const MobileDevicesApiFactory = function (
     },
     /**
      *
+     * @summary Delete a specific mobile device by token
+     * @param {string} token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    mobileDevicesControllerDeleteMobileDeviceByToken(
+      token: string,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<DeleteResponseDto> {
+      return localVarFp
+        .mobileDevicesControllerDeleteMobileDeviceByToken(token, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get all mobile devices associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
@@ -2470,7 +2600,7 @@ export const MobileDevicesApiFactory = function (
     },
     /**
      *
-     * @summary Inserts new mobile device
+     * @summary Inserts new mobile device if it does not exist. Returns the newly created or the existing one.
      * @param {SaveMobileDeviceDto} saveMobileDeviceDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2509,6 +2639,23 @@ export class MobileDevicesApi extends BaseAPI {
 
   /**
    *
+   * @summary Delete a specific mobile device by token
+   * @param {string} token
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MobileDevicesApi
+   */
+  public mobileDevicesControllerDeleteMobileDeviceByToken(
+    token: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return MobileDevicesApiFp(this.configuration)
+      .mobileDevicesControllerDeleteMobileDeviceByToken(token, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Get all mobile devices associated with the user
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
@@ -2528,7 +2675,7 @@ export class MobileDevicesApi extends BaseAPI {
 
   /**
    *
-   * @summary Inserts new mobile device
+   * @summary Inserts new mobile device if it does not exist. Returns the newly created or the existing one.
    * @param {SaveMobileDeviceDto} saveMobileDeviceDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -3277,6 +3424,51 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary Get ticket\'s last payment status
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetTicketLastPaymentStatus: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerGetTicketLastPaymentStatus', 'id', id)
+      const localVarPath = `/tickets/payment-status/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get ticket price
      * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
      * @param {*} [options] Override http request option.
@@ -3984,6 +4176,21 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Get ticket\'s last payment status
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGetTicketLastPaymentStatus(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketPaymentDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerGetTicketLastPaymentStatus(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get ticket price
      * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
      * @param {*} [options] Override http request option.
@@ -4297,6 +4504,21 @@ export const TicketsApiFactory = function (
     },
     /**
      *
+     * @summary Get ticket\'s last payment status
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetTicketLastPaymentStatus(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketPaymentDto> {
+      return localVarFp
+        .ticketsControllerGetTicketLastPaymentStatus(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get ticket price
      * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
      * @param {*} [options] Override http request option.
@@ -4584,6 +4806,20 @@ export class TicketsApi extends BaseAPI {
   public ticketsControllerGetStoredPaymentMethodAvailability(options?: AxiosRequestConfig) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerGetStoredPaymentMethodAvailability(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get ticket\'s last payment status
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGetTicketLastPaymentStatus(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGetTicketLastPaymentStatus(id, options)
       .then((request) => request(this.axios, this.basePath))
   }
 

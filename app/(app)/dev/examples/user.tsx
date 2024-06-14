@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -10,23 +10,18 @@ import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
 import { clientApi } from '@/modules/backend/client-api'
-import { devicesOptions } from '@/modules/backend/constants/queryOptions'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
-// TODO this is just temporary page
-const Page = () => {
+const UserDevPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null)
-
   const signOut = useSignOut()
-
   const { show } = useSnackbar()
 
-  const { data } = useQuery(devicesOptions())
-
   const deleteDeviceMutation = useMutation({
-    mutationFn: async (id: number) => clientApi.mobileDevicesControllerDeleteMobileDevice(id),
+    mutationFn: async (tokenInner: string) =>
+      clientApi.mobileDevicesControllerDeleteMobileDeviceByToken(tokenInner),
     onSuccess: () => {
       show('Device removed', { variant: 'success' })
     },
@@ -37,11 +32,7 @@ const Page = () => {
 
   const removeDevice = async () => {
     const token = await messaging().getToken()
-    const deviceId = data?.devices.find((device) => device.token === token)?.id
-
-    if (deviceId) {
-      deleteDeviceMutation.mutate(deviceId)
-    }
+    deleteDeviceMutation.mutate(token)
   }
 
   useEffect(() => {
@@ -82,4 +73,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default UserDevPage
