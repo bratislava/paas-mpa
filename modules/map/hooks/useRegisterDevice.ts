@@ -22,11 +22,7 @@ export const useRegisterDevice = () => {
   const registerDevice = useCallback(async () => {
     try {
       const token = await messaging().getToken()
-
-      // TODO investigate if token can be empty
-      if (token) {
-        mutateRegisterDevice(token)
-      }
+      mutateRegisterDevice(token)
     } catch (error) {
       // TODO handle error
       console.log('no token', error)
