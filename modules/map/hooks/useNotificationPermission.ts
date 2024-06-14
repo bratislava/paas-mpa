@@ -30,7 +30,11 @@ export const useNotificationPermission = () => {
     }
   }, [permissionStatus])
 
-  // TODO why useCallback
+  // TODO explain why useCallback is used
+  // TODO this function should probably do this two things and should be called an app focus (?):
+  //  - register device if permissions are granted
+  //  - delete device if permissions are not granted
+  //  Now we do only first thing and delete device is called only on sign out.
   const getPermission = useCallback(async () => {
     if (Device.isDevice) {
       // https://rnfirebase.io/messaging/usage#ios---requesting-permissions

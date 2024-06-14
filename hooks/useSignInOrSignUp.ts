@@ -54,9 +54,9 @@ export const useSignInOrSignUp = () => {
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const { locationPermissionStatus } = useLocationPermission()
-  const { notificationPermissionStatus } = useNotificationPermission()
+  const { notificationPermissionStatus, getNotificationPermission } = useNotificationPermission()
 
-  const onAuthStoreUpdate = useAuthStoreUpdateContext()
+  const updateAuthStore = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
 
   const attemptSignInOrSignUp = async (phone: string) => {
@@ -92,7 +92,7 @@ export const useSignInOrSignUp = () => {
            */
           // FIXME: Run the process again after sign out automatically. Now user have to press the button again.
           await signOut()
-          onAuthStoreUpdate({ user: null })
+          updateAuthStore({ user: null })
         } else {
           /**
            * Pass other errors to the next catch block.
@@ -132,11 +132,16 @@ export const useSignInOrSignUp = () => {
 
       /** If sign in didn't throw an error, set the user to context provider and redirect to home screen */
       const user = await getCurrentAuthenticatedUser()
-      onAuthStoreUpdate({ user })
+      updateAuthStore({ user })
       if (!isOnboardingFinished) {
         setIsOnboardingFinished(true)
       }
 
+      // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
+      // TODO this should probably be called on every app focus?
+      await getNotificationPermission()
+
+      // TODO investigate how is this used
       if (
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
         notificationPermissionStatus === PermissionStatus.UNDETERMINED
