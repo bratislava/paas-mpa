@@ -62,7 +62,7 @@ const Markdown = ({ children, fontSize = 'default', textCenter }: Props) => {
   const rules = useMemo(() => getRules(fontSize, textCenter), [fontSize, textCenter])
 
   return (
-    <MarkdownNative rules={rules} markdownit={markdownInstance} debugPrintTree>
+    <MarkdownNative rules={rules} markdownit={markdownInstance}>
       {pushBr(children)}
     </MarkdownNative>
   )

@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * PAAS MPA backend
- * BPA
+ * MPA
  *
  * The version of the OpenAPI document: 1.0
  * Contact: inovacie@bratislava.sk
