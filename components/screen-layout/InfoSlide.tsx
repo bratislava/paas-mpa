@@ -16,7 +16,11 @@ const InfoSlide = ({ title, text, SvgImage, className }: Props) => {
   return (
     <View className={cn('min-h-0 flex-1', className)}>
       {/* TODO if image gets deformed by scaling, try to use preserveAspectRatio */}
-      <View className="relative aspect-square">
+      {/* Use "max-h-[100vw] shrink" to:
+          - prevent the image to grow its height more that its width (= square)
+          - shrink the image height on smaller screens to prevent text to hide unintentionally
+      */}
+      <View className="relative max-h-[100vw] shrink">
         <SvgImage width="100%" height="100%" />
       </View>
 
