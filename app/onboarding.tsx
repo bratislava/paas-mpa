@@ -14,7 +14,7 @@ import {
   ImageWelcome,
 } from '@/assets/onboarding-slides'
 import ContinueButton from '@/components/navigation/ContinueButton'
-import MarketingTabBar from '@/components/navigation/MarketingTabBar'
+import OnboardingTabBar from '@/components/navigation/OnboardingTabBar'
 import InfoSlide from '@/components/screen-layout/InfoSlide'
 import Button from '@/components/shared/Button'
 import FlexRow from '@/components/shared/FlexRow'
@@ -33,7 +33,7 @@ export type OnboardingRouteKey =
   | 'visitorsFree'
   | 'bonusCard'
 
-type MarketingSliderRouteProps = {
+type OnboardingSliderRouteProps = {
   slide: OnboardingRouteKey
 }
 
@@ -42,7 +42,7 @@ type OnboardingRoute = {
   accessibilityLabel: string
 }
 
-const MarketingSliderRoute = ({ slide }: MarketingSliderRouteProps) => {
+const OnboardingSliderRoute = ({ slide }: OnboardingSliderRouteProps) => {
   const locale = useLocale()
 
   const translationsMap = useOnboardingTranslation()
@@ -77,7 +77,7 @@ const renderScene = ({
   route,
 }: SceneRendererProps & {
   route: OnboardingRoute
-}) => <MarketingSliderRoute slide={route.key} />
+}) => <OnboardingSliderRoute slide={route.key} />
 
 const OnboardingScreen = () => {
   const { t } = useTranslation()
@@ -154,7 +154,7 @@ const OnboardingScreen = () => {
         }}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-        renderTabBar={(props) => <MarketingTabBar {...props} />}
+        renderTabBar={(props) => <OnboardingTabBar {...props} />}
         tabBarPosition="bottom"
         className="pb-5"
       />
