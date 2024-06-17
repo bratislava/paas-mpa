@@ -9,7 +9,7 @@ import {
 import PressableStyled from '@/components/shared/PressableStyled'
 import { cn } from '@/utils/cn'
 
-const MarketingTabBar = (
+const OnboardingTabBar = (
   props: SceneRendererProps & { navigationState: NavigationState<Route> },
 ) => {
   return (
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   style: { backgroundColor: 'transparent' },
 })
 
-export default MarketingTabBar
+export default OnboardingTabBar
