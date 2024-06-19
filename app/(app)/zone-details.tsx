@@ -36,7 +36,8 @@ const ZoneDetailsScreen = () => {
   return (
     <ScreenView title={t('ZoneDetailsScreen.title')}>
       <ScreenContent>
-        <FlexRow>
+        {/* items-start is used to prevent the ZoneBadge to stretch to full height when zone.name takes more than one line */}
+        <FlexRow className="items-start">
           <ZoneBadge label={zone.udrId} />
           <Typography className="flex-1">{zone.name}</Typography>
           <Typography variant="default-bold">{formatPricePerHour(price)}</Typography>

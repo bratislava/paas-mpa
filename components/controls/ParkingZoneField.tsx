@@ -38,7 +38,9 @@ const ParkingZoneField = ({ zone }: Props) => {
           <Panel>
             {zone ? (
               <FlexRow>
-                <Typography>{zone.name}</Typography>
+                <Typography numberOfLines={1} className="flex-1 text-ellipsis">
+                  {zone.name}
+                </Typography>
                 <Typography variant="default-semibold">{price}</Typography>
               </FlexRow>
             ) : (
