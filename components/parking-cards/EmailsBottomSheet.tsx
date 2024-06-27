@@ -47,7 +47,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     // This approach is used because we don't have the option to pass loading state into ModalContentWithActions component to disable the "Remove button"
     if (!mutation.isPending) {
       mutation.mutate(id, {
-        onSuccess: (res) => {
+        onSuccess: () => {
           handleModalClose()
           router.navigate('/parking-cards')
         },
