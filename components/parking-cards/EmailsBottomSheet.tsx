@@ -41,14 +41,18 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     },
   })
 
+  // TODO handle error
   const handleRemoveEmailAccount = (id: number) => {
-    // TODO handle error
-    mutation.mutate(id, {
-      onSuccess: (res) => {
-        handleModalClose()
-        router.navigate('/parking-cards')
-      },
-    })
+    // Prevent to run the request multiple times
+    // This approach is used because we don't have the option to pass loading state into ModalContentWithActions component to disable the "Remove button"
+    if (!mutation.isPending) {
+      mutation.mutate(id, {
+        onSuccess: (res) => {
+          handleModalClose()
+          router.navigate('/parking-cards')
+        },
+      })
+    }
   }
 
   const renderBackdrop = useCallback(
