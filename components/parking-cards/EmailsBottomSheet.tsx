@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
-import { forwardRef, useCallback, useState } from 'react'
+import { forwardRef, useCallback, useRef, useState } from 'react'
 
 import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -13,6 +13,7 @@ import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomShe
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import PressableStyled from '@/components/shared/PressableStyled'
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
@@ -20,10 +21,14 @@ import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/query
 const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
-  const [isModalVisible, setIsModalVisible] = useState(false)
 
+  const localRef = useRef<BottomSheetModal>(null)
+  const refSetter = useMultipleRefsSetter(localRef, ref)
+
+  const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
+
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const mutation = useMutation({
     mutationFn: (id: number) => clientApi.verifiedEmailsControllerDeleteVerifiedEmail(id),
@@ -37,11 +42,11 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   })
 
   const handleRemoveEmailAccount = (id: number) => {
-    console.log('handleRemoveEmailAccount', emailId)
+    // TODO handle error
     mutation.mutate(id, {
       onSuccess: (res) => {
-        console.log('success deleting email', res.data)
-        router.push('/parking-cards')
+        handleModalClose()
+        router.navigate('/parking-cards')
       },
     })
   }
@@ -53,12 +58,14 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     [],
   )
 
-  const handleModalClose = useCallback(() => {
+  const handleModalClose = () => {
     setIsModalVisible(false)
-  }, [])
-  const handleModalOpen = useCallback(() => {
+  }
+
+  const handleModalOpen = () => {
     setIsModalVisible(true)
-  }, [])
+    localRef.current?.close()
+  }
 
   // Double-check if emailId is valid number
   if (!parsedEmailId || Number.isNaN(parsedEmailId)) {
@@ -68,7 +75,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   return (
     <>
       <BottomSheetModal
-        ref={ref}
+        ref={refSetter}
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
