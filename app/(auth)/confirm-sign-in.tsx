@@ -58,6 +58,7 @@ const Page = () => {
         if (isErrorWithName(error)) {
           setErrorCode(error.name)
         }
+        // TODO handle error
       }
       setLoading(false)
     }

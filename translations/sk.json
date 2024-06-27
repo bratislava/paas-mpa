@@ -7,6 +7,7 @@
   "AboutScreen.links.termsAndConditions.url": "https://paas.sk/vseobecne-obchodne-podmienky/",
   "AboutScreen.title": "O nás",
   "AddParkingCards.addCardsTitle": "Pridať parkovacie karty",
+  "AddParkingCards.codeInputLabel": "Overovací kód",
   "AddParkingCards.emailField": "E-mailová adresa",
   "AddParkingCards.Errors.EmailAlreadyVerified": "E-mail už bol pridaný",
   "AddParkingCards.Errors.GeneralError": "Vyskytla sa chyba.",

@@ -7,6 +7,7 @@
   "AboutScreen.links.termsAndConditions.url": "https://paas.sk/en/terms-of-use/",
   "AboutScreen.title": "About",
   "AddParkingCards.addCardsTitle": "Add parking cards",
+  "AddParkingCards.codeInputLabel": "Verification code",
   "AddParkingCards.emailField": "Email address",
   "AddParkingCards.Errors.EmailAlreadyVerified": "Email has been added already",
   "AddParkingCards.Errors.GeneralError": "An error occurred.",
