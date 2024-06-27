@@ -37,9 +37,11 @@ const VehicleRow = ({ vehicle, onContextMenuPress, selected, showControlChevron 
   return (
     <Panel className={cn(selected && 'border border-dark')}>
       <FlexRow className={cn(!onContextMenuPress && 'items-center')}>
-        <View>
-          <Typography variant="default-bold">{vehicle.vehiclePlateNumber}</Typography>
-          {vehicle.name ? <Typography>{vehicle.name}</Typography> : null}
+        <View className="flex-1">
+          <Typography variant="default-bold" className="flex-1">
+            {vehicle.vehiclePlateNumber}
+          </Typography>
+          {vehicle.name ? <Typography className="flex-1">{vehicle.name}</Typography> : null}
         </View>
         {selected && <Icon name="check-circle" />}
         {showControlChevron && <Icon name="expand-more" />}

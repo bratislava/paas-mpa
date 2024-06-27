@@ -28,6 +28,7 @@ async function fetchFileOrGetFromCache<T>(fileName: string): Promise<AxiosRespon
         return cachedParsedResponse
       }
     } catch (error) {
+      // TODO log error
       return cachedParsedResponse
     }
   }
