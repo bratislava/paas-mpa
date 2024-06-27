@@ -43,16 +43,12 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
 
   // TODO handle error
   const handleRemoveEmailAccount = (id: number) => {
-    // Prevent to run the request multiple times
-    // This approach is used because we don't have the option to pass loading state into ModalContentWithActions component to disable the "Remove button"
-    if (!mutation.isPending) {
-      mutation.mutate(id, {
-        onSuccess: () => {
-          handleModalClose()
-          router.navigate('/parking-cards')
-        },
-      })
-    }
+    mutation.mutate(id, {
+      onSuccess: () => {
+        handleModalClose()
+        router.navigate('/parking-cards')
+      },
+    })
   }
 
   const renderBackdrop = useCallback(
@@ -104,6 +100,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
           secondaryActionLabel={t('ParkingCards.removeEmailCancel')}
           primaryActionOnPress={() => handleRemoveEmailAccount(parsedEmailId)}
           secondaryActionOnPress={handleModalClose}
+          isLoading={mutation.isPending}
         />
       </Modal>
     </>
