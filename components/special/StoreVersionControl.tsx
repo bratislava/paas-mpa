@@ -33,11 +33,10 @@ const StoreVersionControl = () => {
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const goToStore = () => {
     if (Platform.OS === 'ios') {
-      // TODO change to correct app store link
-      Linking.openURL('https://apps.apple.com/us/app/id1531373575')
+      // TODO this link should be correct, but it does not work yet, probably due to App Store search indexing
+      Linking.openURL('https://apps.apple.com/app/paas/id6457264414')
     } else {
-      // TODO change to correct play store link
-      Linking.openURL('https://play.google.com/store/apps/details?id=com.trafficnow')
+      Linking.openURL('https://play.google.com/store/apps/details?id=com.bratislava.paas')
     }
   }
 
