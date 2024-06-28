@@ -13,8 +13,8 @@ import DismissKeyboard from '@/components/shared/DismissKeyboard'
 import Typography from '@/components/shared/Typography'
 import { useSignInOrSignUp } from '@/hooks/useSignInOrSignUp'
 import { useTranslation } from '@/hooks/useTranslation'
-import { changeUserLanguageToDevice } from '@/utils/changeUserLanguageToDevice'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
+import { getAndChangeUserLanguage } from '@/utils/getAndChangeUserLanguage'
 import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
 type ConfirmAuthSearchParams = {
@@ -48,7 +48,7 @@ const Page = () => {
         }
         await attemptConfirmSignIn(code, phone)
 
-        const newLanguage = await changeUserLanguageToDevice()
+        const newLanguage = await getAndChangeUserLanguage()
 
         if (newLanguage) {
           await i18n.changeLanguage(newLanguage)
