@@ -29,20 +29,23 @@ const Page = () => {
   })
 
   const handleVerify = () => {
-    mutation.mutate(undefined, {
-      onSuccess: (res) => {
-        const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
+    if (code.length === 6) {
+      // TODO handle error
+      mutation.mutate(undefined, {
+        onSuccess: (res) => {
+          const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
 
-        router.replace({
-          pathname: '/parking-cards/verification/verification-result',
-          params: {
-            email,
-            status: 'verified',
-            licencePlates: licencePlates.join(', '),
-          },
-        })
-      },
-    })
+          router.replace({
+            pathname: '/parking-cards/verification/verification-result',
+            params: {
+              email,
+              status: 'verified',
+              licencePlates: licencePlates.join(', '),
+            },
+          })
+        },
+      })
+    }
   }
 
   return (
@@ -58,14 +61,22 @@ const Page = () => {
             asMarkdown
             customAvatarComponent={<EmailAvatar />}
             actionButton={
-              <Button onPress={handleVerify}>{t('AddParkingCards.verifyButton')}</Button>
+              <Button onPress={handleVerify} loading={mutation.isPending}>
+                {t('AddParkingCards.verifyButton')}
+              </Button>
             }
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (
               <Typography>DEV {tmpVerificationToken}</Typography>
             ) : null}
-            <CodeInput value={code} setValue={setCode} onBlur={handleVerify} />
+            <CodeInput
+              autoFocus
+              accessibilityLabel={t('AddParkingCards.codeInputLabel')}
+              value={code}
+              setValue={setCode}
+              onBlur={handleVerify}
+            />
           </ContentWithAvatar>
         </ScreenViewCentered>
       </DismissKeyboard>
