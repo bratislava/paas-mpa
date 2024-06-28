@@ -41,7 +41,8 @@ if (UIManager.setLayoutAnimationEnabledExperimental)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
-const fetchUpdateAndReload = async () => {
+// Keeping the same name `onFetchUpdateAsync` as in documentation for easier reference
+const onFetchUpdateAsync = async () => {
   try {
     const update = await Updates.checkForUpdateAsync()
 
@@ -67,7 +68,7 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (environment.deployment === 'production') {
-      fetchUpdateAndReload()
+      onFetchUpdateAsync()
     }
   }, [])
 
