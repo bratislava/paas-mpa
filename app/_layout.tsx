@@ -72,7 +72,10 @@ const RootLayout = () => {
     }
   }, [])
 
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    // TODO - we change retries to 0 to see the behaviour in production, if it helps with too long waiting for expected errors response
+    defaultOptions: { queries: { retry: 0 } },
+  })
 
   const toastProviderProps = useToastProviderProps()
 
