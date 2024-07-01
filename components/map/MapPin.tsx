@@ -2,7 +2,9 @@ import { View } from 'react-native'
 
 import { MapPinIcon, MapPinNoZoneIcon } from '@/assets/map'
 import Typography from '@/components/shared/Typography'
+import { useLocale } from '@/hooks/useTranslation'
 import { useMapCenter } from '@/modules/map/hooks/useMapCenter'
+import { formatPriceForMapPin } from '@/utils/formatPriceForMapPin'
 
 type Props = {
   price?: number
@@ -12,6 +14,8 @@ const PIN_WIDTH = 56
 const PIN_HEIGHT = 98
 
 const MapPin = ({ price }: Props) => {
+  const locale = useLocale()
+
   const screenCenter = useMapCenter()
   const position = {
     top: screenCenter.top - PIN_HEIGHT + 4,
@@ -23,9 +27,8 @@ const MapPin = ({ price }: Props) => {
     <View className="absolute items-center" pointerEvents="none" style={position}>
       {price ? <MapPinIcon {...pinSize} /> : <MapPinNoZoneIcon {...pinSize} />}
       {price && (
-        // TODO formatPrice
         <Typography variant="small-bold" className="absolute text-white">
-          {price} €
+          {formatPriceForMapPin(price, locale)}
         </Typography>
       )}
     </View>

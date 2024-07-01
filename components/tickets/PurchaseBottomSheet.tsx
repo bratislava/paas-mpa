@@ -10,7 +10,7 @@ import FlexRow from '@/components/shared/FlexRow'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { getDurationFromPriceData } from '@/components/tickets/getDurationFromPriceData'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { formatDuration } from '@/utils/formatDuration'
@@ -25,6 +25,7 @@ type Props = {
 const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
   ({ priceData, purchaseButtonContainerHeight }, ref) => {
     const { t } = useTranslation()
+    const locale = useLocale()
     const { udr } = usePurchaseStoreContext()
 
     const snapPoints = useMemo(() => [HANDLE_HEIGHT], [])
@@ -53,7 +54,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
                   })}
                 </Typography>
                 <Typography variant="default-bold">
-                  {formatPrice(priceData.priceWithoutDiscount)}
+                  {formatPrice(priceData.priceWithoutDiscount, locale)}
                 </Typography>
               </FlexRow>
 
@@ -102,7 +103,9 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
               {isDefined(priceData.tax) ? (
                 <FlexRow>
                   <Typography variant="default">{t('PurchaseBottomSheet.tax')}</Typography>
-                  <Typography variant="default-bold">{formatPrice(priceData.tax)}</Typography>
+                  <Typography variant="default-bold">
+                    {formatPrice(priceData.tax, locale)}
+                  </Typography>
                 </FlexRow>
               ) : null}
 

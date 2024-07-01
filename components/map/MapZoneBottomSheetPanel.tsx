@@ -10,7 +10,7 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
@@ -21,8 +21,11 @@ type Props = {
 }
 
 const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
-  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
   const { t } = useTranslation()
+  const locale = useLocale()
+
+  const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
+
   if (selectedZone) {
     const price = getPriceFromZone(selectedZone)
 
@@ -39,7 +42,7 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
           </FlexRow>
           <Divider />
           <FlexRow>
-            <Typography variant="default-bold">{formatPricePerHour(price)}</Typography>
+            <Typography variant="default-bold">{formatPricePerHour(price, locale)}</Typography>
             <Link
               asChild
               href={{

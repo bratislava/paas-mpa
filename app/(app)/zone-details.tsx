@@ -8,7 +8,7 @@ import Divider from '@/components/shared/Divider'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { useMapZone } from '@/state/MapZonesProvider/useMapZone'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 import { getPriceFromZone } from '@/utils/getPriceFromZone'
@@ -19,6 +19,7 @@ export type ZoneDetailsParams = {
 
 const ZoneDetailsScreen = () => {
   const { t } = useTranslation()
+  const locale = useLocale()
 
   // reason for not passing the whole object: https://reactnavigation.org/docs/params/#what-should-be-in-params
   const { udrId } = useLocalSearchParams<ZoneDetailsParams>()
@@ -40,7 +41,7 @@ const ZoneDetailsScreen = () => {
         <FlexRow className="items-start">
           <ZoneBadge label={zone.udrId} />
           <Typography className="flex-1">{zone.name}</Typography>
-          <Typography variant="default-bold">{formatPricePerHour(price)}</Typography>
+          <Typography variant="default-bold">{formatPricePerHour(price, locale)}</Typography>
         </FlexRow>
 
         <Divider />
@@ -66,7 +67,7 @@ const ZoneDetailsScreen = () => {
           <FlexRow className="justify-start">
             <Typography>{'\u2022'}</Typography>
             <Typography>
-              {t('ZoneDetailsScreen.weekdaysPrice')}: {formatPricePerHour(zone.price)}
+              {t('ZoneDetailsScreen.weekdaysPrice')}: {formatPricePerHour(zone.price, locale)}
             </Typography>
           </FlexRow>
         )}
@@ -75,7 +76,7 @@ const ZoneDetailsScreen = () => {
             <Typography>{'\u2022'}</Typography>
             <Typography>
               {t('ZoneDetailsScreen.weekendsAndHolidaysPrice')}:{' '}
-              {formatPricePerHour(zone.weekendsAndHolidaysPrice)}
+              {formatPricePerHour(zone.weekendsAndHolidaysPrice, locale)}
             </Typography>
           </FlexRow>
         )}
