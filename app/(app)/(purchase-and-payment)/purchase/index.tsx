@@ -149,7 +149,6 @@ const PurchaseScreen = () => {
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
-
             <Field label={t('PurchaseScreen.chooseVehicleFieldLabel')}>
               <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
@@ -160,18 +159,17 @@ const PurchaseScreen = () => {
                 </PressableStyled>
               </Link>
             </Field>
-
             <Field label={t('PurchaseScreen.parkingTimeFieldLabel')}>
               <TimeSelector value={duration} onValueChange={handleSelectTime} />
             </Field>
-
             <Field label={t('PurchaseScreen.paymentMethodsFieldLabel')}>
-              <UsedBonusCard
-                id={priceQuery.data?.bpkId}
-                creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
-                creditBpkRemaining={priceQuery.data?.creditBpkRemaining}
-                validUntil={priceQuery.data?.bpkValidTo}
-              />
+              {priceQuery.data?.creditBpkUsedSeconds ? (
+                <UsedBonusCard
+                  creditUsedSeconds={priceQuery.data.creditBpkUsedSeconds}
+                  creditBpkRemaining={priceQuery.data.creditBpkRemaining}
+                  validUntil={priceQuery.data.bpkValidTo}
+                />
+              ) : null}
 
               {priceQuery.data?.priceTotal !== 0 || priceQuery.data?.creditNpkUsedSeconds ? (
                 <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>

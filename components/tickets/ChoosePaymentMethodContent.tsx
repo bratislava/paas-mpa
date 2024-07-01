@@ -7,7 +7,11 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import { useTranslation } from '@/hooks/useTranslation'
 
-const ChoosePaymentMethodContent = () => {
+type Props = {
+  isBpkUsedInProlongation?: boolean
+}
+
+const ChoosePaymentMethodContent = ({ isBpkUsedInProlongation }: Props) => {
   const { t } = useTranslation()
 
   return (
@@ -16,9 +20,12 @@ const ChoosePaymentMethodContent = () => {
         <ScreenContent>
           <PaymentOptionsField />
 
-          <Divider />
-
-          <VisitorCardsField />
+          {isBpkUsedInProlongation ? null : (
+            <>
+              <Divider />
+              <VisitorCardsField />
+            </>
+          )}
         </ScreenContent>
       </ScrollView>
     </ScreenView>

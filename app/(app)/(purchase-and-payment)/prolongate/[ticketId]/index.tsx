@@ -102,21 +102,16 @@ const ProlongTicketScreen = () => {
 
             {priceQuery.data ? (
               <Field label={t('PurchaseScreen.paymentMethodsFieldLabel')}>
-                <UsedBonusCard
-                  id={priceQuery.data?.bpkId}
-                  creditUsedSeconds={priceQuery.data?.creditBpkUsedSeconds}
-                  creditBpkRemaining={priceQuery.data?.creditBpkRemaining}
-                  validUntil={priceQuery.data?.bpkValidTo}
-                />
+                {priceQuery.data.creditBpkUsedSeconds ? (
+                  <UsedBonusCard
+                    creditUsedSeconds={priceQuery.data.creditBpkUsedSeconds}
+                    creditBpkRemaining={priceQuery.data.creditBpkRemaining}
+                    validUntil={priceQuery.data.bpkValidTo}
+                  />
+                ) : null}
 
                 {/* Allow to open select only if npk is not used (price is not free) */}
-                {priceQuery.data?.priceTotal === 0 ? (
-                  <PaymentMethodsFieldControl
-                    visitorCard={npk}
-                    paymentOption={paymentOption ?? defaultPaymentOption}
-                    showControlChevron={false}
-                  />
-                ) : (
+                {priceQuery.data.priceTotal === 0 ? null : (
                   <Link
                     asChild
                     href={{ pathname: `prolongate/${ticket.id}/choose-payment-method` }}
@@ -130,7 +125,7 @@ const ProlongTicketScreen = () => {
                   </Link>
                 )}
 
-                {priceQuery.data?.priceTotal === 0 ? null : <RememberCardField />}
+                {priceQuery.data.priceTotal === 0 ? null : <RememberCardField />}
               </Field>
             ) : null}
           </ScreenContent>

@@ -2,22 +2,22 @@ import { formatBalance } from '@/utils/formatBalance'
 
 import BonusCardRow from './rows/BonusCardRow'
 
+// TODO check what props should really be optional
 type Props = {
-  id?: string
-  creditUsedSeconds?: number
+  creditUsedSeconds: number
   creditBpkRemaining?: number
   validUntil?: string
 }
 
 const BPK_ORIGINAL_SECONDS = 7200
 
-const UsedBonusCard = ({ id, creditUsedSeconds, validUntil, creditBpkRemaining }: Props) => {
-  return id && creditUsedSeconds ? (
+const UsedBonusCard = ({ creditUsedSeconds, validUntil, creditBpkRemaining }: Props) => {
+  return (
     <BonusCardRow
       balance={formatBalance((creditBpkRemaining ?? 0) + creditUsedSeconds, BPK_ORIGINAL_SECONDS)}
       validUntil={validUntil}
     />
-  ) : null
+  )
 }
 
 export default UsedBonusCard
