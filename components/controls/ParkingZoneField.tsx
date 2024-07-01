@@ -7,7 +7,7 @@ import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { MapUdrZone } from '@/modules/map/types'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
 import { getPriceFromZone } from '@/utils/getPriceFromZone'
@@ -18,7 +18,9 @@ type Props = {
 
 const ParkingZoneField = ({ zone }: Props) => {
   const { t } = useTranslation()
-  const price = zone ? formatPricePerHour(getPriceFromZone(zone)) : ''
+  const locale = useLocale()
+
+  const price = zone ? formatPricePerHour(getPriceFromZone(zone), locale) : ''
 
   return (
     <Field
