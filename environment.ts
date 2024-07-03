@@ -11,20 +11,31 @@ function assertEnv<T>(variable: string, value: T) {
 
   return value
 }
+//
+// export const environment = {
+//   nodeEnv: assertEnv('NODE_ENV', process.env.NODE_ENV),
+//   deployment: assertEnv('EXPO_PUBLIC_DEPLOYMENT', process.env.EXPO_PUBLIC_DEPLOYMENT),
+//   mapboxPublicKey: assertEnv('EXPO_PUBLIC_MAPBOX_KEY', process.env.EXPO_PUBLIC_MAPBOX_KEY),
+//   cognitoUserPoolId: assertEnv(
+//     'EXPO_PUBLIC_COGNITO_USER_POOL_ID',
+//     process.env.EXPO_PUBLIC_COGNITO_USER_POOL_ID,
+//   ),
+//   cognitoClientId: assertEnv(
+//     'EXPO_PUBLIC_COGNITO_CLIENT_ID',
+//     process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
+//   ),
+//   awsRegion: assertEnv('EXPO_PUBLIC_AWS_REGION', process.env.EXPO_PUBLIC_AWS_REGION),
+//   apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
+//   minioBucket: assertEnv('EXPO_PUBLIC_MINIO_BUCKET', process.env.EXPO_PUBLIC_MINIO_BUCKET),
+// }
 
 export const environment = {
-  nodeEnv: assertEnv('NODE_ENV', process.env.NODE_ENV),
-  deployment: assertEnv('EXPO_PUBLIC_DEPLOYMENT', process.env.EXPO_PUBLIC_DEPLOYMENT),
+  nodeEnv: 'production',
+  deployment: 'production',
   mapboxPublicKey: assertEnv('EXPO_PUBLIC_MAPBOX_KEY', process.env.EXPO_PUBLIC_MAPBOX_KEY),
-  cognitoUserPoolId: assertEnv(
-    'EXPO_PUBLIC_COGNITO_USER_POOL_ID',
-    process.env.EXPO_PUBLIC_COGNITO_USER_POOL_ID,
-  ),
-  cognitoClientId: assertEnv(
-    'EXPO_PUBLIC_COGNITO_CLIENT_ID',
-    process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
-  ),
-  awsRegion: assertEnv('EXPO_PUBLIC_AWS_REGION', process.env.EXPO_PUBLIC_AWS_REGION),
-  apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
-  minioBucket: assertEnv('EXPO_PUBLIC_MINIO_BUCKET', process.env.EXPO_PUBLIC_MINIO_BUCKET),
+  cognitoUserPoolId: 'eu-central-1_KAJt3SCx0',
+  cognitoClientId: '2qo6rak1bff2hk45gogpe1phh8',
+  awsRegion: 'eu-central-1',
+  apiUrl: 'https://paas-mpa-backend.bratislava.sk',
+  minioBucket: 'paas-mpa-prod',
 }
