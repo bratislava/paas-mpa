@@ -358,7 +358,7 @@
   "ZoneBottomSheet.title": "Where are you parking?",
   "ZoneBottomSheet.TopAttachment.goToUserLocation": "Go to user location",
   "ZoneBottomSheet.TopAttachment.tickets": "Tickets ({{numberOfTickets}})",
-  "ZoneBottomSheet.zoomIn": "Zoom in to see all parking zones in this area.",
+  "ZoneBottomSheet.zoomIn": "Zoom in to select the place where you park.",
   "ZoneDetailsScreen.addresses": "Addresses",
   "ZoneDetailsScreen.nearByZones": "Nearby parking zones",
   "ZoneDetailsScreen.noResults": "No results",
