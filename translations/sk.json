@@ -360,7 +360,7 @@
   "ZoneBottomSheet.title": "Kde parkujete?",
   "ZoneBottomSheet.TopAttachment.goToUserLocation": "Presunúť na moju polohu",
   "ZoneBottomSheet.TopAttachment.tickets": "Lístky ({{numberOfTickets}})",
-  "ZoneBottomSheet.zoomIn": "Priblížením zobrazíte všetky regulované zóny.",
+  "ZoneBottomSheet.zoomIn": "Priblížením mapy vyberte miesto, kde parkujete.",
   "ZoneDetailsScreen.addresses": "Adresy",
   "ZoneDetailsScreen.nearByZones": "Parkovacie úseky v okolí",
   "ZoneDetailsScreen.noResults": "Žiadne výsledky",
