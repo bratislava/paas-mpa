@@ -66,6 +66,10 @@
       },
       "channel": "production",
       "resourceClass": "large"
+    },
+    "production-testing": {
+      "extends": "production",
+      "channel": "production-testing"
     }
   },
   "submit": {
@@ -79,6 +83,16 @@
       "android": {
         "releaseStatus": "draft",
         "track": "internal"
+      }
+    },
+    "production-testing": {
+      "android": {
+        "releaseStatus": "draft",
+        "track": "internal"
+      },
+      "ios": {
+        "ascAppId": "6457264414",
+        "appleTeamId": "2P6QC78LFR"
       }
     }
   }
