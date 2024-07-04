@@ -71,6 +71,7 @@ const PurchaseScreen = () => {
     router.push('/parking-cards/verification')
   }
 
+  /** Open modal for adding parking card on first run of application */
   useEffect(() => {
     if (firstPurchaseOpened || !parkingCardsQuery.data) return
 
@@ -107,6 +108,13 @@ const PurchaseScreen = () => {
       npk,
     }),
   )
+
+  /** Refetch price every minute */
+  useEffect(() => {
+    const interval = setInterval(() => priceQuery.refetch(), 1000 * 60)
+
+    return () => clearInterval(interval)
+  }, [priceQuery])
 
   const handleSelectTime = (value: number) => {
     onPurchaseStoreUpdate({ duration: value })
