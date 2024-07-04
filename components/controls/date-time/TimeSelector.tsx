@@ -17,6 +17,7 @@ import { formatDuration } from '@/utils/formatDuration'
  * Returns duration in seconds.
  *
  * @param date
+ * @param base
  */
 const getDuration = (date: Date, base: Date) => {
   const diff = date.getTime() - base.getTime()
@@ -30,24 +31,14 @@ type Props = {
   onValueChange: (value: number) => void
 }
 
-/**
- * Function to calculate end time from calculation base (or current time if base is not provided) and duration
- */
-const calculateEndTime = (duration: number, timeCalculationBase: number) => {
-  return new Date(timeCalculationBase + duration * 1000)
-}
-
 const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   const { t } = useTranslation()
   const locale = useLocale()
   const [datePickerOpen, setDatePickerOpen] = useState(false)
 
-  const calculationBaseDate = new Date(timeCalculationBase || Date.now())
-
-  const validUntil = useMemo(
-    () => formatDateTime(calculateEndTime(value, timeCalculationBase || Date.now()), locale),
-    [locale, value, timeCalculationBase],
-  )
+  const baseTimeTimestamp = timeCalculationBase || Date.now()
+  const baseTimeDate = new Date(baseTimeTimestamp)
+  const endTimeDate = new Date(baseTimeTimestamp + value * 1000)
 
   /**
    * Add 15 minutes
@@ -91,7 +82,7 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
   }
 
   const handleDatePickerConfirm = (date: Date) => {
-    const duration = getDuration(date, calculationBaseDate)
+    const duration = getDuration(date, baseTimeDate)
 
     onValueChange(duration)
   }
@@ -155,14 +146,14 @@ const TimeSelector = ({ value, timeCalculationBase, onValueChange }: Props) => {
       <FlexRow>
         <Typography variant="small">{t('TimeSelector.validUntil')}</Typography>
         <PressableStyled onPress={handleDatePickerOpen}>
-          <Typography variant="small-bold">{validUntil}</Typography>
+          <Typography variant="small-bold">{formatDateTime(endTimeDate, locale)}</Typography>
         </PressableStyled>
       </FlexRow>
 
       {datePickerOpen ? (
         <DateTimePicker
-          minimumDate={calculationBaseDate}
-          initialValue={calculateEndTime(value, calculationBaseDate.getTime())}
+          minimumDate={baseTimeDate}
+          initialValue={endTimeDate}
           onClose={handleDatePickerClose}
           onConfirm={handleDatePickerConfirm}
         />
