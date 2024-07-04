@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Link, router } from 'expo-router'
-import { useEffect, useMemo, useState } from 'react'
+import { Link, router, useFocusEffect } from 'expo-router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useDebounce } from 'use-debounce'
 
@@ -71,6 +71,7 @@ const PurchaseScreen = () => {
     router.push('/parking-cards/verification')
   }
 
+  /** Open modal for adding parking card on first run of application */
   useEffect(() => {
     if (firstPurchaseOpened || !parkingCardsQuery.data) return
 
@@ -106,6 +107,18 @@ const PurchaseScreen = () => {
       duration: debouncedDuration,
       npk,
     }),
+  )
+
+  /**
+   * Refetch price every minute when screen is focused.
+   * Docs: https://docs.expo.dev/router/reference/hooks/#usefocuseffect.
+   */
+  useFocusEffect(
+    useCallback(() => {
+      const interval = setInterval(() => priceQuery.refetch(), 1000 * 60)
+
+      return () => clearInterval(interval)
+    }, [priceQuery]),
   )
 
   const handleSelectTime = (value: number) => {
