@@ -41,13 +41,13 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
     const { t } = useTranslation()
     const mapZones = useMapZonesContext()
     const [nearByZones, setNearbyZones] = useState<UdrZoneFeature[]>([])
-    const [loadingNearyByZones, setLoadingNearyByZones] = useState(false)
+    const [loadingNearbyZones, setLoadingNearbyZones] = useState(false)
     const [location] = useLocation()
     const locale = useLocale()
     const getOptions = useMapAutocompleteGetOptions()
 
     useEffect(() => {
-      setLoadingNearyByZones(true)
+      setLoadingNearbyZones(true)
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       InteractionManager.runAfterInteractions(() => {
         if (mapZones && location) {
@@ -58,7 +58,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
               NEARBY_ZONE_RADIUS,
             ),
           )
-          setLoadingNearyByZones(false)
+          setLoadingNearbyZones(false)
         }
       })
     }, [mapZones, location])
@@ -129,7 +129,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           <Portal hostName={optionsPortalName}>
             <View className="flex-1">
               {sections.length === 0 ? (
-                isFetching || loadingNearyByZones ? (
+                isFetching || loadingNearbyZones ? (
                   <LoadingScreen />
                 ) : input ? (
                   <EmptyStateScreen
@@ -161,7 +161,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           </Portal>
         )
       },
-      [optionsPortalName, t, nearByZones, loadingNearyByZones],
+      [optionsPortalName, t, nearByZones, loadingNearbyZones],
     )
 
     return (

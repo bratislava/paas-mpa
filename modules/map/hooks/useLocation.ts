@@ -20,6 +20,7 @@ export const useLocation = () => {
     getCurrentPosition()
   }, [locationPermissionStatus, getCurrentPosition])
 
+  // TODO handle error
   useEffect(() => {
     getLocation().catch((error) => {
       console.warn(error)
