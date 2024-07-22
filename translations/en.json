@@ -70,6 +70,7 @@
   "FeedbackScreen.title": "Feedback",
   "FeedbackScreen.type": "Type",
   "FeedbackScreen.yourMessage": "Your message",
+  "FeedbackScreen.yourMessage.helpText": "Describe the bug in detail (e.g., license plate number, time and place of parking, method and time of payment, etc.).",
   "FeedbackScreen.yourMessageInvalid": "Please enter a message",
   "FiltersScreen.filteringOptions.active": "Parking zone",
   "FiltersScreen.filteringOptions.branch": "Customer center",
