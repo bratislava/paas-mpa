@@ -192,7 +192,7 @@
   "PurchaseScreen.Errors.BadDateFormat": "The date format is incorrect.",
   "PurchaseScreen.Errors.BadRequest": "Bad request.",
   "PurchaseScreen.Errors.CardNotValid": "The visitor parking card is not valid.",
-  "PurchaseScreen.Errors.FreeTicket": "Parking is free during this time period. It is not possible to purchase a parking ticket.",
+  "PurchaseScreen.Errors.FreeTicket": "Parking segment {{udr}} is not paid during this time period. It is not possible to purchase a parking ticket.",
   "PurchaseScreen.Errors.InsufficientCredit": "There is insufficient credit on the visitor parking card.",
   "PurchaseScreen.Errors.InvalidParkingEnd": "It is not possible to terminate the parking ticket prematurely at this time.",
   "PurchaseScreen.Errors.InvalidParkingStart": "Invalid parking duration. The start of a new ticket can only occur after the original ticket has expired.",

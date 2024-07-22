@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { isPricingApiError } from '@/utils/errorPricingApi'
+import { isDefined } from '@/utils/isDefined'
 
 type Props = {
   priceQuery: UseQueryResult<GetTicketPriceResponseDto, Error>
@@ -52,7 +53,7 @@ const PurchaseErrorPanel = ({ priceQuery }: Props) => {
         {/* TODO translation */}
         {t(`PurchaseScreen.Errors.${priceQuery.error.response.data.status}`, {
           ecv: vehicle?.vehiclePlateNumber,
-          udr: udr?.name,
+          udr: [udr?.udrId, udr?.name].filter(isDefined).join(' '),
         })}
       </Typography>
     </Panel>

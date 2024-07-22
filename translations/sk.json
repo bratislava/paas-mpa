@@ -192,7 +192,7 @@
   "PurchaseScreen.Errors.BadDateFormat": "Formát dátumu je nesprávny.",
   "PurchaseScreen.Errors.BadRequest": "Nesprávna požiadavka.",
   "PurchaseScreen.Errors.CardNotValid": "Návštevnícka parkovacia karta nie je platná.",
-  "PurchaseScreen.Errors.FreeTicket": "Úsek parkovania je v tomto čase nespoplatnený. Parkovací lístok nie je možné zakúpiť.",
+  "PurchaseScreen.Errors.FreeTicket": "Úsek parkovania {{udr}} je v tomto čase nespoplatnený. Parkovací lístok nie je možné zakúpiť.",
   "PurchaseScreen.Errors.InsufficientCredit": "Na návštevníckej parkovacej karte nie je dostatok kreditu.",
   "PurchaseScreen.Errors.InvalidParkingEnd": "Parkovacii lístok nie je možné v tomto čase predčasne ukončiť.",
   "PurchaseScreen.Errors.InvalidParkingStart": "Neplatná doba parkovania, začiatok nového lístka môže nastať až po ukončení pôvodného lístka.",
