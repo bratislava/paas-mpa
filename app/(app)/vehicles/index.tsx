@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { FlatList } from 'react-native'
+import { SectionList, View } from 'react-native'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
 import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
@@ -18,13 +18,15 @@ import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
-import Field from '@/components/shared/Field'
 import IconButton from '@/components/shared/IconButton'
 import PressableStyled from '@/components/shared/PressableStyled'
+import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
+import { cn } from '@/utils/cn'
+import { isDefined } from '@/utils/isDefined'
 
 // TODO consider moving whole Delete modal with actions to separate component
 const VehiclesScreen = () => {
@@ -98,6 +100,17 @@ const VehiclesScreen = () => {
     return <NoVehicles />
   }
 
+  const sections = [
+    {
+      title: t('VehiclesScreen.myDefaultVehicle'),
+      data: [defaultVehicle].filter(isDefined),
+    },
+    {
+      title: t('VehiclesScreen.myOtherVehicles'),
+      data: vehicles.filter(({ id }) => id !== defaultVehicle?.id),
+    },
+  ]
+
   return (
     <ScreenView
       title={t('VehiclesScreen.title')}
@@ -110,32 +123,27 @@ const VehiclesScreen = () => {
         ),
       }}
     >
-      <ScreenContent>
-        {defaultVehicle ? (
-          <Field label={t('VehiclesScreen.myDefaultVehicle')}>
-            <VehicleRow
-              vehicle={defaultVehicle}
-              onContextMenuPress={() => handleContextMenuPress(defaultVehicle.id)}
-            />
-          </Field>
-        ) : null}
-
-        {vehicles.length > (defaultVehicle ? 1 : 0) ? (
-          <Field className="flex-1" label={t('VehiclesScreen.myOtherVehicles')}>
-            <FlatList
-              data={vehicles.filter(({ isDefault }) => !isDefault)}
-              keyExtractor={({ id }) => id.toString()}
-              ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
-              renderItem={({ item }) => (
-                <VehicleRow
-                  vehicle={item}
-                  onContextMenuPress={() => handleContextMenuPress(item.id)}
-                />
-              )}
-            />
-          </Field>
-        ) : null}
-      </ScreenContent>
+      <View className="flex-1">
+        <SectionList
+          sections={sections}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={({ section }) =>
+            section.data.length > 0 ? (
+              // Add padding only if it's not the first section, TODO find cleaner solution
+              <View className={cn({ 'mt-5': section.title !== sections[0].title })}>
+                <Typography variant="default-bold">{section.title}</Typography>
+              </View>
+            ) : null
+          }
+          className="p-5"
+          renderItem={({ item }) => (
+            <VehicleRow vehicle={item} onContextMenuPress={() => handleContextMenuPress(item.id)} />
+          )}
+          ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+          // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
+          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+        />
+      </View>
 
       <BottomSheetModal
         ref={bottomSheetRef}

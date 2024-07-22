@@ -15,9 +15,11 @@ import {
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapFilters, MapPointIconEnum, MapZoneStatusEnum } from '@/modules/map/constants'
+import { cn } from '@/utils/cn'
 
 type FiltersParams = MapFilters
 
@@ -96,8 +98,10 @@ const FiltersScreen = () => {
       <View className="flex-1">
         <SectionList
           sections={filteringOptions}
+          stickySectionHeadersEnabled={false}
           renderSectionHeader={({ section: { title } }) => (
-            <View>
+            // Add padding only if it's not the first section, TODO find cleaner solution
+            <View className={cn({ 'mt-2': title !== filteringOptions[0].title })}>
               <Typography variant="default-bold">{translationsMapSections[title]}</Typography>
             </View>
           )}
@@ -106,11 +110,14 @@ const FiltersScreen = () => {
             <SelectRow
               key={optionKey}
               IconComponent={icon}
+              className="py-2"
               label={translationsMapItems[optionKey]}
               onValueChange={getValueChangeHandler(optionKey)}
               value={filters[optionKey] === 'true'}
             />
           )}
+          // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
+          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-3" />}
         />
       </View>
     </ScreenView>
