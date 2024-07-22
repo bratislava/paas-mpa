@@ -18,6 +18,8 @@ import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehicl
 import { AddVehicle } from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 
+export const LICENCE_PLATE_MAX_LENGTH = 15
+
 const AddVehicleScreen = () => {
   const { t } = useTranslation()
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
@@ -31,7 +33,7 @@ const AddVehicleScreen = () => {
   const sanitizedLicencePlate = sanitizeLicencePlate(licencePlateInput)
 
   const handleLicencePlateChange = (newLicencePlate: string) => {
-    setLicencePlateInput(newLicencePlate)
+    setLicencePlateInput(newLicencePlate.trim())
 
     const newSanitizedLicencePlate = sanitizeLicencePlate(newLicencePlate)
 
@@ -74,6 +76,7 @@ const AddVehicleScreen = () => {
               value={licencePlateInput}
               onChangeText={handleLicencePlateChange}
               hasError={error.length > 0}
+              maxLength={LICENCE_PLATE_MAX_LENGTH}
             />
           </AccessibilityField>
 
