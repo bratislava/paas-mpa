@@ -353,6 +353,7 @@
   "VerificationResult.verified.vehicleText_one": "\n\nVehicle with license plate **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
   "VerificationResult.verified.vehicleText_other": "\n\nVehicles with license plates **{{licencePlatesString}}** added as well. You can manage your vehicles in the section Vehicles.",
   "ZoneBottomSheet.noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
+  "ZoneBottomSheet.plannedZonePanelText": "It is not possible to buy a parking ticket for planned zones.",
   "ZoneBottomSheet.searchAccessibilityInput": "Search for a place or address",
   "ZoneBottomSheet.showDetails": "Show details",
   "ZoneBottomSheet.title": "Where are you parking?",

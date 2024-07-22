@@ -11,6 +11,7 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { MapZoneStatusEnum } from '@/modules/map/constants'
 import { MapUdrZone } from '@/modules/map/types'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { formatPricePerHour } from '@/utils/formatPricePerHour'
@@ -62,9 +63,19 @@ const MapZoneBottomSheetPanel = ({ selectedZone }: Props) => {
           </FlexRow>
         </Panel>
 
-        <Link asChild href="/purchase" onPress={() => onPurchaseStoreUpdate({ udr: selectedZone })}>
-          <ContinueButton />
-        </Link>
+        {selectedZone.status === MapZoneStatusEnum.active ? (
+          <Link
+            asChild
+            href="/purchase"
+            onPress={() => onPurchaseStoreUpdate({ udr: selectedZone })}
+          >
+            <ContinueButton />
+          </Link>
+        ) : selectedZone.status === MapZoneStatusEnum.planned ? (
+          <Panel className="bg-warning-light">
+            <Typography>{t('ZoneBottomSheet.plannedZonePanelText')}</Typography>
+          </Panel>
+        ) : null}
       </>
     )
   }
