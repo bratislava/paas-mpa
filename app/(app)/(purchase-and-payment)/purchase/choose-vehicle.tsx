@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
 
+import { LICENCE_PLATE_MAX_LENGTH } from '@/app/(app)/vehicles/add-vehicle'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -87,6 +88,7 @@ const ChooseVehicleScreen = () => {
             value={oneTimeLicencePlate}
             onChangeText={handleLicencePlateChange}
             hasError={!!oneTimeLicencePlateError}
+            maxLength={LICENCE_PLATE_MAX_LENGTH}
           />
         </AccessibilityField>
 
