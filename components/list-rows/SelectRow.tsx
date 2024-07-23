@@ -29,13 +29,14 @@ const SelectRow = ({
   onValueChange,
   disabled,
   IconComponent,
+  className,
   ...restPressableProps
 }: SelectRowProps) => {
   return (
     <PressableStyled
       onPress={() => onValueChange(!value)}
       disabled={disabled}
-      className="flex-row items-center gap-3 py-3"
+      className={cn('flex-row items-center gap-3 py-3', className)}
       accessibilityLabel={label}
       {...restPressableProps}
     >
