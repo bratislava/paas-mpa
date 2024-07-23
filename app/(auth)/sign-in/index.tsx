@@ -78,7 +78,7 @@ const Page = () => {
     if (errorName) {
       setErrorName('')
     }
-
+    // TODO this works only when user pastes the whole number from clipboard, and only if it contains a space after the country code
     // Check if user pasted a phone number with country code and replace country code if it differs from the selected one
     if (value.length - phone.length > 1 && value.startsWith('+')) {
       let countryCode = prefixCode
@@ -96,6 +96,9 @@ const Page = () => {
       }
 
       setPhone(value.replace(`+${countryCode}`, ''))
+    } else if (value.startsWith('09')) {
+      // If the value starts with "09", remove the first character (0)
+      setPhone(value.slice(1))
     } else {
       setPhone(value)
     }
