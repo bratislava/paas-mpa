@@ -2,6 +2,10 @@
 
 In general, follow https://docs.expo.dev/, below are some quick references.
 
+## Product specification
+
+[Product specification](https://magistratba.sharepoint.com/:w:/r/sites/InnovationTeam/_layouts/15/Doc.aspx?sourcedoc=%7B76D1D09F-49C5-412E-81DD-C2498CBCD903%7D&file=Produktov%25u00e1%20a%20technick%25u00e1%20%25u0161pecifik%25u00e1cia%20bratislavsk%25u00e1%20parkovacej%20aplik%25u00e1cie.docx&action=default&mobileredirect=true)
+
 ## Develop
 
 We are using eas-development builds - read more here https://docs.expo.dev/develop/development-builds/introduction/
