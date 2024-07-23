@@ -355,6 +355,7 @@
   "VerificationResult.verified.vehicleText_many": "$t(VerificationResult.verified.vehicleText_other)",
   "VerificationResult.verified.vehicleText_other": "Pridané vozidlá s EČV **{{licencePlatesString}}** nájdete a môžete spravovať v časti Vozidlá.",
   "ZoneBottomSheet.noZoneSelected": "Nenašiel sa úsek parkovania. Použite vyhľadávanie alebo umiestnite pin na úsek parkovania v blízkosti.",
+  "ZoneBottomSheet.plannedZonePanelText": "Pre plánovaný úsek nie je možné zakúpiť parkovací lístok.",
   "ZoneBottomSheet.searchAccessibilityInput": "Vyhľadať zónu alebo adresu",
   "ZoneBottomSheet.showDetails": "Detail úseku",
   "ZoneBottomSheet.title": "Kde parkujete?",

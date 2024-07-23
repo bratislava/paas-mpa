@@ -52,7 +52,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
         animatedPosition={animatedPosition}
         enableDynamicSizing
         // This is a workaround for the issue with the bottom sheet that closes during height change,
-        // Github Issue: https://github.com/bratislava/paas-mpa/issues/475
+        // GitHub Issue: https://github.com/bratislava/paas-mpa/issues/475
         // we hope that this might be the fix for the issue if not we will need to investigate further
         onClose={localRef.current?.expand}
       >
