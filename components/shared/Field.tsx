@@ -8,6 +8,7 @@ export type FieldProps = {
   label: string
   labelInsertArea?: ReactNode
   children: ReactNode
+  helptext?: string
   errorMessage?: string
   variant?: TypographyProps['variant']
   className?: string
@@ -20,6 +21,7 @@ const Field = ({
   children,
   labelInsertArea,
   nativeID,
+  helptext,
   errorMessage,
   variant = 'default-bold',
   style,
@@ -33,6 +35,7 @@ const Field = ({
         </Typography>
         {labelInsertArea || null}
       </View>
+      {helptext ? <Typography>{helptext}</Typography> : null}
       {children}
       {errorMessage ? <Typography className="text-negative">{errorMessage}</Typography> : null}
     </View>

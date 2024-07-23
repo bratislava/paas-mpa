@@ -70,6 +70,7 @@
   "FeedbackScreen.title": "Spätná väzba",
   "FeedbackScreen.type": "Typ",
   "FeedbackScreen.yourMessage": "Vaša správa",
+  "FeedbackScreen.yourMessage.helpText": "Opíšte nám chybu detailne (napr: EČV, kedy a kde ste parkovali, spôsob a čas úhrady a podobne).",
   "FeedbackScreen.yourMessageInvalid": "Prosím, zadajte vašu správu",
   "FiltersScreen.filteringOptions.active": "Parkovacie zóny",
   "FiltersScreen.filteringOptions.branch": "Klientske miesto",

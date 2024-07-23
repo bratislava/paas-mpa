@@ -119,6 +119,9 @@ const FeedbackScreen = () => {
             <AccessibilityField
               style={{ flex: 1 }}
               label={t('FeedbackScreen.yourMessage')}
+              helptext={
+                feedbackType === 'bug' ? t('FeedbackScreen.yourMessage.helpText') : undefined
+              }
               errorMessage={isValidMessage ? undefined : t('FeedbackScreen.yourMessageInvalid')}
             >
               <TextInput
