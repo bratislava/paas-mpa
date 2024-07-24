@@ -17,18 +17,21 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { ticketProlongationPriceOptions } from '@/modules/backend/constants/queryOptions'
 import { InitiateProlongationRequestDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useTicketContext } from '@/state/TicketProvider/useTicketContext'
+import { getPaygateLanguageFromLocale } from '@/utils/getPaygateLanguageFromLocale'
 import { paymentRedirect } from '@/utils/paymentRedirect'
 
 const ProlongTicketScreen = () => {
   const ticket = useTicketContext()
   const { t } = useTranslation()
+  const locale = useLocale()
+
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -51,6 +54,7 @@ const ProlongTicketScreen = () => {
   const priceRequestBody: InitiateProlongationRequestDto = {
     ticketId: ticket?.id || 0,
     newParkingEnd: parkingEnd,
+    paygateLanguage: getPaygateLanguageFromLocale(locale),
   }
 
   const handlePressPay = () => {

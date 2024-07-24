@@ -21,7 +21,7 @@ import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
 import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useFirstPurchaseStorage } from '@/hooks/useFirstPurchaseStorage'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
-import { useTranslation } from '@/hooks/useTranslation'
+import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import {
   ticketPriceOptions,
@@ -39,6 +39,8 @@ import { paymentRedirect } from '@/utils/paymentRedirect'
 
 const PurchaseScreen = () => {
   const { t } = useTranslation()
+  const locale = useLocale()
+
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -60,8 +62,8 @@ const PurchaseScreen = () => {
   const parkingCardsQuery = useQuery(verifiedEmailsLengthOptions({ enabled: !firstPurchaseOpened }))
 
   const priceRequestBody: GetTicketPriceRequestDto = useMemo(
-    () => createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk }),
-    [udr, licencePlate, debouncedDuration, npk],
+    () => createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk, locale }),
+    [udr, licencePlate, debouncedDuration, npk, locale],
   )
 
   const handleModalClose = () => setIsAddCardModalOpen(false)
@@ -140,13 +142,10 @@ const PurchaseScreen = () => {
     const actualPaymentOption = paymentOption ?? defaultPaymentOption
 
     initPaymentMutation.mutate(
-      createPriceRequestBody({
-        udr,
-        licencePlate,
-        duration: debouncedDuration,
-        npk,
+      {
+        ...priceRequestBody,
         rememberCard: actualPaymentOption === 'payment-card' ? rememberCard : false,
-      }),
+      } satisfies InitiatePaymentRequestDto,
       {
         onSuccess: ({ data: ticketInit }) => {
           paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
