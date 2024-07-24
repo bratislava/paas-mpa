@@ -1,5 +1,6 @@
-import { ParkingCardDto } from '@/modules/backend/openapi-generated'
-import { MapUdrZone } from '@/modules/map/types'
+import { InitiatePaymentRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
+import { ApplicationLocale, MapUdrZone } from '@/modules/map/types'
+import { getPaygateLanguageFromLocale } from '@/utils/getPaygateLanguageFromLocale'
 
 /**
  * Function to create price request body needed for having fresh parkingStart
@@ -13,13 +14,15 @@ export const createPriceRequestBody = ({
   duration,
   npk,
   rememberCard,
+  locale,
 }: {
   udr: MapUdrZone | null
   licencePlate: string
   duration: number
   npk: ParkingCardDto | null
   rememberCard?: boolean
-}) => {
+  locale?: ApplicationLocale
+}): InitiatePaymentRequestDto => {
   // Set time to whole minutes. Otherwise, it would charge several seconds more in some cases.
   // E.g. when buying the ticket before the paid period (in this case parkingStart has whole minutes and parkingEnd must have too)
   const dateNow = new Date().setSeconds(0, 0)
@@ -35,5 +38,6 @@ export const createPriceRequestBody = ({
       parkingEnd,
     },
     rememberCard,
+    paygateLanguage: getPaygateLanguageFromLocale(locale),
   }
 }
