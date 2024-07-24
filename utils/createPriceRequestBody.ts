@@ -20,8 +20,8 @@ export const createPriceRequestBody = ({
   licencePlate: string
   duration: number
   npk: ParkingCardDto | null
+  locale: ApplicationLocale
   rememberCard?: boolean
-  locale?: ApplicationLocale
 }): InitiatePaymentRequestDto => {
   // Set time to whole minutes. Otherwise, it would charge several seconds more in some cases.
   // E.g. when buying the ticket before the paid period (in this case parkingStart has whole minutes and parkingEnd must have too)
