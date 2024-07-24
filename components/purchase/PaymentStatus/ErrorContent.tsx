@@ -4,7 +4,7 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
-  message: string
+  message?: string
   purchaseType?: 'payment' | 'prolongation'
 }
 
@@ -32,9 +32,11 @@ const ErrorContent = ({
       title={translationMap[purchaseType].title}
       text={translationMap[purchaseType].text}
     >
-      <Panel className="bg-negative-light">
-        <Typography>{message}</Typography>
-      </Panel>
+      {message ? (
+        <Panel className="bg-negative-light">
+          <Typography>{message}</Typography>
+        </Panel>
+      ) : null}
     </ContentWithAvatar>
   )
 }

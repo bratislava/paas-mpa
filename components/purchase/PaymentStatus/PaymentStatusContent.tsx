@@ -21,16 +21,7 @@ const PaymentStatusContent = ({ ticket }: Props) => {
 
     // Other statuses (Fail, Error) and unexpected states are handled by ErrorComponent
     default:
-      return (
-        <ErrorContent
-          message={
-            // TODO error text
-            // TODO translation
-            ticket.paymentFailReason ?? 'Undefined payment error, please contact administrators.'
-          }
-          purchaseType={purchaseType}
-        />
-      )
+      return <ErrorContent purchaseType={purchaseType} />
   }
 }
 
