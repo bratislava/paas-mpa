@@ -5,6 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { useCallback, useRef, useState } from 'react'
 import { Platform, ScrollView } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
 import { PaymentOption } from '@/components/controls/payment-methods/types'
@@ -19,6 +20,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
   const { t } = useTranslation()
+  const reducedMotion = useReducedMotion()
 
   const paymentOptions: PaymentOption[] = [
     'payment-card',
@@ -82,6 +84,7 @@ const Page = () => {
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
+        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
       >
         <BottomSheetContent>
           <PressableStyled onPress={handleActionSetDefault}>

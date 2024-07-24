@@ -6,6 +6,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import { forwardRef, useCallback, useRef, useState } from 'react'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -21,6 +22,7 @@ import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/query
 const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const reducedMotion = useReducedMotion()
 
   const localRef = useRef<BottomSheetModal>(null)
   const refSetter = useMultipleRefsSetter(localRef, ref)
@@ -79,6 +81,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
+        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
       >
         <BottomSheetContent>
           <PressableStyled onPress={handleModalOpen}>

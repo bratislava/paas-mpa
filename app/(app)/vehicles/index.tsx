@@ -6,6 +6,7 @@ import {
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
 import { SectionList, View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
 import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
@@ -32,6 +33,7 @@ import { isDefined } from '@/utils/isDefined'
 const VehiclesScreen = () => {
   const { t } = useTranslation()
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
+  const reducedMotion = useReducedMotion()
 
   const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, isInitialLoading } =
     useVehiclesStoreContext()
@@ -150,6 +152,7 @@ const VehiclesScreen = () => {
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
+        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
       >
         <BottomSheetContent>
           {activeVehicleId === defaultVehicle?.id ? null : (

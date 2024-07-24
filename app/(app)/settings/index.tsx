@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query'
 import { deleteUser } from 'aws-amplify/auth'
 import { useCallback, useRef } from 'react'
 import { ScrollView } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import LanguageSelectField from '@/components/controls/LanguageSelectField'
 import NotificationSettings from '@/components/controls/notifications/NotificationSettings'
@@ -29,6 +30,7 @@ const SettingsPage = () => {
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const reducedMotion = useReducedMotion()
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -86,6 +88,7 @@ const SettingsPage = () => {
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
+        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
       >
         <BottomSheetContent className="min-h-[80px]">
           <PressableStyled onPress={handleActionDelete}>
