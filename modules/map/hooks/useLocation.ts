@@ -3,30 +3,26 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
+// TODO refactor
 export const useLocation = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const { locationPermissionStatus } = useLocationPermission()
-
-  const getCurrentPosition = useCallback(async () => {
-    const currentPosition = await Location.getCurrentPositionAsync()
-    setLocation(currentPosition)
-  }, [])
 
   const getLocation = useCallback(async () => {
     if (locationPermissionStatus !== Location.PermissionStatus.GRANTED) return
 
     const lastKnownPosition = await Location.getLastKnownPositionAsync()
     setLocation(lastKnownPosition)
-    getCurrentPosition()
-  }, [locationPermissionStatus, getCurrentPosition])
+
+    // Request the current position for next-time use.
+    // It should be used on next visit of Map screen or when GPS button is pressed (if already available)
+    await Location.getCurrentPositionAsync()
+  }, [locationPermissionStatus])
 
   // TODO handle error
   useEffect(() => {
-    getLocation().catch((error) => {
-      console.warn(error)
-      setLocation(null)
-    })
+    getLocation()
   }, [getLocation])
 
-  return [location, getLocation] as const
+  return [location] as const
 }

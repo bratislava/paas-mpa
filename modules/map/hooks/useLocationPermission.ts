@@ -3,13 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useAppFocusEffect } from '@/hooks/useAppFocusEffect'
 
-type Options =
-  | {
-      autoAsk?: boolean
-    }
-  | undefined
-
-export const useLocationPermission = ({ autoAsk }: Options = {}) => {
+// TODO refactor
+export const useLocationPermission = () => {
   const [permissionStatus, setPermissionStatus] = useState<Location.PermissionStatus>(
     Location.PermissionStatus.UNDETERMINED,
   )
@@ -45,14 +40,6 @@ export const useLocationPermission = ({ autoAsk }: Options = {}) => {
       setPermissionStatus(currentStatus)
     }
   }, [doNotAskAgain])
-
-  useEffect(() => {
-    if (autoAsk) {
-      getPermission().catch((error) => {
-        console.warn(error)
-      })
-    }
-  }, [getPermission, autoAsk])
 
   return { locationPermissionStatus: permissionStatus, getLocationPermission: getPermission }
 }
