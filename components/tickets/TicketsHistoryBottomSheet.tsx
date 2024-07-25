@@ -6,6 +6,7 @@ import {
 import { useMutation } from '@tanstack/react-query'
 import React, { forwardRef, useCallback, useRef } from 'react'
 import { Linking, View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -20,6 +21,7 @@ type Props = {
 
 const TicketsHistoryBottomSheet = forwardRef<BottomSheetModal, Props>(({ activeId }, ref) => {
   const { t } = useTranslation()
+  const reducedMotion = useReducedMotion()
 
   const localRef = useRef<BottomSheetModal>(null)
   const refSetter = useMultipleRefsSetter(localRef, ref)
@@ -52,6 +54,7 @@ const TicketsHistoryBottomSheet = forwardRef<BottomSheetModal, Props>(({ activeI
       enableDynamicSizing
       enablePanDownToClose
       backdropComponent={renderBackdrop}
+      animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
     >
       <BottomSheetContent>
         {downloadReceiptMutation.isPending ? (
