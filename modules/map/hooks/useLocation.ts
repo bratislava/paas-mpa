@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
-// TOTO refactor
+// TODO refactor
 export const useLocation = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
   const { locationPermissionStatus } = useLocationPermission()
