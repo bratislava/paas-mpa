@@ -243,6 +243,8 @@
   "Settings.language": "Jazyk",
   "Settings.notificationButtonText": "Povoliť notifikácie",
   "Settings.notificationsDisabled": "Notifikácie nie sú povolené na tomto zariadení.",
+  "Settings.notificationsWarningAndroid": "Pre správne fungovanie sa uistite, že aplikácia PAAS má povolenie na posielanie notifikácií.",
+  "Settings.notificationsWarningAndroid.buttonText": "Otvoriť nastavenia",
   "Settings.openContextMenu": "Otvoriť menu",
   "Settings.pushNotifications": "Push notifikácie",
   "Settings.title": "Nastavenia",
