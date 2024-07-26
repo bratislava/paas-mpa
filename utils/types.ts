@@ -18,7 +18,7 @@ export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
 /**
  * Permission status used with notifications
  */
-export enum PermissionStatus {
+export enum UnifiedPermissionStatus {
   /**
    * User has granted the permission.
    */

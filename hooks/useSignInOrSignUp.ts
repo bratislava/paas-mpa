@@ -16,7 +16,7 @@ import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPe
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 import { isErrorWithName } from '@/utils/errorCognitoAuth'
 import { isError } from '@/utils/errors'
-import { PermissionStatus } from '@/utils/types'
+import { UnifiedPermissionStatus } from '@/utils/types'
 
 import { useIsOnboardingFinished } from './useIsOnboardingFinished'
 
@@ -54,7 +54,7 @@ export const useSignInOrSignUp = () => {
   const [isOnboardingFinished, setIsOnboardingFinished] = useIsOnboardingFinished()
 
   const { locationPermissionStatus } = useLocationPermission()
-  const { notificationPermissionStatus, getNotificationPermissionAndRegisterDevice } =
+  const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
     useNotificationPermission()
 
   const updateAuthStore = useAuthStoreUpdateContext()
@@ -140,14 +140,14 @@ export const useSignInOrSignUp = () => {
 
       if (
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
-        notificationPermissionStatus === PermissionStatus.UNDETERMINED
+        notificationPermissionStatus === UnifiedPermissionStatus.UNDETERMINED
       ) {
         router.replace('/permissions')
       } else {
         // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
         // This happens on /permissions screen too, so we call it only here
         // TODO this should probably be called on every app focus?
-        await getNotificationPermissionAndRegisterDevice()
+        await requestNotificationPermissionAndRegisterDevice()
 
         router.replace('/')
       }
