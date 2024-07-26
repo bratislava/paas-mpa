@@ -14,7 +14,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
-import { PermissionStatus } from '@/utils/types'
+import { UnifiedPermissionStatus } from '@/utils/types'
 
 /*
  * TODO
@@ -35,12 +35,12 @@ import { PermissionStatus } from '@/utils/types'
 const NotificationSettings = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const { notificationPermissionStatus, getNotificationPermissionAndRegisterDevice } =
+  const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
     useNotificationPermission()
 
   useEffect(() => {
-    getNotificationPermissionAndRegisterDevice()
-  }, [getNotificationPermissionAndRegisterDevice])
+    requestNotificationPermissionAndRegisterDevice()
+  }, [requestNotificationPermissionAndRegisterDevice])
 
   const { data, isPending, isError, error } = useQueryWithFocusRefetch(settingsOptions())
 
@@ -106,7 +106,7 @@ const NotificationSettings = () => {
     },
   ] as const
 
-  const arePermissionsNotGranted = notificationPermissionStatus !== PermissionStatus.GRANTED
+  const arePermissionsNotGranted = notificationPermissionStatus !== UnifiedPermissionStatus.GRANTED
 
   return (
     <Field label={t('Settings.pushNotifications')}>

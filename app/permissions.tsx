@@ -11,7 +11,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 import { cn } from '@/utils/cn'
-import { PermissionStatus } from '@/utils/types'
+import { UnifiedPermissionStatus } from '@/utils/types'
 
 // TODO Use ScreenView
 
@@ -28,7 +28,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   const insets = useSafeAreaInsets()
   const { t } = useTranslation()
 
-  const { notificationPermissionStatus, getNotificationPermissionAndRegisterDevice } =
+  const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
     useNotificationPermission()
   const { locationPermissionStatus, getLocationPermission } = useLocationPermission()
 
@@ -40,7 +40,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
     route.key === 'notifications' ? notificationPermissionStatus : locationPermissionStatus
   const getPermission =
     route.key === 'notifications'
-      ? getNotificationPermissionAndRegisterDevice
+      ? requestNotificationPermissionAndRegisterDevice
       : getLocationPermission
   const onPermissionFinished = useCallback(() => {
     if (route.key === 'notifications') {
@@ -51,7 +51,7 @@ const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
   }, [route.key, jumpTo])
 
   useEffect(() => {
-    if (permissionStatus !== PermissionStatus.UNDETERMINED) {
+    if (permissionStatus !== UnifiedPermissionStatus.UNDETERMINED) {
       onPermissionFinished()
     }
   }, [onPermissionFinished, permissionStatus])
