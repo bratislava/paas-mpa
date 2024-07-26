@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { Linking, Platform } from 'react-native'
+import { Linking } from 'react-native'
 
 import NotificationControl from '@/components/controls/notifications/NotificationControl'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
@@ -115,19 +115,6 @@ const NotificationSettings = () => {
           <Typography>{t('Settings.notificationsDisabled')}</Typography>
           <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
             <Typography variant="default-bold">{t('Settings.notificationButtonText')}</Typography>
-          </PressableStyled>
-        </Panel>
-      ) : null}
-
-      {/* Temporarily show info to user to double-check notification permission. */}
-      {/* Used until we use react-native-notifications because @react-native-firebase/messaging works only on ios */}
-      {Platform.OS === 'android' ? (
-        <Panel className="my-2 bg-warning-light px-5">
-          <Typography>{t('Settings.notificationsWarningAndroid')}</Typography>
-          <PressableStyled className="inline-flex" onPress={() => Linking.openSettings()}>
-            <Typography variant="default-bold">
-              {t('Settings.notificationsWarningAndroid.buttonText')}
-            </Typography>
           </PressableStyled>
         </Panel>
       ) : null}
