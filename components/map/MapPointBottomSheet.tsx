@@ -1,6 +1,7 @@
 import BottomSheet, { BottomSheetFooterProps, BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import { forwardRef, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LayoutAnimation, View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import NavigateBottomSheetFooter from '@/components/map/NavigateBottomSheetFooter'
 import BottomSheetHandleWithShadow from '@/components/screen-layout/BottomSheet/BottomSheetHandleWithShadow'
@@ -43,6 +44,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const { t } = useTranslation()
   const locale = useLocale()
   const [footerHeight, setFooterHeight] = useState(0)
+  const reducedMotion = useReducedMotion()
 
   // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -129,6 +131,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
       snapPoints={snapPoints}
       footerComponent={renderFooter}
       handleComponent={BottomSheetHandleWithShadow}
+      animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
     >
       <View className="flex-1">
         <View className="flex-row justify-center border-b border-b-divider pb-3">

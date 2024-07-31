@@ -1,7 +1,8 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
-import { useCallback, useRef } from 'react'
+import { Fragment, useCallback, useRef } from 'react'
 import { View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -12,7 +13,10 @@ import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/Ticket
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
+// TODO refactor from screen to component, because it return only BottomSheet
 const TicketsFiltersTimeframesScreen = () => {
+  const reducedMotion = useReducedMotion()
+
   const snapPoints = [300]
   const ref = useRef<BottomSheet>(null)
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
@@ -48,20 +52,21 @@ const TicketsFiltersTimeframesScreen = () => {
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       enablePanDownToClose
+      animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
     >
       <BottomSheetContent>
         <View>
           {Object.values(FilterTimeframesEnum).map((timeframe, index) => (
-            <>
-              {index > 0 && <Divider key={`divider-${timeframe}`} />}
+            <Fragment key={timeframe}>
+              {index > 0 && <Divider />}
 
-              <PressableStyled key={timeframe} onPress={handleOptionPress(timeframe)}>
+              <PressableStyled onPress={handleOptionPress(timeframe)}>
                 <ActionRow
                   label={translationMap[timeframe]}
                   endIcon={timeframe === selectedTimeframe ? 'check-circle' : undefined}
                 />
               </PressableStyled>
-            </>
+            </Fragment>
           ))}
         </View>
       </BottomSheetContent>

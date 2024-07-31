@@ -2,6 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import * as Location from 'expo-location'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Linking, Platform, View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import AvatarCircleLocationOff from '@/components/info/AvatarCircleLocationOff'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
@@ -15,6 +16,8 @@ import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission
 const MapLocationBottomSheet = () => {
   const { t } = useTranslation()
   const ref = useRef<BottomSheet>(null)
+  const reducedMotion = useReducedMotion()
+
   const { locationPermissionStatus, getLocationPermission } = useLocationPermission()
   const [isLocationOn, setIsLocationOn] = useState(true)
 
@@ -74,6 +77,7 @@ const MapLocationBottomSheet = () => {
       handleComponent={BottomSheetHandleWithShadow}
       enablePanDownToClose
       enableDynamicSizing
+      animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
     >
       <BottomSheetContent>
         <ContentWithAvatar
