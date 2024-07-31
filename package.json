@@ -10,6 +10,7 @@
     "web": "expo start --web",
     "ts:check": "tsc",
     "lint": "eslint --color --ext .md,.ts,.tsx ./",
+    "lint:quiet": "yarn lint --quiet",
     "lint:fix": "yarn lint --fix",
     "doctor": "expo install --check",
     "doctor:fix": "expo install --fix",
