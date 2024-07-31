@@ -1,6 +1,7 @@
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import { forwardRef, useMemo } from 'react'
 import { View } from 'react-native'
+import { useReducedMotion } from 'react-native-reanimated'
 
 import BottomSheetHandleWithShadow, {
   HANDLE_HEIGHT,
@@ -29,6 +30,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
     const { udr } = usePurchaseStoreContext()
 
     const snapPoints = useMemo(() => [HANDLE_HEIGHT], [])
+    const reducedMotion = useReducedMotion()
 
     const durationFromPriceDate = getDurationFromPriceData(priceData)
 
@@ -39,6 +41,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         bottomInset={purchaseButtonContainerHeight}
         snapPoints={snapPoints}
         handleComponent={BottomSheetHandleWithShadow}
+        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
       >
         {/**
          * Better approach for zero height bottom sheet: https://github.com/gorhom/react-native-bottom-sheet/issues/1573
