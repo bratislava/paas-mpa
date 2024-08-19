@@ -17,6 +17,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
+import { isValidEmail as isValidEmailFunction } from '@/utils/isValidEmail'
 
 const FeedbackScreen = () => {
   const { t } = useTranslation()
@@ -77,7 +78,7 @@ const FeedbackScreen = () => {
     })
   }, [email, feedbackType, message, mutation])
 
-  const isValidEmail = !shouldVerifyEmail || (!!email && email.includes('@'))
+  const isValidEmail = !shouldVerifyEmail || (!!email && isValidEmailFunction(email))
   const isValidMessage = !shouldVerifyMessage || message.length > 0
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 

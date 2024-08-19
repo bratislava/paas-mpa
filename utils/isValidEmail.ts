@@ -4,7 +4,7 @@
  * @returns boolean value indicating if email is valid
  */
 export const isValidEmail = (email: string) => {
-  const reg: RegExp = /^[\w-+.]+@([\w-]+\.)+[\w-]{2,4}$/
+  const reg: RegExp = /.*@.*\..*/
 
   return reg.test(String(email).toLowerCase())
 }
