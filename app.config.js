@@ -48,7 +48,7 @@ module.exports = {
       [
         'expo-location',
         {
-          locationWhenInUsePermission: 'Show current location on map.',
+          locationWhenInUsePermission: 'Show current location on map to find your parking zone.',
         },
       ],
       [
