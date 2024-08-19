@@ -6,5 +6,5 @@
 export const isValidEmail = (email: string) => {
   const reg: RegExp = /.*@.*\..*/
 
-  return reg.test(String(email).toLowerCase())
+  return reg.test(email)
 }
