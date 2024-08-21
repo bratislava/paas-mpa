@@ -822,6 +822,7 @@ export const SYSTEMERROR = {
   RabbitMqError: 'RABBIT_MQ_ERROR',
   PdfGenerator: 'PDF_GENERATOR',
   Paygate: 'PAYGATE',
+  Aws: 'AWS',
 } as const
 
 export type SYSTEMERROR = (typeof SYSTEMERROR)[keyof typeof SYSTEMERROR]
@@ -1603,6 +1604,12 @@ export interface VerifyEmailsDto {
    * @memberof VerifyEmailsDto
    */
   emails: Array<string>
+  /**
+   *
+   * @type {ParkingCardType}
+   * @memberof VerifyEmailsDto
+   */
+  type?: ParkingCardType
 }
 
 /**
@@ -1611,6 +1618,104 @@ export interface VerifyEmailsDto {
  */
 export const AdminApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
+    /**
+     *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerCapturePayment: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('adminControllerCapturePayment', 'id', id)
+      const localVarPath = `/admin/capture-payment/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
+     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerCaptureUncapturedPayments: async (
+      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'captureUncapturedPaymentsRequestDto' is not null or undefined
+      assertParamExists(
+        'adminControllerCaptureUncapturedPayments',
+        'captureUncapturedPaymentsRequestDto',
+        captureUncapturedPaymentsRequestDto,
+      )
+      const localVarPath = `/admin/capture-uncaptured-payments`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        captureUncapturedPaymentsRequestDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
     /**
      *
      * @summary Method to get payment status and token status for a specific payment method
@@ -1669,6 +1774,41 @@ export const AdminApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async adminControllerCapturePayment(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.adminControllerCapturePayment(
+        id,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
+     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async adminControllerCaptureUncapturedPayments(
+      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.adminControllerCaptureUncapturedPayments(
+          captureUncapturedPaymentsRequestDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Method to get payment status and token status for a specific payment method
      * @param {string} paymentid
      * @param {*} [options] Override http request option.
@@ -1700,6 +1840,33 @@ export const AdminApiFactory = function (
   return {
     /**
      *
+     * @summary Admin endpoint: Capture payment
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerCapturePayment(id: number, options?: AxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .adminControllerCapturePayment(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
+     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    adminControllerCaptureUncapturedPayments(
+      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .adminControllerCaptureUncapturedPayments(captureUncapturedPaymentsRequestDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Method to get payment status and token status for a specific payment method
      * @param {string} paymentid
      * @param {*} [options] Override http request option.
@@ -1723,6 +1890,37 @@ export const AdminApiFactory = function (
  * @extends {BaseAPI}
  */
 export class AdminApi extends BaseAPI {
+  /**
+   *
+   * @summary Admin endpoint: Capture payment
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AdminApi
+   */
+  public adminControllerCapturePayment(id: number, options?: AxiosRequestConfig) {
+    return AdminApiFp(this.configuration)
+      .adminControllerCapturePayment(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
+   * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AdminApi
+   */
+  public adminControllerCaptureUncapturedPayments(
+    captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return AdminApiFp(this.configuration)
+      .adminControllerCaptureUncapturedPayments(captureUncapturedPaymentsRequestDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
   /**
    *
    * @summary Method to get payment status and token status for a specific payment method
@@ -3270,104 +3468,6 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
   return {
     /**
      *
-     * @summary Admin endpoint: Capture payment
-     * @param {number} id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    ticketsControllerCapturePayment: async (
-      id: number,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      // verify required parameter 'id' is not null or undefined
-      assertParamExists('ticketsControllerCapturePayment', 'id', id)
-      const localVarPath = `/tickets/capture-payment/{id}`.replace(
-        `{${'id'}}`,
-        encodeURIComponent(String(id)),
-      )
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
-      let baseOptions
-      if (configuration) {
-        baseOptions = configuration.baseOptions
-      }
-
-      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
-      const localVarHeaderParameter = {} as any
-      const localVarQueryParameter = {} as any
-
-      // authentication azure required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter)
-      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      }
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      }
-    },
-    /**
-     *
-     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
-     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    ticketsControllerCaptureUncapturedPayments: async (
-      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      // verify required parameter 'captureUncapturedPaymentsRequestDto' is not null or undefined
-      assertParamExists(
-        'ticketsControllerCaptureUncapturedPayments',
-        'captureUncapturedPaymentsRequestDto',
-        captureUncapturedPaymentsRequestDto,
-      )
-      const localVarPath = `/tickets/capture-uncaptured-payments`
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
-      let baseOptions
-      if (configuration) {
-        baseOptions = configuration.baseOptions
-      }
-
-      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
-      const localVarHeaderParameter = {} as any
-      const localVarQueryParameter = {} as any
-
-      // authentication azure required
-      // http bearer authentication required
-      await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-      localVarHeaderParameter['Content-Type'] = 'application/json'
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter)
-      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      }
-      localVarRequestOptions.data = serializeDataIfNeeded(
-        captureUncapturedPaymentsRequestDto,
-        localVarRequestOptions,
-        configuration,
-      )
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      }
-    },
-    /**
-     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -4184,41 +4284,6 @@ export const TicketsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary Admin endpoint: Capture payment
-     * @param {number} id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async ticketsControllerCapturePayment(
-      id: number,
-      options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerCapturePayment(
-        id,
-        options,
-      )
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
-    },
-    /**
-     *
-     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
-     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async ticketsControllerCaptureUncapturedPayments(
-      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
-      options?: AxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.ticketsControllerCaptureUncapturedPayments(
-          captureUncapturedPaymentsRequestDto,
-          options,
-        )
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
-    },
-    /**
-     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -4542,33 +4607,6 @@ export const TicketsApiFactory = function (
   return {
     /**
      *
-     * @summary Admin endpoint: Capture payment
-     * @param {number} id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    ticketsControllerCapturePayment(id: number, options?: AxiosRequestConfig): AxiosPromise<void> {
-      return localVarFp
-        .ticketsControllerCapturePayment(id, options)
-        .then((request) => request(axios, basePath))
-    },
-    /**
-     *
-     * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
-     * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    ticketsControllerCaptureUncapturedPayments(
-      captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
-      options?: AxiosRequestConfig,
-    ): AxiosPromise<void> {
-      return localVarFp
-        .ticketsControllerCaptureUncapturedPayments(captureUncapturedPaymentsRequestDto, options)
-        .then((request) => request(axios, basePath))
-    },
-    /**
-     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -4859,37 +4897,6 @@ export const TicketsApiFactory = function (
  * @extends {BaseAPI}
  */
 export class TicketsApi extends BaseAPI {
-  /**
-   *
-   * @summary Admin endpoint: Capture payment
-   * @param {number} id
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof TicketsApi
-   */
-  public ticketsControllerCapturePayment(id: number, options?: AxiosRequestConfig) {
-    return TicketsApiFp(this.configuration)
-      .ticketsControllerCapturePayment(id, options)
-      .then((request) => request(this.axios, this.basePath))
-  }
-
-  /**
-   *
-   * @summary Capture tickets with given ids. If done because of tickets which are successful in our db but uncaptured in GPWebpay, get the unclaimed tickets ids by their paymentIds from GP admin.
-   * @param {CaptureUncapturedPaymentsRequestDto} captureUncapturedPaymentsRequestDto
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof TicketsApi
-   */
-  public ticketsControllerCaptureUncapturedPayments(
-    captureUncapturedPaymentsRequestDto: CaptureUncapturedPaymentsRequestDto,
-    options?: AxiosRequestConfig,
-  ) {
-    return TicketsApiFp(this.configuration)
-      .ticketsControllerCaptureUncapturedPayments(captureUncapturedPaymentsRequestDto, options)
-      .then((request) => request(this.axios, this.basePath))
-  }
-
   /**
    *
    * @summary Get URL to ticket receipt
