@@ -116,22 +116,19 @@ const Page = () => {
             <FlexRow className="g-2.5">
               <CountrySelectField selectedCountry={selectedCountry} />
 
-              <View className="flex-1">
-                <TextInput
-                  leftIcon={<Typography>+{prefixCode}</Typography>}
-                  className="w-full"
-                  viewClassName="g-2"
-                  value={phone}
-                  onChangeText={handleChangeText}
-                  keyboardType="phone-pad"
-                  autoComplete="tel"
-                  hasError={!!errorName}
-                  onFocus={handleInputFocus}
-                  autoFocus
-                  returnKeyType="done"
-                  onSubmitEditing={handleSignIn}
-                />
-              </View>
+              <TextInput
+                leftIcon={<Typography>+{prefixCode}</Typography>}
+                viewClassName="flex-1"
+                value={phone}
+                onChangeText={handleChangeText}
+                keyboardType="phone-pad"
+                autoComplete="tel"
+                hasError={!!errorName}
+                onFocus={handleInputFocus}
+                autoFocus
+                returnKeyType="done"
+                onSubmitEditing={handleSignIn}
+              />
             </FlexRow>
 
             {errorName ? (

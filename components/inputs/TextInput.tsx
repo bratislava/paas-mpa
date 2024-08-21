@@ -1,6 +1,6 @@
-import { forwardRef, ReactNode, useCallback, useRef, useState } from 'react'
+import { forwardRef, ReactNode, useRef, useState } from 'react'
 import {
-  Pressable,
+  LayoutChangeEvent,
   TextInput as TextInputNative,
   TextInputProps as TextInputNativeProps,
   View,
@@ -40,41 +40,36 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
     const localRef = useRef<TextInputNative>(null)
     const refSetter = useMultipleRefsSetter(localRef, ref)
 
-    const handlePress = useCallback(() => {
-      localRef.current?.focus()
-    }, [])
+    const [iconWidth, setIconWidth] = useState<number>()
+
+    const onLeftIconLayout = (event: LayoutChangeEvent) =>
+      setIconWidth(event.nativeEvent.layout.width)
 
     return (
-      <Pressable
-        onPress={handlePress}
-        pointerEvents={pointerEvents}
-        className={cn(
-          'flex-row items-center rounded border bg-white px-4 py-3 g-3',
-          {
-            'border-divider': !isDisabled && !hasError,
-            'border-dark ': !isDisabled && !hasError && isFocused,
-            'border-negative': hasError && !isDisabled,
-            'border-divider bg-[#D6D6D6]': isDisabled,
-            'flex-1': multiline,
-          },
-          viewClassName,
-        )}
-      >
-        {leftIcon ? <View aria-hidden>{leftIcon}</View> : null}
+      <View className={cn('relative', viewClassName)} pointerEvents={pointerEvents}>
         {/* TODO lineHeight does not work properly on ios, see issue: https://github.com/facebook/react-native/issues/39145 */}
         {/* Quick-fix by setting height instead of lineHeight */}
-        {/* Instead of "h-[24px] text-[16px]", it should use only predefined "text-16" */}
+        {/* Instead of "text-[16px]" and height, it should use only predefined "text-base" */}
         <TextInputNative
           ref={refSetter}
+          style={{ paddingLeft: iconWidth }}
           maxFontSizeMultiplier={1.2}
           editable={!isDisabled}
+          textAlignVertical={multiline ? 'top' : 'center'}
           className={cn(
-            'flex-1 font-inter-400regular text-[16px]',
-            !multiline && 'h-[24px]',
+            'min-h-[52px] items-center rounded border bg-white py-3 pr-4 font-inter-400regular text-[16px]',
+            {
+              'border-divider': !isDisabled && !hasError,
+              'border-dark': !isDisabled && !hasError && isFocused,
+              'border-negative': hasError && !isDisabled,
+              'border-divider bg-[#D6D6D6]': isDisabled,
+              'flex-1 shrink items-center': multiline,
+              'pl-4': !leftIcon,
+            },
             className,
           )}
           multiline={multiline}
-          pointerEvents="none"
+          pointerEvents={pointerEvents}
           onFocus={(e) => {
             onFocus?.(e)
             setIsFocused(true)
@@ -85,7 +80,17 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
           }}
           {...rest}
         />
-      </Pressable>
+
+        {leftIcon ? (
+          <View
+            pointerEvents="none"
+            onLayout={onLeftIconLayout}
+            className="absolute h-full justify-center pl-4 pr-2"
+          >
+            {leftIcon}
+          </View>
+        ) : null}
+      </View>
     )
   },
 )
