@@ -38,7 +38,7 @@
     "@turf/intersect": "^6.5.0",
     "@types/react": "~18.2.45",
     "aws-amplify": "~6.1.4",
-    "axios": "~1.6.8",
+    "axios": "~1.7.4",
     "clsx": "~2.1.0",
     "conditional-wrap": "~1.0.2",
     "date-holidays": "^3.23.3",
