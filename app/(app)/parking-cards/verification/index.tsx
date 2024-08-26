@@ -4,14 +4,17 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
+import ParkingCardTypeRow from '@/components/controls/payment-methods/rows/ParkingCardTypeRow'
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
+import Field from '@/components/shared/Field'
 import Markdown from '@/components/shared/Markdown'
 import Panel from '@/components/shared/Panel'
+import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -23,6 +26,7 @@ const Page = () => {
   const { t } = useTranslation()
 
   const [email, setEmail] = useState('')
+  const [cardType, setCardType] = useState<VerifyEmailsDto['type'] | null>(null)
 
   const [expectedError, setExpectedError] = useState<string | null>(null)
 
@@ -68,6 +72,7 @@ const Page = () => {
     if (isValidEmail(email)) {
       const body: VerifyEmailsDto = {
         emails: [email.toLowerCase().trim()], // double check before sending to the backend
+        type: cardType ?? undefined,
       }
 
       mutation.mutate(body)
@@ -83,6 +88,12 @@ const Page = () => {
     t('AddParkingCards.Errors.GeneralError'),
     t('AddParkingCards.Errors.InvalidEmail'),
   ]
+
+  const handlePanelPress = (cardTypeInner: VerifyEmailsDto['type'] | null) => {
+    setCardType(cardTypeInner)
+  }
+
+  const cardTypePanels = ['all', 'bonus-cards', 'visitor-cards'] as const
 
   return (
     <ScreenView title={t('AddParkingCards.addCardsTitle')}>
@@ -105,9 +116,34 @@ const Page = () => {
                 hasError={!!expectedError}
                 autoComplete="email"
                 autoCorrect={false}
+                autoFocus
                 onSubmitEditing={handleSendVerificationEmail}
               />
             </AccessibilityField>
+
+            <Field
+              label={t('AddParkingCards.fieldParkingCardType.label')}
+              helptext={t('AddParkingCards.fieldParkingCardType.helptext')}
+            >
+              {cardTypePanels.map((panel) => {
+                let cardTypeInner: VerifyEmailsDto['type'] | undefined | null
+
+                if (panel === 'bonus-cards') cardTypeInner = 'BPK'
+                if (panel === 'visitor-cards') cardTypeInner = 'NPK'
+                if (panel === 'all') cardTypeInner = null // null for ALL types
+
+                return (
+                  <PressableStyled key={panel} onPress={() => handlePanelPress(cardTypeInner)}>
+                    <ParkingCardTypeRow
+                      variant={panel}
+                      selected={
+                        cardType === cardTypeInner ?? (panel === 'all' && cardTypeInner === null)
+                      }
+                    />
+                  </PressableStyled>
+                )
+              })}
+            </Field>
 
             <Panel>
               <Typography>{t('AddParkingCards.instructions')}</Typography>
