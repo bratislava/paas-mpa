@@ -73,8 +73,9 @@ const FeedbackScreen = () => {
       feedbackType === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1
     mutation.mutate({
       email: email.toLowerCase().trim(), // double check before sending to the backend
-      message: `${message}\n\n(${nativeApplicationVersion} (${nativeBuildVersion}))`,
+      message,
       type: feedbackTypeValue,
+      appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
     })
   }, [email, feedbackType, message, mutation])
 
