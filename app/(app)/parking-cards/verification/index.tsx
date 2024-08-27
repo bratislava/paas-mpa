@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
@@ -22,13 +22,29 @@ import { SERVICEERROR, VerifyEmailsDto } from '@/modules/backend/openapi-generat
 import { isServiceError } from '@/utils/errorService'
 import { isValidEmail } from '@/utils/isValidEmail'
 
+export type VerificationIndexSearchParams = {
+  // "Boolean" is not supported by expo-router, so we parse it as string
+  // GitHub discussion: https://github.com/expo/router/discussions/806
+  isFirstPurchase?: string
+}
+
 const Page = () => {
   const { t } = useTranslation()
+
+  const { isFirstPurchase: isFirstPurchaseParam } =
+    useLocalSearchParams<VerificationIndexSearchParams>()
+  const isFirstPurchase = isFirstPurchaseParam === 'true'
 
   const [email, setEmail] = useState('')
   const [cardType, setCardType] = useState<VerifyEmailsDto['type'] | null>(null)
 
   const [expectedError, setExpectedError] = useState<string | null>(null)
+
+  const translationMap = {
+    EmailAlreadyVerified: t('AddParkingCards.Errors.EmailAlreadyVerified'),
+    GeneralError: t('AddParkingCards.Errors.GeneralError'),
+    InvalidEmail: t('AddParkingCards.Errors.InvalidEmail'),
+  }
 
   // TODO deduplicate this mutation (it's also used in verification-result.tsx)
   const mutation = useMutation({
@@ -53,9 +69,9 @@ const Page = () => {
         isServiceError(error.response?.data) &&
         error.response?.data.errorName === SERVICEERROR.EmailAlreadyVerified
       )
-        setExpectedError('EmailAlreadyVerified')
+        setExpectedError(translationMap.EmailAlreadyVerified)
       else {
-        setExpectedError('GeneralError')
+        setExpectedError(translationMap.GeneralError)
       }
     },
   })
@@ -77,17 +93,9 @@ const Page = () => {
 
       mutation.mutate(body)
     } else {
-      setExpectedError('InvalidEmail')
+      setExpectedError(translationMap.InvalidEmail)
     }
   }
-
-  // TODO translation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const translationKeys = [
-    t('AddParkingCards.Errors.EmailAlreadyVerified'),
-    t('AddParkingCards.Errors.GeneralError'),
-    t('AddParkingCards.Errors.InvalidEmail'),
-  ]
 
   const handlePanelPress = (cardTypeInner: VerifyEmailsDto['type'] | null) => {
     setCardType(cardTypeInner)
@@ -103,10 +111,7 @@ const Page = () => {
           <ScreenContent>
             <AccessibilityField
               label={t('AddParkingCards.emailField')}
-              errorMessage={
-                // TODO translation
-                expectedError ? t(`AddParkingCards.Errors.${expectedError}`) : undefined
-              }
+              errorMessage={expectedError ?? undefined}
             >
               <TextInput
                 value={email}
@@ -147,15 +152,23 @@ const Page = () => {
 
             <Panel>
               <Typography>{t('AddParkingCards.instructions')}</Typography>
+              {isFirstPurchase ? (
+                <Typography>
+                  {`\n`}
+                  {t('AddParkingCards.instructions.firstPurchaseAdditionalInfo')}
+                </Typography>
+              ) : null}
             </Panel>
 
             <View className="g-10">
               <ContinueButton onPress={handleSendVerificationEmail} loading={mutation.isPending} />
 
-              <View className="g-2">
-                <Typography variant="h2">{t('AddParkingCards.noParkingCard')}</Typography>
-                <Markdown>{t('AddParkingCards.noParkingCardDescription')}</Markdown>
-              </View>
+              {isFirstPurchase ? (
+                <View className="g-2">
+                  <Typography variant="h2">{t('AddParkingCards.noParkingCard')}</Typography>
+                  <Markdown>{t('AddParkingCards.noParkingCardDescription')}</Markdown>
+                </View>
+              ) : null}
             </View>
           </ScreenContent>
         </DismissKeyboard>
