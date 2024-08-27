@@ -4,6 +4,7 @@ import { forwardRef, useCallback, useRef } from 'react'
 import { TextInput as RNTextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
+import { SearchIcon } from '@/assets/ui-icons'
 import TextInput from '@/components/inputs/TextInput'
 import { MapRef } from '@/components/map/Map'
 import MapZoneBottomSheetAttachment from '@/components/map/MapZoneBottomSheetAttachment'
@@ -72,6 +73,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
                     returnKeyType="search"
                     value={address}
                     selection={{ start: 0 }}
+                    leftIcon={<SearchIcon />} // Purposefully using icon from Bratislava DS in this case
                   />
                 </PressableStyled>
               </Field>
