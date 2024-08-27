@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native'
 
+import { SearchIcon } from '@/assets/ui-icons'
 import ZoneBadge from '@/components/info/ZoneBadge'
 import Autocomplete, { AutocompleteProps } from '@/components/inputs/Autocomplete'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
@@ -173,7 +174,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
             isGeocodingFeature(option) ? option.place_name || option.text : option.properties.name
           }
           onValueChange={handleValueChange}
-          leftIcon={<Icon name="search" />}
+          leftIcon={<SearchIcon />} // Purposefully using icon from Bratislava DS in this case
           renderItem={renderItem}
           ListComponent={FlatList}
           renderResults={renderResults}
