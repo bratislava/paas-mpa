@@ -33,7 +33,7 @@
   "Auth.resendCode": "Resend code",
   "Auth.signIn": "Log in",
   "Auth.signOut": "Log out",
-  "Auth.verificationText": "Continue by entering 6-digit code from message we’ve sent.",
+  "Auth.verificationText": "Continue by entering 6-digit code from message we’ve sent to {{phone}}.",
   "BoughtTicket.licencePlate": "Car plate number",
   "BoughtTicket.validUntil": "Valid to",
   "BoughtTicket.yourTicket": "Your ticket",
