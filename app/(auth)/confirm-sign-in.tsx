@@ -71,7 +71,7 @@ const Page = () => {
           <View className="g-2">
             <Typography variant="h1">{t('Auth.enterVerificationCode')}</Typography>
 
-            <Typography>{t('Auth.verificationText')}</Typography>
+            <Typography>{t('Auth.verificationText', { phone })}</Typography>
           </View>
 
           <View className="g-4">
