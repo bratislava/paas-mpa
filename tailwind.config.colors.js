@@ -44,6 +44,10 @@ module.exports = {
     DEFAULT: '#CA6337',
     light: '#FFEFE8',
   },
+  socialServicesCard: {
+    DEFAULT: '#663FB7',
+    light: '#ECE8FF',
+  },
   parkingZone: '#71CA55',
   activeZone: '#F1B830',
 }
