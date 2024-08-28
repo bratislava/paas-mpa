@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useDebounce } from 'use-debounce'
 
+import { VerificationIndexSearchParams } from '@/app/(app)/parking-cards/verification'
 import { ParkingCardAvatar } from '@/assets/avatars'
 import TimeSelector from '@/components/controls/date-time/TimeSelector'
 import ParkingZoneField from '@/components/controls/ParkingZoneField'
@@ -70,7 +71,11 @@ const PurchaseScreen = () => {
 
   const handleParkingCardRedirect = () => {
     handleModalClose()
-    router.push('/parking-cards/verification')
+    router.push({
+      pathname: '/parking-cards/verification',
+      // "Boolean" value is passed as string because of Expo router limitations
+      params: { isFirstPurchase: 'true' } satisfies VerificationIndexSearchParams,
+    })
   }
 
   /** Open modal for adding parking card on first run of application */

@@ -34,7 +34,7 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
   const locale = useLocale()
 
   return (
-    <Panel className={cn(selected && 'border border-dark')}>
+    <Panel className={cn('border', selected ? 'border-dark' : 'border-soft')}>
       <View className="g-3">
         <FlexRow>
           <View className="flex-1">
