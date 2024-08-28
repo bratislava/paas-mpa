@@ -15,7 +15,6 @@ export type ParkingCardTypeRowProps = {
 const ParkingCardTypeRow = ({ variant, selected }: ParkingCardTypeRowProps) => {
   const { t } = useTranslation()
 
-  // TODO test translations
   const translationsMap = {
     'bonus-cards': t('ParkingCardTypeRow.type.bonusCards'),
     'visitor-cards': t('ParkingCardTypeRow.type.visitorCards'),
@@ -26,7 +25,6 @@ const ParkingCardTypeRow = ({ variant, selected }: ParkingCardTypeRowProps) => {
     <Panel className={cn('border', selected ? 'border-dark' : 'border-soft')}>
       <FlexRow className="items-center">
         <View className="flex-1 flex-row items-center g-3">
-          {/* <AvatarSquare variant={variant} /> */}
           <Typography variant="default-bold">{translationsMap[variant]}</Typography>
         </View>
         {selected && <Icon name="check-circle" />}
