@@ -1,11 +1,8 @@
 import messaging from '@react-native-firebase/messaging'
-import { useMutation } from '@tanstack/react-query'
 import * as Device from 'expo-device'
 import { useCallback, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
-import { clientApi } from '@/modules/backend/client-api'
-import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { useRegisterDevice } from '@/modules/map/hooks/useRegisterDevice'
 import { requestNotificationPermissionAndroidAsync } from '@/utils/requestNotificationPermissionAsync.android'
 import { UnifiedPermissionStatus } from '@/utils/types'
@@ -17,10 +14,6 @@ export const useNotificationPermission = () => {
   )
 
   const { registerDevice } = useRegisterDevice()
-
-  const { mutate: mutateSaveSetting } = useMutation({
-    mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
-  })
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -58,10 +51,11 @@ export const useNotificationPermission = () => {
         if (enabled) {
           setPermissionStatus(UnifiedPermissionStatus.GRANTED)
           await registerDevice()
-          mutateSaveSetting({ pushNotificationsAboutToEnd: true, pushNotificationsToEnd: true })
-        } else {
-          setPermissionStatus(UnifiedPermissionStatus.DENIED)
+
+          return UnifiedPermissionStatus.GRANTED
         }
+
+        setPermissionStatus(UnifiedPermissionStatus.DENIED)
       } else {
         console.warn('Must use physical device for Push Notifications, skipping.')
         setPermissionStatus(UnifiedPermissionStatus.DENIED)
@@ -81,12 +75,15 @@ export const useNotificationPermission = () => {
       if (enabled) {
         setPermissionStatus(UnifiedPermissionStatus.GRANTED)
         await registerDevice()
-        mutateSaveSetting({ pushNotificationsAboutToEnd: true, pushNotificationsToEnd: true })
-      } else {
-        setPermissionStatus(UnifiedPermissionStatus.DENIED)
+
+        return UnifiedPermissionStatus.GRANTED
       }
+
+      setPermissionStatus(UnifiedPermissionStatus.DENIED)
     }
-  }, [mutateSaveSetting, registerDevice])
+
+    return UnifiedPermissionStatus.DENIED
+  }, [registerDevice])
 
   return {
     notificationPermissionStatus: permissionStatus,

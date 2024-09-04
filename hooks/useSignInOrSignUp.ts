@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query'
 import { confirmSignIn, signIn, signOut, signUp } from 'aws-amplify/auth'
 import * as Location from 'expo-location'
 import { router } from 'expo-router'
@@ -5,6 +6,8 @@ import { router } from 'expo-router'
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import { useClearHistory } from '@/hooks/useClearHistory'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
+import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import {
   getCurrentAuthenticatedUser,
@@ -56,6 +59,10 @@ export const useSignInOrSignUp = () => {
   const { locationPermissionStatus } = useLocationPermission()
   const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
     useNotificationPermission()
+
+  const { mutate: mutateSaveSetting } = useMutation({
+    mutationFn: (body: SaveUserSettingsDto) => clientApi.usersControllerSaveUserSettings(body),
+  })
 
   const updateAuthStore = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
@@ -147,7 +154,10 @@ export const useSignInOrSignUp = () => {
         // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
         // This happens on /permissions screen too, so we call it only here
         // TODO this should probably be called on every app focus?
-        await requestNotificationPermissionAndRegisterDevice()
+        const result = await requestNotificationPermissionAndRegisterDevice()
+        if (result === UnifiedPermissionStatus.GRANTED) {
+          mutateSaveSetting({ pushNotificationsAboutToEnd: true, pushNotificationsToEnd: true })
+        }
 
         router.replace('/')
       }
