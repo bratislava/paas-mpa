@@ -44,11 +44,10 @@ const ChooseVehicleScreen = () => {
   }
 
   const handleLicencePlateChange = (newLicencePlate: string) => {
-    setOneTimeLicencePlate(newLicencePlate)
-
     const newSanitizedLicencePlate = sanitizeLicencePlate(newLicencePlate)
-
+    setOneTimeLicencePlate(newSanitizedLicencePlate)
     setOneTimeLicencePlateError('')
+
     if (isVehiclePresent(newSanitizedLicencePlate)) {
       setOneTimeLicencePlateError(t('VehiclesScreen.licencePlateDuplicate'))
     }
