@@ -9,9 +9,12 @@ import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { formatDate } from '@/utils/formatDate'
 
-type ElectricCarCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
+type SocialServicesCardProps = Pick<
+  CommonParkingCardProps,
+  'zoneName' | 'licencePlate' | 'validUntil'
+>
 
-const SocialServicesCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCardProps) => {
+const SocialServicesCard = ({ zoneName, licencePlate, validUntil }: SocialServicesCardProps) => {
   const { t } = useTranslation()
   const locale = useLocale()
 
