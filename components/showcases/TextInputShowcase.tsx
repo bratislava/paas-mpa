@@ -1,7 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 
+import { SearchIcon } from '@/assets/ui-icons'
 import TextInput from '@/components/inputs/TextInput'
+import Typography from '@/components/shared/Typography'
 
 const TextInputShowcase = () => {
   return (
@@ -13,6 +15,8 @@ const TextInputShowcase = () => {
       <TextInput isDisabled hasError placeholder="Disabled with error (shouldn't be red)" />
       <TextInput secureTextEntry />
       <TextInput multiline numberOfLines={4} placeholder="Multiline" />
+      <TextInput leftIcon={<SearchIcon />} placeholder="Search" />
+      <TextInput leftIcon={<Typography>+421</Typography>} placeholder="Prefix" />
     </View>
   )
 }
