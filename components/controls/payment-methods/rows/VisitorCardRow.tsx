@@ -34,7 +34,7 @@ const VisitorCardRow = ({ email, balance, selected, showControlChevron }: Props)
   const { t } = useTranslation()
 
   return (
-    <Panel className={cn(selected && 'border border-visitorCard')}>
+    <Panel className={cn('border', selected ? 'border-visitorCard' : 'border-soft')}>
       <FlexRow>
         <View>
           <AvatarSquare variant="visitor-card" />

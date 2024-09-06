@@ -10,7 +10,7 @@ const DividerShowcase = () => {
     <View className="px-4 g-4">
       <Divider />
       <Panel className="g-3">
-        <Typography>See how divider is used in Surface component</Typography>
+        <Typography>See how divider is used in Panel component</Typography>
         <Divider />
         <Typography>It is neat!</Typography>
       </Panel>

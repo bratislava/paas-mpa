@@ -74,6 +74,7 @@ const ParkingCard = ({ card }: Props) => {
           validUntil={card.validTo}
         />
       )
+    // case Social Services Card // TODO implement SocialServicesCard when BE returns the card type
     // case ParkingCardType.Other:
     default:
       return (

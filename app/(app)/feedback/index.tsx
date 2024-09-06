@@ -17,6 +17,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
+import { isValidEmail as isValidEmailFunction } from '@/utils/isValidEmail'
 
 const FeedbackScreen = () => {
   const { t } = useTranslation()
@@ -72,12 +73,13 @@ const FeedbackScreen = () => {
       feedbackType === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1
     mutation.mutate({
       email: email.toLowerCase().trim(), // double check before sending to the backend
-      message: `${message}\n\n(${nativeApplicationVersion} (${nativeBuildVersion}))`,
+      message,
       type: feedbackTypeValue,
+      appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
     })
   }, [email, feedbackType, message, mutation])
 
-  const isValidEmail = !shouldVerifyEmail || (!!email && email.includes('@'))
+  const isValidEmail = !shouldVerifyEmail || (!!email && isValidEmailFunction(email))
   const isValidMessage = !shouldVerifyMessage || message.length > 0
   const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 

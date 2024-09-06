@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
@@ -13,12 +13,14 @@ import Typography from '@/components/shared/Typography'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
+import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
 
 /*
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-(mobile-app)-%5BWIP%5D?node-id=4232%3A6109&mode=dev
  */
 const Page = () => {
   const { t } = useTranslation()
+  const queryClient = useQueryClient()
   const { email, tmpVerificationToken } = useLocalSearchParams()
 
   const [code, setCode] = useState('')
@@ -26,6 +28,9 @@ const Page = () => {
   // TODO handle expired token, token mismatch, add resend token button, etc.
   const mutation = useMutation({
     mutationFn: () => clientApi.verifiedEmailsControllerVerifyEmail(code),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: vehiclesOptions().queryKey })
+    },
   })
 
   const handleVerify = () => {

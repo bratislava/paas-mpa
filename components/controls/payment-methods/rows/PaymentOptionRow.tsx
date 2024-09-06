@@ -41,7 +41,7 @@ const PaymentOptionRow = ({ variant, onContextMenuPress, selected, showControlCh
   } satisfies Record<typeof variant, string>
 
   return (
-    <Panel className={cn(selected && 'border border-dark')}>
+    <Panel className={cn('border', selected ? 'border-dark' : 'border-soft')}>
       <FlexRow className="items-center">
         <View className="flex-1 flex-row items-center g-3">
           <AvatarSquare variant={variant} />

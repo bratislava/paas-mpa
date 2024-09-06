@@ -9,10 +9,9 @@ import FieldShowcase from '@/components/showcases/FieldShowcase'
 import FloatingButtonShowcase from '@/components/showcases/FloatingButtonShowcase'
 import IconShowCase from '@/components/showcases/IconShowCase'
 import ListRowsShowcase from '@/components/showcases/ListRowsShowcase'
+import PanelShowcase from '@/components/showcases/PanelShowcase'
 import ParkingCardsShowcase from '@/components/showcases/ParkingCardsShowcase'
 import SegmentBadgeShowcase from '@/components/showcases/SegmentBadgeShowcase'
-import SelectButtonShowcase from '@/components/showcases/SelectButtonShowcase'
-import SurfaceShowcase from '@/components/showcases/SurfaceShowcase'
 import SwitchShowcase from '@/components/showcases/SwitchShowcase'
 import TextInputShowcase from '@/components/showcases/TextInputShowcase'
 import TimeSelectorShowcase from '@/components/showcases/TimeSelectorShowcase'
@@ -24,9 +23,8 @@ const StyleguideScreen = () => (
     <ButtonShowcase />
     <FloatingButtonShowcase />
     <TextInputShowcase />
-    <SelectButtonShowcase />
     <FieldShowcase />
-    <SurfaceShowcase />
+    <PanelShowcase />
     <DividerShowcase />
     <TimeSelectorShowcase />
     <CheckBoxShowcase />

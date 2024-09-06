@@ -5,7 +5,7 @@ import Panel from '@/components/shared/Panel'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 
-const SurfaceShowcase = () => {
+const PanelShowcase = () => {
   return (
     <View className="p-4 g-4">
       <Panel>
@@ -23,4 +23,4 @@ const SurfaceShowcase = () => {
   )
 }
 
-export default SurfaceShowcase
+export default PanelShowcase
