@@ -27,9 +27,10 @@ const PERMISSION_TABS: PermissionTab[] = [
 ]
 
 const renderScene = (routeProps: RouteProps, index: number) => {
-  const onContinue = () => {
-    const nextTab = PERMISSION_TABS[index + 1]
+  const sceneTabIndex = PERMISSION_TABS.findIndex(({ key }) => key === routeProps.route.key)
 
+  const onContinue = () => {
+    const nextTab = PERMISSION_TABS[sceneTabIndex + 1]
     if (nextTab) {
       routeProps.jumpTo(nextTab.key)
     } else {
@@ -37,11 +38,12 @@ const renderScene = (routeProps: RouteProps, index: number) => {
     }
   }
 
-  const PermissionsComponent = PERMISSION_TABS.find(
-    ({ key }) => key === routeProps.route.key,
-  )?.component
+  const PermissionsComponent = PERMISSION_TABS[sceneTabIndex]?.component
 
-  return PermissionsComponent ? <PermissionsComponent onContinue={onContinue} /> : null
+  // render only the current tab to ensure permissions are requested in order and not all at once
+  return sceneTabIndex === index && PermissionsComponent ? (
+    <PermissionsComponent onContinue={onContinue} />
+  ) : null
 }
 
 const PermissionsScreen = () => {
