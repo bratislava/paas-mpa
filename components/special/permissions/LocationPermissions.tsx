@@ -1,5 +1,3 @@
-// TODO Use ScreenView
-
 import { PermissionStatus } from 'expo-location'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

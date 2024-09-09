@@ -1,5 +1,3 @@
-// TODO Use ScreenView
-
 import { useMutation } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
