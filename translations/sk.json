@@ -12,6 +12,7 @@
   "AddParkingCards.Errors.EmailAlreadyVerified": "E-mail už bol pridaný",
   "AddParkingCards.Errors.GeneralError": "Vyskytla sa chyba.",
   "AddParkingCards.Errors.InvalidEmail": "E-mailová adresa má zlý formát",
+  "AddParkingCards.Errors.TokenIncorrect": "Zadaný kód nie je platný",
   "AddParkingCards.fieldParkingCardType.helptext": "Budú pridané iba platné parkovacie karty.",
   "AddParkingCards.fieldParkingCardType.label": "Vyberte, aké karty chcete pridať",
   "AddParkingCards.instructions": "Ak chcete používať bonusovú či návštevnícku kartu, zadajte emailovú adresu, na ktorú Vám prišlo potvrdenie o vydaní kariet vo Vašom PAAS účte. Po potvrdení emailu môžete karty v aplikácii jednoducho používať.",

@@ -12,6 +12,7 @@
   "AddParkingCards.Errors.EmailAlreadyVerified": "Email has been added already",
   "AddParkingCards.Errors.GeneralError": "An error occurred.",
   "AddParkingCards.Errors.InvalidEmail": "Email address has wrong format",
+  "AddParkingCards.Errors.TokenIncorrect": "Submitted code is incorrect",
   "AddParkingCards.fieldParkingCardType.helptext": "Only active parking card will be added.",
   "AddParkingCards.fieldParkingCardType.label": "Choose type of parking cards to be added",
   "AddParkingCards.instructions": "If you want to use a bonus or visitor card, enter the email address to which you received confirmation of the issuance of the cards in your PAAS account. After confirming the email, you can easily use the cards in the application.",

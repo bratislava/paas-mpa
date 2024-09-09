@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
@@ -14,6 +15,8 @@ import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
+import { SERVICEERROR } from '@/modules/backend/openapi-generated'
+import { isServiceError } from '@/utils/errorService'
 
 /*
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-(mobile-app)-%5BWIP%5D?node-id=4232%3A6109&mode=dev
@@ -24,32 +27,48 @@ const Page = () => {
   const { email, tmpVerificationToken } = useLocalSearchParams()
 
   const [code, setCode] = useState('')
+  const [expectedError, setExpectedError] = useState('')
 
   // TODO handle expired token, token mismatch, add resend token button, etc.
   const mutation = useMutation({
-    mutationFn: () => clientApi.verifiedEmailsControllerVerifyEmail(code),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: vehiclesOptions().queryKey })
+    mutationFn: (verificationCode: string) =>
+      clientApi.verifiedEmailsControllerVerifyEmail(verificationCode),
+    onSuccess: async (res) => {
+      await queryClient.invalidateQueries({ queryKey: vehiclesOptions().queryKey })
+
+      const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
+
+      router.replace({
+        pathname: '/parking-cards/verification/verification-result',
+        params: {
+          email,
+          status: 'verified',
+          licencePlates: licencePlates.join(', '),
+        },
+      })
+    },
+    onError: (error) => {
+      if (
+        isAxiosError(error) &&
+        isServiceError(error.response?.data) &&
+        error.response?.data.errorName === SERVICEERROR.EmailVerificationTokenIncorrect
+      ) {
+        setExpectedError(t('AddParkingCards.Errors.TokenIncorrect'))
+      } else {
+        setExpectedError(t('AddParkingCards.Errors.GeneralError'))
+      }
     },
   })
 
   const handleVerify = () => {
     if (code.length === 6) {
-      // TODO handle error
-      mutation.mutate(undefined, {
-        onSuccess: (res) => {
-          const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
+      mutation.mutate(code)
+    }
+  }
 
-          router.replace({
-            pathname: '/parking-cards/verification/verification-result',
-            params: {
-              email,
-              status: 'verified',
-              licencePlates: licencePlates.join(', '),
-            },
-          })
-        },
-      })
+  const handleFocus = () => {
+    if (expectedError) {
+      setExpectedError('')
     }
   }
 
@@ -80,7 +99,9 @@ const Page = () => {
               accessibilityLabel={t('AddParkingCards.codeInputLabel')}
               value={code}
               setValue={setCode}
+              onFocus={handleFocus}
               onBlur={handleVerify}
+              error={expectedError}
             />
           </ContentWithAvatar>
         </ScreenViewCentered>
