@@ -5,6 +5,7 @@ import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { clientApi } from '@/modules/backend/client-api'
 import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
 import { CreateVehicleDto, UpdateVehicleDto, VehicleDto } from '@/modules/backend/openapi-generated'
+import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
 export type AddVehicle = {
   licencePlate: string
@@ -72,7 +73,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
   const addVehicle = useCallback(
     async (vehicle: AddVehicle) => {
       await insertMutation.mutateAsync({
-        vehiclePlateNumber: vehicle.licencePlate,
+        vehiclePlateNumber: sanitizeLicencePlate(vehicle.licencePlate),
         name: vehicle.vehicleName,
         isDefault: vehicles.length === 0 || !!vehicle.isDefault,
       })

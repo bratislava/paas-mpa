@@ -1,6 +1,7 @@
 import { InitiatePaymentRequestDto, ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { ApplicationLocale, MapUdrZone } from '@/modules/map/types'
 import { getPaygateLanguageFromLocale } from '@/utils/getPaygateLanguageFromLocale'
+import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
 /**
  * Function to create price request body needed for having fresh parkingStart
@@ -33,7 +34,7 @@ export const createPriceRequestBody = ({
     npkId: npk?.identificator || undefined, // TODO If `|| undefined` is intentional, please explain in comment.
     ticket: {
       udr: String(udr?.udrId) ?? '',
-      ecv: licencePlate ?? '',
+      ecv: sanitizeLicencePlate(licencePlate) ?? '',
       parkingStart,
       parkingEnd,
     },

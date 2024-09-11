@@ -130,10 +130,8 @@ const FeedbackScreen = () => {
                 ref={messageRef}
                 value={message}
                 multiline
-                className="h-auto grow"
-                textAlignVertical="top"
                 blurOnSubmit={false}
-                numberOfLines={15}
+                numberOfLines={10}
                 onChangeText={setMessage}
                 onFocus={handleMessageFocus}
                 onBlur={handleMessageBlur}

@@ -140,6 +140,7 @@
   "ParkingCards.type.electric-car": "Electric car card",
   "ParkingCards.type.other": "Other card",
   "ParkingCards.type.resident": "Resident card",
+  "ParkingCards.type.social-services": "Social services card",
   "ParkingCards.type.subscriber": "Subscriber card",
   "ParkingCards.type.tzp": "ŤZP card",
   "ParkingCards.type.visitor": "Visitor card",
