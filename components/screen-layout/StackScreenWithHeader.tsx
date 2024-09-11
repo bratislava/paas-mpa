@@ -9,7 +9,10 @@ import { cn } from '@/utils/cn'
 
 import IconButton from '../shared/IconButton'
 
-type Props = React.ComponentProps<typeof Stack.Screen>
+// The options prop is union type (function and object) so we need to exclude the function variant.
+// The reason is that we only use the object variant.
+type Options = Exclude<React.ComponentProps<typeof Stack.Screen>['options'], Function>
+type Props = { options: Options } & React.ComponentProps<typeof Stack.Screen>
 
 /**
  * Component that wraps Stack.Screen and adds some default options
@@ -28,7 +31,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
 
   const headerSideWidth = Math.max(headerLeftWidth, headerRightWidth)
 
-  const renderHeader: NonNullable<NonNullable<Props['options']>['header']> = useCallback(
+  const renderHeader: NonNullable<NonNullable<Options>['header']> = useCallback(
     ({ options: headerOptions, back }) => {
       return (
         <View

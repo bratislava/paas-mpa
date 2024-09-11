@@ -55,7 +55,7 @@ const ModalContentWithActions = ({
   return (
     <ModalContent {...rest} className="g-6">
       <View className="items-center">
-        {hideAvatar ? null : customAvatarComponent ?? <AvatarCircle variant={variant} />}
+        {hideAvatar ? null : (customAvatarComponent ?? <AvatarCircle variant={variant} />)}
       </View>
       <View className="g-2">
         <Typography variant="h1" className="text-center">

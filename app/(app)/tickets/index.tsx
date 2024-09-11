@@ -79,7 +79,7 @@ const TicketsRoute = ({ active }: RouteProps) => {
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
 
-  useQueryInvalidateOnTicketExpire(active ? tickets ?? null : null, refetch, ['Tickets'])
+  useQueryInvalidateOnTicketExpire(active ? (tickets ?? null) : null, refetch, ['Tickets'])
 
   const loadMore = () => {
     if (hasNextPage) {
