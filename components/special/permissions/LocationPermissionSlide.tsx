@@ -7,7 +7,7 @@ import { ImageLocationPermissions } from '@/assets/onboarding-slides'
 import { PermissionsSlide } from '@/components/special/permissions/PermissionsSlide'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
 
-export const LocationPermissions = ({ onContinue }: RouteComponentProps) => {
+export const LocationPermissionSlide = ({ onContinue }: RouteComponentProps) => {
   const { t } = useTranslation()
 
   const { locationPermissionStatus, getLocationPermission } = useLocationPermission()

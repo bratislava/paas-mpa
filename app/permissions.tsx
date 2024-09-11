@@ -4,8 +4,8 @@ import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
-import { LocationPermissions } from '@/components/special/permissions/LocationPermissions'
-import { NotificationPermissions } from '@/components/special/permissions/NotificationPermissions'
+import { LocationPermissionSlide } from '@/components/special/permissions/LocationPermissionSlide'
+import { NotificationPermissionSlide } from '@/components/special/permissions/NotificationPermissionSlide'
 
 // TODO Use ScreenView
 
@@ -22,8 +22,8 @@ export type RouteComponentProps = { onContinue: () => void }
 type PermissionTab = { key: RouteKeys; component: (props: RouteComponentProps) => JSX.Element }
 
 const PERMISSION_TABS: PermissionTab[] = [
-  { key: 'notifications', component: NotificationPermissions },
-  { key: 'location', component: LocationPermissions },
+  { key: 'notifications', component: NotificationPermissionSlide },
+  { key: 'location', component: LocationPermissionSlide },
 ]
 
 const renderScene = (routeProps: RouteProps, index: number) => {

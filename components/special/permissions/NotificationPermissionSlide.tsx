@@ -10,7 +10,7 @@ import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
 import { UnifiedPermissionStatus } from '@/utils/types'
 
-export const NotificationPermissions = ({ onContinue }: RouteComponentProps) => {
+export const NotificationPermissionSlide = ({ onContinue }: RouteComponentProps) => {
   const { t } = useTranslation()
 
   const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
@@ -26,7 +26,7 @@ export const NotificationPermissions = ({ onContinue }: RouteComponentProps) => 
     }
   }, [onContinue, notificationPermissionStatus])
 
-  const onPress = async () => {
+  const handlePress = async () => {
     const result = await requestNotificationPermissionAndRegisterDevice()
 
     if (result === UnifiedPermissionStatus.GRANTED) {
@@ -39,7 +39,7 @@ export const NotificationPermissions = ({ onContinue }: RouteComponentProps) => 
       title={t('PermissionsScreen.notifications.title')}
       text={t('PermissionsScreen.notifications.text')}
       SvgImage={ImageNotificationPermission}
-      onPress={onPress}
+      onPress={handlePress}
     />
   )
 }
