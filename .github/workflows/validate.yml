@@ -1,15 +1,16 @@
 name: Validate
 
-on: [ pull_request ]
+on: [pull_request]
 
 jobs:
   validate:
     name: Validate typescript
-    uses: bratislava/github-actions/.github/workflows/validate-typescript.yml@stable
+    uses: bratislava/github-actions/.github/workflows/validate-typescript-inhouse.yml@stable
     with:
-      workdir: '.'
+      directory: '.'
+      typescript-directory: '.'
 
-  eslint-check:
+  typescript-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,10 +21,12 @@ jobs:
 
       - run: yarn --frozen-lockfile
 
+      - name: Typescript check
+        run: yarn ts:check
+
       - name: ESlint check
         uses: sibiraj-s/action-eslint@v2
         with:
           eslint-args: '--ignore-path=.gitignore --quiet'
           extensions: 'md,ts,tsx'
           annotations: true
-

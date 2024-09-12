@@ -31,11 +31,11 @@ const Page = () => {
 
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState('')
-  const [errorCode, setErrorCode] = useState('')
+  const [expectedError, setExpectedError] = useState('')
 
   const handleInputFocus = () => {
-    if (errorCode) {
-      setErrorCode('')
+    if (expectedError) {
+      setExpectedError('')
     }
   }
 
@@ -56,7 +56,7 @@ const Page = () => {
         }
       } catch (error) {
         if (isErrorWithName(error)) {
-          setErrorCode(error.name)
+          setExpectedError(error.name)
         }
         // TODO handle error
       }
@@ -79,7 +79,7 @@ const Page = () => {
               autoFocus
               accessibilityLabel={t('Auth.codeInputLabel')}
               // TODO translation
-              error={errorCode ? t(`Auth.errors.${errorCode}`) : undefined}
+              error={expectedError ? t(`Auth.errors.${expectedError}`) : undefined}
               value={code}
               setValue={setCode}
               onFocus={handleInputFocus}
@@ -87,7 +87,7 @@ const Page = () => {
             />
 
             <View className="g-3">
-              {phone && errorCode === 'NotAuthorizedException' ? (
+              {phone && expectedError === 'NotAuthorizedException' ? (
                 <Button variant="secondary" onPress={() => resendConfirmationCode(phone)}>
                   {t('Auth.resendCode')}
                 </Button>
