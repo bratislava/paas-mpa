@@ -89,7 +89,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
         className={cn('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
       >
         {activeTicketsCount > 0 ? (
-          <View className="rounded-full bg-white shadow ">
+          <View className="rounded-full bg-white shadow">
             <Link asChild href="/tickets">
               <PressableStyled>
                 <FlexRow className="items-center p-2 pr-3 g-2">

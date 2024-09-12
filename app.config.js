@@ -60,6 +60,8 @@ module.exports = {
       ['./plugins/firebase.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
+      'expo-font',
+      'expo-secure-store',
     ],
     owner: 'bratislava',
     updates: {

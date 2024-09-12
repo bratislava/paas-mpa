@@ -3,7 +3,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 const SkeletonVehicleRow = () => {
   return (
-    <View className="flex-col rounded  bg-soft p-4">
+    <View className="flex-col rounded bg-soft p-4">
       <SkeletonPlaceholder borderRadius={4}>
         <SkeletonPlaceholder.Item gap={16}>
           <SkeletonPlaceholder.Item flexDirection="row" justifyContent="space-between" gap={40}>

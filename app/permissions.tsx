@@ -1,17 +1,11 @@
 import { router, Stack } from 'expo-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
 
-import { ImageLocationPermissions, ImageNotificationPermission } from '@/assets/onboarding-slides'
-import ContinueButton from '@/components/navigation/ContinueButton'
-import InfoSlide from '@/components/screen-layout/InfoSlide'
-import { useTranslation } from '@/hooks/useTranslation'
-import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
-import { useNotificationPermission } from '@/modules/map/hooks/useNotificationPermission'
-import { cn } from '@/utils/cn'
-import { UnifiedPermissionStatus } from '@/utils/types'
+import { LocationPermissionSlide } from '@/components/special/permissions/LocationPermissionSlide'
+import { NotificationPermissionSlide } from '@/components/special/permissions/NotificationPermissionSlide'
 
 // TODO Use ScreenView
 
@@ -24,63 +18,32 @@ type RouteProps = SceneRendererProps & {
   }
 }
 
-const PermissionsRoute = ({ route, jumpTo }: RouteProps) => {
-  const insets = useSafeAreaInsets()
-  const { t } = useTranslation()
+export type RouteComponentProps = { onContinue: () => void }
+type PermissionTab = { key: RouteKeys; component: (props: RouteComponentProps) => JSX.Element }
 
-  const { notificationPermissionStatus, requestNotificationPermissionAndRegisterDevice } =
-    useNotificationPermission()
-  const { locationPermissionStatus, getLocationPermission } = useLocationPermission()
+const PERMISSION_TABS: PermissionTab[] = [
+  { key: 'notifications', component: NotificationPermissionSlide },
+  { key: 'location', component: LocationPermissionSlide },
+]
 
-  const SvgImage = {
-    notifications: ImageNotificationPermission,
-    location: ImageLocationPermissions,
-  }[route.key]
-  const permissionStatus =
-    route.key === 'notifications' ? notificationPermissionStatus : locationPermissionStatus
-  const getPermission =
-    route.key === 'notifications'
-      ? requestNotificationPermissionAndRegisterDevice
-      : getLocationPermission
-  const onPermissionFinished = useCallback(() => {
-    if (route.key === 'notifications') {
-      jumpTo('location')
+const renderScene = (routeProps: RouteProps, index: number) => {
+  const sceneTabIndex = PERMISSION_TABS.findIndex(({ key }) => key === routeProps.route.key)
+
+  const onContinue = () => {
+    const nextTab = PERMISSION_TABS[sceneTabIndex + 1]
+    if (nextTab) {
+      routeProps.jumpTo(nextTab.key)
     } else {
       router.replace('/')
     }
-  }, [route.key, jumpTo])
+  }
 
-  useEffect(() => {
-    if (permissionStatus !== UnifiedPermissionStatus.UNDETERMINED) {
-      onPermissionFinished()
-    }
-  }, [onPermissionFinished, permissionStatus])
+  const PermissionsComponent = PERMISSION_TABS[sceneTabIndex]?.component
 
-  const translationMap = {
-    notifications: {
-      title: t('PermissionsScreen.notifications.title'),
-      text: t('PermissionsScreen.notifications.text'),
-    },
-    location: {
-      title: t('PermissionsScreen.location.title'),
-      text: t('PermissionsScreen.location.text'),
-    },
-  } satisfies Record<RouteKeys, any>
-
-  return (
-    <View className="flex-1 justify-start">
-      <InfoSlide
-        title={translationMap[route.key].title}
-        text={translationMap[route.key].text}
-        SvgImage={SvgImage}
-      />
-      <ContinueButton className={cn('mx-5', { 'mb-5': !insets.bottom })} onPress={getPermission} />
-    </View>
-  )
-}
-
-const renderScene = (routeProps: RouteProps, activeKey: RouteKeys) => {
-  return activeKey === routeProps.route.key ? <PermissionsRoute {...routeProps} /> : null
+  // render only the current tab to ensure permissions are requested in order and not all at once
+  return sceneTabIndex === index && PermissionsComponent ? (
+    <PermissionsComponent onContinue={onContinue} />
+  ) : null
 }
 
 const PermissionsScreen = () => {
@@ -88,15 +51,14 @@ const PermissionsScreen = () => {
   const insets = useSafeAreaInsets()
 
   const [index, setIndex] = useState(0)
-  const [routes] = useState<{ key: RouteKeys }[]>([{ key: 'notifications' }, { key: 'location' }])
 
   return (
     <View className="flex-1 bg-white" style={{ paddingBottom: insets.bottom }}>
       <Stack.Screen options={{ headerShown: false }} />
 
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={(props) => renderScene(props, routes[index].key)}
+      <TabView<PermissionTab>
+        navigationState={{ index, routes: PERMISSION_TABS }}
+        renderScene={(props) => renderScene(props, index)}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
         renderTabBar={() => null}

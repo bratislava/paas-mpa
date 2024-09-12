@@ -5,14 +5,14 @@ import { SvgProps } from 'react-native-svg'
 import Typography from '@/components/shared/Typography'
 import { cn } from '@/utils/cn'
 
-type Props = {
+export type InfoSlideProps = {
   title: string
   text: string
   SvgImage: FC<SvgProps>
   className?: string
 }
 
-const InfoSlide = ({ title, text, SvgImage, className }: Props) => {
+const InfoSlide = ({ title, text, SvgImage, className }: InfoSlideProps) => {
   return (
     <View className={cn('min-h-0 flex-1', className)}>
       {/* TODO if image gets deformed by scaling, try to use preserveAspectRatio */}
