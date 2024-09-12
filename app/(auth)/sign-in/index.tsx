@@ -43,12 +43,12 @@ const Page = () => {
     countries.find((country) => country.iso === selectedCountry?.toUpperCase())?.code || '421'
 
   const [loading, setLoading] = useState(false)
-  const [errorName, setErrorName] = useState('')
+  const [expectedError, setExpectedError] = useState('')
   const [phone, setPhone] = useState('')
 
   const handleInputFocus = () => {
-    if (errorName) {
-      setErrorName('')
+    if (expectedError) {
+      setExpectedError('')
     }
   }
 
@@ -67,7 +67,7 @@ const Page = () => {
     } catch (error) {
       // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
-        setErrorName(error.name)
+        setExpectedError(error.name)
       }
     }
 
@@ -75,8 +75,8 @@ const Page = () => {
   }
 
   const handleChangeText = (value: string) => {
-    if (errorName) {
-      setErrorName('')
+    if (expectedError) {
+      setExpectedError('')
     }
     // TODO this works only when user pastes the whole number from clipboard, and only if it contains a space after the country code
     // Check if user pasted a phone number with country code and replace country code if it differs from the selected one
@@ -123,7 +123,7 @@ const Page = () => {
                 onChangeText={handleChangeText}
                 keyboardType="phone-pad"
                 autoComplete="tel"
-                hasError={!!errorName}
+                hasError={!!expectedError}
                 onFocus={handleInputFocus}
                 autoFocus
                 returnKeyType="done"
@@ -131,9 +131,9 @@ const Page = () => {
               />
             </FlexRow>
 
-            {errorName ? (
+            {expectedError ? (
               // TODO translation
-              <Typography className="text-negative">{t(`Auth.errors.${errorName}`)}</Typography>
+              <Typography className="text-negative">{t(`Auth.errors.${expectedError}`)}</Typography>
             ) : null}
           </View>
 

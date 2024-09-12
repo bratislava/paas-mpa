@@ -27,7 +27,12 @@ const Page = () => {
   const { email, tmpVerificationToken } = useLocalSearchParams()
 
   const [code, setCode] = useState('')
-  const [expectedError, setExpectedError] = useState('')
+  const [expectedError, setExpectedError] = useState<string>()
+
+  const SERVICE_ERROR_TRANSLATION_KEY_MAP: Partial<Record<SERVICEERROR, string>> = {
+    [SERVICEERROR.EmailVerificationTokenIncorrect]: t('AddParkingCards.Errors.TokenIncorrect'),
+    [SERVICEERROR.EmailVerificationTokenExpired]: t('AddParkingCards.Errors.TokenExpired'),
+  }
 
   // TODO handle expired token, token mismatch, add resend token button, etc.
   const mutation = useMutation({
@@ -48,15 +53,12 @@ const Page = () => {
       })
     },
     onError: (error) => {
-      if (
-        isAxiosError(error) &&
-        isServiceError(error.response?.data) &&
-        error.response?.data.errorName === SERVICEERROR.EmailVerificationTokenIncorrect
-      ) {
-        setExpectedError(t('AddParkingCards.Errors.TokenIncorrect'))
-      } else {
-        setExpectedError(t('AddParkingCards.Errors.GeneralError'))
-      }
+      const translation =
+        isAxiosError(error) && isServiceError(error.response?.data)
+          ? SERVICE_ERROR_TRANSLATION_KEY_MAP[error.response.data.errorName]
+          : t('AddParkingCards.Errors.GeneralError')
+
+      setExpectedError(translation)
     },
   })
 
