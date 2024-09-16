@@ -41,7 +41,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         bottomInset={purchaseButtonContainerHeight}
         snapPoints={snapPoints}
         handleComponent={BottomSheetHandleWithShadow}
-        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
+        animateOnMount={!reducedMotion}
       >
         {/**
          * Better approach for zero height bottom sheet: https://github.com/gorhom/react-native-bottom-sheet/issues/1573
