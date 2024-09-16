@@ -1,6 +1,6 @@
-import { PropsWithChildren, useCallback, useState } from 'react'
-import { LayoutChangeEvent, useWindowDimensions } from 'react-native'
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import { PropsWithChildren, useCallback } from 'react'
+import { LayoutChangeEvent } from 'react-native'
+import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
 export type BottomSheetTopAttachmentProps = PropsWithChildren & {
   animatedPosition: SharedValue<number>
@@ -10,19 +10,18 @@ const BottomSheetTopAttachment = ({
   children,
   animatedPosition,
 }: BottomSheetTopAttachmentProps) => {
-  const { height: screenHeight } = useWindowDimensions()
-  const [height, setHeight] = useState(0)
-  const animatedStyles = useAnimatedStyle(() => {
-    const translateY = interpolate(animatedPosition.value, [0, screenHeight], [0, screenHeight])
+  const sharedHeight = useSharedValue(0)
 
-    return {
-      transform: [{ translateY: -height }, { translateY }],
-    }
-  })
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: -sharedHeight.value }, { translateY: animatedPosition.value }],
+  }))
 
-  const handleLayout = useCallback((event: LayoutChangeEvent) => {
-    setHeight(event.nativeEvent.layout.height)
-  }, [])
+  const handleLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      sharedHeight.value = event.nativeEvent.layout.height
+    },
+    [sharedHeight],
+  )
 
   return (
     <Animated.View
