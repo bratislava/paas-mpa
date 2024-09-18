@@ -84,7 +84,7 @@ const Page = () => {
         enableDynamicSizing
         enablePanDownToClose
         backdropComponent={renderBackdrop}
-        animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
+        animateOnMount={!reducedMotion}
       >
         <BottomSheetContent>
           <PressableStyled onPress={handleActionSetDefault}>

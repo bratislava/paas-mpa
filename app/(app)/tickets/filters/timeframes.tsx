@@ -17,7 +17,6 @@ import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStore
 const TicketsFiltersTimeframesScreen = () => {
   const reducedMotion = useReducedMotion()
 
-  const snapPoints = [300]
   const ref = useRef<BottomSheet>(null)
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
@@ -48,11 +47,10 @@ const TicketsFiltersTimeframesScreen = () => {
     <BottomSheet
       ref={ref}
       backdropComponent={renderBackdrop}
-      index={0}
-      snapPoints={snapPoints}
       onChange={handleSheetChanges}
+      enableDynamicSizing
       enablePanDownToClose
-      animateOnMount={!reducedMotion} // TODO remove when this issues is fixed https://github.com/gorhom/react-native-bottom-sheet/issues/1560
+      animateOnMount={!reducedMotion}
     >
       <BottomSheetContent>
         <View>
