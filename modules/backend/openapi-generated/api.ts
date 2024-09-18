@@ -724,6 +724,7 @@ export const ParkingCardType = {
   Npk: 'NPK',
   Tzp: 'TZP',
   Elektromobil: 'ELEKTROMOBIL',
+  Social: 'SOCIAL',
   Other: 'OTHER',
 } as const
 

@@ -2,6 +2,7 @@ import BonusCard from '@/components/parking-cards/cards/BonusCard'
 import ElectricCarCard from '@/components/parking-cards/cards/ElectricCarCard'
 import OtherCard from '@/components/parking-cards/cards/OtherCard'
 import ResidentCard from '@/components/parking-cards/cards/ResidentCard'
+import SocialServicesCard from '@/components/parking-cards/cards/SocialServicesCard'
 import SubscriberCard from '@/components/parking-cards/cards/SubscriberCard'
 import TzpCard from '@/components/parking-cards/cards/TzpCard'
 import VisitorCard from '@/components/parking-cards/cards/VisitorCard'
@@ -74,7 +75,14 @@ const ParkingCard = ({ card }: Props) => {
           validUntil={card.validTo}
         />
       )
-    // case Social Services Card // TODO implement SocialServicesCard when BE returns the card type
+    case ParkingCardType.Social:
+      return (
+        <SocialServicesCard
+          zoneName={card.name}
+          licencePlate={card.vehiclePlateNumber}
+          validUntil={card.validTo}
+        />
+      )
     // case ParkingCardType.Other:
     default:
       return (
