@@ -17,6 +17,9 @@ module.exports = {
       supportsTablet: true,
       bundleIdentifier: 'com.bratislava.paas',
       googleServicesFile: './GoogleService-Info.plist',
+      entitlements: {
+        'aps-environment': 'development',
+      },
     },
     android: {
       adaptiveIcon: {
