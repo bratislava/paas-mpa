@@ -3,7 +3,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.3.1',
+    version: '1.4.0',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -17,6 +17,9 @@ module.exports = {
       supportsTablet: true,
       bundleIdentifier: 'com.bratislava.paas',
       googleServicesFile: './GoogleService-Info.plist',
+      entitlements: {
+        'aps-environment': 'development',
+      },
     },
     android: {
       adaptiveIcon: {
