@@ -3,7 +3,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.4.0',
+    version: '1.4.1',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -65,6 +65,12 @@ module.exports = {
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      [
+        '@bacons/apple-targets',
+        {
+          appleTeamId: '2P6QC78LFR',
+        },
+      ],
     ],
     owner: 'bratislava',
     updates: {

@@ -29,6 +29,7 @@ import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import { useToastProviderProps } from '@/components/screen-layout/Snackbar/useSnackbar'
 import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import { environment } from '@/environment'
+import LiveActivityControlModule from '@/modules/live-activity-module/src/LiveActivityControlModule'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
 
@@ -67,6 +68,20 @@ const RootLayout = () => {
   })
 
   useEffect(() => {
+    console.log(
+      'aaa',
+      LiveActivityControlModule.areActivitiesEnabled(),
+      LiveActivityControlModule.startActivity(
+        new Date(1_704_300_710 * 1000).getTime(),
+        new Date(1_704_304_310 * 1000).getTime(),
+        'Started at: ',
+        'Ends at:',
+        'https://www.apple.com',
+      ),
+    )
+
+    console.log('truee')
+
     if (environment.deployment === 'production') {
       onFetchUpdateAsync()
     }

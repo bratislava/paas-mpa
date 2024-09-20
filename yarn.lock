@@ -1698,6 +1698,25 @@
     "@babel/helper-validator-identifier" "^7.24.7"
     to-fast-properties "^2.0.0"
 
+"@bacons/apple-targets@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@bacons/apple-targets/-/apple-targets-0.0.5.tgz#6d7defc8c3d60ca0018ce2a827cfeb020af88bc6"
+  integrity sha512-7NJrTZfyccC7u+bIXRmHyVz7CWNB9yX48QNm+CxGvgw9cwwm19VvJJByb+q2Qgyld06ckXkqI0vcqOhSjw0PPw==
+  dependencies:
+    "@bacons/xcode" "^1.0.0-alpha.13"
+    "@react-native/normalize-color" "^2.1.0"
+    fs-extra "^11.2.0"
+    glob "^10.2.6"
+
+"@bacons/xcode@^1.0.0-alpha.13":
+  version "1.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@bacons/xcode/-/xcode-1.0.0-alpha.15.tgz#605eb05db61b640fcbb95bd851b86608cebd8c5d"
+  integrity sha512-qURX00TJIbJJd2NfbeUp6uzZusPF8noaNZ+N4gbzFc/+O33XNs5N8pqYC/5I9BLHaLNkPzwi+/Fn5usqXnlW2Q==
+  dependencies:
+    "@expo/plist" "^0.0.18"
+    debug "^4.3.4"
+    uuid "^8.3.2"
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
@@ -2145,6 +2164,15 @@
     split "^1.0.1"
     sudo-prompt "9.1.1"
 
+"@expo/plist@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@expo/plist/-/plist-0.0.18.tgz#9abcde78df703a88f6d9fa1a557ee2f045d178b0"
+  integrity sha512-+48gRqUiz65R21CZ/IXa7RNBXgAI/uPSdvJqoN9x1hfL44DNbUoWHgHiEXTx7XelcATpDwNTz6sHLfy0iNqf+w==
+  dependencies:
+    "@xmldom/xmldom" "~0.7.0"
+    base64-js "^1.2.3"
+    xmlbuilder "^14.0.0"
+
 "@expo/plist@^0.1.0":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@expo/plist/-/plist-0.1.1.tgz#f9abf0f52ca994465d8129770cd18fac5e23ac52"
@@ -2228,10 +2256,10 @@
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-14.0.0.tgz#48ce0aa5c05873b07c0c78bfe16c870388f4de9a"
   integrity sha512-5orm59pdnBQlovhU9k4DbjMUZBHNlku7IRgFY56f7pcaaCnXq9yaLJoOQl9sMwNdFzf4gnkTyHmR5uN10mI9rA==
 
-"@expo/vector-icons@~14.0.2":
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-14.0.2.tgz#f7f6c4cb5ef356d1171d2b4e059217556738fd3b"
-  integrity sha512-70LpmXQu4xa8cMxjp1fydgRPsalefnHaXLzIwaHMEzcZhnyjw2acZz8azRrZOslPVAWlxItOa2Dd7WtD/kI+CA==
+"@expo/vector-icons@^14.0.3":
+  version "14.0.3"
+  resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-14.0.3.tgz#2e095118dadc0dac80a230bfa659949776b16d74"
+  integrity sha512-UJAKOXPPi6ez/1QZfoFVopCH3+c12Sw+T+IIVkvONCEN7zjN1fLxxWHkZ7Spz4WO5EH2ObtaJfCe/k4rw+ftxA==
   dependencies:
     prop-types "^15.8.1"
 
@@ -2906,6 +2934,11 @@
     "@react-native/babel-preset" "0.74.87"
     hermes-parser "0.19.1"
     nullthrows "^1.1.1"
+
+"@react-native/normalize-color@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
+  integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
 
 "@react-native/normalize-colors@0.74.84":
   version "0.74.84"
@@ -4099,7 +4132,7 @@
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
   integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
 
-"@xmldom/xmldom@~0.7.7":
+"@xmldom/xmldom@~0.7.0", "@xmldom/xmldom@~0.7.7":
   version "0.7.13"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.13.tgz#ff34942667a4e19a9f4a0996a76814daac364cf3"
   integrity sha512-lm2GW5PkosIzccsaZIz7tp8cPADSIlIHWDFTR1N0SzfinhhYgeIQjFMz4rYzanCScr3DqQLeomUDArp6MWKm+g==
@@ -6773,7 +6806,7 @@ expo-modules-autolinking@1.11.2:
     require-from-string "^2.0.2"
     resolve-from "^5.0.0"
 
-expo-modules-core@1.12.24:
+expo-modules-core@1.12.24, expo-modules-core@^1.12.24:
   version "1.12.24"
   resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-1.12.24.tgz#8c35a16ed6ecb8997f6bd527fc95a8c22f343602"
   integrity sha512-3geIe2ecizlp7l26iY8Nmc59z2d1RUC5nQZtI9iJoi5uHEUV/zut8e4zRLFVnZb8KOcMcEDsrvaBL5DPnqdfpg==
@@ -7183,7 +7216,7 @@ fs-extra@9.0.0:
     jsonfile "^6.0.1"
     universalify "^1.0.0"
 
-fs-extra@^11.1.0:
+fs-extra@^11.1.0, fs-extra@^11.2.0:
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.2.0.tgz#e70e17dfad64232287d01929399e0ea7c86b0e5b"
   integrity sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==
@@ -7410,7 +7443,7 @@ glob@7.2.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.7, glob@^7.2.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^10.2.2:
+glob@^10.2.2, glob@^10.2.6:
   version "10.4.5"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.5.tgz#f4d9f0b90ffdbab09c9d77f5f29b4262517b0956"
   integrity sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==
