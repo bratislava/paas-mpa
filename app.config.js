@@ -61,6 +61,7 @@ module.exports = {
         },
       ],
       ['./plugins/firebase.plugin.cjs', 'custom'],
+      ['./plugins/liveActivities.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
       'expo-font',

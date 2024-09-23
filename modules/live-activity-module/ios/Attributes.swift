@@ -7,8 +7,8 @@ struct Attributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var startTime: Date
         var endTime: Date
-        var title: String
-        var headline: String
+        var licencePlate: String
+        var parkingLocation: String
         var widgetUrl: String
     }
 }
