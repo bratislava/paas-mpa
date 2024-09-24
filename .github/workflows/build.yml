@@ -1,0 +1,28 @@
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚂 Setup repo
+        uses: actions/checkout@v4
+
+      - name: 🚛 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: 🚧 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_BUILD_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🚀 Build app
+        run: eas build --profile production --platform all --auto-submit --non-interactive
