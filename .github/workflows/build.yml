@@ -1,7 +1,8 @@
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'prod**'
+      - 'staging**'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,5 +25,19 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install
 
-      - name: 🚀 Build app
-        run: eas build --profile production --platform all --auto-submit --non-interactive
+      - name: 🚀 Build production
+        if: contains(github.event.ref, 'prod')
+        run: |
+          if [[ ${{ github.event.ref }} == *"test-ota"* ]]; then
+            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod-test --platform all --non-interactive
+          elif [[ ${{ github.event.ref }} == *"ota"* ]]; then
+            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod --platform all --non-interactive
+          elif [[ ${{ github.event.ref }} == *"test"* ]]; then
+            eas build --profile prod-test --platform all --auto-submit --non-interactive
+          else
+            eas build --profile prod --platform all --auto-submit --non-interactive
+          fi
+
+      - name: 🚀 Build staging
+        if: contains(github.event.ref, 'staging')
+        run: eas build --profile staging --platform all --auto-submit --non-interactive

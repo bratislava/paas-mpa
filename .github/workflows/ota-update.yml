@@ -1,7 +1,8 @@
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+ota-prod.[0-9]+'
+      - 'ota-prod[0-9]+.[0-9]+.[0-9]+'
+      - 'ota-staging[0-9]+.[0-9]+.[0-9]+'
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -24,5 +25,10 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install
 
-      - name: 🚀 Create update
-        run: eas update --auto --branch production --non-interactive
+      - name: 🚀 Build app
+        if: github.ref =~ ^refs\/tags\/prod-ota[0-9]+\.[0-9]+\.[0-9]+$
+        run: eas update --auto --branch prod --platform all --non-interactive
+
+      - name: 🚀 Build app
+        if: github.ref =~ ^refs\/tags\/staging-ota[0-9]+\.[0-9]+\.[0-9]+$
+        run: eas update --auto --branch staging --platform all --non-interactive
