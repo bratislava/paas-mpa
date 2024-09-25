@@ -26,16 +26,21 @@ jobs:
         run: yarn install
 
       - name: 🚀 Build production
-        if: contains(github.event.ref, 'prod')
+        if: contains(github.event.ref, 'prod') && !contains(github.event.ref, 'ota')
         run: |
-          if [[ ${{ github.event.ref }} == *"test-ota"* ]]; then
-            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod-test --platform all --non-interactive
-          elif [[ ${{ github.event.ref }} == *"ota"* ]]; then
-            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod --platform all --non-interactive
-          elif [[ ${{ github.event.ref }} == *"test"* ]]; then
+          if  [[ ${{ github.event.ref }} == *"test"* ]]; then
             eas build --profile prod-test --platform all --auto-submit --non-interactive
           else
             eas build --profile prod --platform all --auto-submit --non-interactive
+          fi
+
+      - name: 🚀 Update production
+        if: contains(github.event.ref, 'prod') && contains(github.event.ref, 'ota')
+        run: |
+          if [[ ${{ github.event.ref }} == *"test"* ]]; then
+            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod-test --platform all --non-interactive
+          else
+            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod --platform all --non-interactive
           fi
 
       - name: 🚀 Build staging
