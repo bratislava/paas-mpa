@@ -3,9 +3,12 @@ on:
     tags:
       - 'prod**'
       - 'staging**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      EXPO_UPDATE_MESSAGE: '${{ github.event.ref }} ${{ github.event.head_commit.message }}'
     steps:
       - name: 🚂 Setup repo
         uses: actions/checkout@v4
@@ -28,20 +31,20 @@ jobs:
       - name: 🚀 Build production
         if: contains(github.event.ref, 'prod') && !contains(github.event.ref, 'ota')
         run: |
-          if  [[ ${{ github.event.ref }} == *"test"* ]]; then
-            eas build --profile prod-test --platform all --auto-submit --non-interactive
-          else
-            eas build --profile prod --platform all --auto-submit --non-interactive
+          PROFILE="prod"
+          if [[ ${{ github.event.ref }} == *"test"* ]]; then
+            PROFILE="${PROFILE}-test"
           fi
+          eas build --profile "$PROFILE" --platform all --auto-submit --non-interactive
 
       - name: 🚀 Update production
         if: contains(github.event.ref, 'prod') && contains(github.event.ref, 'ota')
         run: |
+          PROFILE="prod"
           if [[ ${{ github.event.ref }} == *"test"* ]]; then
-            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod-test --platform all --non-interactive
-          else
-            eas update --message "${{ github.event.ref }} ${{ github.event.head_commit.message }}" --branch prod --platform all --non-interactive
+            PROFILE="${PROFILE}-test"
           fi
+          eas update --message "$EXPO_UPDATE_MESSAGE" --branch "$PROFILE" --platform all --non-interactive
 
       - name: 🚀 Build staging
         if: contains(github.event.ref, 'staging')
