@@ -15,9 +15,10 @@ import {
 } from '@expo-google-fonts/inter'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { PortalProvider } from '@gorhom/portal'
+import * as Sentry from '@sentry/react-native'
 /* eslint-enable babel/camelcase */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, useNavigationContainerRef } from 'expo-router'
 import * as Updates from 'expo-updates'
 import { Suspense, useEffect } from 'react'
 import { NativeModules } from 'react-native'
@@ -31,6 +32,19 @@ import OmnipresentComponent from '@/components/special/OmnipresentComponent'
 import { environment } from '@/environment'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
+
+const routingInstrumentation = new Sentry.ReactNavigationInstrumentation()
+
+Sentry.init({
+  dsn: environment.sentryDns,
+  debug: environment.deployment !== 'production',
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      routingInstrumentation,
+      enableNativeFramesTracking: true,
+    }),
+  ],
+})
 
 SplashScreen.preventAutoHideAsync()
 
@@ -56,6 +70,14 @@ const onFetchUpdateAsync = async () => {
 }
 
 const RootLayout = () => {
+  // Capture the NavigationContainer ref and register it with the instrumentation.
+  const ref = useNavigationContainerRef()
+  useEffect(() => {
+    if (ref) {
+      routingInstrumentation.registerNavigationContainer(ref)
+    }
+  }, [ref])
+
   // temp - replace with font we actually want to use
   const [fontsLoaded] = useFonts({
     /* eslint-disable unicorn/prefer-module,global-require */
@@ -116,4 +138,4 @@ const RootLayout = () => {
   )
 }
 
-export default RootLayout
+export default Sentry.wrap(RootLayout)
