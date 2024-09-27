@@ -1,0 +1,34 @@
+appId: com.bratislava.paas
+---
+- launchApp
+- waitForAnimationToEnd
+- tapOn:
+    id: activeTicketsCount
+- tapOn: Prolong
+- assertVisible: Pay
+- tapOn: Pay
+- runFlow:
+    when:
+      visible: "Pay\_ 1.50\_EUR"
+    commands:
+      - tapOn: "Pay\_ 1.50\_EUR"
+- runFlow:
+    when:
+      visible: "Zaplatiť\_ 1,50\_EUR"
+    commands:
+      - tapOn: "Zaplatiť\_ 1,50\_EUR"
+- inputText: '4263970000005262'
+- inputText: '0432'
+- inputText: '712'
+- runFlow:
+    when:
+      visible: "Pay\_ 1.50\_EUR"
+    commands:
+      - tapOn: "Pay\_ 1.50\_EUR"
+- runFlow:
+    when:
+      visible: "Zaplatiť\_ 1,50\_EUR"
+    commands:
+      - tapOn: "Zaplatiť\_ 1,50\_EUR"
+- assertVisible: Prolongation successful
+- tapOn: Back to map

@@ -1,0 +1,12 @@
+appId: com.bratislava.paas
+---
+- launchApp
+- waitForAnimationToEnd
+- tapOn:
+    id: activeTicketsCount
+- tapOn: Terminate
+- tapOn: Terminate
+- assertVisible: Termination successful
+- tapOn: Back
+- assertNotVisible: Terminate
+- tapOn: Go Back

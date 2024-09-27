@@ -61,6 +61,7 @@ const ChooseVehicleScreen = () => {
         headerRight: () => (
           <Button
             variant="plain"
+            testID="chooseVehicle"
             disabled={
               !!oneTimeLicencePlateError ||
               !((vehicle && !vehicle?.isOneTimeUse) || oneTimeLicencePlate)
@@ -82,6 +83,7 @@ const ChooseVehicleScreen = () => {
           errorMessage={oneTimeLicencePlateError}
         >
           <TextInput
+            testID="oneTimeVehiclePlate"
             autoCapitalize="characters"
             autoCorrect={false}
             value={oneTimeLicencePlate}

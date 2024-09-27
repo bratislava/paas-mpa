@@ -1,0 +1,32 @@
+appId: com.bratislava.paas
+---
+- launchApp
+- waitForAnimationToEnd
+- tapOn: 'Open menu'
+- tapOn:
+    id: 'Vehicles'
+- tapOn: 'Add new'
+- tapOn:
+    id: 'licencePlate'
+- inputText: 'BB222BB'
+- tapOn: 'Add new'
+- tapOn:
+    id: 'Add vehicle'
+- assertVisible: 'BB222BB'
+- tapOn: 'Edit vehicle'
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - tapOn: 'Delete'
+- runFlow:
+    when:
+      platform: ios
+    commands:
+      - tapOn:
+          point: '21%,91%'
+- tapOn:
+    id: 'Delete vehicle'
+- assertVisible: 'No vehicles'
+- tapOn: Go back
+- tapOn: Go back
