@@ -37,7 +37,10 @@ const routingInstrumentation = new Sentry.ReactNavigationInstrumentation()
 
 Sentry.init({
   dsn: environment.sentryDns,
+  // Debug mode sends logs to console even when enabled is false
   debug: environment.deployment !== 'production',
+  // Disabled in development to avoid unnecessary events in Sentry
+  enabled: environment.deployment === 'production',
   integrations: [
     new Sentry.ReactNativeTracing({
       routingInstrumentation,
