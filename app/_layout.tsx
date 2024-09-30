@@ -41,6 +41,7 @@ Sentry.init({
   debug: environment.deployment !== 'production',
   // Disabled in development to avoid unnecessary events in Sentry
   enabled: environment.deployment === 'production',
+  environment: environment.deployment,
   integrations: [
     new Sentry.ReactNativeTracing({
       routingInstrumentation,
