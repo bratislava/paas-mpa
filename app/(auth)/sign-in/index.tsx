@@ -141,9 +141,6 @@ const Page = () => {
             </View>
 
             <Markdown>{t('Auth.consent')}</Markdown>
-            <Markdown>{t('Auth.consent')}</Markdown>
-            <Markdown>{t('Auth.consent')}</Markdown>
-            <Markdown>{t('Auth.consent')}</Markdown>
 
             <ContinueButton
               loading={loading}
