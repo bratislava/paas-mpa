@@ -1,4 +1,4 @@
-name: Run Maestro tests
+name: Run Maestro tests on Android
 
 # on: [pull_request]
 
@@ -24,5 +24,5 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install
 
-      - name: 🚀 Run tests on iOS and Android devices
+      - name: 🚀 Run tests on Android device
         run: eas build --profile build-and-maestro-test --platform android --non-interactive
