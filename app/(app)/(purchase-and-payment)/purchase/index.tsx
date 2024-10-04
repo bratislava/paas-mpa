@@ -217,6 +217,7 @@ const PurchaseScreen = () => {
 
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
         <ModalContentWithActions
+          testID="addParkingCardsModal"
           customAvatarComponent={<ParkingCardAvatar />}
           title={t('PurchaseScreen.parkingCardModal.title')}
           text={t('PurchaseScreen.parkingCardModal.message')}

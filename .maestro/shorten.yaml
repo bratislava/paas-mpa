@@ -2,6 +2,8 @@ appId: com.bratislava.paas
 ---
 - launchApp
 - waitForAnimationToEnd
+- assertVisible:
+    id: activeTicketsCount
 - tapOn:
     id: activeTicketsCount
 - tapOn: Terminate

@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
 import { forwardRef, useCallback, useRef } from 'react'
-import { TextInput as RNTextInput, View } from 'react-native'
+import { Platform, TextInput as RNTextInput, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
 import { SearchIcon } from '@/assets/ui-icons'
@@ -46,6 +46,11 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>((props, ref) => {
     <>
       <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
       <BottomSheet
+        // Nested accessible is a problem with Maestro on iOS so we need to disable it on parent
+        // https://maestro.mobile.dev/platform-support/react-native#interacting-with-nested-components-on-ios
+        accessible={Platform.select({
+          ios: false,
+        })}
         key="mapZoneBottomSheet"
         ref={refSetter}
         keyboardBehavior="interactive"

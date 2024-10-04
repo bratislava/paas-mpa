@@ -75,7 +75,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
       ({ item }) => {
         if (isGeocodingFeature(item)) {
           return (
-            <View className="border-b border-divider py-4">
+            <View key={item.id} className="border-b border-divider py-4">
               <FlexRow className="items-center g-4">
                 <Icon name="location-pin" />
                 <View className="flex-1">
@@ -94,7 +94,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
         const zone = translateMapObject(item.properties, locale)
 
         return (
-          <View className="border-b border-divider py-4">
+          <View key={zone.id} testID={zone.udrId} className="border-b border-divider py-4">
             <FlexRow className="items-center">
               <ZoneBadge label={zone.udrId} />
               <Typography className="flex-1" numberOfLines={1}>

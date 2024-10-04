@@ -2,37 +2,30 @@ appId: com.bratislava.paas
 ---
 - launchApp
 - waitForAnimationToEnd
+- assertVisible: Open menu
 - tapOn: Open menu
 - tapOn:
     id: Parking cards
-- tapOn: 'Add parking cards'
-- assertVisible: 'Email address'
-- inputText: 'test-user@test.sk'
+- tapOn: Add parking cards
+- assertVisible: Email address
+- inputText: test-user@test.sk
 - hideKeyboard
 - scroll
-- tapOn: 'Continue'
+- tapOn: Continue
 - assertVisible:
-    id: 'tmpVerificationToken'
+    id: tmpVerificationToken
 - copyTextFrom:
-    id: 'tmpVerificationToken'
+    id: tmpVerificationToken
 - inputText: '${maestro.copiedText}'
-- tapOn: 'Continue'
+- tapOn: Continue
 - tapOn:
     id: test-user@test.sk
 - tapOn:
     id: emailMoreMenu
-- runFlow:
-    when:
-      platform: android
-    commands:
-      - tapOn: 'Remove email address'
-- runFlow:
-    when:
-      platform: ios
-    commands:
-      - tapOn:
-          point: 35%,91%
+- tapOn:
+    id: 'deleteEmailBottomSheetPressable'
 - tapOn: Yes, remove email
-- assertVisible: Choose an email to continue and show cards that are attached
+- assertVisible: Add parking cards
+- assertNotVisible: test-user@test.sk
 - tapOn: Go back
 - tapOn: Go back

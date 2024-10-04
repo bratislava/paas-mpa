@@ -2,40 +2,36 @@ appId: com.bratislava.paas
 ---
 - launchApp
 - waitForAnimationToEnd
+- assertVisible: Search for a place or address
+- tapOn: Search for a place or address
+- inputText: STU
+- tapOn:
+    id: '1103'
+- waitForAnimationToEnd
+- tapOn: Continue
 - runFlow:
     when:
-      platform: android
+      visible:
+        id: addParkingCardsModal
     commands:
-      - tapOn: 'Search for a place or address'
-      - inputText: STU
-      - tapOn: '1103'
-      - waitForAnimationToEnd
-      - tapOn: Continue
-- runFlow:
-    when:
-      platform: ios
-    commands:
-      - swipe:
-          start: '61%, 48%'
-          end: '54%, 42%'
-      - tapOn:
-          point: '50%,90%'
+      - tapOn: 'Later'
 - tapOn: Pay
 - tapOn:
     id: add-vehicle
 - tapOn:
-    id: 'oneTimeVehiclePlate'
-- inputText: 'BB222BR'
+    id: oneTimeVehiclePlate
+- inputText: BB222BR
 - tapOn:
     id: chooseVehicle
 - assertVisible: Pay
-- tapOn: 'Pay'
-- tapOn: "Pay\_ 1.50\_EUR"
+- tapOn: Pay
+- tapOn: Card information
 - inputText: '4263970000005262'
 - inputText: '0432'
 - inputText: '712'
+- hideKeyboard
 - tapOn: "Pay\_ 1.50\_EUR"
 - assertVisible: Payment successful
-- tapOn: 'Back to map'
+- tapOn: Back to map
 - assertVisible:
     id: activeTicketsCount

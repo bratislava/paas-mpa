@@ -2,12 +2,13 @@ appId: com.bratislava.paas
 ---
 - launchApp
 - waitForAnimationToEnd
-- tapOn: 'Skip'
+- assertVisible: Skip
+- tapOn: Skip
 - inputText: '00000000'
 - hideKeyboard
-- tapOn: 'Continue'
-- assertVisible: 'Enter 6-digit code'
+- tapOn: Continue
+- assertVisible: Enter 6-digit code
 - inputText: '123456'
-- assertVisible: 'Notifications'
-- tapOn: 'Continue'
-- assertVisible: 'Open filter'
+- assertVisible: Notifications
+- tapOn: Continue
+- assertVisible: Open filter
