@@ -1,0 +1,28 @@
+name: Run Maestro tests
+
+# on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚂 Setup repo
+        uses: actions/checkout@v4
+
+      - name: 🚛 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: 🚧 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TEST_ANDROID_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🚀 Run tests on iOS and Android devices
+        run: eas build --profile build-and-maestro-test --platform android --non-interactive

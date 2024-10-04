@@ -25,6 +25,7 @@ appId: com.bratislava.paas
     id: chooseVehicle
 - assertVisible: Pay
 - tapOn: Pay
+- assertVisible: Card information
 - tapOn: Card information
 - inputText: '4263970000005262'
 - inputText: '0432'

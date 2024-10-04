@@ -19,10 +19,10 @@ jobs:
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
-          token: ${{ secrets.EXPO_TEST_TOKEN }}
+          token: ${{ secrets.EXPO_TEST_IOS_TOKEN }}
 
       - name: 📦 Install dependencies
         run: yarn install
 
       - name: 🚀 Run tests on iOS and Android devices
-        run: eas build --profile build-and-maestro-test --platform all --non-interactive
+        run: eas build --profile build-and-maestro-test --platform ios --non-interactive
