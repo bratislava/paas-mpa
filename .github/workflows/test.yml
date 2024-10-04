@@ -15,6 +15,12 @@ jobs:
           node-version: 20
           cache: yarn
 
+      - name: 🚧 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TEST_TOKEN }}
+
       - name: 📦 Install dependencies
         run: yarn install
 
