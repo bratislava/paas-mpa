@@ -44,7 +44,7 @@ jobs:
           if [[ ${{ github.event.ref }} == *"test"* ]]; then
             PROFILE="${PROFILE}-test"
           fi
-          eas update --message "$EXPO_UPDATE_MESSAGE" --branch "$PROFILE" --platform all --non-interactive
+          eas update --message "$EXPO_UPDATE_MESSAGE" --branch "$PROFILE" --platform all --non-interactive --clear-cache
 
       - name: 🚀 Build staging
         if: contains(github.event.ref, 'staging')
