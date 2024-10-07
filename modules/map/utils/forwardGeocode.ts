@@ -6,7 +6,6 @@ import { CITY_BOUNDS } from '@/modules/map/constants'
 
 export const forwardGeocode = async (text: string) => {
   const accessToken = environment.mapboxPublicKey
-
   const limit = 15
   const bbox = [...CITY_BOUNDS.sw, ...CITY_BOUNDS.ne].join(',')
 
