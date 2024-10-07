@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 import countries from '@/components/controls/country-select/countries.json'
 import CountrySelectField from '@/components/controls/country-select/CountrySelectField'
@@ -107,40 +107,48 @@ const Page = () => {
   return (
     <DismissKeyboard>
       <ScreenView hasBackButton={!isOnboardingFinished}>
-        <ScreenContent>
-          <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
+        <ScrollView alwaysBounceVertical={false}>
+          <ScreenContent>
+            <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
 
-          <View className="g-1">
-            {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
-            {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-            <FlexRow className="g-2.5">
-              <CountrySelectField selectedCountry={selectedCountry} />
+            <View className="g-1">
+              {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+              {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
+              <FlexRow className="g-2.5">
+                <CountrySelectField selectedCountry={selectedCountry} />
 
-              <TextInput
-                leftIcon={<Typography>+{prefixCode}</Typography>}
-                viewClassName="flex-1"
-                value={phone}
-                onChangeText={handleChangeText}
-                keyboardType="phone-pad"
-                autoComplete="tel"
-                hasError={!!expectedError}
-                onFocus={handleInputFocus}
-                autoFocus
-                returnKeyType="done"
-                onSubmitEditing={handleSignIn}
-              />
-            </FlexRow>
+                <TextInput
+                  leftIcon={<Typography>+{prefixCode}</Typography>}
+                  viewClassName="flex-1"
+                  value={phone}
+                  onChangeText={handleChangeText}
+                  keyboardType="phone-pad"
+                  autoComplete="tel"
+                  hasError={!!expectedError}
+                  onFocus={handleInputFocus}
+                  autoFocus
+                  returnKeyType="done"
+                  onSubmitEditing={handleSignIn}
+                />
+              </FlexRow>
 
-            {expectedError ? (
-              // TODO translation
-              <Typography className="text-negative">{t(`Auth.errors.${expectedError}`)}</Typography>
-            ) : null}
-          </View>
+              {expectedError ? (
+                // TODO translation
+                <Typography className="text-negative">
+                  {t(`Auth.errors.${expectedError}`)}
+                </Typography>
+              ) : null}
+            </View>
 
-          <Markdown>{t('Auth.consent')}</Markdown>
+            <Markdown>{t('Auth.consent')}</Markdown>
 
-          <ContinueButton loading={loading} disabled={!phoneWithoutSpaces} onPress={handleSignIn} />
-        </ScreenContent>
+            <ContinueButton
+              loading={loading}
+              disabled={!phoneWithoutSpaces}
+              onPress={handleSignIn}
+            />
+          </ScreenContent>
+        </ScrollView>
       </ScreenView>
     </DismissKeyboard>
   )

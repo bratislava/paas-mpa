@@ -65,6 +65,14 @@ module.exports = {
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      [
+        '@sentry/react-native/expo',
+        {
+          organization: 'bratislava-city-hall',
+          project: 'paas-mpa',
+          url: 'https://sentry.io/',
+        },
+      ],
     ],
     owner: 'bratislava',
     updates: {
