@@ -32,7 +32,11 @@ appId: com.bratislava.paas
 - inputText: '712'
 - hideKeyboard
 - tapOn: "Pay\_ 1.50\_EUR"
-- assertVisible: Payment successful
+- waitForAnimationToEnd
+# Sometimes the payment takes more time
+- extendedWaitUntil:
+    visible: Payment successful
+    timeout: 60000
 - tapOn: Back to map
 - assertVisible:
     id: activeTicketsCount

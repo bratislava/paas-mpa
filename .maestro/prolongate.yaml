@@ -33,5 +33,9 @@ appId: com.bratislava.paas
       visible: "Zaplatiť\_ 1,50\_EUR"
     commands:
       - tapOn: "Zaplatiť\_ 1,50\_EUR"
-- assertVisible: Prolongation successful
+- waitForAnimationToEnd
+# Sometimes the payment takes more time
+- extendedWaitUntil:
+    visible: Prolongation successful
+    timeout: 60000
 - tapOn: Back to map

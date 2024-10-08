@@ -5,7 +5,10 @@ appId: com.bratislava.paas
 - assertVisible: Skip
 - tapOn: Skip
 - inputText: '00000000'
-- hideKeyboard
+# Cannot use `hideKeyboard` on ios because of issue here: https://maestro.mobile.dev/troubleshooting/known-issues#hidekeyboard-command-is-flaky
+# So instead we tap on title to hide keyboard
+- tapOn: Enter phone number
+- waitForAnimationToEnd
 - tapOn: Continue
 - assertVisible: Enter 6-digit code
 - inputText: '123456'
