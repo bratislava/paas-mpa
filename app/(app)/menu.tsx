@@ -1,9 +1,12 @@
 import { Link, router } from 'expo-router'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import MenuRow from '@/components/list-rows/MenuRow'
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
+import { useModal } from '@/components/screen-layout/Modal/useModal'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import { IconName } from '@/components/shared/Icon'
@@ -11,7 +14,6 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
-import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 const DIVIDER = 'divider'
 
@@ -26,9 +28,8 @@ type MenuItemsType =
 
 const MainMenuScreen = () => {
   const { t } = useTranslation()
-  const { bottom } = useSafeAreaInsets()
 
-  const { user } = useAuthStoreContext()
+  const { isModalVisible, openModal, closeModal } = useModal()
   const signOut = useSignOut()
 
   const menuItems: MenuItemsType[] = [
@@ -102,44 +103,42 @@ const MainMenuScreen = () => {
   }
 
   return (
-    <View className="flex-1">
-      <ScreenView
-        className="grow p-5"
-        style={{ paddingBottom: bottom + 20 }} // 20 is same as pb-5
-        title={t('Navigation.menu')}
-      >
-        <View className="flex-1 justify-between">
-          <View>
-            {menuItems.map((item, index) =>
-              item === DIVIDER ? (
-                // eslint-disable-next-line react/no-array-index-key
-                <Divider key={`divider-${index}`} dividerClassname="my-3" />
-              ) : (
-                <Link key={item.path} testID={item.label} asChild href={item.path}>
-                  <PressableStyled>
-                    <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
-                  </PressableStyled>
-                </Link>
-              ),
-            )}
-          </View>
-
-          <View>
-            {user ? (
-              <PressableStyled onPress={handleSignOut}>
-                <MenuRow variant="negative" endIcon="logout" label={t('Auth.signOut')} />
-              </PressableStyled>
+    <ScreenView title={t('Navigation.menu')}>
+      <ScreenContent className="flex-1 justify-between">
+        <View>
+          {menuItems.map((item, index) =>
+            item === DIVIDER ? (
+              // eslint-disable-next-line react/no-array-index-key
+              <Divider key={`divider-${index}`} dividerClassname="my-3" />
             ) : (
-              <Link asChild href="/sign-in" onPress={handlePressClose}>
+              <Link key={item.path} testID={item.label} asChild href={item.path}>
                 <PressableStyled>
-                  <MenuRow endIcon="login" label={t('Auth.signIn')} />
+                  <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
                 </PressableStyled>
               </Link>
-            )}
-          </View>
+            ),
+          )}
         </View>
-      </ScreenView>
-    </View>
+
+        <View>
+          <PressableStyled onPress={openModal}>
+            <MenuRow variant="negative" endIcon="logout" label={t('Auth.signOut')} />
+          </PressableStyled>
+        </View>
+      </ScreenContent>
+
+      <Modal visible={isModalVisible} onRequestClose={closeModal}>
+        <ModalContentWithActions
+          variant="error"
+          title={t('Auth.modal.title')}
+          text={t('Auth.modal.description')}
+          primaryActionLabel={t('Auth.signOut')}
+          secondaryActionLabel={t('Common.cancel')}
+          primaryActionOnPress={handleSignOut}
+          secondaryActionOnPress={closeModal}
+        />
+      </Modal>
+    </ScreenView>
   )
 }
 
