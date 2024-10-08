@@ -98,9 +98,10 @@ export const useSignInOrSignUp = () => {
            * If user is already authenticated, sign them out and try to sign in again.
            * This should not happen, but if so, we want to handle it, otherwise user would be stuck on sing-in screen.
            */
-          // FIXME: Run the process again after sign out automatically. Now user have to press the button again.
           await signOut()
           updateAuthStore({ user: null })
+          // Run the process again after sign out automatically. Now user have to press the button again.
+          await attemptSignInOrSignUp(phone)
         } else {
           /**
            * Pass other errors to the next catch block.
