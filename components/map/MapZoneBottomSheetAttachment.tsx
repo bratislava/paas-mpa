@@ -86,6 +86,7 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow
+        pointerEvents="box-none"
         className={cn('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
       >
         {activeTicketsCount > 0 ? (
