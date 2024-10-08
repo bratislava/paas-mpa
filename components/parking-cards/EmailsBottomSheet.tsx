@@ -6,6 +6,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import { forwardRef, useCallback, useRef, useState } from 'react'
+import { Platform } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
 import { ParkingCardsLocalSearchParams } from '@/app/(app)/parking-cards/[email]'
@@ -77,6 +78,11 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   return (
     <>
       <BottomSheetModal
+        // Nested accessible is a problem with Maestro on iOS so we need to disable it on parent
+        // https://maestro.mobile.dev/platform-support/react-native#interacting-with-nested-components-on-ios
+        accessible={Platform.select({
+          ios: false,
+        })}
         ref={refSetter}
         enableDynamicSizing
         enablePanDownToClose
@@ -84,7 +90,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
         animateOnMount={!reducedMotion}
       >
         <BottomSheetContent>
-          <PressableStyled onPress={handleModalOpen}>
+          <PressableStyled testID="deleteEmailBottomSheetPressable" onPress={handleModalOpen}>
             <ActionRow
               variant="negative"
               startIcon="delete"

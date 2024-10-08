@@ -94,7 +94,7 @@ const Page = () => {
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (
-              <Typography>DEV {tmpVerificationToken}</Typography>
+              <Typography testID="tmpVerificationToken">{tmpVerificationToken}</Typography>
             ) : null}
             <CodeInput
               autoFocus

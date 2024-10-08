@@ -70,6 +70,7 @@ const AddVehicleScreen = () => {
             errorMessage={error}
           >
             <TextInput
+              testID="licencePlate"
               autoCapitalize="characters"
               autoCorrect={false}
               value={licencePlateInput}

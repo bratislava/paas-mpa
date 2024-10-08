@@ -69,6 +69,7 @@ const ModalContentWithActions = ({
         <View className="g-2">
           {primaryActionLabel ? (
             <Button
+              testID={primaryActionLabel}
               variant={variant === 'error' ? 'negative' : 'primary'}
               onPress={primaryActionOnPress}
               loading={isLoading}
