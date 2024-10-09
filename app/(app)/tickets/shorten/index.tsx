@@ -7,12 +7,14 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
+import { useLiveActivities } from '@/hooks/useLiveActivities'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 
 const Shorten = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const { endLiveActivity } = useLiveActivities()
 
   const { ticketId } = useLocalSearchParams<{ ticketId: string }>()
 
@@ -25,6 +27,8 @@ const Shorten = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['Tickets'] })
       queryClient.removeQueries({ queryKey: ['Tickets'] })
+
+      await endLiveActivity(ticketId)
 
       router.replace({ pathname: '/tickets/shorten/shorten-result', params: { status: 'success' } })
     },

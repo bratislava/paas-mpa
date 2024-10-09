@@ -1,5 +1,7 @@
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import BoughtTicket from '@/components/tickets/BoughtTicket'
+import { useEffectOnce } from '@/hooks/useEffectOnce'
+import { useLiveActivities } from '@/hooks/useLiveActivities'
 import { useTranslation } from '@/hooks/useTranslation'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 
@@ -11,6 +13,8 @@ type Props = {
 const SuccessContent = ({ ticket, purchaseType }: Props) => {
   const { t } = useTranslation()
 
+  const { startLiveActivity, updateLiveActivity } = useLiveActivities()
+
   const translationMap = {
     payment: {
       title: t('PurchaseScreen.paymentStatus.successful.payment.title'),
@@ -21,6 +25,12 @@ const SuccessContent = ({ ticket, purchaseType }: Props) => {
       text: t('PurchaseScreen.paymentStatus.successful.prolongation.text'),
     },
   }
+
+  useEffectOnce(() => {
+    if (purchaseType === 'payment') {
+      startLiveActivity(ticket)
+    } else updateLiveActivity(ticket)
+  })
 
   return (
     <ContentWithAvatar

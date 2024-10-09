@@ -140,7 +140,7 @@ export const ticketPriceOptions = (
 
 export const getTicketOptions = (ticketId?: number) =>
   queryOptions({
-    queryKey: ['ticket', ticketId],
+    queryKey: ['Ticket', ticketId],
     queryFn: () => clientApi.ticketsControllerTicketsGetOne(ticketId!),
     select: (res) => res.data,
     enabled: !!ticketId,

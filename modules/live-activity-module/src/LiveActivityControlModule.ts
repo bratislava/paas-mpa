@@ -11,10 +11,29 @@ const fallback = {
   ) => {
     console.log(_endTime, _parkingLocation, _startTime, _licencePlate, _widgetUrl)
 
-    return false
+    return null
   },
-  endActivity: async (_licencePlate: string, _parkingLocation: string, _widgetUrl: string) => {
-    console.log(_parkingLocation, _licencePlate, _widgetUrl)
+  updateActivity: async (
+    _id: string,
+    _startTime: number,
+    _endTime: number,
+    _licencePlate: string,
+    _parkingLocation: string,
+    _widgetUrl: string,
+  ) => {
+    console.log(_endTime, _parkingLocation, _startTime, _licencePlate, _widgetUrl)
+
+    return null
+  },
+  endActivity: async (id: string) => {
+    console.log(id)
+
+    return null
+  },
+
+  // Nice-to-have for testing purposes (not used in the app)
+  endAllActivities: async () => {
+    console.log('endAllActivities')
   },
 }
 
@@ -27,7 +46,16 @@ type LiveActivityControlModule = {
     parkingLocation: string,
     widgetUrl: string,
   ) => Promise<string | null>
-  endActivity: (licencePlate: string, parkingLocation: string, widgetUrl: string) => Promise<void>
+  updateActivity: (
+    id: string,
+    startTime: number,
+    endTime: number,
+    licencePlate: string,
+    parkingLocation: string,
+    widgetUrl: string,
+  ) => Promise<string | null>
+  endActivity: (id: string) => Promise<string | null>
+  endAllActivities: () => Promise<void>
 }
 
 export default Platform.OS === 'ios'
