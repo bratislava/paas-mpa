@@ -57,6 +57,12 @@ const AddVehicleScreen = () => {
     router.back()
   }
 
+  const handleAddVehicle = () => {
+    if (isStandardFormat(sanitizedLicencePlate)) {
+      handleSaveVehicle()
+    } else openModal()
+  }
+
   return (
     <DismissKeyboard>
       <ScreenView title={t('VehiclesScreen.addVehicleTitle')} options={{ presentation: 'modal' }}>
@@ -86,7 +92,7 @@ const AddVehicleScreen = () => {
             <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
           </AccessibilityField>
 
-          <Button disabled={!isValid} onPress={openModal}>
+          <Button disabled={!isValid} onPress={handleAddVehicle}>
             {t('VehiclesScreen.addVehicle')}
           </Button>
 
