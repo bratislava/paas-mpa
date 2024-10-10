@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application'
 import { router } from 'expo-router'
-import { useCallback, useRef, useState } from 'react'
-import { ScrollView, TextInput as NativeTextInput } from 'react-native'
+import { useCallback } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { ScrollView } from 'react-native'
 
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -17,19 +18,33 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
-import { isValidEmail as isValidEmailFunction } from '@/utils/isValidEmail'
+
+type FormData = {
+  email: string
+  message: string
+  type: 'bug' | 'proposal'
+}
+
+const defaultValues: FormData = {
+  email: '',
+  message: '',
+  type: 'bug',
+}
 
 const FeedbackScreen = () => {
   const { t } = useTranslation()
 
-  const emailRef = useRef<NativeTextInput>(null)
-  const messageRef = useRef<NativeTextInput>(null)
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+    watch,
+  } = useForm<FormData>({
+    defaultValues,
+  })
 
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-  const [shouldVerifyEmail, setShouldVerifyEmail] = useState(false)
-  const [shouldVerifyMessage, setShouldVerifyMessage] = useState(false)
-  const [feedbackType, setFeedbackType] = useState<'bug' | 'proposal'>('bug')
+  const watchedType = watch('type')
 
   const mutation = useMutation({
     mutationFn: (feedbackDto: FeedbackDto) => {
@@ -44,105 +59,105 @@ const FeedbackScreen = () => {
     },
   })
 
-  const handleTypePress = useCallback(
-    (type: 'bug' | 'proposal') => () => {
-      setFeedbackType(type)
+  const handleFormSubmit = useCallback(
+    ({ email, message, type }: FormData) => {
+      mutation.mutate({
+        email: email.toLowerCase().trim(), // double check before sending to the backend
+        message,
+        type: type === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1,
+        appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
+      })
     },
-    [],
+    [mutation],
   )
-
-  const handleEmailFocus = useCallback(() => {
-    setShouldVerifyEmail(false)
-  }, [])
-  const handleEmailBlur = useCallback(() => {
-    setShouldVerifyEmail(true)
-  }, [])
-  const handleEmailSubmit = useCallback(() => {
-    messageRef.current?.focus()
-  }, [])
-
-  const handleMessageFocus = useCallback(() => {
-    setShouldVerifyMessage(false)
-  }, [])
-  const handleMessageBlur = useCallback(() => {
-    setShouldVerifyMessage(true)
-  }, [])
-
-  const handleSubmit = useCallback(() => {
-    const feedbackTypeValue: FeedbackType =
-      feedbackType === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1
-    mutation.mutate({
-      email: email.toLowerCase().trim(), // double check before sending to the backend
-      message,
-      type: feedbackTypeValue,
-      appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
-    })
-  }, [email, feedbackType, message, mutation])
-
-  const isValidEmail = !shouldVerifyEmail || (!!email && isValidEmailFunction(email))
-  const isValidMessage = !shouldVerifyMessage || message.length > 0
-  const isDisabled = !isValidEmail || !isValidMessage || !email || !message
 
   return (
     <DismissKeyboard>
       <ScreenView title={t('FeedbackScreen.title')}>
         <ScrollView>
           <ScreenContent>
-            <AccessibilityField
-              label={t('FeedbackScreen.emailAddress')}
-              errorMessage={isValidEmail ? undefined : t('FeedbackScreen.emailAddressInvalid')}
-            >
-              <TextInput
-                ref={emailRef}
-                value={email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                onChangeText={(value) => setEmail(value.toLowerCase())}
-                onFocus={handleEmailFocus}
-                onBlur={handleEmailBlur}
-                onSubmitEditing={handleEmailSubmit}
-                hasError={!isValidEmail}
-              />
-            </AccessibilityField>
-            <Field label={t('FeedbackScreen.type')}>
-              <FlexRow>
-                <PressableStyled onPress={handleTypePress('bug')} className="h-[48px] flex-1">
-                  <Chip label={t('FeedbackScreen.bug')} isActive={feedbackType === 'bug'} />
-                </PressableStyled>
-                <PressableStyled onPress={handleTypePress('proposal')} className="h-[48px] flex-1">
-                  <Chip
-                    label={t('FeedbackScreen.proposal')}
-                    isActive={feedbackType === 'proposal'}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                pattern: {
+                  value: /.*@.*\..*/,
+                  message: 'Email error',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <AccessibilityField
+                  label={t('FeedbackScreen.emailAddress')}
+                  errorMessage={errors.email ? t('FeedbackScreen.emailAddressInvalid') : undefined}
+                >
+                  <TextInput
+                    value={value}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    hasError={!!errors.email}
                   />
-                </PressableStyled>
-              </FlexRow>
-            </Field>
-            <AccessibilityField
-              style={{ flex: 1 }}
-              label={t('FeedbackScreen.yourMessage')}
-              helptext={
-                feedbackType === 'bug' ? t('FeedbackScreen.yourMessage.helpText') : undefined
-              }
-              errorMessage={isValidMessage ? undefined : t('FeedbackScreen.yourMessageInvalid')}
-            >
-              <TextInput
-                ref={messageRef}
-                value={message}
-                multiline
-                blurOnSubmit={false}
-                numberOfLines={10}
-                onChangeText={setMessage}
-                onFocus={handleMessageFocus}
-                onBlur={handleMessageBlur}
-                hasError={!isValidMessage}
-              />
-            </AccessibilityField>
+                </AccessibilityField>
+              )}
+              name="email"
+            />
+
+            <Controller
+              control={control}
+              name="type"
+              render={({ field: { value } }) => (
+                <Field label={t('FeedbackScreen.type')}>
+                  <FlexRow>
+                    <PressableStyled
+                      onPress={() => setValue('type', 'bug')}
+                      className="h-[48px] flex-1"
+                    >
+                      <Chip label={t('FeedbackScreen.bug')} isActive={value === 'bug'} />
+                    </PressableStyled>
+                    <PressableStyled
+                      onPress={() => setValue('type', 'proposal')}
+                      className="h-[48px] flex-1"
+                    >
+                      <Chip label={t('FeedbackScreen.proposal')} isActive={value === 'proposal'} />
+                    </PressableStyled>
+                  </FlexRow>
+                </Field>
+              )}
+            />
+
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <AccessibilityField
+                  style={{ flex: 1 }}
+                  label={t('FeedbackScreen.yourMessage')}
+                  helptext={
+                    watchedType === 'bug' ? t('FeedbackScreen.yourMessage.helpText') : undefined
+                  }
+                  errorMessage={errors.message ? t('FeedbackScreen.yourMessageInvalid') : undefined}
+                >
+                  <TextInput
+                    value={value}
+                    multiline
+                    numberOfLines={10}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    hasError={!!errors.message}
+                  />
+                </AccessibilityField>
+              )}
+              name="message"
+            />
+
             <Button
               variant="primary"
-              onPress={handleSubmit}
+              onPress={handleSubmit(handleFormSubmit)}
               loading={mutation.isPending}
-              disabled={isDisabled}
             >
               {t('FeedbackScreen.send')}
             </Button>
