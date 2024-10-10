@@ -2,7 +2,7 @@ import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 
-import { LicencePlateFormatWarning } from '@/components/info/LicencePlateFormatWarning'
+import { LicencePlateFormatWarningPanel } from '@/components/info/LicencePlateFormatWarningPanel'
 import TextInput from '@/components/inputs/TextInput'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
@@ -117,7 +117,7 @@ const AddVehicleScreen = () => {
             secondaryActionLabel={t('Common.cancel')}
             secondaryActionOnPress={closeModal}
           >
-            <LicencePlateFormatWarning />
+            <LicencePlateFormatWarningPanel />
           </ModalContentWithActions>
         </Modal>
       </ScreenView>

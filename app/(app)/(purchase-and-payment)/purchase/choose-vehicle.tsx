@@ -5,7 +5,7 @@ import { FlatList, View } from 'react-native'
 
 import { LICENCE_PLATE_MAX_LENGTH } from '@/app/(app)/vehicles/add-vehicle'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
-import { LicencePlateFormatWarning } from '@/components/info/LicencePlateFormatWarning'
+import { LicencePlateFormatWarningPanel } from '@/components/info/LicencePlateFormatWarningPanel'
 import TextInput from '@/components/inputs/TextInput'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
@@ -152,7 +152,7 @@ const ChooseVehicleScreen = () => {
           secondaryActionLabel={t('Common.cancel')}
           secondaryActionOnPress={closeModal}
         >
-          <LicencePlateFormatWarning />
+          <LicencePlateFormatWarningPanel />
         </ModalContentWithActions>
       </Modal>
     </ScreenView>
