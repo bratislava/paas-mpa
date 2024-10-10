@@ -5,16 +5,13 @@ import { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { ScrollView } from 'react-native'
 
+import { FeedbackTypeSwitch } from '@/components/controls/feedback/FeedbackTypeSwitch'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
-import Chip from '@/components/shared/Chip'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
-import Field from '@/components/shared/Field'
-import FlexRow from '@/components/shared/FlexRow'
-import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
@@ -108,22 +105,7 @@ const FeedbackScreen = () => {
               control={control}
               name="type"
               render={({ field: { value } }) => (
-                <Field label={t('FeedbackScreen.type')}>
-                  <FlexRow>
-                    <PressableStyled
-                      onPress={() => setValue('type', 'bug')}
-                      className="h-[48px] flex-1"
-                    >
-                      <Chip label={t('FeedbackScreen.bug')} isActive={value === 'bug'} />
-                    </PressableStyled>
-                    <PressableStyled
-                      onPress={() => setValue('type', 'proposal')}
-                      className="h-[48px] flex-1"
-                    >
-                      <Chip label={t('FeedbackScreen.proposal')} isActive={value === 'proposal'} />
-                    </PressableStyled>
-                  </FlexRow>
-                </Field>
+                <FeedbackTypeSwitch value={value} onChange={(val) => setValue('type', val)} />
               )}
             />
 
