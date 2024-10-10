@@ -2,6 +2,7 @@ import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
 
+import { LicencePlateFormatWarningPanel } from '@/components/info/LicencePlateFormatWarningPanel'
 import TextInput from '@/components/inputs/TextInput'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
@@ -11,7 +12,6 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
-import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
@@ -22,7 +22,7 @@ export const LICENCE_PLATE_MAX_LENGTH = 15
 
 const AddVehicleScreen = () => {
   const { t } = useTranslation()
-  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
+  const { isModalVisible, openModal, closeModal } = useModal()
 
   const { addVehicle, isVehiclePresent, isLoading } = useVehiclesStoreContext()
 
@@ -57,6 +57,12 @@ const AddVehicleScreen = () => {
     router.back()
   }
 
+  const handleAddVehicle = () => {
+    if (isStandardFormat(sanitizedLicencePlate)) {
+      handleSaveVehicle()
+    } else openModal()
+  }
+
   return (
     <DismissKeyboard>
       <ScreenView title={t('VehiclesScreen.addVehicleTitle')} options={{ presentation: 'modal' }}>
@@ -86,7 +92,7 @@ const AddVehicleScreen = () => {
             <TextInput autoCorrect={false} value={vehicleName} onChangeText={setVehicleName} />
           </AccessibilityField>
 
-          <Button disabled={!isValid} onPress={openModal}>
+          <Button disabled={!isValid} onPress={handleAddVehicle}>
             {t('VehiclesScreen.addVehicle')}
           </Button>
 
@@ -97,7 +103,7 @@ const AddVehicleScreen = () => {
           )}
         </ScreenContent>
 
-        <Modal visible={isModalVisible} onRequestClose={toggleModal}>
+        <Modal visible={isModalVisible} onRequestClose={closeModal}>
           <ModalContentWithActions
             variant="success"
             title={t('VehiclesScreen.addVehicleConfirmModal.title')}
@@ -108,16 +114,10 @@ const AddVehicleScreen = () => {
             isLoading={isLoading}
             primaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionConfirm')}
             primaryActionOnPress={handleSaveVehicle}
-            secondaryActionLabel={t('VehiclesScreen.addVehicleConfirmModal.actionReject')}
+            secondaryActionLabel={t('Common.cancel')}
             secondaryActionOnPress={closeModal}
           >
-            {isStandardFormat(sanitizedLicencePlate) ? null : (
-              <Panel className="bg-warning-light">
-                <Typography>
-                  {t('VehiclesScreen.addVehicleConfirmModal.licencePlateFormatWarning')}
-                </Typography>
-              </Panel>
-            )}
+            <LicencePlateFormatWarningPanel />
           </ModalContentWithActions>
         </Modal>
       </ScreenView>
