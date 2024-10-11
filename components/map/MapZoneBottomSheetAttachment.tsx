@@ -86,6 +86,8 @@ const MapZoneBottomSheetAttachment = ({ setFlyToCenter, ...restProps }: Props) =
   return (
     <BottomSheetTopAttachment {...restProps}>
       <FlexRow
+        // This allows the user to slide on the map through transparent spaces in this component
+        pointerEvents="box-none"
         className={cn('flex-1 items-end p-2.5 pt-0', activeTicketsCount === 0 && 'justify-end')}
       >
         {activeTicketsCount > 0 ? (
