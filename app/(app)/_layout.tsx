@@ -5,6 +5,7 @@ import Mapbox from '@rnmapbox/maps'
 import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 
+import NotificationHandler from '@/components/special/NotificationHandler'
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapStoreProvider from '@/state/MapStoreProvider/MapStoreProvider'
@@ -101,6 +102,8 @@ const RootLayout = () => {
                   }}
                 />
               </Stack>
+
+              <NotificationHandler />
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>
         </VehiclesStoreProvider>
