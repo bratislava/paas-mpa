@@ -1,0 +1,51 @@
+on:
+  push:
+    tags:
+      - 'prod**'
+      - 'staging**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_UPDATE_MESSAGE: '${{ github.event.ref }} ${{ github.event.head_commit.message }}'
+    steps:
+      - name: 🚂 Setup repo
+        uses: actions/checkout@v4
+
+      - name: 🚛 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: 🚧 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_BUILD_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🚀 Build production
+        if: contains(github.event.ref, 'prod') && !contains(github.event.ref, 'ota')
+        run: |
+          PROFILE="prod"
+          if [[ ${{ github.event.ref }} == *"test"* ]]; then
+            PROFILE="${PROFILE}-test"
+          fi
+          eas build --profile "$PROFILE" --platform all --auto-submit --non-interactive
+
+      - name: 🚀 Update production
+        if: contains(github.event.ref, 'prod') && contains(github.event.ref, 'ota')
+        run: |
+          PROFILE="prod"
+          if [[ ${{ github.event.ref }} == *"test"* ]]; then
+            PROFILE="${PROFILE}-test"
+          fi
+          eas update --message "$EXPO_UPDATE_MESSAGE" --branch "$PROFILE" --platform all --non-interactive --clear-cache
+
+      - name: 🚀 Build staging
+        if: contains(github.event.ref, 'staging')
+        run: eas build --profile staging --platform all --auto-submit --non-interactive

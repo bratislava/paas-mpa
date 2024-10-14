@@ -4,23 +4,6 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "development-simulator": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      },
-      "env": {
-        "EXPO_PUBLIC_MAPBOX_KEY": "pk.eyJ1IjoiaW5vdmFjaWVicmF0aXNsYXZhIiwiYSI6ImNrd25icnBvZTJpZDAyb252N2NlcjZvYTEifQ.RYAkWitxV2HyomaXVe4VnA",
-        "EXPO_PUBLIC_COGNITO_USER_POOL_ID": "eu-central-1_pXpE6zBM0",
-        "EXPO_PUBLIC_COGNITO_CLIENT_ID": "2f8othmrjillbteieffsknuh1e",
-        "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
-        "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
-        "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
-        "EXPO_PUBLIC_DEPLOYMENT": "staging"
-      },
-      "channel": "development-simulator"
-    },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
@@ -35,6 +18,13 @@
       },
       "channel": "development"
     },
+    "development-simulator": {
+      "ios": {
+        "simulator": true
+      },
+      "extends": "development",
+      "channel": "development-simulator"
+    },
     "preview": {
       "distribution": "internal",
       "channel": "preview"
@@ -48,12 +38,13 @@
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.staging.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
-        "EXPO_PUBLIC_DEPLOYMENT": "staging"
+        "EXPO_PUBLIC_DEPLOYMENT": "staging",
+        "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024"
       },
       "channel": "staging",
       "resourceClass": "large"
     },
-    "production": {
+    "prod": {
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_MAPBOX_KEY": "pk.eyJ1IjoiaW5vdmFjaWVicmF0aXNsYXZhIiwiYSI6ImNrd25icnBvZTJpZDAyb252N2NlcjZvYTEifQ.RYAkWitxV2HyomaXVe4VnA",
@@ -62,14 +53,15 @@
         "EXPO_PUBLIC_AWS_REGION": "eu-central-1",
         "EXPO_PUBLIC_API_URL": "https://paas-mpa-backend.bratislava.sk",
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
-        "EXPO_PUBLIC_DEPLOYMENT": "production"
+        "EXPO_PUBLIC_DEPLOYMENT": "production",
+        "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024"
       },
-      "channel": "production",
+      "channel": "prod",
       "resourceClass": "large"
     },
-    "production-testing": {
-      "extends": "production",
-      "channel": "production-testing"
+    "prod-test": {
+      "extends": "prod",
+      "channel": "prod-test"
     }
   },
   "submit": {
@@ -77,15 +69,23 @@
       "android": {
         "releaseStatus": "draft",
         "track": "internal"
+      },
+      "ios": {
+        "ascAppId": "6457264414",
+        "appleTeamId": "2P6QC78LFR"
       }
     },
-    "production": {
+    "prod": {
       "android": {
         "releaseStatus": "draft",
         "track": "internal"
+      },
+      "ios": {
+        "ascAppId": "6457264414",
+        "appleTeamId": "2P6QC78LFR"
       }
     },
-    "production-testing": {
+    "prod-test": {
       "android": {
         "releaseStatus": "draft",
         "track": "internal"

@@ -72,6 +72,14 @@ module.exports = {
           appleTeamId: '2P6QC78LFR',
         },
       ],
+      [
+        '@sentry/react-native/expo',
+        {
+          organization: 'bratislava-city-hall',
+          project: 'paas-mpa',
+          url: 'https://sentry.io/',
+        },
+      ],
     ],
     owner: 'bratislava',
     updates: {
