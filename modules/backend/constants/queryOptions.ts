@@ -9,6 +9,7 @@ import {
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { MapUdrZone } from '@/modules/map/types'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
+import { processPayment } from '@/utils/processPayment'
 
 type PaginationOptions = {
   page?: number
@@ -202,3 +203,11 @@ export const storedPaymentMethodOptions = () => {
     select: (res) => res.data,
   })
 }
+
+export const paymentPageOptions = (paymentUrl: string, params: { [key: string]: string }) =>
+  queryOptions({
+    queryKey: ['Payment', params.Sign],
+    queryFn: () => processPayment({ paymentUrl, params }),
+    enabled: !!(paymentUrl && params),
+    select: (res) => res.data,
+  })

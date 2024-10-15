@@ -193,38 +193,6 @@ export interface EmailVerificationResult {
   sent: boolean
 }
 /**
- *
- * @export
- * @interface FeedbackDto
- */
-export interface FeedbackDto {
-  /**
-   *
-   * @type {FeedbackType}
-   * @memberof FeedbackDto
-   */
-  type: FeedbackType
-  /**
-   * Email of the feedback reporter
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  email: string
-  /**
-   * Message of the feedback
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  message: string
-  /**
-   * Version of the aplication
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  appVersion?: string
-}
-
-/**
  * Type of the feedback
  * @export
  * @enum {string}
@@ -434,6 +402,12 @@ export interface InitiatePaymentRequestDto {
    */
   rememberCard?: boolean
   /**
+   * Id of the stored payment method
+   * @type {number}
+   * @memberof InitiatePaymentRequestDto
+   */
+  rememberedCardId?: number
+  /**
    *
    * @type {Language}
    * @memberof InitiatePaymentRequestDto
@@ -570,6 +544,19 @@ export interface MobileDeviceResponseDto {
   paginationInfo: PaginationInfo
 }
 /**
+ *
+ * @export
+ * @interface Notification24Pay
+ */
+export interface Notification24Pay {
+  /**
+   * Params sent by the paygate back to our BE when the payment status changes
+   * @type {string}
+   * @memberof Notification24Pay
+   */
+  params: string
+}
+/**
  * Exact error name
  * @export
  * @enum {string}
@@ -618,6 +605,109 @@ export interface PaginationInfo {
    * @memberof PaginationInfo
    */
   pageSize: number
+}
+/**
+ *
+ * @export
+ * @interface Params24Pay
+ */
+export interface Params24Pay {
+  /**
+   * Token that was issued by the paygate
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Mid: string
+  /**
+   * Id that was issued by the paygate
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  EshopId: string
+  /**
+   * Id of the payment that allows us to pair the ticket
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  MsTxnId: string
+  /**
+   * Amount in a format #0.00
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Amount: string
+  /**
+   * Currency code ISO 4217
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  CurrAlphaCode: string
+  /**
+   * Id that identifies the user in our BE
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  ClientId: string
+  /**
+   * Fixed first name
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  FirstName: string
+  /**
+   * Fixed last name
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  FamilyName: string
+  /**
+   * Fixed email
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Email: string
+  /**
+   * Country code ISO 3166-1
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Country: string
+  /**
+   * Timestamp of the payment creation
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Timestamp: string
+  /**
+   * Sign that validates the payment request
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  Sign: string
+  /**
+   * URL to return the user to. Must be HTTPS
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  RURL: string
+  /**
+   * URL to send the post request with payment details
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  NURL: string
+  /**
+   * Set to true to support pre authorized payments that needs to be claimed later
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  PreAuthProvided: string
+  /**
+   * ISO 639-1 language code. Supported values: sk, cs, en, de, hu, es, fr, it, pl.
+   * @type {string}
+   * @memberof Params24Pay
+   */
+  LangCode: string
 }
 /**
  *
@@ -807,6 +897,8 @@ export const SERVICEERROR = {
   TicketProlongationNonActive: 'TICKET_PROLONGATION_NON_ACTIVE',
   TicketMissingParkdotsId: 'TICKET_MISSING_PARKDOTS_ID',
   PaymentResponseIncorrect: 'PAYMENT_RESPONSE_INCORRECT',
+  UnsupportedFileType: 'UNSUPPORTED_FILE_TYPE',
+  Pg24PayFailedToUnregister: 'PG_24PAY_FAILED_TO_UNREGISTER',
 } as const
 
 export type SERVICEERROR = (typeof SERVICEERROR)[keyof typeof SERVICEERROR]
@@ -824,6 +916,7 @@ export const SYSTEMERROR = {
   PdfGenerator: 'PDF_GENERATOR',
   Paygate: 'PAYGATE',
   Aws: 'AWS',
+  Gp24PayParsingError: 'GP24PAY_PARSING_ERROR',
 } as const
 
 export type SYSTEMERROR = (typeof SYSTEMERROR)[keyof typeof SYSTEMERROR]
@@ -922,6 +1015,31 @@ export interface SaveUserSettingsDto {
    * @memberof SaveUserSettingsDto
    */
   language?: string
+}
+/**
+ *
+ * @export
+ * @interface SavedPaymentMethod24PayDto
+ */
+export interface SavedPaymentMethod24PayDto {
+  /**
+   * Database id of the saved payment method
+   * @type {number}
+   * @memberof SavedPaymentMethod24PayDto
+   */
+  id: number
+  /**
+   * Mask of the card
+   * @type {string}
+   * @memberof SavedPaymentMethod24PayDto
+   */
+  mask: string
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof SavedPaymentMethod24PayDto
+   */
+  createdAt: string
 }
 /**
  *
@@ -1158,6 +1276,152 @@ export interface TicketDto {
    * @memberof TicketDto
    */
   createdAt: string
+}
+
+/**
+ *
+ * @export
+ * @interface TicketInit24PayDto
+ */
+export interface TicketInit24PayDto {
+  /**
+   * Database id of the vehicle
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  id: number
+  /**
+   * Unique identification of parking slot (specific section of parking regulation)
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  udr: string
+  /**
+   * Parking vehicle registration number
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  ecv: string
+  /**
+   * Start of the parking
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  parkingStart: string
+  /**
+   * End of the parking
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  parkingEnd: string
+  /**
+   * Price of the parking
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  price?: number
+  /**
+   * Credits used in case of bonus parking in seconds
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  bpkCreditUsedSeconds: number
+  /**
+   * Credits used in case of visitor parking in seconds
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  npkCreditUsedSeconds: number
+  /**
+   * ID of the visitor card (GUID)
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  npkId?: string
+  /**
+   * ID of the bonus card (GUID)
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  bpkId?: string
+  /**
+   * ID of the payment in paygate
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  paymentId?: string
+  /**
+   *
+   * @type {PaymentStatus}
+   * @memberof TicketInit24PayDto
+   */
+  paymentStatus?: PaymentStatus
+  /**
+   * Reason of the payment failure. For example: The cardholder canceled the payment
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  paymentFailReason?: string
+  /**
+   * Date of the cancellation
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  canceledAt?: string
+  /**
+   * ID of the last prolongation ticket.
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  lastProlongationTicketId?: number
+  /**
+   * Status of the token registration
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  tokenRegistrationStatus?: string
+  /**
+   * Date of the last change
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  updatedAt: string
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  createdAt: string
+  /**
+   * URL to send the post request
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  paymentUrl?: string
+  /**
+   *
+   * @type {Params24Pay}
+   * @memberof TicketInit24PayDto
+   */
+  params?: Params24Pay
+  /**
+   * End of card validity. ISO8601 formatted UTC timestamp.
+   * @type {string}
+   * @memberof TicketInit24PayDto
+   */
+  validTo?: string
+  /**
+   * Balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  balanceSeconds?: number
+  /**
+   * Original balance available on the visitor card in seconds
+   * @type {number}
+   * @memberof TicketInit24PayDto
+   */
+  originalBalanceSeconds?: number
 }
 
 /**
@@ -3194,16 +3458,28 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback: async (
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'feedbackDto' is not null or undefined
-      assertParamExists('systemControllerSendFeedback', 'feedbackDto', feedbackDto)
+      // verify required parameter 'type' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'type', type)
+      // verify required parameter 'email' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'email', email)
+      // verify required parameter 'message' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'message', message)
       const localVarPath = `/system/feedback`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -3215,12 +3491,34 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
+      const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)()
 
       // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-      localVarHeaderParameter['Content-Type'] = 'application/json'
+      if (type !== undefined) {
+        localVarFormParams.append('type', type as any)
+      }
+
+      if (email !== undefined) {
+        localVarFormParams.append('email', email as any)
+      }
+
+      if (message !== undefined) {
+        localVarFormParams.append('message', message as any)
+      }
+
+      if (appVersion !== undefined) {
+        localVarFormParams.append('appVersion', appVersion as any)
+      }
+      if (files) {
+        files.forEach((element) => {
+          localVarFormParams.append('files', element as any)
+        })
+      }
+
+      localVarHeaderParameter['Content-Type'] = 'multipart/form-data'
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -3229,11 +3527,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
         ...headersFromBaseOptions,
         ...options.headers,
       }
-      localVarRequestOptions.data = serializeDataIfNeeded(
-        feedbackDto,
-        localVarRequestOptions,
-        configuration,
-      )
+      localVarRequestOptions.data = localVarFormParams
 
       return {
         url: toPathString(localVarUrlObj),
@@ -3319,16 +3613,28 @@ export const SystemApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async systemControllerSendFeedback(
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerSendFeedback(
-        feedbackDto,
+        type,
+        email,
+        message,
+        appVersion,
+        files,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3379,16 +3685,24 @@ export const SystemApiFactory = function (
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback(
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options?: AxiosRequestConfig,
     ): AxiosPromise<boolean> {
       return localVarFp
-        .systemControllerSendFeedback(feedbackDto, options)
+        .systemControllerSendFeedback(type, email, message, appVersion, files, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -3432,14 +3746,25 @@ export class SystemApi extends BaseAPI {
   /**
    *
    * @summary Send feedback
-   * @param {FeedbackDto} feedbackDto
+   * @param {FeedbackType} type
+   * @param {string} email Email of the feedback reporter
+   * @param {string} message Message of the feedback
+   * @param {string} [appVersion] Version of the aplication
+   * @param {Array<File>} [files]
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof SystemApi
    */
-  public systemControllerSendFeedback(feedbackDto: FeedbackDto, options?: AxiosRequestConfig) {
+  public systemControllerSendFeedback(
+    type: FeedbackType,
+    email: string,
+    message: string,
+    appVersion?: string,
+    files?: Array<File>,
+    options?: AxiosRequestConfig,
+  ) {
     return SystemApiFp(this.configuration)
-      .systemControllerSendFeedback(feedbackDto, options)
+      .systemControllerSendFeedback(type, email, message, appVersion, files, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -3469,6 +3794,51 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
   return {
     /**
      *
+     * @summary Returns saved payment methods for 24Pay paygate
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGet24PaySavedPaymentMethods: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('ticketsControllerGet24PaySavedPaymentMethods', 'id', id)
+      const localVarPath = `/tickets/payment/24pay/stored-payment-method/revoke/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -3492,6 +3862,44 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
       }
 
       const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Revoke stored payment method from 24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetSavedPaymentMethods: async (
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/tickets/payment/24pay/stored-payment-method-availability`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
 
@@ -3801,6 +4209,59 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary Initiate ticket payment
+     * @param {InitiatePaymentRequestDto} initiatePaymentRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerInitiateTicketPayment24Pay: async (
+      initiatePaymentRequestDto: InitiatePaymentRequestDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'initiatePaymentRequestDto' is not null or undefined
+      assertParamExists(
+        'ticketsControllerInitiateTicketPayment24Pay',
+        'initiatePaymentRequestDto',
+        initiatePaymentRequestDto,
+      )
+      const localVarPath = `/tickets/24pay/payment`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        initiatePaymentRequestDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Initiate prolongation ticket payment
      * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
      * @param {*} [options] Override http request option.
@@ -3960,6 +4421,55 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {Notification24Pay} notification24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerProcessTicketPayment24Pay: async (
+      notification24Pay: Notification24Pay,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'notification24Pay' is not null or undefined
+      assertParamExists(
+        'ticketsControllerProcessTicketPayment24Pay',
+        'notification24Pay',
+        notification24Pay,
+      )
+      const localVarPath = `/tickets/24pay/payment/process`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        notification24Pay,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
      * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
      * @param {string} oPERATION Operation text coming from the paygate return url query param
      * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
@@ -4053,6 +4563,94 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
 
       if (tOKEN !== undefined) {
         localVarQueryParameter['TOKEN'] = tOKEN
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRedirectProlongationPurchaseToMobileApp: async (
+      msTxnId: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'msTxnId' is not null or undefined
+      assertParamExists(
+        'ticketsControllerRedirectProlongationPurchaseToMobileApp',
+        'msTxnId',
+        msTxnId,
+      )
+      const localVarPath = `/tickets/24pay/payment/prolongation/redirect`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      if (msTxnId !== undefined) {
+        localVarQueryParameter['MsTxnId'] = msTxnId
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRedirectPurchaseToMobileApp: async (
+      msTxnId: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'msTxnId' is not null or undefined
+      assertParamExists('ticketsControllerRedirectPurchaseToMobileApp', 'msTxnId', msTxnId)
+      const localVarPath = `/tickets/24pay/payment/redirect`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      if (msTxnId !== undefined) {
+        localVarQueryParameter['MsTxnId'] = msTxnId
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -4285,6 +4883,23 @@ export const TicketsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
+     * @summary Returns saved payment methods for 24Pay paygate
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGet24PaySavedPaymentMethods(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<SavedPaymentMethod24PayDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerGet24PaySavedPaymentMethods(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -4298,6 +4913,19 @@ export const TicketsApiFp = function (configuration?: Configuration) {
         id,
         options,
       )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Revoke stored payment method from 24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerGetSavedPaymentMethods(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StoredPaymentMethodDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerGetSavedPaymentMethods(options)
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -4404,6 +5032,24 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Initiate ticket payment
+     * @param {InitiatePaymentRequestDto} initiatePaymentRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerInitiateTicketPayment24Pay(
+      initiatePaymentRequestDto: InitiatePaymentRequestDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TicketInit24PayDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerInitiateTicketPayment24Pay(
+          initiatePaymentRequestDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Initiate prolongation ticket payment
      * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
      * @param {*} [options] Override http request option.
@@ -4467,6 +5113,24 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {Notification24Pay} notification24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerProcessTicketPayment24Pay(
+      notification24Pay: Notification24Pay,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerProcessTicketPayment24Pay(
+          notification24Pay,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
      * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
      * @param {string} oPERATION Operation text coming from the paygate return url query param
      * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
@@ -4506,6 +5170,42 @@ export const TicketsApiFp = function (configuration?: Configuration) {
           mD,
           tOKENREGSTATUS,
           tOKEN,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerRedirectProlongationPurchaseToMobileApp(
+      msTxnId: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerRedirectProlongationPurchaseToMobileApp(
+          msTxnId,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async ticketsControllerRedirectPurchaseToMobileApp(
+      msTxnId: string,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.ticketsControllerRedirectPurchaseToMobileApp(
+          msTxnId,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -4608,6 +5308,21 @@ export const TicketsApiFactory = function (
   return {
     /**
      *
+     * @summary Returns saved payment methods for 24Pay paygate
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGet24PaySavedPaymentMethods(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<SavedPaymentMethod24PayDto> {
+      return localVarFp
+        .ticketsControllerGet24PaySavedPaymentMethods(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Get URL to ticket receipt
      * @param {number} id
      * @param {*} [options] Override http request option.
@@ -4616,6 +5331,19 @@ export const TicketsApiFactory = function (
     ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig): AxiosPromise<string> {
       return localVarFp
         .ticketsControllerGetReceipt(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Revoke stored payment method from 24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerGetSavedPaymentMethods(
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<StoredPaymentMethodDto> {
+      return localVarFp
+        .ticketsControllerGetSavedPaymentMethods(options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -4708,6 +5436,21 @@ export const TicketsApiFactory = function (
     },
     /**
      *
+     * @summary Initiate ticket payment
+     * @param {InitiatePaymentRequestDto} initiatePaymentRequestDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerInitiateTicketPayment24Pay(
+      initiatePaymentRequestDto: InitiatePaymentRequestDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TicketInit24PayDto> {
+      return localVarFp
+        .ticketsControllerInitiateTicketPayment24Pay(initiatePaymentRequestDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Initiate prolongation ticket payment
      * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
      * @param {*} [options] Override http request option.
@@ -4768,6 +5511,21 @@ export const TicketsApiFactory = function (
     },
     /**
      *
+     * @summary Process ticket payment. This endpoint is called by the payment gate.
+     * @param {Notification24Pay} notification24Pay
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerProcessTicketPayment24Pay(
+      notification24Pay: Notification24Pay,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .ticketsControllerProcessTicketPayment24Pay(notification24Pay, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
      * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
      * @param {string} oPERATION Operation text coming from the paygate return url query param
      * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
@@ -4809,6 +5567,36 @@ export const TicketsApiFactory = function (
           tOKEN,
           options,
         )
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRedirectProlongationPurchaseToMobileApp(
+      msTxnId: string,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .ticketsControllerRedirectProlongationPurchaseToMobileApp(msTxnId, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Redirect user to the mobile app
+     * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    ticketsControllerRedirectPurchaseToMobileApp(
+      msTxnId: string,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .ticketsControllerRedirectPurchaseToMobileApp(msTxnId, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -4900,6 +5688,20 @@ export const TicketsApiFactory = function (
 export class TicketsApi extends BaseAPI {
   /**
    *
+   * @summary Returns saved payment methods for 24Pay paygate
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGet24PaySavedPaymentMethods(id: number, options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGet24PaySavedPaymentMethods(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Get URL to ticket receipt
    * @param {number} id
    * @param {*} [options] Override http request option.
@@ -4909,6 +5711,19 @@ export class TicketsApi extends BaseAPI {
   public ticketsControllerGetReceipt(id: number, options?: AxiosRequestConfig) {
     return TicketsApiFp(this.configuration)
       .ticketsControllerGetReceipt(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Revoke stored payment method from 24Pay
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerGetSavedPaymentMethods(options?: AxiosRequestConfig) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerGetSavedPaymentMethods(options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -5006,6 +5821,23 @@ export class TicketsApi extends BaseAPI {
 
   /**
    *
+   * @summary Initiate ticket payment
+   * @param {InitiatePaymentRequestDto} initiatePaymentRequestDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerInitiateTicketPayment24Pay(
+    initiatePaymentRequestDto: InitiatePaymentRequestDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerInitiateTicketPayment24Pay(initiatePaymentRequestDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Initiate prolongation ticket payment
    * @param {InitiateProlongationRequestDto} initiateProlongationRequestDto
    * @param {*} [options] Override http request option.
@@ -5070,6 +5902,23 @@ export class TicketsApi extends BaseAPI {
 
   /**
    *
+   * @summary Process ticket payment. This endpoint is called by the payment gate.
+   * @param {Notification24Pay} notification24Pay
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerProcessTicketPayment24Pay(
+    notification24Pay: Notification24Pay,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerProcessTicketPayment24Pay(notification24Pay, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
    * @summary Process ticket prolongation payment. This endpoint is called by the payment gate.
    * @param {string} oPERATION Operation text coming from the paygate return url query param
    * @param {string} oRDERNUMBER Ordernumber text coming from the paygate return url query param (13 characters long number)
@@ -5112,6 +5961,40 @@ export class TicketsApi extends BaseAPI {
         tOKEN,
         options,
       )
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Redirect user to the mobile app
+   * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerRedirectProlongationPurchaseToMobileApp(
+    msTxnId: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerRedirectProlongationPurchaseToMobileApp(msTxnId, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Redirect user to the mobile app
+   * @param {string} msTxnId Unique payment identifier provided by the merchant (variable symbol)
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TicketsApi
+   */
+  public ticketsControllerRedirectPurchaseToMobileApp(
+    msTxnId: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return TicketsApiFp(this.configuration)
+      .ticketsControllerRedirectPurchaseToMobileApp(msTxnId, options)
       .then((request) => request(this.axios, this.basePath))
   }
 

@@ -134,7 +134,7 @@ const PurchaseScreen = () => {
 
   const initPaymentMutation = useMutation({
     mutationFn: (bodyInner: InitiatePaymentRequestDto) =>
-      clientApi.ticketsControllerInitiateTicketPayment(bodyInner),
+      clientApi.ticketsControllerInitiateTicketPayment24Pay(bodyInner),
   })
 
   const handlePressPay = () => {
