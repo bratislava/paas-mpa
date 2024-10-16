@@ -29,7 +29,6 @@ export const useLiveActivities = () => {
           new Date(ticket.parkingEnd).getTime(),
           ticket.ecv,
           findUdrNameById(ticket.udr) || ticket.udr,
-          'com.bratislava.paas://tickets',
         )
 
         if (activityId) {
@@ -63,7 +62,6 @@ export const useLiveActivities = () => {
             new Date(ticket.parkingEnd).getTime(),
             ticket.ecv,
             findUdrNameById(ticket.udr) || ticket.udr,
-            'com.bratislava.paas://tickets',
           )
         } catch (error) {
           console.log(error)
