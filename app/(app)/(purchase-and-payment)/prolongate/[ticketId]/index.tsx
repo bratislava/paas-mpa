@@ -48,7 +48,7 @@ const ProlongTicketScreen = () => {
 
   const initPaymentMutation = useMutation({
     mutationFn: (bodyInner: InitiateProlongationRequestDto) =>
-      clientApi.ticketsControllerInitiateTicketProlongationPayment(bodyInner),
+      clientApi.ticketsControllerInitiateTicketProlongationPayment24Pay(bodyInner),
   })
 
   const priceRequestBody: InitiateProlongationRequestDto = {
