@@ -2,51 +2,6 @@ import ActivityKit
 import SwiftUI
 import WidgetKit
 
-struct  TextTimer: View {
-    private static func maxStringFor(_ time: TimeInterval) -> String {
-        if time < 600 { // 9:99
-            return "0:00"
-        }
-        
-        if time < 3600 { // 59:59
-            return "00:00"
-        }
-        
-        if time < 36000 { // 9:59:59
-            return "0:00:00"
-        }
-        
-        return "00:00:00" // 99:59:59
-    }
-    
-    init(_ date: Date, font: UIFont, width: CGFloat? = nil) {
-        self.date = date
-        self.font = font
-        
-        if let width = width {
-            self.width = width
-        } else {
-            let fontAttributes = [NSAttributedString.Key.font: font]
-            let time = date.timeIntervalSinceNow
-            let maxString = Self.maxStringFor(time)
-            self.width = (maxString as NSString).size(withAttributes: fontAttributes).width
-        }
-    }
-    
-    let date: Date
-    let font: UIFont
-    let width: CGFloat
-    
-    var body: some View {
-        Text(timerInterval: Date.now...date, countsDown: true)
-            .font(Font(font))
-            .frame(width: width > 0 ? width : nil)
-            .minimumScaleFactor(0.5)
-            .lineLimit(1)
-    }
-}
-
-
 // PAAS green
 extension Color {
     static let paasGreen = Color(red: 87/255, green: 150/255, blue: 54/255, opacity: 1)
@@ -58,6 +13,7 @@ struct GreenProgressViewStyle: ProgressViewStyle {
             .tint(Color.paasGreen)
     }
 }
+
 struct ActivityView: View {
     let context: ActivityViewContext<Attributes>
     @Environment(\.colorScheme) var colorScheme
@@ -222,14 +178,22 @@ struct LiveWidget: Widget {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20)
             } compactTrailing: {
-               TextTimer(context.state.endTime, font: .systemFont(ofSize: 14))
+                if(context.isStale) {
+                    Text("0 min")
+                        .font(.system(size: 14))
+                }
+                else{
+                    ProgressView(timerInterval: context.state.startTime...context.state.endTime, countsDown: true, label: {EmptyView()},
+                                 currentValueLabel: {EmptyView()})
+                        .progressViewStyle(CircularProgressViewStyle()).tint(Color.paasGreen)
+                }
             } minimal: {
                 Image("Icon")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16)
             }
-            .widgetURL(URL(string: context.state.widgetUrl))
+            .widgetURL(URL(string: context.isStale ? "com.bratislava.paas://tickets?tab=history" : "com.bratislava.paas://tickets?tab=active"))
         }
     }
 }
@@ -242,7 +206,7 @@ private extension Attributes {
 
 private extension Attributes.ContentState {
     static var state: Attributes.ContentState {
-        Attributes.ContentState(startTime: Date(timeIntervalSince1970: TimeInterval(1727093160)), endTime: Date(timeIntervalSince1970: TimeInterval(1727094060)), licencePlate: "BT999AA", parkingLocation: "Špitálska", widgetUrl: "https://www.apple.com")
+        Attributes.ContentState(startTime: Date(timeIntervalSince1970: TimeInterval(1727093160)), endTime: Date(timeIntervalSince1970: TimeInterval(1727094060)), licencePlate: "BT999AA", parkingLocation: "Špitálska")
     }
 }
 

@@ -9,6 +9,5 @@ struct Attributes: ActivityAttributes {
         var endTime: Date
         var licencePlate: String
         var parkingLocation: String
-        var widgetUrl: String
     }
 }
