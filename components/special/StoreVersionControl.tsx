@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import * as Application from 'expo-application'
 import { useEffect, useState } from 'react'
-import { Linking, Platform } from 'react-native'
 
 import AvatarCircle from '@/components/info/AvatarCircle'
 import Modal from '@/components/screen-layout/Modal/Modal'
@@ -9,6 +8,7 @@ import ModalContentWithActions from '@/components/screen-layout/Modal/ModalConte
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { mobileAppVersionOptions } from '@/modules/backend/constants/queryOptions'
+import { navigateToStore } from '@/utils/navigateToStore'
 
 const StoreVersionControl = () => {
   const { t } = useTranslation()
@@ -30,16 +30,6 @@ const StoreVersionControl = () => {
     }
   }, [appVersionQuery.data])
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const goToStore = () => {
-    if (Platform.OS === 'ios') {
-      // TODO this link should be correct, but it does not work yet, probably due to App Store search indexing
-      Linking.openURL('https://apps.apple.com/app/paas/id6457264414')
-    } else {
-      Linking.openURL('https://play.google.com/store/apps/details?id=com.bratislava.paas')
-    }
-  }
-
   return (
     <Modal visible={showModal}>
       <ModalContentWithActions
@@ -47,7 +37,7 @@ const StoreVersionControl = () => {
         title={t('StoreVersionControl.title')}
         text={t('StoreVersionControl.text')}
         primaryActionLabel={t('StoreVersionControl.primaryActionLabel')}
-        primaryActionOnPress={goToStore}
+        primaryActionOnPress={navigateToStore}
       />
     </Modal>
   )
