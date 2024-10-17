@@ -29,7 +29,9 @@ const SuccessContent = ({ ticket, purchaseType }: Props) => {
   useEffectOnce(() => {
     if (purchaseType === 'payment') {
       startLiveActivity(ticket)
-    } else updateLiveActivity(ticket)
+    } else {
+      updateLiveActivity(ticket)
+    }
   })
 
   return (
