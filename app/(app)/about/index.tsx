@@ -15,7 +15,7 @@ import { navigateToStoreReview } from '@/utils/navigateToStore'
 const navigateToRoute = (url: string) => {
   router.navigate({
     pathname: '/about/webview',
-    params: { webviewUri: url } as WebviewSearchParams,
+    params: { webviewUri: url } satisfies WebviewSearchParams,
   })
 }
 
