@@ -3,7 +3,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.5.0',
+    version: '1.6.0',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -61,10 +61,17 @@ module.exports = {
         },
       ],
       ['./plugins/firebase.plugin.cjs', 'custom'],
+      ['./plugins/liveActivities.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      [
+        '@bacons/apple-targets',
+        {
+          appleTeamId: '2P6QC78LFR',
+        },
+      ],
       [
         '@sentry/react-native/expo',
         {

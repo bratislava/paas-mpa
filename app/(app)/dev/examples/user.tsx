@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging'
 import { useMutation } from '@tanstack/react-query'
 import { Link } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -9,6 +9,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
 import Typography from '@/components/shared/Typography'
+import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { clientApi } from '@/modules/backend/client-api'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
@@ -35,7 +36,7 @@ const UserDevPage = () => {
     deleteDeviceMutation.mutate(token)
   }
 
-  useEffect(() => {
+  useEffectOnce(() => {
     getCurrentAuthenticatedUser()
       .then((userInner) => {
         setUser(userInner)
@@ -46,9 +47,7 @@ const UserDevPage = () => {
       .catch((error) => {
         console.log(error)
       })
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
   return (
     <ScreenView>
