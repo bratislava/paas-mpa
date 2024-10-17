@@ -84,7 +84,7 @@ const MainMenuScreen = () => {
             icon: 'developer-mode',
             path: '/dev',
           },
-        ] as MenuItemsType[])
+        ] satisfies MenuItemsType[])
       : []),
   ]
 

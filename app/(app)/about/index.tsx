@@ -1,4 +1,4 @@
-import { Link } from 'expo-router'
+import { router } from 'expo-router'
 import { Fragment } from 'react'
 import { View } from 'react-native'
 
@@ -10,36 +10,44 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
+import { navigateToStoreReview } from '@/utils/navigateToStore'
+
+const navigateToRoute = (url: string) => {
+  router.navigate({
+    pathname: '/about/webview',
+    params: { webviewUri: url } satisfies WebviewSearchParams,
+  })
+}
 
 const Page = () => {
   const { t } = useTranslation()
 
   /* Specify unique key for each item. Using label (with translation) was not working for React. */
-  const links = [
+  const items = [
     {
-      key: 1,
+      key: 'termsAndConditions',
       label: t('AboutScreen.links.termsAndConditions.label'),
-      url: t('AboutScreen.links.termsAndConditions.url'),
+      onPress: () => navigateToRoute(t('AboutScreen.links.termsAndConditions.url')),
       icon: 'language',
     },
     {
-      key: 2,
+      key: 'privacyPolicy',
       label: t('AboutScreen.links.privacyPolicy.label'),
-      url: t('AboutScreen.links.privacyPolicy.url'),
+      onPress: () => navigateToRoute(t('AboutScreen.links.privacyPolicy.url')),
       icon: 'description',
     },
     {
-      key: 3,
+      key: 'contactUs',
       label: t('AboutScreen.links.contactUs.label'),
-      url: t('AboutScreen.links.contactUs.url'),
+      onPress: () => navigateToRoute(t('AboutScreen.links.contactUs.url')),
       icon: 'phone',
     },
-    // {
-    //   key: 4,
-    //   label: t('AboutScreen.links.rateTheApp.label'),
-    //   url: t('AboutScreen.links.rateTheApp.url'),
-    //   icon: 'star',
-    // },
+    {
+      key: 'rateTheApp',
+      label: t('AboutScreen.links.rateTheApp.label'),
+      icon: 'star',
+      onPress: () => navigateToStoreReview(),
+    },
   ] as const
 
   return (
@@ -47,19 +55,12 @@ const Page = () => {
     <ScreenView title={t('AboutScreen.title')} actionButton={<AppVersion />}>
       <ScreenContent>
         <View>
-          {links.map((link) => (
-            <Fragment key={link.key}>
-              <Link
-                asChild
-                href={{
-                  pathname: `/about/webview`,
-                  params: { webviewUri: encodeURI(link.url) } satisfies WebviewSearchParams,
-                }}
-              >
-                <PressableStyled>
-                  <ListRow label={link.label} icon={link.icon} />
-                </PressableStyled>
-              </Link>
+          {items.map((item) => (
+            <Fragment key={item.key}>
+              <PressableStyled onPress={item.onPress}>
+                <ListRow label={item.label} icon={item.icon} />
+              </PressableStyled>
+
               <Divider />
             </Fragment>
           ))}
