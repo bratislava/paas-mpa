@@ -67,7 +67,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
               {headerOptions?.headerRight?.({
                 tintColor: headerOptions.headerTintColor,
                 canGoBack: !!back,
-              }) || <IconPlaceholder />}
+              }) ?? <IconPlaceholder />}
             </View>
           </View>
         </View>
