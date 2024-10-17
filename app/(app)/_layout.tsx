@@ -77,14 +77,6 @@ const RootLayout = () => {
                 <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
                 <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
                 <Stack.Screen
-                  name="tickets/filters/timeframes"
-                  options={{
-                    headerShown: false,
-                    presentation: 'transparentModal',
-                    animation: 'none',
-                  }}
-                />
-                <Stack.Screen
                   name="search"
                   options={{
                     animation: 'slide_from_bottom',

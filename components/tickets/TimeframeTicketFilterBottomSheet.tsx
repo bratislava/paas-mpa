@@ -1,6 +1,5 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
-import { router } from 'expo-router'
-import { Fragment, useCallback, useRef } from 'react'
+import { forwardRef, Fragment, useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
@@ -8,16 +7,18 @@ import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Divider from '@/components/shared/Divider'
 import PressableStyled from '@/components/shared/PressableStyled'
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useTimeframesTranslation } from '@/hooks/useTimeframesTranslation'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
-// TODO refactor from screen to component, because it return only BottomSheet
-const TicketsFiltersTimeframesScreen = () => {
+const TimeframeTicketFilterBottomSheet = forwardRef<BottomSheet>((_, ref) => {
   const reducedMotion = useReducedMotion()
 
-  const ref = useRef<BottomSheet>(null)
+  const localRef = useRef<BottomSheet>(null)
+  const refSetter = useMultipleRefsSetter(localRef, ref)
+
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const translationMap = useTimeframesTranslation()
@@ -32,22 +33,17 @@ const TicketsFiltersTimeframesScreen = () => {
   const handleOptionPress = useCallback(
     (timeframe: FilterTimeframesEnum) => () => {
       onPurchaseStoreUpdate({ timeframe })
-      ref.current?.close()
+      localRef.current?.close()
     },
     [onPurchaseStoreUpdate],
   )
 
-  const handleSheetChanges = useCallback((index: number) => {
-    if (index === -1) {
-      router.back()
-    }
-  }, [])
-
   return (
     <BottomSheet
-      ref={ref}
+      ref={refSetter}
       backdropComponent={renderBackdrop}
-      onChange={handleSheetChanges}
+      // Bottom sheet needs to be hidden by default
+      index={-1}
       enableDynamicSizing
       enablePanDownToClose
       animateOnMount={!reducedMotion}
@@ -70,6 +66,6 @@ const TicketsFiltersTimeframesScreen = () => {
       </BottomSheetContent>
     </BottomSheet>
   )
-}
+})
 
-export default TicketsFiltersTimeframesScreen
+export default TimeframeTicketFilterBottomSheet
