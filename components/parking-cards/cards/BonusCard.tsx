@@ -30,7 +30,7 @@ const BonusCard = ({
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
-        <Divider dividerClassname="bg-divider" />
+        <Divider className="bg-divider" />
         <CardContentItem
           description={t('ParkingCards.remainingCredit')}
           value={

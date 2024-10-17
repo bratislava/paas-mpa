@@ -117,7 +117,7 @@ const FiltersScreen = () => {
             />
           )}
           // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
-          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-3" />}
+          SectionSeparatorComponent={() => <Divider className="h-3 bg-transparent" />}
         />
       </View>
     </ScreenView>

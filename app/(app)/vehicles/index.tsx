@@ -141,9 +141,9 @@ const VehiclesScreen = () => {
           renderItem={({ item }) => (
             <VehicleRow vehicle={item} onContextMenuPress={() => handleContextMenuPress(item.id)} />
           )}
-          ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+          ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
           // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
-          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+          SectionSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
         />
       </View>
 

@@ -110,9 +110,9 @@ const ChooseVehicleScreen = () => {
         </AccessibilityField>
 
         <View className="flex flex-row items-center">
-          <Divider dividerClassname="grow" />
+          <Divider className="grow" />
           <Typography className="px-4">{t('VehiclesScreen.chooseOtherOption')}</Typography>
-          <Divider dividerClassname="grow" />
+          <Divider className="grow" />
         </View>
 
         <View className="flex-1 g-2">
@@ -121,7 +121,7 @@ const ChooseVehicleScreen = () => {
           <FlatList
             data={vehicles}
             keyExtractor={({ id }) => id.toString()}
-            ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-2" />}
+            ItemSeparatorComponent={() => <Divider className="h-2 bg-transparent" />}
             renderItem={({ item: vehicleItem }) => (
               <PressableStyled onPress={() => handleChooseVehicle(vehicleItem.id)}>
                 <VehicleRow vehicle={vehicleItem} selected={vehicle?.id === vehicleItem.id} />
