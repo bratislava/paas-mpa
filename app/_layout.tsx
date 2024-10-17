@@ -131,6 +131,7 @@ const RootLayout = () => {
                       }}
                     />
                   </BottomSheetModalProvider>
+
                   <OmnipresentComponent />
                 </PortalProvider>
               </GestureHandlerRootView>
