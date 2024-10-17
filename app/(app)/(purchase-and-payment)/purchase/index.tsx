@@ -167,7 +167,7 @@ const PurchaseScreen = () => {
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
             <Field label={t('PurchaseScreen.chooseVehicleFieldLabel')}>
-              <Link testID="add-vehicle" asChild href={{ pathname: '/purchase/choose-vehicle' }}>
+              <Link testID="addVehicle" asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
                     hasError={hasLicencePlateError}

@@ -17,7 +17,7 @@ appId: com.bratislava.paas
       - tapOn: 'Later'
 - tapOn: Pay
 - tapOn:
-    id: add-vehicle
+    id: addVehicle
 - tapOn:
     id: oneTimeVehiclePlate
 - inputText: BB222BR
