@@ -167,7 +167,7 @@ const PurchaseScreen = () => {
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
             <Field label={t('PurchaseScreen.chooseVehicleFieldLabel')}>
-              <Link asChild href={{ pathname: '/purchase/choose-vehicle' }}>
+              <Link testID="addVehicle" asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
                     hasError={hasLicencePlateError}
@@ -217,6 +217,7 @@ const PurchaseScreen = () => {
 
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
         <ModalContentWithActions
+          testID="addParkingCardsModal"
           customAvatarComponent={<ParkingCardAvatar />}
           title={t('PurchaseScreen.parkingCardModal.title')}
           text={t('PurchaseScreen.parkingCardModal.message')}
