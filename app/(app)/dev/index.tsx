@@ -1,6 +1,7 @@
 import { Link } from 'expo-router'
-import { FlatList, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 
+import { List } from '@/components/shared/List'
 import Typography from '@/components/shared/Typography'
 
 type MenuItem = {
@@ -111,7 +112,7 @@ const DevScreen = () => {
 
   return (
     <View className="flex-1 items-stretch">
-      <FlatList data={menuItems} keyExtractor={(a: MenuItem) => a.title} renderItem={renderRow} />
+      <List data={menuItems} keyExtractor={(a: MenuItem) => a.title} renderItem={renderRow} />
     </View>
   )
 }

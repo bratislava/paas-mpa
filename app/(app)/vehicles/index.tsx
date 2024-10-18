@@ -35,7 +35,7 @@ const VehiclesScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const reducedMotion = useReducedMotion()
 
-  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, isInitialLoading } =
+  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, query } =
     useVehiclesStoreContext()
   const { vehicle } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -57,6 +57,12 @@ const VehiclesScreen = () => {
   const handleContextMenuPress = (id: number) => {
     setActiveVehicleId(id)
     bottomSheetRef.current?.present()
+  }
+
+  const loadMore = () => {
+    if (query.hasNextPage) {
+      query.fetchNextPage()
+    }
   }
 
   const handleActionDelete = () => {
@@ -88,7 +94,7 @@ const VehiclesScreen = () => {
     closeModal()
   }
 
-  if (isInitialLoading) {
+  if (query.isPending) {
     return (
       <ScreenView title={t('VehiclesScreen.title')}>
         <ScreenContent>
@@ -141,6 +147,9 @@ const VehiclesScreen = () => {
           renderItem={({ item }) => (
             <VehicleRow vehicle={item} onContextMenuPress={() => handleContextMenuPress(item.id)} />
           )}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
           ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
           // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
           SectionSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}

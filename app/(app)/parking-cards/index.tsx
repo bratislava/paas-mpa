@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link } from 'expo-router'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
@@ -12,6 +12,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
+import { List } from '@/components/shared/List'
 import Markdown from '@/components/shared/Markdown'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
@@ -53,10 +54,11 @@ const Page = () => {
       ) : isError ? (
         <Typography>Error: {error.message}</Typography>
       ) : verifiedEmails.length > 0 ? (
-        <ScreenContent>
+        <ScreenContent className="g-2">
           <Typography variant="default-bold">{t('ParkingCards.paasEmailsList')}</Typography>
 
-          <FlatList
+          <List
+            estimatedItemSize={62}
             data={verifiedEmails}
             keyExtractor={(emailItem) => emailItem.email}
             onEndReachedThreshold={0.2}
@@ -88,7 +90,6 @@ const Page = () => {
                   pathname: `/parking-cards/${emailItem.email}`,
                   params: { emailId: emailItem.id },
                 }}
-                key={emailItem.id}
               >
                 <PressableStyled>
                   <ListRow label={emailItem.email} />

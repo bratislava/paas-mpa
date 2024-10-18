@@ -1,12 +1,15 @@
+import { ListRenderItem } from '@shopify/flash-list'
 import { router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useCallback, useMemo, useState } from 'react'
-import { FlatList, ListRenderItem, View } from 'react-native'
 
+import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
+import { List } from '@/components/shared/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -18,7 +21,7 @@ import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehicl
 const TicketsFiltersVehiclesScreen = () => {
   const { t } = useTranslation()
 
-  const { vehicles } = useVehiclesStoreContext()
+  const { vehicles, query } = useVehiclesStoreContext()
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecvs } = useTicketsFiltersStoreContext()
@@ -28,23 +31,27 @@ const TicketsFiltersVehiclesScreen = () => {
     setLocalEcvs('all')
   }, [])
 
+  const loadMore = () => {
+    if (query.hasNextPage) {
+      query.fetchNextPage()
+    }
+  }
+
   const handleValueChange = useCallback(
     (selectedEcv: string) => () => {
-      if (localEcvs === 'all') {
-        setLocalEcvs(
-          vehicles
+      setLocalEcvs((prevEcvs) => {
+        if (prevEcvs === 'all') {
+          return vehicles
             .map(({ vehiclePlateNumber }) => vehiclePlateNumber)
-            .filter((ecv) => ecv !== selectedEcv),
-        )
-      } else {
-        const newLocalEcvs = localEcvs.includes(selectedEcv)
-          ? localEcvs.filter((prevEcv) => prevEcv !== selectedEcv)
-          : [...localEcvs, selectedEcv]
+            .filter((ecv) => ecv !== selectedEcv)
+        }
 
-        setLocalEcvs(newLocalEcvs)
-      }
+        return prevEcvs.includes(selectedEcv)
+          ? prevEcvs.filter((prevEcv) => prevEcv !== selectedEcv)
+          : [...prevEcvs, selectedEcv]
+      })
     },
-    [localEcvs, vehicles],
+    [vehicles],
   )
 
   const renderItem: ListRenderItem<VehicleDto> = useCallback(
@@ -90,13 +97,19 @@ const TicketsFiltersVehiclesScreen = () => {
       {/* eslint-disable-next-line react/style-prop-object */}
       <StatusBar style="light" />
 
-      <View className="py-5 pl-6 pr-4">
-        <FlatList
+      <ScreenContent>
+        <List
+          estimatedItemSize={57}
           data={vehicles}
+          extraData={localEcvs}
           renderItem={renderItem}
+          keyExtractor={({ vehiclePlateNumber }) => vehiclePlateNumber}
           ItemSeparatorComponent={() => <Divider />}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+          onEndReached={loadMore}
         />
-      </View>
+      </ScreenContent>
     </ScreenView>
   )
 }

@@ -1,15 +1,16 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { ListRenderItem } from '@shopify/flash-list'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { FlatList, ListRenderItem, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import { View } from 'react-native'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import Button from '@/components/shared/Button'
 import FloatingButton from '@/components/shared/FloatingButton'
+import { List } from '@/components/shared/List'
 import Typography from '@/components/shared/Typography'
 import SkeletonTicketCard from '@/components/tickets/SkeletonTicketCard'
 import TicketCard from '@/components/tickets/TicketCard'
@@ -60,8 +61,6 @@ export const TicketsList = ({ active }: RouteProps) => {
         ecvs: filters.ecvs === 'all' ? undefined : filters.ecvs,
       }
 
-  const ticketsQueryOptions = ticketsInfiniteQuery(options)
-
   const {
     data: ticketsDataInf,
     isPending,
@@ -72,7 +71,7 @@ export const TicketsList = ({ active }: RouteProps) => {
     isFetchingNextPage,
     isRefetching,
     refetch,
-  } = useInfiniteQuery(ticketsQueryOptions)
+  } = useInfiniteQuery(ticketsInfiniteQuery(options))
 
   const tickets = ticketsDataInf?.pages.flatMap((page) => page.data.tickets)
 
@@ -108,19 +107,32 @@ export const TicketsList = ({ active }: RouteProps) => {
 
   return (
     <>
-      {/* We aren't using ScreenContent here to use whole width for FlatList, to have scrollbar on the right edge of the screen. */}
-      <View className="flex-1">
-        <FlatList
-          // Padding bottom is there for the last card to be able to go above the floating button when finishing scroll movement.
-          // Padding x and top are the same as in ScreenContent
-          contentContainerStyle={{ gap: 12, paddingBottom: 64, padding: 20 }}
+      <ScreenContent>
+        <List
           data={tickets}
+          estimatedItemSize={active ? 188 : 187}
           renderItem={renderItem}
           ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
           onEndReachedThreshold={0.2}
           onEndReached={loadMore}
           onRefresh={refetch}
           refreshing={isRefetching}
+          ItemSeparatorComponent={() => <View className="h-3" />}
+          actionButton={
+            active ? (
+              tickets?.length ? null : (
+                <Link asChild href="/purchase">
+                  <Button className="w-full" variant="primary">
+                    {t('Tickets.buyTicket')}
+                  </Button>
+                </Link>
+              )
+            ) : (
+              <FloatingButton startIcon="filter-list" onPress={handleFiltersButtonPress}>
+                {t('Tickets.filtersButton')}
+              </FloatingButton>
+            )
+          }
           ListEmptyComponent={
             active ? (
               <ContentWithAvatar
@@ -137,31 +149,7 @@ export const TicketsList = ({ active }: RouteProps) => {
             )
           }
         />
-      </View>
-
-      {active ? (
-        tickets?.length ? null : (
-          <View className="absolute bottom-0 w-full p-5">
-            <Link asChild href="/purchase">
-              <Button variant="primary">{t('Tickets.buyTicket')}</Button>
-            </Link>
-          </View>
-        )
-      ) : (
-        <View className="absolute bottom-0 w-full">
-          <LinearGradient
-            pointerEvents="box-none"
-            // From transparent to white
-            colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-          >
-            <View className="items-center px-5 py-2">
-              <FloatingButton startIcon="filter-list" onPress={handleFiltersButtonPress}>
-                {t('Tickets.filtersButton')}
-              </FloatingButton>
-            </View>
-          </LinearGradient>
-        </View>
-      )}
+      </ScreenContent>
 
       <TicketsHistoryBottomSheet ref={bottomSheetRef} activeId={activeId} />
     </>

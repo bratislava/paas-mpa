@@ -1,9 +1,10 @@
 import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 
 import { LICENCE_PLATE_MAX_LENGTH } from '@/app/(app)/vehicles/add-vehicle'
+import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import { LicencePlateFormatWarningPanel } from '@/components/info/LicencePlateFormatWarningPanel'
 import TextInput from '@/components/inputs/TextInput'
@@ -15,6 +16,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
+import { List } from '@/components/shared/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -26,7 +28,7 @@ import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 const ChooseVehicleScreen = () => {
   const { t } = useTranslation()
   const { vehicle } = usePurchaseStoreContext()
-  const { vehicles, isVehiclePresent, getVehicle } = useVehiclesStoreContext()
+  const { vehicles, isVehiclePresent, getVehicle, query } = useVehiclesStoreContext()
   const { isModalVisible, openModal, closeModal } = useModal()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
@@ -41,6 +43,12 @@ const ChooseVehicleScreen = () => {
       vehicle: { isOneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
     })
     router.navigate('/purchase')
+  }
+
+  const loadMore = () => {
+    if (query.hasNextPage) {
+      query.fetchNextPage()
+    }
   }
 
   const handleChooseOneTimeVehicle = () => {
@@ -118,7 +126,8 @@ const ChooseVehicleScreen = () => {
         <View className="flex-1 g-2">
           <Typography variant="default-bold">{t('VehiclesScreen.savedVehicles')}</Typography>
 
-          <FlatList
+          <List
+            estimatedItemSize={63}
             data={vehicles}
             keyExtractor={({ id }) => id.toString()}
             ItemSeparatorComponent={() => <Divider className="h-2 bg-transparent" />}
@@ -127,6 +136,9 @@ const ChooseVehicleScreen = () => {
                 <VehicleRow vehicle={vehicleItem} selected={vehicle?.id === vehicleItem.id} />
               </PressableStyled>
             )}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+            onEndReached={loadMore}
           />
 
           <View className="items-start">

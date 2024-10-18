@@ -1,6 +1,7 @@
+import { ListRenderItem } from '@shopify/flash-list'
 import { router } from 'expo-router'
 import { useCallback, useState } from 'react'
-import { FlatList, ListRenderItem, View } from 'react-native'
+import { View } from 'react-native'
 import CountryFlag from 'react-native-country-flag'
 
 import countries from '@/components/controls/country-select/countries.json'
@@ -11,6 +12,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
 import FlexRow from '@/components/shared/FlexRow'
+import { List } from '@/components/shared/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -101,7 +103,7 @@ const CountrySearchScreen = () => {
             </View>
 
             <View className="mt-3 flex-1">
-              <FlatList data={filteredCountries} renderItem={renderItem} />
+              <List estimatedItemSize={58} data={filteredCountries} renderItem={renderItem} />
             </View>
           </View>
         </ScreenContent>
