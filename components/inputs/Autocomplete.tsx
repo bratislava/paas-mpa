@@ -2,12 +2,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Portal } from '@gorhom/portal'
+import { ListRenderItem } from '@shopify/flash-list'
 import { useQuery } from '@tanstack/react-query'
 import { forwardRef, ReactElement, ReactNode, Ref, useCallback, useMemo, useState } from 'react'
 import {
-  FlatList,
-  FlatListProps,
-  ListRenderItem,
   NativeSyntheticEvent,
   TextInput as RNTextInput,
   TextInputChangeEventData,
@@ -17,6 +15,7 @@ import {
 import { useDebouncedCallback } from 'use-debounce'
 
 import TextInput, { TextInputProps } from '@/components/inputs/TextInput'
+import { List, ListProps } from '@/components/shared/List/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 
@@ -48,12 +47,12 @@ type CommonProps<L, O> = {
   autoFocus?: boolean
   resultsHeader?: ReactNode
   optionsPortalName?: string
-  ListComponent?: React.ComponentType<FlatListProps<O>>
-  listProps?: Partial<FlatListProps<O>>
+  ListComponent?: React.ComponentType<ListProps<O>>
+  listProps?: Partial<ListProps<O>>
   multiSourceMode?: boolean
   renderResults: (data: {
     options: L
-    optionsListProps: Omit<FlatListProps<O>, 'data'>
+    optionsListProps: Omit<ListProps<O>, 'data'>
     isFetching: boolean
     isFetched: boolean
     input: string
@@ -83,7 +82,7 @@ const AutocompleteInner = <L extends any[], O>(
     autoFocus,
     resultsHeader,
     optionsPortalName,
-    ListComponent = FlatList,
+    ListComponent = List,
     listProps = {},
     multiSourceMode,
     renderResults,
@@ -174,7 +173,7 @@ const AutocompleteInner = <L extends any[], O>(
     [],
   )
 
-  const optionsListProps: Omit<FlatListProps<O>, 'data'> = useMemo(
+  const optionsListProps: Omit<ListProps<O>, 'data'> = useMemo(
     () => ({
       className: 'flex-1',
       ...listProps,

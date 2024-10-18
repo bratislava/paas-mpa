@@ -20,7 +20,7 @@ const ElectricCarCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCard
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
-        <Divider dividerClassname="bg-electricCarCard" />
+        <Divider className="bg-electricCarCard" />
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}
