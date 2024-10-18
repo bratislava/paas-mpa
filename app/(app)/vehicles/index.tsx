@@ -34,7 +34,7 @@ const VehiclesScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const reducedMotion = useReducedMotion()
 
-  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, query } =
+  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, vehiclesQuery } =
     useVehiclesStoreContext()
   const { vehicle } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -59,8 +59,8 @@ const VehiclesScreen = () => {
   }
 
   const loadMore = () => {
-    if (query.hasNextPage) {
-      query.fetchNextPage()
+    if (vehiclesQuery.hasNextPage) {
+      vehiclesQuery.fetchNextPage()
     }
   }
 
@@ -93,7 +93,7 @@ const VehiclesScreen = () => {
     closeModal()
   }
 
-  if (query.isPending) {
+  if (vehiclesQuery.isPending) {
     return (
       <ScreenView title={t('VehiclesScreen.title')}>
         <ScreenContent>
@@ -145,7 +145,7 @@ const VehiclesScreen = () => {
           )}
           onEndReached={loadMore}
           onEndReachedThreshold={0.2}
-          ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+          ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
           ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
           SectionSeparatorComponent={() => <Divider className="h-5 bg-transparent" />}
         />

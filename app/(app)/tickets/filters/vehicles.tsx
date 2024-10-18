@@ -21,7 +21,7 @@ import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehicl
 const TicketsFiltersVehiclesScreen = () => {
   const { t } = useTranslation()
 
-  const { vehicles, query } = useVehiclesStoreContext()
+  const { vehicles, vehiclesQuery } = useVehiclesStoreContext()
 
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
   const { ecvs } = useTicketsFiltersStoreContext()
@@ -32,8 +32,8 @@ const TicketsFiltersVehiclesScreen = () => {
   }, [])
 
   const loadMore = () => {
-    if (query.hasNextPage) {
-      query.fetchNextPage()
+    if (vehiclesQuery.hasNextPage) {
+      vehiclesQuery.fetchNextPage()
     }
   }
 
@@ -106,7 +106,7 @@ const TicketsFiltersVehiclesScreen = () => {
           keyExtractor={({ vehiclePlateNumber }) => vehiclePlateNumber}
           ItemSeparatorComponent={() => <Divider />}
           onEndReachedThreshold={0.2}
-          ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+          ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
           onEndReached={loadMore}
         />
       </ScreenContent>

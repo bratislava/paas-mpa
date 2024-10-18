@@ -44,17 +44,13 @@ export const SectionList = <T extends any, S extends string>({
     return sections.find((s) => s.title === sectionData.item)
   }
 
-  const stickyHeaderIndices = flatSections
-    .map((item, index) => {
-      if (typeof item === 'string') {
-        return index
-      }
-
-      return null
-    })
-    .filter((item) => item !== null)
+  const stickyHeaderIndices: number[] = flatSections
+    .map((item, index) => (typeof item === 'string' ? index : null))
+    // TS thinks that it can be null even after filtering, so we need to assert it
+    .filter((index) => index !== null) as number[]
 
   return (
+    // Negative margin so the scroll bar is on the edge of the screen because of ScreenContent component
     <View className="mx-[-20px] flex-1">
       <FlashList
         {...props}

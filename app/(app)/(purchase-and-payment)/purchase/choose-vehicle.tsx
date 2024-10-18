@@ -28,7 +28,7 @@ import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 const ChooseVehicleScreen = () => {
   const { t } = useTranslation()
   const { vehicle } = usePurchaseStoreContext()
-  const { vehicles, isVehiclePresent, getVehicle, query } = useVehiclesStoreContext()
+  const { vehicles, isVehiclePresent, getVehicle, vehiclesQuery } = useVehiclesStoreContext()
   const { isModalVisible, openModal, closeModal } = useModal()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
@@ -46,8 +46,8 @@ const ChooseVehicleScreen = () => {
   }
 
   const loadMore = () => {
-    if (query.hasNextPage) {
-      query.fetchNextPage()
+    if (vehiclesQuery.hasNextPage) {
+      vehiclesQuery.fetchNextPage()
     }
   }
 
@@ -137,7 +137,7 @@ const ChooseVehicleScreen = () => {
               </PressableStyled>
             )}
             onEndReachedThreshold={0.2}
-            ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+            ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
             onEndReached={loadMore}
           />
 

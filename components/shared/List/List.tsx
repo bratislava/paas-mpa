@@ -17,6 +17,7 @@ export const List = <T extends any>({
   ...props
 }: ListProps<T>) => {
   return (
+    // Negative margin so the scroll bar is on the edge of the screen because of ScreenContent component
     <View className="mx-[-20px] flex-1">
       <FlashList
         {...props}

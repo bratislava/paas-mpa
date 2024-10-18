@@ -174,7 +174,7 @@ export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceR
     enabled: !!body.ticketId,
   })
 
-export const vehiclesOptions = () =>
+export const vehiclesInfiniteOptions = () =>
   infiniteQueryOptions({
     queryKey: ['Vehicles'],
     queryFn: ({ pageParam }) => clientApi.vehiclesControllerVehiclesGetMany(pageParam),

@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
 import { clientApi } from '@/modules/backend/client-api'
-import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
+import { vehiclesInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 import { CreateVehicleDto, UpdateVehicleDto, VehicleDto } from '@/modules/backend/openapi-generated'
 import { sanitizeLicencePlate } from '@/utils/licencePlate'
 
@@ -27,18 +27,18 @@ type VehiclesStoreContextProps = {
   isVehiclePresent: (licencePlate: string) => boolean
   getVehicle: (id?: number | null) => VehicleDto | null | undefined
   isLoading?: boolean
-  query: ReturnType<typeof useInfiniteQuery>
+  vehiclesQuery: ReturnType<typeof useInfiniteQuery>
 }
 
 export const VehiclesStoreContext = createContext<VehiclesStoreContextProps | null>(null)
 VehiclesStoreContext.displayName = 'VehiclesStoreContext'
 
 const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
-  const query = useInfiniteQuery(vehiclesOptions())
+  const vehiclesQuery = useInfiniteQuery(vehiclesInfiniteOptions())
 
   const vehicles = useMemo(
-    () => query.data?.pages.flatMap((page) => page.data.vehicles) ?? [],
-    [query.data?.pages],
+    () => vehiclesQuery.data?.pages.flatMap((page) => page.data.vehicles) ?? [],
+    [vehiclesQuery.data?.pages],
   )
 
   const defaultVehicle = vehicles?.find(({ isDefault }) => isDefault) ?? null
@@ -48,7 +48,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       clientApi.vehiclesControllerInsertVehicle(bodyInner),
     onSuccess: async (response) => {
       if (response.data) {
-        await query.refetch()
+        await vehiclesQuery.refetch()
       }
     },
   })
@@ -57,7 +57,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
     mutationFn: (id: number) => clientApi.vehiclesControllerDeleteVehicle(id),
     onSuccess: async (response) => {
       if (response.data.deleted) {
-        await query.refetch()
+        await vehiclesQuery.refetch()
       }
     },
   })
@@ -67,7 +67,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       clientApi.vehiclesControllerUpdateVehicle(id, updateVehicleDto),
     onSuccess: async (response) => {
       if (response.data) {
-        await query.refetch()
+        await vehiclesQuery.refetch()
       }
     },
   })
@@ -150,7 +150,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       isVehiclePresent,
       isLoading: insertMutation.isPending || deleteMutation.isPending || updateMutation.isPending,
       getVehicle,
-      query,
+      vehiclesQuery,
     }),
     [
       addVehicle,
@@ -164,7 +164,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
       insertMutation.isPending,
       deleteMutation.isPending,
       updateMutation.isPending,
-      query,
+      vehiclesQuery,
     ],
   )
 
