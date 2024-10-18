@@ -1,14 +1,14 @@
 import { FlashList, FlashListProps } from '@shopify/flash-list'
 import { View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
 
-export type ListProps<T> = FlashListProps<T> & {
-  actionButton?: React.ReactNode
-}
+import { ListGradient, ListGradientProps } from '@/components/shared/List/ListGradient'
+
+export type ListProps<T> = FlashListProps<T> & ListGradientProps
 
 /**
  * High performance list component with action button at the bottom
- * @param estimatedItemSize is determined on the first render and is used to speed up the rendering... first time usage is without this prop and it logs warning where it is calculated next step is to use it in the component
+ * https://shopify.github.io/flash-list/docs/usage
+ * @param estimatedItemSize is determined on the first render and is used to speed up the rendering... first time usage is without this prop and it logs warning where it is calculated. Next step is to use it in the component
  */
 export const List = <T extends any>({
   actionButton,
@@ -34,15 +34,7 @@ export const List = <T extends any>({
         }
       />
 
-      <View className="absolute bottom-0 w-full">
-        <LinearGradient
-          pointerEvents="box-none"
-          // From transparent to white
-          colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
-        >
-          <View className="items-center px-5 py-2">{actionButton}</View>
-        </LinearGradient>
-      </View>
+      <ListGradient actionButton={actionButton} />
     </View>
   )
 }

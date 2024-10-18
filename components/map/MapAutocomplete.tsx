@@ -1,12 +1,6 @@
 import { Portal } from '@gorhom/portal'
 import { forwardRef, useCallback, useEffect, useState } from 'react'
-import {
-  FlatList,
-  InteractionManager,
-  SectionList,
-  TextInput as RNTextInput,
-  View,
-} from 'react-native'
+import { InteractionManager, TextInput as RNTextInput, View } from 'react-native'
 
 import { SearchIcon } from '@/assets/ui-icons'
 import ZoneBadge from '@/components/info/ZoneBadge'
@@ -15,6 +9,8 @@ import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
+import { List } from '@/components/shared/List/List'
+import { SectionList } from '@/components/shared/List/SectionList'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature } from '@/modules/arcgis/types'
@@ -142,12 +138,13 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 <>
                   <Typography variant="h2">{t('ZoneDetailsScreen.searchResults')}</Typography>
                   <SectionList
+                    estimatedItemSize={63}
                     className="flex-1"
                     sections={sections}
                     keyboardShouldPersistTaps="always"
                     stickySectionHeadersEnabled={false}
-                    renderItem={optionsListProps.renderItem!}
-                    renderSectionHeader={({ section: { title } }) => (
+                    renderItem={optionsListProps.renderItem}
+                    renderSectionHeader={({ title }) => (
                       <Typography
                         variant="h3"
                         className="border-b-2 border-divider bg-white pb-2 pt-4"
@@ -176,7 +173,7 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
           onValueChange={handleValueChange}
           leftIcon={<SearchIcon />} // Purposefully using icon from Bratislava DS in this case
           renderItem={renderItem}
-          ListComponent={FlatList}
+          ListComponent={List}
           renderResults={renderResults}
           multiSourceMode
           autoFocus

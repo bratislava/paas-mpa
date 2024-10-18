@@ -5,7 +5,6 @@ import {
 } from '@gorhom/bottom-sheet'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { SectionList, View } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
@@ -20,13 +19,13 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
+import { SectionList } from '@/components/shared/List/SectionList'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
-import { cn } from '@/utils/cn'
 import { isDefined } from '@/utils/isDefined'
 
 // TODO consider moving whole Delete modal with actions to separate component
@@ -131,19 +130,16 @@ const VehiclesScreen = () => {
         ),
       }}
     >
-      <View className="flex-1">
+      <ScreenContent>
         <SectionList
+          estimatedItemSize={59}
           sections={sections}
           stickySectionHeadersEnabled={false}
-          renderSectionHeader={({ section }) =>
+          renderSectionHeader={(section) =>
             section.data.length > 0 ? (
-              // Add padding only if it's not the first section, TODO find cleaner solution
-              <View className={cn({ 'mt-5': section.title !== sections[0].title })}>
-                <Typography variant="default-bold">{section.title}</Typography>
-              </View>
+              <Typography variant="default-bold">{section.title}</Typography>
             ) : null
           }
-          className="p-5"
           renderItem={({ item }) => (
             <VehicleRow vehicle={item} onContextMenuPress={() => handleContextMenuPress(item.id)} />
           )}
@@ -151,10 +147,9 @@ const VehiclesScreen = () => {
           onEndReachedThreshold={0.2}
           ListFooterComponent={query.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
           ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
-          // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
-          SectionSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
+          SectionSeparatorComponent={() => <Divider className="h-5 bg-transparent" />}
         />
-      </View>
+      </ScreenContent>
 
       <BottomSheetModal
         ref={bottomSheetRef}

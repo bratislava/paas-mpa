@@ -1,7 +1,7 @@
 import { Link } from 'expo-router'
 import { TouchableOpacity, View } from 'react-native'
 
-import { List } from '@/components/shared/List'
+import { List } from '@/components/shared/List/List'
 import Typography from '@/components/shared/Typography'
 
 type MenuItem = {
