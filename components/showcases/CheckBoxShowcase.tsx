@@ -27,7 +27,7 @@ const CheckBoxShowcase = () => {
         value={checked}
       />
 
-      {/* <FlatList data={dataSelectRows} renderItem={({ item }) => <SelectRow {...item} />} /> */}
+      {/* <List data={dataSelectRows} renderItem={({ item }) => <SelectRow {...item} />} /> */}
     </View>
   )
 }

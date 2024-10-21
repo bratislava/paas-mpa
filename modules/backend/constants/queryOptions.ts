@@ -174,10 +174,12 @@ export const ticketProlongationPriceOptions = (body: GetTicketProlongationPriceR
     enabled: !!body.ticketId,
   })
 
-export const vehiclesOptions = () =>
-  queryOptions({
+export const vehiclesInfiniteOptions = () =>
+  infiniteQueryOptions({
     queryKey: ['Vehicles'],
-    queryFn: () => clientApi.vehiclesControllerVehiclesGetMany(),
+    queryFn: ({ pageParam }) => clientApi.vehiclesControllerVehiclesGetMany(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
 
 export const mobileAppVersionOptions = () =>

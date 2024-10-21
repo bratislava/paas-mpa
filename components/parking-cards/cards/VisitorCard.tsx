@@ -28,7 +28,7 @@ const VisitorCard = ({
     <ParkingCardBase variant="visitor">
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
-        <Divider dividerClassname="bg-visitorCard" />
+        <Divider className="bg-visitorCard" />
         <CardContentItem
           description={t('ParkingCards.remainingCredit')}
           value={

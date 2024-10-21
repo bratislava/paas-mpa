@@ -23,7 +23,7 @@ const SocialServicesCard = ({ zoneName, licencePlate, validUntil }: SocialServic
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
-        <Divider dividerClassname="bg-socialServicesCard" />
+        <Divider className="bg-socialServicesCard" />
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}

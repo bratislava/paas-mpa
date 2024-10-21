@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
-import { Platform, SectionList, View } from 'react-native'
+import { Platform } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
@@ -20,13 +20,13 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import IconButton from '@/components/shared/IconButton'
+import { SectionList } from '@/components/shared/List/SectionList'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
-import { cn } from '@/utils/cn'
 import { isDefined } from '@/utils/isDefined'
 
 // TODO consider moving whole Delete modal with actions to separate component
@@ -35,7 +35,7 @@ const VehiclesScreen = () => {
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
   const reducedMotion = useReducedMotion()
 
-  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, isInitialLoading } =
+  const { vehicles, deleteVehicle, defaultVehicle, setDefaultVehicle, vehiclesQuery } =
     useVehiclesStoreContext()
   const { vehicle } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -57,6 +57,12 @@ const VehiclesScreen = () => {
   const handleContextMenuPress = (id: number) => {
     setActiveVehicleId(id)
     bottomSheetRef.current?.present()
+  }
+
+  const loadMore = () => {
+    if (vehiclesQuery.hasNextPage) {
+      vehiclesQuery.fetchNextPage()
+    }
   }
 
   const handleActionDelete = () => {
@@ -88,7 +94,7 @@ const VehiclesScreen = () => {
     closeModal()
   }
 
-  if (isInitialLoading) {
+  if (vehiclesQuery.isPending) {
     return (
       <ScreenView title={t('VehiclesScreen.title')}>
         <ScreenContent>
@@ -125,27 +131,26 @@ const VehiclesScreen = () => {
         ),
       }}
     >
-      <View className="flex-1">
+      <ScreenContent>
         <SectionList
+          estimatedItemSize={59}
           sections={sections}
           stickySectionHeadersEnabled={false}
-          renderSectionHeader={({ section }) =>
+          renderSectionHeader={(section) =>
             section.data.length > 0 ? (
-              // Add padding only if it's not the first section, TODO find cleaner solution
-              <View className={cn({ 'mt-5': section.title !== sections[0].title })}>
-                <Typography variant="default-bold">{section.title}</Typography>
-              </View>
+              <Typography variant="default-bold">{section.title}</Typography>
             ) : null
           }
-          className="p-5"
           renderItem={({ item }) => (
             <VehicleRow vehicle={item} onContextMenuPress={() => handleContextMenuPress(item.id)} />
           )}
-          ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
-          // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
-          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-1" />}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+          ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
+          SectionSeparatorComponent={() => <Divider className="h-5 bg-transparent" />}
         />
-      </View>
+      </ScreenContent>
 
       <BottomSheetModal
         // Nested accessible is a problem with Maestro on iOS so we need to disable it on parent

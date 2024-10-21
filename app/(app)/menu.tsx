@@ -109,7 +109,7 @@ const MainMenuScreen = () => {
           {menuItems.map((item, index) =>
             item === DIVIDER ? (
               // eslint-disable-next-line react/no-array-index-key
-              <Divider key={`divider-${index}`} dividerClassname="my-3" />
+              <Divider key={`divider-${index}`} className="my-3" />
             ) : (
               <Link key={item.path} testID={item.label} asChild href={item.path}>
                 <PressableStyled>

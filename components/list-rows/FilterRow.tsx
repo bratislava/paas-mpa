@@ -1,3 +1,6 @@
+import { forwardRef } from 'react'
+import { View } from 'react-native'
+
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
 import Panel from '@/components/shared/Panel'
@@ -9,8 +12,8 @@ type Props = {
   onPress?: () => void
 }
 
-const FilterRow = ({ label, onPress }: Props) => (
-  <PressableStyled onPress={onPress}>
+const FilterRow = forwardRef<View, Props>(({ label, onPress }, ref) => (
+  <PressableStyled ref={ref} onPress={onPress}>
     <Panel>
       <FlexRow>
         <Typography variant="default-bold" numberOfLines={1} className="shrink text-ellipsis">
@@ -21,6 +24,6 @@ const FilterRow = ({ label, onPress }: Props) => (
       </FlexRow>
     </Panel>
   </PressableStyled>
-)
+))
 
 export default FilterRow
