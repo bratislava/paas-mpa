@@ -49,6 +49,7 @@ const Page = () => {
           headerRight: () => (
             <IconButton
               name="more-horiz"
+              testID="emailMoreMenu"
               accessibilityLabel={t('ParkingCards.openEmailActions')}
               onPress={() => bottomSheetRef.current?.present()}
             />

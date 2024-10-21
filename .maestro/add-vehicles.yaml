@@ -1,0 +1,24 @@
+appId: com.bratislava.paas
+---
+- launchApp
+- waitForAnimationToEnd
+- assertVisible: Open menu
+- tapOn: Open menu
+- tapOn:
+    id: Vehicles
+- tapOn: Add new
+- tapOn:
+    id: licencePlate
+- inputText: BB222BB
+- tapOn: Add new
+- tapOn:
+    id: Add vehicle
+- assertVisible: BB222BB
+- tapOn: Edit vehicle
+- tapOn:
+    id: deleteVehicleBottomSheetPressable
+- tapOn:
+    id: Delete vehicle
+- assertVisible: No vehicles
+- tapOn: Go back
+- tapOn: Go back

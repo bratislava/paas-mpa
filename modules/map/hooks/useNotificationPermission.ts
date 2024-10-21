@@ -57,7 +57,7 @@ export const useNotificationPermission = () => {
 
         setPermissionStatus(UnifiedPermissionStatus.DENIED)
       } else {
-        console.warn('Must use physical device for Push Notifications, skipping.')
+        console.log('Must use physical device for Push Notifications, skipping.')
         setPermissionStatus(UnifiedPermissionStatus.DENIED)
       }
     }

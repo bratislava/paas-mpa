@@ -5,6 +5,7 @@ import {
 } from '@gorhom/bottom-sheet'
 import { Link, router } from 'expo-router'
 import { useCallback, useRef, useState } from 'react'
+import { Platform } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
 import NoVehicles from '@/components/controls/vehicles/NoVehicles'
@@ -152,6 +153,11 @@ const VehiclesScreen = () => {
       </ScreenContent>
 
       <BottomSheetModal
+        // Nested accessible is a problem with Maestro on iOS so we need to disable it on parent
+        // https://maestro.mobile.dev/platform-support/react-native#interacting-with-nested-components-on-ios
+        accessible={Platform.select({
+          ios: false,
+        })}
         ref={bottomSheetRef}
         enableDynamicSizing
         enablePanDownToClose
@@ -178,7 +184,7 @@ const VehiclesScreen = () => {
 
           <Divider />
 
-          <PressableStyled onPress={handleActionDelete}>
+          <PressableStyled testID="deleteVehicleBottomSheetPressable" onPress={handleActionDelete}>
             <ActionRow
               startIcon="delete"
               label={t('VehiclesScreen.actions.deleteVehicle')}

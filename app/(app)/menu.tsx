@@ -111,7 +111,7 @@ const MainMenuScreen = () => {
               // eslint-disable-next-line react/no-array-index-key
               <Divider key={`divider-${index}`} className="my-3" />
             ) : (
-              <Link key={item.path} asChild href={item.path}>
+              <Link key={item.path} testID={item.label} asChild href={item.path}>
                 <PressableStyled>
                   <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
                 </PressableStyled>
