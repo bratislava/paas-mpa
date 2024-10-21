@@ -14,6 +14,8 @@ import IconButton from '../shared/IconButton'
 type Options = Exclude<React.ComponentProps<typeof Stack.Screen>['options'], Function>
 type Props = { options: Options } & React.ComponentProps<typeof Stack.Screen>
 
+const IconPlaceholder = () => <View className="h-[24px] w-[24px]" />
+
 /**
  * Component that wraps Stack.Screen and adds some default options
  */
@@ -29,10 +31,10 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
     setHeaderRightWidth(event.nativeEvent.layout.width)
   }, [])
 
-  const headerSideWidth = Math.max(headerLeftWidth, headerRightWidth)
-
   const renderHeader: NonNullable<NonNullable<Options>['header']> = useCallback(
     ({ options: headerOptions, back }) => {
+      const headerSideWidth = Math.max(headerLeftWidth, headerRightWidth)
+
       return (
         <View
           className={cn('w-full flex-row', { 'bg-white': !headerOptions?.headerTransparent })}
@@ -47,7 +49,9 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
                 name={headerOptions.presentation === 'modal' ? 'close' : 'arrow-back'}
                 onLayout={handleHeaderLeftLayout}
               />
-            ) : null}
+            ) : (
+              <IconPlaceholder />
+            )}
             <View
               className="min-w-0 flex-1 flex-row items-center justify-center px-2"
               style={{
@@ -63,7 +67,7 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
               {headerOptions?.headerRight?.({
                 tintColor: headerOptions.headerTintColor,
                 canGoBack: !!back,
-              })}
+              }) ?? <IconPlaceholder />}
             </View>
           </View>
         </View>
@@ -74,7 +78,6 @@ const StackScreenWithHeader = ({ options, ...passingProps }: Props) => {
       t,
       handleHeaderLeftLayout,
       handleHeaderRightLayout,
-      headerSideWidth,
       headerLeftWidth,
       headerRightWidth,
     ],
