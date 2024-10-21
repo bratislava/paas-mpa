@@ -9,7 +9,7 @@ type Props = {
 
 const ZoneBadge = ({ label }: Props) => {
   return (
-    <View className="rounded-sm bg-green-light px-2">
+    <View testID={label} className="rounded-sm bg-green-light px-2">
       <Typography variant="default-bold" className="text-green">
         {label}
       </Typography>

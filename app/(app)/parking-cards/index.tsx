@@ -88,6 +88,7 @@ const Page = () => {
                   pathname: `/parking-cards/${emailItem.email}`,
                   params: { emailId: emailItem.id },
                 }}
+                testID={emailItem.email}
                 key={emailItem.id}
               >
                 <PressableStyled>
