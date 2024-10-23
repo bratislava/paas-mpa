@@ -80,6 +80,14 @@ module.exports = {
           url: 'https://sentry.io/',
         },
       ],
+      [
+        'expo-build-properties',
+        {
+          ios: {
+            newArchEnabled: true,
+          },
+        },
+      ],
     ],
     owner: 'bratislava',
     updates: {

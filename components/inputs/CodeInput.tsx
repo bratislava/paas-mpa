@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import {
   CodeField,
   CodeFieldProps,
@@ -63,7 +63,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
         onChangeText={setValue}
         cellCount={cellCount}
         keyboardType="number-pad"
-        autoComplete="one-time-code"
+        autoComplete={Platform.OS === 'ios' ? 'one-time-code' : 'sms-otp'}
         rootStyle={styles.rootStyle}
         renderCell={({ index, symbol, isFocused }) => (
           <Typography
@@ -72,7 +72,7 @@ const CodeInput = ({ cellCount = 6, value, setValue, error, ...props }: CodeInpu
             onLayout={getCellOnLayoutHandler(index)}
             // TODO - sizes are little bit guessed, needs to be tested on multiple devices
             className={cn(
-              'h-[48px] w-[48px] items-center justify-center rounded border border-divider bg-white text-center text-[20px] leading-[44px]',
+              'h-[48px] w-[48px] items-center justify-center rounded border border-divider text-center text-[20px] leading-[44px]',
               {
                 'border-dark': isFocused,
                 'border-negative': !!error,

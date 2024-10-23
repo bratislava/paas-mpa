@@ -33,7 +33,7 @@ import { environment } from '@/environment'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
 
-const routingInstrumentation = new Sentry.ReactNavigationInstrumentation()
+const reactNavigationIntegration = Sentry.reactNavigationIntegration()
 
 Sentry.init({
   dsn: environment.sentryDns,
@@ -42,12 +42,8 @@ Sentry.init({
   // Disabled in development to avoid unnecessary events in Sentry
   enabled: environment.deployment === 'production',
   environment: environment.deployment,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-      enableNativeFramesTracking: true,
-    }),
-  ],
+  enableNativeFramesTracking: true,
+  integrations: [reactNavigationIntegration],
 })
 
 SplashScreen.preventAutoHideAsync()
@@ -78,7 +74,7 @@ const RootLayout = () => {
   const ref = useNavigationContainerRef()
   useEffect(() => {
     if (ref) {
-      routingInstrumentation.registerNavigationContainer(ref)
+      reactNavigationIntegration.registerNavigationContainer(ref)
     }
   }, [ref])
 
