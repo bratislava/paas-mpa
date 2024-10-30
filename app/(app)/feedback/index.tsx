@@ -1,31 +1,46 @@
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application'
+import { ImagePickerAsset } from 'expo-image-picker'
 import { router } from 'expo-router'
 import { useCallback } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { ScrollView } from 'react-native'
 
 import { FeedbackTypeSwitch } from '@/components/controls/feedback/FeedbackTypeSwitch'
+import { ImagePicker } from '@/components/inputs/ImagePicker/ImagePicker'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
+import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
+import { FeedbackType, SERVICEERROR } from '@/modules/backend/openapi-generated'
+import { isServiceError } from '@/utils/errorService'
 
 type FormData = {
   email: string
   message: string
   type: 'bug' | 'proposal'
+  files: ImagePickerAsset[]
+}
+
+type FeedbackMutationData = {
+  type: FeedbackType
+  email: string
+  message: string
+  appVersion?: string
+  files?: Array<File>
 }
 
 const defaultValues: FormData = {
   email: '',
   message: '',
   type: 'bug',
+  files: [],
 }
 
 const FeedbackScreen = () => {
@@ -41,12 +56,26 @@ const FeedbackScreen = () => {
     defaultValues,
   })
 
+  const {
+    fields: files,
+    append: appendFiles,
+    remove: removeFile,
+  } = useFieldArray({
+    control,
+    name: 'files',
+  })
+
   const watchedType = watch('type')
 
   const mutation = useMutation({
-    mutationFn: (feedbackDto: FeedbackDto) => {
-      return clientApi.systemControllerSendFeedback(feedbackDto)
-    },
+    mutationFn: (data: FeedbackMutationData) =>
+      clientApi.systemControllerSendFeedback(
+        data.type,
+        data.email,
+        data.message,
+        data.appVersion,
+        data.files,
+      ),
     onSuccess: () => {
       router.replace('/feedback/success')
       mutation.reset()
@@ -57,12 +86,13 @@ const FeedbackScreen = () => {
   })
 
   const handleFormSubmit = useCallback(
-    ({ email, message, type }: FormData) => {
+    (data: FormData) => {
       mutation.mutate({
-        email: email.toLowerCase().trim(), // double check before sending to the backend
-        message,
-        type: type === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1,
+        email: data.email.toLowerCase().trim(), // double check before sending to the backend
+        message: data.message,
+        type: data.type === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1,
         appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
+        files: data.files.map((file) => new File([file.uri], file.uri)),
       })
     },
     [mutation],
@@ -135,6 +165,16 @@ const FeedbackScreen = () => {
               )}
               name="message"
             />
+
+            {isAxiosError(mutation.error) &&
+            isServiceError(mutation.error.response?.data) &&
+            mutation.error.response.data.errorName === SERVICEERROR.UnsupportedFileType ? (
+              <Typography className="text-negative">
+                {t('FeedbackScreen.attachFilesUnsupportedFileType')}
+              </Typography>
+            ) : undefined}
+
+            <ImagePicker value={files} onAddFiles={appendFiles} onRemoveFile={removeFile} />
 
             <Button
               variant="primary"

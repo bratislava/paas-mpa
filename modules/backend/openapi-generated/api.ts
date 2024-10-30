@@ -193,38 +193,6 @@ export interface EmailVerificationResult {
   sent: boolean
 }
 /**
- *
- * @export
- * @interface FeedbackDto
- */
-export interface FeedbackDto {
-  /**
-   *
-   * @type {FeedbackType}
-   * @memberof FeedbackDto
-   */
-  type: FeedbackType
-  /**
-   * Email of the feedback reporter
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  email: string
-  /**
-   * Message of the feedback
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  message: string
-  /**
-   * Version of the aplication
-   * @type {string}
-   * @memberof FeedbackDto
-   */
-  appVersion?: string
-}
-
-/**
  * Type of the feedback
  * @export
  * @enum {string}
@@ -807,6 +775,7 @@ export const SERVICEERROR = {
   TicketProlongationNonActive: 'TICKET_PROLONGATION_NON_ACTIVE',
   TicketMissingParkdotsId: 'TICKET_MISSING_PARKDOTS_ID',
   PaymentResponseIncorrect: 'PAYMENT_RESPONSE_INCORRECT',
+  UnsupportedFileType: 'UNSUPPORTED_FILE_TYPE',
 } as const
 
 export type SERVICEERROR = (typeof SERVICEERROR)[keyof typeof SERVICEERROR]
@@ -3194,16 +3163,28 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback: async (
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'feedbackDto' is not null or undefined
-      assertParamExists('systemControllerSendFeedback', 'feedbackDto', feedbackDto)
+      // verify required parameter 'type' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'type', type)
+      // verify required parameter 'email' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'email', email)
+      // verify required parameter 'message' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'message', message)
       const localVarPath = `/system/feedback`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
@@ -3215,12 +3196,34 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
       const localVarHeaderParameter = {} as any
       const localVarQueryParameter = {} as any
+      const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)()
 
       // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-      localVarHeaderParameter['Content-Type'] = 'application/json'
+      if (type !== undefined) {
+        localVarFormParams.append('type', type as any)
+      }
+
+      if (email !== undefined) {
+        localVarFormParams.append('email', email as any)
+      }
+
+      if (message !== undefined) {
+        localVarFormParams.append('message', message as any)
+      }
+
+      if (appVersion !== undefined) {
+        localVarFormParams.append('appVersion', appVersion as any)
+      }
+      if (files) {
+        files.forEach((element) => {
+          localVarFormParams.append('files', element as any)
+        })
+      }
+
+      localVarHeaderParameter['Content-Type'] = 'multipart/form-data'
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -3229,11 +3232,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
         ...headersFromBaseOptions,
         ...options.headers,
       }
-      localVarRequestOptions.data = serializeDataIfNeeded(
-        feedbackDto,
-        localVarRequestOptions,
-        configuration,
-      )
+      localVarRequestOptions.data = localVarFormParams
 
       return {
         url: toPathString(localVarUrlObj),
@@ -3319,16 +3318,28 @@ export const SystemApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async systemControllerSendFeedback(
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerSendFeedback(
-        feedbackDto,
+        type,
+        email,
+        message,
+        appVersion,
+        files,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3379,16 +3390,24 @@ export const SystemApiFactory = function (
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackDto} feedbackDto
+     * @param {FeedbackType} type
+     * @param {string} email Email of the feedback reporter
+     * @param {string} message Message of the feedback
+     * @param {string} [appVersion] Version of the aplication
+     * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback(
-      feedbackDto: FeedbackDto,
+      type: FeedbackType,
+      email: string,
+      message: string,
+      appVersion?: string,
+      files?: Array<File>,
       options?: AxiosRequestConfig,
     ): AxiosPromise<boolean> {
       return localVarFp
-        .systemControllerSendFeedback(feedbackDto, options)
+        .systemControllerSendFeedback(type, email, message, appVersion, files, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -3432,14 +3451,25 @@ export class SystemApi extends BaseAPI {
   /**
    *
    * @summary Send feedback
-   * @param {FeedbackDto} feedbackDto
+   * @param {FeedbackType} type
+   * @param {string} email Email of the feedback reporter
+   * @param {string} message Message of the feedback
+   * @param {string} [appVersion] Version of the aplication
+   * @param {Array<File>} [files]
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof SystemApi
    */
-  public systemControllerSendFeedback(feedbackDto: FeedbackDto, options?: AxiosRequestConfig) {
+  public systemControllerSendFeedback(
+    type: FeedbackType,
+    email: string,
+    message: string,
+    appVersion?: string,
+    files?: Array<File>,
+    options?: AxiosRequestConfig,
+  ) {
     return SystemApiFp(this.configuration)
-      .systemControllerSendFeedback(feedbackDto, options)
+      .systemControllerSendFeedback(type, email, message, appVersion, files, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
