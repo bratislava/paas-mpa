@@ -1,10 +1,12 @@
+import { ListRenderItem } from '@shopify/flash-list'
 import { useCallback, useEffect, useRef } from 'react'
-import { FlatList, ListRenderItem } from 'react-native'
 
 import Announcement from '@/components/info/Announcement'
 import EmptyStateScreen from '@/components/screen-layout/EmptyStateScreen'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import { List } from '@/components/shared/List/List'
 import Typography from '@/components/shared/Typography'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
@@ -67,7 +69,9 @@ const AnnouncementsScreen = () => {
 
   return (
     <ScreenView title={t('Announcements.title')}>
-      <FlatList data={data.announcements} renderItem={renderItem} />
+      <ScreenContent>
+        <List data={data.announcements} renderItem={renderItem} />
+      </ScreenContent>
     </ScreenView>
   )
 }

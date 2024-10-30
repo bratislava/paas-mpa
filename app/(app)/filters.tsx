@@ -1,6 +1,5 @@
 import { Link, useLocalSearchParams } from 'expo-router'
 import { FC, useState } from 'react'
-import { SectionList, View } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
 import {
@@ -14,18 +13,26 @@ import {
 } from '@/assets/map'
 import SelectRow from '@/components/list-rows/SelectRow'
 import ContinueButton from '@/components/navigation/ContinueButton'
+import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
+import { SectionList } from '@/components/shared/List/SectionList'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { MapFilters, MapPointIconEnum, MapZoneStatusEnum } from '@/modules/map/constants'
-import { cn } from '@/utils/cn'
 
 type FiltersParams = MapFilters
 
+type FilteringOptionsData = {
+  icon: FC<SvgProps>
+  optionKey: MapPointIconEnum | MapZoneStatusEnum
+}
+
+type FilteringOptionsTitle = 'payment' | 'parkingType' | 'zones'
+
 const filteringOptions: {
-  title: 'payment' | 'parkingType' | 'zones' // TODO more universal type
-  data: { icon: FC<SvgProps>; optionKey: MapPointIconEnum | MapZoneStatusEnum }[]
+  title: FilteringOptionsTitle
+  data: FilteringOptionsData[]
 }[] = [
   {
     title: 'payment',
@@ -95,17 +102,14 @@ const FiltersScreen = () => {
         </Link>
       }
     >
-      <View className="flex-1">
+      <ScreenContent>
         <SectionList
+          estimatedItemSize={51}
           sections={filteringOptions}
-          stickySectionHeadersEnabled={false}
-          renderSectionHeader={({ section: { title } }) => (
-            // Add padding only if it's not the first section, TODO find cleaner solution
-            <View className={cn({ 'mt-2': title !== filteringOptions[0].title })}>
-              <Typography variant="default-bold">{translationsMapSections[title]}</Typography>
-            </View>
+          extraData={filters}
+          renderSectionHeader={({ title }) => (
+            <Typography variant="default-bold">{translationsMapSections[title]}</Typography>
           )}
-          className="p-5"
           renderItem={({ item: { icon, optionKey } }) => (
             <SelectRow
               key={optionKey}
@@ -116,10 +120,9 @@ const FiltersScreen = () => {
               value={filters[optionKey] === 'true'}
             />
           )}
-          // SectionSeparatorComponent is added above and below section header, so we add only h-1 height and use workaround with top margin in renderSectionHeader
-          SectionSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-3" />}
+          SectionSeparatorComponent={() => <Divider className="h-3 bg-transparent" />}
         />
-      </View>
+      </ScreenContent>
     </ScreenView>
   )
 }

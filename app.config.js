@@ -61,10 +61,17 @@ module.exports = {
         },
       ],
       ['./plugins/firebase.plugin.cjs', 'custom'],
+      ['./plugins/liveActivities.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      [
+        '@bacons/apple-targets',
+        {
+          appleTeamId: '2P6QC78LFR',
+        },
+      ],
       [
         '@sentry/react-native/expo',
         {

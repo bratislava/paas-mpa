@@ -5,6 +5,7 @@ import Mapbox from '@rnmapbox/maps'
 import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 
+import NotificationHandler from '@/components/special/NotificationHandler'
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapStoreProvider from '@/state/MapStoreProvider/MapStoreProvider'
@@ -76,14 +77,6 @@ const RootLayout = () => {
                 <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
                 <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
                 <Stack.Screen
-                  name="tickets/filters/timeframes"
-                  options={{
-                    headerShown: false,
-                    presentation: 'transparentModal',
-                    animation: 'none',
-                  }}
-                />
-                <Stack.Screen
                   name="search"
                   options={{
                     animation: 'slide_from_bottom',
@@ -101,6 +94,8 @@ const RootLayout = () => {
                   }}
                 />
               </Stack>
+
+              <NotificationHandler />
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>
         </VehiclesStoreProvider>

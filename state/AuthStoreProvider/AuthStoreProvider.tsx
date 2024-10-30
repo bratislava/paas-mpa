@@ -3,6 +3,7 @@ import { SplashScreen } from 'expo-router'
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
 type GlobalContextProps = {
@@ -39,10 +40,9 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
     onAuthStoreUpdate({ user: currentUser, isLoading: false })
   }
 
-  useEffect(() => {
+  useEffectOnce(() => {
     onFetchUser()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  })
 
   // Hide splash screen when user is loaded and translations are ready
   useEffect(() => {

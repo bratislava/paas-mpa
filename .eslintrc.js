@@ -72,5 +72,17 @@ module.exports = {
     'sonarjs/cognitive-complexity': 'warn',
     '@typescript-eslint/no-misused-promises': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'react-native',
+            importNames: ['SectionList', 'FlatList'],
+            message: 'List imports should be from `@/components/shared/List/...`.',
+          },
+        ],
+      },
+    ],
   },
 }

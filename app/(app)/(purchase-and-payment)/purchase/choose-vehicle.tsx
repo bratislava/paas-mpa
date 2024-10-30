@@ -1,9 +1,10 @@
 import { Link, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 
 import { LICENCE_PLATE_MAX_LENGTH } from '@/app/(app)/vehicles/add-vehicle'
+import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
 import VehicleRow from '@/components/controls/vehicles/VehicleRow'
 import { LicencePlateFormatWarningPanel } from '@/components/info/LicencePlateFormatWarningPanel'
 import TextInput from '@/components/inputs/TextInput'
@@ -15,6 +16,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import Divider from '@/components/shared/Divider'
+import { List } from '@/components/shared/List/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -26,7 +28,7 @@ import { isStandardFormat, sanitizeLicencePlate } from '@/utils/licencePlate'
 const ChooseVehicleScreen = () => {
   const { t } = useTranslation()
   const { vehicle } = usePurchaseStoreContext()
-  const { vehicles, isVehiclePresent, getVehicle } = useVehiclesStoreContext()
+  const { vehicles, isVehiclePresent, getVehicle, vehiclesQuery } = useVehiclesStoreContext()
   const { isModalVisible, openModal, closeModal } = useModal()
 
   const [oneTimeLicencePlate, setOneTimeLicencePlate] = useState(
@@ -41,6 +43,12 @@ const ChooseVehicleScreen = () => {
       vehicle: { isOneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
     })
     router.navigate('/purchase')
+  }
+
+  const loadMore = () => {
+    if (vehiclesQuery.hasNextPage) {
+      vehiclesQuery.fetchNextPage()
+    }
   }
 
   const handleChooseOneTimeVehicle = () => {
@@ -79,6 +87,7 @@ const ChooseVehicleScreen = () => {
         headerRight: () => (
           <Button
             variant="plain"
+            testID="chooseVehicle"
             disabled={
               !!oneTimeLicencePlateError ||
               !((vehicle && !vehicle?.isOneTimeUse) || oneTimeLicencePlate)
@@ -100,6 +109,7 @@ const ChooseVehicleScreen = () => {
           errorMessage={oneTimeLicencePlateError}
         >
           <TextInput
+            testID="oneTimeVehiclePlate"
             autoCapitalize="characters"
             autoCorrect={false}
             value={oneTimeLicencePlate}
@@ -110,23 +120,27 @@ const ChooseVehicleScreen = () => {
         </AccessibilityField>
 
         <View className="flex flex-row items-center">
-          <Divider dividerClassname="grow" />
+          <Divider className="grow" />
           <Typography className="px-4">{t('VehiclesScreen.chooseOtherOption')}</Typography>
-          <Divider dividerClassname="grow" />
+          <Divider className="grow" />
         </View>
 
         <View className="flex-1 g-2">
           <Typography variant="default-bold">{t('VehiclesScreen.savedVehicles')}</Typography>
 
-          <FlatList
+          <List
+            estimatedItemSize={63}
             data={vehicles}
             keyExtractor={({ id }) => id.toString()}
-            ItemSeparatorComponent={() => <Divider dividerClassname="bg-transparent h-2" />}
+            ItemSeparatorComponent={() => <Divider className="h-2 bg-transparent" />}
             renderItem={({ item: vehicleItem }) => (
               <PressableStyled onPress={() => handleChooseVehicle(vehicleItem.id)}>
                 <VehicleRow vehicle={vehicleItem} selected={vehicle?.id === vehicleItem.id} />
               </PressableStyled>
             )}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
+            onEndReached={loadMore}
           />
 
           <View className="items-start">

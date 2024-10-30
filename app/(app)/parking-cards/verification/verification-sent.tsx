@@ -14,7 +14,7 @@ import Typography from '@/components/shared/Typography'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { vehiclesOptions } from '@/modules/backend/constants/queryOptions'
+import { vehiclesInfiniteOptions } from '@/modules/backend/constants/queryOptions'
 import { SERVICEERROR } from '@/modules/backend/openapi-generated'
 import { isServiceError } from '@/utils/errorService'
 
@@ -39,7 +39,7 @@ const Page = () => {
     mutationFn: (verificationCode: string) =>
       clientApi.verifiedEmailsControllerVerifyEmail(verificationCode),
     onSuccess: async (res) => {
-      await queryClient.invalidateQueries({ queryKey: vehiclesOptions().queryKey })
+      await queryClient.invalidateQueries({ queryKey: vehiclesInfiniteOptions().queryKey })
 
       const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
 
@@ -94,7 +94,7 @@ const Page = () => {
           >
             {/* eslint-disable-next-line unicorn/no-negated-condition */}
             {environment.deployment !== 'production' ? (
-              <Typography>DEV {tmpVerificationToken}</Typography>
+              <Typography testID="tmpVerificationToken">{tmpVerificationToken}</Typography>
             ) : null}
             <CodeInput
               autoFocus

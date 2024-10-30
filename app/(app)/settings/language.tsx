@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useTranslation as useTranslationI18N } from 'react-i18next'
-import { ActivityIndicator, FlatList } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { useMMKVString } from 'react-native-mmkv'
 
 import ActionRow from '@/components/list-rows/ActionRow'
@@ -9,6 +9,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
 import Icon from '@/components/shared/Icon'
+import { List } from '@/components/shared/List/List'
 import PressableStyled from '@/components/shared/PressableStyled'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -54,12 +55,12 @@ const Page = () => {
   return (
     <ScreenView title={t('Settings.title')}>
       <ScreenContent>
-        <FlatList
+        <List
+          estimatedItemSize={67}
           ItemSeparatorComponent={() => <Divider />}
           data={languages}
           renderItem={({ item }) => (
             <PressableStyled
-              key={item.value}
               disabled={isPending || mutation.isPending}
               onPress={() => handleLanguageChange(item.value)}
             >

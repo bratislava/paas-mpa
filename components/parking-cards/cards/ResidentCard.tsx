@@ -20,7 +20,7 @@ const ResidentCard = ({ zoneName, licencePlate, validUntil }: ResidentCardProps)
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
         <Typography variant="small">{licencePlate}</Typography>
-        <Divider dividerClassname="bg-dark" />
+        <Divider className="bg-dark" />
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}

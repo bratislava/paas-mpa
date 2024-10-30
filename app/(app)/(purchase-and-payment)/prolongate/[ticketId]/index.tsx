@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -32,6 +32,8 @@ const ProlongTicketScreen = () => {
   const { t } = useTranslation()
   const locale = useLocale()
 
+  const queryClient = useQueryClient()
+
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
@@ -62,6 +64,9 @@ const ProlongTicketScreen = () => {
       { ...priceRequestBody, rememberCard },
       {
         onSuccess: ({ data: ticketInit }) => {
+          // The query gets removed so the tickets fetches correctly in success screen (newest version) we use the same query as here
+          queryClient.removeQueries({ queryKey: ['Ticket', ticket?.id] })
+
           paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
         },
       },
