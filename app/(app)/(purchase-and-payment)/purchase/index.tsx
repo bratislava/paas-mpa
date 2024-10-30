@@ -19,7 +19,7 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
-import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
+import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { useFirstPurchaseStorage } from '@/hooks/useFirstPurchaseStorage'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
@@ -47,11 +47,11 @@ const PurchaseScreen = () => {
 
   const [hasLicencePlateError, setHasLicencePlateError] = useState(false)
 
-  const { udr, vehicle, duration, npk, paymentOption, rememberCard } = usePurchaseStoreContext()
+  const { udr, vehicle, duration, npk, paymentMethod, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
   const { getVehicle, defaultVehicle } = useVehiclesStoreContext()
-  const [defaultPaymentOption] = useDefaultPaymentOption()
+  const [defaultPaymentMethod] = useDefaultPaymentMethod()
   const [firstPurchaseOpened, setFirstPurchaseOpened] = useFirstPurchaseStorage()
   const [isAddCardModalOpen, setIsAddCardModalOpen] = useState(false)
 
@@ -144,16 +144,16 @@ const PurchaseScreen = () => {
       return
     }
 
-    const actualPaymentOption = paymentOption ?? defaultPaymentOption
+    const actualPaymentOption = paymentMethod ?? defaultPaymentMethod
 
     initPaymentMutation.mutate(
       {
         ...priceRequestBody,
-        rememberCard: actualPaymentOption === 'payment-card' ? rememberCard : false,
+        rememberCard: actualPaymentOption.type === 'payment-card' ? rememberCard : false,
       } satisfies InitiatePaymentRequestDto,
       {
         onSuccess: ({ data: ticketInit }) => {
-          paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+          paymentRedirect(ticketInit)
         },
       },
     )
@@ -191,10 +191,7 @@ const PurchaseScreen = () => {
               {priceQuery.data?.priceTotal !== 0 || priceQuery.data?.creditNpkUsedSeconds ? (
                 <Link asChild href={{ pathname: '/purchase/choose-payment-method' }}>
                   <PressableStyled>
-                    <PaymentMethodsFieldControl
-                      visitorCard={npk}
-                      paymentOption={paymentOption ?? defaultPaymentOption}
-                    />
+                    <PaymentMethodsFieldControl visitorCard={npk} paymentMethod={paymentMethod} />
                   </PressableStyled>
                 </Link>
               ) : null}

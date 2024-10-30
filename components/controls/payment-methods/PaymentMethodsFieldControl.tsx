@@ -2,21 +2,24 @@ import React from 'react'
 
 import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
 import VisitorCardRow from '@/components/controls/payment-methods/rows/VisitorCardRow'
-import { PaymentOption } from '@/components/controls/payment-methods/types'
+import { PaymentMethod } from '@/components/controls/payment-methods/types'
+import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { formatBalance } from '@/utils/formatBalance'
 
 type Props = {
   visitorCard: ParkingCardDto | null
-  paymentOption: PaymentOption | undefined
+  paymentMethod: PaymentMethod | null
   showControlChevron?: boolean
 }
 
 const PaymentMethodsFieldControl = ({
   visitorCard,
-  paymentOption = 'payment-card',
+  paymentMethod,
   showControlChevron = true,
 }: Props) => {
+  const [defaultPaymentMethod] = useDefaultPaymentMethod()
+
   return visitorCard ? (
     <VisitorCardRow
       email={visitorCard.name ?? ''}
@@ -25,7 +28,10 @@ const PaymentMethodsFieldControl = ({
       showControlChevron={showControlChevron}
     />
   ) : (
-    <PaymentOptionRow variant={paymentOption} showControlChevron={showControlChevron} />
+    <PaymentOptionRow
+      method={paymentMethod ?? defaultPaymentMethod}
+      showControlChevron={showControlChevron}
+    />
   )
 }
 

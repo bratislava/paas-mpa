@@ -4,33 +4,31 @@ import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet'
 import { useCallback, useRef, useState } from 'react'
-import { Platform, ScrollView } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
 import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
-import { PaymentOption } from '@/components/controls/payment-methods/types'
+import SkeletonPaymentMethod from '@/components/controls/payment-methods/SkeletonPaymentMethod'
+import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Field from '@/components/shared/Field'
+import Divider from '@/components/shared/Divider'
+import { SectionList } from '@/components/shared/List/SectionList'
 import PressableStyled from '@/components/shared/PressableStyled'
-import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
+import Typography from '@/components/shared/Typography'
+import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
+import { usePaymentMethods } from '@/hooks/usePaymentMethods'
 import { useTranslation } from '@/hooks/useTranslation'
 
 const Page = () => {
   const { t } = useTranslation()
   const reducedMotion = useReducedMotion()
 
-  const paymentOptions: PaymentOption[] = [
-    'payment-card',
-    ...(Platform.OS === 'ios' ? (['apple-pay'] as const) : []),
-    ...(Platform.OS === 'android' ? (['google-pay'] as const) : []),
-    // 'e-wallet'
-  ]
+  const [activeMethod, setActiveMethod] = useState<PaymentMethod | null>(null)
 
-  const [defaultPaymentOption, setDefaultPaymentOption] = useDefaultPaymentOption()
-  const [activeOption, setActiveOption] = useState<PaymentOption | null>(null)
+  const [, setDefaultPaymentMethod] = useDefaultPaymentMethod()
+  const { sections, isLoading } = usePaymentMethods()
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
@@ -41,43 +39,49 @@ const Page = () => {
     [],
   )
 
-  const handleContextMenuPress = (option: PaymentOption) => {
+  const handleContextMenuPress = (method: PaymentMethod) => {
     bottomSheetRef.current?.present()
-    setActiveOption(option)
+    setActiveMethod(method)
   }
 
   const handleActionSetDefault = () => {
-    if (activeOption) {
-      setDefaultPaymentOption(activeOption)
+    if (activeMethod) {
+      setDefaultPaymentMethod(activeMethod)
     }
     bottomSheetRef.current?.close()
   }
 
+  if (isLoading) {
+    return (
+      <ScreenView title={t('PaymentMethods.title')}>
+        <ScreenContent>
+          <SkeletonPaymentMethod />
+        </ScreenContent>
+      </ScreenView>
+    )
+  }
+
   return (
     <ScreenView title={t('PaymentMethods.title')}>
-      <ScrollView>
-        <ScreenContent>
-          {defaultPaymentOption ? (
-            <Field label={t('PaymentMethods.defaultPaymentOption')}>
-              <PaymentOptionRow variant={defaultPaymentOption} />
-            </Field>
-          ) : null}
-
-          <Field label={t('PaymentMethods.otherPaymentOptions')}>
-            {paymentOptions
-              .filter((option) => option !== defaultPaymentOption)
-              .map((option) => {
-                return (
-                  <PaymentOptionRow
-                    key={option}
-                    variant={option}
-                    onContextMenuPress={() => handleContextMenuPress(option)}
-                  />
-                )
-              })}
-          </Field>
-        </ScreenContent>
-      </ScrollView>
+      <ScreenContent>
+        <SectionList
+          sections={sections}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={(section) =>
+            section.data.length > 0 ? (
+              <Typography variant="default-bold">{section.title}</Typography>
+            ) : null
+          }
+          renderItem={({ item }) => (
+            <PaymentOptionRow
+              method={item}
+              onContextMenuPress={() => handleContextMenuPress(item)}
+            />
+          )}
+          ItemSeparatorComponent={() => <Divider className="h-1 bg-transparent" />}
+          SectionSeparatorComponent={() => <Divider className="h-5 bg-transparent" />}
+        />
+      </ScreenContent>
 
       <BottomSheetModal
         ref={bottomSheetRef}

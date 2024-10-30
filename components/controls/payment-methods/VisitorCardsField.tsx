@@ -29,7 +29,7 @@ const VisitorCardsField = () => {
   } = useQueryWithFocusRefetch(visitorCardsOptions())
 
   const handleCardPress = (card: ParkingCardDto) => {
-    onPurchaseStoreUpdate({ npk: card, paymentOption: null })
+    onPurchaseStoreUpdate({ npk: card, paymentMethod: null })
     router.back()
   }
 

@@ -8,6 +8,8 @@ node_modules/
 dist/
 web-build/
 PAAS.app
+ios/
+android/
 
 # Native
 *.orig.*

@@ -15,7 +15,6 @@ import ScreenView from '@/components/screen-layout/ScreenView'
 import Field from '@/components/shared/Field'
 import PressableStyled from '@/components/shared/PressableStyled'
 import PurchaseBottomContent from '@/components/tickets/PurchaseBottomContent'
-import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
@@ -37,10 +36,8 @@ const ProlongTicketScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const { vehicle, npk, paymentOption, duration, rememberCard } = usePurchaseStoreContext()
+  const { vehicle, npk, paymentMethod, duration, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
-
-  const [defaultPaymentOption] = useDefaultPaymentOption()
 
   const [debouncedDuration] = useDebounce(duration, 400)
   const isDebouncingDuration = duration !== debouncedDuration
@@ -67,7 +64,7 @@ const ProlongTicketScreen = () => {
           // The query gets removed so the tickets fetches correctly in success screen (newest version) we use the same query as here
           queryClient.removeQueries({ queryKey: ['Ticket', ticket?.id] })
 
-          paymentRedirect(ticketInit, paymentOption ?? defaultPaymentOption)
+          paymentRedirect(ticketInit)
         },
       },
     )
@@ -126,10 +123,7 @@ const ProlongTicketScreen = () => {
                     href={{ pathname: `prolongate/${ticket.id}/choose-payment-method` }}
                   >
                     <PressableStyled>
-                      <PaymentMethodsFieldControl
-                        visitorCard={npk}
-                        paymentOption={paymentOption ?? defaultPaymentOption}
-                      />
+                      <PaymentMethodsFieldControl visitorCard={npk} paymentMethod={paymentMethod} />
                     </PressableStyled>
                   </Link>
                 )}

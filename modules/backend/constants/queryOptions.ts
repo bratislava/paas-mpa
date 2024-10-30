@@ -183,6 +183,13 @@ export const vehiclesInfiniteOptions = () =>
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
 
+export const paymentMethodsOptions = () =>
+  queryOptions({
+    queryKey: ['PaymentMethods'],
+    queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethods24Pay(),
+    select: (res) => res.data,
+  })
+
 export const mobileAppVersionOptions = () =>
   queryOptions({
     queryKey: ['MobileVersion'],
@@ -195,13 +202,6 @@ export const verifiedEmailsLengthOptions = ({ enabled }: { enabled?: boolean }) 
     queryKey: ['VerifiedEmailsLength'],
     enabled,
     queryFn: () => clientApi.verifiedEmailsControllerVerifiedEmailsGetMany(),
-    select: (res) => res.data,
-  })
-}
-export const storedPaymentMethodOptions = () => {
-  return queryOptions({
-    queryKey: ['StoredPaymentMethod'],
-    queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethodAvailability(),
     select: (res) => res.data,
   })
 }

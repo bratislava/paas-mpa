@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 
-import { PaymentOption } from '@/components/controls/payment-methods/types'
-import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
+import { PaymentMethod } from '@/components/controls/payment-methods/types'
+import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { ParkingCardDto } from '@/modules/backend/openapi-generated'
 import { MapUdrZone } from '@/modules/map/types'
 
@@ -18,7 +18,7 @@ type PurchaseStoreContextProps = {
   vehicle: PurchaseContextVehicle | null
   rememberCard: boolean
   duration: number
-  paymentOption: PaymentOption | null
+  paymentMethod: PaymentMethod | null
 }
 
 interface Props {
@@ -38,14 +38,14 @@ export const defaultInitialPurchaseStoreValues: PurchaseStoreContextProps = {
   vehicle: null,
   rememberCard: false,
   duration: 60 * 60, // 1 hour
-  paymentOption: null,
+  paymentMethod: null,
 }
 
 const PurchaseStoreProvider = ({ children, initialValues }: PropsWithChildren<Props>) => {
   const [values, setValues] = useState<PurchaseStoreContextProps>(
     initialValues ?? defaultInitialPurchaseStoreValues,
   )
-  const [defaultPaymentOption] = useDefaultPaymentOption()
+  const [defaultPaymentMethod] = useDefaultPaymentMethod()
 
   useEffect(() => {
     setValues(initialValues ?? defaultInitialPurchaseStoreValues)
@@ -54,9 +54,9 @@ const PurchaseStoreProvider = ({ children, initialValues }: PropsWithChildren<Pr
   useEffect(() => {
     setValues((prevValues) => ({
       ...prevValues,
-      paymentOption: defaultPaymentOption,
+      paymentMethod: defaultPaymentMethod,
     }))
-  }, [defaultPaymentOption])
+  }, [defaultPaymentMethod])
 
   const onPurchaseStoreUpdate = useCallback(
     (newValues: Partial<PurchaseStoreContextProps>) => {

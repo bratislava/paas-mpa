@@ -2,19 +2,13 @@ import { router } from 'expo-router'
 
 import { PaymentSearchParams } from '@/app/(app)/(purchase-and-payment)/purchase/payment'
 import { TicketPurchaseSearchParams } from '@/app/(app)/(purchase-and-payment)/ticket-purchase'
-import { PaymentOption } from '@/components/controls/payment-methods/types'
 import { TicketInit24PayDto } from '@/modules/backend/openapi-generated'
 
 /**
  * Function to redirect to payment page
  * @param ticketInit response from backend
- * @param paymentOption type of payment method
  */
-export const paymentRedirect = async (
-  ticketInit: TicketInit24PayDto,
-  paymentOption: PaymentOption | null,
-) => {
-  console.log(paymentOption, ticketInit)
+export const paymentRedirect = async (ticketInit: TicketInit24PayDto) => {
   if (ticketInit.paymentUrl) {
     router.push({
       pathname: '/purchase/payment',
