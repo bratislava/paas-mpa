@@ -1,6 +1,6 @@
 import { router } from 'expo-router'
 
-import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
+import PaymentMethodRow from '@/components/controls/payment-methods/rows/PaymentMethodRow'
 import SkeletonPaymentMethod from '@/components/controls/payment-methods/SkeletonPaymentMethod'
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import Divider from '@/components/shared/Divider'
@@ -13,7 +13,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
-const PaymentOptionsField = () => {
+const PaymentMethodsField = () => {
   const { t } = useTranslation()
 
   // TODO potentially get value and setValue functions by props
@@ -41,6 +41,7 @@ const PaymentOptionsField = () => {
   return (
     <Field label={t('PaymentMethods.fieldPaymentMethods')}>
       <SectionList
+        estimatedItemSize={70}
         sections={sections}
         stickySectionHeadersEnabled={false}
         renderSectionHeader={(section) =>
@@ -50,7 +51,7 @@ const PaymentOptionsField = () => {
         }
         renderItem={({ item }) => (
           <PressableStyled onPress={() => handleMethodPress(item)}>
-            <PaymentOptionRow
+            <PaymentMethodRow
               method={item}
               selected={!npk && paymentMethod?.type === item.type && paymentMethod?.id === item.id}
             />
@@ -63,4 +64,4 @@ const PaymentOptionsField = () => {
   )
 }
 
-export default PaymentOptionsField
+export default PaymentMethodsField

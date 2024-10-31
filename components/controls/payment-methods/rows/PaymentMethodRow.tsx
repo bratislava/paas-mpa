@@ -1,4 +1,4 @@
-import PaymentOptionContent from '@/components/controls/payment-methods/rows/PaymentOptionContent'
+import PaymentMethodContent from '@/components/controls/payment-methods/rows/PaymentMethodContent'
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -24,13 +24,13 @@ type Props = CommonPaymentTypeProps & {
   method: PaymentMethod
 }
 
-const PaymentOptionRow = ({ method, ...props }: Props) => {
+const PaymentMethodRow = ({ method, ...props }: Props) => {
   const { t } = useTranslation()
 
   switch (method.type) {
     case 'apple-pay':
       return (
-        <PaymentOptionContent
+        <PaymentMethodContent
           variant="apple-pay"
           title={t('PaymentMethods.methods.apple-pay')}
           {...props}
@@ -38,19 +38,19 @@ const PaymentOptionRow = ({ method, ...props }: Props) => {
       )
     case 'card':
       return (
-        <PaymentOptionContent
+        <PaymentMethodContent
           variant={
             method.brandName === 'visa' || method.brandName === 'mastercard'
               ? method.brandName
               : 'payment-card'
           }
-          title={method.mask ?? t('PaymentMethods.paymentCard')}
+          title={method.mask ?? t('PaymentMethods.methods.payment-card')}
           {...props}
         />
       )
     case 'google-pay':
       return (
-        <PaymentOptionContent
+        <PaymentMethodContent
           variant="google-pay"
           title={t('PaymentMethods.methods.google-pay')}
           {...props}
@@ -58,7 +58,7 @@ const PaymentOptionRow = ({ method, ...props }: Props) => {
       )
     default:
       return (
-        <PaymentOptionContent
+        <PaymentMethodContent
           variant="payment-card"
           title={t('PaymentMethods.methods.payment-card')}
           {...props}
@@ -67,4 +67,4 @@ const PaymentOptionRow = ({ method, ...props }: Props) => {
   }
 }
 
-export default PaymentOptionRow
+export default PaymentMethodRow

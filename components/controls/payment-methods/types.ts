@@ -5,9 +5,9 @@ type PaymentMethodType = 'payment-card' | 'apple-pay' | 'google-pay' | 'card'
 export type PaymentMethod =
   | {
       type: Exclude<PaymentMethodType, 'card'>
-      id?: string
+      id?: number
     }
   | (StoredPaymentMethodDto & {
       type: 'card'
-      id?: string
+      id?: number
     })

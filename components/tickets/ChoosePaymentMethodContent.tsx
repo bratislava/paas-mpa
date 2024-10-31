@@ -1,6 +1,6 @@
 import { ScrollView } from 'react-native'
 
-import PaymentOptionsField from '@/components/controls/payment-methods/PaymentOptionsField'
+import PaymentMethodsField from '@/components/controls/payment-methods/PaymentMethodsField'
 import VisitorCardsField from '@/components/controls/payment-methods/VisitorCardsField'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -18,7 +18,7 @@ const ChoosePaymentMethodContent = ({ isBpkUsedInProlongation }: Props) => {
     <ScreenView title={t('PaymentMethods.title')} options={{ presentation: 'modal' }}>
       <ScrollView>
         <ScreenContent>
-          <PaymentOptionsField />
+          <PaymentMethodsField />
 
           {isBpkUsedInProlongation ? null : (
             <>

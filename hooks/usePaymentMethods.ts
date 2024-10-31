@@ -7,6 +7,12 @@ import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { useTranslation } from '@/hooks/useTranslation'
 import { paymentMethodsOptions } from '@/modules/backend/constants/queryOptions'
 
+const comparePaymentMethods = (
+  paymentMethod: PaymentMethod,
+  comparedPaymentMethod: PaymentMethod,
+) =>
+  paymentMethod.id === comparedPaymentMethod.id && paymentMethod.type === comparedPaymentMethod.type
+
 export const usePaymentMethods = () => {
   const { t } = useTranslation()
 
@@ -14,27 +20,26 @@ export const usePaymentMethods = () => {
 
   const [defaultPaymentMethod] = useDefaultPaymentMethod()
 
-  const paymentOptions = useMemo(() => {
-    const mappedPaymentOptions: PaymentMethod[] =
+  const paymentMethods = useMemo(() => {
+    const serverPaymentMethods: PaymentMethod[] =
       paymentMethodsQuery.data?.map((option) => ({
         type: 'card',
         ...option,
       })) || []
 
-    return [...mappedPaymentOptions, ...localPaymentMethods]
+    return [...serverPaymentMethods, ...localPaymentMethods]
   }, [paymentMethodsQuery.data])
 
   const sections = [
     {
-      title: t('PaymentMethods.defaultPaymentOption'),
-      data: [defaultPaymentMethod],
+      title: t('PaymentMethods.defaultPaymentMethod'),
+      data: paymentMethods.some((method) => comparePaymentMethods(method, defaultPaymentMethod))
+        ? [defaultPaymentMethod]
+        : [],
     },
     {
-      title: t('PaymentMethods.otherPaymentOptions'),
-      data: paymentOptions.filter(
-        (option) =>
-          !(option.id === defaultPaymentMethod.id && option.type === defaultPaymentMethod.type),
-      ),
+      title: t('PaymentMethods.otherPaymentMethods'),
+      data: paymentMethods.filter((method) => !comparePaymentMethods(method, defaultPaymentMethod)),
     },
   ]
 

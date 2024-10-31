@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
+import PaymentMethodRow from '@/components/controls/payment-methods/rows/PaymentMethodRow'
 import VisitorCardRow from '@/components/controls/payment-methods/rows/VisitorCardRow'
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
@@ -28,7 +28,7 @@ const PaymentMethodsFieldControl = ({
       showControlChevron={showControlChevron}
     />
   ) : (
-    <PaymentOptionRow
+    <PaymentMethodRow
       method={paymentMethod ?? defaultPaymentMethod}
       showControlChevron={showControlChevron}
     />

@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 
-import { CommonPaymentTypeProps } from '@/components/controls/payment-methods/rows/PaymentOptionRow'
+import { CommonPaymentTypeProps } from '@/components/controls/payment-methods/rows/PaymentMethodRow'
 import AvatarSquare, { AvatarSquareProps } from '@/components/info/AvatarSquare'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
@@ -15,7 +15,7 @@ type Props = {
   title: string
 } & CommonPaymentTypeProps
 
-const PaymentOptionContent = ({
+const PaymentMethodContent = ({
   variant,
   title,
   onContextMenuPress,
@@ -51,4 +51,4 @@ const PaymentOptionContent = ({
   )
 }
 
-export default PaymentOptionContent
+export default PaymentMethodContent

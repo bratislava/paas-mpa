@@ -144,12 +144,12 @@ const PurchaseScreen = () => {
       return
     }
 
-    const actualPaymentOption = paymentMethod ?? defaultPaymentMethod
+    const actualPaymentMethod = paymentMethod ?? defaultPaymentMethod
 
     initPaymentMutation.mutate(
       {
         ...priceRequestBody,
-        rememberCard: actualPaymentOption.type === 'payment-card' ? rememberCard : false,
+        rememberCard: actualPaymentMethod.type === 'payment-card' ? rememberCard : false,
       } satisfies InitiatePaymentRequestDto,
       {
         onSuccess: ({ data: ticketInit }) => {

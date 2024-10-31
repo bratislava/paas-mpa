@@ -3,14 +3,18 @@ import {
   BottomSheetBackdropProps,
   BottomSheetModal,
 } from '@gorhom/bottom-sheet'
+import { useMutation } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { useReducedMotion } from 'react-native-reanimated'
 
-import PaymentOptionRow from '@/components/controls/payment-methods/rows/PaymentOptionRow'
+import PaymentMethodRow from '@/components/controls/payment-methods/rows/PaymentMethodRow'
 import SkeletonPaymentMethod from '@/components/controls/payment-methods/SkeletonPaymentMethod'
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import ActionRow from '@/components/list-rows/ActionRow'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
+import Modal from '@/components/screen-layout/Modal/Modal'
+import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
+import { useModal } from '@/components/screen-layout/Modal/useModal'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import Divider from '@/components/shared/Divider'
@@ -20,6 +24,7 @@ import Typography from '@/components/shared/Typography'
 import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { usePaymentMethods } from '@/hooks/usePaymentMethods'
 import { useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 
 const Page = () => {
   const { t } = useTranslation()
@@ -29,6 +34,12 @@ const Page = () => {
 
   const [, setDefaultPaymentMethod] = useDefaultPaymentMethod()
   const { sections, isLoading } = usePaymentMethods()
+
+  const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
+
+  const revokePaymentMutation = useMutation({
+    mutationFn: (id: number) => clientApi.ticketsControllerRevokePaymentMethod24Pay(id),
+  })
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
@@ -51,6 +62,18 @@ const Page = () => {
     bottomSheetRef.current?.close()
   }
 
+  const handleActionDelete = () => {
+    bottomSheetRef.current?.close()
+    openModal()
+  }
+
+  const handleConfirmDelete = async () => {
+    if (activeMethod?.id) {
+      revokePaymentMutation.mutate(activeMethod.id)
+    }
+    closeModal()
+  }
+
   if (isLoading) {
     return (
       <ScreenView title={t('PaymentMethods.title')}>
@@ -65,6 +88,7 @@ const Page = () => {
     <ScreenView title={t('PaymentMethods.title')}>
       <ScreenContent>
         <SectionList
+          estimatedItemSize={70}
           sections={sections}
           stickySectionHeadersEnabled={false}
           renderSectionHeader={(section) =>
@@ -73,7 +97,7 @@ const Page = () => {
             ) : null
           }
           renderItem={({ item }) => (
-            <PaymentOptionRow
+            <PaymentMethodRow
               method={item}
               onContextMenuPress={() => handleContextMenuPress(item)}
             />
@@ -94,8 +118,30 @@ const Page = () => {
           <PressableStyled onPress={handleActionSetDefault}>
             <ActionRow startIcon="check-circle" label={t('PaymentMethods.actions.saveAsDefault')} />
           </PressableStyled>
+
+          {activeMethod?.type === 'card' ? (
+            <PressableStyled onPress={handleActionDelete}>
+              <ActionRow
+                startIcon="delete"
+                label={t('PaymentMethods.actions.removeCard')}
+                variant="negative"
+              />
+            </PressableStyled>
+          ) : null}
         </BottomSheetContent>
       </BottomSheetModal>
+
+      <Modal visible={isModalVisible} onRequestClose={toggleModal}>
+        <ModalContentWithActions
+          variant="error"
+          title={t('PaymentMethods.deleteConfirmModal.title')}
+          text={t('PaymentMethods.deleteConfirmModal.message')}
+          primaryActionLabel={t('PaymentMethods.deleteConfirmModal.actionConfirm')}
+          primaryActionOnPress={handleConfirmDelete}
+          secondaryActionLabel={t('PaymentMethods.deleteConfirmModal.actionReject')}
+          secondaryActionOnPress={closeModal}
+        />
+      </Modal>
     </ScreenView>
   )
 }
