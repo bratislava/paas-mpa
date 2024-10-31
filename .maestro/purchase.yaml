@@ -1,6 +1,6 @@
 appId: com.bratislava.paas
 ---
-- launchApp
+# - launchApp
 - waitForAnimationToEnd
 - assertVisible: Search for a place or address
 - tapOn: Search for a place or address
@@ -25,13 +25,10 @@ appId: com.bratislava.paas
     id: chooseVehicle
 - assertVisible: Pay
 - tapOn: Pay
-- assertVisible: Card information
-- tapOn: Card information
-- inputText: '4263970000005262'
-- inputText: '0432'
-- inputText: '712'
-- hideKeyboard
-- tapOn: "Pay\_ 1.50\_EUR"
+- assertVisible: SPOROPAY
+- tapOn: SPOROPAY
+- assertVisible: OK
+- tapOn: OK
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:

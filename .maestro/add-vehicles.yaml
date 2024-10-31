@@ -1,6 +1,6 @@
 appId: com.bratislava.paas
 ---
-- launchApp
+# - launchApp
 - waitForAnimationToEnd
 - assertVisible: Open menu
 - tapOn: Open menu
@@ -11,8 +11,6 @@ appId: com.bratislava.paas
     id: licencePlate
 - inputText: BB222BB
 - tapOn: Add new
-- tapOn:
-    id: Add vehicle
 - assertVisible: BB222BB
 - tapOn: Edit vehicle
 - tapOn:
