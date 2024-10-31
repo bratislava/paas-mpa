@@ -3,7 +3,10 @@ import { View } from 'react-native'
 
 import { ListGradient, ListGradientProps } from '@/components/shared/List/ListGradient'
 
-export type ListProps<T> = FlashListProps<T> & ListGradientProps
+export type ListProps<T> = FlashListProps<T> &
+  ListGradientProps & {
+    showGradient?: boolean
+  }
 
 /**
  * High performance list component with action button at the bottom
@@ -13,6 +16,7 @@ export type ListProps<T> = FlashListProps<T> & ListGradientProps
 export const List = <T extends any>({
   actionButton,
   ItemSeparatorComponent,
+  showGradient = true,
   renderItem,
   ...props
 }: ListProps<T>) => {
@@ -35,7 +39,7 @@ export const List = <T extends any>({
         }
       />
 
-      <ListGradient actionButton={actionButton} />
+      {showGradient ? <ListGradient actionButton={actionButton} /> : null}
     </View>
   )
 }

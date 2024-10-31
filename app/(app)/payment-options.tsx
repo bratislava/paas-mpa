@@ -3,7 +3,6 @@ import {
   BottomSheetBackdropProps,
   BottomSheetModal,
 } from '@gorhom/bottom-sheet'
-import { useMutation } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { useReducedMotion } from 'react-native-reanimated'
 
@@ -22,9 +21,8 @@ import { SectionList } from '@/components/shared/List/SectionList'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
-import { usePaymentMethods } from '@/hooks/usePaymentMethods'
 import { useTranslation } from '@/hooks/useTranslation'
-import { clientApi } from '@/modules/backend/client-api'
+import { usePaymentMethodsStoreContext } from '@/state/PaymentMethodsStoreProvider/usePaymentMethodsStoreContext'
 
 const Page = () => {
   const { t } = useTranslation()
@@ -33,13 +31,9 @@ const Page = () => {
   const [activeMethod, setActiveMethod] = useState<PaymentMethod | null>(null)
 
   const [, setDefaultPaymentMethod] = useDefaultPaymentMethod()
-  const { sections, isLoading } = usePaymentMethods()
+  const { sections, isLoading, deletePaymentMethod } = usePaymentMethodsStoreContext()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
-
-  const revokePaymentMutation = useMutation({
-    mutationFn: (id: number) => clientApi.ticketsControllerRevokePaymentMethod24Pay(id),
-  })
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
@@ -67,9 +61,9 @@ const Page = () => {
     openModal()
   }
 
-  const handleConfirmDelete = async () => {
-    if (activeMethod?.id) {
-      revokePaymentMutation.mutate(activeMethod.id)
+  const handleConfirmDelete = () => {
+    if (activeMethod) {
+      deletePaymentMethod(activeMethod)
     }
     closeModal()
   }

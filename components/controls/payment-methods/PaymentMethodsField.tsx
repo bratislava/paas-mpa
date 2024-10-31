@@ -8,8 +8,8 @@ import Field from '@/components/shared/Field'
 import { SectionList } from '@/components/shared/List/SectionList'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
-import { usePaymentMethods } from '@/hooks/usePaymentMethods'
 import { useTranslation } from '@/hooks/useTranslation'
+import { usePaymentMethodsStoreContext } from '@/state/PaymentMethodsStoreProvider/usePaymentMethodsStoreContext'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 
@@ -20,7 +20,7 @@ const PaymentMethodsField = () => {
   const { paymentMethod, npk } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
 
-  const { sections, isLoading } = usePaymentMethods()
+  const { sections, isLoading } = usePaymentMethodsStoreContext()
 
   const handleMethodPress = (method: PaymentMethod) => {
     onPurchaseStoreUpdate({
@@ -30,7 +30,7 @@ const PaymentMethodsField = () => {
     router.back()
   }
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <Field label={t('PaymentMethods.fieldPaymentMethods')}>
         <SkeletonPaymentMethod />
@@ -42,6 +42,7 @@ const PaymentMethodsField = () => {
     <Field label={t('PaymentMethods.fieldPaymentMethods')}>
       <SectionList
         estimatedItemSize={70}
+        showGradient={false}
         sections={sections}
         stickySectionHeadersEnabled={false}
         renderSectionHeader={(section) =>

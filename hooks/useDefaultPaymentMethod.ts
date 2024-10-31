@@ -23,5 +23,5 @@ export const useDefaultPaymentMethod = () => {
     setDefaultMethod({ type: 'payment-card' })
   }
 
-  return [defaultMethod as PaymentMethod, setDefaultMethod] as const
+  return [defaultMethod, setDefaultMethod] as const
 }
