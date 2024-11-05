@@ -1,11 +1,12 @@
 import { ImagePickerAsset } from 'expo-image-picker'
-import { Image, Pressable, View } from 'react-native'
+import { Image, View } from 'react-native'
 
 import {
   ImagePickerButton,
   ImagePickerButtonProps,
 } from '@/components/inputs/ImagePicker/ImagePickerButton'
 import Icon from '@/components/shared/Icon'
+import PressableStyled from '@/components/shared/PressableStyled'
 import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/utils/cn'
 
@@ -32,13 +33,13 @@ export const ImagePicker = ({ value, onRemoveFile, ...props }: Props) => {
               className="h-full w-full rounded border-2 border-divider"
             />
 
-            <Pressable
+            <PressableStyled
               accessibilityLabel={t('ImagePicker.removeImage')}
-              className="absolute -right-[2px] -top-[6px] h-7 w-7 items-center justify-center rounded-full border border-white bg-negative-light"
+              className="absolute -right-[6px] -top-[10px] h-8 w-8 items-center justify-center rounded-full border-4 border-white bg-negative-light"
               onPress={() => onRemoveFile(index)}
             >
               <Icon name="close" className="text-negative" size={16} />
-            </Pressable>
+            </PressableStyled>
           </View>
         ))}
       </View>

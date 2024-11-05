@@ -20,10 +20,7 @@ import globalAxios from 'axios'
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  setApiKeyToObject,
-  setBasicAuthToObject,
   setBearerAuthToObject,
-  setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -31,7 +28,7 @@ import {
 } from './common'
 import type { RequestArgs } from './base'
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base'
+import { BASE_PATH, BaseAPI, RequiredError } from './base'
 
 /**
  *
@@ -199,8 +196,8 @@ export interface EmailVerificationResult {
  */
 
 export const FeedbackType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  Bug: 'BUG',
+  Improvement: 'IMPROVEMENT',
 } as const
 
 export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]

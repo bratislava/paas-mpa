@@ -24,7 +24,7 @@ export const ImagePickerButton = ({ title, onAddFiles }: ImagePickerButtonProps)
   }
 
   return (
-    <Button variant="tertiary" onPress={pickImage}>
+    <Button startIcon="attach-file" variant="tertiary" onPress={pickImage}>
       {title ?? t('ImagePicker.upload')}
     </Button>
   )
