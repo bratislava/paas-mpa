@@ -34,7 +34,7 @@ export const ImagePicker = ({ value, onRemoveFile, ...props }: Props) => {
             />
 
             <PressableStyled
-              accessibilityLabel={t('ImagePicker.removeImage')}
+              accessibilityLabel={t('ImagePicker.remove')}
               className="absolute -right-[6px] -top-[10px] h-8 w-8 items-center justify-center rounded-full border-4 border-white bg-negative-light"
               onPress={() => onRemoveFile(index)}
             >

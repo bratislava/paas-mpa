@@ -94,7 +94,7 @@
   "FiltersScreen.sectionHeaders.zones": "Zones",
   "FiltersScreen.showResults": "Show results",
   "FiltersScreen.title": "Filters",
-  "ImagePicker.removeImage": "Remove Image",
+  "ImagePicker.remove": "Remove attachment",
   "ImagePicker.upload": "Upload",
   "LocationBottomSheet.dismiss": "Dismiss",
   "LocationBottomSheet.locationDenied.text": "To see nearby parking areas go to App settings in your phone and allow location permissions.",
