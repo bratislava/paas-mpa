@@ -1,31 +1,46 @@
 import { useMutation } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { nativeApplicationVersion, nativeBuildVersion } from 'expo-application'
+import { ImagePickerAsset } from 'expo-image-picker'
 import { router } from 'expo-router'
 import { useCallback } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { ScrollView } from 'react-native'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 
 import { FeedbackTypeSwitch } from '@/components/controls/feedback/FeedbackTypeSwitch'
+import { ImagePicker } from '@/components/inputs/ImagePicker/ImagePicker'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import AccessibilityField from '@/components/shared/AccessibilityField'
 import Button from '@/components/shared/Button'
 import DismissKeyboard from '@/components/shared/DismissKeyboard'
+import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { FeedbackDto, FeedbackType } from '@/modules/backend/openapi-generated'
+import { FeedbackType, SERVICEERROR } from '@/modules/backend/openapi-generated'
+import { isServiceError } from '@/utils/errorService'
 
 type FormData = {
   email: string
   message: string
-  type: 'bug' | 'proposal'
+  type: FeedbackType
+  files: ImagePickerAsset[]
+}
+
+type FeedbackMutationData = {
+  type: FeedbackType
+  email: string
+  message: string
+  appVersion?: string
+  files?: Array<File>
 }
 
 const defaultValues: FormData = {
   email: '',
   message: '',
-  type: 'bug',
+  type: FeedbackType.Bug,
+  files: [],
 }
 
 const FeedbackScreen = () => {
@@ -41,12 +56,26 @@ const FeedbackScreen = () => {
     defaultValues,
   })
 
+  const {
+    fields: files,
+    append: appendFiles,
+    remove: removeFile,
+  } = useFieldArray({
+    control,
+    name: 'files',
+  })
+
   const watchedType = watch('type')
 
   const mutation = useMutation({
-    mutationFn: (feedbackDto: FeedbackDto) => {
-      return clientApi.systemControllerSendFeedback(feedbackDto)
-    },
+    mutationFn: (data: FeedbackMutationData) =>
+      clientApi.systemControllerSendFeedback(
+        data.type,
+        data.email,
+        data.message,
+        data.appVersion,
+        data.files,
+      ),
     onSuccess: () => {
       router.replace('/feedback/success')
       mutation.reset()
@@ -57,12 +86,18 @@ const FeedbackScreen = () => {
   })
 
   const handleFormSubmit = useCallback(
-    ({ email, message, type }: FormData) => {
+    async (data: FormData) => {
       mutation.mutate({
-        email: email.toLowerCase().trim(), // double check before sending to the backend
-        message,
-        type: type === 'bug' ? FeedbackType.NUMBER_0 : FeedbackType.NUMBER_1,
+        email: data.email.toLowerCase().trim(), // double check before sending to the backend
+        message: data.message,
+        type: data.type,
         appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
+        // TODO: Needs further investigation... something weird happens when we use new File() constructor here and the files are not sent correctly
+        files: data.files.map((file) => ({
+          uri: file.uri,
+          type: file.mimeType,
+          name: file.fileName,
+        })) as unknown as File[],
       })
     },
     [mutation],
@@ -71,80 +106,102 @@ const FeedbackScreen = () => {
   return (
     <DismissKeyboard>
       <ScreenView title={t('FeedbackScreen.title')}>
-        <ScrollView>
-          <ScreenContent>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                pattern: {
-                  value: /.*@.*\..*/,
-                  message: 'Email error',
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <AccessibilityField
-                  label={t('FeedbackScreen.emailAddress')}
-                  errorMessage={errors.email ? t('FeedbackScreen.emailAddressInvalid') : undefined}
-                >
-                  <TextInput
-                    value={value}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    hasError={!!errors.email}
-                  />
-                </AccessibilityField>
-              )}
-              name="email"
-            />
+        <KeyboardAvoidingView
+          className="h-full"
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={100}
+        >
+          <ScrollView>
+            <ScreenContent>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  pattern: {
+                    value: /.*@.*\..*/,
+                    message: 'Email error',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <AccessibilityField
+                    label={t('FeedbackScreen.emailAddress')}
+                    errorMessage={
+                      errors.email ? t('FeedbackScreen.emailAddressInvalid') : undefined
+                    }
+                  >
+                    <TextInput
+                      value={value}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      hasError={!!errors.email}
+                    />
+                  </AccessibilityField>
+                )}
+                name="email"
+              />
 
-            <Controller
-              control={control}
-              name="type"
-              render={({ field: { value } }) => (
-                <FeedbackTypeSwitch value={value} onChange={(val) => setValue('type', val)} />
-              )}
-            />
+              <Controller
+                control={control}
+                name="type"
+                render={({ field: { value } }) => (
+                  <FeedbackTypeSwitch value={value} onChange={(val) => setValue('type', val)} />
+                )}
+              />
 
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <AccessibilityField
-                  style={{ flex: 1 }}
-                  label={t('FeedbackScreen.yourMessage')}
-                  helptext={
-                    watchedType === 'bug' ? t('FeedbackScreen.yourMessage.helpText') : undefined
-                  }
-                  errorMessage={errors.message ? t('FeedbackScreen.yourMessageInvalid') : undefined}
-                >
-                  <TextInput
-                    value={value}
-                    multiline
-                    numberOfLines={10}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    hasError={!!errors.message}
-                  />
-                </AccessibilityField>
-              )}
-              name="message"
-            />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <AccessibilityField
+                    style={{ flex: 1 }}
+                    label={t('FeedbackScreen.yourMessage')}
+                    helptext={
+                      watchedType === FeedbackType.Bug
+                        ? t('FeedbackScreen.yourMessage.helpText')
+                        : undefined
+                    }
+                    errorMessage={
+                      errors.message ? t('FeedbackScreen.yourMessageInvalid') : undefined
+                    }
+                  >
+                    <TextInput
+                      value={value}
+                      multiline
+                      numberOfLines={10}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      hasError={!!errors.message}
+                    />
+                  </AccessibilityField>
+                )}
+                name="message"
+              />
 
-            <Button
-              variant="primary"
-              onPress={handleSubmit(handleFormSubmit)}
-              loading={mutation.isPending}
-            >
-              {t('FeedbackScreen.send')}
-            </Button>
-          </ScreenContent>
-        </ScrollView>
+              {isAxiosError(mutation.error) &&
+              isServiceError(mutation.error.response?.data) &&
+              mutation.error.response.data.errorName === SERVICEERROR.UnsupportedFileType ? (
+                <Typography className="text-negative">
+                  {t('FeedbackScreen.attachFilesUnsupportedFileType')}
+                </Typography>
+              ) : undefined}
+
+              <ImagePicker value={files} onAddFiles={appendFiles} onRemoveFile={removeFile} />
+
+              <Button
+                variant="primary"
+                onPress={handleSubmit(handleFormSubmit)}
+                loading={mutation.isPending}
+              >
+                {t('FeedbackScreen.send')}
+              </Button>
+            </ScreenContent>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </ScreenView>
     </DismissKeyboard>
   )
