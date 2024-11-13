@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { useMMKVObject } from 'react-native-mmkv'
 
+import { useLocale } from '@/hooks/useTranslation'
 import { TicketDto } from '@/modules/backend/openapi-generated'
 import LiveActivityControlModule from '@/modules/live-activity-module/src/LiveActivityControlModule'
 import { useMapZonesContext } from '@/state/MapZonesProvider/useMapZonesContext'
@@ -8,6 +9,8 @@ import { storage } from '@/utils/mmkv'
 
 export const useLiveActivities = () => {
   const mapZones = useMapZonesContext()
+  const locale = useLocale()
+
   const [activities, setActivities] = useMMKVObject<Record<string, string>>(
     'liveActivities',
     storage,
@@ -29,6 +32,7 @@ export const useLiveActivities = () => {
           new Date(ticket.parkingEnd).getTime(),
           ticket.ecv,
           findUdrNameById(ticket.udr) || ticket.udr,
+          locale,
         )
 
         if (activityId) {
@@ -45,7 +49,7 @@ export const useLiveActivities = () => {
 
       return null
     },
-    [activities, findUdrNameById, setActivities],
+    [activities, findUdrNameById, setActivities, locale],
   )
 
   const updateLiveActivity = useCallback(
@@ -62,13 +66,14 @@ export const useLiveActivities = () => {
             new Date(ticket.parkingEnd).getTime(),
             ticket.ecv,
             findUdrNameById(ticket.udr) || ticket.udr,
+            locale,
           )
         } catch (error) {
           console.log(error)
         }
       }
     },
-    [activities, findUdrNameById],
+    [activities, findUdrNameById, locale],
   )
 
   const endLiveActivity = useCallback(

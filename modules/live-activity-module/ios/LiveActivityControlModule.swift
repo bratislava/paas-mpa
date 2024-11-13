@@ -13,13 +13,13 @@ public class LiveActivityControlModule: Module {
             }
         }
         
-        Function("startActivity") { (startTimeUnix: UInt64, endTimeUnix: UInt64, licencePlate: String, parkingLocation: String) -> String? in
+        Function("startActivity") { (startTimeUnix: UInt64, endTimeUnix: UInt64, licencePlate: String, parkingLocation: String, locale: String) -> String? in
             let startTime = Date(timeIntervalSince1970: TimeInterval(startTimeUnix) / 1000)
             let endTime = Date(timeIntervalSince1970: TimeInterval(endTimeUnix) / 1000)
             
             if #available(iOS 16.2, *) {
                 let attributes = Attributes()
-                let contentState = Attributes.ContentState(startTime: startTime, endTime: endTime, licencePlate: licencePlate, parkingLocation: parkingLocation)
+                let contentState = Attributes.ContentState(startTime: startTime, endTime: endTime, licencePlate: licencePlate, parkingLocation: parkingLocation, locale: locale)
                 
                 let activityContent = ActivityContent(state: contentState, staleDate: endTime)
                 
@@ -36,14 +36,14 @@ public class LiveActivityControlModule: Module {
             }
         }      
 
-        Function("updateActivity") { (id: String, startTimeUnix: UInt64, endTimeUnix: UInt64, licencePlate: String, parkingLocation: String) -> String? in
+        Function("updateActivity") { (id: String, startTimeUnix: UInt64, endTimeUnix: UInt64, licencePlate: String, parkingLocation: String, locale: String) -> String? in
             let startTime = Date(timeIntervalSince1970: TimeInterval(startTimeUnix) / 1000)
             let endTime = Date(timeIntervalSince1970: TimeInterval(endTimeUnix) / 1000)
             
             if #available(iOS 16.2, *) {
                 let attributes = Attributes()                
 
-                let contentState = Attributes.ContentState(startTime: startTime, endTime: endTime, licencePlate: licencePlate, parkingLocation: parkingLocation)
+                let contentState = Attributes.ContentState(startTime: startTime, endTime: endTime, licencePlate: licencePlate, parkingLocation: parkingLocation, locale: locale)
                 let updatedContent = ActivityContent(state: contentState, staleDate: endTime)
                 
                 Task {
@@ -69,7 +69,7 @@ public class LiveActivityControlModule: Module {
         Function("endActivity") { (id: String) -> String? in
             if #available(iOS 16.2, *) {
                 let attributes = Attributes()
-                let contentState = Attributes.ContentState(startTime: .now, endTime: .now, licencePlate: "", parkingLocation: "")
+                let contentState = Attributes.ContentState(startTime: .now, endTime: .now, licencePlate: "", parkingLocation: "", locale: "")
                 let finalContent = ActivityContent(state: contentState, staleDate: .now)
                 
                 Task {
@@ -96,7 +96,7 @@ public class LiveActivityControlModule: Module {
             if #available(iOS 16.2, *) {
                 Task {
                     for activity in Activity<Attributes>.activities {
-                        let contentState = Attributes.ContentState(startTime: .now, endTime: .now, licencePlate: "", parkingLocation: "")
+                        let contentState = Attributes.ContentState(startTime: .now, endTime: .now, licencePlate: "", parkingLocation: "", locale: "")
                         let finalContent = ActivityContent(state: contentState, staleDate: nil)
                         log.info("ended: \(activity.id)")
                         await activity.end(finalContent, dismissalPolicy: .immediate)

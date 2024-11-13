@@ -13,16 +13,48 @@ struct GreenProgressViewStyle: ProgressViewStyle {
             .tint(Color.paasGreen)
     }
 }
+struct FormattedDate: View {
+    let date: Date
+    let locale: String
+    let type: String
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = locale  == "sk" ? "EEE d. M. HH:mm" : "MMM d, HH:mm"
+        formatter.locale = Locale(identifier: locale)
+        
+        return formatter.string(from: date)
+    }
+    
+    private func getTextBasedOnLocale() -> String {
+        switch locale {
+        case "sk":
+            return type == "from" ? "Od" : "Do"
+        default:
+            return type == "from" ? "From" : "To"
+        }
+    }
+
+    var body: some View {
+        VStack {
+            Text(getTextBasedOnLocale())
+                .font(.system(size: 14))
+                .foregroundColor(.secondary)
+            Text(formatDate(date))
+                .font(.system(size: 16, weight: .medium))
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 18)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color(UIColor.systemGray6))
+        )
+    }
+}
 
 struct ActivityView: View {
     let context: ActivityViewContext<Attributes>
     @Environment(\.colorScheme) var colorScheme
-
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, HH:mm"
-        return formatter.string(from: date)
-    }
 
     var body: some View {
         VStack {
@@ -58,35 +90,11 @@ struct ActivityView: View {
                 .progressViewStyle(GreenProgressViewStyle())
 
             HStack {
-                VStack {
-                    Text("From")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Text(formatDate(context.state.startTime))
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 18)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(UIColor.systemGray6))
-                )
+                FormattedDate(date: context.state.startTime, locale: context.state.locale, type: "from")
 
                 Spacer()
 
-                VStack {
-                    Text("To")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Text(formatDate(context.state.endTime))
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 18)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(UIColor.systemGray6))
-                )
+                FormattedDate(date: context.state.endTime, locale: context.state.locale, type: "to")
             }
         }
         .padding(.all, 12)
@@ -95,11 +103,6 @@ struct ActivityView: View {
 
 struct IslandBottom: View {
     let context: ActivityViewContext<Attributes>
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, HH:mm"
-        return formatter.string(from: date)
-    }
 
     var body: some View {
         VStack {
@@ -107,35 +110,11 @@ struct IslandBottom: View {
                 .progressViewStyle(GreenProgressViewStyle())
 
             HStack {
-                VStack {
-                    Text("From")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Text(formatDate(context.state.startTime))
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 18)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(UIColor.systemGray6))
-                )
+                FormattedDate(date: context.state.startTime, locale: context.state.locale, type: "from")
 
                 Spacer()
 
-                VStack {
-                    Text("To")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                    Text(formatDate(context.state.endTime))
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 18)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(UIColor.systemGray6))
-                )
+                FormattedDate(date: context.state.endTime, locale: context.state.locale, type: "to")
             }
         }
     }
@@ -206,7 +185,7 @@ private extension Attributes {
 
 private extension Attributes.ContentState {
     static var state: Attributes.ContentState {
-        Attributes.ContentState(startTime: Date(timeIntervalSince1970: TimeInterval(1727093160)), endTime: Date(timeIntervalSince1970: TimeInterval(1727094060)), licencePlate: "BT999AA", parkingLocation: "Špitálska")
+    Attributes.ContentState(startTime: Date(timeIntervalSinceNow: 0), endTime: Date(timeIntervalSinceNow: 900), licencePlate: "BT999AA", parkingLocation: "Špitálska", locale: "sk")
     }
 }
 
