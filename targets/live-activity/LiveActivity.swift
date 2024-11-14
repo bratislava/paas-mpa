@@ -52,6 +52,20 @@ struct FormattedDate: View {
     }
 }
 
+struct StaleTicketText: View {
+    let context: ActivityViewContext<Attributes>
+
+    var body: some View {
+        HStack {
+            Text(context.state.locale == "en" ? "The parking ticket has expired." : "Parkovací lístok vypršal.")
+                .font(.system(size: 16, weight: .semibold))
+
+            Spacer()
+        }
+        .padding(.vertical, 4)
+    }
+}
+
 struct ActivityView: View {
     let context: ActivityViewContext<Attributes>
     @Environment(\.colorScheme) var colorScheme
@@ -85,9 +99,12 @@ struct ActivityView: View {
                         .font(.system(size: 14, weight: .medium))
                 }
             }
-
-            ProgressView(timerInterval: context.state.startTime...context.state.endTime, countsDown: true)
-                .progressViewStyle(GreenProgressViewStyle())
+            if context.isStale {
+                StaleTicketText(context: context)
+            } else {
+                ProgressView(timerInterval: context.state.startTime...context.state.endTime, countsDown: true)
+                    .progressViewStyle(GreenProgressViewStyle())
+            }
 
             HStack {
                 FormattedDate(date: context.state.startTime, locale: context.state.locale, type: "from")
@@ -106,8 +123,12 @@ struct IslandBottom: View {
 
     var body: some View {
         VStack {
-            ProgressView(timerInterval: context.state.startTime...context.state.endTime, countsDown: true)
-                .progressViewStyle(GreenProgressViewStyle())
+            if context.isStale {
+                StaleTicketText(context: context)
+            } else {
+                ProgressView(timerInterval: context.state.startTime...context.state.endTime, countsDown: true)
+                    .progressViewStyle(GreenProgressViewStyle())
+            }
 
             HStack {
                 FormattedDate(date: context.state.startTime, locale: context.state.locale, type: "from")
@@ -185,7 +206,7 @@ private extension Attributes {
 
 private extension Attributes.ContentState {
     static var state: Attributes.ContentState {
-    Attributes.ContentState(startTime: Date(timeIntervalSinceNow: 0), endTime: Date(timeIntervalSinceNow: 900), licencePlate: "BT999AA", parkingLocation: "Špitálska", locale: "sk")
+    Attributes.ContentState(startTime: Date(timeIntervalSinceNow: 0), endTime: Date(timeIntervalSinceNow: 120), licencePlate: "BT999AA", parkingLocation: "Špitálska", locale: "en")
     }
 }
 
