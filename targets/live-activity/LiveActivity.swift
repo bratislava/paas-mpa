@@ -13,21 +13,6 @@ struct GreenProgressViewStyle: ProgressViewStyle {
             .tint(Color.paasGreen)
     }
 }
-
-struct StaleTicketText: View {
-    let context: ActivityViewContext<Attributes>
-
-    var body: some View {
-        HStack {
-            Text(context.state.locale == "en" ? "The parking ticket has expired." : "Parkovací lístok vypršal.")
-                .font(.system(size: 16, weight: .semibold))
-
-            Spacer()
-        }
-        .padding(.vertical, 4)
-    }
-}
-
 struct FormattedDate: View {
     let date: Date
     let locale: String
@@ -64,6 +49,20 @@ struct FormattedDate: View {
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color(UIColor.systemGray6))
         )
+    }
+}
+
+struct StaleTicketText: View {
+    let context: ActivityViewContext<Attributes>
+
+    var body: some View {
+        HStack {
+            Text(context.state.locale == "en" ? "The parking ticket has expired." : "Parkovací lístok vypršal.")
+                .font(.system(size: 16, weight: .semibold))
+
+            Spacer()
+        }
+        .padding(.vertical, 4)
     }
 }
 
