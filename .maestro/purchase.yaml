@@ -15,7 +15,6 @@ appId: com.bratislava.paas
         id: addParkingCardsModal
     commands:
       - tapOn: 'Later'
-- tapOn: Pay
 - tapOn:
     id: addVehicle
 - tapOn:
