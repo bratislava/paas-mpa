@@ -11,9 +11,9 @@ appId: com.bratislava.paas
     id: licencePlate
 - inputText: BB222BB
 - tapOn: Add new
-- tapOn:
-    id: Add vehicle
-- assertVisible: BB222BB
+- extendedWaitUntil:
+    visible: BB222BB
+    timeout: 5000
 - tapOn: Edit vehicle
 - tapOn:
     id: deleteVehicleBottomSheetPressable
