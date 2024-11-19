@@ -196,8 +196,8 @@ export interface EmailVerificationResult {
  */
 
 export const FeedbackType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  Bug: 'BUG',
+  Improvement: 'IMPROVEMENT',
 } as const
 
 export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]

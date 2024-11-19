@@ -6,8 +6,8 @@ build:
         inputs:
           flow_path: |
             .maestro/login.yaml
-            .maestro/add-vehicles.yaml
-            .maestro/add-parking-cards.yaml
             .maestro/purchase.yaml
             .maestro/prolongate.yaml
             .maestro/shorten.yaml
+            .maestro/add-vehicles.yaml
+            .maestro/add-parking-cards.yaml

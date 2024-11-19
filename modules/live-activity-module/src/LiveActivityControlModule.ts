@@ -7,8 +7,9 @@ const fallback = {
     _endTime: number,
     _licencePlate: string,
     _parkingLocation: string,
+    _language: string,
   ) => {
-    console.log(_endTime, _parkingLocation, _startTime, _licencePlate)
+    console.log(_endTime, _parkingLocation, _startTime, _licencePlate, _language)
 
     return null
   },
@@ -18,8 +19,9 @@ const fallback = {
     _endTime: number,
     _licencePlate: string,
     _parkingLocation: string,
+    _language: string,
   ) => {
-    console.log(_endTime, _parkingLocation, _startTime, _licencePlate)
+    console.log(_endTime, _parkingLocation, _startTime, _licencePlate, _language)
 
     return null
   },
@@ -42,6 +44,7 @@ type LiveActivityControlModule = {
     endTime: number,
     licencePlate: string,
     parkingLocation: string,
+    language: 'en' | 'sk',
   ) => Promise<string | null>
   updateActivity: (
     id: string,
@@ -49,6 +52,7 @@ type LiveActivityControlModule = {
     endTime: number,
     licencePlate: string,
     parkingLocation: string,
+    language: 'en' | 'sk',
   ) => Promise<string | null>
   endActivity: (id: string) => Promise<string | null>
   endAllActivities: () => Promise<void>
