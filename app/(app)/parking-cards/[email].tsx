@@ -6,6 +6,7 @@ import { View } from 'react-native'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
+import MissingCardCallout from '@/components/parking-cards/MissingCardCallout'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -14,6 +15,7 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
 import { List } from '@/components/shared/List/List'
+import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { parkingCardsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
@@ -69,7 +71,9 @@ const Page = () => {
               keyExtractor={(parkingCard) => parkingCard.identificator}
               onEndReachedThreshold={0.2}
               onEndReached={loadMore}
-              ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
+              ListFooterComponent={
+                isFetchingNextPage ? <SkeletonParkingCard /> : <MissingCardCallout />
+              }
               renderItem={({ item: parkingCardItem }) => <ParkingCard card={parkingCardItem} />}
             />
           </ScreenContent>
@@ -79,6 +83,14 @@ const Page = () => {
               title={t('ParkingCards.noActiveCardsTitle')}
               text={t('ParkingCards.noActiveCardsText')}
               customAvatarComponent={<EmptyStateAvatar />}
+              actionButton={
+                <View className="bg-white g-2">
+                  <Typography className="text-center" variant="h2">
+                    {t('ParkingCards.cannotFindCards.title')}
+                  </Typography>
+                  <Markdown textCenter>{t('ParkingCards.cannotFindCards.text')}</Markdown>
+                </View>
+              }
             />
           </View>
         )}
