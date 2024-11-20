@@ -149,7 +149,8 @@ const PurchaseScreen = () => {
     initPaymentMutation.mutate(
       {
         ...priceRequestBody,
-        rememberCard: actualPaymentMethod.type === 'payment-card' ? rememberCard : false,
+        rememberCard: actualPaymentMethod?.type === 'payment-card' ? rememberCard : false,
+        rememberedCardId: actualPaymentMethod?.type === 'card' ? actualPaymentMethod.id : undefined,
       } satisfies InitiatePaymentRequestDto,
       {
         onSuccess: ({ data: ticketInit }) => {
@@ -196,7 +197,10 @@ const PurchaseScreen = () => {
                 </Link>
               ) : null}
 
-              {priceQuery.data?.priceTotal === 0 ? null : <RememberCardField />}
+              {priceQuery.data?.priceTotal === 0 ||
+              paymentMethod?.type !== 'payment-card' ? null : (
+                <RememberCardField />
+              )}
             </Field>
           </ScreenContent>
         </ScrollView>

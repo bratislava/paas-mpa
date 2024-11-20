@@ -31,7 +31,7 @@ const Page = () => {
   const [activeMethod, setActiveMethod] = useState<PaymentMethod | null>(null)
 
   const [, setDefaultPaymentMethod] = useDefaultPaymentMethod()
-  const { sections, isLoading, deletePaymentMethod } = usePaymentMethodsStoreContext()
+  const { sections, isLoading, deletePaymentMethod, refetch } = usePaymentMethodsStoreContext()
 
   const { isModalVisible, openModal, closeModal, toggleModal } = useModal()
 
@@ -82,6 +82,8 @@ const Page = () => {
     <ScreenView title={t('PaymentMethods.title')}>
       <ScreenContent>
         <SectionList
+          refreshing={isLoading}
+          onRefresh={refetch}
           estimatedItemSize={70}
           sections={sections}
           stickySectionHeadersEnabled={false}

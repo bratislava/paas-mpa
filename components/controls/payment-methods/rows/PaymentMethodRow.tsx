@@ -1,6 +1,7 @@
 import PaymentMethodContent from '@/components/controls/payment-methods/rows/PaymentMethodContent'
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import { useTranslation } from '@/hooks/useTranslation'
+import { getCardBrandName } from '@/utils/getCardBrandName'
 
 // Ensure that only one of these props is set at a time
 export type CommonPaymentTypeProps =
@@ -39,12 +40,12 @@ const PaymentMethodRow = ({ method, ...props }: Props) => {
     case 'card':
       return (
         <PaymentMethodContent
-          variant={
-            method.brandName === 'visa' || method.brandName === 'mastercard'
-              ? method.brandName
-              : 'payment-card'
+          variant={getCardBrandName(method.mask) ?? 'payment-card'}
+          title={
+            method.mask
+              ? `**** ${method.mask.split(',')[1]}`
+              : t('PaymentMethods.methods.payment-card')
           }
-          title={method.mask ?? t('PaymentMethods.methods.payment-card')}
           {...props}
         />
       )

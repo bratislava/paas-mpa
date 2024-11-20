@@ -58,7 +58,11 @@ const ProlongTicketScreen = () => {
 
   const handlePressPay = () => {
     initPaymentMutation.mutate(
-      { ...priceRequestBody, rememberCard },
+      {
+        ...priceRequestBody,
+        rememberCard,
+        rememberedCardId: paymentMethod?.type === 'card' ? paymentMethod.id : undefined,
+      },
       {
         onSuccess: ({ data: ticketInit }) => {
           // The query gets removed so the tickets fetches correctly in success screen (newest version) we use the same query as here
@@ -128,7 +132,10 @@ const ProlongTicketScreen = () => {
                   </Link>
                 )}
 
-                {priceQuery.data.priceTotal === 0 ? null : <RememberCardField />}
+                {priceQuery.data.priceTotal === 0 ||
+                paymentMethod?.type !== 'payment-card' ? null : (
+                  <RememberCardField />
+                )}
               </Field>
             ) : null}
           </ScreenContent>

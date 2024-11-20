@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -6,12 +6,14 @@ import { localPaymentMethods } from '@/components/controls/payment-methods/const
 import { PaymentMethod } from '@/components/controls/payment-methods/types'
 import { Section } from '@/components/shared/List/SectionList'
 import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
+import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { clientApi } from '@/modules/backend/client-api'
 import { paymentMethodsOptions } from '@/modules/backend/constants/queryOptions'
 
 type PaymentMethodsStoreContextProps = {
   sections: Section<PaymentMethod, string>[]
   deletePaymentMethod: (id: PaymentMethod) => void
+  refetch: () => void
   isLoading?: boolean
 }
 
@@ -30,7 +32,7 @@ PaymentMethodsStoreContext.displayName = 'PaymentMethodsStoreContext'
 const PaymentMethodsStoreProvider = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation()
 
-  const paymentMethodsQuery = useQuery(paymentMethodsOptions())
+  const paymentMethodsQuery = useQueryWithFocusRefetch(paymentMethodsOptions())
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => clientApi.ticketsControllerRevokePaymentMethod24Pay(id),
@@ -84,10 +86,11 @@ const PaymentMethodsStoreProvider = ({ children }: PropsWithChildren) => {
     async (paymentMethodToDelete: PaymentMethod) => {
       if (!paymentMethodToDelete.id) return
 
-      if (comparePaymentMethods(defaultPaymentMethod, paymentMethodToDelete)) {
+      const res = await deleteMutation.mutateAsync(paymentMethodToDelete.id)
+
+      if (res.data && comparePaymentMethods(defaultPaymentMethod, paymentMethodToDelete)) {
         setDefaultPaymentMethod(undefined)
       }
-      deleteMutation.mutate(paymentMethodToDelete.id)
     },
     [defaultPaymentMethod, deleteMutation, setDefaultPaymentMethod],
   )
@@ -97,8 +100,9 @@ const PaymentMethodsStoreProvider = ({ children }: PropsWithChildren) => {
       sections,
       deletePaymentMethod,
       isLoading: paymentMethodsQuery.isPending,
+      refetch: paymentMethodsQuery.refetch,
     }),
-    [sections, deletePaymentMethod, paymentMethodsQuery.isPending],
+    [sections, deletePaymentMethod, paymentMethodsQuery.isPending, paymentMethodsQuery.refetch],
   )
 
   return (

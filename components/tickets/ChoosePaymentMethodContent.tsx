@@ -1,10 +1,8 @@
 import { ScrollView } from 'react-native'
 
 import PaymentMethodsField from '@/components/controls/payment-methods/PaymentMethodsField'
-import VisitorCardsField from '@/components/controls/payment-methods/VisitorCardsField'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import Divider from '@/components/shared/Divider'
 import { useTranslation } from '@/hooks/useTranslation'
 
 type Props = {
@@ -18,14 +16,7 @@ const ChoosePaymentMethodContent = ({ isBpkUsedInProlongation }: Props) => {
     <ScreenView title={t('PaymentMethods.title')} options={{ presentation: 'modal' }}>
       <ScrollView>
         <ScreenContent>
-          <PaymentMethodsField />
-
-          {isBpkUsedInProlongation ? null : (
-            <>
-              <Divider />
-              <VisitorCardsField />
-            </>
-          )}
+          <PaymentMethodsField isBpkUsedInProlongation={isBpkUsedInProlongation} />
         </ScreenContent>
       </ScrollView>
     </ScreenView>

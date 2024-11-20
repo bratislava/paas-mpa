@@ -16,12 +16,15 @@ function isPaymentMethod(paymentMethod: unknown): paymentMethod is PaymentMethod
   )
 }
 
-export const useDefaultPaymentMethod = () => {
+export const useDefaultPaymentMethod = (): [PaymentMethod, (value?: PaymentMethod) => void] => {
   const [defaultMethod, setDefaultMethod] = useMMKVObject<PaymentMethod>('default-payment')
 
   if (!isPaymentMethod(defaultMethod)) {
-    setDefaultMethod({ type: 'payment-card' })
+    const newDefaultMethod: PaymentMethod = { type: 'payment-card' }
+    setDefaultMethod(newDefaultMethod)
+
+    return [newDefaultMethod, setDefaultMethod]
   }
 
-  return [defaultMethod, setDefaultMethod] as const
+  return [defaultMethod, setDefaultMethod]
 }
