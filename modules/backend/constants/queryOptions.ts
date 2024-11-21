@@ -9,6 +9,7 @@ import {
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { MapUdrZone } from '@/modules/map/types'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
+import { processPayment } from '@/utils/processPayment'
 
 type PaginationOptions = {
   page?: number
@@ -182,6 +183,13 @@ export const vehiclesInfiniteOptions = () =>
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
 
+export const paymentMethodsOptions = () =>
+  queryOptions({
+    queryKey: ['PaymentMethods'],
+    queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethods24Pay(),
+    select: (res) => res.data,
+  })
+
 export const mobileAppVersionOptions = () =>
   queryOptions({
     queryKey: ['MobileVersion'],
@@ -197,10 +205,11 @@ export const verifiedEmailsLengthOptions = ({ enabled }: { enabled?: boolean }) 
     select: (res) => res.data,
   })
 }
-export const storedPaymentMethodOptions = () => {
-  return queryOptions({
-    queryKey: ['StoredPaymentMethod'],
-    queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethodAvailability(),
+
+export const paymentPageOptions = (paymentUrl: string, params: { [key: string]: string }) =>
+  queryOptions({
+    queryKey: ['Payment', params.Sign],
+    queryFn: () => processPayment({ paymentUrl, params }),
+    enabled: !!(paymentUrl && params),
     select: (res) => res.data,
   })
-}

@@ -1,6 +1,6 @@
 appId: com.bratislava.paas
 ---
-- launchApp
+# - launchApp
 - waitForAnimationToEnd
 - assertVisible:
     id: activeTicketsCount
@@ -9,30 +9,10 @@ appId: com.bratislava.paas
 - tapOn: Prolong
 - assertVisible: Pay
 - tapOn: Pay
-- runFlow:
-    when:
-      visible: Card information
-    commands:
-      - tapOn: Card information
-- runFlow:
-    when:
-      visible: Informácie o karte
-    commands:
-      - tapOn: Informácie o karte
-- inputText: '4263970000005262'
-- inputText: '0432'
-- inputText: '712'
-- hideKeyboard
-- runFlow:
-    when:
-      visible: "Pay\_ 1.50\_EUR"
-    commands:
-      - tapOn: "Pay\_ 1.50\_EUR"
-- runFlow:
-    when:
-      visible: "Zaplatiť\_ 1,50\_EUR"
-    commands:
-      - tapOn: "Zaplatiť\_ 1,50\_EUR"
+- assertVisible: SPOROPAY
+- tapOn: SPOROPAY
+- assertVisible: OK
+- tapOn: OK
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:

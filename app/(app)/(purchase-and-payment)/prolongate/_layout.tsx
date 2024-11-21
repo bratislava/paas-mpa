@@ -1,7 +1,7 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router'
 import { useMemo } from 'react'
 
-import { useDefaultPaymentOption } from '@/hooks/useDefaultPaymentOption'
+import { useDefaultPaymentMethod } from '@/hooks/useDefaultPaymentMethod'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
 import { getTicketOptions, visitorCardsOptions } from '@/modules/backend/constants/queryOptions'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
@@ -16,7 +16,7 @@ const ProlongateLayout = () => {
   const { ticketId } = useLocalSearchParams<ProlongateLocalSearchParams>()
 
   const ticketIdParsed = ticketId ? parseInt(ticketId, 10) : undefined
-  const [defaultPaymentOption] = useDefaultPaymentOption()
+  const [defaultPaymentMethod] = useDefaultPaymentMethod()
 
   const ticketQuery = useQueryWithFocusRefetch(getTicketOptions(ticketIdParsed))
   const visitorCardsQuery = useQueryWithFocusRefetch(visitorCardsOptions())
@@ -29,11 +29,11 @@ const ProlongateLayout = () => {
       duration: 60 * 60,
       vehicle: ticket?.ecv ? { vehiclePlateNumber: ticket?.ecv ?? '', isOneTimeUse: true } : null,
       npk: visitorCards?.find(({ identificator }) => ticket?.npkId === identificator) ?? null,
-      paymentOption: defaultPaymentOption,
+      paymentMethod: defaultPaymentMethod,
       udr: null,
       rememberCard: false,
     }),
-    [defaultPaymentOption, ticket?.ecv, ticket?.npkId, visitorCards],
+    [defaultPaymentMethod, ticket?.ecv, ticket?.npkId, visitorCards],
   )
 
   if (!ticketIdParsed) {

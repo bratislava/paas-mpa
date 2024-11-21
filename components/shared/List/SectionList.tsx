@@ -4,7 +4,7 @@ import { View } from 'react-native'
 
 import { ListGradient, ListGradientProps } from '@/components/shared/List/ListGradient'
 
-type Section<T, S extends string> = {
+export type Section<T, S extends string> = {
   title: S
   data: T[]
 }
@@ -16,6 +16,7 @@ export type SectionListProps<T, S extends string> = Omit<
   ListGradientProps & {
     sections: Section<T, S>[]
     stickySectionHeadersEnabled?: boolean
+    showGradient?: boolean
     SectionSeparatorComponent?: React.ComponentType<any>
     renderSectionHeader: (section: Section<T, S>) => JSX.Element | null
     renderItem: ListRenderItem<T> | null | undefined
@@ -27,6 +28,7 @@ export type SectionListProps<T, S extends string> = Omit<
  * @param estimatedItemSize is determined on the first render and is used to speed up the rendering... first time usage is without this prop and it logs warning where it is calculated next step is to use it in the component
  */
 export const SectionList = <T extends any, S extends string>({
+  showGradient = true,
   actionButton,
   sections,
   ItemSeparatorComponent,
@@ -87,7 +89,7 @@ export const SectionList = <T extends any, S extends string>({
         }
       />
 
-      <ListGradient actionButton={actionButton} />
+      {showGradient ? <ListGradient actionButton={actionButton} /> : null}
     </View>
   )
 }

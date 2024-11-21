@@ -1,6 +1,6 @@
 appId: com.bratislava.paas
 ---
-- launchApp
+# - launchApp
 - waitForAnimationToEnd
 - assertVisible: Open menu
 - tapOn: Open menu
