@@ -133,7 +133,7 @@
   "ParkingCards.cannotFindCards.title": "Can't see your parking cards?",
   "ParkingCards.cannotFindCards.text": "More info [here.](https://paas.sk/casto-kladene-otazky/#ziadna-park-karta)",
   "ParkingCards.emailActions.removeEmail": "Remove email address",
-  "ParkingCards.noActiveCardsText": "All parking cards expired. Once you’ll buy new parking card, it will show here.",
+  "ParkingCards.noActiveCardsText": "Once you’ll buy new parking card, it will show here.",
   "ParkingCards.noActiveCardsTitle": "No active parking cards",
   "ParkingCards.noEmailsText": "To add your cards to the app, please connect with your PAAS account.",
   "ParkingCards.noEmailsTitle": "No parking cards",

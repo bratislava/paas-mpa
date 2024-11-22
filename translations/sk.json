@@ -133,7 +133,7 @@
   "ParkingCards.cannotFindCards.title": "Nevidíte parkovacie karty?",
   "ParkingCards.cannotFindCards.text": "Viac info nájdete [tu.](https://paas.sk/casto-kladene-otazky/#ziadna-park-karta)",
   "ParkingCards.emailActions.removeEmail": "Odstrániť e-mail",
-  "ParkingCards.noActiveCardsText": "Platnosť všetkých parkovacích kariet vypršala. Po zakúpení novej parkovacej karty ju nájdete v tejto sekcii.",
+  "ParkingCards.noActiveCardsText": "Po zakúpení novej parkovacej karty ju nájdete v tejto sekcii.",
   "ParkingCards.noActiveCardsTitle": "Žiadne aktívne karty",
   "ParkingCards.noEmailsText": "Ak chcete pridať svoje karty do aplikácie, overte sa e-mailovou adresou, ktorú ste zadali v PAAS.",
   "ParkingCards.noEmailsTitle": "Žiadne parkovacie karty",
