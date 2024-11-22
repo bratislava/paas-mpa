@@ -15,7 +15,6 @@ import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
 import IconButton from '@/components/shared/IconButton'
 import { List } from '@/components/shared/List/List'
-import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { parkingCardsInfiniteOptions } from '@/modules/backend/constants/queryOptions'
@@ -72,7 +71,11 @@ const Page = () => {
               onEndReachedThreshold={0.2}
               onEndReached={loadMore}
               ListFooterComponent={
-                isFetchingNextPage ? <SkeletonParkingCard /> : <MissingCardCallout />
+                isFetchingNextPage ? (
+                  <SkeletonParkingCard />
+                ) : (
+                  <MissingCardCallout areCardsPresent />
+                )
               }
               renderItem={({ item: parkingCardItem }) => <ParkingCard card={parkingCardItem} />}
             />
@@ -83,14 +86,7 @@ const Page = () => {
               title={t('ParkingCards.noActiveCardsTitle')}
               text={t('ParkingCards.noActiveCardsText')}
               customAvatarComponent={<EmptyStateAvatar />}
-              actionButton={
-                <View className="bg-white g-2">
-                  <Typography className="text-center" variant="h2">
-                    {t('ParkingCards.cannotFindCards.title')}
-                  </Typography>
-                  <Markdown textCenter>{t('ParkingCards.cannotFindCards.text')}</Markdown>
-                </View>
-              }
+              actionButton={<MissingCardCallout />}
             />
           </View>
         )}
