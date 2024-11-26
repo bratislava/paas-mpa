@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/utils/cn'
 
 const useMissingCardTranslations = (areCardsPresent?: boolean) => {
   const { t } = useTranslation()
@@ -23,8 +24,10 @@ const MissingCardCallout = ({ areCardsPresent }: { areCardsPresent?: boolean }) 
 
   return (
     <View className="px-5 py-6 g-2">
-      <Typography variant="h2">{translations.title}</Typography>
-      <Markdown>{translations.text}</Markdown>
+      <Typography variant="h2" className={cn({ 'text-center': !areCardsPresent })}>
+        {translations.title}
+      </Typography>
+      <Markdown textCenter={!areCardsPresent}>{translations.text}</Markdown>
     </View>
   )
 }
