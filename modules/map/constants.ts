@@ -19,6 +19,8 @@ export enum MapPointIconEnum {
   pPlusR = 'p-plus-r',
   garage = 'garage',
   parkingLot = 'parking-lot',
+  // TODO: remove after Christmas
+  tree = 'tree',
 }
 
 export enum MapPointKindEnum {
@@ -28,6 +30,8 @@ export enum MapPointKindEnum {
   pPlusR = 'p-plus-r',
   garage = 'garages',
   parkingLot = 'parking-lots',
+  // TODO: remove after Christmas
+  tree = 'tree',
 }
 
 export enum MapZoneStatusEnum {
@@ -49,7 +53,7 @@ export type MapFilters = {
   [key in MapZoneStatusEnum]: 'true' | 'false'
 }
 
-export const DEFAULT_FILTERS: MapFilters = {
+export const DEFAULT_FILTERS: Omit<MapFilters, 'tree'> = {
   'p-plus-r': 'false',
   'parking-lot': 'false',
   branch: 'false',
