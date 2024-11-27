@@ -4,6 +4,7 @@ import { Feature, FeatureCollection, GeoJsonProperties, Point } from 'geojson'
 import { useCallback, useMemo } from 'react'
 
 import {
+  ChristmasTreeImage,
   ClusterCircleImage,
   GarageImage,
   ParkingImage,
@@ -14,22 +15,41 @@ import {
 import { MapPointIconEnum } from '@/modules/map/constants'
 import { markersStyles } from '@/modules/map/utils/layer-styles/markers'
 
+type FeatureProperties = GeoJsonProperties | { icon: string }
+
 type Props = {
-  markersData: FeatureCollection<Point, GeoJsonProperties | { icon: string }>
+  markersData: FeatureCollection<Point, FeatureProperties>
   onPointPress?: (point: Feature<Point, GeoJsonProperties>) => void
 }
 
+type MarkersDataType = [string, FeatureCollection<Point, FeatureProperties>]
+
+// TODO: remove after Christmas
+const treeFeature: Feature<Point, FeatureProperties> = {
+  type: 'Feature',
+  geometry: {
+    type: 'Point',
+    coordinates: [17.108_552, 48.143_717],
+  },
+  properties: {
+    address: 'Hlavné námestie',
+    icon: 'tree',
+    id: 0,
+    kind: 'tree',
+  },
+}
+
 const MapMarkers = ({ markersData, onPointPress }: Props) => {
-  const markersDataByKind: [
-    string,
-    FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
-  ][] = useMemo(() => {
+  const markersDataByKind: MarkersDataType[] = useMemo(() => {
     return Object.values(MapPointIconEnum).map((icon) => [
       icon,
       {
         ...markersData,
-        features: markersData?.features.filter((marker) => marker.properties?.icon === icon),
-      } satisfies FeatureCollection<Point, GeoJsonProperties | { icon: string }>,
+        features: [
+          ...markersData.features.filter((marker) => marker.properties?.icon === icon),
+          treeFeature,
+        ],
+      } satisfies FeatureCollection<Point, FeatureProperties>,
     ])
   }, [markersData])
 
@@ -53,6 +73,8 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           [MapPointIconEnum.pPlusR]: PPLusRImage,
           [MapPointIconEnum.parkingLot]: ParkingImage,
           clusterCircle: ClusterCircleImage,
+          // TODO: remove after Christmas
+          [MapPointIconEnum.tree]: ChristmasTreeImage,
         }}
       />
       {markersDataByKind?.map(([icon, shape]) => (

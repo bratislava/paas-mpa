@@ -81,6 +81,7 @@ const FiltersScreen = () => {
     'parking-lot': t('FiltersScreen.filteringOptions.parking-lot'),
     parkomat: t('FiltersScreen.filteringOptions.parkomat'),
     partner: t('FiltersScreen.filteringOptions.partner'),
+    tree: t('FiltersScreen.filteringOptions.tree'), // TODO remove after christmas
   } satisfies Record<MapPointIconEnum | MapZoneStatusEnum, string>
 
   const getValueChangeHandler =
