@@ -6,6 +6,7 @@ import { View } from 'react-native'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
+import MissingCardCallout from '@/components/parking-cards/MissingCardCallout'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -69,7 +70,13 @@ const Page = () => {
               keyExtractor={(parkingCard) => parkingCard.identificator}
               onEndReachedThreshold={0.2}
               onEndReached={loadMore}
-              ListFooterComponent={isFetchingNextPage ? <SkeletonParkingCard /> : null}
+              ListFooterComponent={
+                isFetchingNextPage ? (
+                  <SkeletonParkingCard />
+                ) : (
+                  <MissingCardCallout areCardsPresent />
+                )
+              }
               renderItem={({ item: parkingCardItem }) => <ParkingCard card={parkingCardItem} />}
             />
           </ScreenContent>
@@ -79,6 +86,7 @@ const Page = () => {
               title={t('ParkingCards.noActiveCardsTitle')}
               text={t('ParkingCards.noActiveCardsText')}
               customAvatarComponent={<EmptyStateAvatar />}
+              actionButton={<MissingCardCallout />}
             />
           </View>
         )}
