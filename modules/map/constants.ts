@@ -53,7 +53,7 @@ export type MapFilters = {
   [key in MapZoneStatusEnum]: 'true' | 'false'
 }
 
-export const DEFAULT_FILTERS: Omit<MapFilters, 'tree'> = {
+export const DEFAULT_FILTERS: MapFilters = {
   'p-plus-r': 'false',
   'parking-lot': 'false',
   branch: 'false',
@@ -63,4 +63,5 @@ export const DEFAULT_FILTERS: Omit<MapFilters, 'tree'> = {
   active: 'true',
   inactive: 'false',
   planned: 'true',
+  tree: 'false', // TODO: remove after Christmas
 }

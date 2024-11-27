@@ -117,6 +117,8 @@ export namespace ArcgisAliased {
     [MapPointKindEnum.pPlusR]: ParkingPoint
     [MapPointKindEnum.garage]: ParkingPoint
     [MapPointKindEnum.parkingLot]: ParkingPoint
+    // TODO: remove after Christmas
+    [MapPointKindEnum.tree]: MapPoint
   }
 
   // Type guard function using conditional types
