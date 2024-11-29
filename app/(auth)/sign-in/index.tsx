@@ -4,6 +4,7 @@ import { ScrollView, View } from 'react-native'
 import countries from '@/components/controls/country-select/countries.json'
 import CountrySelectField from '@/components/controls/country-select/CountrySelectField'
 import { useUsedCountryStorage } from '@/components/controls/country-select/useUsedCountryStorage'
+import Captcha from '@/components/inputs/Captcha'
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -21,6 +22,7 @@ const Page = () => {
   const { t } = useTranslation()
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
+  const [isCaptchaShown, setIsCaptchaShown] = useState(false)
 
   // TODO translation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,16 +56,19 @@ const Page = () => {
 
   const phoneWithoutSpaces = `+${prefixCode}${phone}`.replaceAll(/\s/g, '')
 
-  const handleSignIn = async () => {
-    try {
-      setLoading(true)
+  const handleRequestCaptcha = () => {
+    setLoading(true)
+    setIsCaptchaShown(true)
+  }
 
+  const handleSignIn = async (token: string) => {
+    try {
       // TODO This never happens because `phoneWithoutSpaces` always contains at least "+" symbol
       if (!phoneWithoutSpaces) {
         throw new Error('No phone number')
       }
 
-      await attemptSignInOrSignUp(phoneWithoutSpaces)
+      await attemptSignInOrSignUp(phoneWithoutSpaces, token)
     } catch (error) {
       // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
@@ -128,7 +133,7 @@ const Page = () => {
                   onFocus={handleInputFocus}
                   autoFocus
                   returnKeyType="done"
-                  onSubmitEditing={handleSignIn}
+                  onSubmitEditing={handleRequestCaptcha}
                 />
               </FlexRow>
 
@@ -140,12 +145,24 @@ const Page = () => {
               ) : null}
             </View>
 
+            {isCaptchaShown ? (
+              <Captcha
+                onSuccess={handleSignIn}
+                onFail={() => {
+                  // For now we call the signIn function even if the captcha fails to get data from lambda...
+                  // TODO: show error to user
+                  handleSignIn('')
+                  setIsCaptchaShown(false)
+                }}
+              />
+            ) : null}
+
             <Markdown>{t('Auth.consent')}</Markdown>
 
             <ContinueButton
               loading={loading}
               disabled={!phoneWithoutSpaces}
-              onPress={handleSignIn}
+              onPress={handleRequestCaptcha}
             />
           </ScreenContent>
         </ScrollView>

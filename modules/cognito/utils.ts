@@ -42,12 +42,17 @@ export const getCurrentAuthenticatedUser = async () => {
   }
 }
 
-export const signInAndRedirectToConfirm = async (phone: string) => {
+export const signInAndRedirectToConfirm = async (phone: string, token: string) => {
   const { isSignedIn, nextStep } = await signIn({
     username: phone,
     ...(phone === STATIC_PHONE
       ? { options: { authFlowType: 'CUSTOM_WITHOUT_SRP' } }
-      : { password: STATIC_TEMP_PASS }),
+      : {
+          password: STATIC_TEMP_PASS,
+          options: {
+            clientMetadata: { token },
+          },
+        }),
   })
 
   console.log('signInOutput', { isSignedIn, nextStep })

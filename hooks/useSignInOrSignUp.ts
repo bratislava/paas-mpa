@@ -67,11 +67,11 @@ export const useSignInOrSignUp = () => {
   const updateAuthStore = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
 
-  const attemptSignInOrSignUp = async (phone: string) => {
+  const attemptSignInOrSignUp = async (phone: string, token: string) => {
     try {
       try {
         /** Try to sign in the user. Cognito will throw an error for non-registered user. */
-        await signInAndRedirectToConfirm(phone)
+        await signInAndRedirectToConfirm(phone, token)
       } catch (error) {
         // Expected error 'UserNotFoundException' means non-registered user
         if (isErrorWithName(error) && error.name === 'UserNotFoundException') {
@@ -92,7 +92,7 @@ export const useSignInOrSignUp = () => {
            * Note: Potentially, we should check if "signUpOutput.nextStep.signUpStep === 'DONE'", but other cases should
            * not happen at all - we don't use autoSignIn and users are auto-verified in lambda.
            * */
-          await signInAndRedirectToConfirm(phone)
+          await signInAndRedirectToConfirm(phone, token)
         } else if (isErrorWithName(error) && error.name === 'UserAlreadyAuthenticatedException') {
           /**
            * If user is already authenticated, sign them out and try to sign in again.
@@ -101,7 +101,7 @@ export const useSignInOrSignUp = () => {
           await signOut()
           updateAuthStore({ user: null })
           // Run the process again after sign out automatically. Now user have to press the button again.
-          await attemptSignInOrSignUp(phone)
+          await attemptSignInOrSignUp(phone, token)
         } else {
           /**
            * Pass other errors to the next catch block.
