@@ -28,10 +28,16 @@ export const ImagePicker = ({ value, onRemoveFile, ...props }: Props) => {
       >
         {value.map((file, index) => (
           <View key={file.uri} className="relative aspect-square w-1/4 p-[6px]">
-            <Image
-              source={{ uri: file.uri }}
-              className="h-full w-full rounded border-2 border-divider"
-            />
+            {file.type === 'image' ? (
+              <Image
+                source={{ uri: file.uri }}
+                className="h-full w-full rounded border-2 border-divider"
+              />
+            ) : (
+              <View className="h-full w-full items-center justify-center rounded border-2 border-divider">
+                <Icon name="videocam" size={32} />
+              </View>
+            )}
 
             <PressableStyled
               accessibilityLabel={t('ImagePicker.remove')}
