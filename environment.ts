@@ -28,8 +28,8 @@ export const environment = {
   apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
   minioBucket: assertEnv('EXPO_PUBLIC_MINIO_BUCKET', process.env.EXPO_PUBLIC_MINIO_BUCKET),
   sentryDns: assertEnv('EXPO_PUBLIC_SENTRY_DNS', process.env.EXPO_PUBLIC_SENTRY_DNS),
-  captchaSiteKey: assertEnv(
-    'EXPO_PUBLIC_CAPTCHA_SITE_KEY',
-    process.env.EXPO_PUBLIC_CAPTCHA_SITE_KEY,
+  turnstileSiteKey: assertEnv(
+    'EXPO_PUBLIC_TURNSTILE_SITE_KEY',
+    process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY,
   ),
 }

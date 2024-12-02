@@ -61,14 +61,14 @@ const Page = () => {
     setIsCaptchaShown(true)
   }
 
-  const handleSignIn = async (token: string) => {
+  const handleSignIn = async (token: string, captchaErrorCode?: string) => {
     try {
       // TODO This never happens because `phoneWithoutSpaces` always contains at least "+" symbol
       if (!phoneWithoutSpaces) {
         throw new Error('No phone number')
       }
 
-      await attemptSignInOrSignUp(phoneWithoutSpaces, token)
+      await attemptSignInOrSignUp(phoneWithoutSpaces, token, captchaErrorCode)
     } catch (error) {
       // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
@@ -148,10 +148,10 @@ const Page = () => {
             {isCaptchaShown ? (
               <Captcha
                 onSuccess={handleSignIn}
-                onFail={() => {
+                onFail={(errorCode) => {
                   // For now we call the signIn function even if the captcha fails to get data from lambda...
-                  // TODO: show error to user
-                  handleSignIn('')
+                  // TODO: show error to user and handle the captcha retry
+                  handleSignIn('', errorCode)
                   setIsCaptchaShown(false)
                 }}
               />
