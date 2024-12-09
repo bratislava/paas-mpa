@@ -25,15 +25,13 @@ const Page = () => {
   const [isOnboardingFinished] = useIsOnboardingFinished()
   const [isCaptchaShown, setIsCaptchaShown] = useState(false)
 
-  // TODO translation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const translationKeys = [
-    t('Auth.errors.CodeMismatchException'),
-    t('Auth.errors.Error'),
-    t('Auth.errors.InvalidParameterException'),
-    t('Auth.errors.NotAuthorizedException'),
-    t('Auth.errors.CaptchaFailed'),
-  ]
+  const translationKeys: Record<string, string> = {
+    CodeMismatchException: t('Auth.errors.CodeMismatchException'),
+    Error: t('Auth.errors.Error'),
+    InvalidParameterException: t('Auth.errors.InvalidParameterException'),
+    NotAuthorizedException: t('Auth.errors.NotAuthorizedException'),
+    TurnstileCaptchaFailed: t('Auth.errors.TurnstileCaptchaFailed'),
+  }
 
   const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
 
@@ -112,6 +110,26 @@ const Page = () => {
     }
   }
 
+  const handleCaptchaFail = (errorCode: string) => {
+    // The second stage of captcha integration includes the error message and signing in after the second try even when the captcha fails
+    if (isCaptchaRetry) {
+      setIsCaptchaRetry(false)
+      Sentry.captureException('Turnstile Captcha failed twice', {
+        extra: { errorCode },
+        level: 'info',
+      })
+
+      // For now we call the signIn function even if the captcha fails to get data from lambda...
+      // TODO: remove after 100% sure that the captcha is working
+      handleSignIn('', errorCode)
+    } else {
+      setExpectedError('TurnstileCaptchaFailed')
+      setIsCaptchaRetry(true)
+      setLoading(false)
+    }
+    setIsCaptchaShown(false)
+  }
+
   return (
     <DismissKeyboard>
       <ScreenView hasBackButton={!isOnboardingFinished}>
@@ -141,34 +159,12 @@ const Page = () => {
               </FlexRow>
 
               {expectedError ? (
-                // TODO translation
-                <Typography className="text-negative">
-                  {t(`Auth.errors.${expectedError}`)}
-                </Typography>
+                <Typography className="text-negative">{translationKeys[expectedError]}</Typography>
               ) : null}
             </View>
 
             {isCaptchaShown ? (
-              <Captcha
-                onSuccess={handleSignIn}
-                onFail={(errorCode) => {
-                  // For now we call the signIn function even if the captcha fails to get data from lambda...
-                  if (isCaptchaRetry) {
-                    setIsCaptchaRetry(false)
-                    Sentry.captureException('Turnstile Captcha failed twice', {
-                      extra: { errorCode },
-                      level: 'info',
-                    })
-
-                    handleSignIn('', errorCode)
-                  } else {
-                    setExpectedError('TurnstileCaptchaFailed')
-                    setIsCaptchaRetry(true)
-                    setLoading(false)
-                  }
-                  setIsCaptchaShown(false)
-                }}
-              />
+              <Captcha onSuccess={handleSignIn} onFail={handleCaptchaFail} />
             ) : null}
 
             <Markdown>{t('Auth.consent')}</Markdown>
