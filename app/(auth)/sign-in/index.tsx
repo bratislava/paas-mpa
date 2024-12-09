@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native'
 import { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
@@ -31,6 +32,7 @@ const Page = () => {
     t('Auth.errors.Error'),
     t('Auth.errors.InvalidParameterException'),
     t('Auth.errors.NotAuthorizedException'),
+    t('Auth.errors.CaptchaFailed'),
   ]
 
   const [selectedCountry, setSelectedCountry] = useUsedCountryStorage()
@@ -47,6 +49,7 @@ const Page = () => {
   const [loading, setLoading] = useState(false)
   const [expectedError, setExpectedError] = useState('')
   const [phone, setPhone] = useState('')
+  const [isCaptchaRetry, setIsCaptchaRetry] = useState(false)
 
   const handleInputFocus = () => {
     if (expectedError) {
@@ -150,8 +153,19 @@ const Page = () => {
                 onSuccess={handleSignIn}
                 onFail={(errorCode) => {
                   // For now we call the signIn function even if the captcha fails to get data from lambda...
-                  // TODO: show error to user and handle the captcha retry
-                  handleSignIn('', errorCode)
+                  if (isCaptchaRetry) {
+                    setIsCaptchaRetry(false)
+                    Sentry.captureException('Turnstile Captcha failed twice', {
+                      extra: { errorCode },
+                      level: 'info',
+                    })
+
+                    handleSignIn('', errorCode)
+                  } else {
+                    setExpectedError('TurnstileCaptchaFailed')
+                    setIsCaptchaRetry(true)
+                    setLoading(false)
+                  }
                   setIsCaptchaShown(false)
                 }}
               />
