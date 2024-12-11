@@ -36,6 +36,7 @@
   "Auth.errors.Error": "An error occurred",
   "Auth.errors.InvalidParameterException": "Enter the phone number in international format (+421…)",
   "Auth.errors.NotAuthorizedException": "Submitted code has expired",
+  "Auth.errors.TurnstileCaptchaFailed": "CAPTCHA verification failed. Try again.",
   "Auth.modal.description": "Are you sure you want to log out?",
   "Auth.modal.title": "Logging out",
   "Auth.resendCode": "Resend code",

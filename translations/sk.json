@@ -36,6 +36,7 @@
   "Auth.errors.Error": "Vyskytla sa chyba",
   "Auth.errors.InvalidParameterException": "Zadajte číslo v medzinárodnom formáte (+421…)",
   "Auth.errors.NotAuthorizedException": "Platnosť kódu vypršala",
+  "Auth.errors.TurnstileCaptchaFailed": "Verifikácia CAPTCHA zlyhala. Skúste to znova.",
   "Auth.modal.description": "Ste si istý, že sa chcete odhlásiť?",
   "Auth.modal.title": "Odhlasovanie",
   "Auth.resendCode": "Odoslať kód znova",
