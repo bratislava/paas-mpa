@@ -193,19 +193,6 @@ export interface EmailVerificationResult {
   sent: boolean
 }
 /**
- * DEPRECATED: Use the feedbackType property instead. Type of the feedback
- * @export
- * @enum {string}
- */
-
-export const FeedbackType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-} as const
-
-export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
-
-/**
  *
  * @export
  * @interface GetTicketPriceRequestDto
@@ -3166,7 +3153,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
      * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
-     * @param {FeedbackType} [type]
+     * @param {string | null} [type] DEPRECATED: Use the feedbackType property instead. Type of the feedback
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
@@ -3176,7 +3163,7 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
       feedbackType: string,
       email: string,
       message: string,
-      type?: FeedbackType,
+      type?: string | null,
       appVersion?: string,
       files?: Array<File>,
       options: AxiosRequestConfig = {},
@@ -3327,7 +3314,7 @@ export const SystemApiFp = function (configuration?: Configuration) {
      * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
-     * @param {FeedbackType} [type]
+     * @param {string | null} [type] DEPRECATED: Use the feedbackType property instead. Type of the feedback
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
@@ -3337,7 +3324,7 @@ export const SystemApiFp = function (configuration?: Configuration) {
       feedbackType: string,
       email: string,
       message: string,
-      type?: FeedbackType,
+      type?: string | null,
       appVersion?: string,
       files?: Array<File>,
       options?: AxiosRequestConfig,
@@ -3402,7 +3389,7 @@ export const SystemApiFactory = function (
      * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
-     * @param {FeedbackType} [type]
+     * @param {string | null} [type] DEPRECATED: Use the feedbackType property instead. Type of the feedback
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
@@ -3412,7 +3399,7 @@ export const SystemApiFactory = function (
       feedbackType: string,
       email: string,
       message: string,
-      type?: FeedbackType,
+      type?: string | null,
       appVersion?: string,
       files?: Array<File>,
       options?: AxiosRequestConfig,
@@ -3473,7 +3460,7 @@ export class SystemApi extends BaseAPI {
    * @param {string} feedbackType Type of the feedback
    * @param {string} email Email of the feedback reporter
    * @param {string} message Message of the feedback
-   * @param {FeedbackType} [type]
+   * @param {string | null} [type] DEPRECATED: Use the feedbackType property instead. Type of the feedback
    * @param {string} [appVersion] Version of the aplication
    * @param {Array<File>} [files]
    * @param {*} [options] Override http request option.
@@ -3484,7 +3471,7 @@ export class SystemApi extends BaseAPI {
     feedbackType: string,
     email: string,
     message: string,
-    type?: FeedbackType,
+    type?: string | null,
     appVersion?: string,
     files?: Array<File>,
     options?: AxiosRequestConfig,
