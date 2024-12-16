@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/react-native'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
 import countries from '@/components/controls/country-select/countries.json'
 import CountrySelectField from '@/components/controls/country-select/CountrySelectField'
 import { useUsedCountryStorage } from '@/components/controls/country-select/useUsedCountryStorage'
-import Captcha from '@/components/inputs/Captcha'
+import Captcha, { CaptchaRef } from '@/components/inputs/Captcha'
 import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -23,7 +23,7 @@ const Page = () => {
   const { t } = useTranslation()
   const { attemptSignInOrSignUp } = useSignInOrSignUp()
   const [isOnboardingFinished] = useIsOnboardingFinished()
-  const [isCaptchaShown, setIsCaptchaShown] = useState(false)
+  const captchaRef = useRef<CaptchaRef>(null)
 
   const translationKeys: Record<string, string> = {
     CodeMismatchException: t('Auth.errors.CodeMismatchException'),
@@ -47,7 +47,6 @@ const Page = () => {
   const [loading, setLoading] = useState(false)
   const [expectedError, setExpectedError] = useState('')
   const [phone, setPhone] = useState('')
-  const [isCaptchaRetry, setIsCaptchaRetry] = useState(false)
 
   const handleInputFocus = () => {
     if (expectedError) {
@@ -59,13 +58,12 @@ const Page = () => {
 
   const handleRequestCaptcha = () => {
     setLoading(true)
-    setIsCaptchaShown(true)
+    captchaRef.current?.initializeCaptcha()
   }
 
   const handleSignIn = async (token: string, captchaErrorCode?: string) => {
     try {
-      // TODO This never happens because `phoneWithoutSpaces` always contains at least "+" symbol
-      if (!phoneWithoutSpaces) {
+      if (!phone) {
         throw new Error('No phone number')
       }
 
@@ -110,10 +108,10 @@ const Page = () => {
     }
   }
 
-  const handleCaptchaFail = (errorCode: string) => {
+  const handleCaptchaFail = (errorCode: string, wasRetried: boolean) => {
     // The second stage of captcha integration includes the error message and signing in after the second try even when the captcha fails
-    if (isCaptchaRetry) {
-      setIsCaptchaRetry(false)
+    if (wasRetried) {
+      setExpectedError('')
       Sentry.captureException('Turnstile Captcha failed twice', {
         extra: { errorCode },
         level: 'info',
@@ -124,10 +122,8 @@ const Page = () => {
       handleSignIn('', errorCode)
     } else {
       setExpectedError('TurnstileCaptchaFailed')
-      setIsCaptchaRetry(true)
       setLoading(false)
     }
-    setIsCaptchaShown(false)
   }
 
   return (
@@ -163,17 +159,11 @@ const Page = () => {
               ) : null}
             </View>
 
-            {isCaptchaShown ? (
-              <Captcha onSuccess={handleSignIn} onFail={handleCaptchaFail} />
-            ) : null}
-
             <Markdown>{t('Auth.consent')}</Markdown>
 
-            <ContinueButton
-              loading={loading}
-              disabled={!phoneWithoutSpaces}
-              onPress={handleRequestCaptcha}
-            />
+            <ContinueButton loading={loading} disabled={!phone} onPress={handleRequestCaptcha} />
+
+            <Captcha ref={captchaRef} onSuccess={handleSignIn} onFail={handleCaptchaFail} />
           </ScreenContent>
         </ScrollView>
       </ScreenView>
