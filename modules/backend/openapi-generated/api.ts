@@ -20,7 +20,10 @@ import globalAxios from 'axios'
 import {
   DUMMY_BASE_URL,
   assertParamExists,
+  setApiKeyToObject,
+  setBasicAuthToObject,
   setBearerAuthToObject,
+  setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -28,7 +31,7 @@ import {
 } from './common'
 import type { RequestArgs } from './base'
 // @ts-ignore
-import { BASE_PATH, BaseAPI, RequiredError } from './base'
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base'
 
 /**
  *
@@ -190,14 +193,14 @@ export interface EmailVerificationResult {
   sent: boolean
 }
 /**
- * Type of the feedback
+ * DEPRECATED: Use the feedbackType property instead. Type of the feedback
  * @export
  * @enum {string}
  */
 
 export const FeedbackType = {
-  Bug: 'BUG',
-  Improvement: 'IMPROVEMENT',
+  NUMBER_0: 0,
+  NUMBER_1: 1,
 } as const
 
 export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
@@ -3160,24 +3163,26 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackType} type
+     * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
+     * @param {FeedbackType} [type]
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback: async (
-      type: FeedbackType,
+      feedbackType: string,
       email: string,
       message: string,
+      type?: FeedbackType,
       appVersion?: string,
       files?: Array<File>,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'type' is not null or undefined
-      assertParamExists('systemControllerSendFeedback', 'type', type)
+      // verify required parameter 'feedbackType' is not null or undefined
+      assertParamExists('systemControllerSendFeedback', 'feedbackType', feedbackType)
       // verify required parameter 'email' is not null or undefined
       assertParamExists('systemControllerSendFeedback', 'email', email)
       // verify required parameter 'message' is not null or undefined
@@ -3201,6 +3206,10 @@ export const SystemApiAxiosParamCreator = function (configuration?: Configuratio
 
       if (type !== undefined) {
         localVarFormParams.append('type', type as any)
+      }
+
+      if (feedbackType !== undefined) {
+        localVarFormParams.append('feedbackType', feedbackType as any)
       }
 
       if (email !== undefined) {
@@ -3315,26 +3324,29 @@ export const SystemApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackType} type
+     * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
+     * @param {FeedbackType} [type]
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async systemControllerSendFeedback(
-      type: FeedbackType,
+      feedbackType: string,
       email: string,
       message: string,
+      type?: FeedbackType,
       appVersion?: string,
       files?: Array<File>,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.systemControllerSendFeedback(
-        type,
+        feedbackType,
         email,
         message,
+        type,
         appVersion,
         files,
         options,
@@ -3387,24 +3399,34 @@ export const SystemApiFactory = function (
     /**
      *
      * @summary Send feedback
-     * @param {FeedbackType} type
+     * @param {string} feedbackType Type of the feedback
      * @param {string} email Email of the feedback reporter
      * @param {string} message Message of the feedback
+     * @param {FeedbackType} [type]
      * @param {string} [appVersion] Version of the aplication
      * @param {Array<File>} [files]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     systemControllerSendFeedback(
-      type: FeedbackType,
+      feedbackType: string,
       email: string,
       message: string,
+      type?: FeedbackType,
       appVersion?: string,
       files?: Array<File>,
       options?: AxiosRequestConfig,
     ): AxiosPromise<boolean> {
       return localVarFp
-        .systemControllerSendFeedback(type, email, message, appVersion, files, options)
+        .systemControllerSendFeedback(
+          feedbackType,
+          email,
+          message,
+          type,
+          appVersion,
+          files,
+          options,
+        )
         .then((request) => request(axios, basePath))
     },
     /**
@@ -3448,9 +3470,10 @@ export class SystemApi extends BaseAPI {
   /**
    *
    * @summary Send feedback
-   * @param {FeedbackType} type
+   * @param {string} feedbackType Type of the feedback
    * @param {string} email Email of the feedback reporter
    * @param {string} message Message of the feedback
+   * @param {FeedbackType} [type]
    * @param {string} [appVersion] Version of the aplication
    * @param {Array<File>} [files]
    * @param {*} [options] Override http request option.
@@ -3458,15 +3481,16 @@ export class SystemApi extends BaseAPI {
    * @memberof SystemApi
    */
   public systemControllerSendFeedback(
-    type: FeedbackType,
+    feedbackType: string,
     email: string,
     message: string,
+    type?: FeedbackType,
     appVersion?: string,
     files?: Array<File>,
     options?: AxiosRequestConfig,
   ) {
     return SystemApiFp(this.configuration)
-      .systemControllerSendFeedback(type, email, message, appVersion, files, options)
+      .systemControllerSendFeedback(feedbackType, email, message, type, appVersion, files, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
