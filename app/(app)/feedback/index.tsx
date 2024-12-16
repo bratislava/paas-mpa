@@ -7,7 +7,7 @@ import { useCallback } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 
-import { FeedbackTypeSwitch } from '@/components/controls/feedback/FeedbackTypeSwitch'
+import { FeedbackType, FeedbackTypeSwitch } from '@/components/controls/feedback/FeedbackTypeSwitch'
 import { ImagePicker } from '@/components/inputs/ImagePicker/ImagePicker'
 import TextInput from '@/components/inputs/TextInput'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
@@ -18,18 +18,18 @@ import DismissKeyboard from '@/components/shared/DismissKeyboard'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
-import { FeedbackType, SERVICEERROR } from '@/modules/backend/openapi-generated'
+import { SERVICEERROR } from '@/modules/backend/openapi-generated'
 import { isServiceError } from '@/utils/errorService'
 
 type FormData = {
   email: string
   message: string
-  type: FeedbackType
+  feedbackType: FeedbackType
   files: ImagePickerAsset[]
 }
 
 type FeedbackMutationData = {
-  type: FeedbackType
+  feedbackType: FeedbackType
   email: string
   message: string
   appVersion?: string
@@ -39,7 +39,7 @@ type FeedbackMutationData = {
 const defaultValues: FormData = {
   email: '',
   message: '',
-  type: FeedbackType.Bug,
+  feedbackType: 'BUG',
   files: [],
 }
 
@@ -65,14 +65,15 @@ const FeedbackScreen = () => {
     name: 'files',
   })
 
-  const watchedType = watch('type')
+  const watchedType = watch('feedbackType')
 
   const mutation = useMutation({
     mutationFn: (data: FeedbackMutationData) =>
       clientApi.systemControllerSendFeedback(
-        data.type,
+        data.feedbackType,
         data.email,
         data.message,
+        undefined,
         data.appVersion,
         data.files,
       ),
@@ -90,7 +91,7 @@ const FeedbackScreen = () => {
       mutation.mutate({
         email: data.email.toLowerCase().trim(), // double check before sending to the backend
         message: data.message,
-        type: data.type,
+        feedbackType: data.feedbackType,
         appVersion: `${nativeApplicationVersion} (${nativeBuildVersion})`,
         // TODO: Needs further investigation... something weird happens when we use new File() constructor here and the files are not sent correctly
         files: data.files.map((file) => ({
@@ -145,9 +146,12 @@ const FeedbackScreen = () => {
 
               <Controller
                 control={control}
-                name="type"
+                name="feedbackType"
                 render={({ field: { value } }) => (
-                  <FeedbackTypeSwitch value={value} onChange={(val) => setValue('type', val)} />
+                  <FeedbackTypeSwitch
+                    value={value}
+                    onChange={(val) => setValue('feedbackType', val)}
+                  />
                 )}
               />
 
@@ -161,9 +165,7 @@ const FeedbackScreen = () => {
                     style={{ flex: 1 }}
                     label={t('FeedbackScreen.yourMessage')}
                     helptext={
-                      watchedType === FeedbackType.Bug
-                        ? t('FeedbackScreen.yourMessage.helpText')
-                        : undefined
+                      watchedType === 'BUG' ? t('FeedbackScreen.yourMessage.helpText') : undefined
                     }
                     errorMessage={
                       errors.message ? t('FeedbackScreen.yourMessageInvalid') : undefined
