@@ -69,6 +69,7 @@
       "autoIncrement": false,
       "withoutCredentials": true,
       "config": "build-and-maestro-test.yml",
+      "resourceClass": "large",
       "android": {
         "buildType": "apk",
         "image": "latest"
