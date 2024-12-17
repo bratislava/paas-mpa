@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react-native'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 
@@ -112,10 +111,6 @@ const Page = () => {
     // The second stage of captcha integration includes the error message and signing in after the second try even when the captcha fails
     if (wasRetried) {
       setExpectedError('')
-      Sentry.captureException('Turnstile Captcha failed twice', {
-        extra: { errorCode },
-        level: 'info',
-      })
 
       // For now we call the signIn function even if the captcha fails to get data from lambda...
       // TODO: remove after 100% sure that the captcha is working
@@ -155,7 +150,9 @@ const Page = () => {
               </FlexRow>
 
               {expectedError ? (
-                <Typography className="text-negative">{translationKeys[expectedError]}</Typography>
+                <Typography testID="expectedError" className="text-negative">
+                  {translationKeys[expectedError]}
+                </Typography>
               ) : null}
             </View>
 

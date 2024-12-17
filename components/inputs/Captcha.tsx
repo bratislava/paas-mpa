@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native'
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 
@@ -39,6 +40,11 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
 
       if (!hasRetried) {
         setHasRetried(true)
+      } else if (environment.deployment === 'production') {
+        Sentry.captureException('Turnstile Captcha failed twice', {
+          extra: { errorCode },
+          level: 'info',
+        })
       }
     } else {
       onSuccess(data)
