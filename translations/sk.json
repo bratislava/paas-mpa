@@ -1,6 +1,8 @@
 {
   "AboutScreen.links.contactUs.label": "Kontakty",
   "AboutScreen.links.contactUs.url": "https://paas.sk/kontakt/",
+  "AboutScreen.links.faq.label": "Často kladené otázky",
+  "AboutScreen.links.faq.url": "https://paas.sk/casto-kladene-otazky/#aplikacie",
   "AboutScreen.links.privacyPolicy.label": "Ochrana osobných údajov",
   "AboutScreen.links.privacyPolicy.url": "https://paas.sk/ochrana-osobnych-udajov/",
   "AboutScreen.links.rateTheApp.label": "Ohodnoťte nás",
@@ -324,6 +326,7 @@
   "TimeSelector.custom": "Vlastný",
   "TimeSelector.subtractTimeButton": "Odobrať 15 minút",
   "TimeSelector.validUntil": "Platnosť do",
+  "TowingService.title": "Volať odťahovú službu",
   "Typography.test": "SK preklad",
   "useSignInOrSignUp.confirmError": "Chyba pri potvrdení: {{message}}",
   "useSignInOrSignUp.signInError": "Chyba prihlásenia: {{message}}",

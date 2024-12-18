@@ -1,6 +1,8 @@
 {
   "AboutScreen.links.contactUs.label": "Contact us",
   "AboutScreen.links.contactUs.url": "https://paas.sk/en/contact/",
+  "AboutScreen.links.faq.label": "Frequently asked questions",
+  "AboutScreen.links.faq.url": "https://paas.sk/casto-kladene-otazky/#aplikacie",
   "AboutScreen.links.privacyPolicy.label": "Privacy policy",
   "AboutScreen.links.privacyPolicy.url": "https://paas.sk/en/privacy-policy/",
   "AboutScreen.links.rateTheApp.label": "Rate the app",
@@ -324,6 +326,7 @@
   "TimeSelector.custom": "Custom",
   "TimeSelector.subtractTimeButton": "Subtract 15 minutes",
   "TimeSelector.validUntil": "Valid until",
+  "TowingService.title": "Call towing service",
   "Typography.test": "EN translation",
   "useSignInOrSignUp.confirmError": "Confirm Error: {{message}}",
   "useSignInOrSignUp.signInError": "Sign In Error: {{message}}",

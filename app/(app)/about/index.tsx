@@ -37,6 +37,12 @@ const Page = () => {
       icon: 'description',
     },
     {
+      key: 'faq',
+      label: t('AboutScreen.links.faq.label'),
+      icon: 'question-answer',
+      onPress: () => navigateToRoute(t('AboutScreen.links.faq.url')),
+    },
+    {
       key: 'contactUs',
       label: t('AboutScreen.links.contactUs.label'),
       onPress: () => navigateToRoute(t('AboutScreen.links.contactUs.url')),
