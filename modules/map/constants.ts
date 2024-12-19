@@ -1,10 +1,14 @@
 /* eslint-disable pii/no-phone-number, unicorn/numeric-separators-style */
+import { Feature, GeoJsonProperties, Point } from 'geojson'
+
 export const MAP_INSETS = {
   top: 40,
   right: 0,
   bottom: 0,
   left: 10,
 }
+
+export type FeatureProperties = GeoJsonProperties | { icon: string }
 
 export enum MapLayerEnum {
   zones = 'zones',
@@ -19,8 +23,7 @@ export enum MapPointIconEnum {
   pPlusR = 'p-plus-r',
   garage = 'garage',
   parkingLot = 'parking-lot',
-  // TODO: remove after Christmas
-  tree = 'tree',
+  christmasTree = 'christmas-tree',
 }
 
 export enum MapPointKindEnum {
@@ -30,8 +33,21 @@ export enum MapPointKindEnum {
   pPlusR = 'p-plus-r',
   garage = 'garages',
   parkingLot = 'parking-lots',
-  // TODO: remove after Christmas
-  tree = 'tree',
+  christmasTree = 'christmas-tree',
+}
+
+export const CHRISTMAS_TREE_FEATURE: Feature<Point, FeatureProperties> = {
+  type: 'Feature',
+  geometry: {
+    type: 'Point',
+    coordinates: [17.108_552, 48.143_717],
+  },
+  properties: {
+    address: 'Hlavné námestie',
+    icon: MapPointIconEnum.christmasTree,
+    id: 0,
+    kind: MapPointKindEnum.christmasTree,
+  },
 }
 
 export enum MapZoneStatusEnum {
@@ -63,5 +79,5 @@ export const DEFAULT_FILTERS: MapFilters = {
   active: 'true',
   inactive: 'false',
   planned: 'true',
-  tree: 'false', // TODO: remove after Christmas
+  'christmas-tree': 'false',
 }

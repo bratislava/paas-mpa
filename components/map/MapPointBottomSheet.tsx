@@ -38,8 +38,7 @@ const ATTRIBUTES_MAP: Record<MapPointKindEnum, (keyof MapPoint)[]> = {
     'publicTransportTravelTime',
   ],
   [MapPointKindEnum.branch]: ['name', 'address', 'place', 'openingHours', 'addressDetail'],
-  // TODO: remove after Christmas
-  [MapPointKindEnum.tree]: ['location', 'address'],
+  [MapPointKindEnum.christmasTree]: ['location', 'address'],
 }
 
 const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
@@ -76,8 +75,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
     t('PointBottomSheet.kinds.parking-lots'),
     t('PointBottomSheet.kinds.parkomats'),
     t('PointBottomSheet.kinds.partners'),
-    // TODO: remove after Christmas
-    t('PointBottomSheet.kinds.tree'),
+    t('PointBottomSheet.kinds.christmas-tree'),
   ]
 
   const snapPoints = useMemo(() => [375, '80%'], [])
