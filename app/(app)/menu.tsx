@@ -76,6 +76,12 @@ const MainMenuScreen = () => {
       icon: 'info',
       path: '/about',
     },
+    DIVIDER,
+    {
+      label: t('TowingService.title'),
+      icon: 'build',
+      path: 'tel:+421222111155',
+    },
     ...(environment.deployment === 'development'
       ? ([
           DIVIDER,
