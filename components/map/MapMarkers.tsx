@@ -12,7 +12,11 @@ import {
   PPLusRImage,
   SellingPointImage,
 } from '@/assets/map/images'
-import { FeatureProperties, MapPointIconEnum, TREE_FEATURE } from '@/modules/map/constants'
+import {
+  CHRISTMAS_TREE_FEATURE,
+  FeatureProperties,
+  MapPointIconEnum,
+} from '@/modules/map/constants'
 import { markersStyles } from '@/modules/map/utils/layer-styles/markers'
 import { isWinterHolidayPeriod } from '@/utils/isWinterHolidayPeriod'
 
@@ -31,7 +35,7 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
         ...markersData,
         features: [
           ...markersData.features.filter((marker) => marker.properties?.icon === icon),
-          ...(isWinterHolidayPeriod() ? [TREE_FEATURE] : []),
+          ...(isWinterHolidayPeriod() ? [CHRISTMAS_TREE_FEATURE] : []),
         ],
       } satisfies FeatureCollection<Point, FeatureProperties>,
     ])
@@ -56,7 +60,7 @@ const MapMarkers = ({ markersData, onPointPress }: Props) => {
           [MapPointIconEnum.partner]: SellingPointImage,
           [MapPointIconEnum.pPlusR]: PPLusRImage,
           [MapPointIconEnum.parkingLot]: ParkingImage,
-          [MapPointIconEnum.tree]: ChristmasTreeImage,
+          [MapPointIconEnum.christmasTree]: ChristmasTreeImage,
           clusterCircle: ClusterCircleImage,
         }}
       />

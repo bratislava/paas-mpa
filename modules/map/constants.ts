@@ -10,20 +10,6 @@ export const MAP_INSETS = {
 
 export type FeatureProperties = GeoJsonProperties | { icon: string }
 
-export const TREE_FEATURE: Feature<Point, FeatureProperties> = {
-  type: 'Feature',
-  geometry: {
-    type: 'Point',
-    coordinates: [17.108_552, 48.143_717],
-  },
-  properties: {
-    address: 'Hlavné námestie',
-    icon: 'tree',
-    id: 0,
-    kind: 'tree',
-  },
-}
-
 export enum MapLayerEnum {
   zones = 'zones',
   visitors = 'visitors',
@@ -37,7 +23,7 @@ export enum MapPointIconEnum {
   pPlusR = 'p-plus-r',
   garage = 'garage',
   parkingLot = 'parking-lot',
-  tree = 'tree',
+  christmasTree = 'christmas-tree',
 }
 
 export enum MapPointKindEnum {
@@ -47,7 +33,21 @@ export enum MapPointKindEnum {
   pPlusR = 'p-plus-r',
   garage = 'garages',
   parkingLot = 'parking-lots',
-  tree = 'tree',
+  christmasTree = 'christmas-tree',
+}
+
+export const CHRISTMAS_TREE_FEATURE: Feature<Point, FeatureProperties> = {
+  type: 'Feature',
+  geometry: {
+    type: 'Point',
+    coordinates: [17.108_552, 48.143_717],
+  },
+  properties: {
+    address: 'Hlavné námestie',
+    icon: MapPointIconEnum.christmasTree,
+    id: 0,
+    kind: MapPointKindEnum.christmasTree,
+  },
 }
 
 export enum MapZoneStatusEnum {
@@ -79,5 +79,5 @@ export const DEFAULT_FILTERS: MapFilters = {
   active: 'true',
   inactive: 'false',
   planned: 'true',
-  tree: 'false',
+  'christmas-tree': 'false',
 }
