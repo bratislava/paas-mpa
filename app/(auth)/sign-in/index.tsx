@@ -53,7 +53,7 @@ const Page = () => {
     }
   }
 
-  const phoneWithoutSpaces = `+${prefixCode}${phone}`.replaceAll(/\s/g, '')
+  const phoneWithoutSpaces = phone.replaceAll(/\s/g, '')
 
   const handleRequestCaptcha = () => {
     setLoading(true)
@@ -62,11 +62,12 @@ const Page = () => {
 
   const handleSignIn = async (token: string, captchaErrorCode?: string) => {
     try {
-      if (!phone) {
+      if (!phoneWithoutSpaces) {
         throw new Error('No phone number')
       }
 
-      await attemptSignInOrSignUp(phoneWithoutSpaces, token, captchaErrorCode)
+      const phoneWithPrefix = `+${prefixCode}${phoneWithoutSpaces}`
+      await attemptSignInOrSignUp(phoneWithPrefix, token, captchaErrorCode)
     } catch (error) {
       // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
@@ -158,7 +159,11 @@ const Page = () => {
 
             <Markdown>{t('Auth.consent')}</Markdown>
 
-            <ContinueButton loading={loading} disabled={!phone} onPress={handleRequestCaptcha} />
+            <ContinueButton
+              loading={loading}
+              disabled={!phoneWithoutSpaces}
+              onPress={handleRequestCaptcha}
+            />
 
             <Captcha ref={captchaRef} onSuccess={handleSignIn} onFail={handleCaptchaFail} />
           </ScreenContent>
