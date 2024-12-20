@@ -10,6 +10,12 @@ appId: com.bratislava.paas
 - tapOn: Enter phone number
 - waitForAnimationToEnd
 - tapOn: Continue
+- runFlow:
+    when:
+      visible:
+        id: expectedError
+    commands:
+      - tapOn: Continue
 - assertVisible: Enter 6-digit code
 - inputText: '123456'
 - assertVisible: Notifications

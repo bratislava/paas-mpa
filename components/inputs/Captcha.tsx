@@ -1,10 +1,18 @@
+import * as Sentry from '@sentry/react-native'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 
 import { environment } from '@/environment'
 
 type Props = {
   onSuccess: (token: string) => void
-  onFail: (errorCode: string) => void
+  onFail: (errorCode: string, wasRetried: boolean) => void
+}
+
+const CAPTCHA_ERROR_START_MESSAGE = 'error_'
+
+export type CaptchaRef = {
+  initializeCaptcha: () => void
 }
 
 /**
@@ -13,18 +21,39 @@ type Props = {
  * @param onSuccess Callback function that is called when the captcha is successfully solved. The token is passed as an argument.
  * @param onFail Callback function that is called when the captcha fails. The error code is passed as an argument and sent to the cognito.
  */
-const Captcha = ({ onSuccess, onFail }: Props) => {
+const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
+  const [hasRetried, setHasRetried] = useState<boolean>(false)
+  const [showCaptcha, setShowCaptcha] = useState<boolean>(false)
+
+  useImperativeHandle(ref, () => ({
+    initializeCaptcha: () => {
+      setShowCaptcha(true)
+    },
+  }))
+
   const handleMessage = (event: WebViewMessageEvent) => {
     const { data } = event.nativeEvent
+    if (data.startsWith(CAPTCHA_ERROR_START_MESSAGE)) {
+      const errorCode = data.split('_')[1]
 
-    if (data.split('_')[0] === 'error') {
-      onFail(data.split('_')[1])
+      onFail(errorCode, hasRetried)
+
+      if (!hasRetried) {
+        setHasRetried(true)
+      } else if (environment.deployment === 'production') {
+        Sentry.captureException('Turnstile Captcha failed twice', {
+          extra: { errorCode },
+          level: 'info',
+        })
+      }
     } else {
       onSuccess(data)
     }
+
+    setShowCaptcha(false)
   }
 
-  return (
+  return showCaptcha ? (
     <WebView
       originWhitelist={['*']}
       onMessage={handleMessage}
@@ -47,8 +76,8 @@ const Captcha = ({ onSuccess, onFail }: Props) => {
                                 callback: function (token) {
                                     window.ReactNativeWebView.postMessage(token);
                                 },
-                                'error-callback': function (error) {
-                                    window.ReactNativeWebView.postMessage("error_" + error);
+                                'error-callback': function (errorCode) {
+                                    window.ReactNativeWebView.postMessage("${CAPTCHA_ERROR_START_MESSAGE}" + errorCode);
                                 }
                             });
                         }
@@ -58,7 +87,7 @@ const Captcha = ({ onSuccess, onFail }: Props) => {
         `,
       }}
     />
-  )
-}
+  ) : null
+})
 
 export default Captcha
