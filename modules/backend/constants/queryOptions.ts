@@ -135,6 +135,7 @@ export const ticketPriceOptions = (
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
+    refetchInterval: 1000 * 60,
     enabled: !!udr && !!licencePlate && !!duration,
   })
 
