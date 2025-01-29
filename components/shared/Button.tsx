@@ -67,28 +67,24 @@ const Button = forwardRef<View, ButtonProps>(
     ref,
   ) => {
     const { t } = useTranslation()
-
     const rest = { ...restProps, disabled: loading || disabled }
     const { buttonContainerClassNames, buttonTextClassNames } = buttonClassNames(variant, rest)
 
-    return (
+    // Loading check needs to be separated, because when used within Pressable it can trigger onPress when the button is pressed quickly before loading ends or right after loading starts
+    return loading ? (
+      <View className={cn(buttonContainerClassNames)}>
+        <Icon name="hourglass-top" className={buttonTextClassNames} />
+        <Typography variant="button" className={buttonTextClassNames}>
+          {`${loadingText || t('Common.loading')}${loadingTextEllipsis ? '…' : ''}`}
+        </Typography>
+      </View>
+    ) : (
       <Pressable ref={ref} hitSlop={4} {...rest} className={cn(buttonContainerClassNames)}>
-        {loading ? (
-          <>
-            <Icon name="hourglass-top" className={buttonTextClassNames} />
-            <Typography variant="button" className={buttonTextClassNames}>
-              {`${loadingText || t('Common.loading')}${loadingTextEllipsis ? '…' : ''}`}
-            </Typography>
-          </>
-        ) : (
-          <>
-            {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
-            <Typography variant="button" className={buttonTextClassNames}>
-              {children}
-            </Typography>
-            {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
-          </>
-        )}
+        {startIcon ? <Icon name={startIcon} className={buttonTextClassNames} /> : null}
+        <Typography variant="button" className={buttonTextClassNames}>
+          {children}
+        </Typography>
+        {endIcon ? <Icon name={endIcon} className={buttonTextClassNames} /> : null}
       </Pressable>
     )
   },
