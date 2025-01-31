@@ -93,17 +93,15 @@ const PurchaseScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
 
-  const priceQuery = useQueryWithFocusRefetch(
-    ticketPriceOptions(
-      createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk, locale }),
-      {
-        udr,
-        licencePlate,
-        duration: debouncedDuration,
-        npk,
-      },
-    ),
-  )
+  const priceQueryBody = createPriceRequestBody({
+    udr,
+    licencePlate,
+    duration: debouncedDuration,
+    npk,
+    locale,
+  })
+
+  const priceQuery = useQueryWithFocusRefetch(ticketPriceOptions(priceQueryBody))
 
   const handleSelectTime = (value: number) => {
     onPurchaseStoreUpdate({ duration: value })
@@ -123,7 +121,7 @@ const PurchaseScreen = () => {
 
     initPaymentMutation.mutate(
       {
-        ...createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk, locale }),
+        ...priceQueryBody,
         rememberCard: actualPaymentOption === 'payment-card' ? rememberCard : false,
       } satisfies InitiatePaymentRequestDto,
       {

@@ -4,10 +4,8 @@ import { clientApi } from '@/modules/backend/client-api'
 import {
   GetTicketPriceRequestDto,
   GetTicketProlongationPriceRequestDto,
-  ParkingCardDto,
 } from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
-import { MapUdrZone } from '@/modules/map/types'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 
 type PaginationOptions = {
@@ -115,28 +113,24 @@ export const verifiedEmailsInfiniteOptions = (options?: PageSize) => {
   })
 }
 
-export const ticketPriceOptions = (
-  body: GetTicketPriceRequestDto,
-  {
-    udr,
-    licencePlate,
-    duration,
-    npk,
-  }: {
-    udr: MapUdrZone | null
-    licencePlate: string
-    duration: number
-    npk: ParkingCardDto | null
-  },
-) =>
+export const ticketPriceOptions = (body: GetTicketPriceRequestDto) =>
   queryOptions({
-    queryKey: ['TicketPrice', udr, licencePlate, duration, npk],
+    queryKey: [
+      'TicketPrice',
+      body.ticket.udr,
+      body.ticket.ecv,
+      body.ticket.parkingEnd,
+      body.npkId,
+      body.ticket.udrUuid,
+      body.ticket.parkingStart,
+    ],
     queryFn: () => clientApi.ticketsControllerGetTicketPrice(body),
     select: (res) => res.data,
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
     refetchInterval: 1000 * 60,
-    enabled: !!udr && !!licencePlate && !!duration,
+    refetchIntervalInBackground: true,
+    enabled: !!body.ticket.udr && !!body.ticket.ecv && !!body.ticket.parkingEnd,
   })
 
 export const getTicketOptions = (ticketId?: number) =>
