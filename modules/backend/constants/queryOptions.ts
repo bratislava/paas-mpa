@@ -129,7 +129,6 @@ export const ticketPriceOptions = (body: GetTicketPriceRequestDto) =>
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
     refetchInterval: 1000 * 60,
-    refetchIntervalInBackground: true,
     enabled: !!body.ticket.udr && !!body.ticket.ecv && !!body.ticket.parkingEnd,
   })
 

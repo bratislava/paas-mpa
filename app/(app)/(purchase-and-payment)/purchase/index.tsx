@@ -42,7 +42,7 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const [isTouched, setIsTouched] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const { udr, vehicle, duration, npk, paymentOption, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -113,7 +113,7 @@ const PurchaseScreen = () => {
   })
 
   const handlePressPay = () => {
-    setIsTouched(true)
+    setIsSubmitted(true)
 
     if (!licencePlate) return
 
@@ -132,7 +132,7 @@ const PurchaseScreen = () => {
     )
   }
 
-  const showLicencePlateError = isTouched && !licencePlate
+  const showLicencePlateError = isSubmitted && !licencePlate
 
   return (
     <>
