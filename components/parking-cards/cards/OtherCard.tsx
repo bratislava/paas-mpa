@@ -7,7 +7,7 @@ import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { formatDate } from '@/utils/formatDate'
+import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
 // TODO - this is not in Figma, it's just a fallback for ParkingCardType === 'OTHER'
 
@@ -26,7 +26,7 @@ const OtherCard = ({ zoneName, licencePlate, validUntil }: OtherCardProps) => {
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}
-            value={formatDate(new Date(validUntil), locale)}
+            value={formatValidUntilDate(validUntil, locale)}
           />
         ) : null}
       </ParkingCardContent>

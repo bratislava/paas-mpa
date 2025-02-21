@@ -7,7 +7,7 @@ import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/utils/cn'
-import { formatDate } from '@/utils/formatDate'
+import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 /*
  *  Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=3708%3A25139&mode=dev
  */
@@ -53,7 +53,7 @@ const BonusCardRow = ({ balance, validUntil, selected, showControlChevron }: Pro
         {validUntil ? (
           <FlexRow>
             <Typography variant="small">{t('PaymentMethods.validUntil')}</Typography>
-            <Typography variant="small-bold">{formatDate(new Date(validUntil), locale)}</Typography>
+            <Typography variant="small-bold">{formatValidUntilDate(validUntil, locale)}</Typography>
           </FlexRow>
         ) : null}
       </View>

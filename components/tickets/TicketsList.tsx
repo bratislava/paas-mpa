@@ -2,7 +2,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { ListRenderItem } from '@shopify/flash-list'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
-import { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import { EmptyStateAvatar } from '@/assets/avatars'
@@ -121,7 +121,7 @@ export const TicketsList = ({ active }: RouteProps) => {
           actionButton={
             active ? (
               tickets?.length ? null : (
-                <Link asChild href="/purchase">
+                <Link asChild href="/">
                   <Button className="w-full" variant="primary">
                     {t('Tickets.buyTicket')}
                   </Button>
