@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Link, router, useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link, router } from 'expo-router'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { useDebounce } from 'use-debounce'
 
@@ -28,10 +28,7 @@ import {
   ticketPriceOptions,
   verifiedEmailsLengthOptions,
 } from '@/modules/backend/constants/queryOptions'
-import {
-  GetTicketPriceRequestDto,
-  InitiatePaymentRequestDto,
-} from '@/modules/backend/openapi-generated'
+import { InitiatePaymentRequestDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
 import { useVehiclesStoreContext } from '@/state/VehiclesStoreProvider/useVehiclesStoreContext'
@@ -45,7 +42,7 @@ const PurchaseScreen = () => {
   // TODO: find solution for height of bottom content with drawing
   const [purchaseButtonContainerHeight, setPurchaseButtonContainerHeight] = useState(0)
 
-  const [hasLicencePlateError, setHasLicencePlateError] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const { udr, vehicle, duration, npk, paymentOption, rememberCard } = usePurchaseStoreContext()
   const onPurchaseStoreUpdate = usePurchaseStoreUpdateContext()
@@ -61,11 +58,6 @@ const PurchaseScreen = () => {
   const isDebouncingDuration = duration !== debouncedDuration
 
   const parkingCardsQuery = useQuery(verifiedEmailsLengthOptions({ enabled: !firstPurchaseOpened }))
-
-  const priceRequestBody: GetTicketPriceRequestDto = useMemo(
-    () => createPriceRequestBody({ udr, licencePlate, duration: debouncedDuration, npk, locale }),
-    [udr, licencePlate, debouncedDuration, npk, locale],
-  )
 
   const handleModalClose = () => setIsAddCardModalOpen(false)
 
@@ -101,32 +93,15 @@ const PurchaseScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultVehicle])
 
-  useEffect(() => {
-    if (licencePlate && hasLicencePlateError) {
-      setHasLicencePlateError(false)
-    }
-  }, [licencePlate, hasLicencePlateError])
+  const priceQueryBody = createPriceRequestBody({
+    udr,
+    licencePlate,
+    duration: debouncedDuration,
+    npk,
+    locale,
+  })
 
-  const priceQuery = useQueryWithFocusRefetch(
-    ticketPriceOptions(priceRequestBody, {
-      udr,
-      licencePlate,
-      duration: debouncedDuration,
-      npk,
-    }),
-  )
-
-  /**
-   * Refetch price every minute when screen is focused.
-   * Docs: https://docs.expo.dev/router/reference/hooks/#usefocuseffect.
-   */
-  useFocusEffect(
-    useCallback(() => {
-      const interval = setInterval(() => priceQuery.refetch(), 1000 * 60)
-
-      return () => clearInterval(interval)
-    }, [priceQuery]),
-  )
+  const priceQuery = useQueryWithFocusRefetch(ticketPriceOptions(priceQueryBody))
 
   const handleSelectTime = (value: number) => {
     onPurchaseStoreUpdate({ duration: value })
@@ -138,17 +113,15 @@ const PurchaseScreen = () => {
   })
 
   const handlePressPay = () => {
-    if (!licencePlate) {
-      setHasLicencePlateError(true)
+    setIsSubmitted(true)
 
-      return
-    }
+    if (!licencePlate) return
 
     const actualPaymentOption = paymentOption ?? defaultPaymentOption
 
     initPaymentMutation.mutate(
       {
-        ...priceRequestBody,
+        ...priceQueryBody,
         rememberCard: actualPaymentOption === 'payment-card' ? rememberCard : false,
       } satisfies InitiatePaymentRequestDto,
       {
@@ -158,6 +131,8 @@ const PurchaseScreen = () => {
       },
     )
   }
+
+  const showLicencePlateError = isSubmitted && !licencePlate
 
   return (
     <>
@@ -170,7 +145,7 @@ const PurchaseScreen = () => {
               <Link testID="addVehicle" asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>
                   <VehicleFieldControl
-                    hasError={hasLicencePlateError}
+                    hasError={showLicencePlateError}
                     vehicle={vehicle?.isOneTimeUse ? vehicle : getVehicle(vehicle?.id)}
                   />
                 </PressableStyled>
@@ -212,7 +187,7 @@ const PurchaseScreen = () => {
         purchaseButtonContainerHeight={purchaseButtonContainerHeight}
         setPurchaseButtonContainerHeight={setPurchaseButtonContainerHeight}
         isLoading={initPaymentMutation.isPending || isDebouncingDuration}
-        hasLicencePlateError={hasLicencePlateError}
+        hasLicencePlateError={showLicencePlateError}
       />
 
       <Modal visible={isAddCardModalOpen} onRequestClose={handleModalClose}>
