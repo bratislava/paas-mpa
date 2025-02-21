@@ -8,7 +8,7 @@ import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { formatBalance } from '@/utils/formatBalance'
-import { formatDate } from '@/utils/formatDate'
+import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
 type BonusCardProps = Pick<
   CommonParkingCardProps,
@@ -42,7 +42,7 @@ const BonusCard = ({
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}
-            value={formatDate(new Date(validUntil), locale)}
+            value={formatValidUntilDate(validUntil, locale)}
           />
         ) : null}
       </ParkingCardContent>

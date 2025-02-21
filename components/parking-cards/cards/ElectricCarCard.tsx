@@ -7,7 +7,7 @@ import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { formatDate } from '@/utils/formatDate'
+import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
 type ElectricCarCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
 
@@ -24,7 +24,7 @@ const ElectricCarCard = ({ zoneName, licencePlate, validUntil }: ElectricCarCard
         {validUntil ? (
           <CardContentItem
             description={t('ParkingCards.validUntil')}
-            value={formatDate(new Date(validUntil), locale)}
+            value={formatValidUntilDate(validUntil, locale)}
           />
         ) : null}
       </ParkingCardContent>

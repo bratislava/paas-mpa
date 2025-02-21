@@ -158,7 +158,7 @@
   "ParkingCards.type.subscriber": "Abonentská karta",
   "ParkingCards.type.tzp": "ŤZP karta",
   "ParkingCards.type.visitor": "Návštevnícka karta",
-  "ParkingCards.validUntil": "Platnosť do",
+  "ParkingCards.validUntil": "Platnosť do (vrátane)",
   "ParkingCardTypeRow.type.all": "Všetky parkovacie karty",
   "ParkingCardTypeRow.type.bonusCards": "Iba bonusové karty",
   "ParkingCardTypeRow.type.visitorCards": "Iba návštevnícke karty",
