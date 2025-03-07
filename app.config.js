@@ -3,7 +3,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.6.2',
+    version: '1.7.0',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',

@@ -67,7 +67,12 @@ const Page = () => {
       }
 
       const phoneWithPrefix = `+${prefixCode}${phoneWithoutSpaces}`
-      await attemptSignInOrSignUp(phoneWithPrefix, token, captchaErrorCode)
+      await attemptSignInOrSignUp({
+        phone: phoneWithPrefix,
+        prefix: prefixCode,
+        token,
+        captchaErrorCode,
+      })
     } catch (error) {
       // Expected errors are in SIGNIN_ERROR_CODES_TO_SHOW
       if (isErrorWithName(error)) {
@@ -108,18 +113,9 @@ const Page = () => {
     }
   }
 
-  const handleCaptchaFail = (errorCode: string, wasRetried: boolean) => {
-    // The second stage of captcha integration includes the error message and signing in after the second try even when the captcha fails
-    if (wasRetried) {
-      setExpectedError('')
-
-      // For now we call the signIn function even if the captcha fails to get data from lambda...
-      // TODO: remove after 100% sure that the captcha is working
-      handleSignIn('', errorCode)
-    } else {
-      setExpectedError('TurnstileCaptchaFailed')
-      setLoading(false)
-    }
+  const handleCaptchaFail = () => {
+    setExpectedError('TurnstileCaptchaFailed')
+    setLoading(false)
   }
 
   return (
