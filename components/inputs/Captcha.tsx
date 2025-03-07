@@ -1,12 +1,13 @@
 import * as Sentry from '@sentry/react-native'
 import { forwardRef, useImperativeHandle, useState } from 'react'
+import { View } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 
 import { environment } from '@/environment'
 
 type Props = {
   onSuccess: (token: string) => void
-  onFail: (errorCode: string, wasRetried: boolean) => void
+  onFail: (errorCode: string) => void
 }
 
 const CAPTCHA_ERROR_START_MESSAGE = 'error_'
@@ -16,13 +17,11 @@ export type CaptchaRef = {
 }
 
 /**
- * Captcha component handles Cloudflare's invisible captcha. The webview is opened without any user interaction. The user is not aware of the captcha, but the token is sent to the onSuccess callback.
- * TODO: For now the captcha is not required by cognito, we need the number of users who failed the captcha and why. After that the errors will be handled and the captcha can be enabled in cognito.
+ * Captcha component handles Cloudflare's managed captcha. The webview is opened with user interaction. The user is aware of the captcha, and the token is sent to the onSuccess callback.
  * @param onSuccess Callback function that is called when the captcha is successfully solved. The token is passed as an argument.
- * @param onFail Callback function that is called when the captcha fails. The error code is passed as an argument and sent to the cognito.
+ * @param onFail Callback function that is called when the captcha fails. The error code is passed as an argument.
  */
 const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
-  const [hasRetried, setHasRetried] = useState<boolean>(false)
   const [showCaptcha, setShowCaptcha] = useState<boolean>(false)
 
   useImperativeHandle(ref, () => ({
@@ -36,12 +35,10 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
     if (data.startsWith(CAPTCHA_ERROR_START_MESSAGE)) {
       const errorCode = data.split('_')[1]
 
-      onFail(errorCode, hasRetried)
+      onFail(errorCode)
 
-      if (!hasRetried) {
-        setHasRetried(true)
-      } else if (environment.deployment === 'production') {
-        Sentry.captureException('Turnstile Captcha failed twice', {
+      if (environment.deployment === 'production') {
+        Sentry.captureException('Turnstile Captcha failed', {
           extra: { errorCode },
           level: 'info',
         })
@@ -54,16 +51,35 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
   }
 
   return showCaptcha ? (
-    <WebView
-      originWhitelist={['*']}
-      onMessage={handleMessage}
-      source={{
-        baseUrl: 'https://bratislava.sk',
-        html: `
+    <View className="h-[100px] w-full flex-1">
+      <WebView
+        originWhitelist={['*']}
+        onMessage={handleMessage}
+        className="w-full flex-1"
+        source={{
+          baseUrl: 'https://bratislava.sk',
+          html: `
             <!DOCTYPE html>
             <html>
                 <head>
                     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_renderCaptcha" async defer></script>
+                    <style>
+                        html, body {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            height: 100%;
+                            overflow: hidden;
+                        }
+                        #turnstileWidget {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            transform: scale(2);
+                        }
+                    </style>
                 </head>
                 <body>
                     <div id="turnstileWidget"></div>
@@ -85,8 +101,9 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
                 </body>
             </html>
         `,
-      }}
-    />
+        }}
+      />
+    </View>
   ) : null
 })
 
