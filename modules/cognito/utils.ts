@@ -42,11 +42,19 @@ export const getCurrentAuthenticatedUser = async () => {
   }
 }
 
-export const signInAndRedirectToConfirm = async (
-  phone: string,
-  token: string,
-  captchaErrorCode: string = '',
-) => {
+export type SignInInput = {
+  phone: string
+  prefix: string
+  token: string
+  captchaErrorCode?: string
+}
+
+export const signInAndRedirectToConfirm = async ({
+  phone,
+  prefix,
+  token,
+  captchaErrorCode = '',
+}: SignInInput) => {
   const { isSignedIn, nextStep } = await signIn({
     username: phone,
     ...(phone === STATIC_PHONE
@@ -54,7 +62,7 @@ export const signInAndRedirectToConfirm = async (
       : {
           password: STATIC_TEMP_PASS,
           options: {
-            clientMetadata: { token, captchaErrorCode },
+            clientMetadata: { token, captchaErrorCode, prefix },
           },
         }),
   })

@@ -12,6 +12,7 @@ import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import {
   getCurrentAuthenticatedUser,
   signInAndRedirectToConfirm,
+  SignInInput,
   STATIC_PHONE,
 } from '@/modules/cognito/utils'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
@@ -67,11 +68,11 @@ export const useSignInOrSignUp = () => {
   const updateAuthStore = useAuthStoreUpdateContext()
   const clearHistory = useClearHistory()
 
-  const attemptSignInOrSignUp = async (phone: string, token: string, captchaErrorCode?: string) => {
+  const attemptSignInOrSignUp = async (signInInput: SignInInput) => {
     try {
       try {
         /** Try to sign in the user. Cognito will throw an error for non-registered user. */
-        await signInAndRedirectToConfirm(phone, token, captchaErrorCode)
+        await signInAndRedirectToConfirm(signInInput)
       } catch (error) {
         // Expected error 'UserNotFoundException' means non-registered user
         if (isErrorWithName(error) && error.name === 'UserNotFoundException') {
@@ -82,7 +83,7 @@ export const useSignInOrSignUp = () => {
 
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const signUpOutput = await signUp({
-            username: phone,
+            username: signInInput.phone,
             password: STATIC_TEMP_PASS,
           })
 
@@ -92,7 +93,7 @@ export const useSignInOrSignUp = () => {
            * Note: Potentially, we should check if "signUpOutput.nextStep.signUpStep === 'DONE'", but other cases should
            * not happen at all - we don't use autoSignIn and users are auto-verified in lambda.
            * */
-          await signInAndRedirectToConfirm(phone, token, captchaErrorCode)
+          await signInAndRedirectToConfirm(signInInput)
         } else if (isErrorWithName(error) && error.name === 'UserAlreadyAuthenticatedException') {
           /**
            * If user is already authenticated, sign them out and try to sign in again.
@@ -101,7 +102,7 @@ export const useSignInOrSignUp = () => {
           await signOut()
           updateAuthStore({ user: null })
           // Run the process again after sign out automatically. Now user have to press the button again.
-          await attemptSignInOrSignUp(phone, token, captchaErrorCode)
+          await attemptSignInOrSignUp(signInInput)
         } else {
           /**
            * Pass other errors to the next catch block.
