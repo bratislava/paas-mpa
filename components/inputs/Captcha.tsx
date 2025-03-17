@@ -62,6 +62,8 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
             <!DOCTYPE html>
             <html>
                 <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
                     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_renderCaptcha" async defer></script>
                     <style>
                         html, body {
@@ -74,10 +76,6 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
                         #turnstileWidget {
                             width: 100%;
                             height: 100%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            transform: scale(2);
                         }
                     </style>
                 </head>
@@ -89,6 +87,7 @@ const Captcha = forwardRef<CaptchaRef, Props>(({ onSuccess, onFail }, ref) => {
                         function _renderCaptcha() {
                             turnstile.render('#turnstileWidget', {
                                 sitekey: '${environment.turnstileSiteKey}',
+                                size: 'flexible',
                                 callback: function (token) {
                                     window.ReactNativeWebView.postMessage(token);
                                 },

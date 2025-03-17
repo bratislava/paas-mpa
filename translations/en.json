@@ -330,7 +330,7 @@
   "TowingService.title": "Call towing service",
   "Typography.test": "EN translation",
   "useSignInOrSignUp.confirmError": "Confirm Error: {{message}}",
-  "useSignInOrSignUp.signInError": "Sign In Error: {{message}}",
+  "useSignInOrSignUp.signInError": "Sign In Error",
   "useSignInOrSignUp.unexpectedErrorObjectInConfirm": "Unexpected error. Unknown error object during confirm flow.",
   "useSignInOrSignUp.unexpectedErrorObjectInSignIn": "Unexpected error. Unknown error object during sign in.",
   "VehiclesModal.licencePlateFormatWarning": "Please, check the license plate carefully.",

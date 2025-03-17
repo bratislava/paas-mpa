@@ -330,7 +330,7 @@
   "TowingService.title": "Volať odťahovú službu",
   "Typography.test": "SK preklad",
   "useSignInOrSignUp.confirmError": "Chyba pri potvrdení: {{message}}",
-  "useSignInOrSignUp.signInError": "Chyba prihlásenia: {{message}}",
+  "useSignInOrSignUp.signInError": "Chyba prihlásenia",
   "useSignInOrSignUp.unexpectedErrorObjectInConfirm": "Neočakávaná chyba. Neznámy error object počas potvrdenia.",
   "useSignInOrSignUp.unexpectedErrorObjectInSignIn": "Neočakávaná chyba. Neznámy error object počas prihlásenia.",
   "VehiclesModal.licencePlateFormatWarning": "Pozorne si skontrolujte zadané EČV.",
