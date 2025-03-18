@@ -121,8 +121,8 @@ export const useSignInOrSignUp = () => {
       // TODO Logging
       /** Log unexpected errors and show generic error message to the user */
       if (isError(error)) {
-        console.error(t('useSignInOrSignUp.signInError', { message: error.message }), error)
-        snackbar.show(t('useSignInOrSignUp.signInError', { message: error.message }), {
+        console.error(t('useSignInOrSignUp.signInError'), error)
+        snackbar.show(t('useSignInOrSignUp.signInError'), {
           variant: 'danger',
         })
       } else {
