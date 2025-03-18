@@ -9,7 +9,6 @@ import TextInput from '@/components/inputs/TextInput'
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import DismissKeyboard from '@/components/shared/DismissKeyboard'
 import FlexRow from '@/components/shared/FlexRow'
 import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
@@ -119,53 +118,51 @@ const Page = () => {
   }
 
   return (
-    <DismissKeyboard>
-      <ScreenView hasBackButton={!isOnboardingFinished}>
-        <ScrollView alwaysBounceVertical={false}>
-          <ScreenContent>
-            <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
+    <ScreenView hasBackButton={!isOnboardingFinished}>
+      <ScrollView alwaysBounceVertical={false} keyboardDismissMode="on-drag">
+        <ScreenContent>
+          <Typography variant="h1">{t('Auth.enterPhoneNumber')}</Typography>
 
-            <View className="g-1">
-              {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
-              {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
-              <FlexRow className="g-2.5">
-                <CountrySelectField selectedCountry={selectedCountry} />
+          <View className="g-1">
+            {/* Note that `onSubmitEditing` on iOS isn't called when using keyboardType="phone-pad": https://reactnative.dev/docs/textinput#onsubmitediting */}
+            {/* Adding returnKeyType="done" adds Done button above keyboard, otherwise, there is no "Enter" button */}
+            <FlexRow className="g-2.5">
+              <CountrySelectField selectedCountry={selectedCountry} />
 
-                <TextInput
-                  leftIcon={<Typography>+{prefixCode}</Typography>}
-                  viewClassName="flex-1"
-                  value={phone}
-                  onChangeText={handleChangeText}
-                  keyboardType="phone-pad"
-                  autoComplete="tel"
-                  hasError={!!expectedError}
-                  onFocus={handleInputFocus}
-                  autoFocus
-                  returnKeyType="done"
-                  onSubmitEditing={handleRequestCaptcha}
-                />
-              </FlexRow>
+              <TextInput
+                leftIcon={<Typography>+{prefixCode}</Typography>}
+                viewClassName="flex-1"
+                value={phone}
+                onChangeText={handleChangeText}
+                keyboardType="phone-pad"
+                autoComplete="tel"
+                hasError={!!expectedError}
+                onFocus={handleInputFocus}
+                autoFocus
+                returnKeyType="done"
+                onSubmitEditing={handleRequestCaptcha}
+              />
+            </FlexRow>
 
-              {expectedError ? (
-                <Typography testID="expectedError" className="text-negative">
-                  {translationKeys[expectedError]}
-                </Typography>
-              ) : null}
-            </View>
+            {expectedError ? (
+              <Typography testID="expectedError" className="text-negative">
+                {translationKeys[expectedError]}
+              </Typography>
+            ) : null}
+          </View>
 
-            <Markdown>{t('Auth.consent')}</Markdown>
+          <Markdown>{t('Auth.consent')}</Markdown>
 
-            <ContinueButton
-              loading={loading}
-              disabled={!phoneWithoutSpaces}
-              onPress={handleRequestCaptcha}
-            />
+          <ContinueButton
+            loading={loading}
+            disabled={!phoneWithoutSpaces}
+            onPress={handleRequestCaptcha}
+          />
 
-            <Captcha ref={captchaRef} onSuccess={handleSignIn} onFail={handleCaptchaFail} />
-          </ScreenContent>
-        </ScrollView>
-      </ScreenView>
-    </DismissKeyboard>
+          <Captcha ref={captchaRef} onSuccess={handleSignIn} onFail={handleCaptchaFail} />
+        </ScreenContent>
+      </ScrollView>
+    </ScreenView>
   )
 }
 

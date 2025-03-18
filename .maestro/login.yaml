@@ -16,6 +16,7 @@ appId: com.bratislava.paas
         id: expectedError
     commands:
       - tapOn: Continue
+- tapOn: Verify you are human
 - assertVisible: Enter 6-digit code
 - inputText: '123456'
 - assertVisible: Notifications
