@@ -141,6 +141,7 @@ const PurchaseScreen = () => {
           {/* TODO better approach - this padding is here to be able to scroll up above bottom sheet */}
           <ScreenContent style={{ paddingBottom: purchaseButtonContainerHeight }}>
             <ParkingZoneField zone={udr} />
+
             <Field label={t('PurchaseScreen.chooseVehicleFieldLabel')}>
               <Link testID="addVehicle" asChild href={{ pathname: '/purchase/choose-vehicle' }}>
                 <PressableStyled>

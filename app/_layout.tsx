@@ -33,7 +33,7 @@ import { environment } from '@/environment'
 import AuthStoreProvider from '@/state/AuthStoreProvider/AuthStoreProvider'
 import colors from '@/tailwind.config.colors'
 
-const routingInstrumentation = new Sentry.ReactNavigationInstrumentation()
+const navigationIntegration = Sentry.reactNavigationIntegration()
 
 Sentry.init({
   dsn: environment.sentryDns,
@@ -42,21 +42,14 @@ Sentry.init({
   // Disabled in development to avoid unnecessary events in Sentry
   enabled: environment.deployment === 'production',
   environment: environment.deployment,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-      enableNativeFramesTracking: true,
-    }),
-  ],
+  integrations: [navigationIntegration],
 })
 
 SplashScreen.preventAutoHideAsync()
 
 const { UIManager } = NativeModules
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-if (UIManager.setLayoutAnimationEnabledExperimental)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+if (UIManager?.setLayoutAnimationEnabledExperimental)
   UIManager.setLayoutAnimationEnabledExperimental(true)
 
 // Keeping the same name `onFetchUpdateAsync` as in documentation for easier reference
@@ -78,7 +71,7 @@ const RootLayout = () => {
   const ref = useNavigationContainerRef()
   useEffect(() => {
     if (ref) {
-      routingInstrumentation.registerNavigationContainer(ref)
+      navigationIntegration.registerNavigationContainer(ref)
     }
   }, [ref])
 
@@ -122,7 +115,7 @@ const RootLayout = () => {
                   <BottomSheetModalProvider>
                     <Stack
                       screenOptions={{
-                        headerBackTitleVisible: false,
+                        headerBackButtonDisplayMode: 'minimal',
                         headerShown: false,
                         headerTitleStyle: {
                           fontFamily: 'BelfastGrotesk_700Bold',

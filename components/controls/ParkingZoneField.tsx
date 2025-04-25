@@ -27,7 +27,7 @@ const ParkingZoneField = ({ zone }: Props) => {
       label={t('PurchaseScreen.segmentFieldLabel')}
       labelInsertArea={
         zone ? (
-          <Link asChild href="/">
+          <Link asChild dismissTo href="/">
             <PressableStyled>
               <ZoneBadge label={zone.udrId} />
             </PressableStyled>
