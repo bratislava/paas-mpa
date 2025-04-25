@@ -121,7 +121,7 @@ export const TicketsList = ({ active }: RouteProps) => {
           actionButton={
             active ? (
               tickets?.length ? null : (
-                <Link asChild href="/">
+                <Link asChild href="/" dismissTo>
                   <Button className="w-full" variant="primary">
                     {t('Tickets.buyTicket')}
                   </Button>

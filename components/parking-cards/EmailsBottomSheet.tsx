@@ -49,7 +49,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     mutation.mutate(id, {
       onSuccess: () => {
         handleModalClose()
-        router.navigate('/parking-cards')
+        router.dismissTo('/parking-cards')
       },
     })
   }

@@ -69,14 +69,14 @@ const TicketPurchasePage = () => {
     navigation.reset({
       ...state,
       index: 1,
-      routes: [state.routes[0], state.routes.at(-1)].filter(isDefined),
+      routes: [state?.routes[0], state?.routes.at(-1)].filter(isDefined),
     })
   }, [navigation])
 
   return (
     <ScreenViewCentered
       actionButton={
-        <Link asChild href="/">
+        <Link asChild href="/" dismissTo>
           <ContinueButton>{t('PurchaseScreen.backToMap')}</ContinueButton>
         </Link>
       }

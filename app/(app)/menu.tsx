@@ -1,4 +1,4 @@
-import { Link, router } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 
@@ -28,6 +28,7 @@ type MenuItemsType =
 
 const MainMenuScreen = () => {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const { isModalVisible, openModal, closeModal } = useModal()
   const signOut = useSignOut()
@@ -94,12 +95,11 @@ const MainMenuScreen = () => {
       : []),
   ]
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handlePressClose = () => {
     if (router.canGoBack()) {
       router.back()
     } else {
-      router.replace('/')
+      router.dismissTo('/')
     }
   }
 

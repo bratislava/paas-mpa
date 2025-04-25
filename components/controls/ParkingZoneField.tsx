@@ -35,7 +35,7 @@ const ParkingZoneField = ({ zone }: Props) => {
         ) : null
       }
     >
-      <Link asChild href="/">
+      <Link asChild href="/" dismissTo>
         <PressableStyled>
           <Panel>
             {zone ? (
