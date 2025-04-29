@@ -43,6 +43,7 @@ const Page = () => {
 
       const licencePlates = res.data.map((item) => item.vehiclePlateNumber).filter(Boolean)
 
+      router.back()
       router.replace({
         pathname: '/parking-cards/verification/verification-result',
         params: {
