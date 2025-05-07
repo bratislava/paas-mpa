@@ -1,12 +1,4 @@
-import {
-  Camera,
-  FillLayer,
-  LineLayer,
-  MapView,
-  ShapeSource,
-  UserLocation,
-  UserLocationRenderMode,
-} from '@rnmapbox/maps'
+import { Camera, FillLayer, LineLayer, MapView, ShapeSource, UserLocation } from '@rnmapbox/maps'
 import { Feature, GeoJsonProperties, Point, Position } from 'geojson'
 import {
   ForwardedRef,
@@ -160,7 +152,6 @@ const Map = forwardRef(
 
           <UserLocation
             androidRenderMode="gps"
-            renderMode={UserLocationRenderMode.Normal}
             // TODO: fix indicator size bug
             // showsUserHeadingIndicator
             visible

@@ -1,4 +1,3 @@
-import { PortalHost } from '@gorhom/portal'
 import { useQueryClient } from '@tanstack/react-query'
 import { router, useFocusEffect } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -65,8 +64,6 @@ const IndexScreen = () => {
           ) : null}
         </View>
       </View>
-
-      <PortalHost name="index" />
     </View>
   )
 }
