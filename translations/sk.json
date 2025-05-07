@@ -383,6 +383,7 @@
   "ZoneBottomSheet.noZoneSelected": "Nenašiel sa úsek parkovania. Použite vyhľadávanie alebo umiestnite pin na úsek parkovania v blízkosti.",
   "ZoneBottomSheet.plannedZonePanelText": "Pre plánovaný úsek nie je možné zakúpiť parkovací lístok.",
   "ZoneBottomSheet.searchAccessibilityInput": "Vyhľadať zónu alebo adresu",
+  "ZoneBottomSheet.searchPlaceholder": "Vyhľadať zónu alebo adresu",
   "ZoneBottomSheet.showDetails": "Detail úseku",
   "ZoneBottomSheet.title": "Kde parkujete?",
   "ZoneBottomSheet.TopAttachment.goToUserLocation": "Presunúť na moju polohu",

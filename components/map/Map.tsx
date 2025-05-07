@@ -12,13 +12,14 @@ import {
 } from 'react'
 import { View } from 'react-native'
 
-import MapCamera from '@/components/map/MapCamera'
+import MapCamera, { ZOOM_ON_PLACE_SELECT } from '@/components/map/MapCamera'
 import MapMarkers from '@/components/map/MapMarkers'
 import MapPin from '@/components/map/MapPin'
 import MapZones from '@/components/map/MapZones'
 import { MapFilters } from '@/modules/map/constants'
 import { useCameraChangeHandler } from '@/modules/map/hooks/useCameraChangeHandler'
 import { useFilteredMapData } from '@/modules/map/hooks/useFilteredMapData'
+import { getMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { ProcessedMapData } from '@/modules/map/hooks/useProcessedArcgisData'
 import {
   MapPointWithTranslationProps,
@@ -39,11 +40,10 @@ type Props = {
 }
 
 export type MapRef = {
-  setFlyToCenter: (center: Position) => void
+  flyTo: (center: Position) => void
 }
 
 const ZOOM_ON_CLUSTER_PRESS = 1.5
-const ZOOM_ON_PLACE_SELECT = 15
 
 const Map = forwardRef(
   (
@@ -64,9 +64,6 @@ const Map = forwardRef(
     const [selectedPolygon, setSelectedPolygon] = useState<UdrZoneFeature | null>(null)
     const [isMapPinShown, setIsMapPinShown] = useState(false)
 
-    const [flyToCenter, setFlyToCenter] = useState<Position | null>(null)
-    const [cameraZoom, setCameraZoom] = useState<number | undefined>()
-
     const selectedZone = useMemo(() => selectedPolygon?.properties, [selectedPolygon])
 
     const { markersData, udrData } = useFilteredMapData(processedData, filters)
@@ -79,20 +76,27 @@ const Map = forwardRef(
       onMapPinVisibilityChange?.(isMapPinShown)
     }, [onMapPinVisibilityChange, isMapPinShown])
 
-    const handleSetFlyToCenter = useCallback((center: Position) => {
-      setFlyToCenter(center)
-      setCameraZoom(ZOOM_ON_PLACE_SELECT)
-    }, [])
+    const handleFlyTo = useCallback(
+      (center: Position, zoomLevel: number = ZOOM_ON_PLACE_SELECT) => {
+        camera.current?.setCamera({
+          centerCoordinate: center,
+          zoomLevel,
+          // both setCamera and flyTo function don't respect the padding set in the Camera component so it needs to be set again
+          padding: getMapPadding(),
+        })
+      },
+      [],
+    )
 
     useEffect(() => {
       updateMapStoreContext({
-        setFlyToCenter: handleSetFlyToCenter,
+        flyTo: (center) => {
+          handleFlyTo(center)
+        },
       })
-    }, [updateMapStoreContext, handleSetFlyToCenter])
+    }, [updateMapStoreContext, handleFlyTo])
 
-    useImperativeHandle(ref, () => ({ setFlyToCenter: handleSetFlyToCenter }), [
-      handleSetFlyToCenter,
-    ])
+    useImperativeHandle(ref, () => ({ flyTo: handleFlyTo }), [handleFlyTo])
 
     const handleCameraChange = useCameraChangeHandler({
       map: map.current,
@@ -100,22 +104,21 @@ const Map = forwardRef(
       selectedPolygon,
       setSelectedPolygon,
       setIsMapPinShown,
-      setFlyToCenter,
       onCenterChange,
     })
 
     const handlePointPress = useCallback(
       async (point: Feature<Point, GeoJsonProperties>) => {
         if (point.properties?.point_count) {
-          setFlyToCenter(point.geometry.coordinates)
           const zoom = await map.current?.getZoom()
-          setCameraZoom(zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
+
+          handleFlyTo(point.geometry.coordinates, zoom ? zoom + ZOOM_ON_CLUSTER_PRESS : 14)
 
           return
         }
         onPointPress?.(point.properties as MapPointWithTranslationProps)
       },
-      [onPointPress],
+      [handleFlyTo, onPointPress],
     )
 
     return (
@@ -130,12 +133,7 @@ const Map = forwardRef(
           pitchEnabled={false}
           rotateEnabled={false}
         >
-          <MapCamera
-            ref={camera}
-            flyToCenter={flyToCenter}
-            cameraZoom={cameraZoom}
-            setFlyToCenter={setFlyToCenter}
-          />
+          <MapCamera ref={camera} />
 
           {udrData && <MapZones udrData={udrData} />}
 

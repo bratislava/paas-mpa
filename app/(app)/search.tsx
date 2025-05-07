@@ -16,7 +16,7 @@ import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCen
 import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
 
 const SearchScreen = () => {
-  const { setFlyToCenter } = useMapStoreContext()
+  const { flyTo } = useMapStoreContext()
 
   const { t } = useTranslation()
 
@@ -41,15 +41,15 @@ const SearchScreen = () => {
       // needs to be in timeout because going to map (handleCancel) rerenders the map which cancels the flyToCenter
       setTimeout(() => {
         if (isGeocodingFeature(newValue)) {
-          setFlyToCenter?.(newValue.center)
+          flyTo?.(newValue.center)
         } else {
-          setFlyToCenter?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+          flyTo?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
         }
       }, 100)
 
       handleCancel()
     },
-    [handleInputBlur, setFlyToCenter, handleCancel],
+    [handleInputBlur, flyTo, handleCancel],
   )
 
   return (

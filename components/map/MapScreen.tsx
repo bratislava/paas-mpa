@@ -113,7 +113,7 @@ const MapScreen = () => {
       <MapZoneBottomSheet
         ref={zoneBottomSheetRef}
         zone={normalizedZone}
-        setFlyToCenter={mapRef.current?.setFlyToCenter}
+        flyTo={mapRef.current?.flyTo}
         isZoomedOut={!isMapPinShown}
         address={currentAddress}
       />

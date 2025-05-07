@@ -17,13 +17,13 @@ import { cn } from '@/utils/cn'
 
 type Props = {
   zone: MapUdrZone | null
-  setFlyToCenter?: MapRef['setFlyToCenter']
+  flyTo?: MapRef['flyTo']
   isZoomedOut?: boolean
   address?: string
 }
 
 const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(
-  ({ zone: selectedZone, setFlyToCenter, isZoomedOut, address }, ref) => {
+  ({ zone: selectedZone, flyTo, isZoomedOut, address }, ref) => {
     const localRef = useRef<BottomSheet>(null)
     const refSetter = useMultipleRefsSetter(localRef, ref)
 
@@ -33,7 +33,7 @@ const MapZoneBottomSheet = forwardRef<BottomSheet, Props>(
 
     return (
       <>
-        <MapZoneBottomSheetAttachment {...{ animatedPosition, setFlyToCenter }} />
+        <MapZoneBottomSheetAttachment {...{ animatedPosition, flyTo }} />
         <BottomSheet
           // Nested accessible is a problem with Maestro on iOS so we need to disable it on parent
           // https://maestro.mobile.dev/platform-support/react-native#interacting-with-nested-components-on-ios

@@ -2915,6 +2915,10 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2922,6 +2926,10 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'email' is not null or undefined
@@ -2952,6 +2960,22 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
 
       if (email !== undefined) {
         localVarQueryParameter['email'] = email
+      }
+
+      if (validFromFrom !== undefined) {
+        localVarQueryParameter['validFromFrom'] = validFromFrom
+      }
+
+      if (validFromTo !== undefined) {
+        localVarQueryParameter['validFromTo'] = validFromTo
+      }
+
+      if (validToFrom !== undefined) {
+        localVarQueryParameter['validToFrom'] = validToFrom
+      }
+
+      if (validToTo !== undefined) {
+        localVarQueryParameter['validToTo'] = validToTo
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -2996,6 +3020,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3003,6 +3031,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParkingCardsResponseDto>
@@ -3012,6 +3044,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
           email,
           page,
           pageSize,
+          validFromFrom,
+          validFromTo,
+          validToFrom,
+          validToTo,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3049,6 +3085,10 @@ export const ParkingCardsApiFactory = function (
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3056,10 +3096,23 @@ export const ParkingCardsApiFactory = function (
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<ParkingCardsResponseDto> {
       return localVarFp
-        .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
+        .parkingCardsControllerGetParkingCards(
+          email,
+          page,
+          pageSize,
+          validFromFrom,
+          validFromTo,
+          validToFrom,
+          validToTo,
+          options,
+        )
         .then((request) => request(axios, basePath))
     },
   }
@@ -3091,6 +3144,10 @@ export class ParkingCardsApi extends BaseAPI {
    * @param {string} email Email
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
+   * @param {string} [validFromFrom] Lower bound for valid from
+   * @param {string} [validFromTo] Upper bound for valid from
+   * @param {string} [validToFrom] Lower bound for valid to
+   * @param {string} [validToTo] Upper bound for valid to
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof ParkingCardsApi
@@ -3099,10 +3156,23 @@ export class ParkingCardsApi extends BaseAPI {
     email: string,
     page?: number,
     pageSize?: number,
+    validFromFrom?: string,
+    validFromTo?: string,
+    validToFrom?: string,
+    validToTo?: string,
     options?: AxiosRequestConfig,
   ) {
     return ParkingCardsApiFp(this.configuration)
-      .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
+      .parkingCardsControllerGetParkingCards(
+        email,
+        page,
+        pageSize,
+        validFromFrom,
+        validFromTo,
+        validToFrom,
+        validToTo,
+        options,
+      )
       .then((request) => request(this.axios, this.basePath))
   }
 }
