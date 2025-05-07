@@ -1,5 +1,5 @@
 import * as Linking from 'expo-linking'
-import { router, useLocalSearchParams } from 'expo-router'
+import { Redirect, router, useLocalSearchParams } from 'expo-router'
 import { useRef, useState } from 'react'
 import { Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -69,9 +69,9 @@ const PaymentScreen = () => {
       show('Unable to open payment URL.', { variant: 'danger' })
     }
 
-    redirectToPurchaseResult()
-
-    return null
+    return (
+      <Redirect href={{ pathname: '/ticket-purchase', params: { ticketId: ticketId ?? '' } }} />
+    )
   }
 
   return (
