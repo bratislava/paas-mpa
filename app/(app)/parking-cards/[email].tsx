@@ -67,7 +67,7 @@ const Page = () => {
           ),
         }}
       >
-        <View className="mt-2 px-4">
+        <View className="mt-2 px-5">
           <ParkingCardsFilter selectedKey={validityKey} onChange={setValidityKey} />
         </View>
 
