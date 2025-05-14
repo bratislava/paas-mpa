@@ -24,7 +24,7 @@ const TicketsHistoryBottomSheet = forwardRef<BottomSheetModal, Props>(({ activeI
   const reducedMotion = useReducedMotion()
 
   const localRef = useRef<BottomSheetModal>(null)
-  const refSetter = useMultipleRefsSetter(localRef, ref)
+  const refSetter = useMultipleRefsSetter<BottomSheetModal | null>(localRef, ref)
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
