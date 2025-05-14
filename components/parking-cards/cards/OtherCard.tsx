@@ -1,37 +1,31 @@
 import React from 'react'
 
-import CardContentItem from '@/components/parking-cards/base/CardContentItem'
 import ParkingCardBase from '@/components/parking-cards/base/ParkingCardBase'
 import ParkingCardContent from '@/components/parking-cards/base/ParkingCardContent'
+import { ParkingCardValidityItems } from '@/components/parking-cards/base/ParkingCardValidityItems'
 import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
-import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
 // TODO - this is not in Figma, it's just a fallback for ParkingCardType === 'OTHER'
 
-type OtherCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
+type OtherCardProps = Pick<
+  CommonParkingCardProps,
+  'zoneName' | 'licencePlate' | 'validUntil' | 'validFrom'
+>
 
-const OtherCard = ({ zoneName, licencePlate, validUntil }: OtherCardProps) => {
-  const { t } = useTranslation()
-  const locale = useLocale()
+const OtherCard = ({ zoneName, licencePlate, validUntil, validFrom }: OtherCardProps) => (
+  <ParkingCardBase variant="other">
+    <ParkingCardContent>
+      <Typography variant="small">{zoneName}</Typography>
 
-  return (
-    <ParkingCardBase variant="other">
-      <ParkingCardContent>
-        <Typography variant="small">{zoneName}</Typography>
-        <Typography variant="small">{licencePlate}</Typography>
-        <Divider className="bg-divider" />
-        {validUntil ? (
-          <CardContentItem
-            description={t('ParkingCards.validUntil')}
-            value={formatValidUntilDate(validUntil, locale)}
-          />
-        ) : null}
-      </ParkingCardContent>
-    </ParkingCardBase>
-  )
-}
+      <Typography variant="small">{licencePlate}</Typography>
+
+      <Divider className="bg-divider" />
+
+      <ParkingCardValidityItems validFrom={validFrom} validUntil={validUntil} />
+    </ParkingCardContent>
+  </ParkingCardBase>
+)
 
 export default OtherCard

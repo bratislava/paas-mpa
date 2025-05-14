@@ -1,35 +1,29 @@
 import React from 'react'
 
-import CardContentItem from '@/components/parking-cards/base/CardContentItem'
 import ParkingCardBase from '@/components/parking-cards/base/ParkingCardBase'
 import ParkingCardContent from '@/components/parking-cards/base/ParkingCardContent'
+import { ParkingCardValidityItems } from '@/components/parking-cards/base/ParkingCardValidityItems'
 import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
-import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
-type SubscriberCardProps = Pick<CommonParkingCardProps, 'zoneName' | 'licencePlate' | 'validUntil'>
+type SubscriberCardProps = Pick<
+  CommonParkingCardProps,
+  'zoneName' | 'licencePlate' | 'validUntil' | 'validFrom'
+>
 
-const SubscriberCard = ({ zoneName, licencePlate, validUntil }: SubscriberCardProps) => {
-  const { t } = useTranslation()
-  const locale = useLocale()
+const SubscriberCard = ({ zoneName, licencePlate, validUntil, validFrom }: SubscriberCardProps) => (
+  <ParkingCardBase variant="subscriber">
+    <ParkingCardContent>
+      <Typography variant="small">{zoneName}</Typography>
 
-  return (
-    <ParkingCardBase variant="subscriber">
-      <ParkingCardContent>
-        <Typography variant="small">{zoneName}</Typography>
-        <Typography variant="small">{licencePlate}</Typography>
-        <Divider className="bg-subscriberCard" />
-        {validUntil ? (
-          <CardContentItem
-            description={t('ParkingCards.validUntil')}
-            value={formatValidUntilDate(validUntil, locale)}
-          />
-        ) : null}
-      </ParkingCardContent>
-    </ParkingCardBase>
-  )
-}
+      <Typography variant="small">{licencePlate}</Typography>
+
+      <Divider className="bg-subscriberCard" />
+
+      <ParkingCardValidityItems validFrom={validFrom} validUntil={validUntil} />
+    </ParkingCardContent>
+  </ParkingCardBase>
+)
 
 export default SubscriberCard

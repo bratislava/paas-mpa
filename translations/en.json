@@ -164,6 +164,7 @@
   "ParkingCards.type.subscriber": "Subscriber card",
   "ParkingCards.type.tzp": "ŤZP card",
   "ParkingCards.type.visitor": "Visitor card",
+  "ParkingCards.validFrom": "Valid from",
   "ParkingCards.validUntil": "Valid until",
   "ParkingCardTypeRow.type.all": "All parking cards",
   "ParkingCardTypeRow.type.bonusCards": "Bonus cards only",
