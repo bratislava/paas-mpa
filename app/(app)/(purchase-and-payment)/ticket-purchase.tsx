@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { Link, useLocalSearchParams, useNavigation } from 'expo-router'
+import { Link, useLocalSearchParams, useNavigation, useRouter } from 'expo-router'
 import { useEffect } from 'react'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
@@ -12,7 +12,6 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { getTicketOptions } from '@/modules/backend/constants/queryOptions'
 import { defaultInitialPurchaseStoreValues } from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
 import { usePurchaseStoreUpdateContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreUpdateContext'
-import { isDefined } from '@/utils/isDefined'
 
 export type TicketPurchaseSearchParams = {
   ticketId: string
@@ -29,6 +28,7 @@ const TicketPurchasePage = () => {
   const updatePurchaseStore = usePurchaseStoreUpdateContext()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
+  const router = useRouter()
 
   const { data, isPending, isError, error, refetch } = useQueryWithFocusRefetch(
     getTicketOptions(ticketIdParsed),
@@ -66,12 +66,14 @@ const TicketPurchasePage = () => {
   useEffect(() => {
     const state = navigation.getState()
 
-    navigation.reset({
-      ...state,
-      index: 1,
-      routes: [state?.routes[0], state?.routes.at(-1)].filter(isDefined),
-    })
-  }, [navigation])
+    if (state && state.routes && state.routes.length > 2) {
+      router.dismissTo('/')
+      router.push({
+        pathname: '/ticket-purchase',
+        params: { ticketId: ticketId ?? '' } satisfies TicketPurchaseSearchParams,
+      })
+    }
+  }, [navigation, ticketId, router])
 
   return (
     <ScreenViewCentered
