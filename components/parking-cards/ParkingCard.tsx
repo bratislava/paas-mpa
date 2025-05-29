@@ -13,85 +13,54 @@ type Props = {
 }
 
 export type CommonParkingCardProps = {
-  zoneName: string | null | undefined
-  licencePlate: string | null | undefined
-  validUntil: string | null | undefined
-  cardNumber: string | null | undefined
-  balanceSeconds: number | null | undefined
-  originalBalanceSeconds: number | null | undefined
+  zoneName: string | undefined
+  licencePlate: string | undefined
+  validUntil: string | undefined
+  validFrom: string | undefined
+  cardNumber: string | undefined
+  balanceSeconds: number | undefined
+  originalBalanceSeconds: number | undefined
 }
 
 // TODO change card.name to zone
 const ParkingCard = ({ card }: Props) => {
+  const commonCardProps = {
+    zoneName: card.name,
+    validUntil: card.validTo,
+    validFrom: card.validFrom,
+  }
+
   switch (card.type) {
     case ParkingCardType.Abonent:
-      return (
-        <SubscriberCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <SubscriberCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
     case ParkingCardType.Bpk:
       return (
         <BonusCard
-          zoneName={card.name}
           licencePlate={card.vehiclePlateNumber}
           balanceSeconds={card.balanceSeconds}
           originalBalanceSeconds={card.originalBalanceSeconds}
-          validUntil={card.validTo}
+          {...commonCardProps}
         />
       )
     case ParkingCardType.Rezident:
-      return (
-        <ResidentCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <ResidentCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
     case ParkingCardType.Npk:
       return (
         <VisitorCard
-          zoneName={card.name}
           balanceSeconds={card.balanceSeconds}
           originalBalanceSeconds={undefined} // TODO check with parkdots if original balance is safe to use {card.originalBalanceSeconds}
-          validUntil={card.validTo}
+          {...commonCardProps}
         />
       )
     case ParkingCardType.Tzp:
-      return (
-        <TzpCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <TzpCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
     case ParkingCardType.Elektromobil:
-      return (
-        <ElectricCarCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <ElectricCarCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
     case ParkingCardType.Social:
-      return (
-        <SocialServicesCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <SocialServicesCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
     // case ParkingCardType.Other:
     default:
-      return (
-        <OtherCard
-          zoneName={card.name}
-          licencePlate={card.vehiclePlateNumber}
-          validUntil={card.validTo}
-        />
-      )
+      return <OtherCard licencePlate={card.vehiclePlateNumber} {...commonCardProps} />
   }
 }
 

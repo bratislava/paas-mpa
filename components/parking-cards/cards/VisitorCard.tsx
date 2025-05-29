@@ -3,16 +3,16 @@ import React from 'react'
 import CardContentItem from '@/components/parking-cards/base/CardContentItem'
 import ParkingCardBase from '@/components/parking-cards/base/ParkingCardBase'
 import ParkingCardContent from '@/components/parking-cards/base/ParkingCardContent'
+import { ParkingCardValidityItems } from '@/components/parking-cards/base/ParkingCardValidityItems'
 import { CommonParkingCardProps } from '@/components/parking-cards/ParkingCard'
 import Divider from '@/components/shared/Divider'
 import Typography from '@/components/shared/Typography'
-import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { useTranslation } from '@/hooks/useTranslation'
 import { formatBalance } from '@/utils/formatBalance'
-import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
 
 type VisitorCardProps = Pick<
   CommonParkingCardProps,
-  'zoneName' | 'balanceSeconds' | 'originalBalanceSeconds' | 'validUntil'
+  'zoneName' | 'balanceSeconds' | 'originalBalanceSeconds' | 'validUntil' | 'validFrom'
 >
 
 const VisitorCard = ({
@@ -20,27 +20,25 @@ const VisitorCard = ({
   balanceSeconds,
   originalBalanceSeconds,
   validUntil,
+  validFrom,
 }: VisitorCardProps) => {
   const { t } = useTranslation()
-  const locale = useLocale()
 
   return (
     <ParkingCardBase variant="visitor">
       <ParkingCardContent>
         <Typography variant="small">{zoneName}</Typography>
+
         <Divider className="bg-visitorCard" />
+
         <CardContentItem
           description={t('ParkingCards.remainingCredit')}
           value={
             balanceSeconds ? formatBalance(balanceSeconds, originalBalanceSeconds ?? undefined) : ''
           }
         />
-        {validUntil ? (
-          <CardContentItem
-            description={t('ParkingCards.validUntil')}
-            value={formatValidUntilDate(validUntil, locale)}
-          />
-        ) : null}
+
+        <ParkingCardValidityItems validFrom={validFrom} validUntil={validUntil} />
       </ParkingCardContent>
     </ParkingCardBase>
   )

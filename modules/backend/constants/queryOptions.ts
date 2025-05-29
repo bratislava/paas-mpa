@@ -1,5 +1,6 @@
 import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
+import { CardFilter, ValidityKey } from '@/components/parking-cards/ParkingCardsFilter'
 import { clientApi } from '@/modules/backend/client-api'
 import {
   GetTicketPriceRequestDto,
@@ -87,15 +88,43 @@ export const ticketsInfiniteQuery = (
 }
 
 export const parkingCardsInfiniteOptions = (
-  options?: { email: string | undefined } & PaginationOptions,
+  options: {
+    email: string | undefined
+    validityKey: ValidityKey
+  } & PaginationOptions,
 ) => {
-  const { email, pageSize } = options ?? {}
+  const { email, pageSize, validityKey } = options
+
+  // This constant needs to be inside the function so the dates are always fresh
+  const VALIDITY_FILTERS: Record<ValidityKey, CardFilter> = {
+    all: {},
+    actual: {
+      validFromTo: new Date(),
+      validToFrom: new Date(),
+    },
+    expired: {
+      validToTo: new Date(),
+    },
+    future: {
+      validFromFrom: new Date(),
+    },
+  }
+
+  const { validFromFrom, validFromTo, validToFrom, validToTo } = VALIDITY_FILTERS[validityKey]
 
   return infiniteQueryOptions({
-    queryKey: ['ParkingCardsInfinite', email, pageSize],
+    queryKey: ['ParkingCardsInfinite', email, pageSize, validityKey],
     enabled: !!email,
     queryFn: ({ pageParam }) =>
-      clientApi.parkingCardsControllerGetParkingCards(email!, pageParam, pageSize),
+      clientApi.parkingCardsControllerGetParkingCards(
+        email!,
+        pageParam,
+        pageSize,
+        validFromFrom?.toISOString(),
+        validFromTo?.toISOString(),
+        validToFrom?.toISOString(),
+        validToTo?.toISOString(),
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
