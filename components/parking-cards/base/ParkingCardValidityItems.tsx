@@ -1,6 +1,6 @@
 import CardContentItem from '@/components/parking-cards/base/CardContentItem'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { formatValidUntilDate } from '@/utils/formatValidUntilDate'
+import { formatCardValidityDate } from '@/utils/formatCardValidityDate'
 
 type Props = {
   validFrom?: string
@@ -11,21 +11,21 @@ export const ParkingCardValidityItems = ({ validFrom, validUntil }: Props) => {
   const { t } = useTranslation()
   const locale = useLocale()
 
-  const isValidInTheFuture = validFrom && new Date(validFrom).getTime() > Date.now()
+  const isValidFromInTheFuture = validFrom && new Date(validFrom).getTime() > Date.now()
 
   return (
     <>
-      {validFrom && isValidInTheFuture ? (
+      {validFrom && isValidFromInTheFuture ? (
         <CardContentItem
           description={t('ParkingCards.validFrom')}
-          value={formatValidUntilDate(validFrom, locale)}
+          value={formatCardValidityDate(validFrom, locale)}
         />
       ) : null}
 
       {validUntil ? (
         <CardContentItem
           description={t('ParkingCards.validUntil')}
-          value={formatValidUntilDate(validUntil, locale)}
+          value={formatCardValidityDate(validUntil, locale)}
         />
       ) : null}
     </>
