@@ -1,9 +1,11 @@
 name: Run Maestro tests on iOS
 
-on:
-  pull_request:
-  push:
-    branches: ['master']
+# Temporarily disabled - expo is not reliable enough and each build costs money
+# We can still run the tests locally with `maestro test ...`
+# on:
+#   pull_request:
+#   push:
+#     branches: ['master']
 
 jobs:
   build:
