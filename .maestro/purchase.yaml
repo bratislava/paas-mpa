@@ -4,9 +4,9 @@ appId: com.bratislava.paas
 - waitForAnimationToEnd
 - assertVisible: Search for a place or address
 - tapOn: Search for a place or address
-- inputText: STU
+- inputText: S
 - tapOn:
-    id: '1103'
+    id: '1001'
 - waitForAnimationToEnd
 - tapOn: Continue
 - runFlow:
@@ -30,7 +30,7 @@ appId: com.bratislava.paas
 - inputText: '0432'
 - inputText: '712'
 - hideKeyboard
-- tapOn: "Pay\_ 1.50\_EUR"
+- tapOn: "Pay\_ 2,00\_EUR"
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:

@@ -68,6 +68,7 @@ const TextInput = forwardRef<TextInputNative, TextInputProps>(
             },
             className,
           )}
+          numberOfLines={multiline ? undefined : 1}
           multiline={multiline}
           pointerEvents={pointerEvents}
           onFocus={(e) => {

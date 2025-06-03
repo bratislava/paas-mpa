@@ -98,7 +98,7 @@ const AddVehicleScreen = () => {
           </Button>
 
           {!isPresented && (
-            <Link href="/" asChild>
+            <Link href="/" asChild dismissTo>
               <Button variant="plain-dark">Dismiss</Button>
             </Link>
           )}

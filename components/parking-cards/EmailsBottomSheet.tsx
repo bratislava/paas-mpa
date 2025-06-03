@@ -26,7 +26,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
   const reducedMotion = useReducedMotion()
 
   const localRef = useRef<BottomSheetModal>(null)
-  const refSetter = useMultipleRefsSetter(localRef, ref)
+  const refSetter = useMultipleRefsSetter<BottomSheetModal | null>(localRef, ref)
 
   const { emailId } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
   const parsedEmailId = emailId ? Number.parseInt(emailId, 10) : null
@@ -49,7 +49,7 @@ const EmailsBottomSheet = forwardRef<BottomSheetModal>((props, ref) => {
     mutation.mutate(id, {
       onSuccess: () => {
         handleModalClose()
-        router.navigate('/parking-cards')
+        router.dismissTo('/parking-cards')
       },
     })
   }

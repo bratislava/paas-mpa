@@ -1,12 +1,14 @@
 import { router, useLocalSearchParams } from 'expo-router'
 import { useMemo } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useWindowDimensions, View } from 'react-native'
 import { SceneMap, TabView } from 'react-native-tab-view'
 
 import TabBar from '@/components/navigation/TabBar'
 import ScreenView from '@/components/screen-layout/ScreenView'
+import Typography from '@/components/shared/Typography'
 import { TicketsList } from '@/components/tickets/TicketsList'
 import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/utils/cn'
 
 const ActiveTicketsRoute = () => <TicketsList active />
 const HistoryTicketsRoute = () => <TicketsList />
@@ -52,6 +54,20 @@ const Page = () => {
         renderScene={renderScene}
         onIndexChange={navigateToTab}
         initialLayout={{ width: layout.width }}
+        commonOptions={{
+          label: ({ route, focused }) => {
+            return (
+              <View className="items-center justify-center">
+                <Typography
+                  variant="default-bold"
+                  className={cn('text-dark', { 'text-green': focused })}
+                >
+                  {route.title}
+                </Typography>
+              </View>
+            )
+          },
+        }}
         renderTabBar={(props) => <TabBar {...props} />}
       />
     </ScreenView>

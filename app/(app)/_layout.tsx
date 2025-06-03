@@ -55,14 +55,17 @@ const RootLayout = () => {
             <TicketsFiltersStoreProvider>
               <Stack
                 screenOptions={{
-                  headerBackTitleVisible: false,
+                  headerBackButtonDisplayMode: 'minimal',
                   headerTitleStyle: {
                     fontFamily: 'BelfastGrotesk_700Bold',
                   },
                   headerTintColor: colors.dark.DEFAULT,
                 }}
               >
-                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="index"
+                  options={{ headerShown: false, headerTransparent: true }}
+                />
 
                 <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
                 <Stack.Screen name="vehicles/edit-vehicle" options={{ presentation: 'modal' }} />

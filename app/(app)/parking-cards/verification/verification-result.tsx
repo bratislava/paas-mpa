@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { router, useLocalSearchParams, useNavigation } from 'expo-router'
-import { useEffect } from 'react'
+import { router, useLocalSearchParams } from 'expo-router'
 
 import ContinueButton from '@/components/navigation/ContinueButton'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -28,7 +27,6 @@ type VerificationResultSearchParams = {
 const VerificationResultPage = () => {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const navigation = useNavigation()
   const { email, status, licencePlatesString } =
     useLocalSearchParams<VerificationResultSearchParams>()
 
@@ -71,30 +69,6 @@ const VerificationResultPage = () => {
 
     mutation.mutate(body)
   }
-
-  useEffect(() => {
-    if (status === 'link-expired') return
-
-    const state = navigation.getState()
-    // Checks if user came from purchase page
-    let index = state.routes.findIndex((route) => (route.name as string).includes('purchase'))
-
-    if (index === -1) {
-      // Checks if user came from parking cards page
-      index = state.routes.findIndex((route) => route.name === 'parking-cards/index')
-
-      if (index === -1) {
-        return
-      }
-    }
-
-    // changes navigation state to remove validation pages from stack and enables to go back to correct page
-    navigation.reset({
-      ...state,
-      index: index + 1,
-      routes: [...state.routes.slice(0, index + 1), state.routes.at(-1)!],
-    })
-  }, [navigation, status])
 
   if (!status) {
     return <Typography>No status provided in url.</Typography>

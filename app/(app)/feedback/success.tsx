@@ -13,7 +13,7 @@ const FeedbackSuccessScreen = () => {
     if (router.canGoBack()) {
       router.back()
     } else {
-      router.replace('/')
+      router.dismissTo('/')
     }
   }, [])
 

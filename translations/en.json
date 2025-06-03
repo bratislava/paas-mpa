@@ -381,6 +381,7 @@
   "ZoneBottomSheet.noZoneSelected": "No parking zones found. Use search or place the pin to a parking zone nearby.",
   "ZoneBottomSheet.plannedZonePanelText": "It is not possible to buy a parking ticket for planned zones.",
   "ZoneBottomSheet.searchAccessibilityInput": "Search for a place or address",
+  "ZoneBottomSheet.searchPlaceholder": "Search for a place or address",
   "ZoneBottomSheet.showDetails": "Show details",
   "ZoneBottomSheet.title": "Where are you parking?",
   "ZoneBottomSheet.TopAttachment.goToUserLocation": "Go to user location",

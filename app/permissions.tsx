@@ -26,13 +26,13 @@ const PERMISSION_TABS: PermissionTab[] = [
   { key: 'location', component: LocationPermissionSlide },
 ]
 
-const renderScene = (routeProps: RouteProps, index: number) => {
-  const sceneTabIndex = PERMISSION_TABS.findIndex(({ key }) => key === routeProps.route.key)
+const renderScene = ({ jumpTo, route }: RouteProps, index: number) => {
+  const sceneTabIndex = PERMISSION_TABS.findIndex(({ key }) => key === route.key)
 
   const onContinue = () => {
     const nextTab = PERMISSION_TABS[sceneTabIndex + 1]
     if (nextTab) {
-      routeProps.jumpTo(nextTab.key)
+      jumpTo(nextTab.key)
     } else {
       router.replace('/')
     }
@@ -60,6 +60,8 @@ const PermissionsScreen = () => {
         navigationState={{ index, routes: PERMISSION_TABS }}
         renderScene={(props) => renderScene(props, index)}
         onIndexChange={setIndex}
+        // calling router.replace() during the animation causes a crash
+        animationEnabled={false}
         initialLayout={{ width: layout.width }}
         renderTabBar={() => null}
         tabBarPosition="bottom"

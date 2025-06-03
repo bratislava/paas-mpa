@@ -5,7 +5,7 @@ const playStoreId = 'com.bratislava.paas'
 
 const nativeStoreUrl =
   Platform.OS === 'ios'
-    ? `itms-apps://itunes.apple.com/app/id${appStoreId}`
+    ? `itms-apps://itunes.apple.com/app/${appStoreId}`
     : `market://details?id=${playStoreId}`
 
 const webStoreUrl =

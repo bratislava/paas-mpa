@@ -8,9 +8,14 @@ type Options = {
 }
 
 // TODO: make screen height dependent?
-export const getBottomMapPadding = () => {
-  // Half of the `MapZoneBottomSheet` height when zone is shown
-  return 150
+export const getMapPadding = () => {
+  return {
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 0,
+    // Half of the `MapZoneBottomSheet` height when zone is shown
+    paddingBottom: 180,
+  }
 }
 
 export const useMapCenter = (options?: Options) => {
@@ -19,7 +24,7 @@ export const useMapCenter = (options?: Options) => {
   const dimensions = useWindowDimensions()
 
   return useMemo(() => {
-    const bottomPadding = getBottomMapPadding()
+    const bottomPadding = getMapPadding().paddingBottom
     const windowWidth = safeArea ? safeAreaFrame.width : dimensions.width
     const windowHeight = safeArea ? safeAreaFrame.height : dimensions.height
 

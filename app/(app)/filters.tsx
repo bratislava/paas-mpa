@@ -98,7 +98,7 @@ const FiltersScreen = () => {
     <ScreenView
       title={t('FiltersScreen.title')}
       actionButton={
-        <Link asChild href={{ pathname: '/', params: filters }}>
+        <Link asChild dismissTo href={{ pathname: '/', params: filters }}>
           <ContinueButton>{t('FiltersScreen.showResults')}</ContinueButton>
         </Link>
       }

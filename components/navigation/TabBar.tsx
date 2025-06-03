@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import {
   NavigationState,
   Route,
@@ -6,9 +6,7 @@ import {
   TabBar as RNTabBar,
 } from 'react-native-tab-view'
 
-import Typography from '@/components/shared/Typography'
 import colors from '@/tailwind.config.colors'
-import { cn } from '@/utils/cn'
 
 const TabBar = ({
   navigationState,
@@ -20,27 +18,13 @@ const TabBar = ({
       navigationState={navigationState}
       style={styles.style}
       tabStyle={{ width: Dimensions.get('window').width / navigationState.routes.length }}
-      labelStyle={styles.labelStyle}
       indicatorStyle={styles.indicatorStyle}
-      renderLabel={({ route, focused }) => {
-        return (
-          <View className="items-center justify-center">
-            <Typography
-              variant="default-bold"
-              className={cn('text-dark', { 'text-green': focused })}
-            >
-              {route.title}
-            </Typography>
-          </View>
-        )
-      }}
     />
   )
 }
 
 const styles = StyleSheet.create({
   indicatorStyle: { backgroundColor: colors.green.DEFAULT },
-  labelStyle: { color: colors.green.DEFAULT },
   style: {
     backgroundColor: colors.white,
     shadowColor: colors.black,

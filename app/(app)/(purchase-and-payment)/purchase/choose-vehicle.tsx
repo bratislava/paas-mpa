@@ -42,7 +42,7 @@ const ChooseVehicleScreen = () => {
     onPurchaseStoreUpdate({
       vehicle: { isOneTimeUse: true, vehiclePlateNumber: oneTimeLicencePlate },
     })
-    router.navigate('/purchase')
+    router.dismissTo('/purchase')
   }
 
   const loadMore = () => {
@@ -63,7 +63,7 @@ const ChooseVehicleScreen = () => {
     const apiVehicle = getVehicle(id)
     if (id && apiVehicle) {
       onPurchaseStoreUpdate({ vehicle: apiVehicle })
-      router.navigate('/purchase')
+      router.dismissTo('/purchase')
     } else if (oneTimeLicencePlate) {
       handleChooseOneTimeVehicle()
     }

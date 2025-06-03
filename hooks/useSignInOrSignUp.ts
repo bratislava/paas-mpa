@@ -4,7 +4,6 @@ import * as Location from 'expo-location'
 import { router } from 'expo-router'
 
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
-import { useClearHistory } from '@/hooks/useClearHistory'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
@@ -66,7 +65,6 @@ export const useSignInOrSignUp = () => {
   })
 
   const updateAuthStore = useAuthStoreUpdateContext()
-  const clearHistory = useClearHistory()
 
   const attemptSignInOrSignUp = async (signInInput: SignInInput) => {
     try {
@@ -151,6 +149,7 @@ export const useSignInOrSignUp = () => {
         locationPermissionStatus === Location.PermissionStatus.UNDETERMINED ||
         notificationPermissionStatus === UnifiedPermissionStatus.UNDETERMINED
       ) {
+        router.dismissAll()
         router.replace('/permissions')
       } else {
         // After successful sign in, register device for notifications - this is needed when user disallows notifications in phone settings
@@ -161,9 +160,9 @@ export const useSignInOrSignUp = () => {
           mutateSaveSetting({ pushNotificationsAboutToEnd: true, pushNotificationsToEnd: true })
         }
 
+        router.dismissAll()
         router.replace('/')
       }
-      clearHistory()
     } catch (error) {
       // [NotAuthorizedException: Invalid session for the user, session is expired.]
       // [CodeMismatchException: Invalid code or auth state for the user.]

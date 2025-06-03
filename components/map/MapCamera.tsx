@@ -1,59 +1,46 @@
-import { Camera, CameraPadding } from '@rnmapbox/maps'
+import { Camera } from '@rnmapbox/maps'
 import { Position } from 'geojson'
-import { forwardRef, useEffect, useMemo, useState } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { CITY_BOUNDS, MAP_CENTER } from '@/modules/map/constants'
 import { useLocation } from '@/modules/map/hooks/useLocation'
-import { getBottomMapPadding } from '@/modules/map/hooks/useMapCenter'
+import { getMapPadding } from '@/modules/map/hooks/useMapCenter'
 import { isWithinCityBounds } from '@/modules/map/utils/isWithinCityBounds'
 
-type Props = {
-  flyToCenter: Position | null
-  cameraZoom?: number
-  setFlyToCenter: (center: Position) => void
-}
+export const ZOOM_ON_PLACE_SELECT = 15
+const DEFAULT_ZOOM = 14
 
-const MapCamera = forwardRef<Camera, Props>(({ cameraZoom, flyToCenter, setFlyToCenter }, ref) => {
+const MapCamera = forwardRef<Camera>((_, ref) => {
+  const localRef = useRef<Camera>(null)
+  const refSetter = useMultipleRefsSetter(localRef, ref)
+
   const [location] = useLocation()
-  const [localFlyToCenter, setLocalFlyToCenter] = useState<Position | undefined>()
-  const [isInitialized, setIsInitialized] = useState(false)
 
-  const cameraPadding: CameraPadding = useMemo(() => {
-    return {
-      paddingBottom: getBottomMapPadding(),
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingTop: 0,
-    }
-  }, [])
+  const flyToCoordinate = (center: Position) => {
+    localRef.current?.setCamera({
+      centerCoordinate: center,
+      zoomLevel: ZOOM_ON_PLACE_SELECT,
+      // both setCamera and flyTo function don't respect the padding set in the Camera component so it needs to be set again
+      padding: getMapPadding(),
+    })
+  }
 
   useEffect(() => {
     const isWithinCity = isWithinCityBounds(location)
     if (isWithinCity && location) {
-      setLocalFlyToCenter([location.coords.longitude, location.coords.latitude])
-    }
-  }, [setFlyToCenter, location])
-
-  /** To accout for `flyToCenter` being reset to undefined,
-   * set to MAP_CENTER only on ititialization when the user is not within the city */
-  useEffect(() => {
-    if (flyToCenter && flyToCenter !== localFlyToCenter) {
-      setLocalFlyToCenter(flyToCenter ?? undefined)
-    } else if (!isInitialized) {
-      setIsInitialized(true)
-      setLocalFlyToCenter(MAP_CENTER)
-    }
-  }, [flyToCenter, isInitialized, localFlyToCenter])
+      flyToCoordinate([location.coords.longitude, location.coords.latitude])
+    } else flyToCoordinate(MAP_CENTER)
+  }, [location])
 
   return (
     <Camera
-      ref={ref}
-      followUserLocation={false}
+      ref={refSetter}
       animationMode="flyTo"
-      zoomLevel={cameraZoom ?? (localFlyToCenter ? 14 : 11.5)}
-      centerCoordinate={localFlyToCenter}
+      zoomLevel={DEFAULT_ZOOM}
+      centerCoordinate={MAP_CENTER}
       maxBounds={CITY_BOUNDS}
-      padding={cameraPadding}
+      padding={getMapPadding()}
     />
   )
 })
