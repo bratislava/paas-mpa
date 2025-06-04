@@ -14,6 +14,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
+import { useQuestionerContext } from '@/state/QuestionerProvider/useQuestionerContext'
 
 const DIVIDER = 'divider'
 
@@ -31,6 +32,9 @@ const MainMenuScreen = () => {
   const router = useRouter()
 
   const { isModalVisible, openModal, closeModal } = useModal()
+
+  const questioner = useQuestionerContext()
+
   const signOut = useSignOut()
 
   const menuItems: MenuItemsType[] = [
@@ -67,6 +71,15 @@ const MainMenuScreen = () => {
     //   path: '/announcements',
     //   endSlot: <NewAnnouncementsBadge />,
     // },
+    ...(questioner
+      ? [
+          {
+            label: questioner.title,
+            icon: 'assistant',
+            path: `/questioner/${questioner.id}`,
+          } as const,
+        ]
+      : []),
     {
       label: t('FeedbackScreen.title'),
       icon: 'feedback',
@@ -91,7 +104,7 @@ const MainMenuScreen = () => {
             icon: 'developer-mode',
             path: '/dev',
           },
-        ] satisfies MenuItemsType[])
+        ] as const)
       : []),
   ]
 
