@@ -78,6 +78,10 @@ const RootLayout = () => {
                   options={{ presentation: 'modal' }}
                 />
                 <Stack.Screen
+                  name="(purchase-and-payment)/prolongate"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
                   name="search"
                   options={{
                     animation: 'slide_from_bottom',
