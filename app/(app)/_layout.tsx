@@ -77,8 +77,6 @@ const RootLayout = () => {
                   name="(purchase-and-payment)/purchase/choose-payment-method"
                   options={{ presentation: 'modal' }}
                 />
-                <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
-                <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
                 <Stack.Screen
                   name="search"
                   options={{
