@@ -40,9 +40,9 @@ export const QuestionerModal = () => {
         testID="addParkingCardsModal"
         title={questioner.title}
         text={questioner.description}
-        primaryActionLabel={questioner.buttonText}
+        primaryActionLabel={questioner.ctaText}
         primaryActionOnPress={handleQuestionerRedirect}
-        secondaryActionLabel={questioner.buttonText}
+        secondaryActionLabel={questioner.secondaryCtaText}
         secondaryActionOnPress={handleModalClose}
       />
     </Modal>

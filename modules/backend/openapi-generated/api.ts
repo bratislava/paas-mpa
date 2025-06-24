@@ -211,6 +211,24 @@ export interface FeedbackFormDto {
    */
   title: string
   /**
+   * Description of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  description?: string
+  /**
+   * CTA text of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  ctaText: string
+  /**
+   * Secondary CTA text of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  secondaryCtaText: string
+  /**
    * External URL where the form is hosted
    * @type {string}
    * @memberof FeedbackFormDto
@@ -229,6 +247,12 @@ export interface FeedbackFormDto {
    */
   to: string
   /**
+   * Language code of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  language: FeedbackFormDtoLanguageEnum
+  /**
    * Date of the creation
    * @type {string}
    * @memberof FeedbackFormDto
@@ -241,6 +265,15 @@ export interface FeedbackFormDto {
    */
   updatedAt: string
 }
+
+export const FeedbackFormDtoLanguageEnum = {
+  Sk: 'SK',
+  En: 'EN',
+} as const
+
+export type FeedbackFormDtoLanguageEnum =
+  (typeof FeedbackFormDtoLanguageEnum)[keyof typeof FeedbackFormDtoLanguageEnum]
+
 /**
  *
  * @export
@@ -497,7 +530,7 @@ export interface InitiateProlongationRequestDto {
 }
 
 /**
- * Dictates the language of the opened paygate
+ * Language code of the feedback form
  * @export
  * @enum {string}
  */
@@ -903,6 +936,12 @@ export interface SaveFeedbackFormDto {
    */
   title: string
   /**
+   * Description of the feedback form
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  description?: string
+  /**
    * External URL where the form is hosted
    * @type {string}
    * @memberof SaveFeedbackFormDto
@@ -920,7 +959,14 @@ export interface SaveFeedbackFormDto {
    * @memberof SaveFeedbackFormDto
    */
   to: string
+  /**
+   *
+   * @type {Language}
+   * @memberof SaveFeedbackFormDto
+   */
+  language: Language
 }
+
 /**
  *
  * @export
@@ -2581,10 +2627,12 @@ export const FeedbackFormsApiAxiosParamCreator = function (configuration?: Confi
     /**
      *
      * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     feedbackFormsControllerFeedbackFormsGetMany: async (
+      language?: Language,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       const localVarPath = `/feedback-forms`
@@ -2602,6 +2650,10 @@ export const FeedbackFormsApiAxiosParamCreator = function (configuration?: Confi
       // authentication cognito required
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      if (language !== undefined) {
+        localVarQueryParameter['language'] = language
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
@@ -2802,16 +2854,21 @@ export const FeedbackFormsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async feedbackFormsControllerFeedbackFormsGetMany(
+      language?: Language,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeedbackFormsResponseDto>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.feedbackFormsControllerFeedbackFormsGetMany(options)
+        await localVarAxiosParamCreator.feedbackFormsControllerFeedbackFormsGetMany(
+          language,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -2900,14 +2957,16 @@ export const FeedbackFormsApiFactory = function (
     /**
      *
      * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     feedbackFormsControllerFeedbackFormsGetMany(
+      language?: Language,
       options?: AxiosRequestConfig,
     ): AxiosPromise<FeedbackFormsResponseDto> {
       return localVarFp
-        .feedbackFormsControllerFeedbackFormsGetMany(options)
+        .feedbackFormsControllerFeedbackFormsGetMany(language, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -2984,13 +3043,17 @@ export class FeedbackFormsApi extends BaseAPI {
   /**
    *
    * @summary Get all feedback forms paginated with filtering options
+   * @param {Language} [language] Language code to filter feedback forms by
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof FeedbackFormsApi
    */
-  public feedbackFormsControllerFeedbackFormsGetMany(options?: AxiosRequestConfig) {
+  public feedbackFormsControllerFeedbackFormsGetMany(
+    language?: Language,
+    options?: AxiosRequestConfig,
+  ) {
     return FeedbackFormsApiFp(this.configuration)
-      .feedbackFormsControllerFeedbackFormsGetMany(options)
+      .feedbackFormsControllerFeedbackFormsGetMany(language, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
