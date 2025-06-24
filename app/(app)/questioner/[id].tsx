@@ -17,7 +17,6 @@ export type QuestionerSearchParams = {
 const Page = () => {
   const { t } = useTranslation()
   const locale = useLocale()
-
   const { id } = useLocalSearchParams<QuestionerSearchParams>()
 
   const [isWebViewLoaded, setIsWebViewLoaded] = useState(false)

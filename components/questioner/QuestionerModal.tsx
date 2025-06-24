@@ -13,13 +13,6 @@ export const QuestionerModal = () => {
   const { hasQuestionerBeenShown, markQuestionerAsShown } = useQuestionerStorage()
   const [isQuestionerModalOpen, setIsQuestionerModalOpen] = useState(false)
 
-  const handleModalClose = () => {
-    if (questioner) {
-      markQuestionerAsShown(questioner.id)
-    }
-    setIsQuestionerModalOpen(false)
-  }
-
   useEffect(() => {
     if (questioner && !hasQuestionerBeenShown(questioner.id)) {
       setIsQuestionerModalOpen(true)
@@ -27,6 +20,12 @@ export const QuestionerModal = () => {
   }, [questioner, hasQuestionerBeenShown])
 
   if (!questioner) return null
+
+  const handleModalClose = () => {
+    markQuestionerAsShown(questioner.id)
+
+    setIsQuestionerModalOpen(false)
+  }
 
   const handleQuestionerRedirect = () => {
     handleModalClose()
@@ -37,7 +36,6 @@ export const QuestionerModal = () => {
     <Modal visible={isQuestionerModalOpen} onRequestClose={handleModalClose}>
       <ModalContentWithActions
         customAvatarComponent={<AvatarCircleFeedbackForm />}
-        testID="addParkingCardsModal"
         title={questioner.title}
         text={questioner.description}
         primaryActionLabel={questioner.ctaText}
