@@ -10,7 +10,15 @@ import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
 import { formatBalance } from '@/utils/formatBalance'
 
-type BonusCardProps = Omit<CommonParkingCardProps, 'cardNumber'>
+type BonusCardProps = Pick<
+  CommonParkingCardProps,
+  | 'zoneName'
+  | 'licencePlate'
+  | 'validUntil'
+  | 'validFrom'
+  | 'originalBalanceSeconds'
+  | 'balanceSeconds'
+>
 
 const BonusCard = ({
   balanceSeconds,
