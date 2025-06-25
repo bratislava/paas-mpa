@@ -58,7 +58,7 @@ const TicketCard = ({ ticket, isActive, handleMorePress }: Props) => {
           <ZoneBadge label={ticket.udr} />
           {zone ? (
             <Typography variant="small">
-              {zone.cityDistrict} – {zone.name}
+              {zone.cityDistrict} - {zone.name}
             </Typography>
           ) : null}
           <Typography variant="small">{ticket.ecv}</Typography>

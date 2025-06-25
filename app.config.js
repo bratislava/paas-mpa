@@ -76,7 +76,6 @@ module.exports = {
           username: 'bratislava',
         },
       ],
-      // ['./plugins/firebase.plugin.cjs', 'custom'],
       ['./plugins/liveActivities.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',

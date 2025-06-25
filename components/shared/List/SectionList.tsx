@@ -13,7 +13,7 @@ export type SectionListProps<T, S extends string> = Omit<
   FlashListProps<string | T>,
   'data' | 'renderItem'
 > &
-  ListGradientProps & {
+  Partial<ListGradientProps> & {
     sections: Section<T, S>[]
     stickySectionHeadersEnabled?: boolean
     SectionSeparatorComponent?: React.ComponentType<any>
@@ -87,7 +87,7 @@ export const SectionList = <T extends any, S extends string>({
         }
       />
 
-      <ListGradient actionButton={actionButton} />
+      {actionButton ? <ListGradient actionButton={actionButton} /> : null}
     </View>
   )
 }

@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 export type ListGradientProps = {
-  actionButton?: React.ReactNode
+  actionButton: React.ReactNode
 }
 
 export const ListGradient = ({ actionButton }: ListGradientProps) => (

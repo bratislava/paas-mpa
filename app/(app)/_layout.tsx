@@ -80,10 +80,9 @@ const RootLayout = () => {
                     name="(purchase-and-payment)/purchase/choose-payment-method"
                     options={{ presentation: 'modal' }}
                   />
-                  <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
                   <Stack.Screen
-                    name="tickets/filters/vehicles"
-                    options={{ presentation: 'modal' }}
+                    name="(purchase-and-payment)/prolongate"
+                    options={{ headerShown: false }}
                   />
                   <Stack.Screen
                     name="search"

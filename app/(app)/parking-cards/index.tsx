@@ -22,8 +22,17 @@ import { verifiedEmailsInfiniteOptions } from '@/modules/backend/constants/query
 const Page = () => {
   const { t } = useTranslation()
 
-  const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useInfiniteQuery(verifiedEmailsInfiniteOptions())
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery(verifiedEmailsInfiniteOptions())
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -63,6 +72,8 @@ const Page = () => {
             keyExtractor={(emailItem) => emailItem.email}
             onEndReachedThreshold={0.2}
             onEndReached={loadMore}
+            refreshing={isRefetching}
+            onRefresh={refetch}
             ItemSeparatorComponent={() => <Divider />}
             ListFooterComponent={
               isFetchingNextPage ? (

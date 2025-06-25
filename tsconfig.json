@@ -19,7 +19,6 @@
     "./types",
     ".eslintrc.js",
     ".prettierrc.js",
-    "plugins/firebase.plugin.cjs",
     "nativewind-env.d.ts"
   ]
 }
