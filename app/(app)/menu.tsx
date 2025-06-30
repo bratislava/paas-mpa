@@ -33,7 +33,7 @@ const MainMenuScreen = () => {
 
   const { isModalVisible, openModal, closeModal } = useModal()
 
-  const questionnaire = useQuestionnaireContext()
+  const questionnaires = useQuestionnaireContext()
 
   const signOut = useSignOut()
 
@@ -71,15 +71,11 @@ const MainMenuScreen = () => {
     //   path: '/announcements',
     //   endSlot: <NewAnnouncementsBadge />,
     // },
-    ...(questionnaire
-      ? [
-          {
-            label: questionnaire.title,
-            icon: 'assistant',
-            path: `/questionnaire/${questionnaire.id}`,
-          } as const,
-        ]
-      : []),
+    ...(questionnaires?.map((questionnaire) => ({
+      label: questionnaire.title,
+      icon: 'assistant' as IconName,
+      path: `/questionnaire/${questionnaire.id}`,
+    })) ?? []),
     {
       label: t('FeedbackScreen.title'),
       icon: 'feedback',

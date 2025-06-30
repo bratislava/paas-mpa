@@ -1,46 +1,55 @@
-import { router } from 'expo-router'
+import { router, usePathname } from 'expo-router'
 import { useEffect, useState } from 'react'
 
 import AvatarCircleFeedbackForm from '@/components/info/AvatarCircleFeedbackForm'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import { useQuestionnaireStorage } from '@/hooks/useQuestionnaireStorage'
+import { FeedbackFormDto } from '@/modules/backend/openapi-generated'
 import { useQuestionnaireContext } from '@/state/QuestionnaireProvider/useQuestionnaireContext'
 
 export const QuestionnaireModal = () => {
-  const questionnaire = useQuestionnaireContext()
+  const questionnaires = useQuestionnaireContext()
+  const pathname = usePathname()
 
   const { hasQuestionnaireBeenShown, markQuestionnaireAsShown } = useQuestionnaireStorage()
-  const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] = useState(false)
+
+  const [shownQuestionnaire, setShownQuestionnaire] = useState<FeedbackFormDto | null>(null)
 
   useEffect(() => {
-    if (questionnaire && !hasQuestionnaireBeenShown(questionnaire.id)) {
-      setIsQuestionnaireModalOpen(true)
+    // If the user is already on the questionnaire page, do not show the modal
+    if (pathname.includes('questionnaire') || shownQuestionnaire) {
+      return
     }
-  }, [questionnaire, hasQuestionnaireBeenShown])
+    // Find the first questionnaire that has not been shown yet
+    const questionnaire = questionnaires?.find((q) => !hasQuestionnaireBeenShown(q.id))
+    if (questionnaire) {
+      setShownQuestionnaire(questionnaire)
+    }
+  }, [hasQuestionnaireBeenShown, pathname, shownQuestionnaire, questionnaires])
 
-  if (!questionnaire) return null
+  if (!shownQuestionnaire) return null
 
   const handleModalClose = () => {
-    markQuestionnaireAsShown(questionnaire.id)
+    markQuestionnaireAsShown(shownQuestionnaire.id)
 
-    setIsQuestionnaireModalOpen(false)
+    setShownQuestionnaire(null)
   }
 
   const handleQuestionnaireRedirect = () => {
+    router.push(`questionnaire/${shownQuestionnaire.id}`)
     handleModalClose()
-    router.push(`questionnaire/${questionnaire.id}`)
   }
 
   return (
-    <Modal visible={isQuestionnaireModalOpen} onRequestClose={handleModalClose}>
+    <Modal visible={!!shownQuestionnaire} onRequestClose={handleModalClose}>
       <ModalContentWithActions
         customAvatarComponent={<AvatarCircleFeedbackForm />}
-        title={questionnaire.title}
-        text={questionnaire.description}
-        primaryActionLabel={questionnaire.ctaText}
+        title={shownQuestionnaire.title}
+        text={shownQuestionnaire.description}
+        primaryActionLabel={shownQuestionnaire.ctaText}
         primaryActionOnPress={handleQuestionnaireRedirect}
-        secondaryActionLabel={questionnaire.secondaryCtaText}
+        secondaryActionLabel={shownQuestionnaire.secondaryCtaText}
         secondaryActionOnPress={handleModalClose}
       />
     </Modal>
