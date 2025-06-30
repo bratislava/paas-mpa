@@ -6,36 +6,36 @@ import { WebView } from 'react-native-webview'
 import ErrorScreen from '@/components/screen-layout/ErrorScreen'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenView from '@/components/screen-layout/ScreenView'
-import { useLocale, useTranslation } from '@/hooks/useTranslation'
-import { clientApi } from '@/modules/backend/client-api'
+import { useTranslation } from '@/hooks/useTranslation'
+import { questionnaireOptions } from '@/modules/backend/constants/queryOptions'
 import { cn } from '@/utils/cn'
 
-export type QuestionerSearchParams = {
+export type QuestionnaireSearchParams = {
   id: string
 }
 
 const Page = () => {
   const { t } = useTranslation()
-  const locale = useLocale()
-  const { id } = useLocalSearchParams<QuestionerSearchParams>()
+  const { id } = useLocalSearchParams<QuestionnaireSearchParams>()
 
   const [isWebViewLoaded, setIsWebViewLoaded] = useState(false)
 
-  const isIdValid = !!id && !Number.isNaN(Number(id))
+  const questionnaireId = Number(id)
 
-  const { data, isPending, isError } = useQuery({
-    queryKey: ['questioner', id, locale],
-    queryFn: async () => clientApi.feedbackFormsControllerGetFeedbackForm(+id),
-    enabled: isIdValid,
-    select: (res) => res.data,
-  })
+  const isIdValid = !!id && !Number.isNaN(questionnaireId)
+
+  const { data, isPending, isError } = useQuery(questionnaireOptions(questionnaireId, isIdValid))
 
   if (isPending) {
     return <LoadingScreen asScreenView />
   }
 
-  if (isError || !isIdValid) {
-    return <ErrorScreen text={isError ? t('questioner.error.text') : t('questioner.error.empty')} />
+  if (isError) {
+    return <ErrorScreen text={t('QuestionnaireScreen.error.text')} />
+  }
+
+  if (!isIdValid) {
+    return <ErrorScreen text={t('QuestionnaireScreen.error.empty')} />
   }
 
   return (

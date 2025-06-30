@@ -5,14 +5,14 @@ import Mapbox from '@rnmapbox/maps'
 import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 
-import { QuestionerModal } from '@/components/questioner/QuestionerModal'
+import { QuestionnaireModal } from '@/components/questionnaire/QuestionnaireModal'
 import NotificationHandler from '@/components/special/NotificationHandler'
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapStoreProvider from '@/state/MapStoreProvider/MapStoreProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
-import QuestionerProvider from '@/state/QuestionerProvider/QuestionerProvider'
+import QuestionnaireProvider from '@/state/QuestionnaireProvider/QuestionnaireProvider'
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import VehiclesStoreProvider from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import colors from '@/tailwind.config.colors'
@@ -55,7 +55,7 @@ const RootLayout = () => {
         <VehiclesStoreProvider>
           <PurchaseStoreProvider>
             <TicketsFiltersStoreProvider>
-              <QuestionerProvider>
+              <QuestionnaireProvider>
                 <Stack
                   screenOptions={{
                     headerBackButtonDisplayMode: 'minimal',
@@ -105,8 +105,8 @@ const RootLayout = () => {
 
                 <NotificationHandler />
 
-                <QuestionerModal />
-              </QuestionerProvider>
+                <QuestionnaireModal />
+              </QuestionnaireProvider>
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>
         </VehiclesStoreProvider>
