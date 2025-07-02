@@ -73,7 +73,7 @@ const MainMenuScreen = () => {
     // },
     ...(questionnaires?.map((questionnaire) => ({
       label: questionnaire.title,
-      icon: 'assistant' as IconName,
+      icon: 'assistant' as const,
       path: `/questionnaire/${questionnaire.id}`,
     })) ?? []),
     {

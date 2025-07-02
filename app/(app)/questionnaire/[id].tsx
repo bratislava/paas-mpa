@@ -26,16 +26,16 @@ const Page = () => {
 
   const { data, isPending, isError } = useQuery(questionnaireOptions(questionnaireId, isIdValid))
 
+  if (!isIdValid) {
+    return <ErrorScreen text={t('QuestionnaireScreen.error.empty')} />
+  }
+
   if (isPending) {
     return <LoadingScreen asScreenView />
   }
 
   if (isError) {
     return <ErrorScreen text={t('QuestionnaireScreen.error.text')} />
-  }
-
-  if (!isIdValid) {
-    return <ErrorScreen text={t('QuestionnaireScreen.error.empty')} />
   }
 
   return (
