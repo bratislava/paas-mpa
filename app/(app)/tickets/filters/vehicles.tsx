@@ -1,6 +1,5 @@
 import { ListRenderItem } from '@shopify/flash-list'
 import { router } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import { useCallback, useMemo, useState } from 'react'
 
 import SkeletonVehicleRow from '@/components/controls/vehicles/SkeletonVehicleRow'
@@ -68,6 +67,7 @@ const TicketsFiltersVehiclesScreen = () => {
   const actionButton = useMemo(
     () => (
       <ContinueButton
+        className="w-full"
         disabled={localEcvs?.length === 0}
         onPress={() => {
           onPurchaseStoreUpdate({ ecvs: localEcvs?.length === vehicles.length ? 'all' : localEcvs })
@@ -89,18 +89,12 @@ const TicketsFiltersVehiclesScreen = () => {
             <Typography variant="default-bold">{t('TicketsFilters.selectAll')}</Typography>
           </PressableStyled>
         ),
-        presentation: 'modal',
       }}
-      actionButton={actionButton}
     >
-      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
-      {/* eslint-disable-next-line react/style-prop-object */}
-      <StatusBar style="light" />
-
       <ScreenContent>
         <List
-          estimatedItemSize={57}
           data={vehicles}
+          estimatedItemSize={64}
           extraData={localEcvs}
           renderItem={renderItem}
           keyExtractor={({ vehiclePlateNumber }) => vehiclePlateNumber}
@@ -108,6 +102,7 @@ const TicketsFiltersVehiclesScreen = () => {
           onEndReachedThreshold={0.2}
           ListFooterComponent={vehiclesQuery.isFetchingNextPage ? <SkeletonVehicleRow /> : null}
           onEndReached={loadMore}
+          actionButton={actionButton}
         />
       </ScreenContent>
     </ScreenView>

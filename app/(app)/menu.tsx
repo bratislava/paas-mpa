@@ -1,4 +1,4 @@
-import { Link, router } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 
@@ -14,6 +14,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useSignOut } from '@/modules/cognito/hooks/useSignOut'
+import { useQuestionnaireContext } from '@/state/QuestionnaireProvider/useQuestionnaireContext'
 
 const DIVIDER = 'divider'
 
@@ -28,8 +29,12 @@ type MenuItemsType =
 
 const MainMenuScreen = () => {
   const { t } = useTranslation()
+  const router = useRouter()
 
   const { isModalVisible, openModal, closeModal } = useModal()
+
+  const questionnaires = useQuestionnaireContext()
+
   const signOut = useSignOut()
 
   const menuItems: MenuItemsType[] = [
@@ -66,6 +71,11 @@ const MainMenuScreen = () => {
     //   path: '/announcements',
     //   endSlot: <NewAnnouncementsBadge />,
     // },
+    ...(questionnaires?.map((questionnaire) => ({
+      label: questionnaire.title,
+      icon: 'assistant' as const,
+      path: `/questionnaire/${questionnaire.id}`,
+    })) ?? []),
     {
       label: t('FeedbackScreen.title'),
       icon: 'feedback',
@@ -90,16 +100,15 @@ const MainMenuScreen = () => {
             icon: 'developer-mode',
             path: '/dev',
           },
-        ] satisfies MenuItemsType[])
+        ] as const)
       : []),
   ]
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const handlePressClose = () => {
     if (router.canGoBack()) {
       router.back()
     } else {
-      router.replace('/')
+      router.dismissTo('/')
     }
   }
 

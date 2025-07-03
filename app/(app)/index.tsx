@@ -1,6 +1,6 @@
-import { PortalHost } from '@gorhom/portal'
 import { useQueryClient } from '@tanstack/react-query'
 import { router, useFocusEffect } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -45,6 +45,8 @@ const IndexScreen = () => {
     <View className="flex-1">
       <MapScreen />
 
+      <StatusBar translucent backgroundColor="transparent" />
+
       <View className="absolute right-0 px-2.5 g-3" style={{ top }}>
         <View>
           <IconButton
@@ -52,8 +54,8 @@ const IndexScreen = () => {
             accessibilityLabel={t('Navigation.openMenu')}
             variant="white-raised-small"
             onPress={handlePressOpen}
-            // onLongPress={()=> router.push('/dev')}
           />
+
           {newAnnouncementsCount ? (
             <View
               className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-warning"
@@ -62,8 +64,6 @@ const IndexScreen = () => {
           ) : null}
         </View>
       </View>
-
-      <PortalHost name="index" />
     </View>
   )
 }

@@ -1,6 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import { Link, router } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import { useRef } from 'react'
 import { View } from 'react-native'
 
@@ -57,7 +56,6 @@ const TicketsFiltersScreen = () => {
               <Typography variant="default-bold">{t('TicketsFilters.reset')}</Typography>
             </PressableStyled>
           ),
-          presentation: 'modal',
         }}
         actionButton={
           <ContinueButton onPress={() => router.back()}>
@@ -65,10 +63,6 @@ const TicketsFiltersScreen = () => {
           </ContinueButton>
         }
       >
-        {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
-        {/* eslint-disable-next-line react/style-prop-object */}
-        <StatusBar style="light" />
-
         <View className="p-5 g-5">
           {fields.map(({ key, label, path, value, onPress }) => (
             <Field key={key} label={label}>

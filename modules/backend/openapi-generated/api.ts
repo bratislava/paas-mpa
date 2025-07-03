@@ -195,6 +195,107 @@ export interface EmailVerificationResult {
 /**
  *
  * @export
+ * @interface FeedbackFormDto
+ */
+export interface FeedbackFormDto {
+  /**
+   * Database id of the feedback form
+   * @type {number}
+   * @memberof FeedbackFormDto
+   */
+  id: number
+  /**
+   * Title of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  title: string
+  /**
+   * Description of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  description?: string
+  /**
+   * CTA text of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  ctaText: string
+  /**
+   * Secondary CTA text of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  secondaryCtaText: string
+  /**
+   * External URL where the form is hosted
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  externalUrl: string
+  /**
+   * Date when the form becomes active
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  from: string
+  /**
+   * Date when the form becomes inactive
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  to: string
+  /**
+   * Language code of the feedback form
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  language: FeedbackFormDtoLanguageEnum
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  createdAt: string
+  /**
+   * Date of the last update
+   * @type {string}
+   * @memberof FeedbackFormDto
+   */
+  updatedAt: string
+}
+
+export const FeedbackFormDtoLanguageEnum = {
+  Sk: 'SK',
+  En: 'EN',
+} as const
+
+export type FeedbackFormDtoLanguageEnum =
+  (typeof FeedbackFormDtoLanguageEnum)[keyof typeof FeedbackFormDtoLanguageEnum]
+
+/**
+ *
+ * @export
+ * @interface FeedbackFormsResponseDto
+ */
+export interface FeedbackFormsResponseDto {
+  /**
+   * List of feedback forms
+   * @type {Array<FeedbackFormDto>}
+   * @memberof FeedbackFormsResponseDto
+   */
+  feedbackForms: Array<FeedbackFormDto>
+  /**
+   *
+   * @type {PaginationInfo}
+   * @memberof FeedbackFormsResponseDto
+   */
+  paginationInfo: PaginationInfo
+}
+/**
+ *
+ * @export
  * @interface GetTicketPriceRequestDto
  */
 export interface GetTicketPriceRequestDto {
@@ -429,7 +530,7 @@ export interface InitiateProlongationRequestDto {
 }
 
 /**
- * Dictates the language of the opened paygate
+ * Language code of the feedback form
  * @export
  * @enum {string}
  */
@@ -820,6 +921,50 @@ export interface SaveAnnouncementDto {
    * @memberof SaveAnnouncementDto
    */
   externalUrl?: string
+}
+
+/**
+ *
+ * @export
+ * @interface SaveFeedbackFormDto
+ */
+export interface SaveFeedbackFormDto {
+  /**
+   * Title of the feedback form
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  title: string
+  /**
+   * Description of the feedback form
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  description?: string
+  /**
+   * External URL where the form is hosted
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  externalUrl: string
+  /**
+   * Date when the form becomes active
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  from: string
+  /**
+   * Date when the form becomes inactive
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  to: string
+  /**
+   *
+   * @type {Language}
+   * @memberof SaveFeedbackFormDto
+   */
+  language: Language
 }
 
 /**
@@ -2429,6 +2574,541 @@ export class DefaultApi extends BaseAPI {
 }
 
 /**
+ * FeedbackFormsApi - axios parameter creator
+ * @export
+ */
+export const FeedbackFormsApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Delete a specific feedback form
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerDeleteFeedbackForm: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('feedbackFormsControllerDeleteFeedbackForm', 'id', id)
+      const localVarPath = `/feedback-forms/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerFeedbackFormsGetMany: async (
+      language?: Language,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/feedback-forms`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      if (language !== undefined) {
+        localVarQueryParameter['language'] = language
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Get a specific feedback form by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerGetFeedbackForm: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('feedbackFormsControllerGetFeedbackForm', 'id', id)
+      const localVarPath = `/feedback-forms/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Create a new feedback form
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerInsertFeedbackForm: async (
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'saveFeedbackFormDto' is not null or undefined
+      assertParamExists(
+        'feedbackFormsControllerInsertFeedbackForm',
+        'saveFeedbackFormDto',
+        saveFeedbackFormDto,
+      )
+      const localVarPath = `/feedback-forms`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        saveFeedbackFormDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Update an existing feedback form
+     * @param {number} id
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerUpdateFeedbackForm: async (
+      id: number,
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('feedbackFormsControllerUpdateFeedbackForm', 'id', id)
+      // verify required parameter 'saveFeedbackFormDto' is not null or undefined
+      assertParamExists(
+        'feedbackFormsControllerUpdateFeedbackForm',
+        'saveFeedbackFormDto',
+        saveFeedbackFormDto,
+      )
+      const localVarPath = `/feedback-forms/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        saveFeedbackFormDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * FeedbackFormsApi - functional programming interface
+ * @export
+ */
+export const FeedbackFormsApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = FeedbackFormsApiAxiosParamCreator(configuration)
+  return {
+    /**
+     *
+     * @summary Delete a specific feedback form
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async feedbackFormsControllerDeleteFeedbackForm(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.feedbackFormsControllerDeleteFeedbackForm(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async feedbackFormsControllerFeedbackFormsGetMany(
+      language?: Language,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeedbackFormsResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.feedbackFormsControllerFeedbackFormsGetMany(
+          language,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Get a specific feedback form by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async feedbackFormsControllerGetFeedbackForm(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeedbackFormDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.feedbackFormsControllerGetFeedbackForm(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Create a new feedback form
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async feedbackFormsControllerInsertFeedbackForm(
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeedbackFormDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.feedbackFormsControllerInsertFeedbackForm(
+          saveFeedbackFormDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Update an existing feedback form
+     * @param {number} id
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async feedbackFormsControllerUpdateFeedbackForm(
+      id: number,
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeedbackFormDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.feedbackFormsControllerUpdateFeedbackForm(
+          id,
+          saveFeedbackFormDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * FeedbackFormsApi - factory interface
+ * @export
+ */
+export const FeedbackFormsApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = FeedbackFormsApiFp(configuration)
+  return {
+    /**
+     *
+     * @summary Delete a specific feedback form
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerDeleteFeedbackForm(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<DeleteResponseDto> {
+      return localVarFp
+        .feedbackFormsControllerDeleteFeedbackForm(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Get all feedback forms paginated with filtering options
+     * @param {Language} [language] Language code to filter feedback forms by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerFeedbackFormsGetMany(
+      language?: Language,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<FeedbackFormsResponseDto> {
+      return localVarFp
+        .feedbackFormsControllerFeedbackFormsGetMany(language, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Get a specific feedback form by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerGetFeedbackForm(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<FeedbackFormDto> {
+      return localVarFp
+        .feedbackFormsControllerGetFeedbackForm(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Create a new feedback form
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerInsertFeedbackForm(
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<FeedbackFormDto> {
+      return localVarFp
+        .feedbackFormsControllerInsertFeedbackForm(saveFeedbackFormDto, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Update an existing feedback form
+     * @param {number} id
+     * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    feedbackFormsControllerUpdateFeedbackForm(
+      id: number,
+      saveFeedbackFormDto: SaveFeedbackFormDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<FeedbackFormDto> {
+      return localVarFp
+        .feedbackFormsControllerUpdateFeedbackForm(id, saveFeedbackFormDto, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * FeedbackFormsApi - object-oriented interface
+ * @export
+ * @class FeedbackFormsApi
+ * @extends {BaseAPI}
+ */
+export class FeedbackFormsApi extends BaseAPI {
+  /**
+   *
+   * @summary Delete a specific feedback form
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FeedbackFormsApi
+   */
+  public feedbackFormsControllerDeleteFeedbackForm(id: number, options?: AxiosRequestConfig) {
+    return FeedbackFormsApiFp(this.configuration)
+      .feedbackFormsControllerDeleteFeedbackForm(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get all feedback forms paginated with filtering options
+   * @param {Language} [language] Language code to filter feedback forms by
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FeedbackFormsApi
+   */
+  public feedbackFormsControllerFeedbackFormsGetMany(
+    language?: Language,
+    options?: AxiosRequestConfig,
+  ) {
+    return FeedbackFormsApiFp(this.configuration)
+      .feedbackFormsControllerFeedbackFormsGetMany(language, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Get a specific feedback form by ID
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FeedbackFormsApi
+   */
+  public feedbackFormsControllerGetFeedbackForm(id: number, options?: AxiosRequestConfig) {
+    return FeedbackFormsApiFp(this.configuration)
+      .feedbackFormsControllerGetFeedbackForm(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Create a new feedback form
+   * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FeedbackFormsApi
+   */
+  public feedbackFormsControllerInsertFeedbackForm(
+    saveFeedbackFormDto: SaveFeedbackFormDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return FeedbackFormsApiFp(this.configuration)
+      .feedbackFormsControllerInsertFeedbackForm(saveFeedbackFormDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Update an existing feedback form
+   * @param {number} id
+   * @param {SaveFeedbackFormDto} saveFeedbackFormDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FeedbackFormsApi
+   */
+  public feedbackFormsControllerUpdateFeedbackForm(
+    id: number,
+    saveFeedbackFormDto: SaveFeedbackFormDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return FeedbackFormsApiFp(this.configuration)
+      .feedbackFormsControllerUpdateFeedbackForm(id, saveFeedbackFormDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
  * MobileDevicesApi - axios parameter creator
  * @export
  */
@@ -2915,6 +3595,10 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2922,6 +3606,10 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'email' is not null or undefined
@@ -2952,6 +3640,22 @@ export const ParkingCardsApiAxiosParamCreator = function (configuration?: Config
 
       if (email !== undefined) {
         localVarQueryParameter['email'] = email
+      }
+
+      if (validFromFrom !== undefined) {
+        localVarQueryParameter['validFromFrom'] = validFromFrom
+      }
+
+      if (validFromTo !== undefined) {
+        localVarQueryParameter['validFromTo'] = validFromTo
+      }
+
+      if (validToFrom !== undefined) {
+        localVarQueryParameter['validToFrom'] = validToFrom
+      }
+
+      if (validToTo !== undefined) {
+        localVarQueryParameter['validToTo'] = validToTo
       }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter)
@@ -2996,6 +3700,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3003,6 +3711,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParkingCardsResponseDto>
@@ -3012,6 +3724,10 @@ export const ParkingCardsApiFp = function (configuration?: Configuration) {
           email,
           page,
           pageSize,
+          validFromFrom,
+          validFromTo,
+          validToFrom,
+          validToTo,
           options,
         )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -3049,6 +3765,10 @@ export const ParkingCardsApiFactory = function (
      * @param {string} email Email
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
+     * @param {string} [validFromFrom] Lower bound for valid from
+     * @param {string} [validFromTo] Upper bound for valid from
+     * @param {string} [validToFrom] Lower bound for valid to
+     * @param {string} [validToTo] Upper bound for valid to
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -3056,10 +3776,23 @@ export const ParkingCardsApiFactory = function (
       email: string,
       page?: number,
       pageSize?: number,
+      validFromFrom?: string,
+      validFromTo?: string,
+      validToFrom?: string,
+      validToTo?: string,
       options?: AxiosRequestConfig,
     ): AxiosPromise<ParkingCardsResponseDto> {
       return localVarFp
-        .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
+        .parkingCardsControllerGetParkingCards(
+          email,
+          page,
+          pageSize,
+          validFromFrom,
+          validFromTo,
+          validToFrom,
+          validToTo,
+          options,
+        )
         .then((request) => request(axios, basePath))
     },
   }
@@ -3091,6 +3824,10 @@ export class ParkingCardsApi extends BaseAPI {
    * @param {string} email Email
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
+   * @param {string} [validFromFrom] Lower bound for valid from
+   * @param {string} [validFromTo] Upper bound for valid from
+   * @param {string} [validToFrom] Lower bound for valid to
+   * @param {string} [validToTo] Upper bound for valid to
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof ParkingCardsApi
@@ -3099,10 +3836,23 @@ export class ParkingCardsApi extends BaseAPI {
     email: string,
     page?: number,
     pageSize?: number,
+    validFromFrom?: string,
+    validFromTo?: string,
+    validToFrom?: string,
+    validToTo?: string,
     options?: AxiosRequestConfig,
   ) {
     return ParkingCardsApiFp(this.configuration)
-      .parkingCardsControllerGetParkingCards(email, page, pageSize, options)
+      .parkingCardsControllerGetParkingCards(
+        email,
+        page,
+        pageSize,
+        validFromFrom,
+        validFromTo,
+        validToFrom,
+        validToTo,
+        options,
+      )
       .then((request) => request(this.axios, this.basePath))
   }
 }

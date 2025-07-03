@@ -1,15 +1,15 @@
 module.exports = {
   expo: {
+    newArchEnabled: true,
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.7.2',
+    version: '1.8.1',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/app/splash.png',
-      resizeMode: 'contain',
+      image: './assets/app/icon.png',
       backgroundColor: '#16254C',
     },
     assetBundlePatterns: ['**/*'],
@@ -18,10 +18,18 @@ module.exports = {
       bundleIdentifier: 'com.bratislava.paas',
       googleServicesFile: './GoogleService-Info.plist',
       entitlements: {
-        'aps-environment': 'development',
+        'aps-environment': 'production',
+      },
+      infoPlist: {
+        ITSAppUsesNonExemptEncryption: false,
+        LSApplicationQueriesSchemes: ['itms-apps'],
       },
     },
     android: {
+      androidXOptions: {
+        useAndroidX: true,
+        enableJetifier: true,
+      },
       adaptiveIcon: {
         foregroundImage: './assets/app/adaptive-icon.png',
         backgroundColor: '#16254C',
@@ -40,6 +48,14 @@ module.exports = {
       },
     },
     plugins: [
+      [
+        'expo-build-properties',
+        {
+          ios: {
+            useFrameworks: 'static',
+          },
+        },
+      ],
       '@react-native-firebase/app',
       [
         '@rnmapbox/maps',
@@ -60,7 +76,6 @@ module.exports = {
           username: 'bratislava',
         },
       ],
-      ['./plugins/firebase.plugin.cjs', 'custom'],
       ['./plugins/liveActivities.plugin.cjs', 'custom'],
       'expo-router',
       'expo-localization',

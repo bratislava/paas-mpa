@@ -61,7 +61,7 @@ const UserDevPage = () => {
           <Button onPress={signOut} disabled={!user}>
             Logout
           </Button>
-          <Link asChild href="/">
+          <Link asChild href="/" dismissTo>
             <Button>Home</Button>
           </Link>
           <Button onPress={removeDevice}>Remove device from notifications</Button>

@@ -1,15 +1,15 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { View } from 'react-native'
 
-import { EmptyStateAvatar } from '@/assets/avatars'
 import EmailsBottomSheet from '@/components/parking-cards/EmailsBottomSheet'
 import MissingCardCallout from '@/components/parking-cards/MissingCardCallout'
 import ParkingCard from '@/components/parking-cards/ParkingCard'
+import { ParkingCardsEmptyState } from '@/components/parking-cards/ParkingCardsEmptyState'
+import { ParkingCardsFilter, ValidityKey } from '@/components/parking-cards/ParkingCardsFilter'
 import SkeletonParkingCard from '@/components/parking-cards/SkeletonParkingCard'
-import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenView from '@/components/screen-layout/ScreenView'
@@ -27,11 +27,21 @@ export type ParkingCardsLocalSearchParams = {
 const Page = () => {
   const { t } = useTranslation()
   const { email } = useLocalSearchParams<ParkingCardsLocalSearchParams>()
+  const [validityKey, setValidityKey] = useState<ValidityKey>('all')
 
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
-  const { data, isPending, isError, error, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useInfiniteQuery(parkingCardsInfiniteOptions({ email }))
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+    isRefetching,
+  } = useInfiniteQuery(parkingCardsInfiniteOptions({ email, validityKey }))
 
   const loadMore = () => {
     if (hasNextPage) {
@@ -57,6 +67,10 @@ const Page = () => {
           ),
         }}
       >
+        <View className="mt-2 px-5">
+          <ParkingCardsFilter selectedKey={validityKey} onChange={setValidityKey} />
+        </View>
+
         {isPending ? (
           <LoadingScreen />
         ) : isError ? (
@@ -70,6 +84,8 @@ const Page = () => {
               keyExtractor={(parkingCard) => parkingCard.identificator}
               onEndReachedThreshold={0.2}
               onEndReached={loadMore}
+              onRefresh={refetch}
+              refreshing={isRefetching}
               ListFooterComponent={
                 isFetchingNextPage ? (
                   <SkeletonParkingCard />
@@ -81,14 +97,7 @@ const Page = () => {
             />
           </ScreenContent>
         ) : (
-          <View className="flex-1 justify-center">
-            <ContentWithAvatar
-              title={t('ParkingCards.noActiveCardsTitle')}
-              text={t('ParkingCards.noActiveCardsText')}
-              customAvatarComponent={<EmptyStateAvatar />}
-              actionButton={<MissingCardCallout />}
-            />
-          </View>
+          <ParkingCardsEmptyState validityKey={validityKey} />
         )}
       </ScreenView>
 

@@ -1,6 +1,5 @@
-import { useNavigation } from 'expo-router'
 import { ScreenProps } from 'expo-router/build/views/Screen'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Image, View, ViewProps } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -36,16 +35,6 @@ const ScreenView = ({
   options,
   ...rest
 }: ScreenViewProps) => {
-  const navigation = useNavigation()
-  useEffect(() => {
-    // This is our problem: https://github.com/expo/expo/issues/24553#issuecomment-1749261475
-    // but the solution provided does not work
-    // Here we are hiding the header for the root navigation when the nested navigator is rendered
-    // this keeps the back button working as expected and the title is also correctly displayed
-    const rootNavigation = navigation.getParent()
-    rootNavigation?.setOptions({ headerShown: false })
-  }, [navigation])
-
   const insets = useSafeAreaInsets()
 
   const hasHeader = title || options || hasBackButton

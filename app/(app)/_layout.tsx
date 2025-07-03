@@ -5,12 +5,14 @@ import Mapbox from '@rnmapbox/maps'
 import { Redirect, Stack } from 'expo-router'
 import { useEffect, useState } from 'react'
 
+import { QuestionnaireModal } from '@/components/questionnaire/QuestionnaireModal'
 import NotificationHandler from '@/components/special/NotificationHandler'
 import { environment } from '@/environment'
 import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 import MapStoreProvider from '@/state/MapStoreProvider/MapStoreProvider'
 import MapZonesProvider from '@/state/MapZonesProvider/MapZonesProvider'
 import PurchaseStoreProvider from '@/state/PurchaseStoreProvider/PurchaseStoreProvider'
+import QuestionnaireProvider from '@/state/QuestionnaireProvider/QuestionnaireProvider'
 import TicketsFiltersStoreProvider from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
 import VehiclesStoreProvider from '@/state/VehiclesStoreProvider/VehiclesStoreProvider'
 import colors from '@/tailwind.config.colors'
@@ -53,49 +55,58 @@ const RootLayout = () => {
         <VehiclesStoreProvider>
           <PurchaseStoreProvider>
             <TicketsFiltersStoreProvider>
-              <Stack
-                screenOptions={{
-                  headerBackTitleVisible: false,
-                  headerTitleStyle: {
-                    fontFamily: 'BelfastGrotesk_700Bold',
-                  },
-                  headerTintColor: colors.dark.DEFAULT,
-                }}
-              >
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-
-                <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
-                <Stack.Screen name="vehicles/edit-vehicle" options={{ presentation: 'modal' }} />
-                <Stack.Screen
-                  name="(purchase-and-payment)/purchase/choose-vehicle"
-                  options={{ presentation: 'modal' }}
-                />
-                <Stack.Screen
-                  name="(purchase-and-payment)/purchase/choose-payment-method"
-                  options={{ presentation: 'modal' }}
-                />
-                <Stack.Screen name="tickets/filters/index" options={{ presentation: 'modal' }} />
-                <Stack.Screen name="tickets/filters/vehicles" options={{ presentation: 'modal' }} />
-                <Stack.Screen
-                  name="search"
-                  options={{
-                    animation: 'slide_from_bottom',
-                    headerShown: false,
+              <QuestionnaireProvider>
+                <Stack
+                  screenOptions={{
+                    headerBackButtonDisplayMode: 'minimal',
+                    headerTitleStyle: {
+                      fontFamily: 'BelfastGrotesk_700Bold',
+                    },
+                    headerTintColor: colors.dark.DEFAULT,
                   }}
-                />
-                <Stack.Screen
-                  name="menu"
-                  options={{
-                    // TODO On ios, animation from right is ignored when presentation is transparentModal
-                    // For now, implemented as full screen page with animation from right
-                    // headerShown: false,
-                    // presentation: 'transparentModal',
-                    animation: 'slide_from_right',
-                  }}
-                />
-              </Stack>
+                >
+                  <Stack.Screen
+                    name="index"
+                    options={{ headerShown: false, headerTransparent: true }}
+                  />
 
-              <NotificationHandler />
+                  <Stack.Screen name="vehicles/add-vehicle" options={{ presentation: 'modal' }} />
+                  <Stack.Screen name="vehicles/edit-vehicle" options={{ presentation: 'modal' }} />
+                  <Stack.Screen
+                    name="(purchase-and-payment)/purchase/choose-vehicle"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="(purchase-and-payment)/purchase/choose-payment-method"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="(purchase-and-payment)/prolongate"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="search"
+                    options={{
+                      animation: 'slide_from_bottom',
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="menu"
+                    options={{
+                      // TODO On ios, animation from right is ignored when presentation is transparentModal
+                      // For now, implemented as full screen page with animation from right
+                      // headerShown: false,
+                      // presentation: 'transparentModal',
+                      animation: 'slide_from_right',
+                    }}
+                  />
+                </Stack>
+
+                <NotificationHandler />
+
+                <QuestionnaireModal />
+              </QuestionnaireProvider>
             </TicketsFiltersStoreProvider>
           </PurchaseStoreProvider>
         </VehiclesStoreProvider>

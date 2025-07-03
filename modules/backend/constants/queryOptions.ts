@@ -1,9 +1,11 @@
 import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/react-query'
 
+import { CardFilter, ValidityKey } from '@/components/parking-cards/ParkingCardsFilter'
 import { clientApi } from '@/modules/backend/client-api'
 import {
   GetTicketPriceRequestDto,
   GetTicketProlongationPriceRequestDto,
+  Language,
 } from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
@@ -87,15 +89,43 @@ export const ticketsInfiniteQuery = (
 }
 
 export const parkingCardsInfiniteOptions = (
-  options?: { email: string | undefined } & PaginationOptions,
+  options: {
+    email: string | undefined
+    validityKey: ValidityKey
+  } & PaginationOptions,
 ) => {
-  const { email, pageSize } = options ?? {}
+  const { email, pageSize, validityKey } = options
+
+  // This constant needs to be inside the function so the dates are always fresh
+  const VALIDITY_FILTERS: Record<ValidityKey, CardFilter> = {
+    all: {},
+    actual: {
+      validFromTo: new Date(),
+      validToFrom: new Date(),
+    },
+    expired: {
+      validToTo: new Date(),
+    },
+    future: {
+      validFromFrom: new Date(),
+    },
+  }
+
+  const { validFromFrom, validFromTo, validToFrom, validToTo } = VALIDITY_FILTERS[validityKey]
 
   return infiniteQueryOptions({
-    queryKey: ['ParkingCardsInfinite', email, pageSize],
+    queryKey: ['ParkingCardsInfinite', email, pageSize, validityKey],
     enabled: !!email,
     queryFn: ({ pageParam }) =>
-      clientApi.parkingCardsControllerGetParkingCards(email!, pageParam, pageSize),
+      clientApi.parkingCardsControllerGetParkingCards(
+        email!,
+        pageParam,
+        pageSize,
+        validFromFrom?.toISOString(),
+        validFromTo?.toISOString(),
+        validToFrom?.toISOString(),
+        validToTo?.toISOString(),
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => nextPageParam(lastPage.data.paginationInfo),
   })
@@ -195,6 +225,23 @@ export const storedPaymentMethodOptions = () => {
   return queryOptions({
     queryKey: ['StoredPaymentMethod'],
     queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethodAvailability(),
+    select: (res) => res.data,
+  })
+}
+
+export const questionnairesOptions = (language: Language) => {
+  return queryOptions({
+    queryKey: ['Questionnaires', language],
+    queryFn: () => clientApi.feedbackFormsControllerFeedbackFormsGetMany(language),
+    select: (res) => res.data,
+  })
+}
+
+export const questionnaireOptions = (id: number, enabled: boolean) => {
+  return queryOptions({
+    queryKey: ['Questionnaire', id],
+    queryFn: async () => clientApi.feedbackFormsControllerGetFeedbackForm(id),
+    enabled,
     select: (res) => res.data,
   })
 }

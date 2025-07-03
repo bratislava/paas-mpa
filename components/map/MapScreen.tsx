@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { Portal } from '@gorhom/portal'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { Position } from 'geojson'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -88,43 +87,43 @@ const MapScreen = () => {
   const { isLoading, ...processedData } = useProcessedArcgisData()
 
   return (
-    <View className="flex-1 items-stretch">
-      <Map
-        ref={mapRef}
-        onZoneChange={handleZoneChange}
-        onPointPress={handlePointPress}
-        filters={filters}
-        processedData={processedData}
-        onMapPinVisibilityChange={handleMapPinVisibilityChange}
-        onCenterChange={debouncedHandleCenterChange}
-      />
-
-      <Portal hostName="index">
-        <MapZoneBottomSheet
-          ref={zoneBottomSheetRef}
-          zone={normalizedZone}
-          setFlyToCenter={mapRef.current?.setFlyToCenter}
-          isZoomedOut={!isMapPinShown}
-          address={currentAddress}
+    <>
+      <View className="flex-1 items-stretch">
+        <Map
+          ref={mapRef}
+          onZoneChange={handleZoneChange}
+          onPointPress={handlePointPress}
+          filters={filters}
+          processedData={processedData}
+          onMapPinVisibilityChange={handleMapPinVisibilityChange}
+          onCenterChange={debouncedHandleCenterChange}
         />
 
-        {selectedMapPoint && (
-          <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedMapPoint} />
-        )}
-
-        <MapLocationBottomSheet />
-      </Portal>
-
-      <View className="absolute left-0 px-2.5" style={{ top }}>
-        <Link asChild href={{ pathname: '/filters', params: filters }}>
-          <IconButton
-            name="filter-list"
-            accessibilityLabel={t('MapScreen.openFilters')}
-            variant="white-raised-small"
-          />
-        </Link>
+        <View className="absolute left-0 px-2.5" style={{ top }}>
+          <Link asChild href={{ pathname: '/filters', params: filters }}>
+            <IconButton
+              name="filter-list"
+              accessibilityLabel={t('MapScreen.openFilters')}
+              variant="white-raised-small"
+            />
+          </Link>
+        </View>
       </View>
-    </View>
+
+      <MapZoneBottomSheet
+        ref={zoneBottomSheetRef}
+        zone={normalizedZone}
+        flyTo={mapRef.current?.flyTo}
+        isZoomedOut={!isMapPinShown}
+        address={currentAddress}
+      />
+
+      {selectedMapPoint && (
+        <MapPointBottomSheet ref={pointBottomSheetRef} point={selectedMapPoint} />
+      )}
+
+      <MapLocationBottomSheet />
+    </>
   )
 }
 

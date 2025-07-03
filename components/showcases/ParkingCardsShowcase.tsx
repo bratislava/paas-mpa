@@ -13,27 +13,31 @@ import VisitorCard from '@/components/parking-cards/cards/VisitorCard'
 const ParkingCardsShowcase = () => {
   const date = '2024-08-27'
 
+  const commonCardProps = {
+    zoneName: 'zoneName',
+    validUntil: date,
+    validFrom: date,
+  }
+
   return (
     <View className="p-4 g-4">
       <VisitorCard
-        zoneName="zone Name"
         balanceSeconds={60 * 60 * 24}
         originalBalanceSeconds={60 * 60 * 24 * 2}
-        validUntil={date}
+        {...commonCardProps}
       />
-      <ResidentCard licencePlate="AA111AA" validUntil={date} zoneName="zoneName" />
-      <SubscriberCard licencePlate="AA111AA" validUntil={date} zoneName="zoneName" />
+      <ResidentCard licencePlate="AA111AA" {...commonCardProps} />
+      <SubscriberCard licencePlate="AA111AA" {...commonCardProps} />
       <BonusCard
         licencePlate="AA111AA"
-        validUntil={date}
-        zoneName="zoneName"
+        {...commonCardProps}
         balanceSeconds={60 * 60 * 24}
         originalBalanceSeconds={60 * 60 * 24 * 2}
       />
-      <TzpCard licencePlate="AA111AA" validUntil={date} zoneName="zoneName" />
-      <ElectricCarCard licencePlate="AA111AA" validUntil={date} zoneName="zoneName" />
-      <SocialServicesCard licencePlate="AA111AA" validUntil={date} zoneName="zoneName" />
-      <OtherCard licencePlate="AA111AA" validUntil={date} zoneName="fallback style card" />
+      <TzpCard licencePlate="AA111AA" {...commonCardProps} />
+      <ElectricCarCard licencePlate="AA111AA" {...commonCardProps} />
+      <SocialServicesCard licencePlate="AA111AA" {...commonCardProps} />
+      <OtherCard licencePlate="AA111AA" {...commonCardProps} zoneName="fallback style card" />
     </View>
   )
 }
