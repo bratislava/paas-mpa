@@ -264,6 +264,8 @@
   "PurchaseScreen.useRememberedCard": "Použiť zapamätanú kartu",
   "PurchaseScreen.vehicle": "Vozidlo",
   "PurchaseScreen.warnings.differentEnd": "Koniec parkovania sa líši, pretože minimálna doba parkovania plateného lístka je 15 minút. Nový lístok bude platný do {{time}}.",
+  "QuestionnaireScreen.error.empty": "Dotaznik nebol nájdený.",
+  "QuestionnaireScreen.error.text": "Dotaznik neexistuje alebo nastala chyba. Skúste to prosím neskôr.",
   "Settings.actions.deleteAccount": "Vymazať účet",
   "Settings.deleteAccountConfirmModal.actionConfirm": "Vymazať účet",
   "Settings.deleteAccountConfirmModal.actionReject": "Ponechať účet",

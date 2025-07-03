@@ -5,6 +5,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import {
   GetTicketPriceRequestDto,
   GetTicketProlongationPriceRequestDto,
+  Language,
 } from '@/modules/backend/openapi-generated'
 import { nextPageParam } from '@/modules/backend/utils/nextPageParam'
 import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/TicketsFiltersStoreProvider'
@@ -224,6 +225,23 @@ export const storedPaymentMethodOptions = () => {
   return queryOptions({
     queryKey: ['StoredPaymentMethod'],
     queryFn: () => clientApi.ticketsControllerGetStoredPaymentMethodAvailability(),
+    select: (res) => res.data,
+  })
+}
+
+export const questionnairesOptions = (language: Language) => {
+  return queryOptions({
+    queryKey: ['Questionnaires', language],
+    queryFn: () => clientApi.feedbackFormsControllerFeedbackFormsGetMany(language),
+    select: (res) => res.data,
+  })
+}
+
+export const questionnaireOptions = (id: number, enabled: boolean) => {
+  return queryOptions({
+    queryKey: ['Questionnaire', id],
+    queryFn: async () => clientApi.feedbackFormsControllerGetFeedbackForm(id),
+    enabled,
     select: (res) => res.data,
   })
 }
