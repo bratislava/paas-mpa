@@ -60,11 +60,11 @@ const MapScreen = () => {
   )
 
   const handleCenterChange = useCallback(async (center: Position) => {
-    const geocodingResult = await reverseGeocode(center)
-    if (geocodingResult.length > 0) {
-      setCurrentAddress(geocodingResult[0].place_name)
-    }
+    const address = await reverseGeocode(center)
+
+    setCurrentAddress(address)
   }, [])
+
   const debouncedHandleCenterChange = useDebouncedCallback(
     handleCenterChange,
     MAP_STATE_DEBOUNCE_TIME,
