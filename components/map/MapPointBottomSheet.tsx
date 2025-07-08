@@ -81,7 +81,7 @@ const MapPointBottomSheet = forwardRef<BottomSheet, Props>(({ point }, ref) => {
   const snapPoints = useMemo(() => [375, '80%'], [])
   const translatedPoint = useMemo(() => translateMapObject(point, locale), [point, locale])
 
-  const localRef = useRef<BottomSheet>()
+  const localRef = useRef<BottomSheet>(null)
 
   const setRefs: Ref<BottomSheet> = useCallback(
     (passedRef: BottomSheet) => {

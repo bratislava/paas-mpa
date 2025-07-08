@@ -1,5 +1,12 @@
 /* eslint-disable no-underscore-dangle,sonarjs/cognitive-complexity */
-import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  type JSX,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import {
   Dimensions,
   NativeScrollEvent,

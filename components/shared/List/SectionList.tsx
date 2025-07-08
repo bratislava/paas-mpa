@@ -1,5 +1,5 @@
 import { FlashList, FlashListProps, ListRenderItem, ListRenderItemInfo } from '@shopify/flash-list'
-import { useMemo } from 'react'
+import { type JSX, useMemo } from 'react'
 import { View } from 'react-native'
 
 import { ListGradient, ListGradientProps } from '@/components/shared/List/ListGradient'
