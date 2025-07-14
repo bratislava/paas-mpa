@@ -20,6 +20,7 @@ import colors from '@/tailwind.config.colors'
 // eslint-disable-next-line babel/camelcase
 export const unstable_settings = {
   // Ensure any route can link back to `/` (deep links to the app won't have back button without this)
+  // https://docs.expo.dev/router/advanced/router-settings/
   initialRouteName: 'index',
 }
 
