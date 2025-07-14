@@ -1,4 +1,4 @@
-import { cloneElement, ReactElement, useId } from 'react'
+import { cloneElement, type JSX, useId } from 'react'
 
 import Field, { FieldProps } from '@/components/shared/Field'
 
@@ -11,7 +11,7 @@ const AccessibilityField = ({ children, ...passingProps }: Omit<FieldProps, 'nat
 
   return (
     <Field nativeID={generatedId} {...passingProps}>
-      {cloneElement(children as ReactElement<any>, {
+      {cloneElement(children as JSX.Element, {
         accessibilityLabelledBy: generatedId,
         accessibilityLabel: passingProps.label,
       })}
