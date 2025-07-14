@@ -3073,7 +3073,7 @@
   dependencies:
     nanoid "^3.3.11"
 
-"@rnmapbox/maps@^10.1.39":
+"@rnmapbox/maps@10.1.39":
   version "10.1.39"
   resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.39.tgz#20673c90eadc976e7fb3877ee4ad137845610ff5"
   integrity sha512-h96h/wPwmuJ6Je/qDL8KTh3QSVvlX41SNVAZpEUtPpIos/n/3eDzERvBxNd/8FGZYZVR/3FcZnv4razaNCFksg==
