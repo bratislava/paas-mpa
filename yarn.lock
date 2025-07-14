@@ -3073,10 +3073,10 @@
   dependencies:
     nanoid "^3.3.11"
 
-"@rnmapbox/maps@10.1.38":
-  version "10.1.38"
-  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.38.tgz#c2041be18d747522f4828add7135eba448a3a95e"
-  integrity sha512-TMKaVwh5C5Z+nqUx87mZlDfPB1zmsdJqU6jAjmM8OrZWpuxpaBo3r0AgijmLEhoXIcJ2ptREk/RRcVnNgwNxgQ==
+"@rnmapbox/maps@^10.1.39":
+  version "10.1.39"
+  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.39.tgz#20673c90eadc976e7fb3877ee4ad137845610ff5"
+  integrity sha512-h96h/wPwmuJ6Je/qDL8KTh3QSVvlX41SNVAZpEUtPpIos/n/3eDzERvBxNd/8FGZYZVR/3FcZnv4razaNCFksg==
   dependencies:
     "@turf/along" "6.5.0"
     "@turf/distance" "6.5.0"
