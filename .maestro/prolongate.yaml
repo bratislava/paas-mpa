@@ -26,14 +26,14 @@ appId: com.bratislava.paas
 - hideKeyboard
 - runFlow:
     when:
-      visible: "Pay\_ 2,00\_EUR"
+      visible: "Pay\_ 2.00\_EUR"
     commands:
-      - tapOn: "Pay\_ 2,00\_EUR"
+      - tapOn: "Pay\_ 2.00\_EUR"
 - runFlow:
     when:
-      visible: "Zaplatiť\_ 2,00\_EUR"
+      visible: "Zaplatiť\_ 2.00\_EUR"
     commands:
-      - tapOn: "Zaplatiť\_ 2,00\_EUR"
+      - tapOn: "Zaplatiť\_ 2.00\_EUR"
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:
