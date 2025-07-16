@@ -142,7 +142,7 @@ const Page = () => {
                     <ParkingCardTypeRow
                       variant={panel}
                       selected={
-                        cardType === cardTypeInner ?? (panel === 'all' && cardTypeInner === null)
+                        cardType === cardTypeInner || (panel === 'all' && cardTypeInner === null)
                       }
                     />
                   </PressableStyled>

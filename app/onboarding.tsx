@@ -86,7 +86,7 @@ const OnboardingScreen = () => {
   const [isOnboardingFinished] = useIsOnboardingFinished()
   const translationsMap = useOnboardingTranslation()
 
-  const jumpToRef = useRef<SceneRendererProps['jumpTo']>()
+  const jumpToRef = useRef<SceneRendererProps['jumpTo']>(null)
   const [index, setIndex] = useState(0)
   const [routes] = useState<OnboardingRoute[]>(
     routeKeys.map((key) => ({

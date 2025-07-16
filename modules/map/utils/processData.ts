@@ -2,9 +2,8 @@
 /* eslint-disable */
 import area from '@turf/area'
 import booleanIntersects from '@turf/boolean-intersects'
-import { Point, Polygon } from '@turf/helpers'
 import intersect from '@turf/intersect'
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point, Polygon } from 'geojson'
 import {
   UdrZoneFeature,
   MapPointWithTranslationProps,
@@ -34,7 +33,19 @@ export const getIntersectionOfFeatureFromFeatures = <G extends Geometry>(
 
   for (const availableFeature of availableFeatures) {
     if (feature.geometry.type === 'Polygon') {
-      const intersection = intersect(availableFeature.geometry, feature as Feature<Polygon>)
+      const featureCollection = {
+        type: 'FeatureCollection' as const,
+        features: [
+          availableFeature,
+          {
+            type: 'Feature' as const,
+            properties: {},
+            geometry: feature.geometry as Polygon,
+          },
+        ],
+      }
+
+      const intersection = intersect(featureCollection)
 
       if (!intersection) {
         continue
@@ -201,16 +212,16 @@ export const processData = ({
               (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'P+R'
                 ? MapPointIconEnum.pPlusR
                 : (feature.properties as Arcgis.ParkingPoint)?.Typ_en === 'garage' ||
-                  (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'garage'
-                ? MapPointIconEnum.garage
-                : MapPointIconEnum.parkingLot
+                    (feature.properties as ArcgisAliased.ParkingPoint)?.['Typ (en)'] == 'garage'
+                  ? MapPointIconEnum.garage
+                  : MapPointIconEnum.parkingLot
 
             const kind =
               type == MapPointIconEnum.pPlusR
                 ? MapPointKindEnum.pPlusR
                 : type == MapPointIconEnum.garage
-                ? MapPointKindEnum.garage
-                : MapPointKindEnum.parkingLot
+                  ? MapPointKindEnum.garage
+                  : MapPointKindEnum.parkingLot
             const icon = type
             const properties = {
               ...feature.properties,

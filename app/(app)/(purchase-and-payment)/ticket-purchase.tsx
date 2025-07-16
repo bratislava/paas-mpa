@@ -43,15 +43,13 @@ const TicketPurchasePage = () => {
       timeout = setTimeout(() => {
         refetch()
       }, 2000)
-    } else if (data?.paymentStatus === 'SUCCESS') {
-      // TODO investigate if this invalidation is needed
-      queryClient.invalidateQueries({ queryKey: ['Tickets'] })
-
+    } else if (
+      data?.paymentStatus === 'SUCCESS' &&
       // This reset must happen only for PurchaseScreen, it's not relevant for prolongation, because the whole prolongation context provider gets unmounted completely
-      if (!data.lastProlongationTicketId) {
-        updatePurchaseStore(defaultInitialPurchaseStoreValues)
-        queryClient.removeQueries({ queryKey: ['TicketPrice'] })
-      }
+      !data.lastProlongationTicketId
+    ) {
+      updatePurchaseStore(defaultInitialPurchaseStoreValues)
+      queryClient.removeQueries({ queryKey: ['TicketPrice'] })
     }
 
     return () => {

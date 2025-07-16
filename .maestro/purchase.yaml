@@ -30,7 +30,7 @@ appId: com.bratislava.paas
 - inputText: '0432'
 - inputText: '712'
 - hideKeyboard
-- tapOn: "Pay\_ 2,00\_EUR"
+- tapOn: "Pay\_ 2.00\_EUR"
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:
