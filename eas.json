@@ -65,21 +65,6 @@
     "prod-test": {
       "extends": "prod",
       "channel": "prod-test"
-    },
-    "build-and-maestro-test": {
-      "extends": "staging",
-      "autoIncrement": false,
-      "withoutCredentials": true,
-      "config": "build-and-maestro-test.yml",
-      "resourceClass": "large",
-      "android": {
-        "buildType": "apk",
-        "image": "latest"
-      },
-      "ios": {
-        "simulator": true,
-        "image": "latest"
-      }
     }
   },
   "submit": {
