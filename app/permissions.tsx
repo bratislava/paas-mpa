@@ -1,5 +1,5 @@
 import { router, Stack } from 'expo-router'
-import { useState } from 'react'
+import { type JSX, useState } from 'react'
 import { useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SceneRendererProps, TabView } from 'react-native-tab-view'
