@@ -132,6 +132,31 @@ export interface CaptureUncapturedPaymentsRequestDto {
 /**
  *
  * @export
+ * @interface CreatePushNotificationAnnouncementDto
+ */
+export interface CreatePushNotificationAnnouncementDto {
+  /**
+   * Title of the push notification
+   * @type {string}
+   * @memberof CreatePushNotificationAnnouncementDto
+   */
+  title: string
+  /**
+   * Content of the push notification
+   * @type {string}
+   * @memberof CreatePushNotificationAnnouncementDto
+   */
+  content: string
+  /**
+   * Deep link URL for the notification
+   * @type {string}
+   * @memberof CreatePushNotificationAnnouncementDto
+   */
+  link?: string
+}
+/**
+ *
+ * @export
  * @interface CreateVehicleDto
  */
 export interface CreateVehicleDto {
@@ -846,6 +871,115 @@ export interface PaymentUrls {
   paymentUrlGPAY: string
 }
 /**
+ *
+ * @export
+ * @interface PushNotificationAnnouncementDto
+ */
+export interface PushNotificationAnnouncementDto {
+  /**
+   * Title of the push notification
+   * @type {string}
+   * @memberof PushNotificationAnnouncementDto
+   */
+  title: string
+  /**
+   * Content of the push notification
+   * @type {string}
+   * @memberof PushNotificationAnnouncementDto
+   */
+  content: string
+  /**
+   * Deep link URL for the notification
+   * @type {string}
+   * @memberof PushNotificationAnnouncementDto
+   */
+  link?: string
+  /**
+   * Database ID of the push notification announcement
+   * @type {number}
+   * @memberof PushNotificationAnnouncementDto
+   */
+  id: number
+  /**
+   * Creation timestamp
+   * @type {string}
+   * @memberof PushNotificationAnnouncementDto
+   */
+  createdAt: string
+}
+/**
+ *
+ * @export
+ * @interface PushNotificationAnnouncementsResponseDto
+ */
+export interface PushNotificationAnnouncementsResponseDto {
+  /**
+   * List of push notification announcements
+   * @type {Array<PushNotificationAnnouncementDto>}
+   * @memberof PushNotificationAnnouncementsResponseDto
+   */
+  items: Array<PushNotificationAnnouncementDto>
+  /**
+   *
+   * @type {PaginationInfo}
+   * @memberof PushNotificationAnnouncementsResponseDto
+   */
+  pagination: PaginationInfo
+}
+/**
+ *
+ * @export
+ * @interface ResourceDto
+ */
+export interface ResourceDto {
+  /**
+   * Key of the resource
+   * @type {string}
+   * @memberof ResourceDto
+   */
+  key: string
+  /**
+   * Language code of the resource
+   * @type {string}
+   * @memberof ResourceDto
+   */
+  language: ResourceDtoLanguageEnum
+  /**
+   * Value of the resource
+   * @type {string}
+   * @memberof ResourceDto
+   */
+  value: string
+  /**
+   * Date of the creation
+   * @type {string}
+   * @memberof ResourceDto
+   */
+  createdAt: string
+}
+
+export const ResourceDtoLanguageEnum = {
+  Sk: 'SK',
+  En: 'EN',
+} as const
+
+export type ResourceDtoLanguageEnum =
+  (typeof ResourceDtoLanguageEnum)[keyof typeof ResourceDtoLanguageEnum]
+
+/**
+ *
+ * @export
+ * @interface ResourcesResponseDto
+ */
+export interface ResourcesResponseDto {
+  /**
+   * List of resources
+   * @type {Array<ResourceDto>}
+   * @memberof ResourcesResponseDto
+   */
+  resources: Array<ResourceDto>
+}
+/**
  * Exact error name
  * @export
  * @enum {string}
@@ -942,6 +1076,18 @@ export interface SaveFeedbackFormDto {
    */
   description?: string
   /**
+   * CTA text of the feedback form
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  ctaText?: string
+  /**
+   * Secondary CTA text of the feedback form
+   * @type {string}
+   * @memberof SaveFeedbackFormDto
+   */
+  secondaryCtaText?: string
+  /**
    * External URL where the form is hosted
    * @type {string}
    * @memberof SaveFeedbackFormDto
@@ -986,6 +1132,40 @@ export interface SaveMobileDeviceDto {
    */
   platform: MobileDevicePlatform
 }
+
+/**
+ *
+ * @export
+ * @interface SaveResourceDto
+ */
+export interface SaveResourceDto {
+  /**
+   * Key of the resource
+   * @type {string}
+   * @memberof SaveResourceDto
+   */
+  key: string
+  /**
+   * Language code of the resource
+   * @type {string}
+   * @memberof SaveResourceDto
+   */
+  language: SaveResourceDtoLanguageEnum
+  /**
+   * Value of the resource
+   * @type {string}
+   * @memberof SaveResourceDto
+   */
+  value: string
+}
+
+export const SaveResourceDtoLanguageEnum = {
+  Sk: 'SK',
+  En: 'EN',
+} as const
+
+export type SaveResourceDtoLanguageEnum =
+  (typeof SaveResourceDtoLanguageEnum)[keyof typeof SaveResourceDtoLanguageEnum]
 
 /**
  *
@@ -1508,6 +1688,46 @@ export interface UnexpectedErrorDto {
    */
   errorName: string
 }
+/**
+ *
+ * @export
+ * @interface UpdatePushNotificationAnnouncementDto
+ */
+export interface UpdatePushNotificationAnnouncementDto {
+  /**
+   * Title of the push notification
+   * @type {string}
+   * @memberof UpdatePushNotificationAnnouncementDto
+   */
+  title: string
+  /**
+   * Content of the push notification
+   * @type {string}
+   * @memberof UpdatePushNotificationAnnouncementDto
+   */
+  content: string
+  /**
+   * Deep link URL for the notification
+   * @type {string}
+   * @memberof UpdatePushNotificationAnnouncementDto
+   */
+  link?: string
+  /**
+   * Status of the announcement
+   * @type {string}
+   * @memberof UpdatePushNotificationAnnouncementDto
+   */
+  status?: UpdatePushNotificationAnnouncementDtoStatusEnum
+}
+
+export const UpdatePushNotificationAnnouncementDtoStatusEnum = {
+  Draft: 'draft',
+  Sent: 'sent',
+} as const
+
+export type UpdatePushNotificationAnnouncementDtoStatusEnum =
+  (typeof UpdatePushNotificationAnnouncementDtoStatusEnum)[keyof typeof UpdatePushNotificationAnnouncementDtoStatusEnum]
+
 /**
  *
  * @export
@@ -3853,6 +4073,892 @@ export class ParkingCardsApi extends BaseAPI {
         validToTo,
         options,
       )
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
+ * PushNotificationAnnouncementsApi - axios parameter creator
+ * @export
+ */
+export const PushNotificationAnnouncementsApiAxiosParamCreator = function (
+  configuration?: Configuration,
+) {
+  return {
+    /**
+     * Creates a new push notification announcement
+     * @summary Create a new push notification announcement
+     * @param {CreatePushNotificationAnnouncementDto} createPushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerCreate: async (
+      createPushNotificationAnnouncementDto: CreatePushNotificationAnnouncementDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'createPushNotificationAnnouncementDto' is not null or undefined
+      assertParamExists(
+        'pushNotificationAnnouncementsControllerCreate',
+        'createPushNotificationAnnouncementDto',
+        createPushNotificationAnnouncementDto,
+      )
+      const localVarPath = `/push-notification-announcements`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        createPushNotificationAnnouncementDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Returns a paginated list of push notification announcements
+     * @summary Get all push notification announcements
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerGetMany: async (
+      page?: number,
+      pageSize?: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/push-notification-announcements`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter['pageSize'] = pageSize
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Returns a single push notification announcement
+     * @summary Get a push notification announcement by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerGetOne: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('pushNotificationAnnouncementsControllerGetOne', 'id', id)
+      const localVarPath = `/push-notification-announcements/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Deletes a push notification announcement by ID
+     * @summary Delete a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerRemove: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('pushNotificationAnnouncementsControllerRemove', 'id', id)
+      const localVarPath = `/push-notification-announcements/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Queues a push notification announcement for sending to all devices
+     * @summary Send a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerSend: async (
+      id: number,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('pushNotificationAnnouncementsControllerSend', 'id', id)
+      const localVarPath = `/push-notification-announcements/{id}/send`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Updates an existing push notification announcement
+     * @summary Update a push notification announcement
+     * @param {number} id
+     * @param {UpdatePushNotificationAnnouncementDto} updatePushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerUpdate: async (
+      id: number,
+      updatePushNotificationAnnouncementDto: UpdatePushNotificationAnnouncementDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('pushNotificationAnnouncementsControllerUpdate', 'id', id)
+      // verify required parameter 'updatePushNotificationAnnouncementDto' is not null or undefined
+      assertParamExists(
+        'pushNotificationAnnouncementsControllerUpdate',
+        'updatePushNotificationAnnouncementDto',
+        updatePushNotificationAnnouncementDto,
+      )
+      const localVarPath = `/push-notification-announcements/{id}`.replace(
+        `{${'id'}}`,
+        encodeURIComponent(String(id)),
+      )
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        updatePushNotificationAnnouncementDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * PushNotificationAnnouncementsApi - functional programming interface
+ * @export
+ */
+export const PushNotificationAnnouncementsApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = PushNotificationAnnouncementsApiAxiosParamCreator(configuration)
+  return {
+    /**
+     * Creates a new push notification announcement
+     * @summary Create a new push notification announcement
+     * @param {CreatePushNotificationAnnouncementDto} createPushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerCreate(
+      createPushNotificationAnnouncementDto: CreatePushNotificationAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PushNotificationAnnouncementDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerCreate(
+          createPushNotificationAnnouncementDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Returns a paginated list of push notification announcements
+     * @summary Get all push notification announcements
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerGetMany(
+      page?: number,
+      pageSize?: number,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<PushNotificationAnnouncementsResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerGetMany(
+          page,
+          pageSize,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Returns a single push notification announcement
+     * @summary Get a push notification announcement by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerGetOne(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PushNotificationAnnouncementDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerGetOne(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Deletes a push notification announcement by ID
+     * @summary Delete a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerRemove(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteResponseDto>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerRemove(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Queues a push notification announcement for sending to all devices
+     * @summary Send a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerSend(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerSend(id, options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Updates an existing push notification announcement
+     * @summary Update a push notification announcement
+     * @param {number} id
+     * @param {UpdatePushNotificationAnnouncementDto} updatePushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async pushNotificationAnnouncementsControllerUpdate(
+      id: number,
+      updatePushNotificationAnnouncementDto: UpdatePushNotificationAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PushNotificationAnnouncementDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerUpdate(
+          id,
+          updatePushNotificationAnnouncementDto,
+          options,
+        )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * PushNotificationAnnouncementsApi - factory interface
+ * @export
+ */
+export const PushNotificationAnnouncementsApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = PushNotificationAnnouncementsApiFp(configuration)
+  return {
+    /**
+     * Creates a new push notification announcement
+     * @summary Create a new push notification announcement
+     * @param {CreatePushNotificationAnnouncementDto} createPushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerCreate(
+      createPushNotificationAnnouncementDto: CreatePushNotificationAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<PushNotificationAnnouncementDto> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerCreate(
+          createPushNotificationAnnouncementDto,
+          options,
+        )
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Returns a paginated list of push notification announcements
+     * @summary Get all push notification announcements
+     * @param {number} [page] Page number
+     * @param {number} [pageSize] Items per page
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerGetMany(
+      page?: number,
+      pageSize?: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<PushNotificationAnnouncementsResponseDto> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerGetMany(page, pageSize, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Returns a single push notification announcement
+     * @summary Get a push notification announcement by ID
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerGetOne(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<PushNotificationAnnouncementDto> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerGetOne(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Deletes a push notification announcement by ID
+     * @summary Delete a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerRemove(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<DeleteResponseDto> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerRemove(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Queues a push notification announcement for sending to all devices
+     * @summary Send a push notification announcement
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerSend(
+      id: number,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<void> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerSend(id, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Updates an existing push notification announcement
+     * @summary Update a push notification announcement
+     * @param {number} id
+     * @param {UpdatePushNotificationAnnouncementDto} updatePushNotificationAnnouncementDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    pushNotificationAnnouncementsControllerUpdate(
+      id: number,
+      updatePushNotificationAnnouncementDto: UpdatePushNotificationAnnouncementDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<PushNotificationAnnouncementDto> {
+      return localVarFp
+        .pushNotificationAnnouncementsControllerUpdate(
+          id,
+          updatePushNotificationAnnouncementDto,
+          options,
+        )
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * PushNotificationAnnouncementsApi - object-oriented interface
+ * @export
+ * @class PushNotificationAnnouncementsApi
+ * @extends {BaseAPI}
+ */
+export class PushNotificationAnnouncementsApi extends BaseAPI {
+  /**
+   * Creates a new push notification announcement
+   * @summary Create a new push notification announcement
+   * @param {CreatePushNotificationAnnouncementDto} createPushNotificationAnnouncementDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerCreate(
+    createPushNotificationAnnouncementDto: CreatePushNotificationAnnouncementDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerCreate(createPushNotificationAnnouncementDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Returns a paginated list of push notification announcements
+   * @summary Get all push notification announcements
+   * @param {number} [page] Page number
+   * @param {number} [pageSize] Items per page
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerGetMany(
+    page?: number,
+    pageSize?: number,
+    options?: AxiosRequestConfig,
+  ) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerGetMany(page, pageSize, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Returns a single push notification announcement
+   * @summary Get a push notification announcement by ID
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerGetOne(id: number, options?: AxiosRequestConfig) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerGetOne(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Deletes a push notification announcement by ID
+   * @summary Delete a push notification announcement
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerRemove(id: number, options?: AxiosRequestConfig) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerRemove(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Queues a push notification announcement for sending to all devices
+   * @summary Send a push notification announcement
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerSend(id: number, options?: AxiosRequestConfig) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerSend(id, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Updates an existing push notification announcement
+   * @summary Update a push notification announcement
+   * @param {number} id
+   * @param {UpdatePushNotificationAnnouncementDto} updatePushNotificationAnnouncementDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof PushNotificationAnnouncementsApi
+   */
+  public pushNotificationAnnouncementsControllerUpdate(
+    id: number,
+    updatePushNotificationAnnouncementDto: UpdatePushNotificationAnnouncementDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return PushNotificationAnnouncementsApiFp(this.configuration)
+      .pushNotificationAnnouncementsControllerUpdate(
+        id,
+        updatePushNotificationAnnouncementDto,
+        options,
+      )
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
+ * ResourcesApi - axios parameter creator
+ * @export
+ */
+export const ResourcesApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @summary Get all resources for a specific language
+     * @param {Language} language Language code to filter resources by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    resourcesControllerGetResources: async (
+      language: Language,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'language' is not null or undefined
+      assertParamExists('resourcesControllerGetResources', 'language', language)
+      const localVarPath = `/resources`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      if (language !== undefined) {
+        localVarQueryParameter['language'] = language
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     *
+     * @summary Create or update a resource
+     * @param {SaveResourceDto} saveResourceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    resourcesControllerUpsertResource: async (
+      saveResourceDto: SaveResourceDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'saveResourceDto' is not null or undefined
+      assertParamExists('resourcesControllerUpsertResource', 'saveResourceDto', saveResourceDto)
+      const localVarPath = `/resources`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication azure required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        saveResourceDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * ResourcesApi - functional programming interface
+ * @export
+ */
+export const ResourcesApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = ResourcesApiAxiosParamCreator(configuration)
+  return {
+    /**
+     *
+     * @summary Get all resources for a specific language
+     * @param {Language} language Language code to filter resources by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async resourcesControllerGetResources(
+      language: Language,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourcesResponseDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.resourcesControllerGetResources(
+        language,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     *
+     * @summary Create or update a resource
+     * @param {SaveResourceDto} saveResourceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async resourcesControllerUpsertResource(
+      saveResourceDto: SaveResourceDto,
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.resourcesControllerUpsertResource(
+        saveResourceDto,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * ResourcesApi - factory interface
+ * @export
+ */
+export const ResourcesApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = ResourcesApiFp(configuration)
+  return {
+    /**
+     *
+     * @summary Get all resources for a specific language
+     * @param {Language} language Language code to filter resources by
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    resourcesControllerGetResources(
+      language: Language,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<ResourcesResponseDto> {
+      return localVarFp
+        .resourcesControllerGetResources(language, options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     *
+     * @summary Create or update a resource
+     * @param {SaveResourceDto} saveResourceDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    resourcesControllerUpsertResource(
+      saveResourceDto: SaveResourceDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<ResourceDto> {
+      return localVarFp
+        .resourcesControllerUpsertResource(saveResourceDto, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * ResourcesApi - object-oriented interface
+ * @export
+ * @class ResourcesApi
+ * @extends {BaseAPI}
+ */
+export class ResourcesApi extends BaseAPI {
+  /**
+   *
+   * @summary Get all resources for a specific language
+   * @param {Language} language Language code to filter resources by
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ResourcesApi
+   */
+  public resourcesControllerGetResources(language: Language, options?: AxiosRequestConfig) {
+    return ResourcesApiFp(this.configuration)
+      .resourcesControllerGetResources(language, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   *
+   * @summary Create or update a resource
+   * @param {SaveResourceDto} saveResourceDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ResourcesApi
+   */
+  public resourcesControllerUpsertResource(
+    saveResourceDto: SaveResourceDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return ResourcesApiFp(this.configuration)
+      .resourcesControllerUpsertResource(saveResourceDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }

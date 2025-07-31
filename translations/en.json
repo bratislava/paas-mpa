@@ -31,7 +31,7 @@
   "Announcements.title": "Announcements",
   "AppVersion.appVersion": "App version {{version}}",
   "Auth.codeInputLabel": "Verification code",
-  "Auth.consent": "I confirm my understanding of [the personal data processing terms](https://paas.sk/ochrana-osobnych-udajov/) and [terms and conditions](https://paas.sk/vseobecne-obchodne-podmienky/) in Bratislava. I'm aware that the parking policy conditions may change under [Regulation No. 6/2023 and the Operating Regulations](https://paas.sk/dokumenty/).",
+  "Auth.consent": "I confirm my understanding of [the personal data processing terms](https://paas.sk/ochrana-osobnych-udajov/) and [terms and conditions](https://paas.sk/vseobecne-obchodne-podmienky/) in Bratislava.\n\nI'm aware that the parking policy conditions may change under [Regulation No. 7/2025 and the Operating Regulations](https://paas.sk/dokumenty/).",
   "Auth.enterPhoneNumber": "Enter phone number",
   "Auth.enterVerificationCode": "Enter 6-digit code",
   "Auth.errors.CodeMismatchException": "Submitted code is invalid",

@@ -3,7 +3,7 @@
 
 import 'intl-pluralrules'
 import '@/modules/cognito/amplify'
-import '../i18n.config.js'
+import '../i18n.config.ts'
 import '../global.css'
 
 /* eslint-disable babel/camelcase */

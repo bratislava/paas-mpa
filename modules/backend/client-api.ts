@@ -8,6 +8,7 @@ import {
   FeedbackFormsApiFactory,
   MobileDevicesApiFactory,
   ParkingCardsApiFactory,
+  ResourcesApiFactory,
   SystemApiFactory,
   TicketsApiFactory,
   UserApiFactory,
@@ -28,4 +29,5 @@ export const clientApi = {
   ...AnnouncementsApiFactory(...args),
   ...MobileDevicesApiFactory(...args),
   ...FeedbackFormsApiFactory(...args),
+  ...ResourcesApiFactory(...args),
 }
