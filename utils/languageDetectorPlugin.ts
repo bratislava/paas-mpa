@@ -22,4 +22,4 @@ export const languageDetectorPlugin = {
 
     return callback(appLocale)
   },
-}
+} as const
