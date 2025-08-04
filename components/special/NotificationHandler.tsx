@@ -1,21 +1,38 @@
-import messaging from '@react-native-firebase/messaging'
-import { router } from 'expo-router'
+import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging'
+import { router, UnknownInputParams } from 'expo-router'
 import { useEffect } from 'react'
 
-const navigateToTickets = (notificationType: string) => {
-  router.navigate({
-    pathname: '/tickets',
-    params: {
-      tab: notificationType === 'ENDED' ? 'history' : 'active',
-    },
-  })
+const navigateFromNotification = (notification: FirebaseMessagingTypes.RemoteMessage) => {
+  if (!notification.data) {
+    return
+  }
+
+  if (notification.data.pathname) {
+    router.navigate({
+      pathname: notification.data.pathname as string,
+      params: (notification.data.params as UnknownInputParams) ?? {},
+    })
+
+    return
+  }
+
+  // This is here for backward compatibility with old notifications
+  // TODO: remove after migration to new notifications
+  if (notification.data.notificationType) {
+    router.navigate({
+      pathname: '/tickets',
+      params: {
+        tab: notification.data.notificationType === 'ENDED' ? 'history' : 'active',
+      },
+    })
+  }
 }
 
 const getInitialNotification = async () => {
   const initialNotification = await messaging().getInitialNotification()
 
   if (initialNotification) {
-    navigateToTickets(initialNotification.data?.notificationType as string)
+    navigateFromNotification(initialNotification)
   }
 }
 
@@ -26,7 +43,7 @@ const NotificationHandler = () => {
   useEffect(() => {
     // Notification caused app to open from background state
     const unsubscribe = messaging().onNotificationOpenedApp((notification) => {
-      navigateToTickets(notification.data?.notificationType as string)
+      navigateFromNotification(notification)
     })
 
     // Notification caused app to open from quit state

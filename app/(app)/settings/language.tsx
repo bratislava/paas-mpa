@@ -18,17 +18,12 @@ import { settingsOptions } from '@/modules/backend/constants/queryOptions'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { STORAGE_LANGUAGE_KEY } from '@/utils/mmkv'
 
-export type Language = 'sk' | 'en'
+export type LanguageKey = 'sk' | 'en'
 
 type LanguageOption = {
   label: string
-  value: Language
+  value: LanguageKey
 }
-
-const languages: LanguageOption[] = [
-  { label: 'Slovenčina', value: 'sk' },
-  { label: 'English', value: 'en' },
-]
 
 const Page = () => {
   const { t } = useTranslation()
@@ -47,7 +42,7 @@ const Page = () => {
 
   const language = data?.data?.language
 
-  const handleLanguageChange = async (newLanguage: Language) => {
+  const handleLanguageChange = async (newLanguage: LanguageKey) => {
     if (newLanguage !== language) {
       await mutation.mutateAsync({ language: newLanguage })
       await i18n.changeLanguage(newLanguage)
@@ -58,6 +53,11 @@ const Page = () => {
       router.back()
     }
   }
+
+  const languages: LanguageOption[] = [
+    { label: 'Slovenčina', value: 'sk' },
+    { label: 'English', value: 'en' },
+  ]
 
   return (
     <ScreenView title={t('Settings.title')}>
