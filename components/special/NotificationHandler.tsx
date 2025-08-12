@@ -1,28 +1,29 @@
 import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging'
-import { router, UnknownInputParams } from 'expo-router'
+import { router } from 'expo-router'
 import { useEffect } from 'react'
+import { Linking } from 'react-native'
 
 const navigateFromNotification = (notification: FirebaseMessagingTypes.RemoteMessage) => {
   if (!notification.data) {
     return
   }
 
-  if (notification.data.pathname) {
-    router.navigate({
-      pathname: notification.data.pathname as string,
-      params: (notification.data.params as UnknownInputParams) ?? {},
-    })
+  const { link, notificationType } = notification.data
+
+  // If the notification has a deeplink and the deeplink is to our app, open it
+  if (link && typeof link === 'string' && link.startsWith('paasmpa://')) {
+    Linking.openURL(link)
 
     return
   }
 
   // This is here for backward compatibility with old notifications
   // TODO: remove after migration to new notifications
-  if (notification.data.notificationType) {
+  if (notificationType) {
     router.navigate({
       pathname: '/tickets',
       params: {
-        tab: notification.data.notificationType === 'ENDED' ? 'history' : 'active',
+        tab: notificationType === 'ENDED' ? 'history' : 'active',
       },
     })
   }
