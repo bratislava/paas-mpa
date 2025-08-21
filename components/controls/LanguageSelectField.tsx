@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useTranslation as useLibTranslation } from 'react-i18next'
 import { useMMKVString } from 'react-native-mmkv'
 
+import { LanguageKey } from '@/app/(app)/settings/language'
 import Field from '@/components/shared/Field'
 import FlexRow from '@/components/shared/FlexRow'
 import Icon from '@/components/shared/Icon'
@@ -38,7 +39,7 @@ const LanguageSelectField = () => {
         <PressableStyled disabled={isPending || isRefetching}>
           <Panel className="border border-divider bg-white py-3">
             <FlexRow>
-              <Typography>{languages[data?.data.language as 'sk' | 'en']}</Typography>
+              <Typography>{languages[data?.data.language as LanguageKey]}</Typography>
               <Icon name="expand-more" />
             </FlexRow>
           </Panel>
