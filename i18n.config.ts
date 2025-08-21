@@ -6,7 +6,7 @@ import { languageDetectorPlugin } from '@/utils/languageDetectorPlugin'
 import { environment } from './environment'
 import { clientApi } from '@/modules/backend/client-api'
 import { Language as LanguageApiObject } from '@/modules/backend/openapi-generated'
-import { Language } from '@/app/(app)/settings/language'
+import { LanguageKey } from '@/app/(app)/settings/language'
 
 const resources = {
   en: {
@@ -27,12 +27,12 @@ i18n
     debug: environment.deployment === 'development',
   })
 
-const languageMap: Record<Language, LanguageApiObject> = {
+const languageMap: Record<LanguageKey, LanguageApiObject> = {
   sk: LanguageApiObject.Sk,
   en: LanguageApiObject.En,
 }
 
-i18n.on('languageChanged', async (lng: Language) => {
+i18n.on('languageChanged', async (lng: LanguageKey) => {
   if (!languageMap[lng]) return
 
   try {

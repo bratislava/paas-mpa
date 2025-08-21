@@ -193,7 +193,7 @@ struct LiveWidget: Widget {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16)
             }
-            .widgetURL(URL(string: context.isStale ? "com.bratislava.paas://tickets?tab=history" : "com.bratislava.paas://tickets?tab=active"))
+            .widgetURL(URL(string: context.isStale ? "paasmpa://tickets?tab=history" : "paasmpa://tickets?tab=active"))
         }
     }
 }

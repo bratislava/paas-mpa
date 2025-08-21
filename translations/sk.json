@@ -31,7 +31,7 @@
   "Announcements.title": "Oznámenia",
   "AppVersion.appVersion": "Verzia aplikácie {{version}}",
   "Auth.codeInputLabel": "Overovací kód",
-  "Auth.consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 7/2025 a Prevádzkového poriadku](https://paas.sk/dokumenty/).",
+  "Auth.consent": "Pokračovaním potvrdzujem, že som sa oboznámil s [podmienkami spracúvania osobných údajov](https://paas.sk/ochrana-osobnych-udajov/) a [všeobecnými obchodnými podmienkami](https://paas.sk/vseobecne-obchodne-podmienky/) hlavného mesta SR Bratislavy. hlavného mesta SR Bratislavy.\n\nBeriem na vedomie, že podmienky prevádzkovania parkovacej politiky sú predmetom úpravy [VZN č. 3/2025 a Prevádzkového poriadku](https://paas.sk/dokumenty/).",
   "Auth.enterPhoneNumber": "Zadajte telefónne číslo",
   "Auth.enterVerificationCode": "Zadajte 6-miestny kód",
   "Auth.errors.CodeMismatchException": "Zadaný kód nie je platný",
