@@ -48,7 +48,7 @@ const Page = () => {
         pathname: '/parking-cards/verification/verification-result',
         params: {
           email,
-          status: 'verified',
+          status: res.data.length > 0 ? 'verified' : 'verified-no-cards',
           licencePlates: licencePlates.join(', '),
         },
       })
