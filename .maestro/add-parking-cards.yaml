@@ -8,7 +8,7 @@ appId: com.bratislava.paas
     id: Parking cards
 - tapOn: Add parking cards
 - assertVisible: Email address
-- inputText: test-user@test.sk
+- inputText: test-user1@test.sk
 - hideKeyboard
 - scroll
 - tapOn: Continue
@@ -19,13 +19,13 @@ appId: com.bratislava.paas
 - inputText: '${maestro.copiedText}'
 - tapOn: Continue
 - tapOn:
-    id: test-user@test.sk
+    id: test-user1@test.sk
 - tapOn:
     id: emailMoreMenu
 - tapOn:
     id: 'deleteEmailBottomSheetPressable'
 - tapOn: Yes, remove email
 - assertVisible: Add parking cards
-- assertNotVisible: test-user@test.sk
+- assertNotVisible: test-user1@test.sk
 - tapOn: Go back
 - tapOn: Go back
