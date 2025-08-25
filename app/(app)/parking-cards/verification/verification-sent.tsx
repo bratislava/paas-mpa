@@ -4,6 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
 
+import { StatusType } from '@/app/(app)/parking-cards/verification/verification-result'
 import { EmailAvatar } from '@/assets/avatars'
 import CodeInput from '@/components/inputs/CodeInput'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
@@ -48,7 +49,7 @@ const Page = () => {
         pathname: '/parking-cards/verification/verification-result',
         params: {
           email,
-          status: res.data.length > 0 ? 'verified' : 'verified-no-cards',
+          status: (res.data.length > 0 ? 'verified' : 'verified-no-cards') satisfies StatusType,
           licencePlates: licencePlates.join(', '),
         },
       })
