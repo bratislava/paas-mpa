@@ -66,6 +66,12 @@ const onFetchUpdateAsync = async () => {
   }
 }
 
+// The queryClient needs to be created outside of the component to avoid re-creating it on every render.
+const queryClient = new QueryClient({
+  // TODO - we change retries to 0 to see the behaviour in production, if it helps with too long waiting for expected errors response
+  defaultOptions: { queries: { retry: 0 } },
+})
+
 const RootLayout = () => {
   // Capture the NavigationContainer ref and register it with the instrumentation.
   const ref = useNavigationContainerRef()
@@ -90,11 +96,6 @@ const RootLayout = () => {
       onFetchUpdateAsync()
     }
   }, [])
-
-  const queryClient = new QueryClient({
-    // TODO - we change retries to 0 to see the behaviour in production, if it helps with too long waiting for expected errors response
-    defaultOptions: { queries: { retry: 0 } },
-  })
 
   const toastProviderProps = useToastProviderProps()
 

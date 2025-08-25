@@ -1,6 +1,5 @@
-import { useQueryClient } from '@tanstack/react-query'
 import * as Location from 'expo-location'
-import { Link, useFocusEffect } from 'expo-router'
+import { Link } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
@@ -15,6 +14,7 @@ import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useQueryInvalidateOnTicketExpire } from '@/hooks/useQueryInvalidateOnTicketExpire'
 import { useQueryWithFocusRefetch } from '@/hooks/useQueryWithFocusRefetch'
+import { useRefetchOnScreenFocus } from '@/hooks/useRefetchOnScreenFocus'
 import { useTranslation } from '@/hooks/useTranslation'
 import { activeTicketsOptions } from '@/modules/backend/constants/queryOptions'
 import { useLocationPermission } from '@/modules/map/hooks/useLocationPermission'
@@ -63,19 +63,7 @@ const MapZoneBottomSheetAttachment = ({ flyTo, ...restProps }: Props) => {
   }, [flyTo, locationPermissionStatus])
 
   const { data: ticketsData, refetch } = useQueryWithFocusRefetch(activeTicketsOptions())
-
-  // Invalidate active tickets query on map focus to have fresh data when returning to the map
-  const queryClient = useQueryClient()
-  useFocusEffect(
-    useCallback(() => {
-      const queryState = queryClient.getQueryState(activeTicketsOptions().queryKey)
-
-      if (!queryState) refetch()
-      else if (queryState.status === 'success') {
-        queryClient.invalidateQueries({ queryKey: activeTicketsOptions().queryKey })
-      }
-    }, [queryClient, refetch]),
-  )
+  useRefetchOnScreenFocus(refetch)
 
   useQueryInvalidateOnTicketExpire(ticketsData?.tickets ?? null, refetch, ['Tickets'])
 
