@@ -10,30 +10,12 @@ appId: com.bratislava.paas
 - tapOn: Prolong
 - assertVisible: Pay
 - tapOn: Pay
-- runFlow:
-    when:
-      visible: Card information
-    commands:
-      - tapOn: Card information
-- runFlow:
-    when:
-      visible: Informácie o karte
-    commands:
-      - tapOn: Informácie o karte
+- tapOn: Card information
 - inputText: '4263970000005262'
 - inputText: '0432'
 - inputText: '712'
 - hideKeyboard
-- runFlow:
-    when:
-      visible: "Pay\_ 2.00\_EUR"
-    commands:
-      - tapOn: "Pay\_ 2.00\_EUR"
-- runFlow:
-    when:
-      visible: "Zaplatiť\_ 2.00\_EUR"
-    commands:
-      - tapOn: "Zaplatiť\_ 2.00\_EUR"
+- tapOn: "Pay\_ 2.00\_EUR"
 - waitForAnimationToEnd
 # Sometimes the payment takes more time
 - extendedWaitUntil:

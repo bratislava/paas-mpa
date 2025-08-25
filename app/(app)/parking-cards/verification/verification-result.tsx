@@ -14,7 +14,7 @@ import { VerifyEmailsDto } from '@/modules/backend/openapi-generated'
  * Figma: https://www.figma.com/file/3TppNabuUdnCChkHG9Vft7/paas-mpa?node-id=1300%3A11943&mode=dev
  */
 
-type StatusType = 'verified' | 'verified-no-cards' | 'link-expired'
+export type StatusType = 'verified' | 'verified-no-cards' | 'link-expired'
 
 // TODO may need update depending on changes in figma
 type VerificationResultSearchParams = {

@@ -139,12 +139,7 @@ const Page = () => {
 
                 return (
                   <PressableStyled key={panel} onPress={() => handlePanelPress(cardTypeInner)}>
-                    <ParkingCardTypeRow
-                      variant={panel}
-                      selected={
-                        cardType === cardTypeInner || (panel === 'all' && cardTypeInner === null)
-                      }
-                    />
+                    <ParkingCardTypeRow variant={panel} selected={cardType === cardTypeInner} />
                   </PressableStyled>
                 )
               })}
