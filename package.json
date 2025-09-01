@@ -43,7 +43,7 @@
     "axios": "~1.10.0",
     "clsx": "~2.1.0",
     "conditional-wrap": "~1.0.2",
-    "date-holidays": "^3.23.3",
+    "date-holidays": "^3.25.2",
     "expo": "53.0.20",
     "expo-application": "~6.1.5",
     "expo-build-properties": "~0.14.8",

@@ -5788,10 +5788,10 @@ date-holidays-parser@^3.4.7:
     jalaali-js "^1.2.7"
     moment-timezone "^0.5.47"
 
-date-holidays@^3.23.3:
-  version "3.24.2"
-  resolved "https://registry.yarnpkg.com/date-holidays/-/date-holidays-3.24.2.tgz#db209832edb9e0714b4c616da4d11d6e934e95e8"
-  integrity sha512-CBvQDyVAPAhGjl1sVcCfuK77GM36r2YLEToHF6DNokZS06DGYpW3Jug0iIOj28Crm2JWPwz9gdJs9tniU8zgxg==
+date-holidays@^3.25.2:
+  version "3.25.2"
+  resolved "https://registry.yarnpkg.com/date-holidays/-/date-holidays-3.25.2.tgz#edb3ec85f102f6d41054410bf67b538564c5e118"
+  integrity sha512-xtgGWIBn5tGTA6QdYxKKVH1nogrY0SSbluDRDeUqnAvJy5fKMNjlrsAwmnzypjzF+TcdPvMd9KYfXs3KinQ2BA==
   dependencies:
     date-holidays-parser "^3.4.7"
     js-yaml "^4.1.0"
