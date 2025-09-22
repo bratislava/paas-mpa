@@ -133,7 +133,6 @@ const VehiclesScreen = () => {
     >
       <ScreenContent>
         <SectionList
-          estimatedItemSize={59}
           sections={sections}
           stickySectionHeadersEnabled={false}
           renderSectionHeader={(section) =>

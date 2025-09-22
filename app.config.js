@@ -1,5 +1,6 @@
 module.exports = {
   expo: {
+    // TODO: Check if `newArchEnabled: true` is the default or not (if so remove it)
     newArchEnabled: true,
     name: 'PAAS',
     slug: 'paas',

@@ -24,7 +24,6 @@ export type SectionListProps<T, S extends string> = Omit<
 /**
  * High performance section list component with action button at the bottom
  * https://shopify.github.io/flash-list/docs/guides/section-list
- * @param estimatedItemSize is determined on the first render and is used to speed up the rendering... first time usage is without this prop and it logs warning where it is calculated next step is to use it in the component
  */
 export const SectionList = <T extends any, S extends string>({
   actionButton,

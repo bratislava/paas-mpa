@@ -78,7 +78,6 @@ const Page = () => {
         ) : parkingCards?.length ? (
           <ScreenContent>
             <List
-              estimatedItemSize={162}
               ItemSeparatorComponent={() => <View className="h-3" />}
               data={parkingCards}
               keyExtractor={(parkingCard) => parkingCard.identificator}

@@ -138,7 +138,6 @@ const MapAutocomplete = forwardRef<RNTextInput, Props>(
                 <>
                   <Typography variant="h2">{t('ZoneDetailsScreen.searchResults')}</Typography>
                   <SectionList
-                    estimatedItemSize={63}
                     className="flex-1"
                     sections={sections}
                     keyboardShouldPersistTaps="always"
