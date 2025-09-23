@@ -1,0 +1,17 @@
+diff --git a/node_modules/@sentry/react-native/dist/js/tools/utils.js b/node_modules/@sentry/react-native/dist/js/tools/utils.js
+index 10bbde3..2dd76f9 100644
+--- a/node_modules/@sentry/react-native/dist/js/tools/utils.js
++++ b/node_modules/@sentry/react-native/dist/js/tools/utils.js
+@@ -4,10 +4,10 @@ exports.getExpoConfig = exports.createVirtualJSModule = exports.prependModule =
+ const crypto = require("crypto");
+ let countLines;
+ try {
+-    countLines = require('metro/private/lib/countLines');
++    countLines = require('metro/private/lib/countLines').default;
+ }
+ catch (e) {
+-    countLines = require('metro/src/lib/countLines');
++    countLines = require('metro/src/lib/countLines').default;
+ }
+ /**
+  * Returns minified Debug ID code snippet.

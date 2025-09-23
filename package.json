@@ -16,7 +16,8 @@
     "doctor:fix": "expo install --fix",
     "parse-translations": "i18next",
     "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.staging.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
-    "generate-clients": "yarn generate-client-paas-mpa"
+    "generate-clients": "yarn generate-client-paas-mpa",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@aws-amplify/react-native": "^1.1.11-unstable.3ea1c8e.0",
@@ -66,6 +67,7 @@
     "i18next": "~23.11.2",
     "intl-pluralrules": "~2.0.1",
     "nativewind": "^4.2.1",
+    "patch-package": "^8.0.0",
     "react": "19.1.0",
     "react-hook-form": "^7.53.0",
     "react-i18next": "~14.1.0",
