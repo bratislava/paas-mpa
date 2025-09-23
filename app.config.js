@@ -54,6 +54,7 @@ module.exports = {
         {
           ios: {
             useFrameworks: 'static',
+            buildReactNativeFromSource: true,
           },
         },
       ],
