@@ -5,7 +5,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.8.2',
+    version: '1.8.3',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -55,6 +55,9 @@ module.exports = {
           ios: {
             useFrameworks: 'static',
             buildReactNativeFromSource: true,
+          },
+          android: {
+            buildArchs: ['arm64-v8a', 'x86_64'],
           },
         },
       ],
