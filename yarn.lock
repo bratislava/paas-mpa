@@ -11131,10 +11131,10 @@ react-native-markdown-display@~7.0.0-alpha.2:
     prop-types "^15.7.2"
     react-native-fit-image "^1.5.5"
 
-react-native-mmkv@^4.0.0-beta.10:
-  version "4.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-4.0.0-beta.10.tgz#9e019a0a825cfa5f510de0915df28ccd0c12d342"
-  integrity sha512-BNpO+AUEPtX5pgGztS34I63xLxd/zpA/aJkrzwAdYxzXGn1exuzGnsWkIrfg82brqHIjusm66bVMF3oDAZS34w==
+react-native-mmkv@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-3.3.1.tgz#854ec786d3951e4bbbaa6161d812c3345d071d85"
+  integrity sha512-LYamDWQirPTUJZ9Re+BkCD+zLRGNr+EVJDeIeblvoJXGatWy9PXnChtajDSLqwjX3EXVeUyjgrembs7wlBw9ug==
 
 react-native-nitro-modules@^0.29.6:
   version "0.29.6"
