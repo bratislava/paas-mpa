@@ -20,7 +20,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@aws-amplify/react-native": "^1.1.11-unstable.3ea1c8e.0",
+    "@aws-amplify/react-native": "^1.2.0",
     "@bacons/apple-targets": "~0.0.5",
     "@expo-google-fonts/inter": "~0.3.0",
     "@expo/metro-runtime": "~6.1.2",
@@ -41,7 +41,7 @@
     "@turf/boolean-intersects": "^7.2.0",
     "@turf/intersect": "^7.2.0",
     "@types/react": "~19.1.10",
-    "aws-amplify": "~6.15.6",
+    "aws-amplify": "~6.15.7",
     "axios": "~1.10.0",
     "clsx": "~2.1.0",
     "conditional-wrap": "~1.0.2",
