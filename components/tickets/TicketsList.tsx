@@ -110,7 +110,6 @@ export const TicketsList = ({ active }: RouteProps) => {
       <ScreenContent>
         <List
           data={tickets}
-          estimatedItemSize={active ? 188 : 187}
           renderItem={renderItem}
           ListFooterComponent={isFetchingNextPage ? <SkeletonTicketCard /> : null}
           onEndReachedThreshold={0.2}

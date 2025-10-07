@@ -67,7 +67,6 @@ const Page = () => {
           <Typography variant="default-bold">{t('ParkingCards.paasEmailsList')}</Typography>
 
           <List
-            estimatedItemSize={62}
             data={verifiedEmails}
             keyExtractor={(emailItem) => emailItem.email}
             onEndReachedThreshold={0.2}

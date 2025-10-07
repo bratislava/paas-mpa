@@ -36,6 +36,17 @@ eas build --profile development --platform ios
 eas device:create
 ```
 
+### Communication with Backend
+
+The BE has it's OpenAPI specification with Swagger.
+We use the `@openapitools/openapi-generator-cli` by which we can generate typesafe code to communicate with Rest API.
+
+To generate fresh types just run this command:
+
+```bash
+yarn generate-clients
+```
+
 ## Deploy
 
 ### Build
@@ -44,7 +55,7 @@ Follow https://docs.expo.dev/deploy/build-project/
 
 Quick reference:
 
-```
+```bash
 eas build --platform all
 
 # optionally, by platform
@@ -52,24 +63,27 @@ eas build --platform android
 eas build --platform ios
 ```
 
-### Release - Android
+## Release
 
+We have release pipelines so when we want to release production we create release in this repo with `prod*.*.*` tag. The pipeline will build app and submit it to the both stores.
 https://docs.expo.dev/deploy/submit-to-app-stores/
 
-```
-eas submit -p android
-```
+### Release - Android
+
+Rest of the flow is done in Google Play Console.
+
+> [!IMPORTANT]  
+> Google reviewers are from India and this country is blocked by AWS WAF. Country can change at any moment.
 
 ### Release - iOs
 
-https://docs.expo.dev/deploy/submit-to-app-stores/
+Rest of the flow is done in App Store Connect.
 
-```
-eas submit -p ios
-```
+> [!IMPORTANT]  
+> Apple reviewers are from Ireland and this country is blocked by AWS WAF. Country can change at any moment.
 
 ## Environment variables
 
-Public ones available in the final frontend package go to `.env` prefixed with `EXPO_PUBLIC_`. Access them using `environment.ts`. Secrets go to Expo secrets (and are afterwards available in app.config.js - and probably elsewhere - as environment variables) - see Expo secrets docs.
+Public ones available in the final frontend package go to `.env` prefixed with `EXPO_PUBLIC_`. Access them using `environment.ts`. Release envs are set in `eas.json` file for each build profile separately. Secrets go to Expo secrets (and are afterwards available in app.config.js - and probably elsewhere - as environment variables) - see Expo secrets docs.
 
 You can create the usual array of .env files (`.env.local`, `.env.development`). Expect for `.env*.local`, the are all committed to git.

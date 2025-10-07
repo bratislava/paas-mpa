@@ -94,7 +94,6 @@ const TicketsFiltersVehiclesScreen = () => {
       <ScreenContent>
         <List
           data={vehicles}
-          estimatedItemSize={64}
           extraData={localEcvs}
           renderItem={renderItem}
           keyExtractor={({ vehiclePlateNumber }) => vehiclePlateNumber}

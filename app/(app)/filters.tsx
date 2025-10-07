@@ -105,7 +105,6 @@ const FiltersScreen = () => {
     >
       <ScreenContent>
         <SectionList
-          estimatedItemSize={51}
           sections={filteringOptions}
           extraData={filters}
           renderSectionHeader={({ title }) => (
