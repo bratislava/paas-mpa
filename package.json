@@ -16,8 +16,7 @@
     "doctor:fix": "expo install --fix",
     "parse-translations": "i18next",
     "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.staging.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
-    "generate-clients": "yarn generate-client-paas-mpa",
-    "postinstall": "patch-package"
+    "generate-clients": "yarn generate-client-paas-mpa"
   },
   "dependencies": {
     "@aws-amplify/react-native": "^1.2.0",
@@ -34,7 +33,7 @@
     "@react-native-firebase/messaging": "~23.3.1",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@rnmapbox/maps": "^10.1.44",
-    "@sentry/react-native": "~7.1.0",
+    "@sentry/react-native": "~7.2.0",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "~5.74.4",
     "@turf/area": "^7.2.0",
@@ -67,7 +66,6 @@
     "i18next": "~23.11.2",
     "intl-pluralrules": "~2.0.1",
     "nativewind": "^4.2.1",
-    "patch-package": "^8.0.0",
     "react": "19.1.0",
     "react-hook-form": "^7.53.0",
     "react-i18next": "~14.1.0",
