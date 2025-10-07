@@ -63,7 +63,6 @@ const Page = () => {
     <ScreenView title={t('Settings.title')}>
       <ScreenContent>
         <List
-          estimatedItemSize={67}
           ItemSeparatorComponent={() => <Divider />}
           data={languages}
           renderItem={({ item }) => (

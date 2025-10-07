@@ -103,7 +103,7 @@ const CountrySearchScreen = () => {
             </View>
 
             <View className="mt-3 flex-1">
-              <List estimatedItemSize={58} data={filteredCountries} renderItem={renderItem} />
+              <List data={filteredCountries} renderItem={renderItem} />
             </View>
           </View>
         </ScreenContent>

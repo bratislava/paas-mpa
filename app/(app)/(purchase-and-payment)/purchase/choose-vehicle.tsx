@@ -129,7 +129,6 @@ const ChooseVehicleScreen = () => {
           <Typography variant="default-bold">{t('VehiclesScreen.savedVehicles')}</Typography>
 
           <List
-            estimatedItemSize={63}
             data={vehicles}
             keyExtractor={({ id }) => id.toString()}
             ItemSeparatorComponent={() => <Divider className="h-2 bg-transparent" />}
