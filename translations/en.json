@@ -263,7 +263,7 @@
   "PurchaseScreen.titlePayment": "Payment",
   "PurchaseScreen.useRememberedCard": "Use remembered card",
   "PurchaseScreen.vehicle": "Vehicle",
-  "PurchaseScreen.warnings.differentEnd": "The parking end differs because minimum parking time of paid ticket is 15 minutes. The new ticket will be valid till {{time}}.",
+  "PurchaseScreen.warnings.differentEnd": "The parking end differs because minimum parking time of paid ticket is 15 minutes. The new ticket will be valid till {{- time}}.",
   "QuestionnaireScreen.error.empty": "Questionnaire not found.",
   "QuestionnaireScreen.error.text": "Questionnaire does not exist or an error occurred. Please try again later.",
   "Settings.actions.deleteAccount": "Delete account",
