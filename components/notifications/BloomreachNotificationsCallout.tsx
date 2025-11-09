@@ -14,7 +14,7 @@ export const BloomreachNotificationCallout = () => {
       text={t('bloomreachNotifications.callout.text')}
       customAvatarComponent={<NotificationBellAvatar />}
       actionButton={
-        <Link asChild href="/settings/notifications/why">
+        <Link asChild href="/settings/notifications">
           <Button>{t('bloomreachNotifications.callout.action')}</Button>
         </Link>
       }

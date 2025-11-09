@@ -12,7 +12,7 @@ export const ConnectWithCityAccountMenuLink = () => {
   const router = useRouter()
 
   const handlePress = () => {
-    router.push('/notifications/settings')
+    router.push('/settings/notifications')
   }
 
   return (

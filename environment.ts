@@ -24,6 +24,14 @@ export const environment = {
     'EXPO_PUBLIC_COGNITO_CLIENT_ID',
     process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
   ),
+  cityAccountApiUrl: assertEnv(
+    'EXPO_PUBLIC_CITY_ACCOUNT_API_URL',
+    process.env.EXPO_PUBLIC_CITY_ACCOUNT_API_URL,
+  ),
+  cityAccountCognitoClientId: assertEnv(
+    'EXPO_PUBLIC_CITY_ACCOUNT_COGNITO_CLIENT_ID',
+    process.env.EXPO_PUBLIC_CITY_ACCOUNT_COGNITO_CLIENT_ID,
+  ),
   awsRegion: assertEnv('EXPO_PUBLIC_AWS_REGION', process.env.EXPO_PUBLIC_AWS_REGION),
   apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
   minioBucket: assertEnv('EXPO_PUBLIC_MINIO_BUCKET', process.env.EXPO_PUBLIC_MINIO_BUCKET),

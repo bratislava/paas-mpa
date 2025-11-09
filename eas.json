@@ -16,7 +16,9 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "development",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.dev.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_COGNITO_CLIENT_ID": "3ei88tn1gkvhfqpfckkd6plopr"
       },
       "channel": "development"
     },
@@ -42,7 +44,9 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
         "EXPO_PUBLIC_DEPLOYMENT": "staging",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.staging.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_COGNITO_CLIENT_ID": "3ei88tn1gkvhfqpfckkd6plopr"
       },
       "channel": "staging"
     },
@@ -57,7 +61,9 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
         "EXPO_PUBLIC_DEPLOYMENT": "production",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAAGcjNLteOzO0fDF"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAAGcjNLteOzO0fDF",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_COGNITO_CLIENT_ID": "3ei88tn1gkvhfqpfckkd6plopr"
       },
       "channel": "prod",
       "resourceClass": "large"

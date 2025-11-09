@@ -17,7 +17,7 @@ const NoVehicles = () => {
       text={t('VehiclesScreen.noVehiclesText')}
       actionButton={
         <Link asChild href="/vehicles/add-vehicle">
-          <ContinueButton>{t('VehiclesScreen.addVehicle')}</ContinueButton>
+          <ContinueButton variant="secondary">{t('VehiclesScreen.addVehicle')}</ContinueButton>
         </Link>
       }
     />
