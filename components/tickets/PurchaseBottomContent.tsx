@@ -1,6 +1,5 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { Dispatch, SetStateAction } from 'react'
-import { Trans } from 'react-i18next'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -76,13 +75,12 @@ const PurchaseBottomContent = ({
         {isDifferentEnd ? (
           <Panel className="mt-3 bg-warning-light px-5">
             <Typography>
-              <Trans
-                t={t}
-                tOptions={{ time: formatTime(new Date(priceQuery.data.ticketEnd), locale) }}
-                shouldUnescape
-              >
-                PurchaseScreen.warnings.differentEnd
-              </Trans>
+              {t('PurchaseScreen.warnings.differentEnd', {
+                time: formatTime(new Date(priceQuery.data.ticketEnd), locale),
+                interpolation: {
+                  escapeValue: false,
+                },
+              })}
             </Typography>
           </Panel>
         ) : null}
