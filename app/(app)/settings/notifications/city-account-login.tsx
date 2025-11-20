@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native'
 
 import { ImageDataSecurity } from '@/assets/onboarding-slides'
 import { BloomreachNotificationInfoScreenItem } from '@/components/notifications/BloomreachNotificationInfoScreen'
+import { configureExponea } from '@/components/notifications/utils'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
 import Button from '@/components/shared/Button'
@@ -35,6 +36,9 @@ const NotificationsHowPage = () => {
         const data = await fetchResponse.json()
 
         console.log('fetchResponse data', data)
+        // TODO check if user is verified
+
+        configureExponea(data.bloomreachId)
       }
     } catch (error) {
       console.log('Error during City Account sign-in:', error)

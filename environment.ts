@@ -40,4 +40,16 @@ export const environment = {
     'EXPO_PUBLIC_TURNSTILE_SITE_KEY',
     process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY,
   ),
+  bloomreachProjectToken: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN',
+    process.env.EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN,
+  ),
+  bloomreachAuthorizationToken: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN',
+    process.env.EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN,
+  ),
+  bloomreachBaseUrl: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_BASE_URL',
+    process.env.EXPO_PUBLIC_BLOOMREACH_BASE_URL,
+  ),
 }

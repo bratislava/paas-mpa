@@ -1,7 +1,5 @@
 module.exports = {
   expo: {
-    // TODO: Check if `newArchEnabled: true` is the default or not (if so remove it)
-    newArchEnabled: true,
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
@@ -79,6 +77,7 @@ module.exports = {
         },
       ],
       ['./plugins/liveActivities.plugin.cjs', 'custom'],
+      ['./plugins/withBloomreach.plugin.cjs'],
       'expo-router',
       'expo-localization',
       'expo-font',

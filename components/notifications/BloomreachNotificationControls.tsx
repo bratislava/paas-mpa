@@ -1,9 +1,26 @@
+import { useQuery } from '@tanstack/react-query'
+import exponea from 'react-native-exponea-sdk'
+
 import SwitchControl from '@/components/controls/notifications/SwitchControl'
 import Field from '@/components/shared/Field'
 import { useTranslation } from '@/hooks/useTranslation'
 
 export const BloomreachNotificationControls = () => {
   const { t } = useTranslation()
+
+  const query = useQuery({
+    queryKey: ['bloomreach-notifications'],
+    queryFn: async () => {
+      const isConfigured = await exponea.isConfigured()
+      if (isConfigured) {
+        return exponea.fetchConsents()
+      }
+
+      return null
+    },
+  })
+
+  console.log(query.data)
 
   return (
     <>
