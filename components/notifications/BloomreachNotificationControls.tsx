@@ -12,15 +12,26 @@ export const BloomreachNotificationControls = () => {
     queryKey: ['bloomreach-notifications'],
     queryFn: async () => {
       const isConfigured = await exponea.isConfigured()
-      if (isConfigured) {
-        return exponea.fetchConsents()
+
+      if (!isConfigured) {
+        throw new Error('Exponea SDK is not configured. Please configure it first.')
       }
 
-      return null
+      try {
+        return await exponea.fetchConsents()
+      } catch (error) {
+        // Provide more helpful error message
+        if (error instanceof Error && error.message.includes('authorization')) {
+          throw new Error(
+            'Authorization failed. The token used to configure Exponea SDK must have consent read permissions. Please check your Bloomreach API token permissions.',
+          )
+        }
+        throw error
+      }
     },
   })
 
-  console.log(query.data)
+  // todo do something with the data
 
   return (
     <>

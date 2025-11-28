@@ -1,4 +1,4 @@
-import { getCurrentUser } from 'aws-amplify/auth'
+import { getCurrentUser, updateUserAttribute } from 'aws-amplify/auth'
 import { ScrollView } from 'react-native'
 
 import { ImageDataSecurity } from '@/assets/onboarding-slides'
@@ -19,27 +19,36 @@ const NotificationsHowPage = () => {
     try {
       const res = await signIn()
 
-      if (res?.accessToken) {
-        const user = await getCurrentUser()
+      if (!res?.accessToken) return
 
-        const fetchResponse = await fetch(`${environment.cityAccountApiUrl}/mpa/register-phone`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${res.accessToken}`,
-          },
-          body: JSON.stringify({
-            phone: '+421912345670' || user.signInDetails?.loginId,
-          }),
-        })
+      const user = await getCurrentUser()
 
-        const data = await fetchResponse.json()
+      if (!user.signInDetails?.loginId) return
 
-        console.log('fetchResponse data', data)
-        // TODO check if user is verified
+      const fetchResponse = await fetch(`${environment.cityAccountApiUrl}/mpa/register-phone`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${res.accessToken}`,
+        },
+        body: JSON.stringify({
+          phone: user.signInDetails.loginId,
+        }),
+      })
 
-        configureExponea(data.bloomreachId)
-      }
+      const data = await fetchResponse.json()
+      console.log('fetchResponse data', data)
+
+      // TODO check if user is verified
+      if (!data.bloomreachId) return
+
+      await updateUserAttribute({
+        userAttribute: {
+          attributeKey: 'custom:bloomreachId',
+          value: data.bloomreachId,
+        },
+      })
+      await configureExponea(data.bloomreachId, user.signInDetails.loginId)
     } catch (error) {
       console.log('Error during City Account sign-in:', error)
     }
