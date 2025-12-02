@@ -10,7 +10,8 @@ module.exports = {
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/app/icon.png',
+      image: './assets/app/splash-christmas.png',
+      resizeMode: 'contain',
       backgroundColor: '#16254C',
     },
     assetBundlePatterns: ['**/*'],
