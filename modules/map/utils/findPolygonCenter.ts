@@ -1,3 +1,6 @@
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
+import { MultiPolygon, Polygon } from 'geojson'
+
 export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [number, number] => {
   let sumLon = 0
   let sumLat = 0
@@ -18,32 +21,57 @@ export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [
   return [centerLon, centerLat]
 }
 
-/** Finds the coordinate of a polygon or a multipolygon that is closest to the center, used during navigating to a zone,
- * when choosing a point that is inside the zone it should be selected after naviagting to it
- * @param coordinates A polygon or a multipolygon */
-export const findMostCenterPointInPolygon = (
-  coordinates: number[][][] | number[][][][],
-): [number, number] => {
-  const center = findPolygonCenter(coordinates)
-  let nearestPoint: [number, number] = [0, 0]
-  let minDistance = Number.MAX_VALUE
-
-  /** A multipolygon consists of an array of polygons which consist of an array of lines which consist of an array of points. Points themselves are an array of 2 numbers, a longitude and a latitude. */
+/** GeoJSON Polygon/MultiPolygon feature for Turf */
+function toTurfFeature(coordinates: number[][][] | number[][][][]): Polygon | MultiPolygon {
   const isMultiPolygon = Array.isArray(coordinates[0][0][0])
 
-  coordinates.flat(isMultiPolygon ? 2 : 1).forEach((point) => {
-    const [lon, lat] = point as number[]
-    const distance = Math.hypot(lon - center[0], lat - center[1])
+  return isMultiPolygon
+    ? { type: 'MultiPolygon', coordinates: coordinates as number[][][][] }
+    : { type: 'Polygon', coordinates: coordinates as number[][][] }
+}
 
-    if (distance < minDistance) {
-      minDistance = distance
-      nearestPoint = point as [number, number]
-    }
-  })
+/**
+ * Returns a point that is guaranteed to be inside the polygon (or multipolygon).
+ * Used when flying to a UDR so the map pin is unambiguously inside the chosen zone,
+ * avoiding edge points where overlapping polygons can cause the wrong zone to be selected.
+ *
+ * @param coordinates Polygon or MultiPolygon coordinates (GeoJSON format)
+ */
+export const findPointInsidePolygon = (
+  coordinates: number[][][] | number[][][][],
+): [number, number] => {
+  const firstPolygon = Array.isArray(coordinates[0][0][0]) ? coordinates[0] : coordinates
+  const feature = toTurfFeature(firstPolygon as number[][][])
+  const centroid = findPolygonCenter(coordinates)
 
-  if (nearestPoint[0] === 0 || nearestPoint[1] === 0) {
-    return center
+  if (booleanPointInPolygon(centroid, feature)) {
+    return centroid
   }
 
-  return nearestPoint
+  // Centroid is outside (e.g. concave polygon). Find an interior point by
+  // walking from the middle of the first edge in perpendicular direction.
+
+  const firstVertex = firstPolygon[0][0] as [number, number]
+  const secondVertex = firstPolygon[0][1] as [number, number]
+  const middleVertex = [
+    (firstVertex[0] + secondVertex[0]) / 2,
+    (firstVertex[1] + secondVertex[1]) / 2,
+  ]
+  // Calculate the perpendicular vector and normalize it to a unit vector of a reasonable length.
+  const perpendicular = [firstVertex[1] - secondVertex[1], secondVertex[0] - firstVertex[0]]
+  const normalizationScalar = 0.000_07 / Math.hypot(perpendicular[0], perpendicular[1])
+
+  for (let i = 1; i <= 2; i += 1) {
+    // Walk in both directions to ensure we find a point inside the polygon
+    const sign = (-1) ** i
+    const lon = middleVertex[0] + normalizationScalar * sign * perpendicular[0]
+    const lat = middleVertex[1] + normalizationScalar * sign * perpendicular[1]
+
+    if (booleanPointInPolygon([lon, lat], feature)) {
+      return [lon, lat]
+    }
+  }
+
+  // Fallback: return first vertex
+  return firstVertex
 }

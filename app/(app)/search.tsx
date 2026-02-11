@@ -12,7 +12,7 @@ import FlexRow from '@/components/shared/FlexRow'
 import { useTranslation } from '@/hooks/useTranslation'
 import { GeocodingFeature } from '@/modules/arcgis/types'
 import { isGeocodingFeature, UdrZoneFeature } from '@/modules/map/types'
-import { findMostCenterPointInPolygon } from '@/modules/map/utils/findPolygonCenter'
+import { findPointInsidePolygon } from '@/modules/map/utils/findPolygonCenter'
 import { useMapStoreContext } from '@/state/MapStoreProvider/useMapStoreContext'
 
 const SearchScreen = () => {
@@ -43,7 +43,7 @@ const SearchScreen = () => {
         if (isGeocodingFeature(newValue)) {
           flyTo?.(newValue.center)
         } else {
-          flyTo?.(findMostCenterPointInPolygon(newValue.geometry.coordinates))
+          flyTo?.(findPointInsidePolygon(newValue.geometry.coordinates))
         }
       }, 100)
 
