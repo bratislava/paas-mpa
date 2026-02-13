@@ -1,5 +1,5 @@
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
-import { MultiPolygon, Polygon } from 'geojson'
+import booleanIntersects from '@turf/boolean-intersects'
+import { MultiPolygon, Point, Polygon } from 'geojson'
 
 export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [number, number] => {
   let sumLon = 0
@@ -22,7 +22,13 @@ export const findPolygonCenter = (coordinates: number[][][] | number[][][][]): [
 }
 
 /** GeoJSON Polygon/MultiPolygon feature for Turf */
-function toTurfFeature(coordinates: number[][][] | number[][][][]): Polygon | MultiPolygon {
+function toTurfFeature(
+  coordinates: number[] | number[][][] | number[][][][],
+): Point | Polygon | MultiPolygon {
+  if (!Array.isArray(coordinates[0])) {
+    return { type: 'Point', coordinates: coordinates as [number, number] }
+  }
+
   const isMultiPolygon = Array.isArray(coordinates[0][0][0])
 
   return isMultiPolygon
@@ -44,7 +50,7 @@ export const findPointInsidePolygon = (
   const feature = toTurfFeature(firstPolygon as number[][][])
   const centroid = findPolygonCenter(coordinates)
 
-  if (booleanPointInPolygon(centroid, feature)) {
+  if (booleanIntersects(toTurfFeature(centroid), feature)) {
     return centroid
   }
 
@@ -59,15 +65,17 @@ export const findPointInsidePolygon = (
   ]
   // Calculate the perpendicular vector and normalize it to a unit vector of a reasonable length.
   const perpendicular = [firstVertex[1] - secondVertex[1], secondVertex[0] - firstVertex[0]]
-  const normalizationScalar = 0.000_07 / Math.hypot(perpendicular[0], perpendicular[1])
+  const normalizationScalar = 0.0001 / Math.hypot(perpendicular[0], perpendicular[1])
 
-  for (let i = 1; i <= 2; i += 1) {
+  for (let i = 1; i <= 10; i += 1) {
     // Walk in both directions to ensure we find a point inside the polygon
     const sign = (-1) ** i
-    const lon = middleVertex[0] + normalizationScalar * sign * perpendicular[0]
-    const lat = middleVertex[1] + normalizationScalar * sign * perpendicular[1]
+    const reducedScalar = normalizationScalar / i
 
-    if (booleanPointInPolygon([lon, lat], feature)) {
+    const lon = middleVertex[0] + sign * reducedScalar * perpendicular[0]
+    const lat = middleVertex[1] + sign * reducedScalar * perpendicular[1]
+
+    if (booleanIntersects(toTurfFeature([lon, lat]), feature)) {
       return [lon, lat]
     }
   }
