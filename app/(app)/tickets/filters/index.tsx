@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Link, router } from 'expo-router'
 import { useRef } from 'react'
 import { View } from 'react-native'
@@ -23,7 +23,7 @@ const TicketsFiltersScreen = () => {
   const filters = useTicketsFiltersStoreContext()
   const translationMapTimeframes = useTimeframesTranslation()
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
 
   const { ecvs, timeframe } = filters
 
@@ -42,7 +42,7 @@ const TicketsFiltersScreen = () => {
       key: 'fromTo',
       label: t('TicketsFilters.fromTo'),
       value: translationMapTimeframes[timeframe],
-      onPress: () => bottomSheetRef.current?.expand(),
+      onPress: () => bottomSheetRef.current?.present(),
     },
   ]
 
