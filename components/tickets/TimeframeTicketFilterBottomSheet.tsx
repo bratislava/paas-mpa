@@ -1,4 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet'
 import { forwardRef, Fragment, useCallback, useRef } from 'react'
 import { View } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
@@ -13,11 +17,11 @@ import { FilterTimeframesEnum } from '@/state/TicketsFiltersStoreProvider/Ticket
 import { useTicketsFiltersStoreContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreContext'
 import { useTicketsFiltersStoreUpdateContext } from '@/state/TicketsFiltersStoreProvider/useTicketsFiltersStoreUpdateContext'
 
-const TimeframeTicketFilterBottomSheet = forwardRef<BottomSheet>((_, ref) => {
+const TimeframeTicketFilterBottomSheet = forwardRef<BottomSheetModal>((_, ref) => {
   const reducedMotion = useReducedMotion()
 
-  const localRef = useRef<BottomSheet>(null)
-  const refSetter = useMultipleRefsSetter(localRef, ref)
+  const localRef = useRef<BottomSheetModal>(null)
+  const refSetter = useMultipleRefsSetter<BottomSheetModal | null>(localRef, ref)
 
   const { timeframe: selectedTimeframe } = useTicketsFiltersStoreContext()
   const onPurchaseStoreUpdate = useTicketsFiltersStoreUpdateContext()
@@ -39,11 +43,9 @@ const TimeframeTicketFilterBottomSheet = forwardRef<BottomSheet>((_, ref) => {
   )
 
   return (
-    <BottomSheet
+    <BottomSheetModal
       ref={refSetter}
       backdropComponent={renderBackdrop}
-      // Bottom sheet needs to be hidden by default
-      index={-1}
       enableDynamicSizing
       enablePanDownToClose
       animateOnMount={!reducedMotion}
@@ -64,7 +66,7 @@ const TimeframeTicketFilterBottomSheet = forwardRef<BottomSheet>((_, ref) => {
           ))}
         </View>
       </BottomSheetContent>
-    </BottomSheet>
+    </BottomSheetModal>
   )
 })
 
