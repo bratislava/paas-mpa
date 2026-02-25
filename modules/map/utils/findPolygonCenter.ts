@@ -46,9 +46,11 @@ function toTurfFeature(
 export const findPointInsidePolygon = (
   coordinates: number[][][] | number[][][][],
 ): [number, number] => {
-  const firstPolygon = Array.isArray(coordinates[0][0][0]) ? coordinates[0] : coordinates
-  const feature = toTurfFeature(firstPolygon as number[][][])
-  const centroid = findPolygonCenter(coordinates)
+  const firstPolygon = (
+    Array.isArray(coordinates[0][0][0]) ? coordinates[0] : coordinates
+  ) as number[][][]
+  const feature = toTurfFeature(firstPolygon)
+  const centroid = findPolygonCenter(firstPolygon)
 
   if (booleanIntersects(toTurfFeature(centroid), feature)) {
     return centroid
@@ -58,11 +60,11 @@ export const findPointInsidePolygon = (
   // walking from the middle of the first edge in perpendicular direction.
 
   const firstVertex = firstPolygon[0][0] as [number, number]
-  const secondVertex = firstPolygon[0][1] as [number, number]
+  const secondVertex = firstPolygon[0][1]
   const middleVertex = [
     (firstVertex[0] + secondVertex[0]) / 2,
     (firstVertex[1] + secondVertex[1]) / 2,
-  ]
+  ] as [number, number]
   // Calculate the perpendicular vector and normalize it to a unit vector of a reasonable length.
   const perpendicular = [firstVertex[1] - secondVertex[1], secondVertex[0] - firstVertex[0]]
   const normalizationScalar = 0.0001 / Math.hypot(perpendicular[0], perpendicular[1])
