@@ -4,7 +4,7 @@ import { useMMKVObject } from 'react-native-mmkv'
 import { environment } from '@/environment'
 
 export const AUTHENTICATION_TOKENS_KEY = 'authentication_tokens'
-export const AUTH_SCOPES = ['user.read', 'offline_access']
+export const AUTH_SCOPES = ['user.read', 'offline_access', 'identity:verified']
 
 const baseOauth2Url = `${environment.cityAccountApiUrl}/oauth2`
 

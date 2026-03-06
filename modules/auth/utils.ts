@@ -1,6 +1,7 @@
 import { refreshAsync, TokenResponse } from 'expo-auth-session'
 import { jwtDecode } from 'jwt-decode'
 
+import { environment } from '@/environment'
 import { AUTH_SCOPES, discovery } from '@/modules/auth/hooks/useCityAccountAuthTokens'
 
 type User = {
@@ -9,7 +10,7 @@ type User = {
   roles: string[]
 }
 
-const clientId = '3ei88tn1gkvhfqpfckkd6plopr'
+const clientId = environment.cityAccountCognitoClientId
 
 export const getUserFromTokens = (tokens: TokenResponse): User => {
   const { accessToken } = tokens

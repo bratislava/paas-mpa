@@ -1,4 +1,5 @@
 import { getCurrentUser, updateUserAttribute } from 'aws-amplify/auth'
+import { router } from 'expo-router'
 import { ScrollView } from 'react-native'
 
 import { ImageDataSecurity } from '@/assets/onboarding-slides'
@@ -23,9 +24,12 @@ const NotificationsHowPage = () => {
 
       const user = await getCurrentUser()
 
-      if (!user.signInDetails?.loginId) return
+      if (!user.signInDetails?.loginId) {
+        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+        return
+      }
 
-      const fetchResponse = await fetch(`${environment.cityAccountApiUrl}/mpa/register-phone`, {
+      const fetchResponse = await fetch(`${environment.cityAccountApiUrl}/paas-mpa/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,10 +41,11 @@ const NotificationsHowPage = () => {
       })
 
       const data = await fetchResponse.json()
-      console.log('fetchResponse data', data)
 
-      // TODO check if user is verified
-      if (!data.bloomreachId) return
+      if (!data.bloomreachId) {
+        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+        return
+      }
 
       await updateUserAttribute({
         userAttribute: {
@@ -49,8 +54,10 @@ const NotificationsHowPage = () => {
         },
       })
       await configureExponea(data.bloomreachId, user.signInDetails.loginId)
+
+      router.replace({ pathname: '/settings/notifications/result', params: { status: 'success' } })
     } catch (error) {
-      console.log('Error during City Account sign-in:', error)
+      router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
     }
   }
 
