@@ -39,6 +39,10 @@ module.exports = {
       },
       package: 'com.bratislava.paas',
       googleServicesFile: './google-services.json',
+      blockedPermissions: [
+        'android.permission.READ_MEDIA_IMAGES',
+        'android.permission.READ_MEDIA_VIDEO',
+      ],
     },
     experiments: {
       tsconfigPaths: true,
