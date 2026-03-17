@@ -6,9 +6,13 @@ import Icon from '@/components/shared/Icon'
 import PressableStyled from '@/components/shared/PressableStyled'
 import Typography from '@/components/shared/Typography'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 export const ConnectWithCityAccountMenuLink = () => {
   const { t } = useTranslation()
+  const { bloomreachId } = useAuthStoreContext()
+
+  if (bloomreachId) return null
 
   return (
     <Link asChild href="/settings/notifications">

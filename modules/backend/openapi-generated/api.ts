@@ -132,6 +132,69 @@ export interface CaptureUncapturedPaymentsRequestDto {
 /**
  *
  * @export
+ * @interface ConsentItemDto
+ */
+export interface ConsentItemDto {
+  /**
+   * Consent category
+   * @type {string}
+   * @memberof ConsentItemDto
+   */
+  category: ConsentItemDtoCategoryEnum
+  /**
+   * Whether the consent is valid (active)
+   * @type {boolean}
+   * @memberof ConsentItemDto
+   */
+  valid: boolean
+  /**
+   * Consent message if available
+   * @type {string}
+   * @memberof ConsentItemDto
+   */
+  message?: string | null
+  /**
+   * Timestamp when consent was given
+   * @type {number}
+   * @memberof ConsentItemDto
+   */
+  timestamp?: number | null
+  /**
+   * Timestamp until when consent is valid
+   * @type {number}
+   * @memberof ConsentItemDto
+   */
+  until?: number | null
+}
+
+export const ConsentItemDtoCategoryEnum = {
+  FineSms: 'PARKING-FINE-SMS',
+  FineEmail: 'PARKING-FINE-EMAIL',
+  FinePush: 'PARKING-FINE-PUSH',
+  CardExpirationSms: 'PARKING-CARD-EXPIRATION-SMS',
+  CardExpirationEmail: 'PARKING-CARD-EXPIRATION-EMAIL',
+  CardExpirationPush: 'PARKING-CARD-EXPIRATION-PUSH',
+} as const
+
+export type ConsentItemDtoCategoryEnum =
+  (typeof ConsentItemDtoCategoryEnum)[keyof typeof ConsentItemDtoCategoryEnum]
+
+/**
+ *
+ * @export
+ * @interface ConsentResponseDto
+ */
+export interface ConsentResponseDto {
+  /**
+   * List of user consents
+   * @type {Array<ConsentItemDto>}
+   * @memberof ConsentResponseDto
+   */
+  consents: Array<ConsentItemDto>
+}
+/**
+ *
+ * @export
  * @interface CreatePushNotificationAnnouncementDto
  */
 export interface CreatePushNotificationAnnouncementDto {
@@ -1004,6 +1067,7 @@ export const SERVICEERROR = {
   TicketMissingParkdotsId: 'TICKET_MISSING_PARKDOTS_ID',
   PaymentResponseIncorrect: 'PAYMENT_RESPONSE_INCORRECT',
   UnsupportedFileType: 'UNSUPPORTED_FILE_TYPE',
+  BloomreachError: 'BLOOMREACH_ERROR',
 } as const
 
 export type SERVICEERROR = (typeof SERVICEERROR)[keyof typeof SERVICEERROR]
@@ -1675,6 +1739,90 @@ export interface TicketsResponseDto {
    * @memberof TicketsResponseDto
    */
   paginationInfo: PaginationInfo
+}
+/**
+ *
+ * @export
+ * @interface TrackConsentChangeBodyDto
+ */
+export interface TrackConsentChangeBodyDto {
+  /**
+   *
+   * @type {TrackConsentChangePropertiesDto}
+   * @memberof TrackConsentChangeBodyDto
+   */
+  properties: TrackConsentChangePropertiesDto
+}
+/**
+ *
+ * @export
+ * @interface TrackConsentChangePropertiesDto
+ */
+export interface TrackConsentChangePropertiesDto {
+  /**
+   * Whether consent was accepted or rejected
+   * @type {string}
+   * @memberof TrackConsentChangePropertiesDto
+   */
+  action: TrackConsentChangePropertiesDtoActionEnum
+  /**
+   * Consent category (e.g. PARKING-FINE-SMS)
+   * @type {string}
+   * @memberof TrackConsentChangePropertiesDto
+   */
+  category: TrackConsentChangePropertiesDtoCategoryEnum
+  /**
+   *
+   * @type {TrackConsentChangePropertiesDtoValidUntil}
+   * @memberof TrackConsentChangePropertiesDto
+   */
+  valid_until: TrackConsentChangePropertiesDtoValidUntil
+  /**
+   * Optional message or source of the consent
+   * @type {string}
+   * @memberof TrackConsentChangePropertiesDto
+   */
+  message?: string
+}
+
+export const TrackConsentChangePropertiesDtoActionEnum = {
+  Accept: 'accept',
+  Reject: 'reject',
+} as const
+
+export type TrackConsentChangePropertiesDtoActionEnum =
+  (typeof TrackConsentChangePropertiesDtoActionEnum)[keyof typeof TrackConsentChangePropertiesDtoActionEnum]
+export const TrackConsentChangePropertiesDtoCategoryEnum = {
+  FineSms: 'PARKING-FINE-SMS',
+  FineEmail: 'PARKING-FINE-EMAIL',
+  FinePush: 'PARKING-FINE-PUSH',
+  CardExpirationSms: 'PARKING-CARD-EXPIRATION-SMS',
+  CardExpirationEmail: 'PARKING-CARD-EXPIRATION-EMAIL',
+  CardExpirationPush: 'PARKING-CARD-EXPIRATION-PUSH',
+} as const
+
+export type TrackConsentChangePropertiesDtoCategoryEnum =
+  (typeof TrackConsentChangePropertiesDtoCategoryEnum)[keyof typeof TrackConsentChangePropertiesDtoCategoryEnum]
+
+/**
+ * @type TrackConsentChangePropertiesDtoValidUntil
+ * How long the consent is valid
+ * @export
+ */
+export type TrackConsentChangePropertiesDtoValidUntil = number | string
+
+/**
+ *
+ * @export
+ * @interface TrackConsentChangeResponseDto
+ */
+export interface TrackConsentChangeResponseDto {
+  /**
+   * Whether the consent change was tracked successfully
+   * @type {boolean}
+   * @memberof TrackConsentChangeResponseDto
+   */
+  success: boolean
 }
 /**
  *
@@ -2630,6 +2778,223 @@ export class AnnouncementsApi extends BaseAPI {
   ) {
     return AnnouncementsApiFp(this.configuration)
       .announcementsControllerInsertAnnouncement(saveAnnouncementDto, options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+}
+
+/**
+ * ConsentApi - axios parameter creator
+ * @export
+ */
+export const ConsentApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     * Retrieves all consent preferences for the authenticated user from Bloomreach
+     * @summary Get user consents from Bloomreach
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    consentControllerGetConsent: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/consent`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+    /**
+     * Sends a consent accept/reject event to Bloomreach for the authenticated user
+     * @summary Track a consent change
+     * @param {TrackConsentChangeBodyDto} trackConsentChangeBodyDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    consentControllerTrackConsentChange: async (
+      trackConsentChangeBodyDto: TrackConsentChangeBodyDto,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'trackConsentChangeBodyDto' is not null or undefined
+      assertParamExists(
+        'consentControllerTrackConsentChange',
+        'trackConsentChangeBodyDto',
+        trackConsentChangeBodyDto,
+      )
+      const localVarPath = `/consent`
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL)
+      let baseOptions
+      if (configuration) {
+        baseOptions = configuration.baseOptions
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options }
+      const localVarHeaderParameter = {} as any
+      const localVarQueryParameter = {} as any
+
+      // authentication cognito required
+      // http bearer authentication required
+      await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter)
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        trackConsentChangeBodyDto,
+        localVarRequestOptions,
+        configuration,
+      )
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      }
+    },
+  }
+}
+
+/**
+ * ConsentApi - functional programming interface
+ * @export
+ */
+export const ConsentApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = ConsentApiAxiosParamCreator(configuration)
+  return {
+    /**
+     * Retrieves all consent preferences for the authenticated user from Bloomreach
+     * @summary Get user consents from Bloomreach
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async consentControllerGetConsent(
+      options?: AxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ConsentResponseDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.consentControllerGetConsent(options)
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+    /**
+     * Sends a consent accept/reject event to Bloomreach for the authenticated user
+     * @summary Track a consent change
+     * @param {TrackConsentChangeBodyDto} trackConsentChangeBodyDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async consentControllerTrackConsentChange(
+      trackConsentChangeBodyDto: TrackConsentChangeBodyDto,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TrackConsentChangeResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.consentControllerTrackConsentChange(
+        trackConsentChangeBodyDto,
+        options,
+      )
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
+    },
+  }
+}
+
+/**
+ * ConsentApi - factory interface
+ * @export
+ */
+export const ConsentApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = ConsentApiFp(configuration)
+  return {
+    /**
+     * Retrieves all consent preferences for the authenticated user from Bloomreach
+     * @summary Get user consents from Bloomreach
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    consentControllerGetConsent(options?: AxiosRequestConfig): AxiosPromise<ConsentResponseDto> {
+      return localVarFp
+        .consentControllerGetConsent(options)
+        .then((request) => request(axios, basePath))
+    },
+    /**
+     * Sends a consent accept/reject event to Bloomreach for the authenticated user
+     * @summary Track a consent change
+     * @param {TrackConsentChangeBodyDto} trackConsentChangeBodyDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    consentControllerTrackConsentChange(
+      trackConsentChangeBodyDto: TrackConsentChangeBodyDto,
+      options?: AxiosRequestConfig,
+    ): AxiosPromise<TrackConsentChangeResponseDto> {
+      return localVarFp
+        .consentControllerTrackConsentChange(trackConsentChangeBodyDto, options)
+        .then((request) => request(axios, basePath))
+    },
+  }
+}
+
+/**
+ * ConsentApi - object-oriented interface
+ * @export
+ * @class ConsentApi
+ * @extends {BaseAPI}
+ */
+export class ConsentApi extends BaseAPI {
+  /**
+   * Retrieves all consent preferences for the authenticated user from Bloomreach
+   * @summary Get user consents from Bloomreach
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ConsentApi
+   */
+  public consentControllerGetConsent(options?: AxiosRequestConfig) {
+    return ConsentApiFp(this.configuration)
+      .consentControllerGetConsent(options)
+      .then((request) => request(this.axios, this.basePath))
+  }
+
+  /**
+   * Sends a consent accept/reject event to Bloomreach for the authenticated user
+   * @summary Track a consent change
+   * @param {TrackConsentChangeBodyDto} trackConsentChangeBodyDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ConsentApi
+   */
+  public consentControllerTrackConsentChange(
+    trackConsentChangeBodyDto: TrackConsentChangeBodyDto,
+    options?: AxiosRequestConfig,
+  ) {
+    return ConsentApiFp(this.configuration)
+      .consentControllerTrackConsentChange(trackConsentChangeBodyDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 }

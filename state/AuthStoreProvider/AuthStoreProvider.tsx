@@ -11,6 +11,7 @@ type GlobalContextProps = {
   signUpPhone: string | null
   user: AuthUser | null
   isLoading: boolean
+  bloomreachId: string | null
 }
 
 export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
@@ -27,6 +28,7 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
     signUpPhone: null,
     user: null,
     isLoading: true,
+    bloomreachId: null,
   })
 
   const onAuthStoreUpdate = useCallback(
@@ -47,10 +49,11 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
 
   const onConfigureExponea = useCallback(async () => {
     const bloomreachId = await getBloomreachId()
+    onAuthStoreUpdate({ bloomreachId: bloomreachId ?? null })
     if (values.user?.signInDetails?.loginId && bloomreachId) {
       await configureExponea(bloomreachId, values.user.signInDetails.loginId)
     }
-  }, [values.user?.signInDetails?.loginId])
+  }, [onAuthStoreUpdate, values.user?.signInDetails?.loginId])
 
   useEffect(() => {
     onConfigureExponea()

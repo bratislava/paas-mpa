@@ -11,10 +11,12 @@ import Button from '@/components/shared/Button'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useCityAccountSignIn } from '@/modules/auth/hooks/useCityAccountSignIn'
+import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 
 const NotificationsHowPage = () => {
   const { t } = useTranslation()
   const { signIn } = useCityAccountSignIn()
+  const updateAuthStore = useAuthStoreUpdateContext()
 
   const handleSignIn = async () => {
     try {
@@ -26,6 +28,7 @@ const NotificationsHowPage = () => {
 
       if (!user.signInDetails?.loginId) {
         router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+
         return
       }
 
@@ -36,27 +39,29 @@ const NotificationsHowPage = () => {
           Authorization: `Bearer ${res.accessToken}`,
         },
         body: JSON.stringify({
-          phone: user.signInDetails.loginId,
+          phoneNumber: user.signInDetails.loginId,
         }),
       })
 
       const data = await fetchResponse.json()
 
-      if (!data.bloomreachId) {
+      if (!data.bloomreachContactId) {
         router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+
         return
       }
 
       await updateUserAttribute({
         userAttribute: {
           attributeKey: 'custom:bloomreachId',
-          value: data.bloomreachId,
+          value: data.bloomreachContactId,
         },
       })
-      await configureExponea(data.bloomreachId, user.signInDetails.loginId)
+      await configureExponea(data.bloomreachContactId, user.signInDetails.loginId)
+      updateAuthStore({ bloomreachId: data.bloomreachContactId })
 
       router.replace({ pathname: '/settings/notifications/result', params: { status: 'success' } })
-    } catch (error) {
+    } catch {
       router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
     }
   }

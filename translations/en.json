@@ -74,6 +74,8 @@
   "bloomreachNotifications.modal.actionConfirm": "Register",
   "bloomreachNotifications.modal.text": "TODO: Notifikácie o pokutách a parkovacích kartách",
   "bloomreachNotifications.modal.title": "TODO: Chcete dostávať SMS a e-mail upozornenia ak zaparkujete nesprávne a upozornenia o prípadnej pokute?",
+  "bloomreachNotifications.consents.error.text": "Failed to load notification preferences. Please try again.",
+  "bloomreachNotifications.consents.mutationError": "Failed to update notification preference. Please try again.",
   "bloomreachNotifications.result.error.action": "Try again",
   "bloomreachNotifications.result.error.text": "An error occurred during registration. Please try again.",
   "bloomreachNotifications.result.error.title": "Registration failed",

@@ -74,6 +74,8 @@
   "bloomreachNotifications.modal.actionConfirm": "Registrovať",
   "bloomreachNotifications.modal.text": "Chcete dostávať SMS a e-mail upozornenia ak zaparkujete nesprávne a upozornenia o prípadnej pokute?",
   "bloomreachNotifications.modal.title": "Notifikácie o pokutách \na parkovacích kartách",
+  "bloomreachNotifications.consents.error.text": "Nepodarilo sa načítať nastavenia upozornení. Skúste to znova.",
+  "bloomreachNotifications.consents.mutationError": "Nepodarilo sa aktualizovať nastavenie upozornenia. Skúste to znova.",
   "bloomreachNotifications.result.error.action": "Registrovať/Prihlásiť",
   "bloomreachNotifications.result.error.text": "Ľutujeme, ale PAAS aplikáciu sa nepodarilo spárovať s vašim Bratislavským kontom. Skúste to znova.",
   "bloomreachNotifications.result.error.title": "Spárovanie zlyhalo",

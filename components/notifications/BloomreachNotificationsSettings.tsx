@@ -1,12 +1,13 @@
 import { BloomreachNotificationControls } from '@/components/notifications/BloomreachNotificationControls'
 import { BloomreachNotificationCallout } from '@/components/notifications/BloomreachNotificationsCallout'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 export const BloomreachNotificationSettings = () => {
-  return (
-    <>
-      <BloomreachNotificationCallout />
+  const { bloomreachId } = useAuthStoreContext()
 
-      <BloomreachNotificationControls />
-    </>
-  )
+  if (!bloomreachId) {
+    return <BloomreachNotificationCallout />
+  }
+
+  return <BloomreachNotificationControls />
 }

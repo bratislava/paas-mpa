@@ -1,11 +1,11 @@
 import { exchangeCodeAsync, makeRedirectUri, Prompt, useAuthRequest } from 'expo-auth-session'
 
+import { environment } from '@/environment'
 import {
   AUTH_SCOPES,
   discovery,
   useCityAccountAuthTokens,
 } from '@/modules/auth/hooks/useCityAccountAuthTokens'
-import { environment } from '@/environment'
 
 export const useCityAccountSignIn = () => {
   const [, setTokens] = useCityAccountAuthTokens()
@@ -27,34 +27,29 @@ export const useCityAccountSignIn = () => {
   )
 
   const signIn = async () => {
-    try {
-      const codeResponse = await promptAsync()
+    const codeResponse = await promptAsync()
 
-      if (request && codeResponse?.type === 'success' && discovery) {
-        const res = await exchangeCodeAsync(
-          {
-            clientId: environment.cityAccountCognitoClientId,
-            scopes: [`api://${environment.cityAccountCognitoClientId}/user_auth`, ...AUTH_SCOPES],
-            code: codeResponse.params.code,
-            extraParams: request.codeVerifier
-              ? {
-                  code_verifier: request.codeVerifier,
-                }
-              : undefined,
-            redirectUri,
-          },
-          discovery,
-        )
+    if (request && codeResponse?.type === 'success' && discovery) {
+      const res = await exchangeCodeAsync(
+        {
+          clientId: environment.cityAccountCognitoClientId,
+          scopes: [`api://${environment.cityAccountCognitoClientId}/user_auth`, ...AUTH_SCOPES],
+          code: codeResponse.params.code,
+          extraParams: request.codeVerifier
+            ? {
+                code_verifier: request.codeVerifier,
+              }
+            : undefined,
+          redirectUri,
+        },
+        discovery,
+      )
 
-        if (res.accessToken) {
-          setTokens(res)
+      if (res.accessToken) {
+        setTokens(res)
 
-          return res
-        }
+        return res
       }
-    } catch (error) {
-      console.error('Error during City Account sign-in:', error)
-      throw error
     }
   }
 
