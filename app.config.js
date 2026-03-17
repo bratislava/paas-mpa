@@ -3,7 +3,7 @@ module.exports = {
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.8.3',
+    version: '1.8.6',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -37,6 +37,10 @@ module.exports = {
       },
       package: 'com.bratislava.paas',
       googleServicesFile: './google-services.json',
+      blockedPermissions: [
+        'android.permission.READ_MEDIA_IMAGES',
+        'android.permission.READ_MEDIA_VIDEO',
+      ],
     },
     experiments: {
       tsconfigPaths: true,
@@ -82,6 +86,7 @@ module.exports = {
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      'expo-web-browser',
       [
         '@bacons/apple-targets',
         {

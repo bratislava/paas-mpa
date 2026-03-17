@@ -520,6 +520,12 @@ export interface InitiatePaymentRequestDto {
    * @memberof InitiatePaymentRequestDto
    */
   paygateLanguage?: Language
+  /**
+   * Localized UDR name for display purposes (e.g., Live Activities)
+   * @type {string}
+   * @memberof InitiatePaymentRequestDto
+   */
+  localizedUdr?: string
 }
 
 /**
@@ -1203,6 +1209,19 @@ export interface SaveUserSettingsDto {
    * @memberof SaveUserSettingsDto
    */
   language?: string
+}
+/**
+ *
+ * @export
+ * @interface SendPushNotificationDto
+ */
+export interface SendPushNotificationDto {
+  /**
+   * List of user IDs to send the notification to
+   * @type {Array<string>}
+   * @memberof SendPushNotificationDto
+   */
+  userIds?: Array<string>
 }
 /**
  *
@@ -4282,15 +4301,23 @@ export const PushNotificationAnnouncementsApiAxiosParamCreator = function (
      * Queues a push notification announcement for sending to all devices
      * @summary Send a push notification announcement
      * @param {number} id
+     * @param {SendPushNotificationDto} sendPushNotificationDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     pushNotificationAnnouncementsControllerSend: async (
       id: number,
+      sendPushNotificationDto: SendPushNotificationDto,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
       assertParamExists('pushNotificationAnnouncementsControllerSend', 'id', id)
+      // verify required parameter 'sendPushNotificationDto' is not null or undefined
+      assertParamExists(
+        'pushNotificationAnnouncementsControllerSend',
+        'sendPushNotificationDto',
+        sendPushNotificationDto,
+      )
       const localVarPath = `/push-notification-announcements/{id}/send`.replace(
         `{${'id'}}`,
         encodeURIComponent(String(id)),
@@ -4310,6 +4337,8 @@ export const PushNotificationAnnouncementsApiAxiosParamCreator = function (
       // http bearer authentication required
       await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+      localVarHeaderParameter['Content-Type'] = 'application/json'
+
       setSearchParams(localVarUrlObj, localVarQueryParameter)
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {}
       localVarRequestOptions.headers = {
@@ -4317,6 +4346,11 @@ export const PushNotificationAnnouncementsApiAxiosParamCreator = function (
         ...headersFromBaseOptions,
         ...options.headers,
       }
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        sendPushNotificationDto,
+        localVarRequestOptions,
+        configuration,
+      )
 
       return {
         url: toPathString(localVarUrlObj),
@@ -4475,15 +4509,21 @@ export const PushNotificationAnnouncementsApiFp = function (configuration?: Conf
      * Queues a push notification announcement for sending to all devices
      * @summary Send a push notification announcement
      * @param {number} id
+     * @param {SendPushNotificationDto} sendPushNotificationDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async pushNotificationAnnouncementsControllerSend(
       id: number,
+      sendPushNotificationDto: SendPushNotificationDto,
       options?: AxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerSend(id, options)
+        await localVarAxiosParamCreator.pushNotificationAnnouncementsControllerSend(
+          id,
+          sendPushNotificationDto,
+          options,
+        )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
     },
     /**
@@ -4592,15 +4632,17 @@ export const PushNotificationAnnouncementsApiFactory = function (
      * Queues a push notification announcement for sending to all devices
      * @summary Send a push notification announcement
      * @param {number} id
+     * @param {SendPushNotificationDto} sendPushNotificationDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     pushNotificationAnnouncementsControllerSend(
       id: number,
+      sendPushNotificationDto: SendPushNotificationDto,
       options?: AxiosRequestConfig,
     ): AxiosPromise<void> {
       return localVarFp
-        .pushNotificationAnnouncementsControllerSend(id, options)
+        .pushNotificationAnnouncementsControllerSend(id, sendPushNotificationDto, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -4702,13 +4744,18 @@ export class PushNotificationAnnouncementsApi extends BaseAPI {
    * Queues a push notification announcement for sending to all devices
    * @summary Send a push notification announcement
    * @param {number} id
+   * @param {SendPushNotificationDto} sendPushNotificationDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof PushNotificationAnnouncementsApi
    */
-  public pushNotificationAnnouncementsControllerSend(id: number, options?: AxiosRequestConfig) {
+  public pushNotificationAnnouncementsControllerSend(
+    id: number,
+    sendPushNotificationDto: SendPushNotificationDto,
+    options?: AxiosRequestConfig,
+  ) {
     return PushNotificationAnnouncementsApiFp(this.configuration)
-      .pushNotificationAnnouncementsControllerSend(id, options)
+      .pushNotificationAnnouncementsControllerSend(id, sendPushNotificationDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
@@ -7973,7 +8020,7 @@ export const VerifiedEmailsApiAxiosParamCreator = function (configuration?: Conf
     },
     /**
      *
-     * @summary Get all verified emails associated with the user
+     * @summary Get all emails with parking cards associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
@@ -8132,7 +8179,7 @@ export const VerifiedEmailsApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary Get all verified emails associated with the user
+     * @summary Get all emails with parking cards associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
@@ -8231,7 +8278,7 @@ export const VerifiedEmailsApiFactory = function (
     },
     /**
      *
-     * @summary Get all verified emails associated with the user
+     * @summary Get all emails with parking cards associated with the user
      * @param {number} [page] Page number
      * @param {number} [pageSize] Items per page
      * @param {*} [options] Override http request option.
@@ -8321,7 +8368,7 @@ export class VerifiedEmailsApi extends BaseAPI {
 
   /**
    *
-   * @summary Get all verified emails associated with the user
+   * @summary Get all emails with parking cards associated with the user
    * @param {number} [page] Page number
    * @param {number} [pageSize] Items per page
    * @param {*} [options] Override http request option.

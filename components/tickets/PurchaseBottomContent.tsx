@@ -77,6 +77,9 @@ const PurchaseBottomContent = ({
             <Typography>
               {t('PurchaseScreen.warnings.differentEnd', {
                 time: formatTime(new Date(priceQuery.data.ticketEnd), locale),
+                interpolation: {
+                  escapeValue: false,
+                },
               })}
             </Typography>
           </Panel>

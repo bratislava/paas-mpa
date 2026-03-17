@@ -10,7 +10,7 @@ import { interpolate } from '@/utils/interpolate'
 
 const HIDE_MARKER_ON_ZOOM_OVER = 13.5
 const DEBOUNCE_TIME = 50
-const QUERY_RECT_SIZE = 5
+const QUERY_RECT_SIZE = 3
 
 type Dependencies = {
   map: MapView | null
