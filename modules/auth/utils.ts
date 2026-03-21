@@ -10,7 +10,7 @@ type User = {
   roles: string[]
 }
 
-const clientId = environment.cityAccountCognitoClientId
+const clientId = environment.cityAccountOAuthClientId
 
 export const getUserFromTokens = (tokens: TokenResponse): User => {
   const { accessToken } = tokens

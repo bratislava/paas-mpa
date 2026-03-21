@@ -17,7 +17,7 @@ export const useCityAccountSignIn = () => {
 
   const [request, , promptAsync] = useAuthRequest(
     {
-      clientId: environment.cityAccountCognitoClientId,
+      clientId: environment.cityAccountOAuthClientId,
       scopes: AUTH_SCOPES,
       redirectUri,
       // prompt value is here to force user to login with credentials to get rid of the issue with multiple accounts on one device.
@@ -32,8 +32,8 @@ export const useCityAccountSignIn = () => {
     if (request && codeResponse?.type === 'success' && discovery) {
       const res = await exchangeCodeAsync(
         {
-          clientId: environment.cityAccountCognitoClientId,
-          scopes: [`api://${environment.cityAccountCognitoClientId}/user_auth`, ...AUTH_SCOPES],
+          clientId: environment.cityAccountOAuthClientId,
+          scopes: [`api://${environment.cityAccountOAuthClientId}/user_auth`, ...AUTH_SCOPES],
           code: codeResponse.params.code,
           extraParams: request.codeVerifier
             ? {
