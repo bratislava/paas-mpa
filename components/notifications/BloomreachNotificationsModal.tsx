@@ -12,11 +12,11 @@ import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreConte
 
 export const BloomreachNotificationModal = () => {
   const { t } = useTranslation()
-  const { bloomreachId } = useAuthStoreContext()
+  const { bloomreachId, isLoading } = useAuthStoreContext()
   const { shouldShowModal, snoozeForWeek, dismissPermanently } =
     useBloomreachNotificationModalStorage()
 
-  if (bloomreachId || !shouldShowModal) {
+  if (isLoading || bloomreachId || !shouldShowModal) {
     return null
   }
 

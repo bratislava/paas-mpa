@@ -1,11 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
+import { View } from 'react-native'
 
 import SwitchControl from '@/components/controls/notifications/SwitchControl'
 import ContentWithAvatar from '@/components/screen-layout/ContentWithAvatar'
 import LoadingScreen from '@/components/screen-layout/LoadingScreen'
 import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
+import Divider from '@/components/shared/Divider'
 import Field from '@/components/shared/Field'
+import Markdown from '@/components/shared/Markdown'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { consentsOptions } from '@/modules/backend/constants/queryOptions'
@@ -93,13 +96,22 @@ export const BloomreachNotificationControls = () => {
 
   return (
     <>
-      <Field label={t('bloomreachNotifications.fine.title')}>
+      <Divider />
+
+      <Field
+        label={t('bloomreachNotifications.fine.title')}
+        helptext={t('bloomreachNotifications.fine.description')}
+      >
+        <View className="pb-5 pt-2">
+          <Markdown>{t('bloomreachNotifications.fine.viewFullText')}</Markdown>
+        </View>
+
         <SwitchControl
           title={t('bloomreachNotifications.fine.email.title')}
           description={t('bloomreachNotifications.fine.email.description')}
           accessibilityLabel={t('bloomreachNotifications.fine.email.accessibilityLabel')}
           value={getConsentValue(ConsentItemDtoCategoryEnum.FineEmail)}
-          disabled={mutation.isPending}
+          // disabled={mutation.isPending}
           onValueChange={(value) =>
             handleChange(TrackConsentChangePropertiesDtoCategoryEnum.FineEmail, value)
           }
@@ -109,12 +121,12 @@ export const BloomreachNotificationControls = () => {
           description={t('bloomreachNotifications.fine.sms.description')}
           accessibilityLabel={t('bloomreachNotifications.fine.sms.accessibilityLabel')}
           value={getConsentValue(ConsentItemDtoCategoryEnum.FineSms)}
-          disabled={mutation.isPending}
+          // disabled={mutation.isPending}
           onValueChange={(value) =>
             handleChange(TrackConsentChangePropertiesDtoCategoryEnum.FineSms, value)
           }
         />
-        <SwitchControl
+        {/* <SwitchControl
           title={t('bloomreachNotifications.fine.push.title')}
           description={t('bloomreachNotifications.fine.push.description')}
           accessibilityLabel={t('bloomreachNotifications.fine.push.accessibilityLabel')}
@@ -123,10 +135,10 @@ export const BloomreachNotificationControls = () => {
           onValueChange={(value) =>
             handleChange(TrackConsentChangePropertiesDtoCategoryEnum.FinePush, value)
           }
-        />
+        /> */}
       </Field>
 
-      <Field label={t('bloomreachNotifications.expiration.title')}>
+      {/* <Field label={t('bloomreachNotifications.expiration.title')}>
         <SwitchControl
           title={t('bloomreachNotifications.expiration.email.title')}
           description={t('bloomreachNotifications.expiration.email.description')}
@@ -157,7 +169,7 @@ export const BloomreachNotificationControls = () => {
             handleChange(TrackConsentChangePropertiesDtoCategoryEnum.CardExpirationPush, value)
           }
         />
-      </Field>
+      </Field> */}
     </>
   )
 }
