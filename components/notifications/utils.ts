@@ -2,7 +2,6 @@ import { fetchUserAttributes } from 'aws-amplify/auth'
 import Exponea from 'react-native-exponea-sdk'
 
 import { environment } from '@/environment'
-import { clearExponea } from '@/modules/cognito/utils'
 
 export const getBloomreachId = async (): Promise<string | undefined> => {
   try {
@@ -21,10 +20,8 @@ export const configureExponea = async (bloomreachId: string, phoneNumber: string
     const isConfigured = await Exponea.isConfigured()
 
     if (isConfigured) {
-      // TESTING ONLY: stop and clear if SDK is already configured
-      // return early if SDK is already configured
-      await clearExponea()
-      console.log('Exponea SDK already configured, resetting...')
+      // SDK is already configured, avoid unnecessary reconfiguration in production.
+      return
     }
 
     await Exponea.configure({
