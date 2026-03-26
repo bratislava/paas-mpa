@@ -32,7 +32,7 @@
     "@react-native-firebase/app": "~23.3.1",
     "@react-native-firebase/messaging": "~23.3.1",
     "@react-native-masked-view/masked-view": "0.3.2",
-    "@rnmapbox/maps": "^10.1.44",
+    "@rnmapbox/maps": "~10.1.45",
     "@sentry/react-native": "~7.2.0",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "~5.74.4",
