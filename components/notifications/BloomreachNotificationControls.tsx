@@ -83,6 +83,28 @@ export const BloomreachNotificationControls = () => {
     query.data?.consents.find((c) => c.category === category)?.valid ?? false
 
   const handleChange = (category: TrackConsentChangePropertiesDtoCategoryEnum, value: boolean) => {
+    // Connect Email and SMS settings - SMS notifications are allowed only when Email notifications are enabled.
+    // When disabling Email notification, disable also SMS notification
+    if (category === TrackConsentChangePropertiesDtoCategoryEnum.FineEmail && value === false) {
+      mutation.mutate({
+        properties: {
+          action: TrackConsentChangePropertiesDtoActionEnum.Reject,
+          category: TrackConsentChangePropertiesDtoCategoryEnum.FineSms,
+          valid_until: 'unlimited',
+        },
+      })
+    }
+    // When enabling SMS notification, enable also Email notification
+    if (category === TrackConsentChangePropertiesDtoCategoryEnum.FineSms && value === true) {
+      mutation.mutate({
+        properties: {
+          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
+          category: TrackConsentChangePropertiesDtoCategoryEnum.FineEmail,
+          valid_until: 'unlimited',
+        },
+      })
+    }
+
     mutation.mutate({
       properties: {
         action: value

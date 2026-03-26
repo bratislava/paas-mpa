@@ -11,6 +11,11 @@ import Button from '@/components/shared/Button'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useCityAccountSignIn } from '@/modules/auth/hooks/useCityAccountSignIn'
+import { clientApi } from '@/modules/backend/client-api'
+import {
+  TrackConsentChangePropertiesDtoActionEnum,
+  TrackConsentChangePropertiesDtoCategoryEnum,
+} from '@/modules/backend/openapi-generated'
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 
 const NotificationsHowPage = () => {
@@ -57,6 +62,23 @@ const NotificationsHowPage = () => {
           value: data.bloomreachContactId,
         },
       })
+
+      // Set PARKING-GENERAL and PARKING-FINE-EMAIL consents to true
+      await clientApi.consentControllerTrackConsentChange({
+        properties: {
+          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
+          category: TrackConsentChangePropertiesDtoCategoryEnum.General,
+          valid_until: 'unlimited',
+        },
+      })
+      await clientApi.consentControllerTrackConsentChange({
+        properties: {
+          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
+          category: TrackConsentChangePropertiesDtoCategoryEnum.FineEmail,
+          valid_until: 'unlimited',
+        },
+      })
+
       await configureExponea(data.bloomreachContactId, user.signInDetails.loginId)
       updateAuthStore({ bloomreachId: data.bloomreachContactId })
 

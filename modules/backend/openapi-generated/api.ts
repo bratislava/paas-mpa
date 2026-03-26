@@ -168,6 +168,7 @@ export interface ConsentItemDto {
 }
 
 export const ConsentItemDtoCategoryEnum = {
+  General: 'PARKING-GENERAL',
   FineSms: 'PARKING-FINE-SMS',
   FineEmail: 'PARKING-FINE-EMAIL',
   FinePush: 'PARKING-FINE-PUSH',
@@ -1793,6 +1794,7 @@ export const TrackConsentChangePropertiesDtoActionEnum = {
 export type TrackConsentChangePropertiesDtoActionEnum =
   (typeof TrackConsentChangePropertiesDtoActionEnum)[keyof typeof TrackConsentChangePropertiesDtoActionEnum]
 export const TrackConsentChangePropertiesDtoCategoryEnum = {
+  General: 'PARKING-GENERAL',
   FineSms: 'PARKING-FINE-SMS',
   FineEmail: 'PARKING-FINE-EMAIL',
   FinePush: 'PARKING-FINE-PUSH',
