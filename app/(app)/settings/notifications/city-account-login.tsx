@@ -48,6 +48,12 @@ const NotificationsHowPage = () => {
         }),
       })
 
+      if (!fetchResponse.ok) {
+        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+
+        return
+      }
+
       const data = await fetchResponse.json()
 
       if (!data.bloomreachContactId) {

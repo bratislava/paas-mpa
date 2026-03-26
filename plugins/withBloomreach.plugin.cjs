@@ -1,3 +1,5 @@
+// Bloomreach Engagement React Native SDK setup for Expo managed apps
+// Reference: https://documentation.bloomreach.com/engagement/docs/react-native-sdk-setup#expo-managed-apps
 /* eslint-disable @typescript-eslint/no-var-requires */
 const {
   withPlugins,
