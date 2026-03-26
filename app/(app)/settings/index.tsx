@@ -12,6 +12,7 @@ import { useReducedMotion } from 'react-native-reanimated'
 import LanguageSelectField from '@/components/controls/LanguageSelectField'
 import NotificationSettings from '@/components/controls/notifications/NotificationSettings'
 import ActionRow from '@/components/list-rows/ActionRow'
+import { BloomreachNotificationSettings } from '@/components/notifications/BloomreachNotificationsSettings'
 import BottomSheetContent from '@/components/screen-layout/BottomSheet/BottomSheetContent'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
@@ -75,13 +76,15 @@ const SettingsPage = () => {
         ),
       }}
     >
-      <ScreenContent className="flex-1">
-        <ScrollView className="h-full" contentContainerStyle={{ gap: 20, flexGrow: 1 }}>
+      <ScrollView className="h-full">
+        <ScreenContent className="flex-1">
           <LanguageSelectField />
 
           <NotificationSettings />
-        </ScrollView>
-      </ScreenContent>
+
+          <BloomreachNotificationSettings />
+        </ScreenContent>
+      </ScrollView>
 
       <BottomSheetModal
         ref={bottomSheetRef}

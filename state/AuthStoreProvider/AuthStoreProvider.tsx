@@ -3,6 +3,7 @@ import { SplashScreen } from 'expo-router'
 import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { configureExponea, getBloomreachId } from '@/components/notifications/utils'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
@@ -10,6 +11,8 @@ type GlobalContextProps = {
   signUpPhone: string | null
   user: AuthUser | null
   isLoading: boolean
+  bloomreachId: string | null
+  isBloomreachInitialized: boolean
 }
 
 export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
@@ -26,6 +29,8 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
     signUpPhone: null,
     user: null,
     isLoading: true,
+    bloomreachId: null,
+    isBloomreachInitialized: false,
   })
 
   const onAuthStoreUpdate = useCallback(
@@ -43,6 +48,18 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   useEffectOnce(() => {
     onFetchUser()
   })
+
+  const onConfigureExponea = useCallback(async () => {
+    const bloomreachId = await getBloomreachId()
+    onAuthStoreUpdate({ bloomreachId: bloomreachId ?? null, isBloomreachInitialized: true })
+    if (values.user?.signInDetails?.loginId && bloomreachId) {
+      await configureExponea(bloomreachId, values.user.signInDetails.loginId)
+    }
+  }, [onAuthStoreUpdate, values.user?.signInDetails?.loginId])
+
+  useEffect(() => {
+    onConfigureExponea()
+  }, [onConfigureExponea])
 
   // Hide splash screen when user is loaded and translations are ready
   useEffect(() => {

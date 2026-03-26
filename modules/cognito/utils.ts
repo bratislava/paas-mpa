@@ -1,5 +1,6 @@
 import { fetchAuthSession, getCurrentUser, signIn } from 'aws-amplify/auth'
 import { router } from 'expo-router'
+import Exponea from 'react-native-exponea-sdk'
 
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 
@@ -74,5 +75,18 @@ export const signInAndRedirectToConfirm = async ({
   }
   if (nextStep.signInStep === 'DONE') {
     router.push({ pathname: '/confirm-sign-in', params: { phone } })
+  }
+}
+
+export const clearExponea = async () => {
+  const isConfigured = await Exponea.isConfigured()
+  if (!isConfigured) {
+    return
+  }
+  try {
+    await Exponea.stopIntegration()
+    await Exponea.clearLocalCustomerData()
+  } catch (error) {
+    console.log('error clearing exponea', error)
   }
 }

@@ -1,11 +1,9 @@
 module.exports = {
   expo: {
-    // TODO: Check if `newArchEnabled: true` is the default or not (if so remove it)
-    newArchEnabled: true,
     name: 'PAAS',
     slug: 'paas',
     scheme: 'paasmpa',
-    version: '1.8.6',
+    version: '1.9.0',
     orientation: 'portrait',
     icon: './assets/app/icon.png',
     userInterfaceStyle: 'light',
@@ -83,10 +81,12 @@ module.exports = {
         },
       ],
       ['./plugins/liveActivities.plugin.cjs', 'custom'],
+      ['./plugins/withBloomreach.plugin.cjs'],
       'expo-router',
       'expo-localization',
       'expo-font',
       'expo-secure-store',
+      'expo-web-browser',
       [
         '@bacons/apple-targets',
         {

@@ -24,6 +24,14 @@ export const environment = {
     'EXPO_PUBLIC_COGNITO_CLIENT_ID',
     process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
   ),
+  cityAccountApiUrl: assertEnv(
+    'EXPO_PUBLIC_CITY_ACCOUNT_API_URL',
+    process.env.EXPO_PUBLIC_CITY_ACCOUNT_API_URL,
+  ),
+  cityAccountOAuthClientId: assertEnv(
+    'EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID',
+    process.env.EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID,
+  ),
   awsRegion: assertEnv('EXPO_PUBLIC_AWS_REGION', process.env.EXPO_PUBLIC_AWS_REGION),
   apiUrl: assertEnv('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL),
   minioBucket: assertEnv('EXPO_PUBLIC_MINIO_BUCKET', process.env.EXPO_PUBLIC_MINIO_BUCKET),
@@ -31,5 +39,17 @@ export const environment = {
   turnstileSiteKey: assertEnv(
     'EXPO_PUBLIC_TURNSTILE_SITE_KEY',
     process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY,
+  ),
+  bloomreachProjectToken: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN',
+    process.env.EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN,
+  ),
+  bloomreachAuthorizationToken: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN',
+    process.env.EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN,
+  ),
+  bloomreachBaseUrl: assertEnv(
+    'EXPO_PUBLIC_BLOOMREACH_BASE_URL',
+    process.env.EXPO_PUBLIC_BLOOMREACH_BASE_URL,
   ),
 }

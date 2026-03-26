@@ -245,3 +245,10 @@ export const questionnaireOptions = (id: number, enabled: boolean) => {
     select: (res) => res.data,
   })
 }
+
+export const consentsOptions = () =>
+  queryOptions({
+    queryKey: ['Consents'],
+    queryFn: () => clientApi.consentControllerGetConsent(),
+    select: (res) => res.data,
+  })
