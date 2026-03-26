@@ -16,7 +16,8 @@
     "doctor:fix": "expo install --fix",
     "parse-translations": "i18next",
     "generate-client-paas-mpa": "openapi-generator-cli generate -i https://paas-mpa-backend.staging.bratislava.sk/api-json -g typescript-axios -o modules/backend/openapi-generated && node ./modules/backend/utils/fix-client.js && prettier --write modules/backend/openapi-generated",
-    "generate-clients": "yarn generate-client-paas-mpa"
+    "generate-clients": "yarn generate-client-paas-mpa",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@aws-amplify/react-native": "^1.2.0",
@@ -140,6 +141,8 @@
     "eslint-plugin-unicorn": "^51.0.1",
     "eslint-plugin-xss": "^0.1.12",
     "i18next-parser": "^9.3.0",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "~3.3.3",
     "prettier-plugin-tailwindcss": "~0.6.6",
     "react-native-svg-transformer": "~1.3.0",
@@ -154,7 +157,7 @@
   },
   "private": true,
   "volta": {
-    "node": "18.18.2",
+    "node": "20.20.2",
     "yarn": "1.22.19"
   }
 }

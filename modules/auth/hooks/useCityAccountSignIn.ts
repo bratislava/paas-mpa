@@ -26,6 +26,7 @@ export const useCityAccountSignIn = () => {
     discovery,
   )
 
+  // eslint-disable-next-line consistent-return
   const signIn = async () => {
     const codeResponse = await promptAsync()
 
