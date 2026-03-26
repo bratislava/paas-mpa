@@ -70,8 +70,8 @@
         "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAAGcjNLteOzO0fDF",
         "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.bratislava.sk",
         "EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID": "hov220d0ru512ens1a9o9iksi",
-        "EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN": "ff16a1f4-72c1-11f0-9001-ae69061b36fb",
-        "EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN": "o0cnwko7vn629o4isbbxc9d7mr8cqfxudpgy8xxnoz4vektgdxr5mc2pg9g3nrn4",
+        "EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN": "928b11e0-b9dc-11ee-9cbe-aeb901fdedf8",
+        "EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN": "2qvx8f3yzykz1dc6m5cstuh21e7x4aptkiuf1tmp4tc5uv2yxf31dajprxaolgev",
         "EXPO_PUBLIC_BLOOMREACH_BASE_URL": "https://api.eu1.exponea.com"
       },
       "channel": "prod",
