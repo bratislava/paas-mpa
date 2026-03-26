@@ -1,5 +1,6 @@
 import { getCurrentUser, updateUserAttribute } from 'aws-amplify/auth'
 import { router } from 'expo-router'
+import { useState } from 'react'
 import { ScrollView } from 'react-native'
 
 import { ImageDataSecurity } from '@/assets/onboarding-slides'
@@ -22,8 +23,10 @@ const NotificationsHowPage = () => {
   const { t } = useTranslation()
   const { signIn } = useCityAccountSignIn()
   const updateAuthStore = useAuthStoreUpdateContext()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSignIn = async () => {
+    setIsLoading(true)
     try {
       const res = await signIn()
 
@@ -91,6 +94,8 @@ const NotificationsHowPage = () => {
       router.replace({ pathname: '/settings/notifications/result', params: { status: 'success' } })
     } catch {
       router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -98,7 +103,9 @@ const NotificationsHowPage = () => {
     <ScreenViewCentered
       title={t('Settings.title')}
       actionButton={
-        <Button onPress={handleSignIn}>{t('bloomreachNotification.how.action')}</Button>
+        <Button loading={isLoading} onPress={handleSignIn}>
+          {t('bloomreachNotification.how.action')}
+        </Button>
       }
       backgroundVariant="white"
     >
