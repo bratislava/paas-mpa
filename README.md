@@ -21,7 +21,7 @@ yarn
 yarn start
 
 # list existing builds (most of the time, you'll install the latest matching from here)
-east build:list
+eas build:list
 
 # Android emulator or device build
 eas build --profile development --platform android
