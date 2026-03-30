@@ -74,10 +74,10 @@
   "bloomreachNotifications.fine.title": "Informácie o pokute",
   "bloomreachNotifications.fine.viewFullText": "[Zobraziť úplné znenie súhlasu](https://paas.sk/wp-content/uploads/2026/03/Uplne-znenie-suhlasu-so-spracovanim-udajov-z-Bratislavskeho-konta.pdf)",
   "bloomreachNotifications.how.items": [
-    "Overenie je jednorazové a zaberie len pár minút.",
-    "Vytvoríte si účet, alebo sa prihlásite do existujúceho účtu v Bratislavskom konte – automaticky vás tam presmerujeme.",
-    "Ak už máte Bratislavské konto zriadené (vrátane overenia totožnosti), stačí sa prihlásiť a potvrdiť svoj súhlas.",
-    "Ak nemáte overenú totožnosť, budete potrebovať rodné číslo a číslo identifikačného dokladu (OP)."
+    "Overenie je jednorazové a **zaberie len pár minút.**",
+    "Vytvoríte si účet, alebo sa prihlásite do existujúceho účtu v **Bratislavskom konte** – automaticky vás tam presmerujeme.",
+    "Ak už **máte Bratislavské konto zriadené** (vrátane overenia totožnosti), stačí sa prihlásiť a potvrdiť svoj súhlas.",
+    "Ak nemáte overenú totožnosť, budete potrebovať **rodné číslo a číslo identifikačného dokladu (OP).**"
   ],
   "bloomreachNotifications.how.title": "Ako to prebehne?",
   "bloomreachNotifications.modal.actionCancel": "Pripomenúť neskôr",
@@ -92,10 +92,10 @@
   "bloomreachNotifications.result.success.text": "Budete dostávať upozornenia o pokutách a expirácii vašich parkovacích kariet.",
   "bloomreachNotifications.result.success.title": "Registrácia úspešná",
   "bloomreachNotifications.why.items": [
-    "Prepojením s Bratislavským kontom overíme vašu totožnosť a získate prístup k novým funkciám (vrátane notifikácií o pokute).",
-    "Budeme vám môcť posielať upozornenie o pokute za nepovolené parkovanie ešte skôr, než príde poštou.",
-    "Upozornenia vám prídu na telefónne číslo a e-mail, ktorý zadáte pri registrácii do Bratislavského konta.",
-    "Ide o citlivé informácie viazané na držiteľa vozidla, preto ich nemôžeme posielať nikomu inému."
+    "Prepojením s Bratislavským kontom **overíme vašu totožnosť** a **získate prístup k novým funkciám (vrátane notifikácií o pokute).**",
+    "Budeme vám môcť posielať **upozornenie o pokute za nepovolené parkovanie** ešte skôr, než príde poštou.",
+    "Upozornenia vám prídu na **telefónne číslo** a **e-mail**, ktorý zadáte pri registrácii do Bratislavského konta.",
+    "Ide o **citlivé informácie viazané na držiteľa vozidla**, preto ich nemôžeme posielať nikomu inému."
   ],
   "bloomreachNotifications.why.title": "Prečo sa prepojiť?",
   "BoughtTicket.licencePlate": "Evidenčné číslo",

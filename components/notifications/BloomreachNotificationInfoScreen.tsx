@@ -1,6 +1,7 @@
 import { View } from 'react-native'
 
 import Icon from '@/components/shared/Icon'
+import Markdown from '@/components/shared/Markdown'
 import Typography from '@/components/shared/Typography'
 
 type Props = {
@@ -19,8 +20,9 @@ export const BloomreachNotificationInfoScreenItem = ({ title, items, icon }: Pro
         {items.map((item) => (
           <View key={item} className="flex-row items-start gap-3">
             <Icon name="check" size={24} className="text-green" />
-
-            <Typography className="flex-1">{item}</Typography>
+            <View className="flex-1">
+              <Markdown>{item}</Markdown>
+            </View>
           </View>
         ))}
       </View>
