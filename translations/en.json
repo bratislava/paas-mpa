@@ -74,10 +74,10 @@
   "bloomreachNotifications.fine.title": "Fines notification",
   "bloomreachNotifications.fine.viewFullText": "[View full text of consent](https://paas.sk/wp-content/uploads/2026/03/Uplne-znenie-suhlasu-so-spracovanim-udajov-z-Bratislavskeho-konta.pdf)",
   "bloomreachNotifications.how.items": [
-    "Verification is a one-time process and takes only a few minutes.",
-    "You will either create a new Bratislava Account or sign in to your existing account — you will be redirected automatically.",
-    "If you already have a verified Bratislava Account, just sign in and confirm your consent.",
-    "If your identity is not verified, you will need your birth number and ID card number."
+    "Verification is a one-time process and **takes only a few minutes.**",
+    "You will either create a new **Bratislava Account** or sign in to your existing account — you will be redirected automatically.",
+    "If you **already have a verified Bratislava Account**, just sign in and confirm your consent.",
+    "If your identity is not verified, you will need your **birth number** and **ID card number (OP).**"
   ],
   "bloomreachNotifications.how.title": "How do we verify your profile?",
   "bloomreachNotifications.modal.actionCancel": "Remind me later",
@@ -92,10 +92,10 @@
   "bloomreachNotifications.result.success.text": "You will now receive notifications about fines and parking card expirations.",
   "bloomreachNotifications.result.success.title": "Registration successful",
   "bloomreachNotifications.why.items": [
-    "We will send you notifications about fines for unauthorized parking before they arrive by mail.",
-    "Notifications will be sent to the phone number and email you provided in your Bratislava Account.",
-    "These are sensitive details linked to your vehicle, so we cannot send them to anyone else.",
-    "Linking your Bratislava Account allows us to verify your identity and gives you access to new features."
+    "We will send you notifications about **fines for unauthorized parking** before they arrive by mail.",
+    "Notifications will be sent to **the phone number** and **email** you provided in your Bratislava Account.",
+    "These are **sensitive details linked to your vehicle**, so we cannot send them to anyone else.",
+    "Linking your Bratislava Account allows us to **verify your identity** and **gives you access to new features.**"
   ],
   "bloomreachNotifications.why.title": "Why join?",
   "BoughtTicket.licencePlate": "Car plate number",
