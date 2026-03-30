@@ -72,7 +72,7 @@ const NotificationsHowPage = () => {
         },
       })
 
-      // Set PARKING-GENERAL and PARKING-FINE-EMAIL consents to true
+      // Set PARKING-GENERAL, PARKING-FINE-EMAIL, PARKING-FINE-SMS consents to true
       await clientApi.consentControllerTrackConsentChange({
         properties: {
           action: TrackConsentChangePropertiesDtoActionEnum.Accept,
@@ -84,6 +84,13 @@ const NotificationsHowPage = () => {
         properties: {
           action: TrackConsentChangePropertiesDtoActionEnum.Accept,
           category: TrackConsentChangePropertiesDtoCategoryEnum.FineEmail,
+          valid_until: 'unlimited',
+        },
+      })
+      await clientApi.consentControllerTrackConsentChange({
+        properties: {
+          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
+          category: TrackConsentChangePropertiesDtoCategoryEnum.FineSms,
           valid_until: 'unlimited',
         },
       })
