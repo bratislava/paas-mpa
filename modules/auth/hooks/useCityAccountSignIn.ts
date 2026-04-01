@@ -28,7 +28,8 @@ export const useCityAccountSignIn = () => {
 
   // eslint-disable-next-line consistent-return
   const signIn = async () => {
-    const codeResponse = await promptAsync()
+    // Keep Chrome Custom Tab alive in Android recents when user switches to email app during verification
+    const codeResponse = await promptAsync({ showInRecents: true })
 
     if (request && codeResponse?.type === 'success' && discovery) {
       const res = await exchangeCodeAsync(
