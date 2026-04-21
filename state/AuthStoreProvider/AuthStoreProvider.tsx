@@ -1,13 +1,13 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import { AuthUser } from 'aws-amplify/auth'
 import { SplashScreen } from 'expo-router'
-import { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { configureExponea, getBloomreachId } from '@/components/notifications/utils'
-import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 
-type GlobalContextProps = {
+type GlobalStateProps = {
   signUpPhone: string | null
   user: AuthUser | null
   isLoading: boolean
@@ -15,17 +15,24 @@ type GlobalContextProps = {
   isBloomreachInitialized: boolean
 }
 
+type GlobalContextProps = GlobalStateProps & {
+  onFetchUser: () => Promise<void>
+}
+
 export const AuthStoreContext = createContext<GlobalContextProps | null>(null)
 AuthStoreContext.displayName = 'AuthStoreContext'
 
 export const AuthStoreUpdateContext = createContext<
-  ((newValues: Partial<GlobalContextProps>) => void) | null
+  ((newValues: Partial<GlobalStateProps>) => void) | null
 >(null)
 
 const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   const { ready } = useTranslation()
 
-  const [values, setValues] = useState<GlobalContextProps>({
+  const { isInternetReachable } = useNetInfo()
+  const hasFetchedUser = useRef(false)
+
+  const [values, setValues] = useState<GlobalStateProps>({
     signUpPhone: null,
     user: null,
     isLoading: true,
@@ -34,20 +41,24 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
   })
 
   const onAuthStoreUpdate = useCallback(
-    (newValues: Partial<GlobalContextProps>) => {
+    (newValues: Partial<GlobalStateProps>) => {
       setValues((prevValues) => ({ ...prevValues, ...newValues }))
     },
     [setValues],
   )
 
-  const onFetchUser = async () => {
+  const onFetchUser = useCallback(async () => {
     const currentUser = await getCurrentAuthenticatedUser()
     onAuthStoreUpdate({ user: currentUser, isLoading: false })
-  }
+  }, [onAuthStoreUpdate])
 
-  useEffectOnce(() => {
-    onFetchUser()
-  })
+  useEffect(() => {
+    if (hasFetchedUser.current) return
+    if (isInternetReachable) {
+      hasFetchedUser.current = true
+      onFetchUser()
+    }
+  }, [isInternetReachable, onFetchUser])
 
   const onConfigureExponea = useCallback(async () => {
     const bloomreachId = await getBloomreachId()
@@ -70,7 +81,9 @@ const AuthStoreProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <AuthStoreUpdateContext.Provider value={onAuthStoreUpdate}>
-      <AuthStoreContext.Provider value={values}>{children}</AuthStoreContext.Provider>
+      <AuthStoreContext.Provider value={{ ...values, onFetchUser }}>
+        {children}
+      </AuthStoreContext.Provider>
     </AuthStoreUpdateContext.Provider>
   )
 }

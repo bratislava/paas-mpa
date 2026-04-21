@@ -1,3 +1,5 @@
+import NetInfo from '@react-native-community/netinfo'
+
 import { getCurrentAuthenticatedUser } from '@/modules/cognito/utils'
 import { getAndChangeUserLanguage } from '@/utils/getAndChangeUserLanguage'
 import { getAppLocale } from '@/utils/getAppLocale'
@@ -11,12 +13,16 @@ export const languageDetectorPlugin = {
   detect: async (callback: (lang: string) => void) => {
     const appLocale = getAppLocale()
 
-    const currentUser = await getCurrentAuthenticatedUser()
-    if (currentUser) {
-      const userLocale = await getAndChangeUserLanguage()
+    // don't attempt getting user without internet connection, as that may result in unexpected logout due to https://github.com/aws-amplify/amplify-js/issues/10393
+    const { isInternetReachable } = await NetInfo.fetch()
+    if (isInternetReachable) {
+      const currentUser = await getCurrentAuthenticatedUser()
+      if (currentUser) {
+        const userLocale = await getAndChangeUserLanguage()
 
-      if (userLocale) {
-        return callback(userLocale)
+        if (userLocale) {
+          return callback(userLocale)
+        }
       }
     }
 
