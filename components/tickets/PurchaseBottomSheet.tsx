@@ -39,85 +39,25 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
     const durationFromPriceDate = getDurationFromPriceData(priceData)
 
     // Auto-expand the bottom sheet when the selected zone has additional information
-    // (e.g. warning that BPK cannot be used in 2e zones), so the user notices it.
+    // (e.g. the warning that BPK cannot be used in 2e zones) so the user notices it.
     //
-    // Calling `expand()` is a no-op until gorhom has finished computing the dynamic
-    // detent (which happens asynchronously on the UI thread after the scroll view
-    // measures its content). To work around this we:
-    //   1. Track the sheet's current snap index via `onChange` so we know when the
-    //      sheet is mounted and which index it's at.
-    //   2. Track the measured content height via `onContentSizeChange`.
-    //   3. Poll `expand()` for up to a second after both signals are ready, until
-    //      the sheet actually moves to a non-collapsed index.
-    // The `lastAutoExpandedFor` ref makes sure we only auto-expand once per zone so
-    // we don't fight the user dragging the sheet back down.
+    // `expand()` is a no-op until gorhom has registered the dynamic content height as
+    // a detent, which happens asynchronously on the UI thread after the scroll view
+    // measures its children. We just retry a few times until it sticks; once it does,
+    // further `expand()` calls become harmless no-ops.
     const additionalInfoText = udr?.additionalInformation ?? null
-
-    // We read all "decision" inputs through refs because gorhom captures the first
-    // `onChange` callback in a worklet and re-invokes it via `runOnJS`, so a closure
-    // over `priceData` / `udr` would be stale. Refs always hold the latest values.
-    const hasAdditionalInformationRef = useRef(false)
-    const priceDataReadyRef = useRef(false)
-    const additionalInfoTextRef = useRef<string | null>(null)
-    const lastAutoExpandedFor = useRef<string | null>(null)
-    const currentIndexRef = useRef<number>(-1)
-    const measuredContentHeightRef = useRef<number>(0)
-
-    hasAdditionalInformationRef.current = Boolean(udr?.additionalInformation)
-    priceDataReadyRef.current = !!priceData
-    additionalInfoTextRef.current = additionalInfoText
-
+    const hasPriceData = !!priceData
     useEffect(() => {
-      if (!hasAdditionalInformationRef.current) {
-        lastAutoExpandedFor.current = null
+      if (!hasPriceData || !additionalInfoText) return undefined
+
+      const intervalId = setInterval(() => localRef.current?.expand(), 100)
+      const timeoutId = setTimeout(() => clearInterval(intervalId), 1000)
+
+      return () => {
+        clearInterval(intervalId)
+        clearTimeout(timeoutId)
       }
-    }, [additionalInfoText])
-
-    const tryAutoExpand = () => {
-      if (
-        !hasAdditionalInformationRef.current ||
-        !priceDataReadyRef.current ||
-        measuredContentHeightRef.current <= HANDLE_HEIGHT ||
-        currentIndexRef.current < 0 ||
-        lastAutoExpandedFor.current === additionalInfoTextRef.current
-      ) {
-        return
-      }
-
-      lastAutoExpandedFor.current = additionalInfoTextRef.current
-
-      let attempts = 0
-      const maxAttempts = 10
-      const intervalMs = 100
-      const intervalId = setInterval(() => {
-        attempts += 1
-        if (currentIndexRef.current > 0 || attempts >= maxAttempts) {
-          clearInterval(intervalId)
-          return
-        }
-        localRef.current?.expand()
-      }, intervalMs)
-      localRef.current?.expand()
-    }
-
-    const handleContentSizeChange = (_width: number, height: number) => {
-      measuredContentHeightRef.current = height
-      tryAutoExpand()
-    }
-
-    const handleChange = (index: number) => {
-      currentIndexRef.current = index
-      tryAutoExpand()
-    }
-
-    // After priceData arrives we may already have all signals ready (mount + content
-    // measured) but neither callback will fire again — so kick off the expand here.
-    useEffect(() => {
-      if (priceData) {
-        tryAutoExpand()
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [priceData, additionalInfoText])
+    }, [hasPriceData, additionalInfoText])
 
     return (
       <BottomSheet
@@ -127,13 +67,12 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
         snapPoints={snapPoints}
         handleComponent={BottomSheetHandleWithShadow}
         animateOnMount={!reducedMotion}
-        onChange={handleChange}
       >
         {/**
          * Better approach for zero height bottom sheet: https://github.com/gorhom/react-native-bottom-sheet/issues/1573
          * fixes dynamic height of bottom sheet
          */}
-        <BottomSheetScrollView scrollEnabled={false} onContentSizeChange={handleContentSizeChange}>
+        <BottomSheetScrollView scrollEnabled={false}>
           {priceData ? (
             <View className="px-5 py-3 g-3">
               <FlexRow>
