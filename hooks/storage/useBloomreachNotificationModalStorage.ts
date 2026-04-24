@@ -15,6 +15,11 @@ export const useBloomreachNotificationModalStorage = () => {
 
   const snoozeForWeek = () => setSnoozedUntil(Date.now() + ONE_WEEK_MS)
   const dismissPermanently = () => setSnoozedUntil(Number.MAX_SAFE_INTEGER)
+  const forceShow = () => {
+    if (snoozedUntil && snoozedUntil < Date.now() + ONE_WEEK_MS) {
+      setSnoozedUntil(0)
+    }
+  }
 
-  return { shouldShowModal, snoozeForWeek, dismissPermanently }
+  return { shouldShowModal, snoozeForWeek, dismissPermanently, forceShow, snoozedUntil }
 }
