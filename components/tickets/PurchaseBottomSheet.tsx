@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { View } from 'react-native'
 import { useReducedMotion } from 'react-native-reanimated'
 
@@ -11,6 +11,7 @@ import FlexRow from '@/components/shared/FlexRow'
 import Panel from '@/components/shared/Panel'
 import Typography from '@/components/shared/Typography'
 import { getDurationFromPriceData } from '@/components/tickets/getDurationFromPriceData'
+import { useMultipleRefsSetter } from '@/hooks/useMultipleRefsSetter'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
 import { GetTicketPriceResponseDto } from '@/modules/backend/openapi-generated'
 import { usePurchaseStoreContext } from '@/state/PurchaseStoreProvider/usePurchaseStoreContext'
@@ -32,11 +33,35 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
     const snapPoints = useMemo(() => [HANDLE_HEIGHT], [])
     const reducedMotion = useReducedMotion()
 
+    const localRef = useRef<BottomSheet>(null)
+    const refSetter = useMultipleRefsSetter(localRef, ref)
+
     const durationFromPriceDate = getDurationFromPriceData(priceData)
+
+    // Auto-expand the bottom sheet when the selected zone has additional information
+    // (e.g. the warning that BPK cannot be used in 2e zones) so the user notices it.
+    //
+    // `expand()` is a no-op until gorhom has registered the dynamic content height as
+    // a detent, which happens asynchronously on the UI thread after the scroll view
+    // measures its children. We just retry a few times until it sticks; once it does,
+    // further `expand()` calls become harmless no-ops.
+    const additionalInfoText = udr?.additionalInformation ?? null
+    const hasPriceData = !!priceData
+    useEffect(() => {
+      if (!hasPriceData || !additionalInfoText) return undefined
+
+      const intervalId = setInterval(() => localRef.current?.expand(), 100)
+      const timeoutId = setTimeout(() => clearInterval(intervalId), 1000)
+
+      return () => {
+        clearInterval(intervalId)
+        clearTimeout(timeoutId)
+      }
+    }, [hasPriceData, additionalInfoText])
 
     return (
       <BottomSheet
-        ref={ref}
+        ref={refSetter}
         enableDynamicSizing
         bottomInset={purchaseButtonContainerHeight}
         snapPoints={snapPoints}
