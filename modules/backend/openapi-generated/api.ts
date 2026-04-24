@@ -1274,6 +1274,12 @@ export interface SaveUserSettingsDto {
    * @memberof SaveUserSettingsDto
    */
   language?: string
+  /**
+   * Set true to send bloomreach notifications for bump
+   * @type {boolean}
+   * @memberof SaveUserSettingsDto
+   */
+  bloomreachNotificationsBump?: boolean
 }
 /**
  *
