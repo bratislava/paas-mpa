@@ -11,7 +11,9 @@ import MapLocationBottomSheet from '@/components/map/MapLocationBottomSheet'
 import MapPointBottomSheet from '@/components/map/MapPointBottomSheet'
 import MapZoneBottomSheet from '@/components/map/MapZoneBottomSheet'
 import IconButton from '@/components/shared/IconButton'
+import { useBloomreachNotificationModalStorage } from '@/hooks/storage/useBloomreachNotificationModalStorage'
 import { useLocale, useTranslation } from '@/hooks/useTranslation'
+import { clientApi } from '@/modules/backend/client-api'
 import { DEFAULT_FILTERS, MapFilters } from '@/modules/map/constants'
 import { useProcessedArcgisData } from '@/modules/map/hooks/useProcessedArcgisData'
 import { MapPointWithTranslationProps, MapUdrZoneWithTranslationProps } from '@/modules/map/types'
@@ -83,6 +85,15 @@ const MapScreen = () => {
     () => (selectedZone ? translateMapObject(selectedZone, locale) : null),
     [selectedZone, locale],
   )
+
+  const { snoozedUntil } = useBloomreachNotificationModalStorage()
+  useEffect(() => {
+    if (snoozedUntil && snoozedUntil < Date.now() + 7 * 24 * 60 * 60 * 1000) {
+      clientApi.usersControllerSaveUserSettings({
+        bloomreachNotificationsBump: true,
+      })
+    }
+  }, [snoozedUntil])
 
   const { isLoading, ...processedData } = useProcessedArcgisData()
 
