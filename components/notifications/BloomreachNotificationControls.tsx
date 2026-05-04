@@ -80,7 +80,7 @@ export const BloomreachNotificationControls = () => {
   }
 
   const getConsentValue = (category: ConsentItemDtoCategoryEnum) =>
-    query.data?.consents.find((c) => c.category === category)?.valid ?? false
+    query.data.consents.find((consent) => consent.category === category)?.valid ?? false
 
   const handleChange = (category: TrackConsentChangePropertiesDtoCategoryEnum, value: boolean) => {
     // Connect Email and SMS settings - SMS notifications are allowed only when Email notifications are enabled.
