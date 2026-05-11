@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import AvatarCircleFeedbackForm from '@/components/info/AvatarCircleFeedbackForm'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
-import { useQuestionnaireStorage } from '@/hooks/useQuestionnaireStorage'
+import { useQuestionnaireStorage } from '@/hooks/storage/useQuestionnaireStorage'
 import { FeedbackFormDto } from '@/modules/backend/openapi-generated'
 import { useQuestionnaireContext } from '@/state/QuestionnaireProvider/useQuestionnaireContext'
 

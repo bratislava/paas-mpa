@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { View } from 'react-native'
 
 import MenuRow from '@/components/list-rows/MenuRow'
+import { ConnectWithCityAccountMenuLink } from '@/components/notifications/ConnectWithCityAccountMenuLink'
 import Modal from '@/components/screen-layout/Modal/Modal'
 import ModalContentWithActions from '@/components/screen-layout/Modal/ModalContentWithActions'
 import { useModal } from '@/components/screen-layout/Modal/useModal'
@@ -120,19 +121,23 @@ const MainMenuScreen = () => {
   return (
     <ScreenView title={t('Navigation.menu')}>
       <ScreenContent className="flex-1 justify-between">
-        <View>
-          {menuItems.map((item, index) =>
-            item === DIVIDER ? (
-              // eslint-disable-next-line react/no-array-index-key
-              <Divider key={`divider-${index}`} className="my-3" />
-            ) : (
-              <Link key={item.path} testID={item.label} asChild href={item.path}>
-                <PressableStyled>
-                  <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
-                </PressableStyled>
-              </Link>
-            ),
-          )}
+        <View className="gap-5">
+          <ConnectWithCityAccountMenuLink />
+
+          <View>
+            {menuItems.map((item, index) =>
+              item === DIVIDER ? (
+                // eslint-disable-next-line react/no-array-index-key
+                <Divider key={`divider-${index}`} className="my-3" />
+              ) : (
+                <Link key={item.path} testID={item.label} asChild href={item.path}>
+                  <PressableStyled>
+                    <MenuRow startIcon={item.icon} label={item.label} endSlot={item.endSlot} />
+                  </PressableStyled>
+                </Link>
+              ),
+            )}
+          </View>
         </View>
 
         <View>

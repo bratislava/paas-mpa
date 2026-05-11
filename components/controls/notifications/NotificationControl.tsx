@@ -15,15 +15,16 @@ const NotificationControl = ({ notificationName, ...rest }: Props) => {
   const { t } = useTranslation()
 
   // TODO test translations
-  const translationsMap = {
+  const translationsMap: Record<
+    typeof notificationName,
+    { title: string; description?: string; accessibilityLabel: string }
+  > = {
     pushNotificationsAboutToEnd: {
       title: t('Settings.type.pushNotificationsAboutToEnd.title'),
-      description: t('Settings.type.pushNotificationsAboutToEnd.description'),
       accessibilityLabel: t('Settings.type.pushNotificationsAboutToEnd.accessibilityLabel'),
     },
     pushNotificationsToEnd: {
       title: t('Settings.type.pushNotificationsToEnd.title'),
-      description: t('Settings.type.pushNotificationsToEnd.description'),
       accessibilityLabel: t('Settings.type.pushNotificationsToEnd.accessibilityLabel'),
     },
     emailNotificationsAboutToEnd: {
@@ -36,10 +37,7 @@ const NotificationControl = ({ notificationName, ...rest }: Props) => {
       description: t('Settings.type.emailNotificationsToEnd.description'),
       accessibilityLabel: t('Settings.type.emailNotificationsToEnd.accessibilityLabel'),
     },
-  } satisfies Record<
-    typeof notificationName,
-    { title: string; description: string; accessibilityLabel: string }
-  >
+  }
 
   return (
     <SwitchControl

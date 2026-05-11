@@ -5,6 +5,7 @@ import * as Device from 'expo-device'
 import { router } from 'expo-router'
 
 import { clientApi } from '@/modules/backend/client-api'
+import { clearExponea } from '@/modules/cognito/utils'
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
 
 /**
@@ -35,6 +36,7 @@ export const useSignOut = () => {
       await signOut()
       // Cleanup the store and redirect to sign in
       onAuthStoreUpdate({ user: null })
+      await clearExponea()
       router.replace('/sign-in')
     } catch (error) {
       console.log('error signing out', error)

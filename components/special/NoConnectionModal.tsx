@@ -9,9 +9,11 @@ import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clientApi } from '@/modules/backend/client-api'
 import { useAxiosResponseInterceptors } from '@/modules/backend/hooks/useAxiosResponseInterceptors'
+import { useAuthStoreContext } from '@/state/AuthStoreProvider/useAuthStoreContext'
 
 const NoConnectionModal = () => {
   const { t } = useTranslation()
+  const { onFetchUser } = useAuthStoreContext()
 
   const [isConnected, setIsConnected] = useState(true)
   const [serverConnectionError, setServerConnectionError] = useState(false)
@@ -24,6 +26,8 @@ const NoConnectionModal = () => {
     onSuccess: () => {
       setIsConnected(true)
       setServerConnectionError(false)
+      // if app is opened without internet, user is not fetched to prevent logout and needs to be refetched once connection is available. Refetching with user already available should not be an issue
+      onFetchUser()
     },
     onError: () => setServerConnectionError(true),
   })

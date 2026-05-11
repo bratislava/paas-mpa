@@ -16,7 +16,12 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-dev",
         "EXPO_PUBLIC_DEPLOYMENT": "development",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.dev.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID": "3ei88tn1gkvhfqpfckkd6plopr",
+        "EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN": "b7d4dc74-b9dc-11ee-9634-f210a1784a31",
+        "EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN": "eguyebc1u8ckfek9gpepjz7u31vdgsu9p5tpxyoh66olj1v1pfwo4s3w1yf6lxsg",
+        "EXPO_PUBLIC_BLOOMREACH_BASE_URL": "https://api.eu1.exponea.com"
       },
       "channel": "development"
     },
@@ -42,7 +47,12 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-staging",
         "EXPO_PUBLIC_DEPLOYMENT": "staging",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAA_XivkZO6ZB5xHQ",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.staging.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID": "4r492nl4bvfo6r5t8hf394pnge",
+        "EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN": "b7d4dc74-b9dc-11ee-9634-f210a1784a31",
+        "EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN": "eguyebc1u8ckfek9gpepjz7u31vdgsu9p5tpxyoh66olj1v1pfwo4s3w1yf6lxsg",
+        "EXPO_PUBLIC_BLOOMREACH_BASE_URL": "https://api.eu1.exponea.com"
       },
       "channel": "staging"
     },
@@ -57,7 +67,12 @@
         "EXPO_PUBLIC_MINIO_BUCKET": "paas-mpa-prod",
         "EXPO_PUBLIC_DEPLOYMENT": "production",
         "EXPO_PUBLIC_SENTRY_DNS": "https://b58eb0384ab7010886ff5cae0417cad5@o701870.ingest.us.sentry.io/4508025288065024",
-        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAAGcjNLteOzO0fDF"
+        "EXPO_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAAGcjNLteOzO0fDF",
+        "EXPO_PUBLIC_CITY_ACCOUNT_API_URL": "https://nest-city-account.bratislava.sk",
+        "EXPO_PUBLIC_CITY_ACCOUNT_OAUTH_CLIENT_ID": "hov220d0ru512ens1a9o9iksi",
+        "EXPO_PUBLIC_BLOOMREACH_PROJECT_TOKEN": "928b11e0-b9dc-11ee-9cbe-aeb901fdedf8",
+        "EXPO_PUBLIC_BLOOMREACH_AUTHORIZATION_TOKEN": "2qvx8f3yzykz1dc6m5cstuh21e7x4aptkiuf1tmp4tc5uv2yxf31dajprxaolgev",
+        "EXPO_PUBLIC_BLOOMREACH_BASE_URL": "https://api.eu1.exponea.com"
       },
       "channel": "prod",
       "resourceClass": "large"

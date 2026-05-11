@@ -4,6 +4,7 @@ import { axiosInstance } from './axios-instance'
 import {
   AnnouncementsApiFactory,
   Configuration,
+  ConsentApiFactory,
   DefaultApiFactory,
   FeedbackFormsApiFactory,
   MobileDevicesApiFactory,
@@ -30,4 +31,5 @@ export const clientApi = {
   ...MobileDevicesApiFactory(...args),
   ...FeedbackFormsApiFactory(...args),
   ...ResourcesApiFactory(...args),
+  ...ConsentApiFactory(...args),
 }

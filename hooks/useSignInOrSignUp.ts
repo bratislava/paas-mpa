@@ -9,6 +9,7 @@ import { clientApi } from '@/modules/backend/client-api'
 import { SaveUserSettingsDto } from '@/modules/backend/openapi-generated'
 import { STATIC_TEMP_PASS } from '@/modules/cognito/amplify'
 import {
+  clearExponea,
   getCurrentAuthenticatedUser,
   signInAndRedirectToConfirm,
   SignInInput,
@@ -99,6 +100,7 @@ export const useSignInOrSignUp = () => {
            */
           await signOut()
           updateAuthStore({ user: null })
+          await clearExponea()
           // Run the process again after sign out automatically. Now user have to press the button again.
           await attemptSignInOrSignUp(signInInput)
         } else {
