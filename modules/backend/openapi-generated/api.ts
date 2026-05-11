@@ -12,26 +12,23 @@
  * Do not edit the class manually.
  */
 
-import type { Configuration } from './configuration'
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios'
 import globalAxios from 'axios'
+import type { Configuration } from './configuration'
 // Some imports not used depending on template conditions
 // @ts-ignore
+import type { RequestArgs } from './base'
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  setApiKeyToObject,
-  setBasicAuthToObject,
-  setBearerAuthToObject,
-  setOAuthToObject,
-  setSearchParams,
-  serializeDataIfNeeded,
-  toPathString,
   createRequestFunction,
+  serializeDataIfNeeded,
+  setBearerAuthToObject,
+  setSearchParams,
+  toPathString,
 } from './common'
-import type { RequestArgs } from './base'
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base'
+import { BASE_PATH, BaseAPI, RequiredError } from './base'
 
 /**
  *
@@ -385,21 +382,21 @@ export interface FeedbackFormsResponseDto {
 /**
  *
  * @export
- * @interface GetTicketPriceRequestDto
+ * @interface GetTicketPriceRequestOptionalEcvDto
  */
-export interface GetTicketPriceRequestDto {
+export interface GetTicketPriceRequestOptionalEcvDto {
   /**
    * Value of NPK UUID
    * @type {string}
-   * @memberof GetTicketPriceRequestDto
+   * @memberof GetTicketPriceRequestOptionalEcvDto
    */
   npkId?: string
   /**
    *
-   * @type {GetTicketPriceTicketInfoRequestDto}
-   * @memberof GetTicketPriceRequestDto
+   * @type {GetTicketPriceTicketInfoRequestOptionalEcvDto}
+   * @memberof GetTicketPriceRequestOptionalEcvDto
    */
-  ticket: GetTicketPriceTicketInfoRequestDto
+  ticket: GetTicketPriceTicketInfoRequestOptionalEcvDto
 }
 /**
  *
@@ -493,12 +490,6 @@ export interface GetTicketPriceResponseDto {
  */
 export interface GetTicketPriceTicketInfoRequestDto {
   /**
-   * Parking vehicle registration number
-   * @type {string}
-   * @memberof GetTicketPriceTicketInfoRequestDto
-   */
-  ecv: string
-  /**
    * Unique identification of parking slot (specific section of parking regulation)
    * @type {string}
    * @memberof GetTicketPriceTicketInfoRequestDto
@@ -522,6 +513,49 @@ export interface GetTicketPriceTicketInfoRequestDto {
    * @memberof GetTicketPriceTicketInfoRequestDto
    */
   parkingStart: string
+  /**
+   * Parking vehicle registration number
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestDto
+   */
+  ecv: string
+}
+/**
+ *
+ * @export
+ * @interface GetTicketPriceTicketInfoRequestOptionalEcvDto
+ */
+export interface GetTicketPriceTicketInfoRequestOptionalEcvDto {
+  /**
+   * Unique identification of parking slot (specific section of parking regulation)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestOptionalEcvDto
+   */
+  udr: string
+  /**
+   * GUID - Unique identification of parking slot (specific section of parking regulation)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestOptionalEcvDto
+   */
+  udrUuid?: string
+  /**
+   * The date and time when parking ends (UTC time in ISO8601 format)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestOptionalEcvDto
+   */
+  parkingEnd: string
+  /**
+   * The date and time when parking ends (UTC time in ISO8601 format)
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestOptionalEcvDto
+   */
+  parkingStart: string
+  /**
+   * Parking vehicle registration number
+   * @type {string}
+   * @memberof GetTicketPriceTicketInfoRequestOptionalEcvDto
+   */
+  ecv?: string
 }
 /**
  *
@@ -5951,19 +5985,19 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
     /**
      *
      * @summary Get ticket price
-     * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
+     * @param {GetTicketPriceRequestOptionalEcvDto} getTicketPriceRequestOptionalEcvDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerGetTicketPrice: async (
-      getTicketPriceRequestDto: GetTicketPriceRequestDto,
+      getTicketPriceRequestOptionalEcvDto: GetTicketPriceRequestOptionalEcvDto,
       options: AxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'getTicketPriceRequestDto' is not null or undefined
+      // verify required parameter 'getTicketPriceRequestOptionalEcvDto' is not null or undefined
       assertParamExists(
         'ticketsControllerGetTicketPrice',
-        'getTicketPriceRequestDto',
-        getTicketPriceRequestDto,
+        'getTicketPriceRequestOptionalEcvDto',
+        getTicketPriceRequestOptionalEcvDto,
       )
       const localVarPath = `/tickets/price`
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5991,7 +6025,7 @@ export const TicketsApiAxiosParamCreator = function (configuration?: Configurati
         ...options.headers,
       }
       localVarRequestOptions.data = serializeDataIfNeeded(
-        getTicketPriceRequestDto,
+        getTicketPriceRequestOptionalEcvDto,
         localVarRequestOptions,
         configuration,
       )
@@ -6656,18 +6690,18 @@ export const TicketsApiFp = function (configuration?: Configuration) {
     /**
      *
      * @summary Get ticket price
-     * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
+     * @param {GetTicketPriceRequestOptionalEcvDto} getTicketPriceRequestOptionalEcvDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async ticketsControllerGetTicketPrice(
-      getTicketPriceRequestDto: GetTicketPriceRequestDto,
+      getTicketPriceRequestOptionalEcvDto: GetTicketPriceRequestOptionalEcvDto,
       options?: AxiosRequestConfig,
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTicketPriceResponseDto>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.ticketsControllerGetTicketPrice(
-        getTicketPriceRequestDto,
+        getTicketPriceRequestOptionalEcvDto,
         options,
       )
       return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)
@@ -6972,16 +7006,16 @@ export const TicketsApiFactory = function (
     /**
      *
      * @summary Get ticket price
-     * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
+     * @param {GetTicketPriceRequestOptionalEcvDto} getTicketPriceRequestOptionalEcvDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     ticketsControllerGetTicketPrice(
-      getTicketPriceRequestDto: GetTicketPriceRequestDto,
+      getTicketPriceRequestOptionalEcvDto: GetTicketPriceRequestOptionalEcvDto,
       options?: AxiosRequestConfig,
     ): AxiosPromise<GetTicketPriceResponseDto> {
       return localVarFp
-        .ticketsControllerGetTicketPrice(getTicketPriceRequestDto, options)
+        .ticketsControllerGetTicketPrice(getTicketPriceRequestOptionalEcvDto, options)
         .then((request) => request(axios, basePath))
     },
     /**
@@ -7264,17 +7298,17 @@ export class TicketsApi extends BaseAPI {
   /**
    *
    * @summary Get ticket price
-   * @param {GetTicketPriceRequestDto} getTicketPriceRequestDto
+   * @param {GetTicketPriceRequestOptionalEcvDto} getTicketPriceRequestOptionalEcvDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof TicketsApi
    */
   public ticketsControllerGetTicketPrice(
-    getTicketPriceRequestDto: GetTicketPriceRequestDto,
+    getTicketPriceRequestOptionalEcvDto: GetTicketPriceRequestOptionalEcvDto,
     options?: AxiosRequestConfig,
   ) {
     return TicketsApiFp(this.configuration)
-      .ticketsControllerGetTicketPrice(getTicketPriceRequestDto, options)
+      .ticketsControllerGetTicketPrice(getTicketPriceRequestOptionalEcvDto, options)
       .then((request) => request(this.axios, this.basePath))
   }
 
