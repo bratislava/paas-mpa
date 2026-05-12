@@ -37,6 +37,7 @@ const PurchaseBottomSheet = forwardRef<BottomSheet, Props>(
     return (
       <BottomSheet
         ref={ref}
+        index={udr?.additionalInformation ? 1 : 0}
         enableDynamicSizing
         bottomInset={purchaseButtonContainerHeight}
         snapPoints={snapPoints}
