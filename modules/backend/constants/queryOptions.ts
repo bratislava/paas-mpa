@@ -3,7 +3,7 @@ import { infiniteQueryOptions, keepPreviousData, queryOptions } from '@tanstack/
 import { CardFilter, ValidityKey } from '@/components/parking-cards/ParkingCardsFilter'
 import { clientApi } from '@/modules/backend/client-api'
 import {
-  GetTicketPriceRequestDto,
+  GetTicketPriceRequestOptionalEcvDto,
   GetTicketProlongationPriceRequestDto,
   Language,
 } from '@/modules/backend/openapi-generated'
@@ -143,7 +143,7 @@ export const verifiedEmailsInfiniteOptions = (options?: PageSize) => {
   })
 }
 
-export const ticketPriceOptions = (body: GetTicketPriceRequestDto) =>
+export const ticketPriceOptions = (body: GetTicketPriceRequestOptionalEcvDto) =>
   queryOptions({
     queryKey: [
       'TicketPrice',
@@ -159,7 +159,7 @@ export const ticketPriceOptions = (body: GetTicketPriceRequestDto) =>
     // https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#removed-keeppreviousdata-in-favor-of-placeholderdata-identity-function
     placeholderData: keepPreviousData,
     refetchInterval: 1000 * 60,
-    enabled: !!body.ticket.udr && !!body.ticket.ecv && !!body.ticket.parkingEnd,
+    enabled: !!body.ticket.udr && !!body.ticket.parkingEnd,
   })
 
 export const getTicketOptions = (ticketId?: number) =>
