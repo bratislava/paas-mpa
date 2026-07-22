@@ -204,4 +204,15 @@ yarn generate-clients
 
 ---
 
-> **Keep this doc in sync:** if a code change updates something described here (routing, purchase flow, auth, integrations), update this `ARCHITECTURE.md` in the same change.
+## Deployment
+
+- **EAS Build (`eas.json`)** -- profiles `development`, `development-simulator`, `preview`, `staging`, `prod`, `prod-test`; `appVersionSource: remote`, auto-increment on staging/prod; submit to Google Play `internal` and App Store (ASC app id `6457264414`).
+- **OTA updates (`expo-updates`)** -- update URL + `runtimeVersion.policy: appVersion`; production launches auto check/fetch/reload. Tags containing `ota` run `eas update` instead of a full build.
+- **Native config / plugins (`app.config.js`)** -- `expo-build-properties`, `@react-native-firebase/app`, `@rnmapbox/maps`, `expo-location/updates/localization/secure-store`, `@bacons/apple-targets` (Live Activity), the custom Bloomreach + Live-Activities plugins, and Sentry.
+- **CI (`.github/workflows/`)** -- `build.yml` (tags `prod**`/`staging**` -> `eas build`/`eas update` with `--auto-submit`), `validate.yml` (PR: TS check + ESLint), `codeql-analysis.yml`.
+- **Force update** -- `components/special/StoreVersionControl.tsx` prompts when the installed version is below the backend minimum.
+- **E2E** -- Maestro flows in `.maestro/`.
+
+---
+
+> **Keep this doc in sync:** if a code change updates something described here (routing, purchase flow, auth, integrations, deployment), update this `ARCHITECTURE.md` in the same change.
