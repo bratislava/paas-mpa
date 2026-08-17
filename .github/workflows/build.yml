@@ -16,8 +16,8 @@ jobs:
       - name: 🚛 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: yarn
+          node-version: 24
+          cache: npm
 
       - name: 🚧 Setup EAS
         uses: expo/expo-github-action@v8
@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.EXPO_BUILD_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: 🚀 Build production
         if: contains(github.event.ref, 'prod') && !contains(github.event.ref, 'ota')
