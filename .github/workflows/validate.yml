@@ -3,13 +3,6 @@ name: Validate
 on: [pull_request]
 
 jobs:
-  validate:
-    name: Validate typescript
-    uses: bratislava/github-actions/.github/workflows/validate-typescript-inhouse.yml@stable
-    with:
-      directory: '.'
-      typescript-directory: '.'
-
   typescript-check:
     runs-on: ubuntu-latest
     steps:
@@ -17,12 +10,13 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '24'
+          cache: npm
 
-      - run: yarn --frozen-lockfile
+      - run: npm ci
 
       - name: Typescript check
-        run: yarn ts:check
+        run: npm run ts:check
 
       - name: ESlint check
         uses: sibiraj-s/action-eslint@v2

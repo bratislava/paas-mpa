@@ -15,10 +15,10 @@ Quick reference:
 ```bash
 # you'll want eas-cli installed globally
 # install local packages
-yarn
+npm install
 
 # local development once you have build installed and are changing only javascript
-yarn start
+npm start
 
 # list existing builds (most of the time, you'll install the latest matching from here)
 eas build:list
@@ -44,7 +44,7 @@ We use the `@openapitools/openapi-generator-cli` by which we can generate typesa
 To generate fresh types just run this command:
 
 ```bash
-yarn generate-clients
+npm run generate-clients
 ```
 
 ## Deploy
