@@ -33,7 +33,7 @@ const NotificationsResultPage = () => {
             </Button>
           </View>
         ) : (
-          <ContinueButton onPress={() => router.dismissTo('/')}>
+          <ContinueButton onPress={() => router.dismissTo('/settings')}>
             {t('bloomreachNotifications.result.success.action')}
           </ContinueButton>
         )
