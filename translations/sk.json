@@ -51,6 +51,7 @@
   "bloomreachNotifications.callout.title": "Notifikácie o pokutách a parkovacích kartách",
   "bloomreachNotifications.consents.error.text": "Nepodarilo sa načítať nastavenia upozornení. Skúste to znova.",
   "bloomreachNotifications.consents.mutationError": "Nepodarilo sa aktualizovať nastavenie upozornenia. Skúste to znova.",
+  "bloomreachNotifications.consents.setupFailed": "Nepodarilo sa zapnúť všetky upozornenia. Môžete ich kedykoľvek zapnúť v nastaveniach upozornení.",
   "bloomreachNotifications.expiration.email.accessibilityLabel": "Expirácia parkovacej karty email prepínač",
   "bloomreachNotifications.expiration.email.description": "Upozornenie príde na váš email zadaný v Bratislavskom konte.",
   "bloomreachNotifications.expiration.email.title": "Email",

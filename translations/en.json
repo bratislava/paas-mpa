@@ -51,6 +51,7 @@
   "bloomreachNotifications.callout.title": "Notifications about fines and parking permits",
   "bloomreachNotifications.consents.error.text": "Failed to load notification preferences. Please try again.",
   "bloomreachNotifications.consents.mutationError": "Failed to update notification preference. Please try again.",
+  "bloomreachNotifications.consents.setupFailed": "We could not turn on all notifications. You can enable them any time in notification settings.",
   "bloomreachNotifications.expiration.email.accessibilityLabel": "Card expiration email switch",
   "bloomreachNotifications.expiration.email.description": "The notification will be sent to the email registered in your Bratislava Account.",
   "bloomreachNotifications.expiration.email.title": "Email",
