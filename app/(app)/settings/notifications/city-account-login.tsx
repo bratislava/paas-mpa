@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native'
 import { getCurrentUser, updateUserAttribute } from 'aws-amplify/auth'
 import { router } from 'expo-router'
 import { useState } from 'react'
@@ -5,28 +6,32 @@ import { ScrollView } from 'react-native'
 
 import { ImageDataSecurity } from '@/assets/onboarding-slides'
 import { BloomreachNotificationInfoScreenItem } from '@/components/notifications/BloomreachNotificationInfoScreen'
-import { configureExponea } from '@/components/notifications/utils'
+import { acceptParkingConsents, configureExponea } from '@/components/notifications/utils'
 import ScreenContent from '@/components/screen-layout/ScreenContent'
 import ScreenViewCentered from '@/components/screen-layout/ScreenViewCentered'
+import { useSnackbar } from '@/components/screen-layout/Snackbar/useSnackbar'
 import Button from '@/components/shared/Button'
 import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useCityAccountSignIn } from '@/modules/auth/hooks/useCityAccountSignIn'
-import { clientApi } from '@/modules/backend/client-api'
-import {
-  TrackConsentChangePropertiesDtoActionEnum,
-  TrackConsentChangePropertiesDtoCategoryEnum,
-} from '@/modules/backend/openapi-generated'
 import { useAuthStoreUpdateContext } from '@/state/AuthStoreProvider/useAuthStoreUpdateContext'
+
+const redirectToNotificationsResult = (status: 'success' | 'error') => {
+  router.replace({ pathname: '/settings/notifications/result', params: { status } })
+}
 
 const NotificationsHowPage = () => {
   const { t } = useTranslation()
   const { signIn } = useCityAccountSignIn()
   const updateAuthStore = useAuthStoreUpdateContext()
+  const snackbar = useSnackbar()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSignIn = async () => {
     setIsLoading(true)
+    /* Guards the error screen: once the account is linked, no later failure may claim otherwise. */
+    let isAccountLinked = false
+
     try {
       const res = await signIn()
 
@@ -35,7 +40,7 @@ const NotificationsHowPage = () => {
       const user = await getCurrentUser()
 
       if (!user.signInDetails?.loginId) {
-        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+        redirectToNotificationsResult('error')
 
         return
       }
@@ -52,7 +57,7 @@ const NotificationsHowPage = () => {
       })
 
       if (!fetchResponse.ok) {
-        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+        redirectToNotificationsResult('error')
 
         return
       }
@@ -60,7 +65,7 @@ const NotificationsHowPage = () => {
       const data = await fetchResponse.json()
 
       if (!data.bloomreachContactId) {
-        router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+        redirectToNotificationsResult('error')
 
         return
       }
@@ -71,36 +76,29 @@ const NotificationsHowPage = () => {
           value: data.bloomreachContactId,
         },
       })
+      isAccountLinked = true
 
-      // Set PARKING-GENERAL, PARKING-FINE-EMAIL, PARKING-FINE-SMS consents to true
-      await clientApi.consentControllerTrackConsentChange({
-        properties: {
-          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
-          category: TrackConsentChangePropertiesDtoCategoryEnum.General,
-          valid_until: 'unlimited',
-        },
-      })
-      await clientApi.consentControllerTrackConsentChange({
-        properties: {
-          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
-          category: TrackConsentChangePropertiesDtoCategoryEnum.FineEmail,
-          valid_until: 'unlimited',
-        },
-      })
-      await clientApi.consentControllerTrackConsentChange({
-        properties: {
-          action: TrackConsentChangePropertiesDtoActionEnum.Accept,
-          category: TrackConsentChangePropertiesDtoCategoryEnum.FineSms,
-          valid_until: 'unlimited',
-        },
-      })
-
-      await configureExponea(data.bloomreachContactId, user.signInDetails.loginId)
       updateAuthStore({ bloomreachId: data.bloomreachContactId })
 
-      router.replace({ pathname: '/settings/notifications/result', params: { status: 'success' } })
+      // Set PARKING-GENERAL, PARKING-FINE-EMAIL, PARKING-FINE-SMS consents to true
+      acceptParkingConsents({
+        onConsentFailed: () =>
+          snackbar.show(t('bloomreachNotifications.consents.setupFailed'), { variant: 'warning' }),
+      })
+
+      try {
+        await configureExponea(data.bloomreachContactId, user.signInDetails.loginId)
+      } catch (error) {
+        /* Recoverable - AuthStoreProvider configures Exponea again on the next app start. */
+        Sentry.captureException(error, { tags: { feature: 'configure-exponea' } })
+      }
+      redirectToNotificationsResult('success')
     } catch {
-      router.replace({ pathname: '/settings/notifications/result', params: { status: 'error' } })
+      if (isAccountLinked) {
+        redirectToNotificationsResult('success')
+      } else {
+        redirectToNotificationsResult('error')
+      }
     } finally {
       setIsLoading(false)
     }
