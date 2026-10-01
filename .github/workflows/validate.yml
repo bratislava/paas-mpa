@@ -6,9 +6,9 @@ jobs:
   typescript-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
         with:
           node-version: '24'
           cache: npm
@@ -19,7 +19,7 @@ jobs:
         run: npm run ts:check
 
       - name: ESlint check
-        uses: sibiraj-s/action-eslint@v2
+        uses: sibiraj-s/action-eslint@5af82bfa2a6b0cc7cba3208d6274724977caefbd # v2.2.1
         with:
           eslint-args: '--ignore-path=.gitignore --quiet'
           extensions: 'md,ts,tsx'
