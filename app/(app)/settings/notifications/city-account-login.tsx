@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { getCurrentUser, updateUserAttribute } from 'aws-amplify/auth'
 import { router } from 'expo-router'
 import { useState } from 'react'
@@ -13,6 +14,7 @@ import { environment } from '@/environment'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useCityAccountSignIn } from '@/modules/auth/hooks/useCityAccountSignIn'
 import { clientApi } from '@/modules/backend/client-api'
+import { consentsOptions } from '@/modules/backend/constants/queryOptions'
 import {
   TrackConsentChangePropertiesDtoActionEnum,
   TrackConsentChangePropertiesDtoCategoryEnum,
@@ -24,6 +26,8 @@ const NotificationsHowPage = () => {
   const { signIn } = useCityAccountSignIn()
   const updateAuthStore = useAuthStoreUpdateContext()
   const [isLoading, setIsLoading] = useState(false)
+
+  const queryClient = useQueryClient()
 
   const handleSignIn = async () => {
     setIsLoading(true)
@@ -94,6 +98,9 @@ const NotificationsHowPage = () => {
           valid_until: 'unlimited',
         },
       })
+
+      // Invalidate consents query to refetch consents
+      await queryClient.invalidateQueries({ queryKey: consentsOptions().queryKey })
 
       await configureExponea(data.bloomreachContactId, user.signInDetails.loginId)
       updateAuthStore({ bloomreachId: data.bloomreachContactId })
