@@ -156,7 +156,7 @@
   },
   "private": true,
   "volta": {
-    "node": "24.19.0",
+    "node": "26.12.1",
     "npm": "12.0.2"
   },
   "packageManager": "npm@12.0.2",
