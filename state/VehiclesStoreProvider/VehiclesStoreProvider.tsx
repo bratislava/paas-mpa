@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createContext, PropsWithChildren, useCallback, useMemo } from 'react'
 
 import { clientApi } from '@/modules/backend/client-api'
@@ -33,7 +33,10 @@ type VehiclesStoreContextProps = {
 export const VehiclesStoreContext = createContext<VehiclesStoreContextProps | null>(null)
 VehiclesStoreContext.displayName = 'VehiclesStoreContext'
 
+const vehiclesQueryKey = vehiclesInfiniteOptions().queryKey
+
 const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
+  const queryClient = useQueryClient()
   const vehiclesQuery = useInfiniteQuery(vehiclesInfiniteOptions())
 
   const vehicles = useMemo(
@@ -43,33 +46,28 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
 
   const defaultVehicle = vehicles?.find(({ isDefault }) => isDefault) ?? null
 
+  // Always resync the list after a mutation settles - even on error the request may have
+  // reached the server (e.g. a timeout after the change was committed).
+  const invalidateVehicles = useCallback(
+    () => queryClient.invalidateQueries({ queryKey: vehiclesQueryKey }),
+    [queryClient],
+  )
+
   const insertMutation = useMutation({
     mutationFn: (bodyInner: CreateVehicleDto) =>
       clientApi.vehiclesControllerInsertVehicle(bodyInner),
-    onSuccess: async (response) => {
-      if (response.data) {
-        await vehiclesQuery.refetch()
-      }
-    },
+    onSettled: invalidateVehicles,
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => clientApi.vehiclesControllerDeleteVehicle(id),
-    onSuccess: async (response) => {
-      if (response.data.deleted) {
-        await vehiclesQuery.refetch()
-      }
-    },
+    onSettled: invalidateVehicles,
   })
 
   const updateMutation = useMutation({
     mutationFn: ({ id, updateVehicleDto }: { id: number; updateVehicleDto: UpdateVehicleDto }) =>
       clientApi.vehiclesControllerUpdateVehicle(id, updateVehicleDto),
-    onSuccess: async (response) => {
-      if (response.data) {
-        await vehiclesQuery.refetch()
-      }
-    },
+    onSettled: invalidateVehicles,
   })
 
   const addVehicle = useCallback(
@@ -120,7 +118,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
           await setDefaultVehicle(newDefaultVehicle.id)
         }
       }
-      deleteMutation.mutate(id)
+      await deleteMutation.mutateAsync(id)
     },
     [defaultVehicle, deleteMutation, setDefaultVehicle, vehicles],
   )
