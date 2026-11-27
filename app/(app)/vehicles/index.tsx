@@ -85,18 +85,13 @@ const VehiclesScreen = () => {
   }
 
   const handleConfirmDelete = async () => {
-    try {
-      if (activeVehicleId) {
-        await deleteVehicle(activeVehicleId)
-        if (activeVehicleId === vehicle?.id) {
-          onPurchaseStoreUpdate({ vehicle: null })
-        }
+    if (activeVehicleId) {
+      await deleteVehicle(activeVehicleId)
+      if (activeVehicleId === vehicle?.id) {
+        onPurchaseStoreUpdate({ vehicle: null })
       }
-    } catch {
-      // Error snackbar is shown by the axios interceptor and the list is resynced in the store
-    } finally {
-      closeModal()
     }
+    closeModal()
   }
 
   if (vehiclesQuery.isPending) {

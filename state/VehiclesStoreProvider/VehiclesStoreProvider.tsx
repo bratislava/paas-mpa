@@ -118,7 +118,7 @@ const VehiclesStoreProvider = ({ children }: PropsWithChildren) => {
           await setDefaultVehicle(newDefaultVehicle.id)
         }
       }
-      await deleteMutation.mutateAsync(id)
+      deleteMutation.mutate(id)
     },
     [defaultVehicle, deleteMutation, setDefaultVehicle, vehicles],
   )
